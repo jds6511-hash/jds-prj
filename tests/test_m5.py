@@ -40,17 +40,28 @@ def test_tied_scores_rank_by_lower_idx_first(monkeypatch):
     # 재현성 계약: search()의 랭킹은 동률 점수를 낮은 idx 우선으로
     # 결정적으로 정렬한다 (argsort kind="stable"). 실제 모델 로드는 피하고
     # embed_texts를 고정 벡터로 대체해 search()의 정렬 로직 자체를 검증한다.
-    q = np.array([1.0, 0.0], dtype=np.float32)
+    # 이 17원소 값 배열은 quicksort와 stable의 argsort 결과가 실제로
+    # 달라지는 것이 실험으로 확인된 픽스처다 (4원소 등 작은 배열에서는
+    # 우연히 두 정렬 방식의 결과가 같아져 이 테스트가 kind="stable" 제거를
+    # 잡아내지 못했음).
+    vals = [0.0, 0.5, 0.0, 0.5, 0.5, 1.0, 0.0, 1.0, 0.0, 0.0,
+            0.0, 1.0, 0.5, 1.0, 1.0, 0.0, 0.5]
+    n = len(vals)
+    q = np.array([1.0], dtype=np.float32)
     monkeypatch.setattr(m5_search, "embed_texts", lambda texts, model: np.array([q]))
-    emb_sub = np.array([[0.5, 0.0], [0.9, 0.0], [0.5, 0.0], [0.9, 0.0]], dtype=np.float32)
+    emb_sub = np.array(vals, dtype=np.float32).reshape(-1, 1)
+    emb_cap = np.zeros_like(emb_sub)  # alpha=1.0이므로 무시됨
     video = VideoIndex(
-        segments=[{"start": float(i * 5), "end": float(i * 5 + 5)} for i in range(4)],
+        segments=[{"idx": i, "start": float(i * 5), "end": float(i * 5 + 5),
+                   "subtitle": ""} for i in range(n)],
         emb_sub=emb_sub,
-        emb_cap=emb_sub.copy(),
-        static_mask=np.array([False, False, False, False]))
-    # alpha=1.0 → score = minmax(s_sub) = [0, 1, 0, 1] → 동률: (idx1,idx3)=1, (idx0,idx2)=0
+        emb_cap=emb_cap,
+        static_mask=np.array([False] * n))
+    # alpha=1.0 → score = minmax(s_sub) = s_sub (0/0.5/1.0 그대로) → 동일 점수 그룹 내
+    # idx 오름차순이 stable argsort의 결정적 결과.
     results = search("query", video, alpha=1.0, cfg={"embed_model": "any-model"})
-    assert [r.idx for r in results] == [1, 3, 0, 2]
+    expected = [5, 7, 11, 13, 14, 1, 3, 4, 12, 16, 0, 2, 6, 8, 9, 10, 15]
+    assert [r.idx for r in results] == expected
 
 def test_load_raises_on_n_segments_mismatch(tmp_path):
     # segments.json이 M4 이후 재생성됐는데 emb_*.npy가 갱신 안 된 경우 fail-fast [리뷰 반영]
