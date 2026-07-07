@@ -10,3 +10,7 @@ bitsandbytes
 qwen-vl-utils
 sentence-transformers
 gradio
+fastapi
+uvicorn
+python-multipart
+httpx

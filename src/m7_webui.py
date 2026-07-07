@@ -1,0 +1,114 @@
+"""M7-W 웹 UI 서버: 업로드 → M1~M4 서브프로세스 인덱싱 → 채팅 검색.
+검색은 m5_search.search를 그대로 import (재구현 금지).
+[docs/superpowers/specs/2026-07-07-webui-design.md]"""
+import argparse, re, subprocess, sys, threading
+from pathlib import Path
+
+from fastapi import FastAPI, HTTPException, UploadFile
+from fastapi.responses import FileResponse, HTMLResponse
+
+import common
+from m5_search import VideoIndex, search
+
+PIPELINE = ("m1_preprocess.py", "m2_keyframe.py", "m3_generate.py", "m4_index.py")
+STAGE = {"m1_preprocess.py": "m1", "m2_keyframe.py": "m2",
+         "m3_generate.py": "m3", "m4_index.py": "m4"}
+
+
+def sanitize_video_id(stem: str) -> str:
+    return re.sub(r"[^a-zA-Z0-9_-]", "_", stem)
+
+
+def run_module_subprocess(script: str, config_path: str, video_id: str) -> None:
+    """M1~M4 CLI 한 단계 실행. 실패 시 stderr 꼬리를 담아 RuntimeError."""
+    proc = subprocess.run(
+        [sys.executable, str(Path("src") / script),
+         "--config", config_path, "--video-id", video_id],
+        capture_output=True, text=True, encoding="utf-8", errors="replace")
+    if proc.returncode != 0:
+        tail = "\n".join((proc.stderr or "").strip().splitlines()[-5:])
+        raise RuntimeError(f"{script} 실패:\n{tail}")
+
+
+class JobStore:
+    """인덱싱 상태 저장소. GPU 자원 보호를 위해 동시 1건만 허용."""
+    def __init__(self):
+        self._lock = threading.Lock()
+        self._status: dict[str, dict] = {}
+        self._busy = False
+
+    def try_start(self, video_id: str) -> bool:
+        with self._lock:
+            if self._busy:
+                return False
+            self._busy = True
+            self._status[video_id] = {"stage": "m1", "detail": "시작 대기"}
+            return True
+
+    def set(self, video_id: str, stage: str, detail: str = "") -> None:
+        with self._lock:
+            self._status[video_id] = {"stage": stage, "detail": detail}
+            if stage in ("done", "error"):
+                self._busy = False
+
+    def get(self, video_id: str) -> dict | None:
+        with self._lock:
+            return self._status.get(video_id)
+
+
+def create_app(cfg: dict, config_path: str, alpha: float,
+               run_module=run_module_subprocess,
+               search_fn=search, load_index=VideoIndex.load) -> FastAPI:
+    app = FastAPI()
+    jobs = JobStore()
+    index_cache: dict[str, VideoIndex] = {}
+    videos_dir = Path(cfg["paths"]["data"]) / "videos"
+    html_path = Path(__file__).parent / "webui" / "index.html"
+
+    def _pipeline(video_id: str) -> None:
+        try:
+            for script in PIPELINE:
+                jobs.set(video_id, STAGE[script], f"{script} 실행 중")
+                run_module(script, config_path, video_id)
+            index_cache.pop(video_id, None)      # 재인덱싱 시 캐시 무효화
+            jobs.set(video_id, "done")
+        except Exception as e:                   # 단계 실패 → UI에 원인 표시
+            jobs.set(video_id, "error", str(e))
+
+    @app.post("/api/upload")
+    async def upload(file: UploadFile):
+        if not (file.filename or "").lower().endswith(".mp4"):
+            raise HTTPException(400, "mp4 파일만 업로드할 수 있어요")
+        video_id = sanitize_video_id(Path(file.filename).stem)
+        if not jobs.try_start(video_id):
+            raise HTTPException(409, "다른 영상 인덱싱 중이에요 — 잠시 후 다시 시도하세요")
+        videos_dir.mkdir(parents=True, exist_ok=True)
+        (videos_dir / f"{video_id}.mp4").write_bytes(await file.read())
+        threading.Thread(target=_pipeline, args=(video_id,), daemon=True).start()
+        return {"video_id": video_id}
+
+    @app.get("/api/status/{video_id}")
+    def status(video_id: str):
+        st = jobs.get(video_id)
+        if st is None:
+            raise HTTPException(404, f"{video_id}: 업로드 기록 없음")
+        return st
+
+    return app
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--config", default="config.yaml")
+    ap.add_argument("--alpha", type=float, default=0.5,
+                    help="M6 grid search 후 고정값으로 교체하는 임시값")
+    ap.add_argument("--port", type=int, default=7860)
+    args = ap.parse_args()
+    import uvicorn
+    cfg = common.load_config(args.config)
+    uvicorn.run(create_app(cfg, args.config, args.alpha),
+                host="127.0.0.1", port=args.port)
+
+
+if __name__ == "__main__":
+    main()
