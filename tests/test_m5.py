@@ -31,3 +31,10 @@ def test_static_substitution_makes_score_equal_subtitle():
     for alpha in (0.0, 0.3, 0.7):
         out = combine_scores(s_sub, s_cap, np.array([True, True]), alpha)
         assert np.allclose(out, minmax(s_sub))
+
+def test_tied_scores_rank_by_lower_idx_first():
+    # 재현성 계약: search()의 랭킹은 동률 점수를 낮은 idx 우선으로
+    # 결정적으로 정렬한다 (argsort kind="stable")
+    score = np.array([0.5, 0.9, 0.5, 0.9])
+    order = np.argsort(-score, kind="stable")
+    assert list(order) == [1, 3, 0, 2]

@@ -59,7 +59,7 @@ def search(query: str, video: VideoIndex, alpha: float, cfg: dict) -> list[Resul
     s_sub = video.emb_sub @ q                    # 1) 코사인 (L2 정규화 완료 상태)
     s_cap = video.emb_cap @ q
     score = combine_scores(s_sub, s_cap, video.static_mask, alpha)
-    order = np.argsort(-score)
+    order = np.argsort(-score, kind="stable")
     return [Result(int(i), float(score[i]),
                    video.segments[i]["start"], video.segments[i]["end"])
             for i in order]
