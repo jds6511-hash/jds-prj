@@ -256,3 +256,51 @@ def test_root_serves_html(tmp_path):
     assert r.status_code == 200
     assert "영상 장면 검색" in r.text
     assert "text/html" in r.headers["content-type"]
+    assert "/api/current" in r.text   # 재접속 복원 로직 존재 스모크
+
+
+def test_status_progress_during_m2(tmp_path):
+    gate = threading.Event()
+
+    def run_module(script, cfgp, vid):
+        if script == "m2_keyframe.py":
+            gate.wait(2)
+
+    client, cfg = make_client(tmp_path, run_module=run_module)
+    vid = client.post("/api/upload",
+                      files={"file": ("v.mp4", b"\x00", "video/mp4")}).json()["video_id"]
+    wait_stage(client, vid, "m2")
+    write_segments(cfg, vid, n=4)
+    frames_dir = Path(cfg["paths"]["work"]) / vid / "frames"
+    frames_dir.mkdir(parents=True, exist_ok=True)
+    (frames_dir / "seg_0000.jpg").write_bytes(b"")
+    (frames_dir / "seg_0001.jpg").write_bytes(b"")
+    st = client.get(f"/api/status/{vid}").json()
+    assert st["progress"] == {"n": 2, "total": 4}
+    gate.set()
+    wait_stage(client, vid, "done")
+
+
+def test_status_progress_absent_when_no_segments(tmp_path):
+    gate = threading.Event()
+
+    def run_module(script, cfgp, vid):
+        if script == "m1_preprocess.py":
+            gate.wait(2)
+
+    client, cfg = make_client(tmp_path, run_module=run_module)
+    vid = client.post("/api/upload",
+                      files={"file": ("v.mp4", b"\x00", "video/mp4")}).json()["video_id"]
+    st = wait_stage(client, vid, "m1")
+    assert "progress" not in st
+    gate.set()
+    wait_stage(client, vid, "done")
+
+
+def test_current_returns_active_job(tmp_path):
+    client, _ = make_client(tmp_path)
+    assert client.get("/api/current").json() == {"video_id": None}
+    r = client.post("/api/upload", files={"file": ("v.mp4", b"\x00", "video/mp4")})
+    vid = r.json()["video_id"]
+    cur = client.get("/api/current").json()
+    assert cur["video_id"] == vid

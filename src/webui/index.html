@@ -79,6 +79,7 @@
 <script>
 const $ = id => document.getElementById(id);
 let videoId = null;
+const STAGE_ORDER = ["m1", "m2", "m3", "m4"];
 const STAGE_INFO = { m1: [10, "오디오 추출·세그먼트 분할 (M1)"],
                      m2: [30, "대표 프레임 선택 (M2)"],
                      m3: [60, "전사·장면설명 생성 (M3)"],
@@ -137,8 +138,17 @@ async function poll() {
       return;
     }
     const [pct, label] = STAGE_INFO[st.stage] || [0, st.stage];
-    $("progress-fill").style.width = pct + "%";
-    $("progress-text").textContent = label + "…";
+    let fillPct = pct;
+    let text = label + "…";
+    if (st.progress) {
+      const idx = STAGE_ORDER.indexOf(st.stage);
+      const prevPct = idx > 0 ? STAGE_INFO[STAGE_ORDER[idx - 1]][0] : 0;
+      const ratio = st.progress.total > 0 ? st.progress.n / st.progress.total : 0;
+      fillPct = prevPct + (pct - prevPct) * ratio;
+      text = `${label}… ${st.progress.n}/${st.progress.total}`;
+    }
+    $("progress-fill").style.width = fillPct + "%";
+    $("progress-text").textContent = text;
     setTimeout(poll, 1000);
   } catch (err) {
     setTimeout(poll, 1000);
@@ -146,6 +156,8 @@ async function poll() {
 }
 
 async function onReady() {
+  $("chat-log").innerHTML = "";
+  addMsg("bot", null, "인덱싱 완료! 찾고 싶은 장면을 설명해 보세요.");
   $("player").src = `/api/video/${videoId}`;
   const r = await fetch(`/api/segments/${videoId}`);
   const { segments } = await r.json();
@@ -163,7 +175,6 @@ async function onReady() {
   }
   $("chat-input").disabled = false;
   $("chat-send").disabled = false;
-  addMsg("bot", null, "인덱싱 완료! 찾고 싶은 장면을 설명해 보세요.");
 }
 
 function addMsg(role, cards, text) {
@@ -207,6 +218,24 @@ $("chat-form").addEventListener("submit", async e => {
     $("chat-send").disabled = false;
   }
 });
+
+async function restoreCurrent() {
+  try {
+    const r = await fetch("/api/current");
+    const cur = await r.json();
+    if (!cur.video_id) return;
+    videoId = cur.video_id;
+    if (cur.stage === "done") {
+      onReady();
+    } else {
+      $("progress-wrap").style.display = "flex";
+      poll();
+    }
+  } catch (err) {
+    // 복원 실패 시 현재처럼 대기
+  }
+}
+restoreCurrent();
 </script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 """M7-W 웹 UI 서버: 업로드 → M1~M4 서브프로세스 인덱싱 → 채팅 검색.
 검색은 m5_search.search를 그대로 import (재구현 금지).
 [docs/superpowers/specs/2026-07-07-webui-design.md]"""
-import argparse, re, subprocess, sys, threading
+import argparse, json, re, subprocess, sys, threading
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, UploadFile
@@ -36,12 +36,14 @@ class JobStore:
         self._lock = threading.Lock()
         self._status: dict[str, dict] = {}
         self._busy = False
+        self._current: str | None = None
 
     def try_start(self, video_id: str) -> bool:
         with self._lock:
             if self._busy:
                 return False
             self._busy = True
+            self._current = video_id
             self._status[video_id] = {"stage": "m1", "detail": "시작 대기"}
             return True
 
@@ -54,6 +56,34 @@ class JobStore:
     def get(self, video_id: str) -> dict | None:
         with self._lock:
             return self._status.get(video_id)
+
+    def current(self) -> str | None:
+        with self._lock:
+            return self._current
+
+
+def _read_segments_progress(cfg: dict, video_id: str, count_fn) -> dict | None:
+    """segments.json 기반 진행률 {n, total} 계산. 없거나 읽기 실패 시 None(진행률 생략)."""
+    seg_path = common.work_dir(cfg, video_id) / "segments.json"
+    if not seg_path.exists():
+        return None
+    try:
+        doc = json.loads(seg_path.read_text(encoding="utf-8"))
+        return {"n": count_fn(doc), "total": doc["n_segments"]}
+    except Exception:                         # 쓰기 도중 등 읽기 실패 → progress 생략
+        return None
+
+
+def _progress_m2(cfg: dict, video_id: str) -> dict | None:
+    frames_dir = common.work_dir(cfg, video_id) / "frames"
+    n_frames = len(list(frames_dir.glob("*.jpg"))) if frames_dir.exists() else 0
+    return _read_segments_progress(cfg, video_id, lambda doc: n_frames)
+
+
+def _progress_m3(cfg: dict, video_id: str) -> dict | None:
+    return _read_segments_progress(
+        cfg, video_id,
+        lambda doc: sum(1 for s in doc["segments"] if s.get("caption")))
 
 
 def create_app(cfg: dict, config_path: str, alpha: float,
@@ -100,7 +130,23 @@ def create_app(cfg: dict, config_path: str, alpha: float,
         st = jobs.get(video_id)
         if st is None:
             raise HTTPException(404, f"{video_id}: 업로드 기록 없음")
-        return st
+        result = dict(st)
+        progress = None
+        if st["stage"] == "m2":
+            progress = _progress_m2(cfg, video_id)
+        elif st["stage"] == "m3":
+            progress = _progress_m3(cfg, video_id)
+        if progress is not None:
+            result["progress"] = progress
+        return result
+
+    @app.get("/api/current")
+    def current():
+        video_id = jobs.current()
+        if video_id is None:
+            return {"video_id": None}
+        st = jobs.get(video_id)
+        return {"video_id": video_id, "stage": st["stage"], "detail": st["detail"]}
 
     @app.get("/api/segments/{video_id}")
     def segments(video_id: str):
