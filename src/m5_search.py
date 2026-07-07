@@ -48,9 +48,15 @@ class VideoIndex:
         if meta["embed_model"] != cfg["embed_model"]:   # 모델 혼입 방지 [4-4]
             raise ValueError(f"임베딩 모델 불일치: index={meta['embed_model']} "
                              f"config={cfg['embed_model']} — run m4_index.py --force")
-        return cls(segments=doc["segments"],
-                   emb_sub=np.load(wdir / "emb_sub.npy"),
-                   emb_cap=np.load(wdir / "emb_cap.npy"),
+        emb_sub = np.load(wdir / "emb_sub.npy")
+        emb_cap = np.load(wdir / "emb_cap.npy")
+        n_seg = len(doc["segments"])
+        if meta["n_segments"] != n_seg or emb_sub.shape[0] != n_seg or emb_cap.shape[0] != n_seg:
+            # segments.json이 M4 이후 재생성되었는데 임베딩이 갱신 안 된 경우 방지
+            raise ValueError(f"세그먼트 수 불일치: meta.n_segments={meta['n_segments']} "
+                             f"segments.json={n_seg} emb_sub={emb_sub.shape[0]} "
+                             f"emb_cap={emb_cap.shape[0]} — run m4_index.py --force")
+        return cls(segments=doc["segments"], emb_sub=emb_sub, emb_cap=emb_cap,
                    static_mask=np.array([s["is_static"] for s in doc["segments"]]))
 
 
