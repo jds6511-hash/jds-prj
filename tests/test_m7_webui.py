@@ -189,3 +189,11 @@ def test_search_no_index_files_409(tmp_path):
 def test_video_route_404_when_missing(tmp_path):
     client, _ = make_client(tmp_path)
     assert client.get("/api/video/nope").status_code == 404
+
+
+def test_root_serves_html(tmp_path):
+    client, _ = make_client(tmp_path)
+    r = client.get("/")
+    assert r.status_code == 200
+    assert "영상 장면 검색" in r.text
+    assert "text/html" in r.headers["content-type"]

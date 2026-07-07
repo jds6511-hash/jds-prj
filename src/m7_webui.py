@@ -75,6 +75,10 @@ def create_app(cfg: dict, config_path: str, alpha: float,
         except Exception as e:                   # 단계 실패 → UI에 원인 표시
             jobs.set(video_id, "error", str(e))
 
+    @app.get("/")
+    def index() -> HTMLResponse:
+        return HTMLResponse(html_path.read_text(encoding="utf-8"))
+
     @app.post("/api/upload")
     async def upload(file: UploadFile):
         if not (file.filename or "").lower().endswith(".mp4"):
