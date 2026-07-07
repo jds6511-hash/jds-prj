@@ -1,0 +1,15 @@
+work/
+results/
+data/videos/
+__pycache__/
+*.npy
+*.mp4
+*.wav
+.env
+.pytest_cache/
+paper/
+caption/
+stt_test/
+*.docx
+*.hwpx
+.superpowers/

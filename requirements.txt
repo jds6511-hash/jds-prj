@@ -1,0 +1,12 @@
+numpy
+scipy
+opencv-python
+pyyaml
+pytest
+faster-whisper
+transformers>=4.49
+accelerate
+bitsandbytes
+qwen-vl-utils
+sentence-transformers
+gradio
