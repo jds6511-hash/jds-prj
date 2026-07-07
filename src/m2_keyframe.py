@@ -70,9 +70,7 @@ def main():
         cap.set(cv2.CAP_PROP_POS_MSEC, t_rep * 1000)
         ok, color = cap.read()
         out = frames_dir / f"seg_{seg['idx']:04d}.jpg"
-        if ok:
-            cv2.imwrite(str(out), color)
-        if not out.exists():
+        if not ok or not cv2.imwrite(str(out), color):
             raise RuntimeError(f"프레임 저장 실패: seg {seg['idx']}")
         seg["rep_frame"] = f"frames/seg_{seg['idx']:04d}.jpg"
         seg["is_static"] = static
