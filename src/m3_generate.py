@@ -72,3 +72,99 @@ def assign_subtitles(utts: list[dict], segments: list[dict]) -> None:
                 parts[s["idx"]].append(u["text"])
     for s in segments:
         s["subtitle"] = " ".join(parts[s["idx"]])
+
+
+def load_vlm(cfg):
+    """Qwen2.5-VL 로딩. 4bit NF4·max_pixels 설정은 기존 caption 실험 검증값 차용."""
+    import torch
+    from transformers import Qwen2_5_VLForConditionalGeneration, AutoProcessor
+    kwargs = dict(device_map="auto")
+    if cfg.get("vlm_4bit"):
+        from transformers import BitsAndBytesConfig
+        kwargs["quantization_config"] = BitsAndBytesConfig(
+            load_in_4bit=True, bnb_4bit_compute_dtype=torch.bfloat16,
+            bnb_4bit_quant_type="nf4", bnb_4bit_use_double_quant=True)
+    else:
+        kwargs["torch_dtype"] = torch.bfloat16
+    model = Qwen2_5_VLForConditionalGeneration.from_pretrained(cfg["caption_model"], **kwargs)
+    processor = AutoProcessor.from_pretrained(
+        cfg["caption_model"], min_pixels=256 * 28 * 28, max_pixels=cfg["vlm_max_pixels"])
+    return model, processor
+
+
+def caption_frame(image_path, prompt, model, processor, cfg) -> str:
+    import torch
+    from qwen_vl_utils import process_vision_info
+    messages = [{"role": "user", "content": [
+        {"type": "image", "image": str(image_path)},
+        {"type": "text", "text": prompt}]}]
+    text = processor.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+    imgs, vids = process_vision_info(messages)
+    inputs = processor(text=[text], images=imgs, videos=vids,
+                       padding=True, return_tensors="pt").to(model.device)
+    gen_kwargs = dict(max_new_tokens=128, do_sample=False)
+    if cfg.get("vlm_rep_penalty", 1.0) != 1.0:
+        gen_kwargs["repetition_penalty"] = cfg["vlm_rep_penalty"]
+    with torch.inference_mode():
+        gen = model.generate(**inputs, **gen_kwargs)
+    out = processor.batch_decode(gen[:, inputs.input_ids.shape[1]:],
+                                 skip_special_tokens=True)[0]
+    return out.strip()
+
+
+def caption_all(doc, wdir, cfg, captioner) -> list[int]:
+    """전 세그먼트 캡션. 실패 시 1회 재시도 후 실패 idx 반환. resume 지원. [4-3]"""
+    failed = []
+    for seg in doc["segments"]:
+        if seg.get("caption"):                        # resume: 이미 있으면 건너뜀
+            continue
+        img = Path(wdir) / seg["rep_frame"]
+        cap_text = ""
+        for attempt in range(2):                      # 최초 1회 + 재시도 1회
+            try:
+                cap_text = captioner(img)
+                break
+            except Exception as e:
+                if attempt == 1:
+                    print(f"seg {seg['idx']} 캡션 실패: {type(e).__name__}: {e}")
+        if not cap_text:
+            failed.append(seg["idx"])
+        seg["caption"] = cap_text
+    return failed
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--config", default="config.yaml")
+    ap.add_argument("--video-id", required=True)
+    ap.add_argument("--force", action="store_true")
+    args = ap.parse_args()
+    cfg = common.load_config(args.config)
+    wdir = common.work_dir(cfg, args.video_id)
+    doc = common.load_segments(wdir / "segments.json", require=["rep_frame", "is_static"])
+
+    if args.force:
+        for s in doc["segments"]:
+            s.pop("subtitle", None); s.pop("caption", None)
+
+    # (a) 자막
+    utts = transcribe(wdir / "audio.wav", cfg["stt_model"], cfg["stt_language"],
+                      force=args.force)
+    assign_subtitles(utts, doc["segments"])
+    covered = sum(1 for s in doc["segments"] if s["subtitle"])
+    print(f"자막 커버리지: {covered}/{doc['n_segments']} ({covered/doc['n_segments']:.1%})")
+
+    # (b) 캡션
+    model, processor = load_vlm(cfg)
+    failed = caption_all(doc, wdir, cfg,
+                         captioner=lambda p: caption_frame(p, cfg["caption_prompt"],
+                                                           model, processor, cfg))
+    common.save_segments(wdir / "segments.json", doc)
+    if failed:
+        print(f"⚠️ 캡션 실패 세그먼트 {len(failed)}개: {failed}")  # 검증 포인트 [4-3]
+        sys.exit(1)
+    print("M3 완료: caption 빈 문자열 0건")
+
+
+if __name__ == "__main__":
+    main()
