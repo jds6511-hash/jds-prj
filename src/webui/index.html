@@ -97,6 +97,10 @@ function showError(text) {
   $("error-box").style.display = "block";
   $("error-box").textContent = text;
 }
+function esc(s) {
+  return String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
 
 $("file-input").addEventListener("change", async e => {
   const file = e.target.files[0];
@@ -104,33 +108,41 @@ $("file-input").addEventListener("change", async e => {
   $("error-box").style.display = "none";
   const fd = new FormData();
   fd.append("file", file);
-  const r = await fetch("/api/upload", { method: "POST", body: fd });
-  const body = await r.json();
-  if (!r.ok) { showError(body.detail); return; }
-  videoId = body.video_id;
-  $("progress-wrap").style.display = "flex";
-  poll();
+  try {
+    const r = await fetch("/api/upload", { method: "POST", body: fd });
+    const body = await r.json();
+    if (!r.ok) { showError(body.detail); return; }
+    videoId = body.video_id;
+    $("progress-wrap").style.display = "flex";
+    poll();
+  } catch (err) {
+    showError("업로드 실패 — 네트워크를 확인해 주세요");
+  }
 });
 
 async function poll() {
-  const r = await fetch(`/api/status/${videoId}`);
-  const st = await r.json();
-  if (st.stage === "error") {
-    showError("인덱싱 실패\n" + st.detail);
-    $("progress-wrap").style.display = "none";
-    return;
+  try {
+    const r = await fetch(`/api/status/${videoId}`);
+    const st = await r.json();
+    if (st.stage === "error") {
+      showError("인덱싱 실패\n" + st.detail);
+      $("progress-wrap").style.display = "none";
+      return;
+    }
+    if (st.stage === "done") {
+      $("progress-fill").style.width = "100%";
+      $("progress-text").textContent = "완료";
+      setTimeout(() => { $("progress-wrap").style.display = "none"; }, 1500);
+      onReady();
+      return;
+    }
+    const [pct, label] = STAGE_INFO[st.stage] || [0, st.stage];
+    $("progress-fill").style.width = pct + "%";
+    $("progress-text").textContent = label + "…";
+    setTimeout(poll, 1000);
+  } catch (err) {
+    setTimeout(poll, 1000);
   }
-  if (st.stage === "done") {
-    $("progress-fill").style.width = "100%";
-    $("progress-text").textContent = "완료";
-    setTimeout(() => { $("progress-wrap").style.display = "none"; }, 1500);
-    onReady();
-    return;
-  }
-  const [pct, label] = STAGE_INFO[st.stage] || [0, st.stage];
-  $("progress-fill").style.width = pct + "%";
-  $("progress-text").textContent = label + "…";
-  setTimeout(poll, 1000);
 }
 
 async function onReady() {
@@ -144,8 +156,8 @@ async function onReady() {
     div.className = "seg";
     div.id = `seg-${s.idx}`;
     div.innerHTML = `<span class="t">${fmt(s.start)}</span>` +
-      `<span>${s.subtitle || "(무발화)"}</span>` +
-      `<div class="cap">${s.caption}</div>`;
+      `<span>${esc(s.subtitle) || "(무발화)"}</span>` +
+      `<div class="cap">${esc(s.caption)}</div>`;
     div.onclick = () => seek(s.start);
     box.appendChild(div);
   }
@@ -162,8 +174,8 @@ function addMsg(role, cards, text) {
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `<span class="time">${fmt(c.start)}~${fmt(c.end)}</span> ` +
-      `<span>${c.subtitle || "(무발화)"}</span>` +
-      `<div class="cap">${c.caption}</div>`;
+      `<span>${esc(c.subtitle) || "(무발화)"}</span>` +
+      `<div class="cap">${esc(c.caption)}</div>`;
     card.onclick = () => seek(c.start);
     div.appendChild(card);
   }
@@ -178,17 +190,22 @@ $("chat-form").addEventListener("submit", async e => {
   addMsg("user", null, query);
   $("chat-input").value = "";
   $("chat-send").disabled = true;
-  const r = await fetch("/api/search", {
-    method: "POST", headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ video_id: videoId, query })
-  });
-  const body = await r.json();
-  $("chat-send").disabled = false;
-  if (!r.ok) { addMsg("bot", null, body.detail); return; }
-  addMsg("bot", body.results, null);
-  document.querySelectorAll(".seg.hit").forEach(el => el.classList.remove("hit"));
-  body.results.forEach(c => $(`seg-${c.idx}`)?.classList.add("hit"));
-  $(`seg-${body.results[0]?.idx}`)?.scrollIntoView({ block: "center" });
+  try {
+    const r = await fetch("/api/search", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ video_id: videoId, query })
+    });
+    const body = await r.json();
+    if (!r.ok) { addMsg("bot", null, body.detail); return; }
+    addMsg("bot", body.results, null);
+    document.querySelectorAll(".seg.hit").forEach(el => el.classList.remove("hit"));
+    body.results.forEach(c => $(`seg-${c.idx}`)?.classList.add("hit"));
+    $(`seg-${body.results[0]?.idx}`)?.scrollIntoView({ block: "center" });
+  } catch (err) {
+    addMsg("bot", null, "검색 요청 실패 — 네트워크를 확인해 주세요");
+  } finally {
+    $("chat-send").disabled = false;
+  }
 });
 </script>
 </body>
