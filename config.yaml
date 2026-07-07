@@ -23,6 +23,7 @@ eval_k: [1, 5, 10]
 iou_thresholds: [0.5, 0.3]
 
 report_model: "Qwen/Qwen2.5-7B-Instruct"
+llm_4bit: true                # 서버(대용량 VRAM)에서는 false (로컬 6GB VRAM 대응) [m8m9-prompt-critique B-7]
 judge_model: null             # report_model과 다른 패밀리 지정 [v2 17-6]
 same_model_judge: false
 map_chunk_size: 60
