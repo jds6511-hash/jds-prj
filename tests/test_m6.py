@@ -1,7 +1,7 @@
 import json, pytest
 from m5_search import Result
 from m6_evaluate import (hit_at_k, mrr, iou_recall_at_k, derive_gt_seg_idx,
-                         load_queries, grid_search_alpha)
+                         load_queries, grid_search_alpha, evaluate)
 
 def _r(indexes):  # Result 리스트 헬퍼 (idx→start=idx*5)
     return [Result(i, 1.0 - n * 0.1, i * 5, i * 5 + 5) for n, i in enumerate(indexes)]
@@ -36,6 +36,10 @@ def test_load_queries_asserts_split_leak(tmp_path):
     p.write_text("\n".join(json.dumps(r, ensure_ascii=False) for r in rows), encoding="utf-8")
     with pytest.raises(AssertionError, match="video_id"):        # 누수 차단 [5-1]
         load_queries(p)
+
+def test_evaluate_empty_queries_raises_clear_error():
+    with pytest.raises(ValueError, match="질의가 없습니다"):        # fail-fast, opaque IndexError 방지
+        evaluate([], {}, 1.0, {"eval_k": [1, 5, 10], "iou_thresholds": [0.5, 0.3]})
 
 def test_grid_search_tiebreak_larger_alpha():
     queries = [{"query_id": "q1", "video_id": "v1", "gt_seg_idx": [0],

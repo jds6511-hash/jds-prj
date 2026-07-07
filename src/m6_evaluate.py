@@ -62,6 +62,8 @@ def _rank_of(ranked, gt_seg_idx) -> int:
 
 def evaluate(queries, indexes, alpha, cfg, search_fn=search) -> dict:
     """질의셋 평균 지표 + per_query 랭크. by_type 분리 집계 포함. [3-4]"""
+    if not queries:
+        raise ValueError("평가할 질의가 없습니다 (queries 비어 있음)")
     per_q, buckets = [], defaultdict(list)
     for q in queries:
         ranked = search_fn(q["text"], indexes[q["video_id"]], alpha, cfg) \
