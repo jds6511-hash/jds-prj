@@ -41,7 +41,7 @@ class VideoIndex:
         wdir = common.work_dir(cfg, video_id)
         doc = common.load_segments(wdir / "segments.json",
                                    require=["subtitle", "caption", "is_static"])
-        for name in ("emb_sub.npy", "emb_cap.npy"):
+        for name in ("emb_sub.npy", "emb_cap.npy", "meta.json"):
             if not (wdir / name).exists():
                 raise FileNotFoundError(f"{name} 없음 — run m4_index.py first")
         meta = json.loads((wdir / "meta.json").read_text(encoding="utf-8"))

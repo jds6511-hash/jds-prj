@@ -78,3 +78,18 @@ def test_load_raises_on_n_segments_mismatch(tmp_path):
     cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}}
     with pytest.raises(ValueError, match="세그먼트 수 불일치"):
         VideoIndex.load(cfg, video_id)
+
+def test_load_raises_friendly_error_when_meta_missing(tmp_path):
+    # meta.json만 없는 부분 산출물(중단된 M4 실행) → 친절한 FileNotFoundError,
+    # read_text의 원시 에러가 아니라 "run m4_index.py first" 메시지여야 함 [리뷰 반영]
+    video_id = "v1"
+    wdir = tmp_path / video_id
+    wdir.mkdir()
+    segments = [{"idx": i, "start": i * 5, "end": i * 5 + 5,
+                "subtitle": "s", "caption": "c", "is_static": False} for i in range(2)]
+    common.save_segments(wdir / "segments.json", {"n_segments": 2, "segments": segments})
+    np.save(wdir / "emb_sub.npy", np.zeros((2, 4), dtype=np.float32))
+    np.save(wdir / "emb_cap.npy", np.zeros((2, 4), dtype=np.float32))
+    cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}}
+    with pytest.raises(FileNotFoundError, match="run m4_index.py first"):
+        VideoIndex.load(cfg, video_id)

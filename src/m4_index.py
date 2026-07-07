@@ -32,7 +32,8 @@ def main():
     wdir = common.work_dir(cfg, args.video_id)
     doc = common.load_segments(wdir / "segments.json", require=["subtitle", "caption"])
 
-    if (wdir / "emb_sub.npy").exists() and not args.force:
+    outputs = ("emb_sub.npy", "emb_cap.npy", "meta.json")
+    if all((wdir / f).exists() for f in outputs) and not args.force:
         print("이미 존재 (--force로 재생성)"); return
 
     subs = [s["subtitle"] for s in doc["segments"]]

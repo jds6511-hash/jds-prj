@@ -30,7 +30,7 @@ def iou_recall_at_k(ranked, gt_start, gt_end, k: int, thr: float) -> float:
                       for r in ranked[:k]) else 0.0
 
 
-def derive_gt_seg_idx(gt_start, gt_end, n_segments, seg_len: int = 5) -> list[int]:
+def derive_gt_seg_idx(gt_start, gt_end, n_segments, seg_len: int) -> list[int]:
     """1초 이상 겹치는 모든 세그먼트, 없으면 최대 겹침 1개. [3-3]"""
     overlaps = []
     for i in range(n_segments):
@@ -49,6 +49,7 @@ def load_queries(path) -> list[dict]:
     assert not leak, f"dev/test에 같은 video_id 존재(누수): {leak}"   # [5-1]
     for q in qs:
         assert q["gt_seg_idx"], f"{q['query_id']}: gt_seg_idx 비어있음"
+        assert q.get("text"), f"{q['query_id']}: text 없음"
     return qs
 
 
@@ -66,8 +67,7 @@ def evaluate(queries, indexes, alpha, cfg, search_fn=search) -> dict:
         raise ValueError("평가할 질의가 없습니다 (queries 비어 있음)")
     per_q, buckets = [], defaultdict(list)
     for q in queries:
-        ranked = search_fn(q["text"], indexes[q["video_id"]], alpha, cfg) \
-            if "text" in q else search_fn(None, indexes[q["video_id"]], alpha, cfg)
+        ranked = search_fn(q["text"], indexes[q["video_id"]], alpha, cfg)
         row = {"query_id": q["query_id"], "type": q["type"],
                "rank": _rank_of(ranked, q["gt_seg_idx"]),
                **{f"hit@{k}": hit_at_k(ranked, q["gt_seg_idx"], k) for k in cfg["eval_k"]},
@@ -83,6 +83,21 @@ def evaluate(queries, indexes, alpha, cfg, search_fn=search) -> dict:
     metrics = _mean(per_q)
     metrics["by_type"] = {t: _mean(rows) for t, rows in buckets.items()}
     return {"metrics": metrics, "per_query": per_q}
+
+
+def build_eval_result(test_queries, base, prop, alpha) -> dict:
+    """eval_test.json 스키마 조립: baseline/proposed는 test_queries와 동일 순서라 zip으로
+    query_id가 그대로 정렬된다. [3-4]"""
+    n_by_type = defaultdict(int)
+    for q in test_queries:
+        n_by_type[q["type"]] += 1
+    return {
+        "alpha_from_dev": alpha,
+        "n_queries": {"total": len(test_queries), **n_by_type},
+        "metrics": {"baseline": base["metrics"], "proposed": prop["metrics"]},
+        "per_query": [{"query_id": b["query_id"],
+                       "baseline_rank": b["rank"], "proposed_rank": p["rank"]}
+                      for b, p in zip(base["per_query"], prop["per_query"])]}
 
 
 def grid_search_alpha(dev_queries, indexes, cfg, search_fn=search):
@@ -118,16 +133,8 @@ def main():
     # ② test 평가는 그 α만 사용 (baseline=1.0 vs proposed=α*)
     base = evaluate(test, indexes, 1.0, cfg)
     prop = evaluate(test, indexes, alpha, cfg)
-    n_by_type = defaultdict(int)
-    for q in test:
-        n_by_type[q["type"]] += 1
-    common.atomic_write_json(rdir / "eval_test.json", {
-        "alpha_from_dev": alpha,
-        "n_queries": {"total": len(test), **n_by_type},
-        "metrics": {"baseline": base["metrics"], "proposed": prop["metrics"]},
-        "per_query": [{"query_id": b["query_id"],
-                       "baseline_rank": b["rank"], "proposed_rank": p["rank"]}
-                      for b, p in zip(base["per_query"], prop["per_query"])]})
+    result = build_eval_result(test, base, prop, alpha)
+    common.atomic_write_json(rdir / "eval_test.json", result)
     print(f"M6 완료: eval_test.json (baseline hit@5={base['metrics']['hit@5']}, "
           f"proposed hit@5={prop['metrics']['hit@5']})")
 
