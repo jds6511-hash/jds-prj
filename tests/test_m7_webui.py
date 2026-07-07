@@ -1,7 +1,9 @@
+import json
 import threading
 import time
 import warnings
 from pathlib import Path
+from types import SimpleNamespace
 
 from starlette.exceptions import StarletteDeprecationWarning
 
@@ -10,6 +12,7 @@ from starlette.exceptions import StarletteDeprecationWarning
 with warnings.catch_warnings():
     warnings.filterwarnings("ignore", category=StarletteDeprecationWarning)
     from fastapi.testclient import TestClient
+from m5_search import Result
 from m7_webui import create_app, sanitize_video_id
 
 
@@ -107,3 +110,82 @@ def test_upload_write_failure_releases_busy(tmp_path, monkeypatch):
 def test_status_unknown_video_404(tmp_path):
     client, _ = make_client(tmp_path)
     assert client.get("/api/status/nope").status_code == 404
+
+
+def write_segments(cfg, vid, n=3):
+    wdir = Path(cfg["paths"]["work"]) / vid
+    wdir.mkdir(parents=True)
+    doc = {"video_id": vid, "duration_sec": n * 5.0, "fps": 30.0, "n_segments": n,
+           "segments": [{"idx": i, "start": i * 5, "end": i * 5 + 5,
+                         "rep_frame": "", "is_static": False, "motion_score": 0.1,
+                         "subtitle": f"자막{i}", "caption": f"설명{i}"}
+                        for i in range(n)]}
+    (wdir / "segments.json").write_text(
+        json.dumps(doc, ensure_ascii=False), encoding="utf-8")
+
+
+def _stub_index(n=3):
+    return SimpleNamespace(segments=[
+        {"idx": i, "start": i * 5, "end": i * 5 + 5,
+         "subtitle": f"자막{i}", "caption": f"설명{i}"} for i in range(n)])
+
+
+def test_segments_endpoint_returns_list(tmp_path):
+    client, cfg = make_client(tmp_path)
+    write_segments(cfg, "v1")
+    r = client.get("/api/segments/v1")
+    assert r.status_code == 200
+    segs = r.json()["segments"]
+    assert len(segs) == 3
+    assert segs[0] == {"idx": 0, "start": 0, "end": 5,
+                       "subtitle": "자막0", "caption": "설명0"}
+
+
+def test_segments_missing_index_404(tmp_path):
+    client, _ = make_client(tmp_path)
+    assert client.get("/api/segments/nope").status_code == 404
+
+
+def test_search_returns_top3_cards(tmp_path):
+    ranked = [Result(2, 0.9, 10, 15), Result(0, 0.8, 0, 5),
+              Result(1, 0.7, 5, 10), Result(3, 0.1, 15, 20)]
+    client, _ = make_client(tmp_path,
+                            search_fn=lambda q, v, a, c: ranked,
+                            load_index=lambda cfg, vid: _stub_index(4))
+    r = client.post("/api/search", json={"video_id": "v1", "query": "질의"})
+    assert r.status_code == 200
+    res = r.json()["results"]
+    assert len(res) == 3                                  # Top-3 고정
+    assert res[0] == {"idx": 2, "start": 10, "end": 15, "score": 0.9,
+                      "subtitle": "자막2", "caption": "설명2"}
+
+
+def test_search_empty_query_400(tmp_path):
+    client, _ = make_client(tmp_path)
+    r = client.post("/api/search", json={"video_id": "v1", "query": "  "})
+    assert r.status_code == 400
+
+
+def test_search_while_indexing_409(tmp_path):
+    gate = threading.Event()
+    client, _ = make_client(tmp_path, run_module=lambda s, c, v: gate.wait(1))
+    vid = client.post("/api/upload",
+                      files={"file": ("v.mp4", b"\x00", "video/mp4")}).json()["video_id"]
+    r = client.post("/api/search", json={"video_id": vid, "query": "질의"})
+    assert r.status_code == 409
+    assert "인덱싱" in r.json()["detail"]
+    gate.set()
+    wait_stage(client, vid, "done")
+
+
+def test_search_no_index_files_409(tmp_path):
+    def missing(cfg, vid):
+        raise FileNotFoundError("emb_sub.npy 없음 — run m4_index.py first")
+    client, _ = make_client(tmp_path, load_index=missing)
+    r = client.post("/api/search", json={"video_id": "v1", "query": "질의"})
+    assert r.status_code == 409
+
+
+def test_video_route_404_when_missing(tmp_path):
+    client, _ = make_client(tmp_path)
+    assert client.get("/api/video/nope").status_code == 404

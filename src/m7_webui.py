@@ -98,6 +98,43 @@ def create_app(cfg: dict, config_path: str, alpha: float,
             raise HTTPException(404, f"{video_id}: 업로드 기록 없음")
         return st
 
+    @app.get("/api/segments/{video_id}")
+    def segments(video_id: str):
+        path = common.work_dir(cfg, video_id) / "segments.json"
+        if not path.exists():
+            raise HTTPException(404, f"{video_id}: 인덱스 없음")
+        doc = common.load_segments(path, require=["subtitle", "caption"])
+        keys = ("idx", "start", "end", "subtitle", "caption")
+        return {"segments": [{k: s[k] for k in keys} for s in doc["segments"]]}
+
+    @app.post("/api/search")
+    def do_search(body: dict):
+        video_id, query = body.get("video_id", ""), body.get("query", "")
+        if not query.strip():
+            raise HTTPException(400, "질의가 비어 있어요")
+        st = jobs.get(video_id)
+        if st is not None and st["stage"] != "done":
+            raise HTTPException(409, "인덱싱이 끝나면 검색할 수 있어요")
+        if video_id not in index_cache:
+            try:
+                index_cache[video_id] = load_index(cfg, video_id)
+            except FileNotFoundError as e:       # 산출물 미존재 → 안내
+                raise HTTPException(409, str(e))
+        video = index_cache[video_id]
+        top = search_fn(query, video, alpha, cfg)[:3]
+        return {"results": [
+            {"idx": r.idx, "start": int(r.start), "end": int(r.end),
+             "score": round(r.score, 3),
+             "subtitle": video.segments[r.idx]["subtitle"],
+             "caption": video.segments[r.idx]["caption"]} for r in top]}
+
+    @app.get("/api/video/{video_id}")
+    def video_file(video_id: str):
+        p = videos_dir / f"{sanitize_video_id(video_id)}.mp4"
+        if not p.exists():
+            raise HTTPException(404, "영상 파일 없음")
+        return FileResponse(p, media_type="video/mp4")   # starlette Range 지원
+
     return app
 
 
