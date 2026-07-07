@@ -89,7 +89,7 @@ def create_app(cfg: dict, config_path: str, alpha: float,
         try:
             videos_dir.mkdir(parents=True, exist_ok=True)
             (videos_dir / f"{video_id}.mp4").write_bytes(await file.read())
-        except OSError as e:
+        except Exception as e:
             jobs.set(video_id, "error", f"업로드 저장 실패: {e}")
             raise HTTPException(500, f"업로드 저장 실패: {e}")
         threading.Thread(target=_pipeline, args=(video_id,), daemon=True).start()
@@ -104,26 +104,33 @@ def create_app(cfg: dict, config_path: str, alpha: float,
 
     @app.get("/api/segments/{video_id}")
     def segments(video_id: str):
+        video_id = sanitize_video_id(video_id)
         path = common.work_dir(cfg, video_id) / "segments.json"
         if not path.exists():
             raise HTTPException(404, f"{video_id}: 인덱스 없음")
-        doc = common.load_segments(path, require=["subtitle", "caption"])
+        try:
+            doc = common.load_segments(path, require=["subtitle", "caption"])
+        except ValueError as e:                  # 불변식/필드 누락 → 안내
+            raise HTTPException(404, str(e))
         keys = ("idx", "start", "end", "subtitle", "caption")
         return {"segments": [{k: s[k] for k in keys} for s in doc["segments"]]}
 
     @app.post("/api/search")
     def do_search(body: dict):
-        video_id, query = body.get("video_id", ""), body.get("query", "")
+        video_id = sanitize_video_id(body.get("video_id", ""))
+        query = body.get("query", "")
         if not query.strip():
             raise HTTPException(400, "질의가 비어 있어요")
         st = jobs.get(video_id)
+        if st is not None and st["stage"] == "error":
+            raise HTTPException(409, "인덱싱이 실패했어요 — 영상을 다시 업로드해 주세요")
         if st is not None and st["stage"] != "done":
             raise HTTPException(409, "인덱싱이 끝나면 검색할 수 있어요")
         if video_id not in index_cache:
             try:
                 index_cache[video_id] = load_index(cfg, video_id)
-            except FileNotFoundError as e:       # 산출물 미존재 → 안내
-                raise HTTPException(409, str(e))
+            except (FileNotFoundError, ValueError) as e:   # 산출물 미존재/불일치 → 안내
+                raise HTTPException(404, str(e))
         video = index_cache[video_id]
         top = search_fn(query, video, alpha, cfg)[:3]
         return {"results": [

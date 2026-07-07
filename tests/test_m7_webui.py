@@ -107,6 +107,22 @@ def test_upload_write_failure_releases_busy(tmp_path, monkeypatch):
     assert r2.status_code == 200
 
 
+def test_upload_non_oserror_failure_releases_busy(tmp_path, monkeypatch):
+    # 비-OSError 예외(멀티파트 파싱 오류, 클라이언트 절단 등)도 busy를 해제해야 함
+    def boom_write_bytes(self, data):
+        raise RuntimeError("클라이언트 연결 끊김")
+
+    monkeypatch.setattr(Path, "write_bytes", boom_write_bytes)
+    client, _ = make_client(tmp_path)
+
+    r1 = client.post("/api/upload", files={"file": ("a.mp4", b"\x00", "video/mp4")})
+    assert r1.status_code == 500
+
+    monkeypatch.undo()
+    r2 = client.post("/api/upload", files={"file": ("b.mp4", b"\x00", "video/mp4")})
+    assert r2.status_code == 200
+
+
 def test_status_unknown_video_404(tmp_path):
     client, _ = make_client(tmp_path)
     assert client.get("/api/status/nope").status_code == 404
@@ -146,6 +162,21 @@ def test_segments_missing_index_404(tmp_path):
     assert client.get("/api/segments/nope").status_code == 404
 
 
+def test_segments_invariant_violation_404(tmp_path):
+    # common.load_segments가 던지는 ValueError(불변식/필드 누락)도 404로 매핑돼야 함
+    client, cfg = make_client(tmp_path)
+    wdir = Path(cfg["paths"]["work"]) / "v1"
+    wdir.mkdir(parents=True)
+    bad_doc = {"video_id": "v1", "duration_sec": 5.0, "fps": 30.0, "n_segments": 2,
+               "segments": [{"idx": 0, "start": 0, "end": 5, "rep_frame": "",
+                             "is_static": False, "motion_score": 0.1,
+                             "subtitle": "자막0", "caption": "설명0"}]}
+    (wdir / "segments.json").write_text(
+        json.dumps(bad_doc, ensure_ascii=False), encoding="utf-8")
+    r = client.get("/api/segments/v1")
+    assert r.status_code == 404
+
+
 def test_search_returns_top3_cards(tmp_path):
     ranked = [Result(2, 0.9, 10, 15), Result(0, 0.8, 0, 5),
               Result(1, 0.7, 5, 10), Result(3, 0.1, 15, 20)]
@@ -178,12 +209,40 @@ def test_search_while_indexing_409(tmp_path):
     wait_stage(client, vid, "done")
 
 
-def test_search_no_index_files_409(tmp_path):
+def test_search_no_index_files_404(tmp_path):
     def missing(cfg, vid):
         raise FileNotFoundError("emb_sub.npy 없음 — run m4_index.py first")
     client, _ = make_client(tmp_path, load_index=missing)
     r = client.post("/api/search", json={"video_id": "v1", "query": "질의"})
+    assert r.status_code == 404
+
+
+def test_search_index_mismatch_valueerror_404(tmp_path):
+    # VideoIndex.load가 임베딩 모델/세그먼트 수 불일치 시 던지는 ValueError도 404 + 원인 포함
+    def mismatch(cfg, vid):
+        raise ValueError("임베딩 모델 불일치: index=a config=b — run m4_index.py --force")
+    client, _ = make_client(tmp_path, load_index=mismatch)
+    r = client.post("/api/search", json={"video_id": "v1", "query": "질의"})
+    assert r.status_code == 404
+    assert "임베딩 모델 불일치" in r.json()["detail"]
+
+
+def test_search_after_indexing_error_is_409_with_failure_message(tmp_path):
+    def boom(script, cfgp, vid):
+        raise RuntimeError("m1_preprocess.py 실패:\n뭔가 잘못됨")
+    client, _ = make_client(tmp_path, run_module=boom)
+    vid = client.post("/api/upload",
+                      files={"file": ("v.mp4", b"\x00", "video/mp4")}).json()["video_id"]
+    wait_stage(client, vid, "error")
+    r = client.post("/api/search", json={"video_id": vid, "query": "질의"})
     assert r.status_code == 409
+    assert "실패" in r.json()["detail"]
+
+
+def test_search_video_id_traversal_is_sanitized_to_404(tmp_path):
+    client, _ = make_client(tmp_path)
+    r = client.post("/api/search", json={"video_id": "../etc", "query": "질의"})
+    assert r.status_code == 404
 
 
 def test_video_route_404_when_missing(tmp_path):
