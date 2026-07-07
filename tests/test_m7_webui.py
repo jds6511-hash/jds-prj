@@ -1,7 +1,15 @@
 import threading
 import time
+import warnings
 from pathlib import Path
-from fastapi.testclient import TestClient
+
+from starlette.exceptions import StarletteDeprecationWarning
+
+# StarletteDeprecationWarning(UserWarning 하위)이 fastapi.testclient import 시점에
+# 발생함(DeprecationWarning이 아니므로 pytest filterwarnings 마커로는 못 잡음).
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore", category=StarletteDeprecationWarning)
+    from fastapi.testclient import TestClient
 from m7_webui import create_app, sanitize_video_id
 
 
@@ -74,6 +82,26 @@ def test_second_upload_while_busy_is_409(tmp_path):
     assert r2.status_code == 409
     gate.set()
     wait_stage(client, "a", "done")   # 정리: 잡 완료 후 종료
+
+
+def test_upload_write_failure_releases_busy(tmp_path, monkeypatch):
+    orig_write_bytes = Path.write_bytes
+    calls = {"n": 0}
+
+    def flaky_write_bytes(self, data):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            raise OSError("디스크 가득 참")
+        return orig_write_bytes(self, data)
+
+    monkeypatch.setattr(Path, "write_bytes", flaky_write_bytes)
+    client, _ = make_client(tmp_path)
+
+    r1 = client.post("/api/upload", files={"file": ("a.mp4", b"\x00", "video/mp4")})
+    assert r1.status_code == 500
+
+    r2 = client.post("/api/upload", files={"file": ("b.mp4", b"\x00", "video/mp4")})
+    assert r2.status_code == 200
 
 
 def test_status_unknown_video_404(tmp_path):

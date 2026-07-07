@@ -82,8 +82,12 @@ def create_app(cfg: dict, config_path: str, alpha: float,
         video_id = sanitize_video_id(Path(file.filename).stem)
         if not jobs.try_start(video_id):
             raise HTTPException(409, "다른 영상 인덱싱 중이에요 — 잠시 후 다시 시도하세요")
-        videos_dir.mkdir(parents=True, exist_ok=True)
-        (videos_dir / f"{video_id}.mp4").write_bytes(await file.read())
+        try:
+            videos_dir.mkdir(parents=True, exist_ok=True)
+            (videos_dir / f"{video_id}.mp4").write_bytes(await file.read())
+        except OSError as e:
+            jobs.set(video_id, "error", f"업로드 저장 실패: {e}")
+            raise HTTPException(500, f"업로드 저장 실패: {e}")
         threading.Thread(target=_pipeline, args=(video_id,), daemon=True).start()
         return {"video_id": video_id}
 
