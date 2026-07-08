@@ -81,3 +81,32 @@ def test_sequential_sampler_matches_seek_based_reference(tmp_path):
             assert ref_rep == new_rep                       # (rep_idx, motion_score) 완전 일치
     finally:
         cap_ref.release(); cap_new.release()
+
+
+def test_sequential_sampler_segment_boundary_shares_frame(tmp_path):
+    # 인접 세그먼트의 끝/시작 요청 시각이 같은 프레임 인덱스로 매핑되는 경계 케이스 —
+    # fps=10, fps_sample=100이면 seg0의 t=1.00과 seg1의 t=1.005가 모두 프레임 10을 요청.
+    # sample_segments_sequential 내부의 "같은 k로 재확인" 분기를 강제로 통과시킨다.
+    video_path = tmp_path / "synthetic.mp4"
+    _make_synthetic_video(video_path, fps=10, n_frames=25)
+    segments = [
+        {"idx": 0, "start": 0.0, "end": 1.005},
+        {"idx": 1, "start": 1.005, "end": 2.0},
+    ]
+    fps_sample = 100
+
+    cap_new = cv2.VideoCapture(str(video_path))
+    fps = cap_new.get(cv2.CAP_PROP_FPS)
+    assert int(1.00 * fps + 0.5) == int(1.005 * fps + 0.5)  # 전제: 실제로 같은 프레임을 요청
+
+    cap_ref = cv2.VideoCapture(str(video_path))
+    try:
+        new_by_idx = {s["idx"]: samples for s, samples in sample_segments_sequential(cap_new, segments, fps_sample)}
+        for seg in segments:
+            ref = _seek_based_reference(cap_ref, seg["start"], seg["end"], fps_sample)
+            new = new_by_idx[seg["idx"]]
+            assert len(ref) == len(new)
+            assert [t for _, t in ref] == [t for _, t in new]
+            assert all(np.array_equal(rg, ng) for (rg, _), (ng, _) in zip(ref, new))  # 픽셀 단위 동일 프레임
+    finally:
+        cap_ref.release(); cap_new.release()
