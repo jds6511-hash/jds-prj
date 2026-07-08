@@ -82,9 +82,23 @@ def generate_report(segments: list[dict], llm, chunk_size: int = 60,
     for s in sents:
         dropped = [c for c in s["cites"] if c not in map_cites]
         if dropped:
-            print(f"⚠️ reduce 인용 유실/오귀속 필터: sent {s['sent_id']} {dropped}")
+            print(f"[warn] reduce 인용 유실/오귀속 필터: sent {s['sent_id']} {dropped}")
             s["cites"] = [c for c in s["cites"] if c in map_cites]
     return {"sentences": sents, "raw_output": raw, "map_raw_outputs": partials}
+
+
+def save_report(out, video_id: str, cfg: dict, rep: dict, n: int) -> None:
+    """report.json을 먼저 저장한 뒤 인용 범위를 검증한다 (raw_output은 항상 보존). [DESIGN_SPEC 3-5]
+
+    LLM이 out-of-range 인용을 환각해 assert가 실패해도 report.json은 이미
+    기록된 상태로 남는다 (raw_output 포함). [m8m9-final-review Finding 1]
+    """
+    common.atomic_write_json(out, {"video_id": video_id,
+                                   "model": cfg["report_model"],
+                                   "map_chunk_size": cfg["map_chunk_size"], **rep})
+    for s in rep["sentences"]:                          # 검증 포인트 [4-8]
+        assert all(0 <= c < n for c in s["cites"]), \
+            f"인용 범위 위반 (report.json은 저장됨): {s}"
 
 
 def main():
@@ -103,12 +117,7 @@ def main():
     llm = make_llm(cfg["report_model"], load_4bit=cfg.get("llm_4bit", False))
     rep = generate_report(doc["segments"], llm,
                           cfg["map_chunk_size"], cfg["map_chunk_overlap"])
-    n = doc["n_segments"]
-    for s in rep["sentences"]:                          # 검증 포인트 [4-8]
-        assert all(0 <= c < n for c in s["cites"]), f"인용 범위 위반: {s}"
-    common.atomic_write_json(out, {"video_id": args.video_id,
-                                   "model": cfg["report_model"],
-                                   "map_chunk_size": cfg["map_chunk_size"], **rep})
+    save_report(out, args.video_id, cfg, rep, doc["n_segments"])
     print(f"M8 완료: 문장 {len(rep['sentences'])}개 → {out}")
 
 

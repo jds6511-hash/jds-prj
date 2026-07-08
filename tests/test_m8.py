@@ -1,4 +1,5 @@
-from m8_report import build_map_prompt, build_reduce_prompt, parse_citations, generate_report
+import json
+from m8_report import build_map_prompt, build_reduce_prompt, parse_citations, generate_report, save_report
 
 def _segs(n):
     return [{"idx": i, "start": i * 5, "end": i * 5 + 5,
@@ -41,3 +42,19 @@ def test_generate_report_map_reduce_and_subset_check():
     assert [1] in cites
     # reduce의 [seg#99]는 map 인용 집합에 없음 → 걸러짐 [13-2 안전장치]
     assert [99] not in cites
+
+def test_save_report_preserves_raw_output_on_range_violation(tmp_path):
+    # map 단계 환각(reduce⊆map 검사를 통과하는 out-of-range 인용)이 있어도
+    # report.json은 먼저 저장되고, assert는 그 뒤에 실패해야 한다. [final-review Finding 1]
+    out = tmp_path / "report.json"
+    rep = {"sentences": [{"sent_id": 0, "text": "유령 인용 [seg#999]", "cites": [999]}],
+           "raw_output": "- 유령 인용 [seg#999]", "map_raw_outputs": []}
+    cfg = {"report_model": "stub-model", "map_chunk_size": 60}
+    try:
+        save_report(out, "v1", cfg, rep, n=3)
+        assert False, "범위 위반인데 AssertionError가 발생하지 않음"
+    except AssertionError:
+        pass
+    assert out.exists()                                 # report.json 소실되지 않음
+    saved = json.loads(out.read_text(encoding="utf-8"))
+    assert saved["raw_output"] == "- 유령 인용 [seg#999]"  # raw_output 보존

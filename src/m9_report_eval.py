@@ -117,7 +117,8 @@ def main():
                if q["split"] == "test" and q["video_id"] == args.video_id]
     gt_idx = [i for q in test_qs for i in q["gt_seg_idx"]]
 
-    judge = make_llm(cfg["judge_model"], max_new_tokens=512)
+    judge = make_llm(cfg["judge_model"], max_new_tokens=512,
+                     load_4bit=cfg.get("llm_4bit", False))
     out = eval_report(report, doc["segments"], gt_idx, judge)
     rdir = Path(cfg["paths"]["results"]); rdir.mkdir(exist_ok=True)
     common.atomic_write_json(rdir / "report_eval.json",
