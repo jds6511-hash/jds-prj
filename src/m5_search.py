@@ -60,15 +60,25 @@ class VideoIndex:
                    static_mask=np.array([s["is_static"] for s in doc["segments"]]))
 
 
-def search(query: str, video: VideoIndex, alpha: float, cfg: dict) -> list[Result]:
+def search_with_stats(query: str, video: VideoIndex, alpha: float,
+                      cfg: dict) -> tuple[list[Result], dict]:
+    """search와 동일 랭킹 + 정규화 이전 raw 코사인 통계 반환.
+    무관련 질의 판정(향후 abstention 임계값 설계)의 근거 데이터용 [HIGH-2]."""
     q = embed_texts([query], cfg["embed_model"])[0]
     s_sub = video.emb_sub @ q                    # 1) 코사인 (L2 정규화 완료 상태)
     s_cap = video.emb_cap @ q
     score = combine_scores(s_sub, s_cap, video.static_mask, alpha)
     order = np.argsort(-score, kind="stable")
-    return [Result(int(i), float(score[i]),
-                   video.segments[i]["start"], video.segments[i]["end"])
-            for i in order]
+    results = [Result(int(i), float(score[i]),
+                      video.segments[i]["start"], video.segments[i]["end"])
+              for i in order]
+    stats = {"raw_sub_max": float(s_sub.max()), "raw_sub_mean": float(s_sub.mean()),
+             "raw_cap_max": float(s_cap.max()), "raw_cap_mean": float(s_cap.mean())}
+    return results, stats
+
+
+def search(query: str, video: VideoIndex, alpha: float, cfg: dict) -> list[Result]:
+    return search_with_stats(query, video, alpha, cfg)[0]
 
 
 def main():

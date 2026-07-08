@@ -1,14 +1,14 @@
 """M7-W 웹 UI 서버: 업로드 → M1~M4 서브프로세스 인덱싱 → 채팅 검색.
 검색은 m5_search.search를 그대로 import (재구현 금지).
 [docs/superpowers/specs/2026-07-07-webui-design.md]"""
-import argparse, json, re, subprocess, sys, threading
+import argparse, json, re, subprocess, sys, threading, time
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, UploadFile
 from fastapi.responses import FileResponse, HTMLResponse
 
 import common
-from m5_search import VideoIndex, search
+from m5_search import VideoIndex, search, search_with_stats
 
 PIPELINE = ("m1_preprocess.py", "m2_keyframe.py", "m3_generate.py", "m4_index.py")
 STAGE = {"m1_preprocess.py": "m1", "m2_keyframe.py": "m2",
@@ -86,9 +86,27 @@ def _progress_m3(cfg: dict, video_id: str) -> dict | None:
         lambda doc: sum(1 for s in doc["segments"] if s.get("caption")))
 
 
+def _log_search(cfg: dict, video_id: str, query: str, alpha: float,
+                stats: dict, top1) -> None:
+    """검색 1건을 search_log.jsonl에 append. 무관련 질의 판정 근거 축적용 [HIGH-2].
+    로깅은 best-effort — 실패해도 검색 응답에 영향 없음."""
+    try:
+        results_dir = Path(cfg["paths"]["results"])
+        results_dir.mkdir(parents=True, exist_ok=True)
+        entry = {"ts": time.time(), "video_id": video_id, "query": query,
+                 "alpha": alpha, **stats,
+                 "top1_idx": top1.idx if top1 is not None else None,
+                 "top1_score": top1.score if top1 is not None else None}
+        with open(results_dir / "search_log.jsonl", "a", encoding="utf-8") as f:
+            f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    except Exception:
+        pass
+
+
 def create_app(cfg: dict, config_path: str, alpha: float,
                run_module=run_module_subprocess,
-               search_fn=search, load_index=VideoIndex.load) -> FastAPI:
+               search_fn=search, load_index=VideoIndex.load,
+               search_stats_fn=None) -> FastAPI:
     app = FastAPI()
     jobs = JobStore()
     index_cache: dict[str, VideoIndex] = {}
@@ -178,12 +196,25 @@ def create_app(cfg: dict, config_path: str, alpha: float,
             except (FileNotFoundError, ValueError) as e:   # 산출물 미존재/불일치 → 안내
                 raise HTTPException(404, str(e))
         video = index_cache[video_id]
-        top = search_fn(query, video, alpha, cfg)[:3]
-        return {"results": [
+        # stats 우선: search_stats_fn이 지정됐거나 search_fn이 기본값(search)이면
+        # search_with_stats로 raw 코사인 통계를 얻는다. search_fn만 스텁 주입된
+        # 경우(기존 M6/M7 테스트 패턴)는 stats 없이 결과만 사용 — 하위호환.
+        stats_fn = search_stats_fn or (search_with_stats if search_fn is search else None)
+        stats = None
+        if stats_fn is not None:
+            results, stats = stats_fn(query, video, alpha, cfg)
+        else:
+            results = search_fn(query, video, alpha, cfg)
+        top = results[:3]
+        response = {"results": [
             {"idx": r.idx, "start": int(r.start), "end": int(r.end),
              "score": round(r.score, 3),
              "subtitle": video.segments[r.idx]["subtitle"],
              "caption": video.segments[r.idx]["caption"]} for r in top]}
+        if stats is not None:
+            response["raw"] = stats
+            _log_search(cfg, video_id, query, alpha, stats, top[0] if top else None)
+        return response
 
     @app.get("/api/video/{video_id}")
     def video_file(video_id: str):

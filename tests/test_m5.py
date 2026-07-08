@@ -3,7 +3,7 @@ import numpy as np
 import pytest
 import common
 import m5_search
-from m5_search import minmax, combine_scores, VideoIndex, search
+from m5_search import minmax, combine_scores, VideoIndex, search, search_with_stats
 
 def test_minmax_basic():
     out = minmax(np.array([1.0, 3.0, 2.0]))
@@ -78,6 +78,30 @@ def test_load_raises_on_n_segments_mismatch(tmp_path):
     cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}}
     with pytest.raises(ValueError, match="세그먼트 수 불일치"):
         VideoIndex.load(cfg, video_id)
+
+def test_search_with_stats_matches_search_ranking_and_raw_stats(monkeypatch):
+    # search_with_stats는 search와 동일 랭킹을 반환하고, 정규화 이전 raw 코사인
+    # 통계(min-max 정규화로 가려지는 무관련 질의 판정 근거)를 함께 준다 [HIGH-2].
+    q = np.array([1.0, 0.0], dtype=np.float32)
+    monkeypatch.setattr(m5_search, "embed_texts", lambda texts, model: np.array([q]))
+    emb_sub = np.array([[0.5, 0.5], [0.9, 0.1], [0.2, 0.8]], dtype=np.float32)
+    emb_cap = np.array([[0.1, 0.9], [0.3, 0.7], [0.6, 0.4]], dtype=np.float32)
+    video = VideoIndex(
+        segments=[{"idx": i, "start": float(i * 5), "end": float(i * 5 + 5),
+                   "subtitle": ""} for i in range(3)],
+        emb_sub=emb_sub, emb_cap=emb_cap,
+        static_mask=np.array([False, False, False]))
+    cfg = {"embed_model": "any-model"}
+    results_a = search("query", video, alpha=0.5, cfg=cfg)
+    results_b, stats = search_with_stats("query", video, alpha=0.5, cfg=cfg)
+    assert results_a == results_b                    # (a) 동일 랭킹
+    s_sub = emb_sub @ q
+    s_cap = emb_cap @ q
+    assert stats == {                                 # (b) 손계산 코사인과 일치
+        "raw_sub_max": pytest.approx(float(s_sub.max())),
+        "raw_sub_mean": pytest.approx(float(s_sub.mean())),
+        "raw_cap_max": pytest.approx(float(s_cap.max())),
+        "raw_cap_mean": pytest.approx(float(s_cap.mean()))}
 
 def test_load_raises_friendly_error_when_meta_missing(tmp_path):
     # meta.json만 없는 부분 산출물(중단된 M4 실행) → 친절한 FileNotFoundError,

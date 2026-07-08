@@ -17,7 +17,8 @@ from m7_webui import create_app, sanitize_video_id
 
 
 def make_cfg(tmp_path):
-    return {"paths": {"data": str(tmp_path / "data"), "work": str(tmp_path / "work")},
+    return {"paths": {"data": str(tmp_path / "data"), "work": str(tmp_path / "work"),
+                      "results": str(tmp_path / "results")},
             "embed_model": "stub-model"}
 
 
@@ -243,6 +244,61 @@ def test_search_video_id_traversal_is_sanitized_to_404(tmp_path):
     client, _ = make_client(tmp_path)
     r = client.post("/api/search", json={"video_id": "../etc", "query": "질의"})
     assert r.status_code == 404
+
+
+def test_search_returns_raw_stats_and_logs_search(tmp_path):
+    # search_stats_fn 스텁 주입 → 응답에 raw 4개 키 + search_log.jsonl에 줄 추가 [HIGH-2]
+    stats = {"raw_sub_max": 0.9, "raw_sub_mean": 0.5,
+             "raw_cap_max": 0.8, "raw_cap_mean": 0.4}
+    ranked = [Result(0, 0.9, 0, 5)]
+    client, cfg = make_client(
+        tmp_path,
+        search_stats_fn=lambda q, v, a, c: (ranked, stats),
+        load_index=lambda cfg, vid: _stub_index(1))
+    r = client.post("/api/search", json={"video_id": "v1", "query": "질의"})
+    assert r.status_code == 200
+    body = r.json()
+    assert body["raw"] == stats
+
+    log_path = Path(cfg["paths"]["results"]) / "search_log.jsonl"
+    assert log_path.exists()
+    line = json.loads(log_path.read_text(encoding="utf-8").strip().splitlines()[-1])
+    assert line["video_id"] == "v1"
+    assert line["query"] == "질의"
+    assert line["alpha"] == 0.5
+    assert line["top1_idx"] == 0
+    assert line["top1_score"] == 0.9
+    for k, v in stats.items():
+        assert line[k] == v
+
+
+def test_search_still_works_when_results_path_missing(tmp_path):
+    # cfg에 results 경로가 없거나 로그 기록이 실패해도 검색 응답은 500이 아니어야 함
+    # (로깅은 best-effort) [HIGH-2]
+    cfg = make_cfg(tmp_path)
+    del cfg["paths"]["results"]
+    stats = {"raw_sub_max": 0.9, "raw_sub_mean": 0.5,
+             "raw_cap_max": 0.8, "raw_cap_mean": 0.4}
+    ranked = [Result(0, 0.9, 0, 5)]
+    app = create_app(cfg, "config.yaml", alpha=0.5,
+                     search_stats_fn=lambda q, v, a, c: (ranked, stats),
+                     load_index=lambda cfg, vid: _stub_index(1))
+    client = TestClient(app)
+    r = client.post("/api/search", json={"video_id": "v1", "query": "질의"})
+    assert r.status_code == 200
+    assert r.json()["raw"] == stats
+
+
+def test_search_fn_stub_without_stats_omits_raw(tmp_path):
+    # 기존 search_fn 스텁 주입 패턴(stats 없음)은 그대로 동작하고 raw 필드가 없다 —
+    # 하위호환 확인 [HIGH-2]
+    ranked = [Result(0, 0.9, 0, 5)]
+    client, _ = make_client(tmp_path,
+                            search_fn=lambda q, v, a, c: ranked,
+                            load_index=lambda cfg, vid: _stub_index(1))
+    r = client.post("/api/search", json={"video_id": "v1", "query": "질의"})
+    assert r.status_code == 200
+    assert "raw" not in r.json()
 
 
 def test_video_route_404_when_missing(tmp_path):
