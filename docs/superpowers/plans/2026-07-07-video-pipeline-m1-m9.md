@@ -1,5 +1,9 @@
 # 영상 장면 검색 파이프라인 (M1~M9) 구현 계획
 
+> ⚠️ **실행 완료된 역사 문서 (2026-07-08 전 태스크 머지 완료) — 더 읽지 말 것.**
+> 현행 계약·스키마는 docs/DESIGN_SPEC.md, 설계 근거는 docs/IMPLEMENTATION_GUIDE.md 참조.
+> 이 문서의 내용은 이후 변경(vlm_rep_penalty 1.1, 정합성 감사 반영 등)을 담고 있지 않다.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** docs/IMPLEMENTATION_GUIDE.md(v2)·docs/DESIGN_SPEC.md 계약대로 M1(전처리)~M9(AAR 평가) 9개 CLI 모듈을 구현한다. baseline(α=1.0) vs proposed(α 결합) 검색 비교와 AAR 리포트 생성·평가까지.
