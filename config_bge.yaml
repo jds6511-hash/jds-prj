@@ -1,0 +1,46 @@
+alpha_grid:
+- 0.0
+- 0.1
+- 0.2
+- 0.3
+- 0.4
+- 0.5
+- 0.6
+- 0.7
+- 0.8
+- 0.9
+- 1.0
+alpha_select_metric: hit@5
+alpha_tiebreak: larger
+caption_model: Qwen/Qwen2.5-VL-3B-Instruct
+caption_prompt: 이 장면을 한 문장의 한국어로 객관적으로 묘사하라. 화면에 보이지 않는 것은 쓰지 마라.
+embed_batch_size: 32
+embed_model: BAAI/bge-m3
+eval_k:
+- 1
+- 5
+- 10
+frame_sample_fps: 3
+gaussian_sigma: 1.0
+human_check_n: 20
+iou_thresholds:
+- 0.5
+- 0.3
+judge_model: null
+llm_4bit: true
+map_chunk_overlap: 5
+map_chunk_size: 60
+paths:
+  data: data
+  results: results
+  work: work_bge
+report_model: Qwen/Qwen2.5-7B-Instruct
+same_model_judge: false
+seed: 42
+seg_len_sec: 5
+static_threshold: 0.05
+stt_language: ko
+stt_model: large-v3
+vlm_4bit: true
+vlm_max_pixels: 602112
+vlm_rep_penalty: 1.3
