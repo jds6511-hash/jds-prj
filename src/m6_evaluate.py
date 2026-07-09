@@ -127,17 +127,20 @@ def grid_search_alpha(dev_queries, indexes, cfg, search_fn=search) -> dict:
     per_alpha, diff_ci = [], {}
     for a in grid:
         if a == alpha_best_point:
-            ci = [0.0, 0.0]                    # 기준점 자신
+            lo, hi = 0.0, 0.0                  # 기준점 자신
         else:
             diffs = per_query_vec[a][idx_b].mean(axis=1) - best_vec[idx_b].mean(axis=1)
-            lo, hi = np.percentile(diffs, [2.5, 97.5])
-            ci = [round(float(lo), 4), round(float(hi), 4)]
-        diff_ci[a] = ci
+            lo, hi = (float(x) for x in np.percentile(diffs, [2.5, 97.5]))
+        # 판정은 원시 lo/hi로 — 반올림 후 판정은 CI 하한이 0에 근접한 유의 α를
+        # 동률로 오분류할 수 있다. JSON 저장용 리스트만 반올림. [리뷰 Major 2]
+        diff_ci[a] = (lo, hi)
         m = results[a]["metrics"]
         per_alpha.append({
             "alpha": a, "mrr": m["mrr"],
             **{f"hit@{k}": m[f"hit@{k}"] for k in cfg["eval_k"]},
-            "diff_vs_best_ci95": ci,
+            "diff_vs_best_ci95": [round(lo, 4), round(hi, 4)],
+            # per_query_rr은 alpha_select_metric의 per-query 벡터 — 필드명은
+            # metric="mrr"(reciprocal rank) 전제로 8-1 스키마에 고정돼 있다.
             "per_query_rr": per_query_vec[a].tolist()})
 
     tie_set = [a for a in grid if diff_ci[a][0] <= 0.0 <= diff_ci[a][1]]

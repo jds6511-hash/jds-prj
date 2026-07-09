@@ -1,4 +1,6 @@
-import json, pytest
+import json
+import numpy as np
+import pytest
 from m5_search import Result
 from m6_evaluate import (hit_at_k, mrr, iou_recall_at_k, derive_gt_seg_idx,
                          load_queries, grid_search_alpha, evaluate, build_eval_result)
@@ -111,23 +113,43 @@ def test_grid_search_alpha_paired_ci_all_tied():
 
 
 def test_grid_search_alpha_discriminates_single_alpha():
-    # α=0.5만 전 질의에서 지표가 확실히 높고(gt가 랭크1) 나머지는 확실히 낮음
-    # (gt가 결과에 없음) → 질의마다 동일한 음수 차이라 CI가 0을 포함하지 않는다.
-    # 주변(marginal) CI 겹침 방식이면 다른 α도 tie_set에 들어와 실패한다. [8-1(b)]
+    # [리뷰 Major 1 재설계] 질의별 상관 노이즈(난이도) 주입: 질의 i의 기본 랭크
+    # r_i = (i%10)+1 → per-query rr이 1.0~0.1로 넓게 분포. 모든 α가 같은 난이도
+    # r_i를 공유하되 α=0.5만 전 질의에서 랭크 1 우위(r_i vs r_i+1). 쌍체 diff는
+    # 전 질의 strict 음수 → 어떤 재표집에서도 평균이 음수 → diff CI가 0을 확실히
+    # 배제해 tie_set={0.5} 단독. 반면 질의 간 분산이 커서 주변(marginal) CI는
+    # 넓게 겹친다 — 아래에서 주변 방식 판정을 직접 계산해 동률 집합이 팽창함을
+    # 함께 assert(변이 탐지력 자체 증명). [8-1(b)]
     n = 20
-    queries = [{"query_id": f"q{i}", "video_id": "v1", "text": "t", "gt_seg_idx": [0],
+    queries = [{"query_id": f"q{i}", "video_id": "v1", "text": f"t{i}", "gt_seg_idx": [0],
                 "gt_start": 0.0, "gt_end": 5.0, "type": "자막형", "split": "dev"}
                for i in range(n)]
 
-    def fake_search(q, video, alpha, cfg):
-        if alpha == 0.5:
-            return _r([0, 1, 2])      # gt(idx=0) 랭크1 → mrr=1.0, hit@k=1.0
-        return _r([1, 2, 3])          # gt 없음 → mrr=0.0, hit@k=0.0
+    def fake_search(text, video, alpha, cfg):
+        i = int(text[1:])
+        base_rank = (i % 10) + 1                  # 질의 난이도: rr 1.0 ~ 0.1
+        rank = base_rank if alpha == 0.5 else base_rank + 1
+        return _r(list(range(1, rank)) + [0])     # gt(idx=0)를 해당 랭크에 배치
 
     cfg = _dev_cfg()
     result = grid_search_alpha(queries, {"v1": None}, cfg, search_fn=fake_search)
+    assert result["alpha_best_point"] == 0.5
     assert result["tie_set"] == [0.5]
     assert result["alpha_star"] == 0.5
+
+    # 주변(marginal) CI 겹침 방식이었다면: α별 평균 rr의 부트스트랩 CI가 best의
+    # CI와 겹치는 α를 전부 동률 처리 → 이 데이터에서는 동률 집합이 2개 이상으로
+    # 팽창한다(즉 구현이 주변 방식으로 변이되면 위 tie_set 단정이 실패).
+    per_rr = {row["alpha"]: np.array(row["per_query_rr"]) for row in result["per_alpha"]}
+    rng = np.random.default_rng(cfg["seed"])
+    idx_b = rng.integers(0, n, size=(cfg["bootstrap_B"], n))
+    marg_ci = {a: np.percentile(v[idx_b].mean(axis=1), [2.5, 97.5])
+               for a, v in per_rr.items()}
+    best = result["alpha_best_point"]
+    marginal_tie = [a for a in cfg["alpha_grid"]
+                    if marg_ci[a][0] <= marg_ci[best][1]
+                    and marg_ci[best][0] <= marg_ci[a][1]]
+    assert len(marginal_tie) >= 2   # 주변 방식은 이 데이터에서 오판 — 쌍체 방식 필요성 증명
 
 
 def test_grid_search_alpha_deterministic():
