@@ -28,7 +28,7 @@
 | STT | Whisper large-v3 | 부족 시 turbo |
 | 캡션 VLM | Qwen2.5-VL-7B-Instruct | 메모리 부족 시 3B |
 | 임베딩 | KURE (BGE-M3와 dev 비교 후 확정) | 장면형 질의 분리 검증 (v2 8-5) |
-| α grid | 0.0~1.0, step 0.1 | 선택 기준 hit@5 |
+| α grid | 0.0~1.0, step 0.1 | 선택 기준 mrr (쌍체 부트스트랩 CI tie_set, DESIGN_SPEC 8-1) |
 | 평가 k | 1, 5, 10 | |
 | 출력 형식 | 정수 초 `[[시작,끝],...]` | Chrono 근거 (v2 6장) |
 | 캡션 언어 | 한국어 (질의 언어와 일치) | |
