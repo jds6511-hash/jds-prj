@@ -279,9 +279,10 @@ def mrr(ranked, gt_seg_idx) -> float
     # gt_seg_idx 중 하나가 처음 등장하는 랭크의 역수
 def iou_recall_at_k(ranked, gt_start, gt_end, k, thr) -> float
     # 보조지표: thr ∈ {0.5, 0.3}
-def grid_search_alpha(dev_queries) -> float
-    # α ∈ {0.0,0.1,...,1.0}, 기준 = dev hit@5 (config로 변경 가능)
-    # 동률 시 α가 큰 값(자막 우선) 선택 [v2 9-1(a)]
+def grid_search_alpha(dev_queries, indexes, cfg, search_fn) -> dict
+    # α ∈ {0.0,0.1,...,1.0}, 선택 지표 = dev MRR 점 추정 + 쌍체 차이 부트스트랩
+    # tie_set(CI가 0을 포함하는 α들)에 동률 시 α가 큰 값(자막 우선) 선택 [8-1, v2 9-1(a)]
+    # 반환: alpha_search_dev.json과 동일 스키마의 dict
 def derive_gt_seg_idx(gt_start, gt_end, n_segments, seg_len: int) -> list[int]
     # (gt_start, gt_end, n_segments, seg_len) → 1초 이상 겹치는 세그먼트 전부,
     # 없으면 최대 겹침 세그먼트 1개를 보장 [3-3]
@@ -289,7 +290,7 @@ def derive_gt_seg_idx(gt_start, gt_end, n_segments, seg_len: int) -> list[int]
 
 - **실행 순서 강제:** ① dev로 grid_search_alpha → alpha_search_dev.json 저장 → ② test 평가는 그 α만 사용. M6는 test 질의로 α를 재탐색하는 코드 경로를 갖지 않는다(누수 원천 차단, v2 9-1).
 - **검증 포인트:** dev/test에 같은 video_id가 없는지 로드 시 assert.
-- **[예정] α 안정화:** M6 정식 실행(60질의) 전에 8-1의 부트스트랩 CI·선택 지표 변경을 반드시 적용한다. 현행 hit@5 단독 선택은 소표본에서 α*가 요동함이 실측됐다(8-1 참조).
+- **α 안정화(구현됨, 8-1(a)(b)):** `grid_search_alpha`는 선택 지표를 MRR로(`alpha_select_metric: "mrr"`), 점 추정 1위(alpha_best_point)를 기준점으로 한 쌍체 차이(paired-diff) 부트스트랩(B=`bootstrap_B`, 질의 재표집 인덱스 전 α 공유)으로 95% CI를 계산해 CI가 0을 포함하는 α들(tie_set)에만 tiebreak(자막 우선)를 적용한다. alpha_search_dev.json은 8-1의 신 스키마(select_metric, bootstrap, alpha_best_point, per_alpha, by_video, tie_set, alpha_star)로 저장된다. **[예정] 8-1(c) dev 다양화**(영상 3개 확대)는 라벨링 요건이라 미착수.
 
 ## 4-7. M7 프로토타입 (v2 6장)
 
@@ -387,7 +388,8 @@ embed_model: "nlpai-lab/KURE-v1"   # dev에서 BAAI/bge-m3와 비교 후 확정 
 embed_batch_size: 32
 
 alpha_grid: [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
-alpha_select_metric: "hit@5"
+alpha_select_metric: "mrr"    # hit@5는 소표본 계단형·동률 다발로 α* 불안정 [8-1(a)]
+bootstrap_B: 2000              # 쌍체 차이 부트스트랩 재표집 횟수 [8-1(b)]
 alpha_tiebreak: "larger"      # 동률 시 자막 우선 [v2 9-1(a)]
 eval_k: [1, 5, 10]
 iou_thresholds: [0.5, 0.3]    # 보조지표
@@ -423,7 +425,7 @@ paths:
 
 **진행 현황 (2026-07-09, 3주차):** M1~M9 전 모듈 + 웹 UI(M7-W) 구현·테스트 완료 — 표 기준 약 6주 선행. 잔여 병목은 구현이 아니라 (a) 질의 라벨링(18/60), (b) judge 모델용 GPU 확정(튜터), (c) 8장의 고도화 설계 실행이다. 일정표는 원 계획 기록으로 보존한다.
 
-# 8. 고도화 설계 (v1.1 추가 — 전 항목 [예정], 구현 착수 시 태그 제거)
+# 8. 고도화 설계 (v1.1 추가 — 8-1(a)(b) 구현 완료, 8-1(c) 및 8-2~8-6은 [예정], 구현 착수 시 태그 제거)
 
 정합성 감사(docs/설계점검_2026-07-09.md)의 HIGH-3·MEDIUM-4~6과 ablation 계획(docs/ablation_plan_draft.md)의 미결 결정 3건을 계약 수준으로 확정한다. 공통 원칙: **현행 계약(1~7장)을 깨는 항목은 없다** — 전부 추가 경로 또는 config 확장이며, baseline/proposed 대칭성과 dev-only 탐색 원칙(9-1)을 상속한다.
 
@@ -455,9 +457,9 @@ paths:
 
 보고 규칙: 선택은 MRR로 하되 헤드라인 표에는 hit@5·MRR을 항상 병기하고, 두 지표의 우열이 갈리면 per_query 원자료로 사례 해석을 덧붙인다(지표 간 불일치를 숨기지 않는다).
 
-**처방 (c) dev 다양화:** dev 영상을 3개로 확대(확정치는 8-6의 단일 표를 따른다). 영상 간 α* 편차를 alpha_search_dev.json에 영상별 분해로 병기해 "α가 영상 특성의 함수인지"를 보고 자료로 남긴다.
+**처방 (c) dev 다양화 [예정, 라벨링 요건]:** dev 영상을 3개로 확대(확정치는 8-6의 단일 표를 따른다). 영상 간 α* 편차를 alpha_search_dev.json에 영상별 분해로 병기해 "α가 영상 특성의 함수인지"를 보고 자료로 남긴다. **영상별 분해(by_video 키)는 (a)(b)와 함께 이미 구현됨** — 현재 dev 1영상이라 값이 하나뿐이지만, 영상이 늘어나도 그대로 동작한다.
 
-config 예정 키: `alpha_select_metric: "mrr"`(기존 키 값 변경), `bootstrap_B: 2000`(신규). §6에는 구현 시점에 반영한다(문서-코드 동기 원칙).
+config 키: `alpha_select_metric: "mrr"`(기존 키 값 변경, 구현됨), `bootstrap_B: 2000`(신규, 구현됨). §6에 반영 완료(문서-코드 동기 원칙).
 
 ## 8-2. 무관련 질의 판정 — abstention (데이터 축적 후 발동)
 

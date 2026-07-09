@@ -17,7 +17,8 @@ embed_model: "nlpai-lab/KURE-v1"   # dev에서 BAAI/bge-m3와 비교 후 확정 
 embed_batch_size: 32
 
 alpha_grid: [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
-alpha_select_metric: "hit@5"
+alpha_select_metric: "mrr"    # hit@5는 소표본 계단형·동률 다발로 α* 불안정 [8-1(a)]
+bootstrap_B: 2000              # 쌍체 차이 부트스트랩 재표집 횟수 [8-1(b)]
 alpha_tiebreak: "larger"      # 동률 시 자막 우선 [v2 9-1(a)]
 eval_k: [1, 5, 10]
 iou_thresholds: [0.5, 0.3]

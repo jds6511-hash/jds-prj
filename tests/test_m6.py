@@ -42,13 +42,18 @@ def test_evaluate_empty_queries_raises_clear_error():
         evaluate([], {}, 1.0, {"eval_k": [1, 5, 10], "iou_thresholds": [0.5, 0.3]})
 
 def test_grid_search_tiebreak_larger_alpha():
+    # [8-1] grid_search_alpha는 (best, table) 튜플 대신 alpha_search_dev.json 스키마
+    # dict를 반환하도록 확장됨 — 이 테스트는 cfg에 seed/bootstrap_B를 추가하고
+    # best 대신 alpha_star를 검증하도록 최소 수정했다(하강호환 시그니처 유지 불가,
+    # 보고서에 근거 명시).
     queries = [{"query_id": "q1", "video_id": "v1", "text": "t", "gt_seg_idx": [0],
                 "gt_start": 0.0, "gt_end": 5.0, "type": "자막형", "split": "dev"}]
     cfg = {"alpha_grid": [0.0, 0.5, 1.0], "alpha_select_metric": "hit@5",
-           "alpha_tiebreak": "larger", "eval_k": [1, 5, 10], "iou_thresholds": [0.5, 0.3]}
+           "alpha_tiebreak": "larger", "eval_k": [1, 5, 10], "iou_thresholds": [0.5, 0.3],
+           "seed": 42, "bootstrap_B": 100}
     fake_search = lambda q, video, alpha, cfg: _r([0, 1, 2])     # 모든 α 동률
-    best, table = grid_search_alpha(queries, {"v1": None}, cfg, search_fn=fake_search)
-    assert best == 1.0                                            # 동률 → α 큰 값 [9-1(a)]
+    result = grid_search_alpha(queries, {"v1": None}, cfg, search_fn=fake_search)
+    assert result["alpha_star"] == 1.0                            # 동률 → α 큰 값 [9-1(a)]
 
 def test_load_queries_asserts_text_present(tmp_path):
     # text 누락은 sentence-transformers 내부까지 들어가기 전에 fail-fast [리뷰 반영]
@@ -81,3 +86,95 @@ def test_build_eval_result_schema_and_alignment():
     for row, q in zip(result["per_query"], test_queries):     # positional 정렬 고정
         assert row["query_id"] == q["query_id"]
         assert set(row.keys()) == {"query_id", "baseline_rank", "proposed_rank"}
+
+
+def _dev_cfg(grid=None, metric="mrr", B=200):
+    return {"alpha_grid": grid or [0.0, 0.3, 0.5, 0.7, 1.0],
+            "alpha_select_metric": metric, "alpha_tiebreak": "larger",
+            "eval_k": [1, 5, 10], "iou_thresholds": [0.5, 0.3],
+            "seed": 42, "bootstrap_B": B}
+
+
+def test_grid_search_alpha_paired_ci_all_tied():
+    # 모든 α가 동일한 per-query 지표를 내는 스텁 → 차이가 항상 정확히 0이라
+    # 재표집을 어떻게 하든 CI=[0,0], tie_set=전체 그리드, alpha_star=1.0(tiebreak) [8-1(b)]
+    queries = [{"query_id": f"q{i}", "video_id": "v1", "text": "t", "gt_seg_idx": [0],
+                "gt_start": 0.0, "gt_end": 5.0, "type": "자막형", "split": "dev"}
+               for i in range(5)]
+    cfg = _dev_cfg()
+    fake_search = lambda q, video, alpha, cfg: _r([0, 1, 2])   # 모든 α 동일 결과
+    result = grid_search_alpha(queries, {"v1": None}, cfg, search_fn=fake_search)
+    for row in result["per_alpha"]:
+        assert row["diff_vs_best_ci95"] == [0.0, 0.0]
+    assert result["tie_set"] == cfg["alpha_grid"]
+    assert result["alpha_star"] == 1.0
+
+
+def test_grid_search_alpha_discriminates_single_alpha():
+    # α=0.5만 전 질의에서 지표가 확실히 높고(gt가 랭크1) 나머지는 확실히 낮음
+    # (gt가 결과에 없음) → 질의마다 동일한 음수 차이라 CI가 0을 포함하지 않는다.
+    # 주변(marginal) CI 겹침 방식이면 다른 α도 tie_set에 들어와 실패한다. [8-1(b)]
+    n = 20
+    queries = [{"query_id": f"q{i}", "video_id": "v1", "text": "t", "gt_seg_idx": [0],
+                "gt_start": 0.0, "gt_end": 5.0, "type": "자막형", "split": "dev"}
+               for i in range(n)]
+
+    def fake_search(q, video, alpha, cfg):
+        if alpha == 0.5:
+            return _r([0, 1, 2])      # gt(idx=0) 랭크1 → mrr=1.0, hit@k=1.0
+        return _r([1, 2, 3])          # gt 없음 → mrr=0.0, hit@k=0.0
+
+    cfg = _dev_cfg()
+    result = grid_search_alpha(queries, {"v1": None}, cfg, search_fn=fake_search)
+    assert result["tie_set"] == [0.5]
+    assert result["alpha_star"] == 0.5
+
+
+def test_grid_search_alpha_deterministic():
+    # 같은 cfg(같은 seed)로 2회 실행 시 alpha_search_dev.json 내용(dict)이 동일 [8-1(b)]
+    n = 12
+    queries = [{"query_id": f"q{i}", "video_id": "v1", "text": "t", "gt_seg_idx": [0],
+                "gt_start": 0.0, "gt_end": 5.0, "type": "자막형", "split": "dev"}
+               for i in range(n)]
+    fake_search = (lambda q, video, alpha, cfg:
+                    _r([0, 1, 2]) if alpha >= 0.5 else _r([2, 1, 0]))
+    cfg = _dev_cfg()
+    r1 = grid_search_alpha(queries, {"v1": None}, cfg, search_fn=fake_search)
+    r2 = grid_search_alpha(queries, {"v1": None}, cfg, search_fn=fake_search)
+    assert r1 == r2
+
+
+def test_grid_search_alpha_schema_keys():
+    n = 6
+    queries = [{"query_id": f"q{i}", "video_id": "v1", "text": "t", "gt_seg_idx": [0],
+                "gt_start": 0.0, "gt_end": 5.0, "type": "자막형", "split": "dev"}
+               for i in range(n)]
+    cfg = _dev_cfg()
+    fake_search = lambda q, video, alpha, cfg: _r([0, 1, 2])
+    result = grid_search_alpha(queries, {"v1": None}, cfg, search_fn=fake_search)
+    assert set(result.keys()) == {"select_metric", "bootstrap", "alpha_best_point",
+                                   "per_alpha", "by_video", "tie_set", "alpha_star"}
+    assert result["select_metric"] == "mrr"
+    assert result["bootstrap"] == {"B": cfg["bootstrap_B"], "seed": cfg["seed"],
+                                    "method": "paired-diff"}
+    assert len(result["per_alpha"]) == len(cfg["alpha_grid"])
+    for row in result["per_alpha"]:
+        assert {"alpha", "mrr", "hit@5", "diff_vs_best_ci95", "per_query_rr"} <= set(row.keys())
+        assert len(row["per_query_rr"]) == n
+
+
+def test_grid_search_alpha_by_video_breakdown():
+    # dev 영상이 여럿이어도 by_video가 영상별로 분해되는지 확인(현재 dev 1영상이어도
+    # 일반 구현이어야 한다는 요건). [8-1(c)]
+    queries = (
+        [{"query_id": f"a{i}", "video_id": "v1", "text": "t", "gt_seg_idx": [0],
+          "gt_start": 0.0, "gt_end": 5.0, "type": "자막형", "split": "dev"} for i in range(3)]
+        + [{"query_id": f"b{i}", "video_id": "v2", "text": "t", "gt_seg_idx": [0],
+            "gt_start": 0.0, "gt_end": 5.0, "type": "자막형", "split": "dev"} for i in range(3)])
+    cfg = _dev_cfg()
+    fake_search = lambda q, video, alpha, cfg: _r([0, 1, 2])   # 모든 질의 mrr=1.0
+    result = grid_search_alpha(queries, {"v1": None, "v2": None}, cfg, search_fn=fake_search)
+    assert set(result["by_video"].keys()) == {"v1", "v2"}
+    for table in result["by_video"].values():
+        assert set(table.keys()) == {str(a) for a in cfg["alpha_grid"]}
+        assert all(v == 1.0 for v in table.values())
