@@ -3,6 +3,7 @@
 import argparse, json
 from collections import defaultdict
 from pathlib import Path
+import numpy as np
 import common
 from m5_search import VideoIndex, search
 
@@ -100,35 +101,97 @@ def build_eval_result(test_queries, base, prop, alpha) -> dict:
                       for b, p in zip(base["per_query"], prop["per_query"])]}
 
 
-def grid_search_alpha(dev_queries, indexes, cfg, search_fn=search):
-    """dev 전용 α 탐색. 동률 시 α 큰 값(자막 우선). [4-6, v2 9-1(a)]"""
+def grid_search_alpha(dev_queries, indexes, cfg, search_fn=search) -> dict:
+    """dev 전용 α 탐색: 점 추정(선택 지표, 기본 MRR) 1위 α_best_point를 기준점으로
+    쌍체 차이(paired-diff) 부트스트랩 95% CI를 α별로 계산한다. CI가 0을 포함하는
+    α들(tie_set)에 tiebreak(자막 우선=값이 큰 α)를 적용해 alpha_star를 고른다.
+    재검색 없음 — α별 evaluate()는 1회씩만 호출하고 재표집 인덱스는 전 α 공유.
+    [DESIGN_SPEC 8-1]"""
     metric = cfg["alpha_select_metric"]
-    table = {}
-    for alpha in cfg["alpha_grid"]:
-        table[alpha] = evaluate(dev_queries, indexes, alpha, cfg, search_fn)["metrics"][metric]
-    best = max(table, key=lambda a: (table[a], a))   # 동률 → larger
+    grid = cfg["alpha_grid"]
     assert cfg["alpha_tiebreak"] == "larger"
-    return best, table
+
+    results = {a: evaluate(dev_queries, indexes, a, cfg, search_fn) for a in grid}
+    per_query_vec = {a: np.array([row[metric] for row in results[a]["per_query"]])
+                     for a in grid}
+
+    point_scores = {a: results[a]["metrics"][metric] for a in grid}
+    alpha_best_point = max(grid, key=lambda a: (point_scores[a], a))
+
+    n = len(dev_queries)
+    rng = np.random.default_rng(cfg["seed"])
+    B = cfg["bootstrap_B"]
+    idx_b = rng.integers(0, n, size=(B, n))   # 재표집 인덱스 행렬 — 전 α 공유 [8-1(b)]
+    best_vec = per_query_vec[alpha_best_point]
+
+    per_alpha, diff_ci = [], {}
+    for a in grid:
+        if a == alpha_best_point:
+            lo, hi = 0.0, 0.0                  # 기준점 자신
+        else:
+            diffs = per_query_vec[a][idx_b].mean(axis=1) - best_vec[idx_b].mean(axis=1)
+            lo, hi = (float(x) for x in np.percentile(diffs, [2.5, 97.5]))
+        # 판정은 원시 lo/hi로 — 반올림 후 판정은 CI 하한이 0에 근접한 유의 α를
+        # 동률로 오분류할 수 있다. JSON 저장용 리스트만 반올림. [리뷰 Major 2]
+        diff_ci[a] = (lo, hi)
+        m = results[a]["metrics"]
+        per_alpha.append({
+            "alpha": a, "mrr": m["mrr"],
+            **{f"hit@{k}": m[f"hit@{k}"] for k in cfg["eval_k"]},
+            "diff_vs_best_ci95": [round(lo, 4), round(hi, 4)],
+            # per_query_rr은 alpha_select_metric의 per-query 벡터 — 필드명은
+            # metric="mrr"(reciprocal rank) 전제로 8-1 스키마에 고정돼 있다.
+            "per_query_rr": per_query_vec[a].tolist()})
+
+    tie_set = [a for a in grid if diff_ci[a][0] <= 0.0 <= diff_ci[a][1]]
+    alpha_star = max(tie_set)   # 동률 → larger [v2 9-1(a)]
+
+    by_video = {}
+    for vid in dict.fromkeys(q["video_id"] for q in dev_queries):   # 등장 순서 보존
+        idxs = [i for i, q in enumerate(dev_queries) if q["video_id"] == vid]
+        by_video[vid] = {str(a): round(float(per_query_vec[a][idxs].mean()), 4)
+                          for a in grid}
+
+    return {"select_metric": metric,
+            "bootstrap": {"B": B, "seed": cfg["seed"], "method": "paired-diff"},
+            "alpha_best_point": alpha_best_point,
+            "per_alpha": per_alpha,
+            "by_video": by_video,
+            "tie_set": tie_set,
+            "alpha_star": alpha_star}
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="config.yaml")
     ap.add_argument("--queries", default="data/queries/queries.jsonl")
+    ap.add_argument("--static-threshold", type=float, default=None,
+                    help="지정 시 저장된 is_static 대신 motion_score<thr로 재계산 [8-5(2)]")
+    ap.add_argument("--dev-only", action="store_true",
+                    help="dev grid search + alpha_search_dev.json 저장까지만 실행, test 평가 생략")
     args = ap.parse_args()
+    if args.static_threshold is not None and not args.dev_only:
+        # 확정 config 값과 다른 threshold로 test를 평가하는 경로 차단 [8-5(2)]
+        ap.error("--static-threshold는 --dev-only와 함께만 사용할 수 있습니다 "
+                 "(test 평가는 확정 static_threshold로만 수행)")
     cfg = common.load_config(args.config)
     queries = load_queries(args.queries)
     dev = [q for q in queries if q["split"] == "dev"]
     test = [q for q in queries if q["split"] == "test"]
-    indexes = {vid: VideoIndex.load(cfg, vid) for vid in {q["video_id"] for q in queries}}
+    indexes = {vid: VideoIndex.load(cfg, vid, static_threshold=args.static_threshold)
+              for vid in {q["video_id"] for q in queries}}
     rdir = Path(cfg["paths"]["results"]); rdir.mkdir(exist_ok=True)
 
-    # ① dev grid search → 저장
-    alpha, table = grid_search_alpha(dev, indexes, cfg)
-    common.atomic_write_json(rdir / "alpha_search_dev.json",
-                             {"best_alpha": alpha, "metric": cfg["alpha_select_metric"],
-                              "table": {str(a): v for a, v in table.items()}})
-    print(f"dev grid search: α*={alpha}")
+    # ① dev grid search(쌍체 부트스트랩) → 저장 [8-1]
+    dev_result = grid_search_alpha(dev, indexes, cfg)
+    dev_result["static_threshold"] = args.static_threshold   # 재현성 기록 [8-5(2)]
+    common.atomic_write_json(rdir / "alpha_search_dev.json", dev_result)
+    alpha = dev_result["alpha_star"]
+    print(f"dev grid search: α*={alpha} (tie_set={dev_result['tie_set']})")
+
+    if args.dev_only:
+        print("dev-only: test 평가 생략")
+        return
 
     # ② test 평가는 그 α만 사용 (baseline=1.0 vs proposed=α*)
     base = evaluate(test, indexes, 1.0, cfg)

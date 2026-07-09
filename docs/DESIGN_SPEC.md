@@ -279,9 +279,10 @@ def mrr(ranked, gt_seg_idx) -> float
     # gt_seg_idx 중 하나가 처음 등장하는 랭크의 역수
 def iou_recall_at_k(ranked, gt_start, gt_end, k, thr) -> float
     # 보조지표: thr ∈ {0.5, 0.3}
-def grid_search_alpha(dev_queries) -> float
-    # α ∈ {0.0,0.1,...,1.0}, 기준 = dev hit@5 (config로 변경 가능)
-    # 동률 시 α가 큰 값(자막 우선) 선택 [v2 9-1(a)]
+def grid_search_alpha(dev_queries, indexes, cfg, search_fn) -> dict
+    # α ∈ {0.0,0.1,...,1.0}, 선택 지표 = dev MRR 점 추정 + 쌍체 차이 부트스트랩
+    # tie_set(CI가 0을 포함하는 α들)에 동률 시 α가 큰 값(자막 우선) 선택 [8-1, v2 9-1(a)]
+    # 반환: alpha_search_dev.json과 동일 스키마의 dict
 def derive_gt_seg_idx(gt_start, gt_end, n_segments, seg_len: int) -> list[int]
     # (gt_start, gt_end, n_segments, seg_len) → 1초 이상 겹치는 세그먼트 전부,
     # 없으면 최대 겹침 세그먼트 1개를 보장 [3-3]
@@ -289,7 +290,7 @@ def derive_gt_seg_idx(gt_start, gt_end, n_segments, seg_len: int) -> list[int]
 
 - **실행 순서 강제:** ① dev로 grid_search_alpha → alpha_search_dev.json 저장 → ② test 평가는 그 α만 사용. M6는 test 질의로 α를 재탐색하는 코드 경로를 갖지 않는다(누수 원천 차단, v2 9-1).
 - **검증 포인트:** dev/test에 같은 video_id가 없는지 로드 시 assert.
-- **[예정] α 안정화:** M6 정식 실행(60질의) 전에 8-1의 부트스트랩 CI·선택 지표 변경을 반드시 적용한다. 현행 hit@5 단독 선택은 소표본에서 α*가 요동함이 실측됐다(8-1 참조).
+- **α 안정화(구현됨, 8-1(a)(b)):** `grid_search_alpha`는 선택 지표를 MRR로(`alpha_select_metric: "mrr"`), 점 추정 1위(alpha_best_point)를 기준점으로 한 쌍체 차이(paired-diff) 부트스트랩(B=`bootstrap_B`, 질의 재표집 인덱스 전 α 공유)으로 95% CI를 계산해 CI가 0을 포함하는 α들(tie_set)에만 tiebreak(자막 우선)를 적용한다. alpha_search_dev.json은 8-1의 신 스키마(select_metric, bootstrap, alpha_best_point, per_alpha, by_video, tie_set, alpha_star)로 저장된다. **[예정] 8-1(c) dev 다양화**(영상 3개 확대)는 라벨링 요건이라 미착수.
 
 ## 4-7. M7 프로토타입 (v2 6장)
 
@@ -387,7 +388,8 @@ embed_model: "nlpai-lab/KURE-v1"   # dev에서 BAAI/bge-m3와 비교 후 확정 
 embed_batch_size: 32
 
 alpha_grid: [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
-alpha_select_metric: "hit@5"
+alpha_select_metric: "mrr"    # hit@5는 소표본 계단형·동률 다발로 α* 불안정 [8-1(a)]
+bootstrap_B: 2000              # 쌍체 차이 부트스트랩 재표집 횟수 [8-1(b)]
 alpha_tiebreak: "larger"      # 동률 시 자막 우선 [v2 9-1(a)]
 eval_k: [1, 5, 10]
 iou_thresholds: [0.5, 0.3]    # 보조지표
@@ -423,7 +425,7 @@ paths:
 
 **진행 현황 (2026-07-09, 3주차):** M1~M9 전 모듈 + 웹 UI(M7-W) 구현·테스트 완료 — 표 기준 약 6주 선행. 잔여 병목은 구현이 아니라 (a) 질의 라벨링(18/60), (b) judge 모델용 GPU 확정(튜터), (c) 8장의 고도화 설계 실행이다. 일정표는 원 계획 기록으로 보존한다.
 
-# 8. 고도화 설계 (v1.1 추가 — 전 항목 [예정], 구현 착수 시 태그 제거)
+# 8. 고도화 설계 (v1.1 추가 — 8-1(a)(b)·8-5(전항목) 구현 완료, 8-1(c) 및 8-2~8-4·8-6은 [예정] — 구현 완료 항목은 태그 해제)
 
 정합성 감사(docs/설계점검_2026-07-09.md)의 HIGH-3·MEDIUM-4~6과 ablation 계획(docs/ablation_plan_draft.md)의 미결 결정 3건을 계약 수준으로 확정한다. 공통 원칙: **현행 계약(1~7장)을 깨는 항목은 없다** — 전부 추가 경로 또는 config 확장이며, baseline/proposed 대칭성과 dev-only 탐색 원칙(9-1)을 상속한다.
 
@@ -449,15 +451,16 @@ paths:
     ...
   ],
   "tie_set": [0.4, 0.5, 0.6],      // 차이 CI가 0을 포함한 α들
-  "alpha_star": 0.6                 // tie_set에 tiebreak 적용 결과
+  "alpha_star": 0.6,                // tie_set에 tiebreak 적용 결과
+  "static_threshold": null          // null|float — 8-5(2) 스윕 재현성 기록(M6 main이 부기)
 }
 ```
 
 보고 규칙: 선택은 MRR로 하되 헤드라인 표에는 hit@5·MRR을 항상 병기하고, 두 지표의 우열이 갈리면 per_query 원자료로 사례 해석을 덧붙인다(지표 간 불일치를 숨기지 않는다).
 
-**처방 (c) dev 다양화:** dev 영상을 3개로 확대(확정치는 8-6의 단일 표를 따른다). 영상 간 α* 편차를 alpha_search_dev.json에 영상별 분해로 병기해 "α가 영상 특성의 함수인지"를 보고 자료로 남긴다.
+**처방 (c) dev 다양화 [예정, 라벨링 요건]:** dev 영상을 3개로 확대(확정치는 8-6의 단일 표를 따른다). 영상 간 α* 편차를 alpha_search_dev.json에 영상별 분해로 병기해 "α가 영상 특성의 함수인지"를 보고 자료로 남긴다. **영상별 분해(by_video 키)는 (a)(b)와 함께 이미 구현됨** — 현재 dev 1영상이라 값이 하나뿐이지만, 영상이 늘어나도 그대로 동작한다.
 
-config 예정 키: `alpha_select_metric: "mrr"`(기존 키 값 변경), `bootstrap_B: 2000`(신규). §6에는 구현 시점에 반영한다(문서-코드 동기 원칙).
+config 키: `alpha_select_metric: "mrr"`(기존 키 값 변경, 구현됨), `bootstrap_B: 2000`(신규, 구현됨). §6에 반영 완료(문서-코드 동기 원칙).
 
 ## 8-2. 무관련 질의 판정 — abstention (데이터 축적 후 발동)
 
@@ -496,9 +499,9 @@ config 예정 키: `alpha_select_metric: "mrr"`(기존 키 값 변경), `bootstr
 
 **(1) 변형 실험 산출물 격리 — paths.work·paths.results 동시 분리를 표준으로 한다.** 변형마다 config 사본(`config_{variant}.yaml`)을 만들고 `paths.work`와 `paths.results`를 함께 교체한다(예: `work_seg3/` + `results_seg3/`). work만 바꾸면 인덱싱 산출물(M1~M4)은 격리되지만 M6가 고정 파일명(`alpha_search_dev.json`, `eval_test.json`)으로 기록하고 M7-W가 `search_log.jsonl`에 append하므로 변형 실행이 기준 실행의 결과 파일을 덮어쓴다. 근거: 기존 모듈 무수정으로 동작하고, 전례 2회(work_rp13/, work_bge/)로 검증됐다(당시는 M6 미실행이라 results 충돌이 드러나지 않았을 뿐이다). video_id에 suffix를 붙이는 방식은 기각 — M5·M7의 video_id 기반 경로 조립과 얽히고, data/videos/{video_id}.mp4 원본 참조가 깨진다. queries.jsonl의 video_id도 불변으로 유지된다.
 
-**(2) static_threshold 스윕 — config 스키마 불변, 평가 시점 재판정.** config는 절대값 1개(`static_threshold`)를 유지한다(6장 "dev에서 1회 보정 후 고정" 계약). 스윕 메커니즘: **M5·M6 공통 진입점인 `VideoIndex.load`에 `static_threshold: float | None = None` 인자를 추가**해, 지정 시 저장된 `is_static` 대신 `motion_score < thr`로 static_mask를 재계산한다(이때 segments.json 로드의 require에 motion_score 추가). M6 CLI의 `--static-threshold`가 이 값을 인덱스 로드까지 관통시키되, **스윕 실행은 M6 main(dev 탐색+test 평가)이 아니라 dev 질의만으로 evaluate()를 호출하는 스윕 스크립트(또는 M6 `--dev-only` 모드)로 한다** — threshold 후보마다 test가 평가되면 dev-only 원칙(v2 9-1, 8-6) 위반이다. 스윕 결과는 고정 파일명(alpha_search_dev.json 등)을 덮어쓰지 않도록 threshold별로 단일 파일(예: `results/static_sweep_dev.json`)에 누적 기록한다. segments.json 저장 필드는 건드리지 않아 멱등 안전. 분위수(P10/P25/P50)는 **후보값 산출 방법론**일 뿐 config에 들어가지 않는다(dev 분포에서 절대값으로 환산해 스윕). 알려진 한계를 결과에 명시: rep_frame·캡션은 thr=0.05 기준 산출물이라 재판정과 비대칭.
+**(2) static_threshold 스윕 — config 스키마 불변, 평가 시점 재판정 (구현됨).** config는 절대값 1개(`static_threshold`)를 유지한다(6장 "dev에서 1회 보정 후 고정" 계약). 스윕 메커니즘: **M5·M6 공통 진입점인 `VideoIndex.load`에 `static_threshold: float | None = None` 인자를 추가**해, 지정 시 저장된 `is_static` 대신 `motion_score < thr`로 static_mask를 재계산한다(이때 segments.json 로드의 require에 motion_score 추가). M6 CLI의 `--static-threshold`가 이 값을 인덱스 로드까지 관통시키되, **스윕 실행은 M6 main(dev 탐색+test 평가)이 아니라 dev 질의만으로 evaluate()를 호출하는 스윕 스크립트(또는 M6 `--dev-only` 모드)로 한다** — threshold 후보마다 test가 평가되면 dev-only 원칙(v2 9-1, 8-6) 위반이다. **`--static-threshold`는 `--dev-only`와 함께가 아니면 CLI가 에러로 거부한다**(확정 config 값과 다른 threshold로 test를 평가하는 경로 차단). alpha_search_dev.json에 사용된 static_threshold 값을 스키마에 기록(`"static_threshold": null|float`, 8-1 스키마 예시 참조)해 재현성을 보장한다. 스윕 결과 누적(threshold별 `results/static_sweep_dev.json` 등)은 별도 스크립트 몫이라 이번 범위 밖이다. segments.json 저장 필드는 건드리지 않아 멱등 안전. 분위수(P10/P25/P50)는 **후보값 산출 방법론**일 뿐 config에 들어가지 않는다(dev 분포에서 절대값으로 환산해 스윕). 알려진 한계를 결과에 명시: rep_frame·캡션은 thr=0.05 기준 산출물이라 재판정과 비대칭.
 
-**(3) 실험 3(프롬프트)의 부분 재실행 — M3에 `--captions-only` 옵션 추가.** Whisper 전사·자막 귀속(M3(a))을 건너뛰고 caption만 재생성한다. 절차 계약: ① 대상 work 디렉터리에 subtitle·rep_frame이 채워진 segments.json과 frames/가 **선재해야 한다** — (1)의 변형 디렉터리는 비어 있으므로 기준 `work/{video_id}/`의 segments.json·frames/를 복사해 seeding하는 단계가 선행된다(audio.wav·npy는 불필요). ② `--captions-only`는 **caption 필드만 초기화한 뒤 재생성**한다 — 현행 캡션 생성이 caption 존재 시 건너뛰는 resume 동작이므로, 초기화 없이는 no-op가 된다. subtitle·rep_frame은 불변. ③ 현행 `--force`는 전체 재실행이므로 실험 3에서 사용 금지(Whisper ~수십 분 낭비 + 자막 재현성 위험). 멱등성은 greedy 디코딩(do_sample=False) 전제에서 성립.
+**(3) 실험 3(프롬프트)의 부분 재실행 — M3에 `--captions-only` 옵션 추가 (구현됨).** Whisper 전사·자막 귀속(M3(a))을 건너뛰고 caption만 재생성한다. 절차 계약: ① 대상 work 디렉터리에 subtitle·rep_frame이 채워진 segments.json과 frames/가 **선재해야 한다** — (1)의 변형 디렉터리는 비어 있으므로 기준 `work/{video_id}/`의 segments.json·frames/를 복사해 seeding하는 단계가 선행된다(audio.wav·npy는 불필요). 선재하지 않으면 fail-fast(seeding 안내 메시지). ② `--captions-only`는 **caption 필드만 초기화한 뒤 재생성**한다 — 현행 캡션 생성이 caption 존재 시 건너뛰는 resume 동작이므로, 초기화 없이는 no-op가 된다. subtitle·rep_frame·is_static·motion_score는 불변. ③ 현행 `--force`는 전체 재실행이므로 실험 3에서 사용 금지(Whisper ~수십 분 낭비 + 자막 재현성 위험) — `--captions-only`와 `--force`를 동시 지정하면 CLI가 에러로 거부한다. 멱등성은 greedy 디코딩(do_sample=False) 전제에서 성립.
 
 ## 8-6. 평가 프로토콜 확정치
 

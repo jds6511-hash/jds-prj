@@ -138,21 +138,39 @@ def main():
     ap.add_argument("--config", default="config.yaml")
     ap.add_argument("--video-id", required=True)
     ap.add_argument("--force", action="store_true")
+    ap.add_argument("--captions-only", action="store_true",
+                    help="Whisper 전사·자막 귀속을 건너뛰고 caption만 재생성 [8-5(3)]")
     args = ap.parse_args()
+    if args.force and args.captions_only:
+        ap.error("--force와 --captions-only는 동시 지정 불가(force는 전체 재실행)")
     cfg = common.load_config(args.config)
     wdir = common.work_dir(cfg, args.video_id)
-    doc = common.load_segments(wdir / "segments.json", require=["rep_frame", "is_static"])
 
-    if args.force:
+    if args.captions_only:
+        doc = common.load_segments(wdir / "segments.json")
+        # subtitle=""은 무발화 세그먼트의 정상값이므로 키 존재만 검사(값 진위 아님) [8-5(3)]
+        # rep_frame은 common.load_segments의 require 경로를 쓰지 않는다 — 그 경로의
+        # 일반 에러 메시지가 아니라 seeding 안내가 필요하기 때문 [8-5(3)①]
+        missing = [f for f in ("subtitle", "rep_frame")
+                  if any(f not in s for s in doc["segments"])]
+        if missing:
+            raise SystemExit(
+                f"--captions-only: segments.json에 {', '.join(missing)}이 채워져 있지 않습니다 — "
+                "기준 work 디렉터리의 segments.json·frames/를 복사해 seeding하라 [8-5(3)]")
         for s in doc["segments"]:
-            s.pop("subtitle", None); s.pop("caption", None)
+            s.pop("caption", None)   # resume이 no-op 되는 것 방지 [8-5(3)]
+    else:
+        doc = common.load_segments(wdir / "segments.json", require=["rep_frame", "is_static"])
+        if args.force:
+            for s in doc["segments"]:
+                s.pop("subtitle", None); s.pop("caption", None)
 
-    # (a) 자막
-    utts = transcribe(wdir / "audio.wav", cfg["stt_model"], cfg["stt_language"],
-                      force=args.force)
-    assign_subtitles(utts, doc["segments"])
-    covered = sum(1 for s in doc["segments"] if s["subtitle"])
-    print(f"자막 커버리지: {covered}/{doc['n_segments']} ({covered/doc['n_segments']:.1%})")
+        # (a) 자막
+        utts = transcribe(wdir / "audio.wav", cfg["stt_model"], cfg["stt_language"],
+                          force=args.force)
+        assign_subtitles(utts, doc["segments"])
+        covered = sum(1 for s in doc["segments"] if s["subtitle"])
+        print(f"자막 커버리지: {covered}/{doc['n_segments']} ({covered/doc['n_segments']:.1%})")
 
     # (b) 캡션
     model, processor = load_vlm(cfg)

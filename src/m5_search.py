@@ -37,10 +37,13 @@ class VideoIndex:
     static_mask: np.ndarray
 
     @classmethod
-    def load(cls, cfg: dict, video_id: str) -> "VideoIndex":
+    def load(cls, cfg: dict, video_id: str,
+              static_threshold: float | None = None) -> "VideoIndex":
         wdir = common.work_dir(cfg, video_id)
-        doc = common.load_segments(wdir / "segments.json",
-                                   require=["subtitle", "caption", "is_static"])
+        require = ["subtitle", "caption", "is_static"]
+        if static_threshold is not None:
+            require.append("motion_score")   # [8-5(2)]
+        doc = common.load_segments(wdir / "segments.json", require=require)
         for name in ("emb_sub.npy", "emb_cap.npy", "meta.json"):
             if not (wdir / name).exists():
                 raise FileNotFoundError(f"{name} 없음 — run m4_index.py first")
@@ -56,8 +59,14 @@ class VideoIndex:
             raise ValueError(f"세그먼트 수 불일치: meta.n_segments={meta['n_segments']} "
                              f"segments.json={n_seg} emb_sub={emb_sub.shape[0]} "
                              f"emb_cap={emb_cap.shape[0]} — run m4_index.py --force")
+        if static_threshold is None:
+            static_mask = np.array([s["is_static"] for s in doc["segments"]])
+        else:
+            # segments.json은 읽기 전용 — 저장 필드(is_static)는 불변, 재계산은 메모리상에서만 [8-5(2)]
+            static_mask = np.array([s["motion_score"] < static_threshold
+                                    for s in doc["segments"]])
         return cls(segments=doc["segments"], emb_sub=emb_sub, emb_cap=emb_cap,
-                   static_mask=np.array([s["is_static"] for s in doc["segments"]]))
+                   static_mask=static_mask)
 
 
 def search_with_stats(query: str, video: VideoIndex, alpha: float,
