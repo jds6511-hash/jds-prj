@@ -114,12 +114,14 @@ for start in range(0, int(duration), 5):
 
 **무엇: 각 5초 세그먼트에서 VLM 캡션을 생성할 대표 프레임 1장을 고른다.**
 
-왜: 단순히 중간 프레임을 쓰는 대신, SMART의 키프레임 선택(STC 1단계)을 차용하면 "가장 동적인(정보량 많은)" 프레임을 골라 캡션 품질을 높일 수 있다. SMART는 인접 프레임 차분의 L2 norm을 구해 가우시안 평활화 후 값이 큰 프레임을 키프레임으로 선택한다. 이 부분은 학습이 전혀 필요 없다.
+왜: 단순히 중간 프레임을 쓰는 대신, SMART의 키프레임 선택(STC 1단계)을 차용하면 "가장 동적인(정보량 많은)" 프레임을 골라 캡션 품질을 높일 수 있다. SMART는 인접 프레임 차분의 L2 norm을 구해 가우시안 평활화 후 값이 큰 프레임을 키프레임으로 선택한다. 이 부분은 학습이 전혀 필요 없다. (구현 확정: 차분은 픽셀 수로 정규화한 RMS — 해상도 독립, DESIGN_SPEC 4-2 참조.)
 
 **의사코드 — 세그먼트 내 대표 프레임 선택 (SMART STC 1단계 차용):**
 
 ```
 frames = sample_frames(segment, fps=3)          # 세그먼트 내 프레임들
+#   (구현 확정: 세그먼트별 시크 대신 영상 1회 순차 디코딩으로 동일 프레임을 수집 —
+#    m2_keyframe.sample_segments_sequential, 동등성 실측 검증. DESIGN_SPEC 4-2)
 embs = [image_encoder(f) for f in frames]       # 또는 raw pixel diff도 가능
 diffs = [l2_norm(embs[i] - embs[i-1]) for i in range(1, len(embs))]
 diffs = gaussian_filter(diffs, sigma=1.0)       # 지터 억제
