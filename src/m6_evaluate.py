@@ -165,19 +165,33 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="config.yaml")
     ap.add_argument("--queries", default="data/queries/queries.jsonl")
+    ap.add_argument("--static-threshold", type=float, default=None,
+                    help="지정 시 저장된 is_static 대신 motion_score<thr로 재계산 [8-5(2)]")
+    ap.add_argument("--dev-only", action="store_true",
+                    help="dev grid search + alpha_search_dev.json 저장까지만 실행, test 평가 생략")
     args = ap.parse_args()
+    if args.static_threshold is not None and not args.dev_only:
+        # 확정 config 값과 다른 threshold로 test를 평가하는 경로 차단 [8-5(2)]
+        ap.error("--static-threshold는 --dev-only와 함께만 사용할 수 있습니다 "
+                 "(test 평가는 확정 static_threshold로만 수행)")
     cfg = common.load_config(args.config)
     queries = load_queries(args.queries)
     dev = [q for q in queries if q["split"] == "dev"]
     test = [q for q in queries if q["split"] == "test"]
-    indexes = {vid: VideoIndex.load(cfg, vid) for vid in {q["video_id"] for q in queries}}
+    indexes = {vid: VideoIndex.load(cfg, vid, static_threshold=args.static_threshold)
+              for vid in {q["video_id"] for q in queries}}
     rdir = Path(cfg["paths"]["results"]); rdir.mkdir(exist_ok=True)
 
     # ① dev grid search(쌍체 부트스트랩) → 저장 [8-1]
     dev_result = grid_search_alpha(dev, indexes, cfg)
+    dev_result["static_threshold"] = args.static_threshold   # 재현성 기록 [8-5(2)]
     common.atomic_write_json(rdir / "alpha_search_dev.json", dev_result)
     alpha = dev_result["alpha_star"]
     print(f"dev grid search: α*={alpha} (tie_set={dev_result['tie_set']})")
+
+    if args.dev_only:
+        print("dev-only: test 평가 생략")
+        return
 
     # ② test 평가는 그 α만 사용 (baseline=1.0 vs proposed=α*)
     base = evaluate(test, indexes, 1.0, cfg)

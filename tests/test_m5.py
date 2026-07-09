@@ -117,3 +117,46 @@ def test_load_raises_friendly_error_when_meta_missing(tmp_path):
     cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}}
     with pytest.raises(FileNotFoundError, match="run m4_index.py first"):
         VideoIndex.load(cfg, video_id)
+
+def _static_threshold_fixture(tmp_path, video_id="v1"):
+    wdir = tmp_path / video_id
+    wdir.mkdir()
+    segments = [
+        {"idx": 0, "start": 0, "end": 5, "subtitle": "s", "caption": "c",
+         "is_static": True, "motion_score": 0.02},
+        {"idx": 1, "start": 5, "end": 10, "subtitle": "s", "caption": "c",
+         "is_static": False, "motion_score": 0.08},
+        {"idx": 2, "start": 10, "end": 15, "subtitle": "s", "caption": "c",
+         "is_static": False, "motion_score": 0.01}]
+    common.save_segments(wdir / "segments.json", {"n_segments": 3, "segments": segments})
+    np.save(wdir / "emb_sub.npy", np.zeros((3, 4), dtype=np.float32))
+    np.save(wdir / "emb_cap.npy", np.zeros((3, 4), dtype=np.float32))
+    (wdir / "meta.json").write_text(
+        json.dumps({"embed_model": "m", "dim": 4, "n_segments": 3}), encoding="utf-8")
+    return wdir
+
+def test_load_static_threshold_recomputes_mask_and_file_unchanged(tmp_path):
+    # [DESIGN_SPEC 8-5(2)] static_threshold 지정 시 motion_score<thr로 static_mask
+    # 재계산. segments.json은 읽기 전용(파일 내용·mtime 불변).
+    video_id = "v1"
+    wdir = _static_threshold_fixture(tmp_path, video_id)
+    cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}}
+    before_mtime = (wdir / "segments.json").stat().st_mtime
+    before_content = (wdir / "segments.json").read_text(encoding="utf-8")
+
+    video = VideoIndex.load(cfg, video_id, static_threshold=0.05)
+
+    # motion_score < 0.05 → idx0(0.02) True, idx1(0.08) False, idx2(0.01) True
+    assert list(video.static_mask) == [True, False, True]
+    # 저장된 is_static은 그대로(재계산 결과와 다름) — segments.json 읽기 전용 확인
+    assert [s["is_static"] for s in video.segments] == [True, False, False]
+    assert (wdir / "segments.json").stat().st_mtime == before_mtime
+    assert (wdir / "segments.json").read_text(encoding="utf-8") == before_content
+
+def test_load_static_threshold_none_uses_stored_is_static(tmp_path):
+    # static_threshold=None(기본) 경로는 현행 동작 그대로 — 저장된 is_static 사용 [8-5(2)]
+    video_id = "v1"
+    _static_threshold_fixture(tmp_path, video_id)
+    cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}}
+    video = VideoIndex.load(cfg, video_id)
+    assert list(video.static_mask) == [True, False, False]

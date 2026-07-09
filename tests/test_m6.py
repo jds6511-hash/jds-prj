@@ -1,7 +1,11 @@
 import json
+import sys
 import numpy as np
 import pytest
-from m5_search import Result
+import common
+import m5_search
+import m6_evaluate
+from m5_search import Result, VideoIndex
 from m6_evaluate import (hit_at_k, mrr, iou_recall_at_k, derive_gt_seg_idx,
                          load_queries, grid_search_alpha, evaluate, build_eval_result)
 
@@ -200,3 +204,84 @@ def test_grid_search_alpha_by_video_breakdown():
     for table in result["by_video"].values():
         assert set(table.keys()) == {str(a) for a in cfg["alpha_grid"]}
         assert all(v == 1.0 for v in table.values())
+
+
+def _main_cfg(tmp_path):
+    return {"alpha_grid": [0.0, 0.5, 1.0], "alpha_select_metric": "mrr",
+            "alpha_tiebreak": "larger", "eval_k": [1, 5, 10], "iou_thresholds": [0.5, 0.3],
+            "seed": 42, "bootstrap_B": 50, "embed_model": "m",
+            "paths": {"work": str(tmp_path / "work"), "results": str(tmp_path / "results")}}
+
+
+def _write_dev_test_queries(tmp_path):
+    p = tmp_path / "queries.jsonl"
+    rows = [{"query_id": "d1", "video_id": "v1", "text": "t", "type": "자막형",
+             "gt_start": 0.0, "gt_end": 5.0, "gt_seg_idx": [0], "split": "dev"},
+            {"query_id": "t1", "video_id": "v2", "text": "t", "type": "자막형",
+             "gt_start": 0.0, "gt_end": 5.0, "gt_seg_idx": [0], "split": "test"}]
+    p.write_text("\n".join(json.dumps(r, ensure_ascii=False) for r in rows), encoding="utf-8")
+    return p
+
+
+def _fake_video():
+    return VideoIndex(segments=[{"idx": 0, "start": 0.0, "end": 5.0, "subtitle": ""}],
+                      emb_sub=np.zeros((1, 2), dtype=np.float32),
+                      emb_cap=np.zeros((1, 2), dtype=np.float32),
+                      static_mask=np.array([False]))
+
+
+def test_m6_main_dev_only_skips_test_eval(tmp_path, monkeypatch, capsys):
+    # [8-5(2)] --dev-only: alpha_search_dev.json 생성 + eval_test.json 미생성,
+    # 로그에 "dev-only: test 평가 생략" 출력.
+    queries_path = _write_dev_test_queries(tmp_path)
+    cfg = _main_cfg(tmp_path)
+    monkeypatch.setattr(common, "load_config", lambda path: cfg)
+    monkeypatch.setattr(VideoIndex, "load",
+                        classmethod(lambda cls, cfg, vid, static_threshold=None: _fake_video()))
+    monkeypatch.setattr(m5_search, "embed_texts",
+                        lambda texts, model: np.zeros((1, 2), dtype=np.float32))
+    monkeypatch.setattr(sys, "argv", ["m6_evaluate.py", "--config", "c.yaml",
+                                      "--queries", str(queries_path), "--dev-only"])
+    m6_evaluate.main()
+
+    out = capsys.readouterr().out
+    assert "dev-only: test 평가 생략" in out
+    rdir = tmp_path / "results"
+    assert (rdir / "alpha_search_dev.json").exists()
+    assert not (rdir / "eval_test.json").exists()
+    saved = json.loads((rdir / "alpha_search_dev.json").read_text(encoding="utf-8"))
+    assert saved["static_threshold"] is None    # [8-1 스키마 확장]
+
+
+def test_m6_static_threshold_requires_dev_only(monkeypatch):
+    # [8-5(2)] --static-threshold 지정 시 --dev-only가 아니면 에러로 거부
+    # (확정 config 값과 다른 threshold로 test를 평가하는 경로 차단).
+    monkeypatch.setattr(sys, "argv", ["m6_evaluate.py", "--static-threshold", "0.05"])
+    with pytest.raises(SystemExit):
+        m6_evaluate.main()
+
+
+def test_m6_static_threshold_passed_through_and_recorded(tmp_path, monkeypatch):
+    # --static-threshold가 VideoIndex.load까지 관통하고 alpha_search_dev.json에
+    # 재현성용으로 기록됨 [8-5(2)].
+    queries_path = _write_dev_test_queries(tmp_path)
+    cfg = _main_cfg(tmp_path)
+    monkeypatch.setattr(common, "load_config", lambda path: cfg)
+    calls = []
+
+    def fake_load(cls, cfg, vid, static_threshold=None):
+        calls.append(static_threshold)
+        return _fake_video()
+
+    monkeypatch.setattr(VideoIndex, "load", classmethod(fake_load))
+    monkeypatch.setattr(m5_search, "embed_texts",
+                        lambda texts, model: np.zeros((1, 2), dtype=np.float32))
+    monkeypatch.setattr(sys, "argv", ["m6_evaluate.py", "--config", "c.yaml",
+                                      "--queries", str(queries_path),
+                                      "--dev-only", "--static-threshold", "0.05"])
+    m6_evaluate.main()
+
+    assert calls == [0.05, 0.05]   # dev(v1)·test(v2) 인덱스 모두 관통
+    saved = json.loads((tmp_path / "results" / "alpha_search_dev.json")
+                       .read_text(encoding="utf-8"))
+    assert saved["static_threshold"] == 0.05
