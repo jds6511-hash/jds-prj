@@ -112,9 +112,11 @@ def caption_frame(image_path, prompt, model, processor, cfg) -> str:
     return out.strip()
 
 
-def caption_all(doc, wdir, cfg, captioner) -> list[int]:
-    """전 세그먼트 캡션. 실패 시 1회 재시도 후 실패 idx 반환. resume 지원. [4-3]"""
+def caption_all(doc, wdir, cfg, captioner, checkpoint_every: int = 20) -> list[int]:
+    """전 세그먼트 캡션. 실패 시 1회 재시도 후 실패 idx 반환. resume 지원.
+    checkpoint_every개마다 중간 저장 — GPU 크래시(OOM 등) 시 이미 완료한 캡션 보존. [4-3]"""
     failed = []
+    since_checkpoint = 0
     for seg in doc["segments"]:
         if seg.get("caption"):                        # resume: 이미 있으면 건너뜀
             continue
@@ -130,6 +132,10 @@ def caption_all(doc, wdir, cfg, captioner) -> list[int]:
         if not cap_text:
             failed.append(seg["idx"])
         seg["caption"] = cap_text
+        since_checkpoint += 1
+        if since_checkpoint >= checkpoint_every:
+            common.save_segments(Path(wdir) / "segments.json", doc)
+            since_checkpoint = 0
     return failed
 
 
