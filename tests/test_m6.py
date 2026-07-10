@@ -336,6 +336,41 @@ def test_m6_main_dev_only_skips_test_eval(tmp_path, monkeypatch, capsys):
     assert saved["static_threshold"] is None    # [8-1 스키마 확장]
 
 
+def test_m6_recompute_gt_requires_dev_only(monkeypatch):
+    # 공식 test 평가는 확정 5초 라벨로만 — 재계산 경로는 dev-only 강제 [ablation 1-4④]
+    monkeypatch.setattr(sys, "argv", ["m6_evaluate.py", "--recompute-gt-seg-idx"])
+    with pytest.raises(SystemExit):
+        m6_evaluate.main()
+
+
+def test_m6_recompute_gt_seg_idx_from_timestamps(tmp_path, monkeypatch):
+    # gt_seg_idx가 5초 격자 기준(구식)이어도 --recompute-gt-seg-idx가 cfg seg_len 기준으로
+    # 재계산해 validate를 통과하고 평가에 반영되는지 [ablation 1-4④]
+    p = tmp_path / "queries.jsonl"
+    # gt 15.0~20.0초: seg_len=10이면 idx 1이 정답인데 라벨에는 5초 기준 idx 3이 적혀 있음
+    rows = [{"query_id": "d1", "video_id": "v1", "text": "t", "type": "자막형",
+             "gt_start": 15.0, "gt_end": 20.0, "gt_seg_idx": [3], "split": "dev"}]
+    p.write_text("\n".join(json.dumps(r, ensure_ascii=False) for r in rows), encoding="utf-8")
+    cfg = _main_cfg(tmp_path); cfg["seg_len_sec"] = 10
+    monkeypatch.setattr(common, "load_config", lambda path: cfg)
+    fake = VideoIndex(segments=[{"idx": i, "start": i * 10.0, "end": i * 10.0 + 10.0,
+                                 "subtitle": ""} for i in range(3)],
+                      emb_sub=np.zeros((3, 2), dtype=np.float32),
+                      emb_cap=np.zeros((3, 2), dtype=np.float32),
+                      static_mask=np.array([False] * 3))
+    monkeypatch.setattr(VideoIndex, "load",
+                        classmethod(lambda cls, cfg, vid, static_threshold=None: fake))
+    monkeypatch.setattr(m5_search, "embed_texts",
+                        lambda texts, model: np.zeros((1, 2), dtype=np.float32))
+    monkeypatch.setattr(sys, "argv", ["m6_evaluate.py", "--config", "c.yaml",
+                                      "--queries", str(p), "--dev-only",
+                                      "--recompute-gt-seg-idx"])
+    m6_evaluate.main()   # 재계산 없이는 validate_gt_seg_idx가 idx 1 누락으로 assert 실패
+    saved = json.loads((tmp_path / "results" / "alpha_search_dev.json")
+                       .read_text(encoding="utf-8"))
+    assert saved["alpha_star"] in cfg["alpha_grid"]
+
+
 def test_m6_static_threshold_requires_dev_only(monkeypatch):
     # [8-5(2)] --static-threshold 지정 시 --dev-only가 아니면 에러로 거부
     # (확정 config 값과 다른 threshold로 test를 평가하는 경로 차단).

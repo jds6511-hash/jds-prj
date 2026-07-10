@@ -224,17 +224,30 @@ def main():
                     help="지정 시 저장된 is_static 대신 motion_score<thr로 재계산 [8-5(2)]")
     ap.add_argument("--dev-only", action="store_true",
                     help="dev grid search + alpha_search_dev.json 저장까지만 실행, test 평가 생략")
+    ap.add_argument("--recompute-gt-seg-idx", action="store_true",
+                    help="저장된 gt_seg_idx를 무시하고 gt_start/gt_end에서 cfg seg_len_sec 기준 "
+                         "재계산 — seg_len ablation 전용 [ablation_plan 1-4④]")
     args = ap.parse_args()
     if args.static_threshold is not None and not args.dev_only:
         # 확정 config 값과 다른 threshold로 test를 평가하는 경로 차단 [8-5(2)]
         ap.error("--static-threshold는 --dev-only와 함께만 사용할 수 있습니다 "
                  "(test 평가는 확정 static_threshold로만 수행)")
+    if args.recompute_gt_seg_idx and not args.dev_only:
+        # 공식 test 평가는 확정 5초 라벨(gt_seg_idx)로만 수행 [9-1]
+        ap.error("--recompute-gt-seg-idx는 --dev-only와 함께만 사용할 수 있습니다")
     cfg = common.load_config(args.config)
     queries = load_queries(args.queries)
     dev = [q for q in queries if q["split"] == "dev"]
     test = [q for q in queries if q["split"] == "test"]
     indexes = {vid: VideoIndex.load(cfg, vid, static_threshold=args.static_threshold)
               for vid in {q["video_id"] for q in queries}}
+    if args.recompute_gt_seg_idx:
+        # 초 단위 라벨(gt_start/gt_end)이 원본 — 세그먼트 격자가 바뀌면 여기서 재계산.
+        # 재언급 구간 수동 추가분(wl_q03류 초집합)은 유실되나 ablation 상대 비교에는 무해.
+        for q in queries:
+            q["gt_seg_idx"] = derive_gt_seg_idx(
+                q["gt_start"], q["gt_end"],
+                len(indexes[q["video_id"]].segments), cfg["seg_len_sec"])
     validate_gt_seg_idx(queries, indexes, cfg["seg_len_sec"])
     rdir = Path(cfg["paths"]["results"]); rdir.mkdir(exist_ok=True)
 
