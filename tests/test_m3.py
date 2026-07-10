@@ -22,7 +22,7 @@ def _seed_work_dir(tmp_path, video_id="v1", filled=True):
 
 
 def _cfg(tmp_path):
-    return {"paths": {"work": str(tmp_path / "work")},
+    return {"paths": {"work": str(tmp_path / "work")}, "seg_len_sec": 5,
             "stt_model": "large-v3", "stt_language": "ko",
             "caption_model": "m", "caption_prompt": "p",
             "vlm_max_pixels": 1, "vlm_4bit": False}

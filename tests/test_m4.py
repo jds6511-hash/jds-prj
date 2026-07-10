@@ -42,7 +42,8 @@ def test_partial_artifacts_do_not_skip(monkeypatch, tmp_path, capsys):
             return np.full((len(texts), 4), 0.5, dtype=np.float32)  # norm=1
 
     monkeypatch.setattr(m4_index, "_load_model", lambda name: FakeModel())
-    cfg = {"paths": {"work": str(tmp_path)}, "embed_model": "m", "embed_batch_size": 2}
+    cfg = {"paths": {"work": str(tmp_path)}, "embed_model": "m", "embed_batch_size": 2,
+           "seg_len_sec": 5}
     monkeypatch.setattr(common, "load_config", lambda path: cfg)
     monkeypatch.setattr("sys.argv", ["m4_index.py", "--config", "dummy.yaml",
                                      "--video-id", video_id])

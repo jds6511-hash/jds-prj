@@ -147,7 +147,7 @@ def main():
     wdir = common.work_dir(cfg, args.video_id)
 
     if args.captions_only:
-        doc = common.load_segments(wdir / "segments.json")
+        doc = common.load_segments(wdir / "segments.json", seg_len=cfg["seg_len_sec"])
         # subtitle=""은 무발화 세그먼트의 정상값이므로 키 존재만 검사(값 진위 아님) [8-5(3)]
         # rep_frame은 common.load_segments의 require 경로를 쓰지 않는다 — 그 경로의
         # 일반 에러 메시지가 아니라 seeding 안내가 필요하기 때문 [8-5(3)①]
@@ -160,7 +160,8 @@ def main():
         for s in doc["segments"]:
             s.pop("caption", None)   # resume이 no-op 되는 것 방지 [8-5(3)]
     else:
-        doc = common.load_segments(wdir / "segments.json", require=["rep_frame", "is_static"])
+        doc = common.load_segments(wdir / "segments.json", require=["rep_frame", "is_static"],
+                                   seg_len=cfg["seg_len_sec"])
         if args.force:
             for s in doc["segments"]:
                 s.pop("subtitle", None); s.pop("caption", None)

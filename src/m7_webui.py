@@ -173,7 +173,8 @@ def create_app(cfg: dict, config_path: str, alpha: float,
         if not path.exists():
             raise HTTPException(404, f"{video_id}: 인덱스 없음")
         try:
-            doc = common.load_segments(path, require=["subtitle", "caption"])
+            doc = common.load_segments(path, require=["subtitle", "caption"],
+                                       seg_len=cfg["seg_len_sec"])
         except ValueError as e:                  # 불변식/필드 누락 → 안내
             raise HTTPException(404, str(e))
         keys = ("idx", "start", "end", "subtitle", "caption")

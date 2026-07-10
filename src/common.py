@@ -28,7 +28,7 @@ def atomic_write_json(path, obj) -> None:
     os.replace(tmp, path)
 
 
-def load_segments(path, require: list[str] | None = None) -> dict:
+def load_segments(path, require: list[str] | None = None, seg_len: int = 5) -> dict:
     path = Path(path)
     if not path.exists():
         raise FileNotFoundError(f"{path} 없음 — run m1_preprocess.py first")
@@ -40,8 +40,8 @@ def load_segments(path, require: list[str] | None = None) -> dict:
     for i, s in enumerate(segs):
         if s["idx"] != i:
             raise ValueError(f"segments[{i}].idx={s['idx']} — idx는 0부터 연속 정수여야 함")
-        if s["start"] != i * 5:
-            raise ValueError(f"segments[{i}].start={s['start']} — start = idx*5 불변식 위반")
+        if s["start"] != i * seg_len:
+            raise ValueError(f"segments[{i}].start={s['start']} — start = idx*{seg_len} 불변식 위반")
     for field in (require or []):
         missing = [s["idx"] for s in segs if field not in s]
         if missing:

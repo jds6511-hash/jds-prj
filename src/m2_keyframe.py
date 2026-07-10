@@ -97,7 +97,7 @@ def main():
     cfg = common.load_config(args.config)
 
     wdir = common.work_dir(cfg, args.video_id)
-    doc = common.load_segments(wdir / "segments.json")
+    doc = common.load_segments(wdir / "segments.json", seg_len=cfg["seg_len_sec"])
     if "rep_frame" in doc["segments"][0] and not args.force:
         print("이미 완료 (--force로 재생성)"); return
 

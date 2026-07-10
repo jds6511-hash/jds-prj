@@ -109,7 +109,8 @@ def main():
     args = ap.parse_args()
     cfg = common.load_config(args.config)
     wdir = common.work_dir(cfg, args.video_id)
-    doc = common.load_segments(wdir / "segments.json", require=["subtitle", "caption"])
+    doc = common.load_segments(wdir / "segments.json", require=["subtitle", "caption"],
+                               seg_len=cfg["seg_len_sec"])
     out = wdir / "report.json"
     if out.exists() and not args.force:
         print("이미 존재 (--force로 재생성)"); return

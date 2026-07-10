@@ -30,7 +30,8 @@ def main():
     args = ap.parse_args()
     cfg = common.load_config(args.config)
     wdir = common.work_dir(cfg, args.video_id)
-    doc = common.load_segments(wdir / "segments.json", require=["subtitle", "caption"])
+    doc = common.load_segments(wdir / "segments.json", require=["subtitle", "caption"],
+                               seg_len=cfg["seg_len_sec"])
 
     outputs = ("emb_sub.npy", "emb_cap.npy", "meta.json")
     if all((wdir / f).exists() for f in outputs) and not args.force:

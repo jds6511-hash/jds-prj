@@ -30,6 +30,17 @@ def test_load_segments_rejects_start_invariant(tmp_path):
     with pytest.raises(ValueError, match="start"):
         common.load_segments(p)
 
+def test_load_segments_seg_len_parameterized(tmp_path):
+    # seg_len_sec이 5가 아닌 실험(예: ablation 3초)도 하드코딩 없이 검증 가능해야 함
+    d = _doc(n=3, dur=9.0)
+    for i, s in enumerate(d["segments"]):
+        s["start"] = i * 3; s["end"] = min(i * 3 + 3, 9.0)
+    p = tmp_path / "segments.json"; common.atomic_write_json(p, d)
+    doc = common.load_segments(p, seg_len=3)
+    assert doc["n_segments"] == 3
+    with pytest.raises(ValueError, match="start"):   # seg_len 안 맞으면 여전히 잡아야 함
+        common.load_segments(p, seg_len=5)
+
 def test_load_segments_missing_field_names_module(tmp_path):
     p = tmp_path / "segments.json"; common.atomic_write_json(p, _doc())
     with pytest.raises(ValueError, match="m2_keyframe"):

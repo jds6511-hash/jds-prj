@@ -43,7 +43,8 @@ class VideoIndex:
         require = ["subtitle", "caption", "is_static"]
         if static_threshold is not None:
             require.append("motion_score")   # [8-5(2)]
-        doc = common.load_segments(wdir / "segments.json", require=require)
+        doc = common.load_segments(wdir / "segments.json", require=require,
+                                   seg_len=cfg["seg_len_sec"])
         for name in ("emb_sub.npy", "emb_cap.npy", "meta.json"):
             if not (wdir / name).exists():
                 raise FileNotFoundError(f"{name} 없음 — run m4_index.py first")

@@ -107,7 +107,8 @@ def main():
     cfg = common.load_config(args.config)
     check_judge_config(cfg)
     wdir = common.work_dir(cfg, args.video_id)
-    doc = common.load_segments(wdir / "segments.json", require=["subtitle", "caption"])
+    doc = common.load_segments(wdir / "segments.json", require=["subtitle", "caption"],
+                               seg_len=cfg["seg_len_sec"])
     report = json.loads((wdir / "report.json").read_text(encoding="utf-8"))
     n = doc["n_segments"]
     for s in report["sentences"]:                       # 검증 포인트 [4-9]

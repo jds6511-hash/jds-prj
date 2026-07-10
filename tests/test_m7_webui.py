@@ -19,7 +19,7 @@ from m7_webui import create_app, sanitize_video_id
 def make_cfg(tmp_path):
     return {"paths": {"data": str(tmp_path / "data"), "work": str(tmp_path / "work"),
                       "results": str(tmp_path / "results")},
-            "embed_model": "stub-model"}
+            "embed_model": "stub-model", "seg_len_sec": 5}
 
 
 def make_client(tmp_path, run_module=lambda script, cfgp, vid: None, **kw):

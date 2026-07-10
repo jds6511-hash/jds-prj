@@ -75,7 +75,7 @@ def test_load_raises_on_n_segments_mismatch(tmp_path):
     np.save(wdir / "emb_cap.npy", np.zeros((2, 4), dtype=np.float32))
     (wdir / "meta.json").write_text(
         json.dumps({"embed_model": "m", "dim": 4, "n_segments": 3}), encoding="utf-8")
-    cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}}
+    cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}, "seg_len_sec": 5}
     with pytest.raises(ValueError, match="세그먼트 수 불일치"):
         VideoIndex.load(cfg, video_id)
 
@@ -114,7 +114,7 @@ def test_load_raises_friendly_error_when_meta_missing(tmp_path):
     common.save_segments(wdir / "segments.json", {"n_segments": 2, "segments": segments})
     np.save(wdir / "emb_sub.npy", np.zeros((2, 4), dtype=np.float32))
     np.save(wdir / "emb_cap.npy", np.zeros((2, 4), dtype=np.float32))
-    cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}}
+    cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}, "seg_len_sec": 5}
     with pytest.raises(FileNotFoundError, match="run m4_index.py first"):
         VideoIndex.load(cfg, video_id)
 
@@ -140,7 +140,7 @@ def test_load_static_threshold_recomputes_mask_and_file_unchanged(tmp_path):
     # 재계산. segments.json은 읽기 전용(파일 내용·mtime 불변).
     video_id = "v1"
     wdir = _static_threshold_fixture(tmp_path, video_id)
-    cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}}
+    cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}, "seg_len_sec": 5}
     before_mtime = (wdir / "segments.json").stat().st_mtime
     before_content = (wdir / "segments.json").read_text(encoding="utf-8")
 
@@ -157,6 +157,6 @@ def test_load_static_threshold_none_uses_stored_is_static(tmp_path):
     # static_threshold=None(기본) 경로는 현행 동작 그대로 — 저장된 is_static 사용 [8-5(2)]
     video_id = "v1"
     _static_threshold_fixture(tmp_path, video_id)
-    cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}}
+    cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}, "seg_len_sec": 5}
     video = VideoIndex.load(cfg, video_id)
     assert list(video.static_mask) == [True, False, False]
