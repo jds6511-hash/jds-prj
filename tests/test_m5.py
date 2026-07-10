@@ -68,14 +68,15 @@ def test_load_raises_on_n_segments_mismatch(tmp_path):
     video_id = "v1"
     wdir = tmp_path / video_id
     wdir.mkdir()
-    segments = [{"idx": i, "start": i * 5, "end": i * 5 + 5,
-                "subtitle": "s", "caption": "c", "is_static": False} for i in range(2)]
+    segments = [{"idx": i, "start": i * 5, "end": i * 5 + 5, "subtitle": "s",
+                "caption": "c", "is_static": False, "motion_score": 0.1} for i in range(2)]
     common.save_segments(wdir / "segments.json", {"n_segments": 2, "segments": segments})
     np.save(wdir / "emb_sub.npy", np.zeros((2, 4), dtype=np.float32))
     np.save(wdir / "emb_cap.npy", np.zeros((2, 4), dtype=np.float32))
     (wdir / "meta.json").write_text(
         json.dumps({"embed_model": "m", "dim": 4, "n_segments": 3}), encoding="utf-8")
-    cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}, "seg_len_sec": 5}
+    cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}, "seg_len_sec": 5,
+           "static_threshold": 0.05}
     with pytest.raises(ValueError, match="세그먼트 수 불일치"):
         VideoIndex.load(cfg, video_id)
 
@@ -109,12 +110,13 @@ def test_load_raises_friendly_error_when_meta_missing(tmp_path):
     video_id = "v1"
     wdir = tmp_path / video_id
     wdir.mkdir()
-    segments = [{"idx": i, "start": i * 5, "end": i * 5 + 5,
-                "subtitle": "s", "caption": "c", "is_static": False} for i in range(2)]
+    segments = [{"idx": i, "start": i * 5, "end": i * 5 + 5, "subtitle": "s",
+                "caption": "c", "is_static": False, "motion_score": 0.1} for i in range(2)]
     common.save_segments(wdir / "segments.json", {"n_segments": 2, "segments": segments})
     np.save(wdir / "emb_sub.npy", np.zeros((2, 4), dtype=np.float32))
     np.save(wdir / "emb_cap.npy", np.zeros((2, 4), dtype=np.float32))
-    cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}, "seg_len_sec": 5}
+    cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}, "seg_len_sec": 5,
+           "static_threshold": 0.05}
     with pytest.raises(FileNotFoundError, match="run m4_index.py first"):
         VideoIndex.load(cfg, video_id)
 
@@ -140,7 +142,8 @@ def test_load_static_threshold_recomputes_mask_and_file_unchanged(tmp_path):
     # 재계산. segments.json은 읽기 전용(파일 내용·mtime 불변).
     video_id = "v1"
     wdir = _static_threshold_fixture(tmp_path, video_id)
-    cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}, "seg_len_sec": 5}
+    cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}, "seg_len_sec": 5,
+           "static_threshold": 0.0}   # 인자 지정이 config보다 우선함도 함께 검증
     before_mtime = (wdir / "segments.json").stat().st_mtime
     before_content = (wdir / "segments.json").read_text(encoding="utf-8")
 
@@ -153,10 +156,24 @@ def test_load_static_threshold_recomputes_mask_and_file_unchanged(tmp_path):
     assert (wdir / "segments.json").stat().st_mtime == before_mtime
     assert (wdir / "segments.json").read_text(encoding="utf-8") == before_content
 
-def test_load_static_threshold_none_uses_stored_is_static(tmp_path):
-    # static_threshold=None(기본) 경로는 현행 동작 그대로 — 저장된 is_static 사용 [8-5(2)]
+def test_load_static_threshold_none_uses_config_value(tmp_path):
+    # static_threshold=None(기본)이면 config 값으로 motion_score에서 재판정 —
+    # 저장된 is_static(M2 당시 threshold 산물)은 무시된다 [8-5(2) 확장, 2026-07-11]
     video_id = "v1"
     _static_threshold_fixture(tmp_path, video_id)
-    cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}, "seg_len_sec": 5}
+    cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}, "seg_len_sec": 5,
+           "static_threshold": 0.05}
     video = VideoIndex.load(cfg, video_id)
-    assert list(video.static_mask) == [True, False, False]
+    # motion_score < 0.05 → [0.02, 0.08, 0.01] = [True, False, True]
+    # (저장된 is_static은 [True, False, False]로 이와 다름 — 무시됨을 증명)
+    assert list(video.static_mask) == [True, False, True]
+
+
+def test_load_static_threshold_zero_disables_substitution(tmp_path):
+    # config static_threshold=0이면 모든 세그먼트 비정적 → 치환 off [ablation 2-4-2 확정]
+    video_id = "v1"
+    _static_threshold_fixture(tmp_path, video_id)
+    cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}, "seg_len_sec": 5,
+           "static_threshold": 0}
+    video = VideoIndex.load(cfg, video_id)
+    assert list(video.static_mask) == [False, False, False]

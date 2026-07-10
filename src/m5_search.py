@@ -40,10 +40,12 @@ class VideoIndex:
     def load(cls, cfg: dict, video_id: str,
               static_threshold: float | None = None) -> "VideoIndex":
         wdir = common.work_dir(cfg, video_id)
-        require = ["subtitle", "caption", "is_static"]
-        if static_threshold is not None:
-            require.append("motion_score")   # [8-5(2)]
-        doc = common.load_segments(wdir / "segments.json", require=require,
+        if static_threshold is None:
+            # config가 단일 출처 — 저장된 is_static(M2 실행 당시 threshold 산물)에 의존하면
+            # config의 static_threshold 변경이 평가에 반영되지 않는다 [8-5(2) 확장, 2026-07-11]
+            static_threshold = cfg["static_threshold"]
+        doc = common.load_segments(wdir / "segments.json",
+                                   require=["subtitle", "caption", "motion_score"],
                                    seg_len=cfg["seg_len_sec"])
         for name in ("emb_sub.npy", "emb_cap.npy", "meta.json"):
             if not (wdir / name).exists():
@@ -60,12 +62,10 @@ class VideoIndex:
             raise ValueError(f"세그먼트 수 불일치: meta.n_segments={meta['n_segments']} "
                              f"segments.json={n_seg} emb_sub={emb_sub.shape[0]} "
                              f"emb_cap={emb_cap.shape[0]} — run m4_index.py --force")
-        if static_threshold is None:
-            static_mask = np.array([s["is_static"] for s in doc["segments"]])
-        else:
-            # segments.json은 읽기 전용 — 저장 필드(is_static)는 불변, 재계산은 메모리상에서만 [8-5(2)]
-            static_mask = np.array([s["motion_score"] < static_threshold
-                                    for s in doc["segments"]])
+        # segments.json은 읽기 전용 — 저장 필드(is_static)는 M2 실행 기록으로 보존,
+        # static_mask는 항상 메모리상 재판정 [8-5(2)]
+        static_mask = np.array([s["motion_score"] < static_threshold
+                                for s in doc["segments"]])
         return cls(segments=doc["segments"], emb_sub=emb_sub, emb_cap=emb_cap,
                    static_mask=static_mask)
 

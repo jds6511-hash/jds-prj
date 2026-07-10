@@ -1,6 +1,6 @@
 seg_len_sec: 5
 frame_sample_fps: 3
-static_threshold: 0.05        # motion_score 기준, dev에서 1회 보정 후 고정
+static_threshold: 0           # 정적 치환 off — dev 스윕에서 치환이 유의하게 손해 확인 (2026-07-11, ablation_plan 2-4-2)
 gaussian_sigma: 1.0
 seed: 42
 
