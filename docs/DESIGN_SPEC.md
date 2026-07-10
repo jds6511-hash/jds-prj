@@ -290,7 +290,7 @@ def derive_gt_seg_idx(gt_start, gt_end, n_segments, seg_len: int) -> list[int]
 
 - **실행 순서 강제:** ① dev로 grid_search_alpha → alpha_search_dev.json 저장 → ② test 평가는 그 α만 사용. M6는 test 질의로 α를 재탐색하는 코드 경로를 갖지 않는다(누수 원천 차단, v2 9-1).
 - **검증 포인트:** dev/test에 같은 video_id가 없는지 로드 시 assert.
-- **α 안정화(구현됨, 8-1(a)(b)(c)):** `grid_search_alpha`는 선택 지표를 MRR로(`alpha_select_metric: "mrr"`), 점 추정 1위(alpha_best_point)를 기준점으로 한 쌍체 차이(paired-diff) 부트스트랩(B=`bootstrap_B`, 질의 재표집 인덱스 전 α 공유)으로 95% CI를 계산해 CI가 0을 포함하는 α들(tie_set)에만 tiebreak(자막 우선)를 적용한다. alpha_search_dev.json은 8-1의 신 스키마(select_metric, bootstrap, alpha_best_point, per_alpha, by_video, tie_set, alpha_star)로 저장된다. **8-1(c) dev 다양화 완료(2026-07-10)**: dev 영상 3개(Wilderness/kheritage_grave_excavation/gwaktube_soviet_apartment), 질의 59건 — alpha_star=0.6 확정(8-6 참조).
+- **α 안정화(구현됨, 8-1(a)(b)(c)):** `grid_search_alpha`는 선택 지표를 MRR로(`alpha_select_metric: "mrr"`), 점 추정 1위(alpha_best_point)를 기준점으로 한 쌍체 차이(paired-diff) 부트스트랩(B=`bootstrap_B`, 질의 재표집 인덱스 전 α 공유)으로 95% CI를 계산해 CI가 0을 포함하는 α들(tie_set)에만 tiebreak(자막 우선)를 적용한다. alpha_search_dev.json은 8-1의 신 스키마(select_metric, bootstrap, alpha_best_point, per_alpha, by_video, tie_set, alpha_star)로 저장된다. **8-1(c) dev 다양화 완료(2026-07-10)**: dev 영상 3개(Wilderness/kheritage_grave_excavation/gwaktube_soviet_apartment), 질의 96건 — alpha_star=0.5 확정(8-6 참조. 오염 캡션 재생성 반영 경과는 docs/평가분석_2026-07-10.md).
 
 ## 4-7. M7 프로토타입 (v2 6장)
 
@@ -423,7 +423,7 @@ paths:
 
 *비고: M8·M9는 4순위이므로 M5·M6 일정과 충돌 시 뒤로 미룬다. 단 M9의 judge 모델 분리 여부(GPU)는 8주차 전에 튜터와 확정해야 config를 잠글 수 있다.*
 
-**진행 현황 (2026-07-10 갱신, 3주차):** M1~M9 전 모듈 + 웹 UI(M7-W) 구현·테스트 완료 — 표 기준 약 6주 선행. 질의 라벨링 78건(dev59/test19, 목표 60건 초과 달성) 완료, α 재탐색(α*=0.6)·KURE vs BGE-M3 비교 실행 완료. 잔여 병목은 (a) judge 모델용 GPU 확정(튜터), (b) static_threshold 정식 재실측·8-2~8-4의 고도화 설계 실행이다. 일정표는 원 계획 기록으로 보존한다.
+**진행 현황 (2026-07-10 갱신, 3주차):** M1~M9 전 모듈 + 웹 UI(M7-W) 구현·테스트 완료 — 표 기준 약 6주 선행. 질의 라벨링 115건(dev96/test19, 목표 60건 초과 달성) 완료, α 재탐색(α*=0.5)·KURE vs BGE-M3 비교·오염 캡션 선별 재생성(docs/평가분석_2026-07-10.md) 실행 완료. 잔여 병목은 (a) judge 모델용 GPU 확정(튜터), (b) static_threshold 정식 재실측·8-2~8-4의 고도화 설계 실행이다. 일정표는 원 계획 기록으로 보존한다.
 
 # 8. 고도화 설계 (v1.1 추가 — 8-1(전항목)·8-5(전항목) 구현 완료, 8-6은 α 재탐색/임베딩 비교 완료·static_threshold 재실측 및 무관질의셋은 [예정], 8-2~8-4는 [예정] — 구현 완료 항목은 태그 해제)
 
@@ -501,7 +501,9 @@ config 키: `alpha_select_metric: "mrr"`(기존 키 값 변경, 구현됨), `boo
 
 **(2) static_threshold 스윕 — config 스키마 불변, 평가 시점 재판정 (구현됨).** config는 절대값 1개(`static_threshold`)를 유지한다(6장 "dev에서 1회 보정 후 고정" 계약). 스윕 메커니즘: **M5·M6 공통 진입점인 `VideoIndex.load`에 `static_threshold: float | None = None` 인자를 추가**해, 지정 시 저장된 `is_static` 대신 `motion_score < thr`로 static_mask를 재계산한다(이때 segments.json 로드의 require에 motion_score 추가). M6 CLI의 `--static-threshold`가 이 값을 인덱스 로드까지 관통시키되, **스윕 실행은 M6 main(dev 탐색+test 평가)이 아니라 dev 질의만으로 evaluate()를 호출하는 스윕 스크립트(또는 M6 `--dev-only` 모드)로 한다** — threshold 후보마다 test가 평가되면 dev-only 원칙(v2 9-1, 8-6) 위반이다. **`--static-threshold`는 `--dev-only`와 함께가 아니면 CLI가 에러로 거부한다**(확정 config 값과 다른 threshold로 test를 평가하는 경로 차단). alpha_search_dev.json에 사용된 static_threshold 값을 스키마에 기록(`"static_threshold": null|float`, 8-1 스키마 예시 참조)해 재현성을 보장한다. 스윕 결과 누적(threshold별 `results/static_sweep_dev.json` 등)은 별도 스크립트 몫이라 이번 범위 밖이다. segments.json 저장 필드는 건드리지 않아 멱등 안전. 분위수(P10/P25/P50)는 **후보값 산출 방법론**일 뿐 config에 들어가지 않는다(dev 분포에서 절대값으로 환산해 스윕). 알려진 한계를 결과에 명시: rep_frame·캡션은 thr=0.05 기준 산출물이라 재판정과 비대칭.
 
-**(3) 실험 3(프롬프트)의 부분 재실행 — M3에 `--captions-only` 옵션 추가 (구현됨).** Whisper 전사·자막 귀속(M3(a))을 건너뛰고 caption만 재생성한다. 절차 계약: ① 대상 work 디렉터리에 subtitle·rep_frame이 채워진 segments.json과 frames/가 **선재해야 한다** — (1)의 변형 디렉터리는 비어 있으므로 기준 `work/{video_id}/`의 segments.json·frames/를 복사해 seeding하는 단계가 선행된다(audio.wav·npy는 불필요). 선재하지 않으면 fail-fast(seeding 안내 메시지). ② `--captions-only`는 **caption 필드만 초기화한 뒤 재생성**한다 — 현행 캡션 생성이 caption 존재 시 건너뛰는 resume 동작이므로, 초기화 없이는 no-op가 된다. subtitle·rep_frame·is_static·motion_score는 불변. ③ 현행 `--force`는 전체 재실행이므로 실험 3에서 사용 금지(Whisper ~수십 분 낭비 + 자막 재현성 위험) — `--captions-only`와 `--force`를 동시 지정하면 CLI가 에러로 거부한다. 멱등성은 greedy 디코딩(do_sample=False) 전제에서 성립.
+**(3) 실험 3(프롬프트)의 부분 재실행 — M3에 `--captions-only` 옵션 추가 (구현됨).** Whisper 전사·자막 귀속(M3(a))을 건너뛰고 caption만 재생성한다. 절차 계약: ① 대상 work 디렉터리에 subtitle·rep_frame이 채워진 segments.json과 frames/가 **선재해야 한다** — (1)의 변형 디렉터리는 비어 있으므로 기준 `work/{video_id}/`의 segments.json·frames/를 복사해 seeding하는 단계가 선행된다(audio.wav·npy는 불필요). 선재하지 않으면 fail-fast(seeding 안내 메시지). ② `--captions-only`는 **caption 필드만 초기화한 뒤 재생성**한다 — 현행 캡션 생성이 caption 존재 시 건너뛰는 resume 동작이므로, 초기화 없이는 no-op가 된다. subtitle·rep_frame·is_static·motion_score는 불변. ③ 현행 `--force`는 전체 재실행이므로 실험 3에서 사용 금지(Whisper ~수십 분 낭비 + 자막 재현성 위험) — `--captions-only`와 `--force`를 동시 지정하면 CLI가 에러로 거부한다. 멱등성은 greedy 디코딩(do_sample=False) 전제에서 성립(예외: (4)의 오염 재시도 경로만 샘플링).
+
+**(4) 오염 캡션 선별 재생성 — M3 `--recaption-corrupted` (구현됨, 2026-07-10).** `common.is_corrupted_caption` 감지분(중국어/가나 혼입, 반복 붕괴)만 caption을 비워 재생성한다. greedy는 결정적이라 단순 재실행은 같은 오염 출력을 재현하므로, `caption_all`이 오염을 감지하면 **샘플링(temperature 0.7, top_p 0.9) 재시도 최대 2회**로 전환한다 — 이 경로만 비결정적이며, 재시도 후에도 오염이면 greedy 출력을 유지한다(빈 문자열 금지, M8/M9 필터가 후처리). `--force`/`--captions-only`와 상호 배타. 대상 선정이 자동 판정 함수로만 이뤄지므로 test 영상에 적용해도 내용 편집형 오염(leakage)이 아니다 — 실측 경과와 전후 수치는 docs/평가분석_2026-07-10.md.
 
 ## 8-6. 평가 프로토콜 확정치
 
@@ -509,14 +511,14 @@ config 키: `alpha_select_metric: "mrr"`(기존 키 값 변경, 구현됨), `boo
 
 | | 영상 수 | 질의 수 | 유형 구성(자막형/장면형/복합형) |
 |---|---|---|---|
-| dev | 3 (Wilderness/kheritage_grave_excavation/gwaktube_soviet_apartment) | 59 | 16/23/20 |
+| dev | 3 (Wilderness/kheritage_grave_excavation/gwaktube_soviet_apartment) | 96 | 24/38/34 |
 | test | 2 (panibottle_vietnam1/gemini_promo) | 19 | 6/5/8 |
-| 합계 | 5 | 78 | 22/28/28 |
+| 합계 | 5 | 115 | 30/43/42 |
 
   spiderman_trailer(구 test 영상)는 영화 예고편이라 장르 부적합 판단으로 전면 제외됨(2026-07-10) — dev3/test2로 재편해도 아래 원래 60개 목표치를 최소 기준선으로 이미 초과 달성했다. 최초 목표(dev36/test24, 유형별 20/20/20)는 참고용으로만 남긴다: dev 자막형12·장면형12·복합형12, test 자막형8·장면형8·복합형8, 합계 60(유형별 20). 실제 유형 분포는 영상 콘텐츠 특성상 균등하지 않다(예: 다큐 장르는 자막형·복합형이 자연히 많음, DRAFT_REVIEW.md 참조) — 목표는 참고 기준이지 강제 비율이 아니다.
 - **무관 질의 20개**는 위 78개와 별도(8-2, queries_negative.jsonl) — Hit/MRR 계산에서 완전히 제외. **[예정]** — 아직 작성 안 됨.
-- **재측정 트리거 (2026-07-10 실행 완료):** ① static_threshold 재실측은 **[예정]**(ablation_plan_draft.md 실험2로 이관, 2-3절에 5개 영상 실측 분포 반영됨). ② α 재탐색: `results/alpha_search_dev.json`(dev 59건, 3영상 by_video 분해) — **alpha_star=0.6** 확정(1차 실행 시 33건으로는 tiebreak에 의해 1.0=baseline으로 수렴하는 문제가 있어 dev 라벨을 26건 추가 확보 후 재확정). ③ KURE vs BGE-M3 비교: `results_bge/alpha_search_dev.json` — KURE-v1이 전 지점(α=1.0/0.0 양끝 포함) 우세 확인, embed_model=KURE-v1 유지 확정.
-- **베이스라인 고정 (갱신, 구 잠정치 폐기):** test 평가(`results/eval_test.json`, n=19)는 baseline(α=1.0) hit@5=0.7368/mrr=0.7135 대비 proposed(α*=0.6) hit@5=0.7895/mrr=0.7417 — 장면형에서 baseline hit@5=0.2→proposed 0.4(거의 2배)로 가장 크게 개선, 복합형은 근소 하락(mrr 0.877→0.826, n=8이라 단일 질의 순위 변동의 영향이 큼). "α=0.5(잠정), thr=0.05, KURE-v1, 18질의 예비 평가" 문구는 이 결과로 대체한다.
+- **재측정 트리거 (2026-07-10 실행 완료):** ① static_threshold 재실측은 **[예정]**(ablation_plan_draft.md 실험2로 이관, 2-3절에 5개 영상 실측 분포 반영됨). ② α 재탐색: `results/alpha_search_dev.json`(dev 96건, 3영상 by_video 분해) — **alpha_star=0.5** 확정(경과: 1차 33건에서는 tiebreak에 의해 1.0=baseline으로 수렴 → dev 확장으로 59·81·96건에서 0.6 안정화 → 오염 캡션 21건 선별 재생성 후 α=0.6이 tie_set에서 탈락하며 0.5로 최종 확정. 상세: docs/평가분석_2026-07-10.md). ③ KURE vs BGE-M3 비교: `results_bge/alpha_search_dev.json` — KURE-v1이 전 지점(α=1.0/0.0 양끝 포함) 우세 확인, embed_model=KURE-v1 유지 확정.
+- **베이스라인 고정 (재갱신 2026-07-10, 구 수치 폐기):** test 평가(`results/eval_test.json`, n=19, 오염 캡션 재생성 후)는 baseline(α=1.0) hit@5=0.7368/mrr=0.7135 대비 proposed(α*=0.5) hit@5=0.9474/mrr=0.8158, 쌍체 부트스트랩 95% CI가 mrr [0.0304, 0.1843]·hit@5 [0.0526, 0.4211]로 0 배제. 단 19건 중 13건은 양측 rank 1(포화)로 방법 비교에 기여하지 않으며, 차이의 실체는 경합 6건(baseline mrr 0.0929/hit@5 0.1667 vs proposed mrr 0.4167/hit@5 0.8333, 전부 장면형·복합형)에 있다 — 소표본 한계·유형별 해석은 docs/평가분석_2026-07-10.md 6절 참조.
 
 # 9. 변경 이력
 
