@@ -1,5 +1,5 @@
 import pytest
-from m9_report_eval import eval_report, check_judge_config, judge_grounded
+from m9_report_eval import eval_report, check_judge_config, judge_grounded, _grounded_prompt, judge_coverage
 
 def _segs(n):
     return [{"idx": i, "start": i * 5, "end": i * 5 + 5,
@@ -31,6 +31,24 @@ def test_rates_computed():
     out = eval_report(rep, _segs(3), gt_seg_indices=[0, 1], judge=judge)
     assert out["groundedness_rate"] == 0.5               # 2문장 중 1개 grounded
     assert out["coverage_rate"] == 0.5                   # gt 2개 중 1개 커버
+
+def test_grounded_prompt_hides_corrupted_caption_from_judge():
+    # 오염된 캡션이 grounded 판정의 "근거"로 그대로 들어가면 검증이 무력화됨 [8-3(c) 대응]
+    seg = {"idx": 0, "start": 0, "end": 5, "subtitle": "자막",
+           "caption": "一架米色的直升機停在一片草地和樹林之間，背景是清澈的藍天。"}
+    prompt = _grounded_prompt({"text": "문장"}, [seg])
+    assert "直升機" not in prompt
+    assert "캡션 품질 문제로 제외됨" in prompt
+
+def test_judge_coverage_hides_corrupted_caption_from_judge():
+    seg = {"idx": 0, "start": 0, "end": 5, "subtitle": "자막",
+           "caption": "一架米色的直升機停在一片草地和樹林之間，背景是清澈的藍天。"}
+    seen = {}
+    def judge(prompt):
+        seen["prompt"] = prompt
+        return '{"match": true}'
+    judge_coverage("리포트", seg, judge)
+    assert "直升機" not in seen["prompt"]
 
 def test_judge_grounded_conservative_on_parse_failure():
     judge = lambda prompt: "잘 모르겠습니다"              # JSON 아님 → 보수 판정 false

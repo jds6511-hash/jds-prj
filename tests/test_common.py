@@ -48,6 +48,15 @@ def test_load_segments_missing_field_names_module(tmp_path):
     with pytest.raises(ValueError, match="m3_generate"):
         common.load_segments(p, require=["caption"])
 
+def test_is_corrupted_caption_flags_non_korean_script():
+    assert common.is_corrupted_caption(
+        "一架米色的直升機停在一片草地和樹林之間，背景是清澈的藍天。")
+    assert not common.is_corrupted_caption("한 남성이 숲속 길을 걸어가는 장면이다.")
+
+def test_is_corrupted_caption_flags_word_repetition():
+    assert common.is_corrupted_caption("계단 위에는 계단 위에는 계단 위에는 계단 위에는 계단 위에는")
+    assert not common.is_corrupted_caption("")
+
 def test_atomic_write_and_config(tmp_path):
     p = tmp_path / "x.json"
     common.atomic_write_json(p, {"a": 1})

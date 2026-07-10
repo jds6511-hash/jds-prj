@@ -45,9 +45,15 @@ def _parse_ok(text: str) -> bool:
     return bool(re.search(r'"match"', text, re.IGNORECASE))
 
 
+def _clean_caption(caption: str) -> str:
+    """오염된 캡션을 judge 판정 근거로 그대로 쓰지 않도록 대체 — M8 _fmt_seg와 동일 필터.
+    안 그러면 오염된 데이터가 grounded 판정의 기준 자체가 돼 검증이 무력화된다."""
+    return "(캡션 품질 문제로 제외됨)" if common.is_corrupted_caption(caption) else caption
+
+
 def _fmt_segs(segs) -> str:
     return "\n".join(f'[seg#{s["idx"]}] subtitle: "{s["subtitle"]}" '
-                     f'caption: "{s["caption"]}"' for s in segs)
+                     f'caption: "{_clean_caption(s["caption"])}"' for s in segs)
 
 
 def _grounded_prompt(sentence: dict, cited_segments: list[dict]) -> str:
@@ -62,7 +68,7 @@ def judge_grounded(sentence: dict, cited_segments: list[dict], judge) -> bool:
 
 def judge_coverage(report_text: str, segment: dict, judge) -> bool:
     prompt = _COVERAGE_PROMPT.format(idx=segment["idx"], subtitle=segment["subtitle"],
-                                     caption=segment["caption"], report=report_text)
+                                     caption=_clean_caption(segment["caption"]), report=report_text)
     return _parse_verdict(judge(prompt))
 
 

@@ -1,5 +1,6 @@
 import json
-from m8_report import build_map_prompt, build_reduce_prompt, parse_citations, generate_report, save_report
+from m8_report import (build_map_prompt, build_reduce_prompt, parse_citations,
+                       generate_report, save_report, _fmt_seg)
 
 def _segs(n):
     return [{"idx": i, "start": i * 5, "end": i * 5 + 5,
@@ -10,6 +11,14 @@ def test_map_prompt_contains_rules_and_segments():
     assert "[seg#N]" in p and "[seg#0]" in p and "[seg#1]" in p
     assert "추측" in p                                 # 규칙 2 [13-1]
     assert "자막0" in p and "캡션1" in p
+
+def test_fmt_seg_replaces_corrupted_caption():
+    # 오염된(중국어 전환) 캡션이 프롬프트에 그대로 인용되지 않아야 함 [8-3(c) 대응]
+    seg = {"idx": 0, "start": 0, "end": 5, "subtitle": "자막",
+           "caption": "一架米色的直升機停在一片草地和樹林之間，背景是清澈的藍天。"}
+    line = _fmt_seg(seg)
+    assert "直升機" not in line
+    assert "캡션 품질 문제로 제외됨" in line
 
 def test_reduce_prompt_forbids_new_facts():
     p = build_reduce_prompt(["부분1", "부분2"])

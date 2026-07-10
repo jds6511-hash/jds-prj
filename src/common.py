@@ -1,5 +1,6 @@
 """공용 유틸: config 로드, 원자적 JSON 저장, segments.json 계약 검증 (DESIGN_SPEC 3-1)."""
-import json, os
+import json, os, re
+from collections import Counter
 from pathlib import Path
 import yaml
 
@@ -53,3 +54,20 @@ def load_segments(path, require: list[str] | None = None, seg_len: int = 5) -> d
 
 def save_segments(path, doc) -> None:
     atomic_write_json(path, doc)
+
+
+def is_corrupted_caption(text: str) -> bool:
+    """VLM 캡션 오작동 감지: 한자/가나 과다 혼입, 또는 동일 단어 반복 생성.
+    M8 리포트 생성이 오염된 캡션을 근거로 그대로 인용하는 것을 막기 위한 가벼운 필터
+    (실제 관찰 사례: 캡션 전체가 중국어로 출력, "계단 위에는..." 문장 반복 생성 등)."""
+    if not text:
+        return False
+    non_korean = len(re.findall(r"[一-鿿぀-ヿ]", text))
+    if non_korean / len(text) > 0.2:
+        return True
+    words = text.split()
+    if len(words) >= 6:
+        most_common_count = Counter(words).most_common(1)[0][1]
+        if most_common_count / len(words) > 0.4:
+            return True
+    return False

@@ -21,8 +21,11 @@ _SYSTEM = """당신은 영상 사후검토(AAR) 리포트 작성자입니다.
 def _fmt_seg(s) -> str:
     def hms(t):
         t = int(t); return f"{t//60:02d}:{t%60:02d}"
+    caption = s["caption"]
+    if common.is_corrupted_caption(caption):    # 오염된 캡션을 근거로 인용하는 것 방지 [8-3(c) 대응]
+        caption = "(캡션 품질 문제로 제외됨)"
     return (f'[seg#{s["idx"]}] {hms(s["start"])}-{hms(s["end"])} '
-            f'subtitle: "{s["subtitle"]}" caption: "{s["caption"]}"')
+            f'subtitle: "{s["subtitle"]}" caption: "{caption}"')
 
 
 def build_map_prompt(chunk: list[dict]) -> str:
