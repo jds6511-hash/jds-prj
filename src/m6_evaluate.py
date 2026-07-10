@@ -76,6 +76,11 @@ def _rank_of(ranked, gt_seg_idx) -> int:
     return 0    # not found
 
 
+def _mean_metrics(rows) -> dict:
+    keys = [k for k in rows[0] if k not in ("query_id", "type", "rank")]
+    return {k: round(sum(r[k] for r in rows) / len(rows), 4) for k in keys}
+
+
 def evaluate(queries, indexes, alpha, cfg, search_fn=search) -> dict:
     """질의셋 평균 지표 + per_query 랭크. by_type 분리 집계 포함. [3-4]"""
     if not queries:
@@ -91,28 +96,64 @@ def evaluate(queries, indexes, alpha, cfg, search_fn=search) -> dict:
                   for t in cfg["iou_thresholds"]}}
         per_q.append(row); buckets[q["type"]].append(row)
 
-    def _mean(rows):
-        keys = [k for k in rows[0] if k not in ("query_id", "type", "rank")]
-        return {k: round(sum(r[k] for r in rows) / len(rows), 4) for k in keys}
-
-    metrics = _mean(per_q)
-    metrics["by_type"] = {t: _mean(rows) for t, rows in buckets.items()}
+    metrics = _mean_metrics(per_q)
+    metrics["by_type"] = {t: _mean_metrics(rows) for t, rows in buckets.items()}
     return {"metrics": metrics, "per_query": per_q}
 
 
-def build_eval_result(test_queries, base, prop, alpha) -> dict:
+def _median_rank(rows):
+    """rank=0(미발견)은 무한대로 취급 — 중앙값이 미발견 구간에 걸리면 None."""
+    ranks = [r["rank"] if r["rank"] > 0 else float("inf") for r in rows]
+    med = float(np.median(ranks))
+    return None if med == float("inf") else round(med, 1)
+
+
+def paired_diff_ci(base_pq, prop_pq, keys, B, seed) -> dict:
+    """test 단발 평가의 proposed−baseline 차이에 대한 쌍체 부트스트랩 95% CI.
+    α 재선택에는 쓰지 않는다(선택은 dev에서 종료) — 보고용 불확실성 정량화만. [8-7]"""
+    n = len(base_pq)
+    rng = np.random.default_rng(seed)
+    idx_b = rng.integers(0, n, size=(B, n))
+    out = {}
+    for k in keys:
+        b = np.array([r[k] for r in base_pq])
+        p = np.array([r[k] for r in prop_pq])
+        diffs = p[idx_b].mean(axis=1) - b[idx_b].mean(axis=1)
+        out[k] = [round(float(x), 4) for x in np.percentile(diffs, [2.5, 97.5])]
+    return out
+
+
+def build_eval_result(test_queries, base, prop, alpha, cfg) -> dict:
     """eval_test.json 스키마 조립: baseline/proposed는 test_queries와 동일 순서라 zip으로
-    query_id가 그대로 정렬된다. [3-4]"""
+    query_id가 그대로 정렬된다. 경합/포화 분리·중앙값 랭크·차이 CI 포함. [3-4, 8-7]"""
     n_by_type = defaultdict(int)
     for q in test_queries:
         n_by_type[q["type"]] += 1
+
+    pairs = list(zip(base["per_query"], prop["per_query"]))
+    # 포화 = 양쪽 모두 rank 1 → 두 방법을 전혀 구분하지 못하는 질의. 나머지가 경합. [8-7]
+    contested = [(b, p) for b, p in pairs if not (b["rank"] == 1 and p["rank"] == 1)]
+    contested_block = {
+        "n_saturated": len(pairs) - len(contested),
+        "n_contested": len(contested),
+        "query_ids": [b["query_id"] for b, _ in contested],
+        "metrics": ({"baseline": _mean_metrics([b for b, _ in contested]),
+                     "proposed": _mean_metrics([p for _, p in contested])}
+                    if contested else None)}
+
+    ci_keys = ["mrr"] + [f"hit@{k}" for k in cfg["eval_k"]]
     return {
         "alpha_from_dev": alpha,
         "n_queries": {"total": len(test_queries), **n_by_type},
         "metrics": {"baseline": base["metrics"], "proposed": prop["metrics"]},
+        "diff_ci95": paired_diff_ci(base["per_query"], prop["per_query"],
+                                    ci_keys, cfg["bootstrap_B"], cfg["seed"]),
+        "rank_summary": {"baseline": {"median_rank": _median_rank(base["per_query"])},
+                         "proposed": {"median_rank": _median_rank(prop["per_query"])}},
+        "contested": contested_block,
         "per_query": [{"query_id": b["query_id"],
                        "baseline_rank": b["rank"], "proposed_rank": p["rank"]}
-                      for b, p in zip(base["per_query"], prop["per_query"])]}
+                      for b, p in pairs]}
 
 
 def grid_search_alpha(dev_queries, indexes, cfg, search_fn=search) -> dict:
@@ -211,10 +252,13 @@ def main():
     # ② test 평가는 그 α만 사용 (baseline=1.0 vs proposed=α*)
     base = evaluate(test, indexes, 1.0, cfg)
     prop = evaluate(test, indexes, alpha, cfg)
-    result = build_eval_result(test, base, prop, alpha)
+    result = build_eval_result(test, base, prop, alpha, cfg)
     common.atomic_write_json(rdir / "eval_test.json", result)
+    c = result["contested"]
     print(f"M6 완료: eval_test.json (baseline hit@5={base['metrics']['hit@5']}, "
-          f"proposed hit@5={prop['metrics']['hit@5']})")
+          f"proposed hit@5={prop['metrics']['hit@5']}, "
+          f"포화 {c['n_saturated']}/경합 {c['n_contested']}, "
+          f"mrr diff CI95={result['diff_ci95']['mrr']})")
 
 
 if __name__ == "__main__":

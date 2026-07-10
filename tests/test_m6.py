@@ -99,13 +99,14 @@ def test_build_eval_result_schema_and_alignment():
          "gt_start": 0.0, "gt_end": 5.0, "gt_seg_idx": [0], "split": "test"},
         {"query_id": "q2", "video_id": "v1", "text": "t2", "type": "장면형",
          "gt_start": 5.0, "gt_end": 10.0, "gt_seg_idx": [1], "split": "test"}]
-    cfg = {"eval_k": [1, 5], "iou_thresholds": [0.5]}
+    cfg = {"eval_k": [1, 5], "iou_thresholds": [0.5], "seed": 42, "bootstrap_B": 50}
     indexes = {"v1": None}
     fake_search = lambda q, video, alpha, cfg: _r([0, 1])
     base = evaluate(test_queries, indexes, 1.0, cfg, fake_search)
     prop = evaluate(test_queries, indexes, 0.5, cfg, fake_search)
-    result = build_eval_result(test_queries, base, prop, alpha=0.5)
-    assert set(result.keys()) == {"alpha_from_dev", "n_queries", "metrics", "per_query"}
+    result = build_eval_result(test_queries, base, prop, alpha=0.5, cfg=cfg)
+    assert set(result.keys()) == {"alpha_from_dev", "n_queries", "metrics", "diff_ci95",
+                                   "rank_summary", "contested", "per_query"}
     assert result["alpha_from_dev"] == 0.5
     assert result["n_queries"] == {"total": 2, "자막형": 1, "장면형": 1}
     assert set(result["metrics"].keys()) == {"baseline", "proposed"}
@@ -113,6 +114,67 @@ def test_build_eval_result_schema_and_alignment():
     for row, q in zip(result["per_query"], test_queries):     # positional 정렬 고정
         assert row["query_id"] == q["query_id"]
         assert set(row.keys()) == {"query_id", "baseline_rank", "proposed_rank"}
+
+
+def _eval_cfg():
+    return {"eval_k": [1, 5], "iou_thresholds": [0.5], "seed": 42, "bootstrap_B": 200}
+
+
+def _tq(qid, gt_idx, type_="자막형"):
+    return {"query_id": qid, "video_id": "v1", "text": qid, "type": type_,
+            "gt_start": gt_idx * 5.0, "gt_end": gt_idx * 5.0 + 5.0,
+            "gt_seg_idx": [gt_idx], "split": "test"}
+
+
+def test_build_eval_result_contested_split():
+    # [8-7] 양쪽 rank 1인 질의는 포화, 나머지가 경합 — 경합 부분집합 지표가 분리 집계됨
+    test_queries = [_tq("easy", 0), _tq("hard", 3)]
+    cfg = _eval_cfg()
+    # baseline: easy→rank1, hard→rank5 / proposed: easy→rank1, hard→rank3
+    def fake_search(text, video, alpha, cfg):
+        if text == "easy":
+            return _r([0, 1, 2, 3])
+        return _r([1, 2, 3]) if alpha < 1.0 else _r([1, 2, 4, 5, 3])
+    base = evaluate(test_queries, {"v1": None}, 1.0, cfg, fake_search)
+    prop = evaluate(test_queries, {"v1": None}, 0.5, cfg, fake_search)
+    result = build_eval_result(test_queries, base, prop, alpha=0.5, cfg=cfg)
+    c = result["contested"]
+    assert c["n_saturated"] == 1 and c["n_contested"] == 1
+    assert c["query_ids"] == ["hard"]
+    assert c["metrics"]["baseline"]["mrr"] == 0.2      # rank 5 → 1/5
+    assert c["metrics"]["proposed"]["mrr"] == round(1 / 3, 4)
+
+
+def test_build_eval_result_contested_all_saturated_is_none():
+    test_queries = [_tq("q1", 0)]
+    cfg = _eval_cfg()
+    fake_search = lambda q, video, alpha, cfg: _r([0, 1])
+    base = evaluate(test_queries, {"v1": None}, 1.0, cfg, fake_search)
+    prop = evaluate(test_queries, {"v1": None}, 0.5, cfg, fake_search)
+    result = build_eval_result(test_queries, base, prop, alpha=0.5, cfg=cfg)
+    assert result["contested"]["n_contested"] == 0
+    assert result["contested"]["metrics"] is None
+
+
+def test_build_eval_result_diff_ci_zero_when_identical():
+    # baseline=proposed면 per-query 차이가 전부 0 → 어떤 재표집에서도 CI=[0,0]
+    test_queries = [_tq(f"q{i}", i) for i in range(4)]
+    cfg = _eval_cfg()
+    fake_search = lambda q, video, alpha, cfg: _r([0, 1, 2, 3])
+    base = evaluate(test_queries, {"v1": None}, 1.0, cfg, fake_search)
+    prop = evaluate(test_queries, {"v1": None}, 0.5, cfg, fake_search)
+    result = build_eval_result(test_queries, base, prop, alpha=0.5, cfg=cfg)
+    assert set(result["diff_ci95"].keys()) == {"mrr", "hit@1", "hit@5"}
+    for ci in result["diff_ci95"].values():
+        assert ci == [0.0, 0.0]
+
+
+def test_median_rank_treats_not_found_as_worst():
+    from m6_evaluate import _median_rank
+    assert _median_rank([{"rank": 1}, {"rank": 3}, {"rank": 200}]) == 3.0
+    assert _median_rank([{"rank": 2}, {"rank": 4}]) == 3.0
+    # rank=0(미발견)은 최악 취급 — 중앙값이 미발견에 걸리면 None
+    assert _median_rank([{"rank": 0}, {"rank": 0}, {"rank": 1}]) is None
 
 
 def _dev_cfg(grid=None, metric="mrr", B=200):

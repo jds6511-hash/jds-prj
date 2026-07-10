@@ -92,7 +92,7 @@ def load_vlm(cfg):
     return model, processor
 
 
-def caption_frame(image_path, prompt, model, processor, cfg) -> str:
+def caption_frame(image_path, prompt, model, processor, cfg, sample: bool = False) -> str:
     import torch
     from qwen_vl_utils import process_vision_info
     messages = [{"role": "user", "content": [
@@ -103,6 +103,10 @@ def caption_frame(image_path, prompt, model, processor, cfg) -> str:
     inputs = processor(text=[text], images=imgs, videos=vids,
                        padding=True, return_tensors="pt").to(model.device)
     gen_kwargs = dict(max_new_tokens=128, do_sample=False)
+    if sample:
+        # 오염 캡션 재시도용 — greedy는 결정적이라 같은 오염 출력을 재현하므로
+        # 샘플링으로만 다른 출력을 얻을 수 있다 [8-5(4)]
+        gen_kwargs.update(do_sample=True, temperature=0.7, top_p=0.9)
     if cfg.get("vlm_rep_penalty", 1.0) != 1.0:
         gen_kwargs["repetition_penalty"] = cfg["vlm_rep_penalty"]
     with torch.inference_mode():
@@ -129,6 +133,16 @@ def caption_all(doc, wdir, cfg, captioner, checkpoint_every: int = 20) -> list[i
             except Exception as e:
                 if attempt == 1:
                     print(f"seg {seg['idx']} 캡션 실패: {type(e).__name__}: {e}")
+        if cap_text and common.is_corrupted_caption(cap_text):
+            for _ in range(2):                        # 오염 감지 → 샘플링 재시도 [8-5(4)]
+                try:
+                    retry = captioner(img, sample=True)
+                except Exception as e:
+                    print(f"seg {seg['idx']} 샘플링 재시도 실패: {type(e).__name__}: {e}")
+                    break
+                if retry and not common.is_corrupted_caption(retry):
+                    cap_text = retry
+                    break
         if not cap_text:
             failed.append(seg["idx"])
         seg["caption"] = cap_text
@@ -139,6 +153,17 @@ def caption_all(doc, wdir, cfg, captioner, checkpoint_every: int = 20) -> list[i
     return failed
 
 
+def clear_corrupted_captions(doc) -> list[int]:
+    """오염 캡션(is_corrupted_caption)만 비워 caption_all의 resume 대상으로 만든다.
+    반환: 비운 세그먼트 idx 목록. [8-5(4)]"""
+    targets = {s["idx"] for s in doc["segments"]
+               if common.is_corrupted_caption(s.get("caption") or "")}
+    for s in doc["segments"]:
+        if s["idx"] in targets:
+            s["caption"] = ""
+    return sorted(targets)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="config.yaml")
@@ -146,9 +171,13 @@ def main():
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--captions-only", action="store_true",
                     help="Whisper 전사·자막 귀속을 건너뛰고 caption만 재생성 [8-5(3)]")
+    ap.add_argument("--recaption-corrupted", action="store_true",
+                    help="오염 감지(is_corrupted_caption)된 캡션만 재생성 [8-5(4)]")
     args = ap.parse_args()
     if args.force and args.captions_only:
         ap.error("--force와 --captions-only는 동시 지정 불가(force는 전체 재실행)")
+    if args.recaption_corrupted and (args.force or args.captions_only):
+        ap.error("--recaption-corrupted는 --force/--captions-only와 동시 지정 불가")
     cfg = common.load_config(args.config)
     wdir = common.work_dir(cfg, args.video_id)
 
@@ -165,6 +194,14 @@ def main():
                 "기준 work 디렉터리의 segments.json·frames/를 복사해 seeding하라 [8-5(3)]")
         for s in doc["segments"]:
             s.pop("caption", None)   # resume이 no-op 되는 것 방지 [8-5(3)]
+    elif args.recaption_corrupted:
+        doc = common.load_segments(wdir / "segments.json", require=["rep_frame"],
+                                   seg_len=cfg["seg_len_sec"])
+        targets = clear_corrupted_captions(doc)
+        if not targets:
+            print("오염 캡션 0건 — 재생성 불필요")
+            return
+        print(f"오염 캡션 {len(targets)}건 재생성 대상: {targets}")
     else:
         doc = common.load_segments(wdir / "segments.json", require=["rep_frame", "is_static"],
                                    seg_len=cfg["seg_len_sec"])
@@ -182,8 +219,8 @@ def main():
     # (b) 캡션
     model, processor = load_vlm(cfg)
     failed = caption_all(doc, wdir, cfg,
-                         captioner=lambda p: caption_frame(p, cfg["caption_prompt"],
-                                                           model, processor, cfg))
+                         captioner=lambda p, sample=False: caption_frame(
+                             p, cfg["caption_prompt"], model, processor, cfg, sample=sample))
     common.save_segments(wdir / "segments.json", doc)
     if failed:
         print(f"⚠️ 캡션 실패 세그먼트 {len(failed)}개: {failed}")  # 검증 포인트 [4-3]

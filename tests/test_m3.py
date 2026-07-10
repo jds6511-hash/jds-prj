@@ -36,7 +36,7 @@ def test_captions_only_regenerates_caption_keeps_subtitle_never_transcribes(
     monkeypatch.setattr(common, "load_config", lambda path: cfg)
     monkeypatch.setattr(m3_generate, "load_vlm", lambda cfg: (None, None))
     monkeypatch.setattr(m3_generate, "caption_frame",
-                        lambda p, prompt, model, processor, cfg: "새 캡션")
+                        lambda p, prompt, model, processor, cfg, sample=False: "새 캡션")
 
     def _no_transcribe(*a, **kw):
         raise AssertionError("--captions-only는 transcribe를 호출하면 안 됨 [8-5(3)]")
