@@ -1,0 +1,7 @@
+{"query_id": "wl_q13", "video_id": "_10_000_Every_Day_You_Survive_In_The_Wilderness", "text": "2일째 아침에 첫 만 달러를 받았다고 말하는 장면", "type": "자막형", "gt_start": 65.0, "gt_end": 70.0, "gt_seg_idx": [13], "split": "dev"}
+{"query_id": "wl_q14", "video_id": "_10_000_Every_Day_You_Survive_In_The_Wilderness", "text": "지미가 준 5일치 음식과 9일째 저녁 식사를 언급하는 장면", "type": "자막형", "gt_start": 205.0, "gt_end": 210.0, "gt_seg_idx": [41], "split": "dev"}
+{"query_id": "wl_q15", "video_id": "_10_000_Every_Day_You_Survive_In_The_Wilderness", "text": "흰색 후드와 카모플라주 옷을 입은 두 남자가 숲에서 대화하는 장면", "type": "장면형", "gt_start": 75.0, "gt_end": 80.0, "gt_seg_idx": [15], "split": "dev"}
+{"query_id": "wl_q16", "video_id": "_10_000_Every_Day_You_Survive_In_The_Wilderness", "text": "세 남자가 열린 가방 속 돈을 함께 들여다보는 장면", "type": "장면형", "gt_start": 95.0, "gt_end": 100.0, "gt_seg_idx": [19], "split": "dev"}
+{"query_id": "wl_q18", "video_id": "_10_000_Every_Day_You_Survive_In_The_Wilderness", "text": "잎이 다 떨어진 숲에서 나무 사이로 노을이 지는 장면", "type": "장면형", "gt_start": 315.0, "gt_end": 320.0, "gt_seg_idx": [63], "split": "dev"}
+{"query_id": "wl_q19", "video_id": "_10_000_Every_Day_You_Survive_In_The_Wilderness", "text": "카모플라주 옷을 입은 남자가 물에 잠긴 길을 걸어가는 장면", "type": "장면형", "gt_start": 460.0, "gt_end": 465.0, "gt_seg_idx": [92], "split": "dev"}
+{"query_id": "wl_q20", "video_id": "_10_000_Every_Day_You_Survive_In_The_Wilderness", "text": "야외에서 불에 고기를 구워 요리하는 장면", "type": "장면형", "gt_start": 505.0, "gt_end": 510.0, "gt_seg_idx": [101], "split": "dev"}
