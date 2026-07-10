@@ -41,6 +41,20 @@ def derive_gt_seg_idx(gt_start, gt_end, n_segments, seg_len: int) -> list[int]:
     return idx if idx else [max(overlaps, key=lambda t: t[1])[0]]
 
 
+def validate_gt_seg_idx(queries, indexes, seg_len: int) -> None:
+    """gt_seg_idx가 gt_start/gt_end와 겹치는 세그먼트를 전부 포함하는지 검증(초집합 허용).
+    같은 사실이 영상 뒷부분에 재언급돼 gt_seg_idx가 derive_gt_seg_idx 결과의 초집합인 경우가
+    실제로 있다(예: wl_q03, data/queries/DRAFT_REVIEW.md 참조) — 그런 추가 포함은 허용하고,
+    반대로 겹치는 세그먼트가 누락된 경우(라벨 오탈자)만 잡는다. [보완: gt_seg_idx 무결성 검증 부재]"""
+    for q in queries:
+        n_segments = len(indexes[q["video_id"]].segments)
+        expected = set(derive_gt_seg_idx(q["gt_start"], q["gt_end"], n_segments, seg_len))
+        missing = expected - set(q["gt_seg_idx"])
+        assert not missing, (
+            f"{q['query_id']}: gt_seg_idx={q['gt_seg_idx']}가 gt_start/gt_end와 겹치는 "
+            f"세그먼트 {sorted(missing)}를 누락함 — 라벨 오류 가능성")
+
+
 def load_queries(path) -> list[dict]:
     qs = [json.loads(line) for line in
           Path(path).read_text(encoding="utf-8").splitlines() if line.strip()]
@@ -180,6 +194,7 @@ def main():
     test = [q for q in queries if q["split"] == "test"]
     indexes = {vid: VideoIndex.load(cfg, vid, static_threshold=args.static_threshold)
               for vid in {q["video_id"] for q in queries}}
+    validate_gt_seg_idx(queries, indexes, cfg["seg_len_sec"])
     rdir = Path(cfg["paths"]["results"]); rdir.mkdir(exist_ok=True)
 
     # ① dev grid search(쌍체 부트스트랩) → 저장 [8-1]

@@ -3,6 +3,7 @@ work_bge/
 work_rp13/
 results/
 results_bge/
+results_rp13/
 data/videos/
 __pycache__/
 *.npy

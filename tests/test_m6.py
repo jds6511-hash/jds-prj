@@ -7,7 +7,8 @@ import m5_search
 import m6_evaluate
 from m5_search import Result, VideoIndex
 from m6_evaluate import (hit_at_k, mrr, iou_recall_at_k, derive_gt_seg_idx,
-                         load_queries, grid_search_alpha, evaluate, build_eval_result)
+                         load_queries, grid_search_alpha, evaluate, build_eval_result,
+                         validate_gt_seg_idx)
 
 def _r(indexes):  # Result 리스트 헬퍼 (idx→start=idx*5)
     return [Result(i, 1.0 - n * 0.1, i * 5, i * 5 + 5) for n, i in enumerate(indexes)]
@@ -32,6 +33,26 @@ def test_derive_gt_seg_idx():
     assert derive_gt_seg_idx(3.0, 7.0, n_segments=3, seg_len=5) == [0, 1]   # 둘 다 2s 겹침 ≥1s
     assert derive_gt_seg_idx(4.8, 5.4, n_segments=3, seg_len=5) == [1]      # 최대 겹침 1개 보장
     assert derive_gt_seg_idx(33.0, 38.5, n_segments=10, seg_len=5) == [6, 7]
+
+def _fake_index(n_segments):
+    return VideoIndex(segments=[{"idx": i} for i in range(n_segments)],
+                      emb_sub=None, emb_cap=None, static_mask=None)
+
+def test_validate_gt_seg_idx_passes_exact_match():
+    q = {"query_id": "q1", "video_id": "v1", "gt_start": 3.0, "gt_end": 7.0, "gt_seg_idx": [0, 1]}
+    validate_gt_seg_idx([q], {"v1": _fake_index(3)}, seg_len=5)   # 예외 없이 통과
+
+def test_validate_gt_seg_idx_allows_superset_for_reoccurring_answer():
+    # wl_q03류: 같은 사실이 영상 뒷부분에 재언급돼 gt_seg_idx가 겹침 구간보다 더 큰 경우 허용
+    q = {"query_id": "wl_q03_like", "video_id": "v1", "gt_start": 3.0, "gt_end": 7.0,
+         "gt_seg_idx": [0, 1, 99]}
+    validate_gt_seg_idx([q], {"v1": _fake_index(100)}, seg_len=5)
+
+def test_validate_gt_seg_idx_raises_on_missing_overlap():
+    # 겹치는 세그먼트(0,1) 중 1이 gt_seg_idx에서 누락된 라벨 오류
+    q = {"query_id": "bad_q", "video_id": "v1", "gt_start": 3.0, "gt_end": 7.0, "gt_seg_idx": [0]}
+    with pytest.raises(AssertionError, match="bad_q"):
+        validate_gt_seg_idx([q], {"v1": _fake_index(3)}, seg_len=5)
 
 def test_load_queries_asserts_split_leak(tmp_path):
     p = tmp_path / "queries.jsonl"
@@ -209,7 +230,7 @@ def test_grid_search_alpha_by_video_breakdown():
 def _main_cfg(tmp_path):
     return {"alpha_grid": [0.0, 0.5, 1.0], "alpha_select_metric": "mrr",
             "alpha_tiebreak": "larger", "eval_k": [1, 5, 10], "iou_thresholds": [0.5, 0.3],
-            "seed": 42, "bootstrap_B": 50, "embed_model": "m",
+            "seed": 42, "bootstrap_B": 50, "embed_model": "m", "seg_len_sec": 5,
             "paths": {"work": str(tmp_path / "work"), "results": str(tmp_path / "results")}}
 
 
