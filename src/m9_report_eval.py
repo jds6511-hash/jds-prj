@@ -87,11 +87,13 @@ def eval_report(report: dict, segments: list[dict], gt_seg_indices: list[int],
     report_text = "\n".join(s["text"] for s in report["sentences"])
     per_gt = [{"seg_idx": i, "covered": judge_coverage(report_text, by_idx[i], judge)}
               for i in sorted(set(gt_seg_indices))]
+    # gt_seg_indices가 비면(예: video_id에 test 질의가 없는 dev 영상에 잘못 실행) 0.0으로
+    # 조용히 묻히지 않도록 null로 구분 — "커버리지 0%"와 "측정 불가"는 다른 상태다.
+    coverage_rate = round(sum(p["covered"] for p in per_gt) / len(per_gt), 4) if per_gt else None
     return {
         "groundedness_rate": round(
             sum(p["grounded"] for p in per_sentence) / max(len(per_sentence), 1), 4),
-        "coverage_rate": round(
-            sum(p["covered"] for p in per_gt) / max(len(per_gt), 1), 4),
+        "coverage_rate": coverage_rate,
         "per_sentence": per_sentence, "per_gt_segment": per_gt}
 
 

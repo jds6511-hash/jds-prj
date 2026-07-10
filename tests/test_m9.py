@@ -32,6 +32,15 @@ def test_rates_computed():
     assert out["groundedness_rate"] == 0.5               # 2문장 중 1개 grounded
     assert out["coverage_rate"] == 0.5                   # gt 2개 중 1개 커버
 
+def test_coverage_rate_none_when_no_gt_segments():
+    # video_id에 test 질의가 없는 dev 영상에 잘못 실행하는 경우 등, gt_seg_indices가
+    # 비면 0.0(측정치)과 구분되도록 coverage_rate가 None이어야 함 [보완: 조용한 0.0 방지]
+    rep = _report([("사건 [seg#0]", [0])])
+    judge = lambda prompt: '{"match": true}'
+    out = eval_report(rep, _segs(3), gt_seg_indices=[], judge=judge)
+    assert out["coverage_rate"] is None
+    assert out["per_gt_segment"] == []
+
 def test_grounded_prompt_hides_corrupted_caption_from_judge():
     # 오염된 캡션이 grounded 판정의 "근거"로 그대로 들어가면 검증이 무력화됨 [8-3(c) 대응]
     seg = {"idx": 0, "start": 0, "end": 5, "subtitle": "자막",

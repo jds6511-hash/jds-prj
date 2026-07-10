@@ -230,8 +230,8 @@ def create_app(cfg: dict, config_path: str, alpha: float,
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="config.yaml")
-    ap.add_argument("--alpha", type=float, default=0.5,
-                    help="M6 grid search 후 고정값으로 교체하는 임시값")
+    ap.add_argument("--alpha", type=float, required=True,
+                    help="M6 grid search로 확정한 alpha_star 값(results/alpha_search_dev.json 참조)")
     ap.add_argument("--port", type=int, default=7860)
     args = ap.parse_args()
     import uvicorn
