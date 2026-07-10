@@ -213,7 +213,7 @@ def caption_frame(image: Path, prompt: str, model) -> str
     # 프롬프트는 config의 caption_prompt 1종 고정 (다중 프롬프트는 11주차)
 ```
 
-- **캡션 프롬프트 (config 기본값):** "이 장면을 한 문장의 한국어로 객관적으로 묘사하라. 화면에 보이지 않는 것은 쓰지 마라." — 캡션 언어 = 질의 언어 = 한국어 원칙 (v2 7-8).
+- **캡션 프롬프트 (config 기본값, 2026-07-09 anti-OCR 문구 추가):** "이 장면을 한 문장의 한국어로 객관적으로 묘사하라. 화면에 보이지 않는 것은 쓰지 마라. 화면에 자막이나 글자가 보이더라도 그 글자를 그대로 옮겨 적지 말고, 인물의 행동과 배경 등 시각적 내용만 묘사하라." — 캡션 언어 = 질의 언어 = 한국어 원칙 (v2 7-8). 추가 문구는 VLM이 화면 속 번인 자막을 그대로 OCR 전사해 캡션이 자막과 중복되는 문제(s_cap≈s_sub) 방지 목적 — 완전 차단은 아니고 부분 완화(재캡셔닝 검증 결과 일부 프레임은 여전히 인용).
 - **검증 포인트:** caption 빈 문자열 0건(생성 실패 시 재시도 1회 후 실패 목록 출력). subtitle 커버리지(비어있지 않은 비율)를 로그로 남긴다.
 
 ## 4-4. M4 임베딩·인덱싱 (v2 3장)
@@ -290,7 +290,7 @@ def derive_gt_seg_idx(gt_start, gt_end, n_segments, seg_len: int) -> list[int]
 
 - **실행 순서 강제:** ① dev로 grid_search_alpha → alpha_search_dev.json 저장 → ② test 평가는 그 α만 사용. M6는 test 질의로 α를 재탐색하는 코드 경로를 갖지 않는다(누수 원천 차단, v2 9-1).
 - **검증 포인트:** dev/test에 같은 video_id가 없는지 로드 시 assert.
-- **α 안정화(구현됨, 8-1(a)(b)):** `grid_search_alpha`는 선택 지표를 MRR로(`alpha_select_metric: "mrr"`), 점 추정 1위(alpha_best_point)를 기준점으로 한 쌍체 차이(paired-diff) 부트스트랩(B=`bootstrap_B`, 질의 재표집 인덱스 전 α 공유)으로 95% CI를 계산해 CI가 0을 포함하는 α들(tie_set)에만 tiebreak(자막 우선)를 적용한다. alpha_search_dev.json은 8-1의 신 스키마(select_metric, bootstrap, alpha_best_point, per_alpha, by_video, tie_set, alpha_star)로 저장된다. **[예정] 8-1(c) dev 다양화**(영상 3개 확대)는 라벨링 요건이라 미착수.
+- **α 안정화(구현됨, 8-1(a)(b)(c)):** `grid_search_alpha`는 선택 지표를 MRR로(`alpha_select_metric: "mrr"`), 점 추정 1위(alpha_best_point)를 기준점으로 한 쌍체 차이(paired-diff) 부트스트랩(B=`bootstrap_B`, 질의 재표집 인덱스 전 α 공유)으로 95% CI를 계산해 CI가 0을 포함하는 α들(tie_set)에만 tiebreak(자막 우선)를 적용한다. alpha_search_dev.json은 8-1의 신 스키마(select_metric, bootstrap, alpha_best_point, per_alpha, by_video, tie_set, alpha_star)로 저장된다. **8-1(c) dev 다양화 완료(2026-07-10)**: dev 영상 3개(Wilderness/kheritage_grave_excavation/gwaktube_soviet_apartment), 질의 59건 — alpha_star=0.6 확정(8-6 참조).
 
 ## 4-7. M7 프로토타입 (v2 6장)
 
@@ -382,9 +382,9 @@ caption_model: "Qwen/Qwen2.5-VL-3B-Instruct"  # 서버(대용량 VRAM)에서는 
 vlm_4bit: true                # 서버(대용량 VRAM)에서는 false (로컬 6GB VRAM은 true, NF4, 기존 caption 실험 검증)
 vlm_max_pixels: 602112        # 768*28*28 (기존 실험: 비전 토큰 폭증 방지)
 vlm_rep_penalty: 1.1          # 1.3은 3B-4bit에서 문자혼입(한자·가나) 유발 확인(2026-07-09 rp 실험: 혼입 8/10→3/10, 반복 붕괴는 1.0에서도 미발생) — 보험으로 1.1
-caption_prompt: "이 장면을 한 문장의 한국어로 객관적으로 묘사하라. 화면에 보이지 않는 것은 쓰지 마라."
+caption_prompt: "이 장면을 한 문장의 한국어로 객관적으로 묘사하라. 화면에 보이지 않는 것은 쓰지 마라. 화면에 자막이나 글자가 보이더라도 그 글자를 그대로 옮겨 적지 말고, 인물의 행동과 배경 등 시각적 내용만 묘사하라."
 
-embed_model: "nlpai-lab/KURE-v1"   # dev에서 BAAI/bge-m3와 비교 후 확정 [v2 8-5]
+embed_model: "nlpai-lab/KURE-v1"   # dev 비교 완료(2026-07-10) — BGE-M3 대비 전 지점 우세, KURE-v1 확정 [v2 8-5]
 embed_batch_size: 32
 
 alpha_grid: [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
@@ -423,9 +423,9 @@ paths:
 
 *비고: M8·M9는 4순위이므로 M5·M6 일정과 충돌 시 뒤로 미룬다. 단 M9의 judge 모델 분리 여부(GPU)는 8주차 전에 튜터와 확정해야 config를 잠글 수 있다.*
 
-**진행 현황 (2026-07-09, 3주차):** M1~M9 전 모듈 + 웹 UI(M7-W) 구현·테스트 완료 — 표 기준 약 6주 선행. 잔여 병목은 구현이 아니라 (a) 질의 라벨링(18/60), (b) judge 모델용 GPU 확정(튜터), (c) 8장의 고도화 설계 실행이다. 일정표는 원 계획 기록으로 보존한다.
+**진행 현황 (2026-07-10 갱신, 3주차):** M1~M9 전 모듈 + 웹 UI(M7-W) 구현·테스트 완료 — 표 기준 약 6주 선행. 질의 라벨링 78건(dev59/test19, 목표 60건 초과 달성) 완료, α 재탐색(α*=0.6)·KURE vs BGE-M3 비교 실행 완료. 잔여 병목은 (a) judge 모델용 GPU 확정(튜터), (b) static_threshold 정식 재실측·8-2~8-4의 고도화 설계 실행이다. 일정표는 원 계획 기록으로 보존한다.
 
-# 8. 고도화 설계 (v1.1 추가 — 8-1(a)(b)·8-5(전항목) 구현 완료, 8-1(c) 및 8-2~8-4·8-6은 [예정] — 구현 완료 항목은 태그 해제)
+# 8. 고도화 설계 (v1.1 추가 — 8-1(전항목)·8-5(전항목) 구현 완료, 8-6은 α 재탐색/임베딩 비교 완료·static_threshold 재실측 및 무관질의셋은 [예정], 8-2~8-4는 [예정] — 구현 완료 항목은 태그 해제)
 
 정합성 감사(docs/설계점검_2026-07-09.md)의 HIGH-3·MEDIUM-4~6과 ablation 계획(docs/ablation_plan_draft.md)의 미결 결정 3건을 계약 수준으로 확정한다. 공통 원칙: **현행 계약(1~7장)을 깨는 항목은 없다** — 전부 추가 경로 또는 config 확장이며, baseline/proposed 대칭성과 dev-only 탐색 원칙(9-1)을 상속한다.
 
@@ -458,7 +458,7 @@ paths:
 
 보고 규칙: 선택은 MRR로 하되 헤드라인 표에는 hit@5·MRR을 항상 병기하고, 두 지표의 우열이 갈리면 per_query 원자료로 사례 해석을 덧붙인다(지표 간 불일치를 숨기지 않는다).
 
-**처방 (c) dev 다양화 [예정, 라벨링 요건]:** dev 영상을 3개로 확대(확정치는 8-6의 단일 표를 따른다). 영상 간 α* 편차를 alpha_search_dev.json에 영상별 분해로 병기해 "α가 영상 특성의 함수인지"를 보고 자료로 남긴다. **영상별 분해(by_video 키)는 (a)(b)와 함께 이미 구현됨** — 현재 dev 1영상이라 값이 하나뿐이지만, 영상이 늘어나도 그대로 동작한다.
+**처방 (c) dev 다양화 (완료, 2026-07-10):** dev 영상 3개로 확대 완료(확정치는 8-6의 단일 표 참조). 영상 간 α* 편차는 alpha_search_dev.json의 영상별 분해(by_video 키, (a)(b)와 함께 이미 구현됨)로 병기된다.
 
 config 키: `alpha_select_metric: "mrr"`(기존 키 값 변경, 구현됨), `bootstrap_B: 2000`(신규, 구현됨). §6에 반영 완료(문서-코드 동기 원칙).
 
@@ -505,18 +505,18 @@ config 키: `alpha_select_metric: "mrr"`(기존 키 값 변경, 구현됨), `boo
 
 ## 8-6. 평가 프로토콜 확정치
 
-- **데이터 규모 단일 표** (8-1(c)·ablation 계획이 전부 이 표를 파생 참조한다 — 다른 수치 인용 금지):
+- **데이터 규모 단일 표 (2026-07-10 갱신 — 실측치, 원래 60개 목표치는 최소 기준선으로만 유지):**
 
-| | 영상 수 | 질의 수 | 유형 구성 |
+| | 영상 수 | 질의 수 | 유형 구성(자막형/장면형/복합형) |
 |---|---|---|---|
-| dev | 3 | 36 | 자막형/장면형/복합형 12/12/12 |
-| test | 2 | 24 | 자막형/장면형/복합형 8/8/8 |
-| 합계 | 5 | 60 | 20/20/20 (전체 질의 구성 기준) |
+| dev | 3 (Wilderness/kheritage_grave_excavation/gwaktube_soviet_apartment) | 59 | 16/23/20 |
+| test | 2 (panibottle_vietnam1/gemini_promo) | 19 | 6/5/8 |
+| 합계 | 5 | 78 | 22/28/28 |
 
-  주의: 3-4 eval_test.json의 `n_queries`는 **test 질의만의 카운트**이므로 실제 파일에는 `total: 24, 8/8/8`로 기록된다 — 예시의 60/20은 전체 구성 서술이다. 현재 dev 1영상 12질의 / test 1영상 6질의 (18/60) — 추가 라벨링 요건: dev 영상 2개(+24질의), test 영상 1개(+18질의). ablation 실험 1(세그먼트 길이)은 비용 제약상 **dev 3영상 중 1~2개로 축소 실행을 허용**한다(전량이 원칙이 아님을 결과 표에 명시). 유형별 셀 표본 20(유형별 분해의 보고 가치 기준)은 dev+test 합산에서 성립한다.
-- **무관 질의 20개**는 위 60개와 별도(8-2, queries_negative.jsonl) — Hit/MRR 계산에서 완전히 제외.
-- **재측정 트리거:** 60질의 확보 시점에 ① static_threshold 재실측(8-5(2) 방식, 사전 실측은 ablation_plan_draft 2-4-1), ② α 재탐색(8-1 적용 후), ③ KURE vs BGE-M3 비교(work_bge/ 인덱스 기존 산출 재활용)를 일괄 실행한다 — 세 건 모두 dev-only.
-- **베이스라인 고정:** 위 재측정 전까지 데모·중간발표 수치는 "α=0.5(잠정), thr=0.05, KURE-v1, 18질의 예비 평가" 표기를 유지한다 — 잠정치가 확정치처럼 인용되는 것을 방지.
+  spiderman_trailer(구 test 영상)는 영화 예고편이라 장르 부적합 판단으로 전면 제외됨(2026-07-10) — dev3/test2로 재편해도 아래 원래 60개 목표치를 최소 기준선으로 이미 초과 달성했다. 최초 목표(dev36/test24, 유형별 20/20/20)는 참고용으로만 남긴다: dev 자막형12·장면형12·복합형12, test 자막형8·장면형8·복합형8, 합계 60(유형별 20). 실제 유형 분포는 영상 콘텐츠 특성상 균등하지 않다(예: 다큐 장르는 자막형·복합형이 자연히 많음, DRAFT_REVIEW.md 참조) — 목표는 참고 기준이지 강제 비율이 아니다.
+- **무관 질의 20개**는 위 78개와 별도(8-2, queries_negative.jsonl) — Hit/MRR 계산에서 완전히 제외. **[예정]** — 아직 작성 안 됨.
+- **재측정 트리거 (2026-07-10 실행 완료):** ① static_threshold 재실측은 **[예정]**(ablation_plan_draft.md 실험2로 이관, 2-3절에 5개 영상 실측 분포 반영됨). ② α 재탐색: `results/alpha_search_dev.json`(dev 59건, 3영상 by_video 분해) — **alpha_star=0.6** 확정(1차 실행 시 33건으로는 tiebreak에 의해 1.0=baseline으로 수렴하는 문제가 있어 dev 라벨을 26건 추가 확보 후 재확정). ③ KURE vs BGE-M3 비교: `results_bge/alpha_search_dev.json` — KURE-v1이 전 지점(α=1.0/0.0 양끝 포함) 우세 확인, embed_model=KURE-v1 유지 확정.
+- **베이스라인 고정 (갱신, 구 잠정치 폐기):** test 평가(`results/eval_test.json`, n=19)는 baseline(α=1.0) hit@5=0.7368/mrr=0.7135 대비 proposed(α*=0.6) hit@5=0.7895/mrr=0.7417 — 장면형에서 baseline hit@5=0.2→proposed 0.4(거의 2배)로 가장 크게 개선, 복합형은 근소 하락(mrr 0.877→0.826, n=8이라 단일 질의 순위 변동의 영향이 큼). "α=0.5(잠정), thr=0.05, KURE-v1, 18질의 예비 평가" 문구는 이 결과로 대체한다.
 
 # 9. 변경 이력
 

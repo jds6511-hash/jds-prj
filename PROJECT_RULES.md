@@ -27,7 +27,7 @@
 | 프레임 샘플링 | 3 fps | 대표 프레임 선택용 |
 | STT | Whisper large-v3 | 부족 시 turbo |
 | 캡션 VLM | Qwen2.5-VL-7B-Instruct | 메모리 부족 시 3B |
-| 임베딩 | KURE (BGE-M3와 dev 비교 후 확정) | 장면형 질의 분리 검증 (v2 8-5) |
+| 임베딩 | KURE-v1 (BGE-M3 dev 비교 완료 2026-07-10, 전 지점 우세로 확정) | 장면형 질의 분리 검증 (v2 8-5) |
 | α grid | 0.0~1.0, step 0.1 | 선택 기준 mrr (쌍체 부트스트랩 CI tie_set, DESIGN_SPEC 8-1) |
 | 평가 k | 1, 5, 10 | |
 | 출력 형식 | 정수 초 `[[시작,끝],...]` | Chrono 근거 (v2 6장) |
