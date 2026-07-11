@@ -423,7 +423,7 @@ paths:
 
 *비고: M8·M9는 4순위이므로 M5·M6 일정과 충돌 시 뒤로 미룬다. 단 M9의 judge 모델 분리 여부(GPU)는 8주차 전에 튜터와 확정해야 config를 잠글 수 있다.*
 
-**진행 현황 (2026-07-10 갱신, 3주차):** M1~M9 전 모듈 + 웹 UI(M7-W) 구현·테스트 완료 — 표 기준 약 6주 선행. 질의 라벨링 115건(dev96/test19, 목표 60건 초과 달성) 완료, α 재탐색(α*=0.5)·KURE vs BGE-M3 비교·오염 캡션 선별 재생성(docs/평가분석_2026-07-10.md) 실행 완료. 잔여 병목은 (a) judge 모델용 GPU 확정(튜터), (b) static_threshold 정식 재실측·8-2~8-4의 고도화 설계 실행이다. 일정표는 원 계획 기록으로 보존한다.
+**진행 현황 (2026-07-10 갱신, 3주차):** M1~M9 전 모듈 + 웹 UI(M7-W) 구현·테스트 완료 — 표 기준 약 6주 선행. 질의 라벨링 135건(dev96/test39 — test 영상 4개로 확장 2026-07-11, 목표 60건 초과 달성) 완료, α 재탐색(α*=0.5)·KURE vs BGE-M3 비교·오염 캡션 선별 재생성(docs/평가분석_2026-07-10.md) 실행 완료. 잔여 병목은 (a) judge 모델용 GPU 확정(튜터), (b) static_threshold 정식 재실측·8-2~8-4의 고도화 설계 실행이다. 일정표는 원 계획 기록으로 보존한다.
 
 # 8. 고도화 설계 (v1.1 추가 — 8-1(전항목)·8-5(전항목) 구현 완료, 8-6은 α 재탐색/임베딩 비교 완료·static_threshold 재실측 및 무관질의셋은 [예정], 8-2~8-4는 [예정] — 구현 완료 항목은 태그 해제)
 
@@ -512,13 +512,13 @@ config 키: `alpha_select_metric: "mrr"`(기존 키 값 변경, 구현됨), `boo
 | | 영상 수 | 질의 수 | 유형 구성(자막형/장면형/복합형) |
 |---|---|---|---|
 | dev | 3 (Wilderness/kheritage_grave_excavation/gwaktube_soviet_apartment) | 96 | 24/38/34 |
-| test | 2 (panibottle_vietnam1/gemini_promo) | 19 | 6/5/8 |
-| 합계 | 5 | 115 | 30/43/42 |
+| test | 4 (panibottle_vietnam1/gemini_promo/yunnamnopo_tongyeong/itsub_viral_gadgets) | 39 | 12/13/14 |
+| 합계 | 7 | 135 | 36/51/48 |
 
   spiderman_trailer(구 test 영상)는 영화 예고편이라 장르 부적합 판단으로 전면 제외됨(2026-07-10) — dev3/test2로 재편해도 아래 원래 60개 목표치를 최소 기준선으로 이미 초과 달성했다. 최초 목표(dev36/test24, 유형별 20/20/20)는 참고용으로만 남긴다: dev 자막형12·장면형12·복합형12, test 자막형8·장면형8·복합형8, 합계 60(유형별 20). 실제 유형 분포는 영상 콘텐츠 특성상 균등하지 않다(예: 다큐 장르는 자막형·복합형이 자연히 많음, DRAFT_REVIEW.md 참조) — 목표는 참고 기준이지 강제 비율이 아니다.
 - **무관 질의 20개**는 위 78개와 별도(8-2, queries_negative.jsonl) — Hit/MRR 계산에서 완전히 제외. **[예정]** — 아직 작성 안 됨.
 - **재측정 트리거 (2026-07-11 전 항목 완료):** ① static_threshold 재실측 완료(ablation_plan 2-4-2) — dev 96건 스윕에서 치환 off(thr=0)가 유의 우세(mrr +0.035, CI 0 배제), **static_threshold=0 확정(2026-07-11)**. seg_len(5초 유지)·caption_prompt(P0 유지) ablation도 완료(ablation_plan 1-6, 3-6). ② α 재탐색: `results/alpha_search_dev.json`(dev 96건, 3영상 by_video 분해) — **alpha_star=0.5** 확정(경과: 1차 33건에서는 tiebreak에 의해 1.0=baseline으로 수렴 → dev 확장으로 59·81·96건에서 0.6 안정화 → 오염 캡션 21건 선별 재생성 후 α=0.6이 tie_set에서 탈락하며 0.5로 최종 확정. 상세: docs/평가분석_2026-07-10.md). ③ KURE vs BGE-M3 비교: `results_bge/alpha_search_dev.json` — KURE-v1이 전 지점(α=1.0/0.0 양끝 포함) 우세 확인, embed_model=KURE-v1 유지 확정.
-- **베이스라인 고정 (최종 2026-07-11, static_threshold=0 확정 후):** test 평가(`results/eval_test.json`, n=19)는 baseline(α=1.0) hit@1=0.6842/hit@5=0.7368/mrr=0.7135 대비 proposed(α*=0.5) hit@1=0.7895/hit@5=0.9474/**hit@10=1.0**/mrr=0.8567. 쌍체 부트스트랩 95% CI: mrr [0.0396, 0.2728]·hit@5 [0.0526, 0.4211]·hit@10 [0.1053, 0.4737] 모두 0 배제(hit@1은 하한이 정확히 0 — 유의 주장 금지). dev tie_set은 [0.2–0.5] 4개로 축소. 장면형이 mrr 0.1091→0.5889, hit@10 0.2→1.0으로 최대 개선. 19건 중 13건은 양측 rank 1(포화)이며 차이의 실체는 경합 6건(baseline mrr 0.0929/hit@5 0.1667 vs proposed mrr 0.5463/hit@5 0.8333/hit@10 1.0)에 있다 — 소표본 한계·유형별 해석은 docs/평가분석_2026-07-10.md 6절 참조.
+- **베이스라인 고정 (최종 2026-07-11, test 4영상 39건 확장 후):** test 평가(`results/eval_test.json`, n=39, 영상 4개: panibottle/gemini/yunnamnopo(요리 예능)/itsub(테크 리뷰))는 baseline(α=1.0) hit@1=0.5641/hit@5=0.7692/mrr=0.6489 대비 proposed(α*=0.5) hit@1=0.7179/hit@5=0.8974/hit@10=0.9231/mrr=0.7953. 쌍체 부트스트랩 95% CI: mrr [0.0416, 0.2573]·hit@1 [0.0256, 0.2821] 0 배제(유의), hit@5/hit@10 [-0.0256, 0.2821]은 0 포함(유의 주장 금지). 유형별: 장면형(n=13) mrr 0.1741→0.6672·hit@1 0→0.5385로 최대 개선, 복합형(n=14) 근소 상승(mrr 0.8246→0.8398), 자막형(n=12)은 소폭 하락(mrr 0.9583→0.8819, hit@1 0.9167→0.8333 — 회귀 사례 it_q07 1→12위). 39건 중 21건은 양측 rank 1(포화), 경합 18건에서 baseline mrr 0.2393 vs proposed 0.5564. 신규 장르 2개에서도 "장면형 대개선 + 자막형 소폭 손실" 패턴이 재현되어 일반화 근거 확보. 구 n=19 결과는 git 이력·docs/평가분석_2026-07-10.md 참조.
 
 # 9. 변경 이력
 
