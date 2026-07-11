@@ -113,3 +113,23 @@
 {"query_id": "gw_q32", "video_id": "gwaktube_soviet_apartment", "text": "형형색색 봉제인형이 가득 찬 인형뽑기 기계와 쇼핑카트가 놓인 마트 입구가 보이는 장면", "type": "장면형", "gt_start": 170.0, "gt_end": 175.0, "gt_seg_idx": [34], "split": "dev"}
 {"query_id": "gw_q33", "video_id": "gwaktube_soviet_apartment", "text": "파란색 회전 놀이기구를 타며 아래로 흰색 북극곰 조형물과 회전목마가 내려다보이는 장면", "type": "장면형", "gt_start": 665.0, "gt_end": 670.0, "gt_seg_idx": [133], "split": "dev"}
 {"query_id": "gw_q34", "video_id": "gwaktube_soviet_apartment", "text": "장거리 기차 여행 영상을 편집하려는데 머리가 지저분해서 못하겠다며 이발을 결심하는 자막이 나오는 장면", "type": "자막형", "gt_start": 315.0, "gt_end": 320.0, "gt_seg_idx": [63], "split": "dev"}
+{"query_id": "yn_q01", "video_id": "yunnamnopo_tongyeong", "text": "가로수가 늘어선 도심 사거리를 자동차들이 지나가는 장면", "type": "장면형", "gt_start": 15.0, "gt_end": 25.0, "gt_seg_idx": [3, 4], "split": "test"}
+{"query_id": "yn_q02", "video_id": "yunnamnopo_tongyeong", "text": "한 끼 요리를 위해 통영에서 서울까지 네 시간 반 걸려 올라왔다고 이야기하는 장면", "type": "자막형", "gt_start": 160.0, "gt_end": 170.0, "gt_seg_idx": [32, 33], "split": "test"}
+{"query_id": "yn_q03", "video_id": "yunnamnopo_tongyeong", "text": "커다란 스테인리스 대야에 물에 불린 표고버섯이 담겨 있는 장면", "type": "장면형", "gt_start": 335.0, "gt_end": 340.0, "gt_seg_idx": [67], "split": "test"}
+{"query_id": "yn_q04", "video_id": "yunnamnopo_tongyeong", "text": "어머니가 어깨 회전근개 수술을 한 뒤로 부엌일에서 손을 뗐다고 말하는 장면", "type": "자막형", "gt_start": 465.0, "gt_end": 475.0, "gt_seg_idx": [93, 94], "split": "test"}
+{"query_id": "yn_q05", "video_id": "yunnamnopo_tongyeong", "text": "손질 중인 개조개 살을 날것으로 맛보고 비리지 않고 달다고 반응하는 장면", "type": "복합형", "gt_start": 625.0, "gt_end": 635.0, "gt_seg_idx": [125, 126], "split": "test"}
+{"query_id": "yn_q06", "video_id": "yunnamnopo_tongyeong", "text": "통째로 든 수박을 반으로 갈라 붉은 속살 단면이 드러나는 장면", "type": "장면형", "gt_start": 900.0, "gt_end": 905.0, "gt_seg_idx": [180], "split": "test"}
+{"query_id": "yn_q07", "video_id": "yunnamnopo_tongyeong", "text": "새우와 채소가 가득한 볶음 요리 위에 깨가 뿌려지는 팬 클로즈업 장면", "type": "장면형", "gt_start": 1095.0, "gt_end": 1105.0, "gt_seg_idx": [219, 220], "split": "test"}
+{"query_id": "yn_q08", "video_id": "yunnamnopo_tongyeong", "text": "로또를 43년째 사 왔다며 당첨이 아니라 기분으로 사는 거라고 농담하는 장면", "type": "자막형", "gt_start": 1265.0, "gt_end": 1270.0, "gt_seg_idx": [253], "split": "test"}
+{"query_id": "yn_q09", "video_id": "yunnamnopo_tongyeong", "text": "초록빛 전을 크게 한 입 베어 물고 방아 향이 강하다며 놀라는 장면", "type": "복합형", "gt_start": 1570.0, "gt_end": 1580.0, "gt_seg_idx": [314, 315], "split": "test"}
+{"query_id": "yn_q10", "video_id": "yunnamnopo_tongyeong", "text": "종이 상자 안에 들어간 고양이를 만지다가 고양이가 성을 내자 사과하는 장면", "type": "복합형", "gt_start": 1755.0, "gt_end": 1765.0, "gt_seg_idx": [351, 352], "split": "test"}
+{"query_id": "it_q01", "video_id": "itsub_viral_gadgets", "text": "엑스박스 게임패드와 레드미 워치, 샤오미 버즈 상자들이 창고 선반 위에 쌓여 있는 장면", "type": "장면형", "gt_start": 25.0, "gt_end": 30.0, "gt_seg_idx": [5], "split": "test"}
+{"query_id": "it_q02", "video_id": "itsub_viral_gadgets", "text": "커세어 보조모니터 가격이 35만 4천 원으로 사악하다고 말하는 장면", "type": "자막형", "gt_start": 75.0, "gt_end": 80.0, "gt_seg_idx": [15], "split": "test"}
+{"query_id": "it_q03", "video_id": "itsub_viral_gadgets", "text": "보조모니터 화면에 큼직한 플립 시계와 날씨 예보 위젯이 함께 떠 있는 장면", "type": "장면형", "gt_start": 195.0, "gt_end": 200.0, "gt_seg_idx": [39], "split": "test"}
+{"query_id": "it_q04", "video_id": "itsub_viral_gadgets", "text": "만능 리모컨인 줄 알고 샀는데 알고 보니 샤오미 TV에서만 작동한다고 밝히는 장면", "type": "자막형", "gt_start": 225.0, "gt_end": 235.0, "gt_seg_idx": [45, 46], "split": "test"}
+{"query_id": "it_q05", "video_id": "itsub_viral_gadgets", "text": "잔량 숫자가 표시되는 보조배터리에 클립 배지를 물려 놓고 충전 속도가 1와트 수준이라 느리다고 말하는 장면", "type": "복합형", "gt_start": 330.0, "gt_end": 335.0, "gt_seg_idx": [66], "split": "test"}
+{"query_id": "it_q06", "video_id": "itsub_viral_gadgets", "text": "모니터에 뜬 구형 드라이버 설치 창을 보면서 윈도우 XP 시절이 떠오른다며 반가워하는 장면", "type": "복합형", "gt_start": 455.0, "gt_end": 460.0, "gt_seg_idx": [91], "split": "test"}
+{"query_id": "it_q07", "video_id": "itsub_viral_gadgets", "text": "꺼져 있던 외부 카메라 로그인 옵션을 켜서 얼굴 인식이 안 되던 문제를 해결했다고 설명하는 장면", "type": "자막형", "gt_start": 515.0, "gt_end": 520.0, "gt_seg_idx": [103], "split": "test"}
+{"query_id": "it_q08", "video_id": "itsub_viral_gadgets", "text": "주황색 스마트폰을 상자에서 꺼내 들며 아이폰의 오렌지 색상을 따라 만든 것 같다고 말하는 장면", "type": "복합형", "gt_start": 755.0, "gt_end": 760.0, "gt_seg_idx": [151], "split": "test"}
+{"query_id": "it_q09", "video_id": "itsub_viral_gadgets", "text": "손에 든 스마트폰 화면에 CPU와 배터리 용량 등 기기 스펙 목록 페이지가 표시된 장면", "type": "장면형", "gt_start": 835.0, "gt_end": 840.0, "gt_seg_idx": [167], "split": "test"}
+{"query_id": "it_q10", "video_id": "itsub_viral_gadgets", "text": "분홍색 배경 앞에 스마트폰과 리모컨, 원형 클립 배지 등 소개한 제품들이 한데 진열된 장면", "type": "장면형", "gt_start": 860.0, "gt_end": 865.0, "gt_seg_idx": [172], "split": "test"}
