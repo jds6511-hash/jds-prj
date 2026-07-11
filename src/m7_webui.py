@@ -214,6 +214,11 @@ def create_app(cfg: dict, config_path: str, alpha: float,
              "caption": video.segments[r.idx]["caption"]} for r in top]}
         if stats is not None:
             response["raw"] = stats
+            # 8-2 abstention: 랭킹·기존 필드 불변, 표시 계층용 추가 필드만 부기.
+            # τ 미달 = "이 영상에 관련 구간이 없을 수 있음" 경고(결과 은폐 금지).
+            tau = cfg.get("abstention_tau")
+            if tau is not None:
+                response["low_relevance"] = bool(stats["raw_sub_max"] < tau)
             _log_search(cfg, video_id, query, alpha, stats, top[0] if top else None)
         return response
 

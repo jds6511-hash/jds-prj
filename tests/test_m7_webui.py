@@ -22,8 +22,8 @@ def make_cfg(tmp_path):
             "embed_model": "stub-model", "seg_len_sec": 5, "static_threshold": 0.05}
 
 
-def make_client(tmp_path, run_module=lambda script, cfgp, vid: None, **kw):
-    cfg = make_cfg(tmp_path)
+def make_client(tmp_path, run_module=lambda script, cfgp, vid: None, cfg=None, **kw):
+    cfg = cfg or make_cfg(tmp_path)
     app = create_app(cfg, "config.yaml", alpha=0.5, run_module=run_module, **kw)
     return TestClient(app), cfg
 
@@ -270,6 +270,37 @@ def test_search_returns_raw_stats_and_logs_search(tmp_path):
     assert line["top1_score"] == 0.9
     for k, v in stats.items():
         assert line[k] == v
+
+
+def _search_with_tau(tmp_path, raw_sub_max, tau):
+    stats = {"raw_sub_max": raw_sub_max, "raw_sub_mean": 0.4,
+             "raw_cap_max": 0.5, "raw_cap_mean": 0.3}
+    ranked = [Result(0, 0.9, 0, 5)]
+    cfg = make_cfg(tmp_path)
+    if tau is not None:
+        cfg["abstention_tau"] = tau
+    client, _ = make_client(tmp_path, cfg=cfg,
+                            search_stats_fn=lambda q, v, a, c: (ranked, stats),
+                            load_index=lambda cfg, vid: _stub_index(1))
+    r = client.post("/api/search", json={"video_id": "v1", "query": "질의"})
+    assert r.status_code == 200
+    return r.json()
+
+
+def test_search_low_relevance_banner_flag(tmp_path):
+    # [8-2] raw_sub_max < tau → low_relevance=True 부기. 결과 목록은 그대로(은폐 금지).
+    body = _search_with_tau(tmp_path, raw_sub_max=0.40, tau=0.48)
+    assert body["low_relevance"] is True
+    assert len(body["results"]) == 1          # 결과는 여전히 반환
+
+    body = _search_with_tau(tmp_path, raw_sub_max=0.60, tau=0.48)
+    assert body["low_relevance"] is False
+
+
+def test_search_no_tau_key_omits_low_relevance(tmp_path):
+    # abstention_tau 미설정 config(구버전)에서는 필드 자체가 없어야 함 — 하위호환
+    body = _search_with_tau(tmp_path, raw_sub_max=0.40, tau=None)
+    assert "low_relevance" not in body
 
 
 def test_search_still_works_when_results_path_missing(tmp_path):

@@ -34,6 +34,8 @@
   .card:hover { border-color: #4a7cf7; }
   .card .time { font-weight: bold; color: #4a7cf7; }
   .card .cap { color: #666; margin-top: 2px; }
+  .low-rel { background: #fff4e0; border: 1px solid #e8b34a; color: #7a5a00;
+    border-radius: 8px; padding: 6px 10px; margin-bottom: 6px; font-size: 13px; }
   #chat-form { display: flex; gap: 8px; padding: 10px; border-top: 1px solid #eee; }
   #chat-input { flex: 1; padding: 8px 10px; border: 1px solid #ccc;
                 border-radius: 6px; font-size: 14px; }
@@ -177,10 +179,17 @@ async function onReady() {
   $("chat-send").disabled = false;
 }
 
-function addMsg(role, cards, text) {
+function addMsg(role, cards, text, lowRelevance) {
   const div = document.createElement("div");
   div.className = `msg ${role}`;
   if (text) div.textContent = text;
+  if (lowRelevance) {
+    // 8-2 abstention 배너: 결과는 그대로 보여주고 경고만 덧붙인다(결과 은폐 금지)
+    const warn = document.createElement("div");
+    warn.className = "low-rel";
+    warn.textContent = "⚠️ 이 영상에 관련 구간이 없을 수 있습니다";
+    div.appendChild(warn);
+  }
   if (cards) for (const c of cards) {
     const card = document.createElement("div");
     card.className = "card";
@@ -208,7 +217,7 @@ $("chat-form").addEventListener("submit", async e => {
     });
     const body = await r.json();
     if (!r.ok) { addMsg("bot", null, body.detail); return; }
-    addMsg("bot", body.results, null);
+    addMsg("bot", body.results, null, body.low_relevance);
     document.querySelectorAll(".seg.hit").forEach(el => el.classList.remove("hit"));
     body.results.forEach(c => $(`seg-${c.idx}`)?.classList.add("hit"));
     $(`seg-${body.results[0]?.idx}`)?.scrollIntoView({ block: "center" });
