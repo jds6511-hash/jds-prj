@@ -31,6 +31,19 @@ def test_parse_citations():
     assert sents[0]["sent_id"] == 0
     assert sents[1]["cites"] == []                     # 저장은 하되 자동 ungrounded [15-1]
 
+def test_parse_citations_tolerates_spacing_and_case():
+    # [seg# 3], [Seg#4], [seg #5] 변형 유실 방지 [리뷰 2026-07-11 Minor]
+    sents = parse_citations("- 문장 하나 [seg# 3]\n- 문장 둘 [Seg#4, seg #5]")
+    assert [s["cites"] for s in sents] == [[3], [4, 5]]
+
+def test_system_prompt_example_numbers_out_of_range():
+    # 예시 번호는 실영상 범위 밖(>=9000)이어야 함 — 소형 모델의 예시 복사가 인용 범위
+    # assert에 걸려 시끄럽게 실패하도록 [리뷰 2026-07-11 Major, 3B 실측 사고 방어]
+    import re
+    import m8_report
+    nums = [int(m) for m in re.findall(r"seg#(\d+)", m8_report._SYSTEM)]
+    assert nums and all(n >= 9000 for n in nums)
+
 def test_generate_report_single_call_when_small():
     calls = []
     def llm(prompt):

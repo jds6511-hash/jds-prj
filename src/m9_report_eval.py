@@ -41,8 +41,9 @@ def _parse_verdict(text: str) -> bool:
 
 def _parse_ok(text: str) -> bool:
     """judge 출력에서 판정 필드가 파싱 가능했는지 여부. truncation 편향 진단용.
-    [m8m9-prompt-critique B-6]"""
-    return bool(re.search(r'"match"', text, re.IGNORECASE))
+    _parse_verdict와 동일한 값 패턴을 요구 — 키만 있고 값이 비정형('"match": maybe')인
+    출력을 파싱 성공으로 과대보고하지 않도록 [리뷰 2026-07-11 Minor]."""
+    return bool(re.search(r'"match"\s*:\s*"?(true|false)"?', text, re.IGNORECASE))
 
 
 def _clean_caption(caption: str) -> str:
@@ -66,15 +67,22 @@ def judge_grounded(sentence: dict, cited_segments: list[dict], judge) -> bool:
     return _parse_verdict(judge(_grounded_prompt(sentence, cited_segments)))
 
 
-def judge_coverage(report_text: str, segment: dict, judge) -> bool:
+def judge_coverage(report_text: str, segment: dict, judge) -> tuple[bool, bool]:
+    """반환: (covered, judge_parse_ok) — groundedness와 동일하게 truncation 진단 병기
+    [리뷰 2026-07-11 Minor]."""
     prompt = _COVERAGE_PROMPT.format(idx=segment["idx"], subtitle=segment["subtitle"],
                                      caption=_clean_caption(segment["caption"]), report=report_text)
-    return _parse_verdict(judge(prompt))
+    raw = judge(prompt)
+    return _parse_verdict(raw), _parse_ok(raw)
 
 
 def eval_report(report: dict, segments: list[dict], gt_seg_indices: list[int],
                 judge) -> dict:
     by_idx = {s["idx"]: s for s in segments}
+    # gt 인덱스 범위 검증 — judge 비용을 다 치른 뒤 KeyError로 죽는 경로 차단
+    # (m6 validate_gt_seg_idx의 대응물) [리뷰 2026-07-11 Major]
+    bad_gt = [i for i in gt_seg_indices if i not in by_idx]
+    assert not bad_gt, f"gt_seg_idx 범위 밖 인덱스 {bad_gt} — 라벨/seg_len 불일치 가능성"
     per_sentence = []
     for s in report["sentences"]:
         if not s["cites"]:
@@ -85,8 +93,10 @@ def eval_report(report: dict, segments: list[dict], gt_seg_indices: list[int],
         per_sentence.append({"sent_id": s["sent_id"], "cites": s["cites"],
                              "grounded": grounded, "judge_parse_ok": parse_ok})
     report_text = "\n".join(s["text"] for s in report["sentences"])
-    per_gt = [{"seg_idx": i, "covered": judge_coverage(report_text, by_idx[i], judge)}
-              for i in sorted(set(gt_seg_indices))]
+    per_gt = []
+    for i in sorted(set(gt_seg_indices)):
+        covered, parse_ok = judge_coverage(report_text, by_idx[i], judge)
+        per_gt.append({"seg_idx": i, "covered": covered, "judge_parse_ok": parse_ok})
     # gt_seg_indices가 비면(예: video_id에 test 질의가 없는 dev 영상에 잘못 실행) 0.0으로
     # 조용히 묻히지 않도록 null로 구분 — "커버리지 0%"와 "측정 불가"는 다른 상태다.
     coverage_rate = round(sum(p["covered"] for p in per_gt) / len(per_gt), 4) if per_gt else None

@@ -8,8 +8,12 @@ def make_llm(model_name: str, max_new_tokens: int = 2048, load_4bit: bool = Fals
     load_4bit: True면 BitsAndBytesConfig(NF4)로 4bit 양자화 로딩 (로컬 저VRAM 대응).
     [m8m9-prompt-critique B-7]
     """
+    # 캐시 키에 load_4bit 포함 — 같은 모델을 다른 정밀도로 요청하면 먼저 로드된 쪽을
+    # 조용히 재사용하는 무증상 오류 방지 [리뷰 2026-07-11 Major]
+    cache_key = (model_name, load_4bit)
+
     def generate(prompt: str) -> str:
-        if model_name not in _cache:
+        if cache_key not in _cache:
             import torch
             from transformers import AutoModelForCausalLM, AutoTokenizer
             tok = AutoTokenizer.from_pretrained(model_name)
@@ -22,8 +26,8 @@ def make_llm(model_name: str, max_new_tokens: int = 2048, load_4bit: bool = Fals
             else:
                 mdl = AutoModelForCausalLM.from_pretrained(
                     model_name, torch_dtype=torch.bfloat16, device_map="auto")
-            _cache[model_name] = (tok, mdl)
-        tok, mdl = _cache[model_name]
+            _cache[cache_key] = (tok, mdl)
+        tok, mdl = _cache[cache_key]
         msgs = [{"role": "user", "content": prompt}]
         text = tok.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True)
         import torch

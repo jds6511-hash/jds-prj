@@ -93,8 +93,14 @@ def _log_search(cfg: dict, video_id: str, query: str, alpha: float,
     try:
         results_dir = Path(cfg["paths"]["results"])
         results_dir.mkdir(parents=True, exist_ok=True)
+        tau = cfg.get("abstention_tau")
         entry = {"ts": time.time(), "video_id": video_id, "query": query,
                  "alpha": alpha, **stats,
+                 # 당시 tau·배너 판정을 함께 기록 — tau 재캘리브레이션 후에도 "사용자가
+                 # 실제로 본 경고"를 복원 가능하게 [리뷰 2026-07-11 Minor]
+                 "abstention_tau": tau,
+                 "low_relevance": (bool(stats["raw_sub_max"] < tau)
+                                   if tau is not None else None),
                  "top1_idx": top1.idx if top1 is not None else None,
                  "top1_score": top1.score if top1 is not None else None}
         with open(results_dir / "search_log.jsonl", "a", encoding="utf-8") as f:

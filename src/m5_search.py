@@ -54,6 +54,11 @@ class VideoIndex:
         if meta["embed_model"] != cfg["embed_model"]:   # 모델 혼입 방지 [4-4]
             raise ValueError(f"임베딩 모델 불일치: index={meta['embed_model']} "
                              f"config={cfg['embed_model']} — run m4_index.py --force")
+        # 재캡셔닝 후 임베딩 미갱신 감지 — 구버전 meta(해시 없음)는 하위호환 허용
+        # [리뷰 2026-07-11 Major]
+        if "text_hash" in meta and meta["text_hash"] != common.index_text_hash(doc):
+            raise ValueError("segments.json 텍스트와 임베딩 불일치(재캡셔닝 후 미갱신) "
+                             "— run m4_index.py --force")
         emb_sub = np.load(wdir / "emb_sub.npy")
         emb_cap = np.load(wdir / "emb_cap.npy")
         n_seg = len(doc["segments"])

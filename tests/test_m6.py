@@ -293,6 +293,7 @@ def _main_cfg(tmp_path):
     return {"alpha_grid": [0.0, 0.5, 1.0], "alpha_select_metric": "mrr",
             "alpha_tiebreak": "larger", "eval_k": [1, 5, 10], "iou_thresholds": [0.5, 0.3],
             "seed": 42, "bootstrap_B": 50, "embed_model": "m", "seg_len_sec": 5,
+            "static_threshold": 0.05,
             "paths": {"work": str(tmp_path / "work"), "results": str(tmp_path / "results")}}
 
 
@@ -333,7 +334,9 @@ def test_m6_main_dev_only_skips_test_eval(tmp_path, monkeypatch, capsys):
     assert (rdir / "alpha_search_dev.json").exists()
     assert not (rdir / "eval_test.json").exists()
     saved = json.loads((rdir / "alpha_search_dev.json").read_text(encoding="utf-8"))
-    assert saved["static_threshold"] is None    # [8-1 스키마 확장]
+    # CLI 인자 미지정 시 실효값(config)을 기록 — null 기록은 재현성 상실 [리뷰 2026-07-11]
+    assert saved["static_threshold"] == 0.05
+    assert saved["recompute_gt_seg_idx"] is False
 
 
 def test_m6_recompute_gt_requires_dev_only(monkeypatch):
@@ -403,3 +406,21 @@ def test_m6_static_threshold_passed_through_and_recorded(tmp_path, monkeypatch):
     saved = json.loads((tmp_path / "results" / "alpha_search_dev.json")
                        .read_text(encoding="utf-8"))
     assert saved["static_threshold"] == 0.05
+
+
+def test_validate_gt_seg_idx_rejects_out_of_range():
+    # 범위 밖 인덱스 오탈자가 초집합 허용에 묻혀 통과하던 공백 [리뷰 2026-07-11 Major]
+    q = {"query_id": "typo_q", "video_id": "v1", "gt_start": 3.0, "gt_end": 7.0,
+         "gt_seg_idx": [0, 1, 999]}
+    with pytest.raises(AssertionError, match="범위 밖"):
+        validate_gt_seg_idx([q], {"v1": _fake_index(3)}, seg_len=5)
+
+
+def test_load_queries_rejects_unknown_split(tmp_path):
+    # split 오탈자("Dev", "train")는 조용히 평가에서 빠진다 — fail-fast [리뷰 2026-07-11]
+    p = tmp_path / "queries.jsonl"
+    rows = [{"query_id": "q1", "video_id": "v1", "text": "t", "type": "자막형",
+             "gt_start": 0.0, "gt_end": 5.0, "gt_seg_idx": [0], "split": "Dev"}]
+    p.write_text("\n".join(json.dumps(r, ensure_ascii=False) for r in rows), encoding="utf-8")
+    with pytest.raises(AssertionError, match="split"):
+        load_queries(p)

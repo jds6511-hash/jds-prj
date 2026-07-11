@@ -12,10 +12,13 @@ _SYSTEM = """당신은 영상 사후검토(AAR) 리포트 작성자입니다.
 4. 인용한 seg#의 내용과 문장이 실제로 일치해야 함 (사후 검증됨).
 5. 출력에는 '-'로 시작하는 사건 서술 문장 외에 어떤 머리말·설명·맺음말도 쓰지 말 것.
 
-출력 형식 (한 줄에 한 문장). 아래는 형식 예시일 뿐이며 내용·번호를 복사하지 말 것:
-- 화자가 주방에서 조리 재료를 준비한다 [seg#2]
-- 냄비에 물을 끓이며 재료를 손질한다 [seg#4, seg#5]
+출력 형식 (한 줄에 한 문장). 아래는 형식 자리표시자일 뿐이며 내용·번호를 절대 복사하지 말 것:
+- (실제 세그먼트에 근거한 사건 서술) [seg#9999]
+- (사건 서술 — 인용이 여러 개인 경우) [seg#9998, seg#9999]
 """
+# 예시 번호를 의도적으로 실영상 범위 밖(9999)으로 둔다 — 소형 모델이 예시를 복사하면
+# save_report의 인용 범위 assert가 즉시 잡아낸다(3B 실측에서 유효 번호 예시가 전 영상에
+# 복사돼 무증상 통과한 사고의 방어) [리뷰 2026-07-11 Major]
 
 
 def _fmt_seg(s) -> str:
@@ -57,7 +60,8 @@ def parse_citations(text: str) -> list[dict]:
         line = line.strip().lstrip("-").strip()
         if not line:
             continue
-        cites = [int(m) for m in re.findall(r"seg#(\d+)", line)]
+        # 공백·대소문자 변형([seg# 3], [Seg#3]) 유실 방지 [리뷰 2026-07-11 Minor]
+        cites = [int(m) for m in re.findall(r"seg\s*#\s*(\d+)", line, re.IGNORECASE)]
         sents.append({"sent_id": len(sents), "text": line, "cites": sorted(set(cites))})
     return sents
 

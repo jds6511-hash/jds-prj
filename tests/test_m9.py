@@ -92,3 +92,27 @@ def test_same_model_judge_guard():
             "same_model_judge": False}
     with pytest.raises(ValueError, match="judge_model"):
         check_judge_config(cfg2)
+
+def test_eval_report_rejects_out_of_range_gt():
+    # judge 비용을 치르기 전에 gt 인덱스 범위를 검증 [리뷰 2026-07-11 Major]
+    rep = _report([("사건 [seg#0]", [0])])
+    with pytest.raises(AssertionError, match="범위 밖"):
+        eval_report(rep, _segs(3), gt_seg_indices=[0, 999], judge=lambda p: '{"match": true}')
+
+def test_per_gt_records_judge_parse_ok():
+    # coverage 경로에도 truncation 진단(judge_parse_ok) 병기 [리뷰 2026-07-11 Minor]
+    rep = _report([("사건 [seg#0]", [0])])
+    out = eval_report(rep, _segs(3), gt_seg_indices=[1],
+                      judge=lambda p: '{"match": true}')
+    assert out["per_gt_segment"][0]["judge_parse_ok"] is True
+    out2 = eval_report(rep, _segs(3), gt_seg_indices=[1],
+                       judge=lambda p: "판정 불가")
+    assert out2["per_gt_segment"][0] == {"seg_idx": 1, "covered": False,
+                                          "judge_parse_ok": False}
+
+def test_parse_ok_requires_value_not_just_key():
+    # '"match": maybe'처럼 키만 있고 값이 비정형이면 파싱 성공으로 과대보고 금지
+    from m9_report_eval import _parse_ok
+    assert _parse_ok('{"match": true}') is True
+    assert _parse_ok('{"match": "false"}') is True
+    assert _parse_ok('{"match": maybe}') is False

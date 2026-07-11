@@ -2,7 +2,7 @@
 # config.yaml에서 자동 생성(2026-07-10) — 수기 편집 금지, 원본 변경 시 재생성.
 seg_len_sec: 10
 frame_sample_fps: 3
-static_threshold: 0.05        # motion_score 기준, dev에서 1회 보정 후 고정
+static_threshold: 0           # 정적 치환 off — dev 스윕에서 치환이 유의하게 손해 확인 (2026-07-11, ablation_plan 2-4-2)
 gaussian_sigma: 1.0
 seed: 42
 
@@ -18,6 +18,8 @@ caption_prompt: "이 장면을 한 문장의 한국어로 객관적으로 묘사
 embed_model: "nlpai-lab/KURE-v1"   # dev에서 BAAI/bge-m3와 비교 후 확정 [v2 8-5]
 embed_batch_size: 32
 
+abstention_tau: 0.48          # raw_sub_max 기준 무관련 경고 임계값 — dev 96 vs 무관 20 실측 캘리브레이션(2026-07-11, 8-2). KURE-v1 종속: embed_model 교체 시 재캘리브레이션 필수
+
 alpha_grid: [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
 alpha_select_metric: "mrr"    # hit@5는 소표본 계단형·동률 다발로 α* 불안정 [8-1(a)]
 bootstrap_B: 2000              # 쌍체 차이 부트스트랩 재표집 횟수 [8-1(b)]
@@ -25,10 +27,10 @@ alpha_tiebreak: "larger"      # 동률 시 자막 우선 [v2 9-1(a)]
 eval_k: [1, 5, 10]
 iou_thresholds: [0.5, 0.3]
 
-report_model: "Qwen/Qwen2.5-7B-Instruct"
+report_model: "Qwen/Qwen2.5-7B-Instruct"  # 로컬 6GB 실행 불가 실측(4bit로도 embed·lm_head 비양자화분 초과) — 서버 GPU 전용. 3B 하향은 프롬프트 예시 문장 복사 오염으로 기각(2026-07-11, 평가분석 문서 참조)
 llm_4bit: true                # 서버(대용량 VRAM)에서는 false (로컬 6GB VRAM 대응) [m8m9-prompt-critique B-7]
-judge_model: null             # report_model과 다른 패밀리 지정 [v2 17-6]
-same_model_judge: false
+judge_model: "Qwen/Qwen2.5-7B-Instruct"  # 잠정: 다른 패밀리 1순위는 서버 GPU 확정 대기 — 그때까지 report_model과 동일 모델 자기평가(편향 한계를 결과에 명시) [v2 17-6 2순위]
+same_model_judge: true        # 위 잠정 조치의 명시적 선언 — 미선언 시 M9가 거부 [v2 17-6]
 map_chunk_size: 60
 map_chunk_overlap: 5
 human_check_n: 20

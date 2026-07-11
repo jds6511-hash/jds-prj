@@ -48,6 +48,10 @@ def validate_gt_seg_idx(queries, indexes, seg_len: int) -> None:
     반대로 겹치는 세그먼트가 누락된 경우(라벨 오탈자)만 잡는다. [보완: gt_seg_idx 무결성 검증 부재]"""
     for q in queries:
         n_segments = len(indexes[q["video_id"]].segments)
+        out_of_range = [i for i in q["gt_seg_idx"] if not (0 <= i < n_segments)]
+        assert not out_of_range, (
+            f"{q['query_id']}: gt_seg_idx에 범위 밖 인덱스 {out_of_range} "
+            f"(세그먼트 수 {n_segments}) — 라벨 오탈자 [리뷰 2026-07-11]")
         expected = set(derive_gt_seg_idx(q["gt_start"], q["gt_end"], n_segments, seg_len))
         missing = expected - set(q["gt_seg_idx"])
         assert not missing, (
@@ -65,6 +69,8 @@ def load_queries(path) -> list[dict]:
     for q in qs:
         assert q["gt_seg_idx"], f"{q['query_id']}: gt_seg_idx 비어있음"
         assert q.get("text"), f"{q['query_id']}: text 없음"
+        # 오탈자 split은 dev/test 어디에도 안 들어가 조용히 평가에서 빠진다 [리뷰 2026-07-11]
+        assert q["split"] in ("dev", "test"), f"{q['query_id']}: split={q['split']!r} 미허용"
     return qs
 
 
@@ -170,8 +176,9 @@ def grid_search_alpha(dev_queries, indexes, cfg, search_fn=search) -> dict:
     per_query_vec = {a: np.array([row[metric] for row in results[a]["per_query"]])
                      for a in grid}
 
-    point_scores = {a: results[a]["metrics"][metric] for a in grid}
-    alpha_best_point = max(grid, key=lambda a: (point_scores[a], a))
+    # 기준점 선택은 반올림 전 원시 평균으로 — metrics의 round(4)값을 쓰면 미세 차이가
+    # 동률로 붕괴해 tiebreak가 기준점을 옮길 수 있다 [리뷰 2026-07-11 Minor]
+    alpha_best_point = max(grid, key=lambda a: (float(per_query_vec[a].mean()), a))
 
     n = len(dev_queries)
     rng = np.random.default_rng(cfg["seed"])
@@ -253,7 +260,12 @@ def main():
 
     # ① dev grid search(쌍체 부트스트랩) → 저장 [8-1]
     dev_result = grid_search_alpha(dev, indexes, cfg)
-    dev_result["static_threshold"] = args.static_threshold   # 재현성 기록 [8-5(2)]
+    # 재현성 기록: CLI 인자(null)가 아니라 실효 임계값 — static_mask가 로드 시점
+    # config 재판정으로 바뀐 뒤 null은 "당시 config 값"이라 판별 불가 [리뷰 2026-07-11 Major]
+    dev_result["static_threshold"] = (args.static_threshold
+                                      if args.static_threshold is not None
+                                      else cfg["static_threshold"])
+    dev_result["recompute_gt_seg_idx"] = args.recompute_gt_seg_idx   # 변형 플래그 기록
     common.atomic_write_json(rdir / "alpha_search_dev.json", dev_result)
     alpha = dev_result["alpha_star"]
     print(f"dev grid search: α*={alpha} (tie_set={dev_result['tie_set']})")
@@ -266,10 +278,11 @@ def main():
     base = evaluate(test, indexes, 1.0, cfg)
     prop = evaluate(test, indexes, alpha, cfg)
     result = build_eval_result(test, base, prop, alpha, cfg)
+    result["static_threshold"] = cfg["static_threshold"]   # 재현성 기록 [리뷰 2026-07-11]
     common.atomic_write_json(rdir / "eval_test.json", result)
     c = result["contested"]
-    print(f"M6 완료: eval_test.json (baseline hit@5={base['metrics']['hit@5']}, "
-          f"proposed hit@5={prop['metrics']['hit@5']}, "
+    print(f"M6 완료: eval_test.json (baseline mrr={base['metrics']['mrr']}, "
+          f"proposed mrr={prop['metrics']['mrr']}, "
           f"포화 {c['n_saturated']}/경합 {c['n_contested']}, "
           f"mrr diff CI95={result['diff_ci95']['mrr']})")
 

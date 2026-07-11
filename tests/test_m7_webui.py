@@ -391,3 +391,22 @@ def test_current_returns_active_job(tmp_path):
     vid = r.json()["video_id"]
     cur = client.get("/api/current").json()
     assert cur["video_id"] == vid
+
+
+def test_search_log_records_tau_and_low_relevance(tmp_path):
+    # tau 재캘리브레이션 후에도 "사용자가 실제로 본 배너"를 복원할 수 있도록
+    # 당시 tau와 판정을 로그에 기록 [리뷰 2026-07-11 Minor]
+    stats = {"raw_sub_max": 0.40, "raw_sub_mean": 0.3,
+             "raw_cap_max": 0.5, "raw_cap_mean": 0.3}
+    ranked = [Result(0, 0.9, 0, 5)]
+    cfg = make_cfg(tmp_path)
+    cfg["abstention_tau"] = 0.48
+    client, _ = make_client(tmp_path, cfg=cfg,
+                            search_stats_fn=lambda q, v, a, c: (ranked, stats),
+                            load_index=lambda cfg, vid: _stub_index(1))
+    r = client.post("/api/search", json={"video_id": "v1", "query": "질의"})
+    assert r.status_code == 200
+    line = json.loads((Path(cfg["paths"]["results"]) / "search_log.jsonl")
+                      .read_text(encoding="utf-8").strip().splitlines()[-1])
+    assert line["abstention_tau"] == 0.48
+    assert line["low_relevance"] is True

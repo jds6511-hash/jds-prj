@@ -177,3 +177,26 @@ def test_load_static_threshold_zero_disables_substitution(tmp_path):
            "static_threshold": 0}
     video = VideoIndex.load(cfg, video_id)
     assert list(video.static_mask) == [False, False, False]
+
+
+def test_load_raises_on_text_hash_mismatch(tmp_path):
+    # [리뷰 2026-07-11 Major] segments.json 텍스트가 임베딩 생성 시점과 다르면 fail-fast
+    video_id = "v1"
+    wdir = _static_threshold_fixture(tmp_path, video_id)
+    meta = json.loads((wdir / "meta.json").read_text(encoding="utf-8"))
+    meta["text_hash"] = "stale-hash"
+    (wdir / "meta.json").write_text(json.dumps(meta), encoding="utf-8")
+    cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}, "seg_len_sec": 5,
+           "static_threshold": 0.05}
+    with pytest.raises(ValueError, match="재캡셔닝 후 미갱신"):
+        VideoIndex.load(cfg, video_id)
+
+
+def test_load_accepts_meta_without_text_hash(tmp_path):
+    # 구버전 meta.json(해시 없음)은 하위호환 허용 — 기존 인덱스 전면 무효화 방지
+    video_id = "v1"
+    _static_threshold_fixture(tmp_path, video_id)
+    cfg = {"embed_model": "m", "paths": {"work": str(tmp_path)}, "seg_len_sec": 5,
+           "static_threshold": 0.05}
+    video = VideoIndex.load(cfg, video_id)
+    assert len(video.segments) == 3
