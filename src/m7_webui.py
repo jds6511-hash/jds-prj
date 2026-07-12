@@ -222,9 +222,13 @@ def create_app(cfg: dict, config_path: str, alpha: float,
             response["raw"] = stats
             # 8-2 abstention: 랭킹·기존 필드 불변, 표시 계층용 추가 필드만 부기.
             # τ 미달 = "이 영상에 관련 구간이 없을 수 있음" 경고(결과 은폐 금지).
+            # 채널은 max(sub, cap) — sub 단독은 무발화 장면을 찾는 장면형 유관 질의
+            # (자막과 원래 안 붙음)를 무관 질의와 구분 못 해 오배제가 장면형에 쏠린다
+            # [8-2 개정, 2026-07-13 설계 점검 1]
             tau = cfg.get("abstention_tau")
             if tau is not None:
-                response["low_relevance"] = bool(stats["raw_sub_max"] < tau)
+                response["low_relevance"] = bool(
+                    max(stats["raw_sub_max"], stats["raw_cap_max"]) < tau)
             _log_search(cfg, video_id, query, alpha, stats, top[0] if top else None)
         return response
 

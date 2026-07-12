@@ -16,7 +16,7 @@ caption_prompt: "이 장면을 한 문장의 한국어로 객관적으로 묘사
 embed_model: "nlpai-lab/KURE-v1"   # dev에서 BAAI/bge-m3와 비교 후 확정 [v2 8-5]
 embed_batch_size: 32
 
-abstention_tau: 0.48          # raw_sub_max 기준 무관련 경고 임계값 — dev 96 vs 무관 20 실측 캘리브레이션(2026-07-11, 8-2). KURE-v1 종속: embed_model 교체 시 재캘리브레이션 필수
+abstention_tau: 0.55          # max(raw_sub_max, raw_cap_max) 기준 무관련 경고 임계값 — dev 96 vs 무관 20 재캘리브레이션(2026-07-13, 8-2 개정: sub 단독은 장면형 오배제 편향, 오배제 2/96→0/96·감지 13→14/20). KURE-v1 종속: embed_model 교체 시 재캘리브레이션 필수
 
 alpha_grid: [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
 alpha_select_metric: "mrr"    # hit@5는 소표본 계단형·동률 다발로 α* 불안정 [8-1(a)]

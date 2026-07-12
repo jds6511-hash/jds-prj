@@ -272,9 +272,9 @@ def test_search_returns_raw_stats_and_logs_search(tmp_path):
         assert line[k] == v
 
 
-def _search_with_tau(tmp_path, raw_sub_max, tau):
+def _search_with_tau(tmp_path, raw_sub_max, tau, raw_cap_max=0.5):
     stats = {"raw_sub_max": raw_sub_max, "raw_sub_mean": 0.4,
-             "raw_cap_max": 0.5, "raw_cap_mean": 0.3}
+             "raw_cap_max": raw_cap_max, "raw_cap_mean": 0.3}
     ranked = [Result(0, 0.9, 0, 5)]
     cfg = make_cfg(tmp_path)
     if tau is not None:
@@ -288,12 +288,21 @@ def _search_with_tau(tmp_path, raw_sub_max, tau):
 
 
 def test_search_low_relevance_banner_flag(tmp_path):
-    # [8-2] raw_sub_max < tau → low_relevance=True 부기. 결과 목록은 그대로(은폐 금지).
-    body = _search_with_tau(tmp_path, raw_sub_max=0.40, tau=0.48)
+    # [8-2 개정 2026-07-13] max(raw_sub_max, raw_cap_max) < tau → low_relevance=True.
+    # 결과 목록은 그대로(은폐 금지).
+    body = _search_with_tau(tmp_path, raw_sub_max=0.40, raw_cap_max=0.50, tau=0.55)
     assert body["low_relevance"] is True
     assert len(body["results"]) == 1          # 결과는 여전히 반환
 
-    body = _search_with_tau(tmp_path, raw_sub_max=0.60, tau=0.48)
+    body = _search_with_tau(tmp_path, raw_sub_max=0.60, raw_cap_max=0.50, tau=0.55)
+    assert body["low_relevance"] is False
+
+
+def test_search_low_relevance_caption_channel_rescues_scene_query(tmp_path):
+    # 장면형 질의 시나리오: 무발화 장면이라 자막 코사인은 낮지만(0.40) 캡션이 붙으면(0.60)
+    # 유관 — sub 단독 채널이었다면 오배제됐을 케이스가 max 채널에서는 배너 없음
+    # [설계 점검 1, 2026-07-13]
+    body = _search_with_tau(tmp_path, raw_sub_max=0.40, raw_cap_max=0.60, tau=0.55)
     assert body["low_relevance"] is False
 
 
