@@ -329,6 +329,7 @@ def generate_report(segments, llm, chunk_size: int = 60) -> Report
 
 - **map-reduce 발동 조건:** n_segments > chunk_size일 때만 map-reduce, 이하면 단일 호출. chunk_size는 config(LLM 컨텍스트 한도에 맞춰 조정).
 - **검증 포인트:** cites가 존재하는 문장의 인덱스가 [0, n_segments) 범위인지 assert. raw_output 항상 보존.
+- **부분집합 체크의 한계 (2026-07-13, 설계 점검 6):** reduce 출력의 인용 seg# 집합이 map 출력 집합의 부분집합인지 보는 안전장치는 **provenance(근거 출처)만 검증하고 content fidelity(내용 충실도)는 검증하지 않는다.** 즉 "새 근거 날조"는 막지만, 유효한 seg#를 재인용하면서 내용을 다르게 서술하거나 복수 세그먼트를 무리하게 인과·시간 관계로 엮는 것은 못 잡는다. 이 경계 케이스는 M9 groundedness judge가 잡아야 하며, 판정 기준은 4-9 judge_grounded에 명시한다.
 
 ## 4-9. M9 AAR 평가 (v2 16~17장)
 
@@ -343,6 +344,10 @@ def judge_coverage(report, gt_seg_idx, judge_llm) -> bool
 def judge_grounded(sentence, cited_segments, judge_llm) -> bool
     # G-Eval식 3단계 CoT: ①문장 요약 → ②인용 seg 요약 → ③일치 판정 [v2 16-4]
     # 프롬프트에 "확신 없으면 false로 보수 판정" 명시 [v2 17-4 원칙]
+    # 교차 세그먼트 추론 판정 기준 (2026-07-13, 설계 점검 6): 인용된 세그먼트
+    #   각각에 명시된 사실만 grounded로 인정한다. 복수 세그먼트를 종합해
+    #   세그먼트 간 인과·시간 관계를 새로 주장하는 서술(예: "A 때문에 B가 일어났다")은,
+    #   그 관계가 어느 인용 세그먼트에도 명시돼 있지 않으면 ungrounded 처리.
 def eval_report(report, segments, queries) -> ReportEval
     # cites==[] 문장은 judge 호출 없이 자동 ungrounded [v2 15-1]
 def check_judge_config(cfg: dict) -> None
@@ -481,6 +486,8 @@ config 키: `alpha_select_metric: "mrr"`(기존 키 값 변경, 구현됨), `boo
 
 **캘리브레이션 확정 (2026-07-11, dev 96 vs 무관 20, `results/abstention_calibration.json`):**
 유관 raw_sub_max 분포 [min 0.4733, median 0.5816, max 0.8717] vs 무관 [min 0.4241, median 0.4662, max 0.5445] — 겹침 구간 존재(+0.071)로 완전 분리 불가. 배너가 소프트 경고(결과 은폐 없음)이므로 오배제 최소화를 우선해 **τ=0.48 확정**(config `abstention_tau`): 오배제 2/96=2.1%(Wilson 95% CI [0.6%, 7.3%]), 무관 감지 13/20=65%(CI [43%, 82%] — n=20이라 폭이 큼, 병기 의무). 구현: `/api/search` 응답에 추가 필드 `low_relevance`만 부기(기존 필드·랭킹 불변), 프런트 배너 표시. "자명히 무관" 질의만으로 캘리브레이션한 selection bias(미묘한 무관련에 과대허용)는 한계로 유지.
+
+**빈 자막 임베딩의 raw_sub_max 바닥 효과 (2026-07-13 실측, 설계 점검 5).** 무발화 세그먼트(자막=`""`)는 대칭성 원칙대로 그대로 임베딩되는데, KURE는 빈 문자열에 **결정적이고 정규화된 단일 벡터**를 반환한다(데모 영상 125/395=32%가 동일 벡터, 노름 1.0, degenerate 아님). 이 벡터의 질의 코사인은 온토픽 질의에선 중하위(33~47 백분위)라 minmax를 지배하지 않으나(장면형 랭킹은 캡션 채널이 정상 주도), **무관 질의에선 실제 자막들보다 높아 per-query 최댓값이 되어 raw_sub_max에 바닥을 깐다**(무관 질의 "비트코인 시세" 실측 raw_sub_max = 빈자막 코사인 0.466). 즉 raw_sub_max는 빈 자막 코사인 이하로 내려갈 수 없다. τ=0.48은 빈 자막을 포함한 실제 인덱스로 캘리브레이션돼 이 바닥을 이미 흡수하며(0.466<0.48이라 무관 판정 정상), 이것이 τ가 embed_model 종속인 또 다른 이유다 — 모델 교체 시 빈 문자열 벡터의 바닥값이 달라지므로 재캘리브레이션 필수.
 
 ## 8-3. 캡션 생성 상한·후처리 (MEDIUM-4·5, ablation 실험 3의 전제)
 
