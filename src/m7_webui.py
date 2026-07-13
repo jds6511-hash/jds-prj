@@ -15,6 +15,17 @@ STAGE = {"m1_preprocess.py": "m1", "m2_keyframe.py": "m2",
          "m3_generate.py": "m3", "m4_index.py": "m4"}
 
 
+_DISPLAY_REP = re.compile(r"(\S{1,15})(?:\s+\1){2,}")
+_DISPLAY_CJK = re.compile(r"[一-鿿぀-ヿ]+")
+
+
+def display_clean(text: str) -> str:
+    """표시 계층 전용 정리: Whisper 반복 환각 collapse(3회 이상 연속 반복 → 1회) +
+    오염 판정 임계 미만의 잔여 한자·가나 제거. 인덱스·임베딩·랭킹·평가에는 불개입
+    [실사용 테스트 2026-07-13]."""
+    return _DISPLAY_CJK.sub("", _DISPLAY_REP.sub(r"\1", text))
+
+
 def sanitize_video_id(stem: str) -> str:
     return re.sub(r"[^a-zA-Z0-9_-]", "_", stem)
 
@@ -183,8 +194,10 @@ def create_app(cfg: dict, config_path: str, alpha: float,
                                        seg_len=cfg["seg_len_sec"])
         except ValueError as e:                  # 불변식/필드 누락 → 안내
             raise HTTPException(404, str(e))
-        keys = ("idx", "start", "end", "subtitle", "caption")
-        return {"segments": [{k: s[k] for k in keys} for s in doc["segments"]]}
+        return {"segments": [
+            {"idx": s["idx"], "start": s["start"], "end": s["end"],
+             "subtitle": display_clean(s["subtitle"]),
+             "caption": display_clean(s["caption"])} for s in doc["segments"]]}
 
     @app.post("/api/search")
     def do_search(body: dict):
@@ -216,8 +229,8 @@ def create_app(cfg: dict, config_path: str, alpha: float,
         response = {"results": [
             {"idx": r.idx, "start": int(r.start), "end": int(r.end),
              "score": round(r.score, 3),
-             "subtitle": video.segments[r.idx]["subtitle"],
-             "caption": video.segments[r.idx]["caption"]} for r in top]}
+             "subtitle": display_clean(video.segments[r.idx]["subtitle"]),
+             "caption": display_clean(video.segments[r.idx]["caption"])} for r in top]}
         if stats is not None:
             response["raw"] = stats
             # 8-2 abstention: 랭킹·기존 필드 불변, 표시 계층용 추가 필드만 부기.

@@ -1,5 +1,7 @@
-"""M5 검색: 확정 연산 순서 — 코사인 → per-query minmax(단일 영상 범위) →
-정적 s_cap_norm←s_sub_norm 치환 → α 가중합. baseline = α=1.0. [DESIGN_SPEC 4-5]"""
+"""M5 검색: 확정 연산 순서 — 코사인 → per-query z-score(단일 영상 범위; minmax에서
+2026-07-13 개정) → 정적 s_cap_norm←s_sub_norm 치환 → α 가중합. baseline = α=1.0.
+질의 확장(expand_query)은 config query_synonyms 사전이 있을 때만 활성(기본 off).
+[DESIGN_SPEC 4-5]"""
 import argparse, json
 from dataclasses import dataclass
 from typing import NamedTuple
@@ -83,13 +85,38 @@ class VideoIndex:
                    static_mask=static_mask)
 
 
+def expand_query(query: str, cfg: dict) -> list[str]:
+    """질의 확장: cfg['query_synonyms'](term→[동의어]) 사전으로 term 치환 변형을 덧붙인다.
+    사전 미설정/미적중이면 [query] 단독 — 확장 off와 완전 동일(공식 경로 불변).
+    근거·한계: 임베딩의 외래어-고유어 동의어 갭(cos(초밥,스시)=0.48<cos(초밥,김밥)=0.75),
+    프로토타입 실측 초밥→스시 21→2위 — docs/probes/synonym_expansion_probe.py. 정식 채택은
+    dev 검증→승인→test 재평가 절차 대상이라 기본 off로만 통합."""
+    syn = cfg.get("query_synonyms") or {}
+    variants = [query]
+    for term, alts in syn.items():
+        if term in query:
+            for alt in alts:
+                v = query.replace(term, alt)
+                if v not in variants:
+                    variants.append(v)
+    return variants
+
+
 def search_with_stats(query: str, video: VideoIndex, alpha: float,
                       cfg: dict) -> tuple[list[Result], dict]:
     """search와 동일 랭킹 + 정규화 이전 raw 코사인 통계 반환.
     무관련 질의 판정(향후 abstention 임계값 설계)의 근거 데이터용 [HIGH-2]."""
-    q = embed_texts([query], cfg["embed_model"])[0]
-    s_sub = video.emb_sub @ q                    # 1) 코사인 (L2 정규화 완료 상태)
-    s_cap = video.emb_cap @ q
+    variants = expand_query(query, cfg)
+    if len(variants) == 1:
+        q = embed_texts([query], cfg["embed_model"])[0]
+        s_sub = video.emb_sub @ q                # 1) 코사인 (L2 정규화 완료 상태)
+        s_cap = video.emb_cap @ q
+    else:
+        # 변형 간 raw 코사인 max 풀링(정규화 이전 — 동일 임베딩 공간이라 스케일 호환).
+        # 프로브에서 정규화 이후 풀링(21→10)보다 우세(21→2) 확인.
+        qs = embed_texts(variants, cfg["embed_model"])
+        s_sub = np.max(video.emb_sub @ qs.T, axis=1)
+        s_cap = np.max(video.emb_cap @ qs.T, axis=1)
     score = combine_scores(s_sub, s_cap, video.static_mask, alpha)
     order = np.argsort(-score, kind="stable")
     results = [Result(int(i), float(score[i]),

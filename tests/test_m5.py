@@ -3,7 +3,39 @@ import numpy as np
 import pytest
 import common
 import m5_search
-from m5_search import minmax, zscore, combine_scores, VideoIndex, search, search_with_stats
+from m5_search import (minmax, zscore, combine_scores, expand_query,
+                       VideoIndex, search, search_with_stats)
+
+
+def test_expand_query_off_by_default_is_identity():
+    # query_synonyms 미설정/빈 사전 → 변형 없음(확장 off와 완전 동일) [C 2026-07-13]
+    assert expand_query("초밥이 있는 장면", {}) == ["초밥이 있는 장면"]
+    assert expand_query("초밥", {"query_synonyms": {}}) == ["초밥"]
+
+
+def test_expand_query_term_substitution():
+    cfg = {"query_synonyms": {"초밥": ["스시"]}}
+    # 단순 term 치환은 조사 일치를 하지 않는다("초밥이"→"스시이", 문법상 "스시가").
+    # 임베딩은 사소한 조사 오류에 강건해 검색엔 무해하나, 정식 채택 시 조사 정규화 또는
+    # LLM 재작성이 더 정확하다는 알려진 한계다.
+    assert expand_query("초밥이 있는 장면", cfg) == ["초밥이 있는 장면", "스시이 있는 장면"]
+    assert expand_query("마늘 다지기", cfg) == ["마늘 다지기"]   # 미적중 → 원 질의만
+
+
+def test_search_expansion_off_is_byte_identical(monkeypatch):
+    # 사전 없을 때 search 결과가 확장 로직 도입 전과 동일해야 함(공식 경로 불변 보장)
+    vecs = {"질의": np.array([1.0, 0.0], dtype=np.float32)}
+    monkeypatch.setattr(m5_search, "embed_texts",
+                        lambda texts, model: np.stack([vecs[t] for t in texts]))
+    emb_sub = np.array([[1.0, 0.0], [0.0, 1.0], [0.7, 0.7]], dtype=np.float32)
+    video = VideoIndex(
+        segments=[{"idx": i, "start": float(i * 5), "end": float(i * 5 + 5),
+                   "subtitle": ""} for i in range(3)],
+        emb_sub=emb_sub, emb_cap=emb_sub.copy(),
+        static_mask=np.array([False] * 3))
+    r, stats = search_with_stats("질의", video, 0.5, {"embed_model": "m"})
+    assert [x.idx for x in r] == [0, 2, 1]
+    assert stats["raw_sub_max"] == pytest.approx(1.0)
 
 def test_minmax_basic():
     out = minmax(np.array([1.0, 3.0, 2.0]))

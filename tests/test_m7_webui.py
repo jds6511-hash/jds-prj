@@ -419,3 +419,32 @@ def test_search_log_records_tau_and_low_relevance(tmp_path):
                       .read_text(encoding="utf-8").strip().splitlines()[-1])
     assert line["abstention_tau"] == 0.48
     assert line["low_relevance"] is True
+
+
+def test_display_clean_collapses_repetition_and_masks_cjk():
+    # 표시 계층 정리 [실사용 테스트 2026-07-13]: Whisper 반복 환각과 캡션 잔여
+    # 한자·가나를 화면 표시에서만 정리한다. 인덱스·랭킹·평가에는 불개입.
+    from m7_webui import display_clean
+    assert display_clean("설탕 설탕 설탕") == "설탕"
+    assert display_clean("파 파 파 파 파 두부") == "파 두부"
+    assert display_clean("다진 마늘 오이") == "다진 마늘 오이"      # 2회 이하 반복은 유지
+    assert display_clean("투명한 식품 포包가 놓여") == "투명한 식품 포가 놓여"
+    assert display_clean("") == ""
+
+
+def test_search_response_uses_display_clean(tmp_path):
+    # /api/search 카드의 subtitle/caption은 표시 정리를 거쳐야 한다
+    stats = {"raw_sub_max": 0.9, "raw_sub_mean": 0.5,
+             "raw_cap_max": 0.8, "raw_cap_mean": 0.4}
+    ranked = [Result(0, 0.9, 0, 5)]
+    cfg = make_cfg(tmp_path)
+    idx = _stub_index(1)
+    idx.segments[0]["subtitle"] = "설탕 설탕 설탕"
+    idx.segments[0]["caption"] = "포包 상자"
+    client, _ = make_client(tmp_path, cfg=cfg,
+                            search_stats_fn=lambda q, v, a, c: (ranked, stats),
+                            load_index=lambda cfg, vid: idx)
+    r = client.post("/api/search", json={"video_id": "v1", "query": "질의"})
+    body = r.json()
+    assert body["results"][0]["subtitle"] == "설탕"
+    assert body["results"][0]["caption"] == "포 상자"
