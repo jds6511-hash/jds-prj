@@ -16,8 +16,8 @@
    재생성(scratchpad의 gen_ablation_configs.py 패턴). 본 config·본 인덱스를 실험으로
    오염시키지 않는다.
 5. **α는 config에 없다** — CLI 주입(`--alpha`), 확정값은 results/alpha_search_dev.json의
-   alpha_star. static_threshold=0(치환 off)·abstention max(sub,cap) τ=0.55는 실측 확정,
-   근거 없이 되돌리지 마라.
+   alpha_star. static_threshold=0(치환 off)·abstention max(sub,cap) τ=0.55·**융합 정규화
+   z-score**(minmax는 유의 열세 실측, 2026-07-13 개정)는 실측 확정, 근거 없이 되돌리지 마라.
 
 ## 실무 규칙
 

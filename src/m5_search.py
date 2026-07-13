@@ -20,10 +20,18 @@ def minmax(x: np.ndarray) -> np.ndarray:
     return np.zeros_like(x) if rng < 1e-9 else (x - x.min()) / rng
 
 
+def zscore(x: np.ndarray) -> np.ndarray:
+    sd = x.std()
+    return np.zeros_like(x) if sd < 1e-9 else (x - x.mean()) / sd
+
+
 def combine_scores(s_sub: np.ndarray, s_cap: np.ndarray,
                    static_mask: np.ndarray, alpha: float) -> np.ndarray:
-    s_sub_n = minmax(s_sub)                      # 2) 각각 정규화 (단일 영상 범위)
-    s_cap_n = minmax(s_cap)
+    # 2) 채널별 z-score 정규화 (단일 영상 범위). minmax에서 개정(2026-07-13):
+    #    per-query 극값이 유효 범위를 압축해 dev 96에서 유의 손실(-0.065 mrr, CI 0
+    #    배제)을 만드는 것이 실측됨 — docs/probes/fusion_alternatives_probe.py.
+    s_sub_n = zscore(s_sub)
+    s_cap_n = zscore(s_cap)
     s_cap_n = s_cap_n.copy()
     s_cap_n[static_mask] = s_sub_n[static_mask]  # 3) 정규화 '이후' 치환 [v2 8-4]
     return alpha * s_sub_n + (1 - alpha) * s_cap_n  # 4) 가중합
