@@ -79,3 +79,40 @@ def test_atomic_write_and_config(tmp_path):
     assert json.loads(p.read_text(encoding="utf-8")) == {"a": 1}
     cfg = common.load_config(Path(__file__).parents[1] / "config.yaml")
     assert cfg["seg_len_sec"] == 5 and cfg["alpha_tiebreak"] == "larger"
+
+
+def test_truncate_to_sentence():
+    # 8-3(b) 미완결 문장 절단: 마지막 완결 문장 경계까지만
+    assert common.truncate_to_sentence(
+        "남성이 걷는다. 배경에 나무가 보이고 그는 갑자기") == "남성이 걷는다."
+    assert common.truncate_to_sentence(
+        "요리를 한다! 접시에 담는다") == "요리를 한다!"
+    # 이미 완결이면 그대로
+    assert common.truncate_to_sentence("완결된 문장이다.") == "완결된 문장이다."
+    # 경계 문자가 없으면(전체가 미완결) 원문 유지 — 신호 소실 방지
+    assert common.truncate_to_sentence("경계 없는 조각") == "경계 없는 조각"
+    assert common.truncate_to_sentence("") == ""
+
+
+def test_strip_residual_cjk():
+    # 8-3(c) 잔여 한자·가나 제거(음차 아님) + 공백 정규화
+    assert common.strip_residual_cjk("책架 앞의 남성") == "책 앞의 남성"
+    assert common.strip_residual_cjk("카모フラ주 재킷") == "카모주 재킷"
+    assert common.strip_residual_cjk("정상 한국어 캡션") == "정상 한국어 캡션"
+
+
+def test_postprocess_caption_off_by_default():
+    # 플래그 없으면 원문 그대로, caption_raw 미생성 (현행 동작 불변)
+    clean, raw = common.postprocess_caption("남성이 걷는다. 배경에 나무가", {})
+    assert clean == "남성이 걷는다. 배경에 나무가"
+    assert raw is None
+
+
+def test_postprocess_caption_applies_when_enabled():
+    cfg = {"caption_truncate_incomplete": True, "caption_normalize_cjk": True}
+    clean, raw = common.postprocess_caption("책架에서 걷는다. 그리고 갑자기", cfg)
+    assert clean == "책에서 걷는다."          # CJK 제거 + 미완결 절단
+    assert raw == "책架에서 걷는다. 그리고 갑자기"   # 원문 보존
+    # 변화 없으면 caption_raw 불필요
+    clean2, raw2 = common.postprocess_caption("정상 문장이다.", cfg)
+    assert clean2 == "정상 문장이다." and raw2 is None

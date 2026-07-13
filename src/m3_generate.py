@@ -102,7 +102,7 @@ def caption_frame(image_path, prompt, model, processor, cfg, sample: bool = Fals
     imgs, vids = process_vision_info(messages)
     inputs = processor(text=[text], images=imgs, videos=vids,
                        padding=True, return_tensors="pt").to(model.device)
-    gen_kwargs = dict(max_new_tokens=128, do_sample=False)
+    gen_kwargs = dict(max_new_tokens=cfg.get("vlm_max_new_tokens", 128), do_sample=False)
     if sample:
         # 오염 캡션 재시도용 — greedy는 결정적이라 같은 오염 출력을 재현하므로
         # 샘플링으로만 다른 출력을 얻을 수 있다 [8-5(4)]
@@ -145,7 +145,11 @@ def caption_all(doc, wdir, cfg, captioner, checkpoint_every: int = 20) -> list[i
                     break
         if not cap_text:
             failed.append(seg["idx"])
-        seg["caption"] = cap_text
+        # 8-3(b)(c) 후처리 — config 플래그 켜졌을 때만(기본 off = 동작 불변)
+        clean, raw = common.postprocess_caption(cap_text, cfg)
+        seg["caption"] = clean
+        if raw is not None:
+            seg["caption_raw"] = raw
         since_checkpoint += 1
         if since_checkpoint >= checkpoint_every:
             common.save_segments(Path(wdir) / "segments.json", doc)

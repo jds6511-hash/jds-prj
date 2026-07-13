@@ -56,6 +56,34 @@ def save_segments(path, doc) -> None:
     atomic_write_json(path, doc)
 
 
+_SENT_END = re.compile(r"[。．.!?！？…]")
+_CJK_RUN = re.compile(r"[一-鿿぀-ヿ]+")
+
+
+def truncate_to_sentence(text: str) -> str:
+    """8-3(b) 미완결 문장 절단: 마지막 문장 경계(。.!?…)까지만 남긴다.
+    경계가 없으면(전체가 조각) 원문 유지 — 신호 소실 방지."""
+    matches = list(_SENT_END.finditer(text))
+    return text[: matches[-1].end()].rstrip() if matches else text
+
+
+def strip_residual_cjk(text: str) -> str:
+    """8-3(c) 잔여 한자·가나 제거(음차 아님 — 모델 고유 gibberish라 신뢰할 매핑 없음).
+    제거 후 생기는 이중 공백만 정리. display_clean과 동일 문자 클래스."""
+    return re.sub(r"\s{2,}", " ", _CJK_RUN.sub("", text)).strip()
+
+
+def postprocess_caption(text: str, cfg: dict) -> tuple[str, str | None]:
+    """8-3 캡션 후처리. config 플래그가 켜졌을 때만 적용하며(기본 off = 동작 불변),
+    변화가 있으면 원문을 caption_raw로 함께 반환(raw 보존 원칙, M8 raw_output과 일관)."""
+    clean = text
+    if cfg.get("caption_normalize_cjk"):
+        clean = strip_residual_cjk(clean)
+    if cfg.get("caption_truncate_incomplete"):
+        clean = truncate_to_sentence(clean)
+    return (clean, text) if clean != text else (clean, None)
+
+
 def index_text_hash(doc) -> str:
     """임베딩 입력 텍스트(subtitle·caption)의 내용 해시. M4가 meta.json에 기록하고
     스킵 판정·M5 로드에서 대조 — 재캡셔닝 후 --force 누락 시 낡은 임베딩이 무증상으로

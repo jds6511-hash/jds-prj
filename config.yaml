@@ -10,7 +10,10 @@ stt_language: "ko"
 caption_model: "Qwen/Qwen2.5-VL-3B-Instruct"  # 서버(대용량 VRAM)에서는 Qwen2.5-VL-7B-Instruct
 vlm_4bit: true                # 서버(대용량 VRAM)에서는 false (로컬 6GB VRAM은 true, NF4, 기존 caption 실험 검증)
 vlm_max_pixels: 602112        # 768*28*28 (기존 실험: 비전 토큰 폭증 방지)
+vlm_max_new_tokens: 128       # 8-3(a) config화(하드코딩 이전, 기본값 유지=동작 불변). 실험 3에서 192~256 상향 가능
 vlm_rep_penalty: 1.1          # 1.3은 3B-4bit에서 문자혼입(한자·가나) 유발 확인(2026-07-09 rp 실험: 혼입 8/10→3/10, 반복 붕괴는 1.0에서도 미발생) — 보험으로 1.1
+caption_truncate_incomplete: false  # 8-3(b) 미완결 문장 절단. 기본 off(현행 인덱스·평가 불변) — 켜면 재임베딩+test 재평가 절차 필요
+caption_normalize_cjk: false        # 8-3(c) 잔여 한자·가나 제거+caption_raw 보존. 기본 off(동일 절차 조건)
 caption_prompt: "이 장면을 한 문장의 한국어로 객관적으로 묘사하라. 화면에 보이지 않는 것은 쓰지 마라. 화면에 자막이나 글자가 보이더라도 그 글자를 그대로 옮겨 적지 말고, 인물의 행동과 배경 등 시각적 내용만 묘사하라."
 
 embed_model: "nlpai-lab/KURE-v1"   # dev에서 BAAI/bge-m3와 비교 후 확정 [v2 8-5]
