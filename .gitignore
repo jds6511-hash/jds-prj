@@ -1,5 +1,6 @@
 work/
 work_*/
+config_*.yaml
 results/*
 !results/eval_test.json
 !results/alpha_search_dev.json
