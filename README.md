@@ -75,6 +75,8 @@ python src/m7_webui.py --alpha 0.5 --port 7860
 
 ## 테스트
 
+`tests/test_mN_*.py`는 `src/mN_*.py`와 1:1로 대응하는 단위 테스트다(TDD로 작성).
+
 ```bash
 python -m pytest tests/ -q
 ```
