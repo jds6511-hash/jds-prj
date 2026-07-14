@@ -1,6 +1,8 @@
 work/
 work_*/
-results/
+results/*
+!results/eval_test.json
+!results/alpha_search_dev.json
 results_*/
 data/videos/
 __pycache__/
@@ -15,3 +17,4 @@ stt_test/
 *.docx
 *.hwpx
 .superpowers/
+docs/probes/_scratch/

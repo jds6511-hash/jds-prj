@@ -94,9 +94,8 @@ def main():
             "significant": not (ci[0] <= 0 <= ci[1])},
         "oracle_ceiling_minus_single": round(mrr_oracle - mrr_single, 4),
     }
-    dest = Path("C:/Users/UserK/AppData/Local/Temp/claude/"
-                "c--Users-UserK-Desktop-prj/f443ead9-6036-4c8c-8abc-28dc150439d3/"
-                "scratchpad/adaptive_alpha.json")
+    dest = Path(__file__).resolve().parent / "_scratch" / "adaptive_alpha.json"
+    dest.parent.mkdir(exist_ok=True)
     dest.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
     print("written:", dest)
     print(json.dumps(out["mrr"], ensure_ascii=False), "| clf_acc", out["classifier"]["accuracy"],

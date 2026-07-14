@@ -106,9 +106,8 @@ def main():
         "caveat": "dev 오염 캡션 0건이라 α_i=1(오염→자막) 게이트는 dev에서 미발동 — "
                   "빈자막→캡션 게이트만 실효. 오염 게이트는 미세정/서버 캡션에서만 검증 가능.",
     }
-    dest = Path("C:/Users/UserK/AppData/Local/Temp/claude/"
-                "c--Users-UserK-Desktop-prj/f443ead9-6036-4c8c-8abc-28dc150439d3/"
-                "scratchpad/adaptive_fusion.json")
+    dest = Path(__file__).resolve().parent / "_scratch" / "adaptive_fusion.json"
+    dest.parent.mkdir(exist_ok=True)
     dest.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
     print("written:", dest)
     print("overall:", out["mrr_overall"])

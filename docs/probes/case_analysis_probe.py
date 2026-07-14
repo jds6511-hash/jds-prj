@@ -63,9 +63,8 @@ def main():
             }
 
     out["rank_consistency_with_eval_test"] = "OK" if not mismatch else mismatch
-    dest = Path("C:/Users/UserK/AppData/Local/Temp/claude/"
-                "c--Users-UserK-Desktop-prj/f443ead9-6036-4c8c-8abc-28dc150439d3/"
-                "scratchpad/case_analysis.json")
+    dest = Path(__file__).resolve().parent / "_scratch" / "case_analysis.json"
+    dest.parent.mkdir(exist_ok=True)
     dest.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
     print("written:", dest, "| consistency:", out["rank_consistency_with_eval_test"])
 

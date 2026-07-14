@@ -92,10 +92,8 @@ def main():
            "type_summary": type_summary,
            "query_independence_top1": independence,
            "rows": rows}
-    dest = Path(__file__).resolve().parents[2]
-    scratch = Path("C:/Users/UserK/AppData/Local/Temp/claude/"
-                   "c--Users-UserK-Desktop-prj/f443ead9-6036-4c8c-8abc-28dc150439d3/"
-                   "scratchpad/tiebreak_probe.json")
+    scratch = Path(__file__).resolve().parent / "_scratch" / "tiebreak_probe.json"
+    scratch.parent.mkdir(exist_ok=True)
     scratch.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
     print("written:", scratch)
 

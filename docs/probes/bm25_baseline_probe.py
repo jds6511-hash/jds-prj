@@ -101,9 +101,8 @@ def main():
         "proposed_vs_BM25_sub": ci(arrs["proposed(α=0.5)"], arrs["BM25_sub"]),
         "proposed_vs_BM25_subcap": ci(arrs["proposed(α=0.5)"], arrs["BM25_sub+cap"]),
     }
-    dest = Path("C:/Users/UserK/AppData/Local/Temp/claude/"
-                "c--Users-UserK-Desktop-prj/f443ead9-6036-4c8c-8abc-28dc150439d3/"
-                "scratchpad/bm25_baseline.json")
+    dest = Path(__file__).resolve().parent / "_scratch" / "bm25_baseline.json"
+    dest.parent.mkdir(exist_ok=True)
     dest.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
     print("written:", dest)
     print("overall:", out["mrr_overall"])

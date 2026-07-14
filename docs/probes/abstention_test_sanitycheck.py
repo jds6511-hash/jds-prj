@@ -91,9 +91,8 @@ def main():
             "missed": [d for d in detect if not d["banner_fired"]],
         },
     }
-    dest = Path("C:/Users/UserK/AppData/Local/Temp/claude/"
-                "c--Users-UserK-Desktop-prj/f443ead9-6036-4c8c-8abc-28dc150439d3/"
-                "scratchpad/abstention_test_sanity.json")
+    dest = Path(__file__).resolve().parent / "_scratch" / "abstention_test_sanity.json"
+    dest.parent.mkdir(exist_ok=True)
     dest.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
     print("written:", dest)
 

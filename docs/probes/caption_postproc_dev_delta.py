@@ -76,9 +76,8 @@ def main():
                     "ci95_paired": ci, "significant": not (ci[0] <= 0 <= ci[1])},
         "by_type_current": bt(res_cur), "by_type_postproc": bt(res_pp),
     }
-    dest = Path("C:/Users/UserK/AppData/Local/Temp/claude/"
-                "c--Users-UserK-Desktop-prj/f443ead9-6036-4c8c-8abc-28dc150439d3/"
-                "scratchpad/caption_postproc_delta.json")
+    dest = Path(__file__).resolve().parent / "_scratch" / "caption_postproc_delta.json"
+    dest.parent.mkdir(exist_ok=True)
     dest.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
     print("written:", dest)
     print("change:", out["caption_change_profile"], "\ndev_mrr:", out["dev_mrr"])
