@@ -2,7 +2,7 @@
 
 날짜: 2026-07-07
 상태: 사용자 승인됨
-관련 문서: docs/DESIGN_SPEC.md 4-7 (M7), docs/superpowers/plans/2026-07-07-video-pipeline-m1-m9.md
+관련 문서: docs/DESIGN_SPEC.md 4-7 (M7)
 
 ## 목적
 

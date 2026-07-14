@@ -22,3 +22,6 @@ docs/probes/_scratch/
 data/queries/queries_draft*.jsonl
 data/queries/queries_dev_seglen.jsonl
 docs/presentation/중간발표_골격_draft.md
+PROJECT_RULES.md
+docs/작업현황_2026-07-11.md
+docs/작업현황_2026-07-13.md
