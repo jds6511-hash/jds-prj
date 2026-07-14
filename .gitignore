@@ -19,3 +19,6 @@ stt_test/
 *.hwpx
 .superpowers/
 docs/probes/_scratch/
+data/queries/queries_draft*.jsonl
+data/queries/queries_dev_seglen.jsonl
+docs/presentation/중간발표_골격_draft.md
