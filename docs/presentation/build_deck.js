@@ -1,7 +1,6 @@
 const pptxgen = require("pptxgenjs");
 const p = new pptxgen();
 p.layout = "LAYOUT_WIDE";            // 13.33 x 7.5
-p.author = "정대석";
 p.title = "영상에서 원하는 장면, 말로 찾기 (중간발표)";
 
 const W = 13.33, H = 7.5;
@@ -51,7 +50,6 @@ function accentTab(s, x, y, h, color) {
   ], { x: 0.95, y: 4.45, w: 11.5, h: 0.5, fontSize: 17, fontFace: BF, margin: 0 });
   s.addText([
     { text: "중간발표", options: { bold: true, color: WHITE } },
-    { text: "   ·   정대석   ·   KAIST 김주호 교수님 연구실", options: { color: "8FB0C6" } },
   ], { x: 0.95, y: 6.35, w: 11.5, h: 0.4, fontSize: 14, fontFace: BF, margin: 0 });
 }
 
