@@ -21,6 +21,7 @@ stt_test/
 docs/probes/_scratch/
 node_modules/
 ~$*
+*.pptx
 data/queries/queries_draft*.jsonl
 data/queries/queries_dev_seglen.jsonl
 docs/presentation/중간발표_골격_draft.md
