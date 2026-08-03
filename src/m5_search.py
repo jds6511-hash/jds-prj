@@ -123,7 +123,10 @@ def search_with_stats(query: str, video: VideoIndex, alpha: float,
                       video.segments[i]["start"], video.segments[i]["end"])
               for i in order]
     stats = {"raw_sub_max": float(s_sub.max()), "raw_sub_mean": float(s_sub.mean()),
-             "raw_cap_max": float(s_cap.max()), "raw_cap_mean": float(s_cap.mean())}
+             "raw_cap_max": float(s_cap.max()), "raw_cap_mean": float(s_cap.mean()),
+             # zscore의 sd<1e-9 분기 발동 여부 — 발동 빈도 미기록 gap 보완 [2026-07-14]
+             "sub_degenerate": bool(s_sub.std() < 1e-9),
+             "cap_degenerate": bool(s_cap.std() < 1e-9)}
     return results, stats
 
 

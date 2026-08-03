@@ -115,3 +115,21 @@ def is_corrupted_caption(text: str) -> bool:
         if most_common_count / len(words) > 0.4:
             return True
     return False
+
+
+_INJECTION_PATTERNS = [
+    r"이전\s*지시", r"위\s*지시", r"다음\s*지시를?\s*따라", r"지시를\s*따라",
+    r"무시하고", r"무시해", r"위\s*규칙을?\s*무시",
+    r"시스템\s*프롬프트", r"system\s*prompt",
+    r"ignore\s*(previous|above|all)\s*instructions?",
+    r"너는\s*이제", r"당신은\s*이제",
+]
+
+
+def is_suspicious_instruction(text: str) -> bool:
+    """세그먼트 텍스트(자막·캡션)에 리포트 생성 LLM을 겨냥한 지시문 패턴이 있는지
+    휴리스틱 탐지 — 콘텐츠 내 프롬프트 주입 완화용(차단 보장 아님, DESIGN_SPEC 4-8).
+    is_corrupted_caption과 별개 관심사(품질 vs 안전)라 분리한다."""
+    if not text:
+        return False
+    return any(re.search(p, text, re.IGNORECASE) for p in _INJECTION_PATTERNS)

@@ -145,7 +145,26 @@ def test_search_with_stats_matches_search_ranking_and_raw_stats(monkeypatch):
         "raw_sub_max": pytest.approx(float(s_sub.max())),
         "raw_sub_mean": pytest.approx(float(s_sub.mean())),
         "raw_cap_max": pytest.approx(float(s_cap.max())),
-        "raw_cap_mean": pytest.approx(float(s_cap.mean()))}
+        "raw_cap_mean": pytest.approx(float(s_cap.mean())),
+        "sub_degenerate": False,                      # (c) std>0이라 zscore 정상 분기
+        "cap_degenerate": False}
+
+
+def test_search_with_stats_flags_degenerate_normalization(monkeypatch):
+    # s_sub가 전 세그먼트 동일(std<1e-9) → zscore가 0벡터 분기를 탐 → sub_degenerate=True.
+    # 이 발동 빈도가 search_log.jsonl에 안 남아 원인 조사가 불가능했던 gap 보완.
+    q = np.array([1.0, 0.0], dtype=np.float32)
+    monkeypatch.setattr(m5_search, "embed_texts", lambda texts, model: np.array([q]))
+    emb_sub = np.array([[0.6, 0.8], [0.6, 0.8], [0.6, 0.8]], dtype=np.float32)
+    emb_cap = np.array([[0.1, 0.9], [0.3, 0.7], [0.6, 0.4]], dtype=np.float32)
+    video = VideoIndex(
+        segments=[{"idx": i, "start": float(i * 5), "end": float(i * 5 + 5),
+                   "subtitle": ""} for i in range(3)],
+        emb_sub=emb_sub, emb_cap=emb_cap,
+        static_mask=np.array([False, False, False]))
+    _, stats = search_with_stats("query", video, alpha=0.5, cfg={"embed_model": "any-model"})
+    assert stats["sub_degenerate"] is True
+    assert stats["cap_degenerate"] is False
 
 def test_load_raises_friendly_error_when_meta_missing(tmp_path):
     # meta.json만 없는 부분 산출물(중단된 M4 실행) → 친절한 FileNotFoundError,
