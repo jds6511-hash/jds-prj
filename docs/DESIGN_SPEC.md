@@ -166,8 +166,8 @@ Whisper 발화 [t0, t1]이 겹치는 시간이 0초를 초과하는 **모든** �
 - **핵심 함수:**
 
 ```
-def extract_audio(video_path: Path, out_wav: Path,
-                  sr: int = 16000, mono: bool = True) -> None
+def extract_audio(video_path, out_wav, sr: int = 16000) -> None
+    # 모노는 파라미터가 아니라 ffmpeg 인자 `-ac 1`로 고정(선택지 없음)
 def make_segments(duration_sec: float, seg_len: int = 5) -> list[dict]
     # start = idx*5 (정수 초 내림), end = min(start+5, duration)  [v2 9-1(d)]
 ```
@@ -202,12 +202,18 @@ def is_static(motion_score: float, threshold: float) -> bool
 - **핵심 함수:**
 
 ```
-def transcribe(wav: Path, model: str = "large-v3") -> list[Utterance]
+def transcribe(wav: Path, model_name: str = "large-v3", lang: str = "ko",
+               force: bool = False) -> list[Utterance]
+    # 캐시: audio.wav 옆 stt_cache.json (model·lang·mtime·size 일치 시 재사용)
+    # GPU 폴백 사다리: cuda/float16 → cuda/int8_float16 → cpu/int8
     # Utterance = {text, t0, t1, words:[{w, t0, t1}]}
 def assign_subtitles(utts: list[Utterance],
                      segments: list[dict]) -> None
     # 3-2 오버랩 귀속 규칙 구현. 겹치는 모든 세그먼트에 중복 허용
-def caption_frame(image: Path, prompt: str, model) -> str
+def caption_frame(image_path, prompt: str, model, processor, cfg,
+                  sample: bool = False) -> str
+    # sample=True는 오염 캡션 재시도 전용 경로 — greedy는 결정적이라 같은 오염을
+    # 재현하므로 do_sample=True(temperature 0.7, top_p 0.9)로만 다른 출력을 얻는다 [8-5(4)]
     # 프롬프트는 config의 caption_prompt 1종 고정 (다중 프롬프트는 11주차)
 ```
 
@@ -265,11 +271,25 @@ def zscore(x: np.ndarray) -> np.ndarray:
 ```
 def search_with_stats(query, video, alpha, cfg) -> tuple[list[Result], dict]
     # search와 동일 랭킹 + 정규화 '이전' raw 코사인 통계:
-    # {"raw_sub_max", "raw_sub_mean", "raw_cap_max", "raw_cap_mean"}
+    # {"raw_sub_max", "raw_sub_mean", "raw_cap_max", "raw_cap_mean",
+    #  "sub_degenerate", "cap_degenerate"}   ← 뒤 2개는 2026-07-14 추가, 상세 8-2
     # search(...)는 search_with_stats(...)[0] — 랭킹 계약 불변(테스트로 고정)
 ```
 
   근거: per-query min-max는 무관련 질의도 최고점을 1.0으로 끌어올려 "관련 없음" 신호를 지운다(실측: 유관 질의 raw_sub_max ≈ 0.62 vs 무관 질의 ≈ 0.47). raw 통계는 사용자에게 노출하지 않고 8-2의 abstention 임계값 설계 데이터로만 축적한다. 웹 서버(M7-W)는 매 질의를 `results/search_log.jsonl`에 1줄 append한다(스키마는 8-2, 로깅 실패는 무시 — 검색을 죽이지 않는다).
+
+- **질의 확장 (`expand_query`) — 구현됨·기본 off (2026-08-04 등재, 문서-코드 동기 감사에서 미등재 발견):**
+
+```
+def expand_query(query: str, cfg: dict) -> list[str]
+    # cfg['query_synonyms'](term→[동의어]) 사전으로 term 치환 변형을 덧붙인다.
+    # 사전 미설정/미적중 시 [query] 단독 반환 — 확장 off와 완전 동일.
+    # 변형이 2개 이상일 때만: 변형별 임베딩의 raw 코사인 max 풀링(정규화 '이전').
+```
+
+  **이 함수는 `search_with_stats` 안에 있으므로 `search`를 포함한 운영 검색 경로에 들어 있다.** 다만 `config.yaml`에 `query_synonyms` 키가 **없어서 현재 무동작**이며(`[query]` 단독 반환), 따라서 확정 test 결과(8-6)는 확장 off 조건에서 산출된 값이다. 근거·한계: 임베딩의 외래어–고유어 동의어 갭(실측 cos(초밥,스시)=0.48 < cos(초밥,김밥)=0.75), 프로토타입에서 초밥→스시 21위→2위 개선(`docs/probes/synonym_expansion_probe.py`). 정규화 이후 풀링(21→10위)보다 정규화 이전 풀링(21→2위)이 우세한 것도 프로브 실측이다.
+
+  **활성화는 config 변경 = 확정 config 변경**이므로 CLAUDE.md 절대규칙 1의 절차(dev 검증 → 사용자 승인 → test 재평가)를 밟아야 한다. `query_synonyms`를 config에 추가하는 것만으로 검색 동작이 바뀌고 8-6 수치가 더 이상 문서화된 파이프라인에 대응하지 않게 되므로, 키 부재 자체가 의도된 상태다(§6 참조).
 
 ## 4-6. M6 평가 (v2 5장 + 8-3)
 
@@ -321,7 +341,7 @@ def format_output(ranked: list[Result], segments, k: int = 3) -> dict:
 ```
 def build_map_prompt(chunk: list[dict]) -> str
     # [seg#N] 인용 강제 규칙 4개 포함 [v2 15-1 골격]
-def build_reduce_prompt(partial_reports: list[str]) -> str
+def build_reduce_prompt(partials: list[str]) -> str
     # 중복 제거 + 시간순 재정렬만. "새 사실 추가 금지" 명시 [v2 15-2]
 def parse_citations(text: str) -> list[Sentence]
     # 줄(line) 단위로 분리해 각 줄을 후보 문장으로 처리(빈 줄 제외, 선행 "-" 제거).
@@ -329,7 +349,10 @@ def parse_citations(text: str) -> list[Sentence]
     # 반복그룹 정규식 r"\[seg#(\d+)(?:,\s*seg#(\d+))*\]"은 Python re가 반복 그룹의
     # 마지막 매치만 캡처하는 특성 때문에 인용 3개 이상인 문장에서 중간 값이
     # 유실된다 — 사용 금지. 인용이 없는 문장은 cites=[]
-def generate_report(segments, llm, chunk_size: int = 60) -> Report
+def generate_report(segments, llm, chunk_size: int = 60,
+                    overlap: int = 5) -> Report
+    # overlap: map 청크 간 겹침 세그먼트 수(config map_chunk_overlap와 동일 기본값 5)
+    # — 청크 경계에 걸친 사건이 양쪽에서 누락되는 것을 막는다
 ```
 
 - **map-reduce 발동 조건:** n_segments > chunk_size일 때만 map-reduce, 이하면 단일 호출. chunk_size는 config(LLM 컨텍스트 한도에 맞춰 조정).
@@ -349,9 +372,11 @@ def generate_report(segments, llm, chunk_size: int = 60) -> Report
 - **핵심 함수:**
 
 ```
-def judge_coverage(report, gt_seg_idx, judge_llm) -> bool
+def judge_coverage(report_text: str, segment: dict, judge) -> tuple[bool, bool]
     # "리포트가 이 세그먼트 내용을 언급했는가" 이진 판정 [v2 16-1]
-def judge_grounded(sentence, cited_segments, judge_llm) -> bool
+    # 인자는 gt_seg_idx가 아니라 세그먼트 dict 자체(호출부 eval_report가 by_idx로 해소),
+    # 반환은 (covered, judge_parse_ok) 튜플 — per_gt_segment의 두 필드에 대응
+def judge_grounded(sentence: dict, cited_segments: list[dict], judge) -> bool
     # G-Eval식 3단계 CoT: ①문장 요약 → ②인용 seg 요약 → ③일치 판정 [v2 16-4]
     # 프롬프트에 "확신 없으면 false로 보수 판정" 명시 [v2 17-4 원칙]
     # 교차 세그먼트 추론 판정 기준 (2026-07-13, 설계 점검 6): 인용된 세그먼트
@@ -409,7 +434,10 @@ caption_model: "Qwen/Qwen2.5-VL-3B-Instruct"  # 서버(대용량 VRAM)에서는 
 vlm_4bit: true                # 서버(대용량 VRAM)에서는 false (로컬 6GB VRAM은 true, NF4, 기존 caption 실험 검증)
 vlm_max_pixels: 602112        # 768*28*28 (기존 실험: 비전 토큰 폭증 방지)
 vlm_rep_penalty: 1.1          # 1.3은 3B-4bit에서 문자혼입(한자·가나) 유발 확인(2026-07-09 rp 실험: 혼입 8/10→3/10, 반복 붕괴는 1.0에서도 미발생) — 보험으로 1.1
+vlm_max_new_tokens: 128       # 8-3(a) config화(하드코딩 이전, 기본값 유지=동작 불변)
 caption_prompt: "이 장면을 한 문장의 한국어로 객관적으로 묘사하라. 화면에 보이지 않는 것은 쓰지 마라. 화면에 자막이나 글자가 보이더라도 그 글자를 그대로 옮겨 적지 말고, 인물의 행동과 배경 등 시각적 내용만 묘사하라."
+caption_truncate_incomplete: false  # 8-3(b) 미완결 문장 절단. 기본 off(현행 인덱스·평가 불변) — 켜면 재임베딩+test 재평가 절차 필요
+caption_normalize_cjk: false        # 8-3(c) 잔여 한자·가나 제거+caption_raw 보존. 기본 off(동일 절차 조건)
 
 embed_model: "nlpai-lab/KURE-v1"   # dev 비교 완료(2026-07-10) — BGE-M3 대비 전 지점 우세, KURE-v1 확정 [v2 8-5]
 embed_batch_size: 32
@@ -420,11 +448,13 @@ bootstrap_B: 2000              # 쌍체 차이 부트스트랩 재표집 횟수 
 alpha_tiebreak: "larger"      # 동률 시 자막 우선 [v2 9-1(a)]
 eval_k: [1, 5, 10]
 iou_thresholds: [0.5, 0.3]    # 보조지표
+abstention_tau: 0.55          # max(raw_sub_max, raw_cap_max) 기준 무관련 경고 임계값 [8-2]
+                              # KURE-v1 종속 — embed_model 교체 시 재캘리브레이션 필수
 
 report_model: "Qwen/Qwen2.5-7B-Instruct"
 llm_4bit: true                # 서버(대용량 VRAM)에서는 false (로컬 6GB VRAM 대응)
-judge_model: null             # report_model과 다른 패밀리 지정 [v2 17-6]
-same_model_judge: false
+judge_model: "Qwen/Qwen2.5-7B-Instruct"  # 잠정: 다른 패밀리 1순위는 서버 GPU 확정 대기 [v2 17-6 2순위]
+same_model_judge: true        # 위 잠정 조치의 명시적 선언 — 미선언 시 M9가 거부 [v2 17-6]
 map_chunk_size: 60
 map_chunk_overlap: 5
 human_check_n: 20
@@ -434,6 +464,13 @@ paths:
   work: "work"
   results: "results"
 ```
+
+**의도적으로 부재하는 키 (2026-08-04 문서-코드 동기 감사에서 명문화):**
+
+- **`alpha`** — config에 두지 않는다. CLI 주입(`--alpha`)이며 확정값은 `results/alpha_search_dev.json`의 `alpha_star`다 (8-1, CLAUDE.md 절대규칙 5).
+- **`query_synonyms`** — `expand_query`(4-5)가 읽는 키이지만 **일부러 넣지 않는다.** 키가 없으면 확장이 무동작이라 확정 test 수치(8-6)가 문서화된 파이프라인과 정확히 대응한다. 추가하는 순간 검색 동작이 바뀌므로 dev 검증 → 사용자 승인 → test 재평가 절차 대상이다.
+
+*이 §6 블록은 `config.yaml`의 거울이다(문서-코드 동기 원칙). 2026-08-04 감사에서 `vlm_max_new_tokens`·`caption_truncate_incomplete`·`caption_normalize_cjk`·`abstention_tau` 4개 키 누락과 `judge_model`·`same_model_judge` 값 불일치(문서 null/false vs 실제 잠정 동일모델/true)를 발견해 맞췄다.*
 
 # 7. 주차 일정 매핑
 
@@ -503,6 +540,10 @@ paths:
 ```
 
 보고 규칙: 선택은 MRR로 하되 헤드라인 표에는 hit@5·MRR을 항상 병기하고, 두 지표의 우열이 갈리면 per_query 원자료로 사례 해석을 덧붙인다(지표 간 불일치를 숨기지 않는다).
+
+**방법 선택의 외부 근거 (2026-07-31 추가).** 위 처방 (b)가 부트스트랩을 쓰는 근거는 지금까지 자체 실측(hit@5 계단형 불안정)뿐이었다. IR 평가 방법론 문헌에도 근거가 있다: Smucker, Allan, Carterette (CIKM 2007, "A comparison of statistical significance tests for information retrieval evaluation")는 TREC 3·5–8의 ad-hoc 런들로 다섯 검정(paired t-test, Wilcoxon signed rank, sign test, bootstrap, Fisher's randomization)을 비교해 **"randomization·bootstrap·t-test 사이에는 실질적 차이가 거의 없고, Wilcoxon과 sign test는 유의 검출력이 낮으며 잘못된 유의 판정으로 이어질 수 있다"**고 결론했다. 즉 본 프로젝트가 쓰는 부트스트랩은 IR 평가에서 검증된 표준 선택지 안에 있고, 소표본에서 흔히 대안으로 제시되는 "비모수라 안전하다"는 이유의 Wilcoxon 쪽이 오히려 권장되지 않는다. test 헤드라인의 쌍체 부트스트랩 CI(8-6)도 같은 근거를 공유한다.
+
+*범위 주의:* Smucker et al.의 비교 대상은 **런 쌍의 MAP 차이**이고, 본 프로젝트는 질의 단위 MRR·hit@k 차이다. 검정 계열의 상대적 타당성 근거로만 인용하고, 그 논문의 p-value 수치를 본 프로젝트에 전이하지 않는다.
 
 **처방 (c) dev 다양화 (완료, 2026-07-10):** dev 영상 3개로 확대 완료(확정치는 8-6의 단일 표 참조). 영상 간 α* 편차는 alpha_search_dev.json의 영상별 분해(by_video 키, (a)(b)와 함께 이미 구현됨)로 병기된다.
 
@@ -597,6 +638,10 @@ sub 단독 채널은 구조적 장면형 편향이 있었다: 무발화 장면�
 - **재측정 트리거 (2026-07-11 전 항목 완료):** ① static_threshold 재실측 완료(ablation_plan 2-4-2) — dev 96건 스윕에서 치환 off(thr=0)가 유의 우세(mrr +0.035, CI 0 배제), **static_threshold=0 확정(2026-07-11)**. seg_len(5초 유지)·caption_prompt(P0 유지) ablation도 완료(ablation_plan 1-6, 3-6). ② α 재탐색: `results/alpha_search_dev.json`(dev 96건, 3영상 by_video 분해) — **alpha_star=0.5** 확정(경과: 1차 33건에서는 tiebreak에 의해 1.0=baseline으로 수렴 → dev 확장으로 59·81·96건에서 0.6 안정화 → 오염 캡션 21건 선별 재생성 후 α=0.6이 tie_set에서 탈락하며 0.5로 최종 확정. 상세: docs/평가분석_2026-07-10.md). ③ KURE vs BGE-M3 비교: `results_bge/alpha_search_dev.json` — KURE-v1이 전 지점(α=1.0/0.0 양끝 포함) 우세 확인, embed_model=KURE-v1 유지 확정.
 - **베이스라인 고정 (최종 2026-07-13, z-score 융합 개정 후):** test 평가(`results/eval_test.json`, n=39, 영상 4개: panibottle/gemini/yunnamnopo(요리 예능)/itsub(테크 리뷰))는 baseline(α=1.0) hit@1=0.5641/hit@5=0.7692/mrr=0.6489 대비 proposed(α*=0.5) hit@1=**0.7692**/hit@5=0.8718/hit@10=0.9231/mrr=**0.8286**. 쌍체 부트스트랩 95% CI: mrr [0.0583, 0.3098]·hit@1 [0.0769, 0.3590] 0 배제(유의), hit@5/hit@10은 0 포함(유의 주장 금지). 유형별: 장면형(n=13) mrr 0.1741→0.7183·hit@1 0→0.6154로 최대 개선, 복합형(n=14) 상승(mrr 0.8246→0.8869), 자막형(n=12)은 소폭 하락(mrr 0.9583→0.8802 — 회귀 사례 it_q07 1→16위, yn_q09 5→12위 2건). 39건 중 21건은 양측 rank 1(포화), 경합 18건에서 baseline mrr 0.2393 vs proposed 0.6287. 영상별 개선 +0.140~+0.153으로 4장르 균질(일반화 근거). 직전 minmax 결과(mrr 0.7953, hit@1 0.7179, hit@5 0.8974 — z-score가 hit@5만 1건 열세)와 구 n=19 결과는 git 이력·docs/평가분석_2026-07-10.md 참조. **재검증(2026-07-11 리뷰 반영 배치)**: 보강 세정 19건 재캡셔닝 + 전 영상 재임베딩(text_hash 백필) 후 공식 M6 재실행 — dev α*=0.5·tie_set [0.2–0.5] 유지, test per-query 순위 39건 전건 동일(수치 불변). 세정 대상이 GT 인접 세그먼트가 아니었음을 순위 불변으로 확인. **신뢰도 프레이밍(보고서 활용):** tiebreak가 자막 우선(`larger`)이라 α*=0.5는 tie_set [0.2,0.4,0.5] 중 **캡션 기여를 가장 보수적으로 과소평가하는 α**를 고른 것이다. 그럼에도 proposed가 유의 우위를 낸다는 것은 결과가 tiebreak 방향의 편향을 뚫고 나왔다는 뜻이라, 오히려 우위 주장의 신뢰도를 높이는 근거로 명시한다.
 - **test 접촉 이력의 정확한 집계 (2026-07-13 갱신):** "test 1회"의 정확한 의미는 **튜닝 목적 접촉 0회**이며, 공식 평가 실행 자체는 확정 절차에 따라 총 5회였다 — ① 최초 평가(n=19), ② test 영상 확장 후(n=39), ③ static_threshold=0 확정 재평가, ④ 리뷰 반영(세정·재임베딩) 재검증, ⑤ 융합 정규화 개정(minmax→z-score, dev 유의 확인·사용자 승인 후) 재평가. 각 실행은 dev에서 결정이 끝난 뒤의 확인이었고 test 결과가 config 선택에 역류한 적 없다. 단 예외적 경계 사례 1건을 정직하게 기록: pb_q08 회귀의 원인 규명(중국어 캡션)이 test 관찰에서 출발했으나, 처치는 내용 무관(content-blind) 자동 판정 기준의 전 영상 일괄 적용이었다(상세: docs/평가분석_2026-07-10.md).
+
+  **왜 5회 실행이 holdout 과적합이 아닌가 — 적응성 기준으로의 방어 (2026-07-31 추가).** "test를 5번 돌렸으면 test에 과적합된 것 아닌가"라는 지적은 Dwork, Feldman, Hardt, Pitassi, Reingold, Roth (Science 349(6248):636, 2015, "The reusable holdout: Preserving validity in adaptive data analysis")가 formalize한 문제와 대조하면 정확히 답할 수 있다. 그 논문이 지적하는 타당성 붕괴의 원인은 **접촉 횟수 자체가 아니라 적응성(adaptivity)** 이다 — holdout 결과를 보고 다음 분석·가설·파라미터를 고르는 순환이 생길 때 holdout이 사실상 학습셋이 된다. 본 프로젝트의 5회는 그 순환이 없다: α·정규화·τ·임계값 등 **모든 선택은 dev에서 독립적으로 끝난 뒤** test를 돌렸고, test 수치가 config 선택에 역류한 적이 없다(위 ①~⑤ 각 항목이 "dev 결정 완료 → 확인" 구조). 동일 config에 대한 반복 실행은 기대값이 같은 재계산이므로 자유도를 소모하지 않는다.
+
+  이 방어를 정직하게 유지하기 위한 두 가지 단서를 병기한다. 첫째, **위 pb_q08 경계 사례는 유일하게 적응성 방향의 접촉**이었고(관찰 출발점이 test), 그래서 처치를 내용 무관 자동 규칙의 전 영상 일괄 적용으로 제한해 자유도 소모를 구조적으로 차단했다 — 이 1건을 숨기지 않는 것이 방어의 전제다. 둘째, 본 프로젝트는 Dwork et al.이 **제시한 기법**(차분 프라이버시 기반 Thresholdout 등 holdout 재사용 알고리즘)을 쓰지 않는다. 그 기법은 적응적 재사용을 안전하게 만드는 장치이고, 본 프로젝트가 의지하는 것은 **비적응성 자체**다. 따라서 인용은 "우리가 그 기법을 적용했다"가 아니라 "그 논문이 정의한 위험 조건에 우리가 해당하지 않는 이유"로만 한다. 앞으로 test 결과를 보고 config를 바꾸는 일이 생기면 이 방어는 즉시 무효가 되므로, CLAUDE.md의 test 재평가 금지 규칙이 이 논거의 실질적 보증 장치다.
 - **IoU 지표의 test 항등성 각주 (2026-07-13, 설계 점검):** GT가 5초 격자 정렬이고 test 질의의 GT가 전부 1~2세그먼트인 조건에서 **iou@0.5_r@1은 hit@1과 수학적으로 동일**하다(1세그: IoU 1.0, 2세그: 5/10=0.5≥0.5; 유일한 비정렬 gm_q08도 0.658로 통과 구간). 따라서 test 표의 IoU 열은 hit@1의 중복이며 독립 지표로 세지 않는다 — IoU가 분별력을 갖는 곳은 GT 3+세그 질의(dev 6건)와 seg_len ablation(격자 불일치 발생)뿐이다. 보고서·발표 표에는 이 각주를 병기한다.
 - **GT 라벨 예외 1건 (2026-07-13 전수 대조):** 135건 중 wl_q03(dev)만 gt_seg_idx [132,133,134,312]가 gt_start/end(660~675) 파생값 [132,133,134]와 불일치 — seg 312(1560s)는 같은 내용("삼성폰 1,000개")이 영상 후반에 재등장하는 **다중 인스턴스를 수동 추가**한 것. 스키마에 다중 인스턴스 개념이 없어 파생 계약의 예외이며, 부작용 셋을 인지하고 보존한다: (a) hit@k가 이 질의에 한해 관대(양 방법 동일 적용이라 비교 중립), (b) seg 312 히트 시 hit@1=1 vs iou@0.5_r@1=0 지표 모순 가능, (c) `--recompute-gt-seg-idx` 경로는 312를 탈락시켜 공식 평가와 GT가 다름(seg ablation은 상대 비교 목적이라 영향 없음). test 라벨에는 예외 없음.
 

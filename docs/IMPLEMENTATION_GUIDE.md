@@ -871,6 +871,38 @@ Hit/Recall@k 주지표(8-3), IoU@0.5/0.3은 보조. (c) 질의 태깅은
 정수 초, 세그먼트 시작은 내림·끝은 min(start+5, duration). 이 고정값들은
 데이터 명세서에 기록한다.
 
+### 9-1-1. (c)항의 미이행 상태와 일치율 지표 확정 (2026-08-04)
+
+**먼저 정직하게: (c)항은 현재 이행되지 않았다.** 확정 질의셋 135건(dev 96 / test 39)은
+단일 라벨러(연구자 본인)가 프레임 실물 검증으로 작성했고, **라벨러 간 일치율은 계산된
+바 없다.** 발표 골격 초안에도 "라벨러 간 일치율 병기 **예정**"으로만 남아 있다. 문서가
+약속한 절차와 실제 수행이 어긋난 상태이므로, 결과 보고서에 (c)항을 이행한 것처럼 쓰면
+안 된다 --- 아래 둘 중 하나로 정리한다.
+
+**선택지 A (문서를 현실에 맞춤, 비용 0):** (c)항을 "단일 라벨러가 사전 등록한 유형
+가이드라인에 따라 태깅했고, 라벨러 간 일치율은 측정하지 못했다"로 고쳐 쓰고 한계 절에
+명시한다. 유형 태그의 주관성이 결과에 미치는 영향은 유형별 분해 보고가 이미 노출한다.
+
+**선택지 B (일부라도 이행, 비용 소):** 전체 재라벨링은 불필요하다. **GT 타임스탬프는
+프레임 실물 검증이라 상대적으로 객관적이고, 주관성이 실제로 문제되는 부분은 유형 태그
+(3분류)뿐**이므로, 표본(예: 30~40건)에 대해 제2 라벨러가 **유형 태그만** 독립 부여해
+일치율을 계산하면 된다. 질의문과 GT 구간만 보여주고 검색 결과는 보여주지 않는다(절대규칙 3).
+
+**어느 쪽이든 지표는 다음으로 확정한다 --- percent agreement 단독 금지.** Artstein &
+Poesio (Computational Linguistics 34(4):555--596, 2008, "Survey Article: Inter-Coder
+Agreement for Computational Linguistics")가 정리한 대로, 단순 일치율은 **우연 일치를
+보정하지 않아** 범주 수가 적고 분포가 치우친 과제에서 부풀려진다. 본 과제는 3분류
+명목 척도·라벨러 2인이므로 **Cohen's kappa를 주지표로 하고 percent agreement를 병기**한다.
+
+*지표 선택 근거와 그 한계:* 위 서베이는 computational linguistics에서 덜 쓰이던
+alpha류 **가중** 계수(Krippendorff's alpha 등)가 많은 코퍼스 어노테이션 과제에 더
+적합할 수 있다고 주장하지만, **동시에 가중 계수를 쓰면 계수 값의 해석이 더 어려워진다는
+점도 함께 지적한다.** 본 과제의 3분류는 범주 간 거리를 가중할 근거가 없는 명목
+척도이고(자막형과 복합형이 장면형과 복합형보다 "가깝다"고 볼 근거 없음) 라벨러가 2인
+고정이므로, 가중 계수의 이점은 적고 해석 비용만 생긴다 --- 그래서 kappa를 택한다.
+라벨러가 3인 이상으로 늘거나 순서형·부분 정답 구조가 생기면 Krippendorff's alpha로
+재검토한다.
+
 ## 9-2. 신규성 (포지셔닝)
 
  "5초 분할·정렬 블록·가중합·평가지표가 모두
@@ -979,6 +1011,56 @@ ablation을 두어, 본 프로젝트 데이터에서의 적정 길이를 자체 
 *주의: 버전 접미사(v1/v2/v6 등)는 인용 시점에 최신판으로 재확인한다.
 Chrono(2406.18113)와 "MLLM for VMR"은 동일 논문이므로 참고문헌에서 한
 번만 인용한다.*
+
+평가 방법론·통계 타당성 (2026-07-31 추가 --- 태스크 선행연구가 아니라
+"검증 절차의 정당성" 근거. arXiv 없이 학회·저널 인용):
+
+-   **Smucker, Allan, Carterette** --- "A comparison of statistical
+    significance tests for information retrieval evaluation", CIKM 2007,
+    pp. 623--632. TREC 3·5--8 ad-hoc 런으로 다섯 검정을 비교해
+    "randomization·bootstrap·t-test는 실질 차이가 거의 없고, Wilcoxon과
+    sign test는 검출력이 낮고 잘못된 유의 판정 위험이 있다"고 결론.
+    → 본 프로젝트의 쌍체 부트스트랩 CI가 IR 평가의 검증된 표준 선택지
+    안에 있다는 근거 (DESIGN_SPEC 8-1). **인용 범위: 그 논문은 런 쌍의
+    MAP 차이가 대상이므로 p-value 수치는 전이하지 않고 검정 계열의
+    상대적 타당성만 인용.**
+-   **Card, Henderson, Khandelwal, Jia, Mahowald, Jurafsky** --- "With
+    Little Power Comes Great Responsibility", EMNLP 2020. 저검정력
+    실험이 NLP 문헌에 흔하며 잡음과 실제 개선을 구분하기 어렵게 만든다는
+    것을 메타분석으로 보이고, GLUE의 여러 태스크도 test set이 작아 SOTA
+    대비 비교에 검정력이 부족함을 보고.
+    → n=39에서 hit@5/10이 비유의인 것의 구조적 맥락 근거
+    (docs/평가확장_계획.md 1-1). **방패가 아니라 처방으로 인용: 그
+    논문의 요구는 "검정력을 사전에 계산해 보고하라"이고, 우리의 이행은
+    hit@5 유의 전환 필요 n≈73 추정 공개다.**
+-   **Dwork, Feldman, Hardt, Pitassi, Reingold, Roth** --- "The reusable
+    holdout: Preserving validity in adaptive data analysis", *Science*
+    349(6248):636, 2015. holdout 타당성을 깨는 것은 접촉 횟수가 아니라
+    **적응성**(결과를 보고 다음 가설·파라미터를 고르는 순환)임을
+    formalize하고, 안전한 재사용 기법을 제시.
+    → test 공식 평가 5회가 과적합이 아닌 이유를 "비적응성"으로 방어하는
+    근거 (DESIGN_SPEC 8-6). **인용 주의: 본 프로젝트는 그 논문의
+    기법(Thresholdout 등)을 적용한 것이 아니라 비적응성 자체에 의지한다 ---
+    "위험 조건에 해당하지 않는 이유"로만 인용한다.**
+-   **Artstein & Poesio** --- "Survey Article: Inter-Coder Agreement for
+    Computational Linguistics", *Computational Linguistics* 34(4):555--596,
+    2008. 어노테이터 간 일치도 계수(Cohen's kappa, Scott's pi,
+    Krippendorff's alpha)의 수학적 전제를 정리하고, 가중 alpha류가 많은
+    과제에 더 적합할 수 있으나 계수 해석은 더 어려워진다고 지적.
+    → 질의 유형 태그 일치율을 percent agreement 단독이 아니라 **우연 보정
+    계수(Cohen's kappa)** 로 보고하기로 확정한 근거 (9-1-1). **주의: 9-1(c)의
+    2인 라벨링 약속은 현재 미이행 상태이므로, 이 인용은 "이미 한 일의
+    정당화"가 아니라 이행 시 쓸 지표를 사전 확정하는 것이다.**
+-   **Ribeiro, Wu, Guestrin, Singh** --- "Beyond Accuracy: Behavioral
+    Testing of NLP Models with CheckList", ACL 2020 (best paper),
+    arXiv:2005.04118. "held-out 정확도 측정은 모델 성능을 과대평가하는
+    경우가 많다"는 문제의식에서 능력별 테스트 매트릭스를 제안.
+    → 질의를 자막형/장면형/복합형으로 나눠 **집계 지표만 보지 않고
+    유형별로 분해 보고**하는 5-1·8-6 설계의 동기 근거. **정렬 범위 주의:
+    CheckList의 방법론 본체는 능력별 테스트 케이스를 *생성*하는
+    것(MFT/INV/DIR)이고, 본 프로젝트는 기존 평가셋을 유형으로 *분해*해
+    보고하는 것이다 --- 같은 것은 "집계 정확도만으로는 부족하다"는
+    문제의식 수준이므로 그 이상으로 동일시하지 않는다.**
 
 # 제2부 — AAR 리포트 생성 확장 (11~17장)
 
@@ -1161,7 +1243,8 @@ Spearman 0.514, 기존 지표 대비 우수). 본 설계의 judge 프롬프트�
 
 **핵심 경고: 리포트 생성과 채점(judge)에 같은 LLM을 쓰면 자기강화 편향이
 생긴다는 것이 LLM-as-judge 연구에서 반복적으로 확인된 문제다.** 아래는
-이 문제를 뒷받침하는 5편의 근거와 완화책이다.
+이 문제를 뒷받침하는 6편의 근거와 완화책이다(15-7은 2026-08-04 추가 --- 존재·크기·증폭을
+다룬 앞의 다섯 편에 없던 **인과 기제**를 채운다).
 
 ## 15-1. 원조 정의 --- Zheng et al., MT-Bench (arXiv:2306.05685)
 
@@ -1230,7 +1313,9 @@ grounded=false(불일치)로 보수적으로 판정하라"는 원칙을 프롬�
 
 1.  **이상적:** 리포트 생성 LLM과 judge LLM을 다른 계열로 분리한다(예:
     생성은 Qwen2.5-Instruct, 채점은 다른 패밀리의 오픈소스 모델). GPU
-    여유가 확인되면 최우선 채택.
+    여유가 확인되면 최우선 채택. **근거 보강(15-7):** 편향의 원인이
+    self-recognition이므로 계열 분리는 원인 제거형 개입이다. 역으로 같은
+    모델에 프롬프트만 강화하는 것은 대체책이 못 된다.
 2.  **리소스 제약 시 최소 조치:** (a) 결과보고서 9장 스타일로 "동일
     모델을 생성·채점에 썼다"는 한계를 명시하고, (b) 평가 질의셋 중
     일부(예: 50~100개 리포트 문장)를 사람이 직접 Groundedness 채점해
@@ -1242,6 +1327,36 @@ grounded=false(불일치)로 보수적으로 판정하라"는 원칙을 프롬�
 4.  **(여유 시) 교차검증:** 동일 리포트를 계열이 다른 오픈소스 judge
     모델로 한 번 더 채점해, 원래 judge와의 판정 차이를 자기편향의
     근사치로 보고한다(DBG score 방식의 축소 적용).
+
+## 15-7. 편향의 인과 기제 --- Panickssery, Bowman, Feng (NeurIPS 2024, arXiv:2404.13076)
+
+*(2026-08-04 추가. 15-1~15-5가 이미 자기강화 편향의 존재·크기·증폭·판정
+어조를 다뤘으므로, 이 절은 중복이 아니라 그 다섯 편에 없던 **왜 생기는가**를
+채운다.)*
+
+"LLM Evaluators Recognize and Favor Their Own Generations"는 self-preference
+(인간 평가자는 동등 품질로 보는데도 LLM이 자기 출력을 더 높게 채점하는 현상)의
+원인을 **self-recognition(자기 출력을 알아보는 능력)** 으로 지목한다. GPT-4·Llama-2가
+자기 출력을 타 LLM·인간 출력과 구별하는 데 비자명한 정확도를 보이며, 프롬프팅과
+supervised fine-tuning으로 self-recognition 능력을 인위적으로 조절했을 때
+**self-preference 편향의 강도가 그와 선형 상관**했다. 상관 관찰에 그치지 않고
+fine-tuning 개입으로 방향성을 확인한 것이 이 논문의 기여다.
+
+**본 설계에 주는 두 가지 실무적 함의 (15-6에 반영):**
+
+-   **"다른 계열 분리"가 왜 정확히 옳은 처방인지 설명된다.** 편향의 원인이
+    자기 인식이라면, 계열을 바꾸는 것은 원인 자체를 제거하는 개입이다 --- 단순히
+    "다른 모델이니 낫겠지"가 아니라 기제 수준에서 표적이 맞는 완화책이다.
+-   **같은 모델에 프롬프트만 바꾸는 것은 대체 완화책이 될 수 없다.** 모델이
+    자기 문체를 알아보는 능력은 judge 프롬프트를 바꿔도 남으므로, "채점 프롬프트를
+    엄격하게 썼으니 같은 모델이어도 괜찮다"는 논리는 이 논문 기준으로 성립하지
+    않는다. `same_model_judge: true`를 명시적 플래그로 두고 사람 스팟체크를
+    자동 추출하게 만든 지금 설계(DESIGN_SPEC 4-9)가 유일하게 정직한 대응이다.
+
+*인용 범위 주의: 이 논문의 실험은 요약·개방형 생성 과제에서 GPT-3.5/GPT-4/Llama-2를
+대상으로 했다. 본 프로젝트의 AAR Groundedness/Coverage 채점(구조화된 `[seg#N]`
+대조 판정)은 자유 서술 선호도 판정보다 검증 가능성이 높아 편향 여지가 더 작을
+수 있다 --- 수치를 전이하지 않고 기제와 처방 방향만 인용한다.*
 
 # 16. 예상 비판과 방어 논리 (9장 스타일 확장)
 
@@ -1299,8 +1414,11 @@ LLM-judge 신뢰성(자기강화 편향):
 -   LLMs are not Fair Evaluators --- Wang et al., arXiv:2305.17926.
     judge로서의 LLM 공정성 문제 일반.
 -   LLM Evaluators Recognize and Favor Their Own Generations ---
-    Panickssery et al., arXiv:2404.13076. self-recognition과
-    self-preference의 연결.
+    Panickssery, Bowman, Feng, NeurIPS 2024 (Advances in NeurIPS 37),
+    arXiv:2404.13076. self-recognition과 self-preference의 연결 ---
+    fine-tuning으로 자기 인식 능력을 조절하면 편향 강도가 선형 상관함을
+    보여 **인과 기제**를 규명. 본문 전개는 15-7(2026-08-04 추가), 설계
+    반영은 15-6 (1)항.
 -   Benchmarking Cognitive Biases in Large Language Models as Evaluators
     --- Koo et al., arXiv:2309.17012. judge 편향 전반의 벤치마크.
 -   K-FinHallu --- arXiv:2605.29523. 한국어 도메인 환각 탐지 벤치마크
