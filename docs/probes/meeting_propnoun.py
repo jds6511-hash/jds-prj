@@ -68,6 +68,21 @@ attempted(d<=tau)의 기저는 `fp_attempt`, 연속거리의 기저는 미끼 �
   설정과 달라지므로 그 대신 반복 측정으로 다룬다).
 - **속도 수치는 상한값으로만 읽는다.** 순차 배치로 재면 앞 arm의 VRAM 잔존 점유가
   뒤 arm을 시스템 RAM으로 밀어내 수십 배 느려진다(실측 43배, 출력은 동일).
+- **디코딩 동등화**(2026-08-05 추가). 라이브러리 기본값이 비대칭이었다 —
+  faster-whisper `beam_size=5`(+`best_of=5`) vs Qwen `generate()` greedy. `--beams`로
+  맞춘다. 실측: Whisper는 beam 5가 유의하게 기여(greedy로 낮추면 +0.0073 [0.0004,
+  0.0152]), Qwen은 beam 5로 올려도 소폭(−0.0024, 비유의). **동등화 방향에 따라 격차가
+  반대로 움직여 순효과 0** — 어느 한쪽 동등화만 보고하면 오독을 만든다. 둘 다 보고할 것.
+- **청킹 제약 해소**(2026-08-05 추가). `--chunk-sec`. Qwen 인코더는 윈도우 어텐션
+  (`n_window_infer=800`=8초)이라 길이 제약이 구조적으로 없고 실제 상한은 6GB VRAM이다.
+  스모크 peak: 25초 beam5 4.8GB / 120초 greedy 4.8GB / 240초 greedy 5.7GB(위험) /
+  120초 beam5 8.4GB(물리 초과·spill). 그래서 long-form arm은 **120초 greedy**다.
+  긴 청크는 전사가 짧아지는데(c26 15,689→14,623자) 이는 겹침 중복 감소이지 인식 손실이
+  아니다.
+- **attempted 분모는 arm 집합에 의존한다.** attempted 판정이 `min(전 arm 거리) <= τ`라
+  arm을 추가하면 분모가 넓어져 **전 arm의 절대 평균거리가 함께 올라간다**(331→335건에서
+  실측). arm 구성이 다른 실행의 절대값을 직접 비교하지 말고 **쌍체 delta로 비교**하라
+  (delta는 안정: legacy_system −0.0082 → −0.0081).
 
 실행:
   python3 docs/probes/meeting_propnoun.py --meeting c13 --freeze-targets
@@ -76,6 +91,12 @@ attempted(d<=tau)의 기저는 `fp_attempt`, 연속거리의 기저는 미끼 �
   ./.venv_qwen3asr/Scripts/python.exe docs/probes/meeting_propnoun.py \
       --meeting c13 --arm C --mode chunked
   python3 docs/probes/meeting_propnoun.py --meeting c13 --arm A --mode prod --rep 1
+  # 디코딩 동등화·청킹 제약 해소 (2026-08-05)
+  python3 docs/probes/meeting_propnoun.py --meeting c13 --arm A --mode chunked --beams 1
+  ./.venv_qwen3asr/Scripts/python.exe docs/probes/meeting_propnoun.py \
+      --meeting c13 --arm C --mode chunked --beams 5
+  ./.venv_qwen3asr/Scripts/python.exe docs/probes/meeting_propnoun.py \
+      --meeting c13 --arm C --mode chunked --chunk-sec 120
   python3 docs/probes/meeting_propnoun.py --meeting c13 --compare
   python3 docs/probes/meeting_propnoun.py --fair    # 사전 등록 프로토콜 공정 비교(주)
   python3 docs/probes/meeting_propnoun.py --pool    # 이진 hit 기반 통합(참고)
@@ -115,8 +136,11 @@ def set_meeting(key: str):
 SEED = 42
 ATTEMPT_TAU = 0.40                  # 결과 보기 전 고정
 TAU_SENSITIVITY = (0.34, 0.40, 0.50)
-CHUNK_SEC = 25.0
+CHUNK_SEC = 25.0                    # --chunk-sec 로 덮어씀
 OVERLAP_SEC = 2.0
+# Qwen 생성 상한을 청크 길이에 비례시키는 계수. 25초에서 기존 440토큰이 되도록 맞췄다
+# (한국어 발화 실측 ~4자/초 대비 4배 여유). 긴 청크에서 440 고정이면 뒷부분이 잘린다.
+MAX_NEW_PER_SEC = 17.6
 
 MODELS = {
     "A": ("faster-whisper", "large-v3"),
@@ -389,8 +413,10 @@ def load_wav():
     return arr, sr
 
 
-def run_faster_whisper(model_name, arr, sr, mode):
+def run_faster_whisper(model_name, arr, sr, mode, beams=None):
     from faster_whisper import WhisperModel
+    # beams=None이면 라이브러리 기본(beam_size=5)을 그대로 쓴다 = 운영 설정.
+    dec = {} if beams is None else {"beam_size": beams, "best_of": beams}
     last = None
     for dev, ct in (("cuda", "float16"), ("cuda", "int8_float16"), ("cpu", "int8")):
         try:
@@ -406,29 +432,36 @@ def run_faster_whisper(model_name, arr, sr, mode):
         # native 모드(장치 없음)와 비교하면 이 장치들의 기여가 분리된다.
         segs, _ = m.transcribe(arr, language="ko", word_timestamps=True,
                                condition_on_previous_text=False,
-                               hallucination_silence_threshold=1.0)
+                               hallucination_silence_threshold=1.0, **dec)
         return " ".join(s.text.strip() for s in segs), None
     if mode == "native":
-        segs, _ = m.transcribe(arr, language="ko", vad_filter=True)
+        segs, _ = m.transcribe(arr, language="ko", vad_filter=True, **dec)
         return " ".join(s.text.strip() for s in segs), None
     parts = []
     for i, (a, b) in enumerate(chunk_plan(len(arr), sr)):
-        segs, _ = m.transcribe(arr[a:b], language="ko")
+        segs, _ = m.transcribe(arr[a:b], language="ko", **dec)
         parts.append(" ".join(s.text.strip() for s in segs))
         if i % 20 == 0:
             print(f"  chunk {i}", flush=True)
     return " ".join(parts), parts
 
 
-def run_qwen3_asr(model_name, arr, sr, mode):
-    """Phase 1과 동일한 호출 경로(파일경로 대신 배열, pad_to_multiple_of=100)."""
+def run_qwen3_asr(model_name, arr, sr, mode, beams=None):
+    """Phase 1과 동일한 호출 경로(파일경로 대신 배열, pad_to_multiple_of=100).
+
+    청크 길이는 --chunk-sec로 조절한다. 인코더는 `n_window_infer=800` 프레임(8초)
+    윈도우 어텐션이라 임의 길이 입력을 구조적으로 지원한다 — 25초는 우리가 건 제약이며
+    실제 상한은 LLM 컨텍스트(65536)와 6GB VRAM이다. 긴 청크 = 문장 중간 절단 감소.
+    """
     import numpy as np, torch
     from transformers import AutoProcessor, AutoModelForMultimodalLM
     if mode != "chunked":
-        raise SystemExit("arm C는 chunked만 지원(42분 단일 입력 불가)")
+        raise SystemExit("arm C는 chunked만 지원(청크 길이는 --chunk-sec)")
     proc = AutoProcessor.from_pretrained(model_name)
     model = AutoModelForMultimodalLM.from_pretrained(
         model_name, dtype=torch.float16, device_map={"": 0}).eval()
+    dec = {} if beams is None else {"num_beams": beams, "do_sample": False}
+    max_new = int(CHUNK_SEC * MAX_NEW_PER_SEC)
     prefix = re.compile(r"^\s*language\s+\w+\s*")
     parts = []
     for i, (a, b) in enumerate(chunk_plan(len(arr), sr)):
@@ -437,7 +470,7 @@ def run_qwen3_asr(model_name, arr, sr, mode):
             processor_kwargs={"pad_to_multiple_of": 100},
         ).to(model.device, model.dtype)
         with torch.inference_mode():
-            ids = model.generate(**inputs, max_new_tokens=440)
+            ids = model.generate(**inputs, max_new_tokens=max_new, **dec)
         txt = proc.batch_decode(ids[:, inputs["input_ids"].shape[1]:],
                                 skip_special_tokens=True,
                                 return_format="transcription_only")[0]
@@ -447,24 +480,41 @@ def run_qwen3_asr(model_name, arr, sr, mode):
     return " ".join(parts), parts
 
 
-def main_arm(arm: str, mode: str, rep: int = 0):
+def mode_tag(mode: str, beams=None, chunk_sec=None) -> str:
+    """arm 키(`{arm}_{mode}`)를 디코딩·청크 설정별로 갈라준다.
+
+    기존 산출물과 충돌하지 않게, 기본값일 때는 접미가 붙지 않는다
+    (`chunked` == beam 라이브러리 기본 + 25초). 하나라도 다르면 별개 arm이다.
+    """
+    t = mode
+    if beams is not None:
+        t += f"-b{beams}"
+    if chunk_sec is not None and abs(chunk_sec - 25.0) > 1e-9:
+        t += f"-w{int(chunk_sec)}"
+    return t
+
+
+def main_arm(arm: str, mode: str, rep: int = 0, beams=None):
     kind, name = MODELS[arm]
     arr, sr = load_wav()
     spans = chunk_plan(len(arr), sr)
-    print(f"arm {arm} / {name} / {mode} / {len(arr)/sr:.1f}초 / chunks={len(spans)}",
+    mt = mode_tag(mode, beams, CHUNK_SEC)
+    print(f"arm {arm} / {name} / {mt} / {len(arr)/sr:.1f}초 / chunks={len(spans)}",
           flush=True)
     t0 = time.time()
     if kind == "faster-whisper":
-        text, parts = run_faster_whisper(name, arr, sr, mode)
+        text, parts = run_faster_whisper(name, arr, sr, mode, beams)
     else:
-        text, parts = run_qwen3_asr(name, arr, sr, mode)
+        text, parts = run_qwen3_asr(name, arr, sr, mode, beams)
     dt = time.time() - t0
     OUT.mkdir(parents=True, exist_ok=True)
     # rep>0은 재현성 측정용 반복 실행. 채점은 rep0만 집어간다(glob 패턴이 다름).
     tag = f"_rep{rep}" if rep else ""
-    p = OUT / f"phase2_hyp_{arm}_{mode}{SUF}{tag}.json"
+    p = OUT / f"phase2_hyp_{arm}_{mt}{SUF}{tag}.json"
     p.write_text(json.dumps({
-        "arm": arm, "model": name, "mode": mode, "rep": rep,
+        "arm": arm, "model": name, "mode": mt, "rep": rep,
+        "input_mode": mode, "beams": beams,
+        "chunk_sec": CHUNK_SEC, "overlap_sec": OVERLAP_SEC,
         "audio_sec": round(len(arr) / sr, 1), "n_chunks": len(spans),
         "elapsed_sec": round(dt, 1),
         "realtime_factor": round(dt / (len(arr) / sr), 2),
@@ -771,8 +821,20 @@ def fair():
         "primary_metric": "mean_dist_raw (연속 편집거리, 낮을수록 좋음)",
         "meetings": [k for k, _ in pooled], "arms": keys,
         "attempt_tau": ATTEMPT_TAU, "seed": SEED,
-        "contrasts": {"model_vs_model": "C_chunked_vs_A_chunked",
-                      "system_vs_system": "C_chunked_vs_A_prod"},
+        # 사전 등록 대비. 이름은 "X_vs_Y" = X − Y (음수면 X가 더 좋다, 주지표는 거리).
+        # 2026-08-05 추가: 라이브러리 기본 디코딩이 비대칭이었다(faster-whisper beam 5 vs
+        # Qwen greedy 1). 그래서 **빔 폭을 맞춘 모델 대비 2종**과, Qwen 인코더가
+        # 윈도우 어텐션으로 긴 입력을 지원한다는 확인에 따른 **네이티브 long-form
+        # 시스템 대비**를 추가했다. 기존 대비는 비교 가능성 유지를 위해 남긴다.
+        "contrasts": {
+            "model_greedy": "C_chunked_vs_A_chunked-b1",
+            "model_beam5": "C_chunked-b5_vs_A_chunked",
+            "system_native": "C_chunked-w120_vs_A_prod",
+            "qwen_chunk_relief": "C_chunked-w120_vs_C_chunked",
+            "whisper_beam_effect": "A_chunked-b1_vs_A_chunked",
+            "legacy_model": "C_chunked_vs_A_chunked",
+            "legacy_system": "C_chunked_vs_A_prod",
+        },
         "run_meta": per, "decoy_fp": fps, "repeat_runs": reps,
         "pooled": block(allrows, "pooled"),
         "per_meeting": {k: block([{**r, "dist": {j: r["dist"][j] for j in keys},
@@ -843,6 +905,11 @@ if __name__ == "__main__":
     ap.add_argument("--mode", choices=["prod", "native", "chunked"], default="chunked")
     ap.add_argument("--rep", type=int, default=0,
                     help="반복 실행 인덱스(>0이면 별도 파일, 채점 제외)")
+    ap.add_argument("--beams", type=int,
+                    help="빔 폭. 미지정=각 라이브러리 기본(faster-whisper 5, Qwen greedy 1). "
+                         "이 기본값 차이가 디코딩 비대칭이었다")
+    ap.add_argument("--chunk-sec", type=float,
+                    help=f"청크 길이(기본 {CHUNK_SEC}). Qwen은 윈도우 어텐션이라 긴 청크 가능")
     ap.add_argument("--compare", action="store_true")
     ap.add_argument("--fair", action="store_true",
                     help="사전 등록 프로토콜 공정 비교(연속 지표·오탐 보정)")
@@ -850,6 +917,8 @@ if __name__ == "__main__":
                     help="회의 전편 합산 판정(회의별 결과도 병기)")
     a = ap.parse_args()
     set_meeting(a.meeting)
+    if a.chunk_sec:
+        CHUNK_SEC = a.chunk_sec          # noqa: F811 — 모듈 전역 덮어쓰기
     if a.fair:
         fair()
     elif a.pool:
@@ -859,6 +928,6 @@ if __name__ == "__main__":
     elif a.compare:
         compare()
     elif a.arm:
-        main_arm(a.arm, a.mode, a.rep)
+        main_arm(a.arm, a.mode, a.rep, a.beams)
     else:
         ap.error("--freeze-targets / --arm / --compare / --pool 중 하나")
