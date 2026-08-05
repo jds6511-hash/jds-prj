@@ -33,8 +33,14 @@ Phase 2에서 "실제로 발화됐다"가 검증된 문자열이라 새로 고�
   · 회의록 인물 수 자체가 상한값이다(동일인 표기 변이 — meeting_diarize 참조).
   · 앵커는 고유명사에 편중된다. 고유명사가 없는 발언 구간은 측정되지 않는다.
 
+**전사 캐시가 회의 3편 사이에서 듣지 않는다.** `m3_generate.transcribe`의 캐시 위치가
+`wav.parent / "stt_cache.json"`인데(운영에서는 `work/<영상>/audio.wav`로 영상당 디렉터리가
+갈리므로 정상), 회의 오디오는 3편이 `data/meeting_probe/` 한 곳에 있어 캐시 파일을
+서로 덮어쓴다. 따라서 3편 실행은 매번 전사부터 다시 한다(~22분). 운영 코드 문제가
+아니므로 고치지 않는다 — 단독 회의(`--meeting`) 연속 실행만 캐시가 듣는다.
+
 실행:
-  python3 docs/probes/meeting_purity.py                # 3편 전부
+  python3 docs/probes/meeting_purity.py                # 3편 전부 (~22분, 캐시 무효)
   python3 docs/probes/meeting_purity.py --meeting c26
 """
 import argparse, importlib.util, json, random, sys
@@ -189,6 +195,12 @@ def run_meeting(mp, key):
 
     anchors, drop, n_tg = build_anchors(mp, utts)
     anchors = assign_clusters(anchors, dia["turns"], drop)
+    # 사후 진단(2026-08-06 추가, 판정 기준 아님). 불일치가 **사회자 클러스터**로
+    # 몰리는지 본다 — 사전 등록한 한계("회의록은 인용·복창을 구분 못 한다")가
+    # 실제 원인이면 오배정은 발화량 1위 클러스터로 흐를 것이다.
+    dom = next(iter(dia["per_speaker"])) if dia["per_speaker"] else None
+    for a in anchors:
+        a["in_dominant"] = (a["cluster"] == dom)
     pairs = [(a["owner"], a["cluster"]) for a in anchors]
     fwd, n_fwd, per_owner = purity(pairs, "owner", "cluster")
     rev, n_rev, per_cluster = purity([(c, o) for o, c in pairs],
@@ -199,6 +211,9 @@ def run_meeting(mp, key):
         "dropped": drop,
         "n_utts": len(utts), "audio_sec": dia["audio_sec"],
         "n_clusters": dia["n_speakers"], "n_persons": dia["n_minutes_persons"],
+        "dominant_cluster": dom,
+        "dominant_cluster_sec": (dia["per_speaker"].get(dom, {}) or {}).get("sec"),
+        "n_anchors_in_dominant": sum(1 for a in anchors if a["in_dominant"]),
         "owner_purity": fwd, "n_scored_owner": n_fwd,
         "cluster_purity": rev, "n_scored_cluster": n_rev,
         "perm_baseline_owner": base,
