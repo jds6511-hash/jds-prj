@@ -39,6 +39,12 @@ _SYSTEM = """당신은 영상 사후검토(AAR) 리포트 작성자입니다.
 
 _CITE_RE = re.compile(r"\[?\s*seg\s*#\s*\d+\s*(?:,\s*seg\s*#\s*\d+\s*)*\]?", re.IGNORECASE)
 
+# 한 문장이 영상 세그먼트의 이 비율을 넘게 인용하면 reduce 퇴화로 본다.
+# 실측 근거(2026-08-06 서버 7B): 정상 6영상의 문장당 인용 최대는 27/191 = 14%,
+# 퇴화한 yunnamnopo_tongyeong은 318/357 = 89%. 두 분포가 멀어 0.5는 넉넉한 tripwire다.
+# 품질 튜닝 손잡이가 아니라 퇴화 감지용이므로 근거 없이 낮추지 말 것.
+DEGENERATE_CITE_FRAC = 0.5
+
 
 def narration(text: str) -> str:
     """인용 마커를 걷어낸 서술 부분. 비면 그 줄은 정보량이 0이다."""
@@ -160,6 +166,11 @@ def save_report(out, video_id: str, cfg: dict, rep: dict, n: int) -> None:
         # "완료: 문장 270개"로 무증상 통과했다(2026-08-06 서버 7B 실측). [8-5(6)]
         assert narration(s["text"]), \
             f"서술 공백 — 인용만 있고 내용이 없음 (report.json은 저장됨): {s}"
+        # 서술이 있어도 한 문장이 영상 전체를 인용하면 정보량은 사실상 0이다 —
+        # reduce 퇴화(번호 나열)를 위 두 assert가 모두 통과시켰다. [8-5(6-c)]
+        assert len(s["cites"]) <= n * DEGENERATE_CITE_FRAC, \
+            (f"reduce 퇴화 의심 — 문장 하나가 {len(s['cites'])}/{n}세그먼트를 인용 "
+             f"(상한 {DEGENERATE_CITE_FRAC:.0%}, report.json은 저장됨): sent {s['sent_id']}")
 
 
 def main():

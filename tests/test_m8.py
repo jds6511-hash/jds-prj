@@ -106,6 +106,33 @@ def test_save_report_accepts_normal_sentences(tmp_path):
     save_report(out, "v1", {"report_model": "m", "map_chunk_size": 60}, rep, n=3)
     assert json.loads(out.read_text(encoding="utf-8"))["video_id"] == "v1"
 
+def test_save_report_rejects_degenerate_citation_dump(tmp_path):
+    # reduce가 퇴화하면 불릿 하나에 영상 전체 세그먼트 번호를 나열하고 끝난다
+    # (2026-08-06 서버 7B 실측: yunnamnopo_tongyeong 357세그 중 318개를 한 문장이 인용,
+    # 89%). 인용 범위 assert도 서술 공백 assert도 둘 다 통과해 "M8 완료: 문장 1개"로
+    # 무증상 성공 보고했다. 정상 6영상의 문장당 인용 최대는 27/191=14%다.
+    out = tmp_path / "report.json"
+    cites = list(range(60))                             # 60/100 = 60% > 50%
+    rep = {"sentences": [{"sent_id": 0, "text": "두 남성이 요리를 한다 " +
+                          ", ".join(f"[seg#{c}]" for c in cites), "cites": cites}],
+           "raw_output": "…", "map_raw_outputs": []}
+    cfg = {"report_model": "stub-model", "map_chunk_size": 60}
+    import pytest
+    with pytest.raises(AssertionError, match="퇴화"):
+        save_report(out, "v1", cfg, rep, n=100)
+    assert out.exists()                                 # raw 보존 원칙 유지
+
+def test_save_report_accepts_wide_but_plausible_citation(tmp_path):
+    # 실측 정상 상한(27/191=14%)의 두 배도 통과해야 한다 — tripwire는 퇴화 감지용이고
+    # 정상 병합을 막으면 안 된다.
+    out = tmp_path / "report.json"
+    cites = list(range(28))                             # 28/100 = 28% < 50%
+    rep = {"sentences": [{"sent_id": 0, "text": "여러 장면이 이어진다 " +
+                          ", ".join(f"[seg#{c}]" for c in cites), "cites": cites}],
+           "raw_output": "…", "map_raw_outputs": []}
+    save_report(out, "v1", {"report_model": "m", "map_chunk_size": 60}, rep, n=100)
+    assert json.loads(out.read_text(encoding="utf-8"))["video_id"] == "v1"
+
 def test_drop_truncated_tail_removes_uncited_last_line():
     # max_new_tokens 상한에 걸리면 마지막 줄이 단어 중간에서 끊긴다(2026-08-06 서버 실측:
     # dev 3영상 전부 꼬리가 "배경에는", "푸른 하늘과 구름이"로 잘림). 인용이 없는 **마지막**
