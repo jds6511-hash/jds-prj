@@ -65,6 +65,47 @@ def test_system_prompt_example_numbers_out_of_range():
     nums = [int(m) for m in re.findall(r"seg#(\d+)", m8_report._SYSTEM)]
     assert nums and all(n >= 9000 for n in nums)
 
+def test_system_prompt_example_has_filled_narration():
+    # 자리표시자를 괄호로만 두면 7B가 "내용을 복사하지 말라"를 "내용을 쓰지 말라"로
+    # 이행해 `- [seg#N]`만 뱉는다(2026-08-06 서버 실측: dev 3영상 전부, map부터 공백).
+    # 예시는 **실제 서술 문장으로 채워져** 있어야 한다. 번호 방어(>=9000)는 유지.
+    import re
+    import m8_report
+    for line in m8_report._SYSTEM.splitlines():
+        if line.strip().startswith("- ") and "seg#" in line:
+            narr = m8_report.narration(line.strip()[2:])
+            assert len(narr) >= 10, f"예시에 서술이 비어 있음: {line!r}"
+            assert "(" not in narr, f"예시가 괄호 자리표시자로 남아 있음: {line!r}"
+
+def test_narration_strips_citations():
+    from m8_report import narration
+    assert narration("[seg#0]") == ""
+    assert narration("- [seg#12, seg#13]") == ""
+    assert narration("[Seg# 7]") == ""
+    assert narration("남자가 상자를 연다 [seg#3]") == "남자가 상자를 연다"
+    assert narration("두 사람이 대화한다 [seg#3, seg#4]") == "두 사람이 대화한다"
+
+def test_save_report_rejects_citation_only_sentences(tmp_path):
+    # 인용 범위 assert는 서술이 비어도 통과한다 — 실제로 M8이 "완료: 문장 270개"로
+    # 성공 보고했는데 내용이 0이었다. 서술 공백을 별도 검증 포인트로 잡는다.
+    out = tmp_path / "report.json"
+    rep = {"sentences": [{"sent_id": 0, "text": "[seg#1]", "cites": [1]}],
+           "raw_output": "- [seg#1]", "map_raw_outputs": []}
+    cfg = {"report_model": "stub-model", "map_chunk_size": 60}
+    # pytest.raises를 쓴다 — try/except로 잡으면 `assert False`가 던진 AssertionError를
+    # 같은 except가 받아 테스트가 무조건 통과한다(자기 자신을 잡아먹음, 실측).
+    import pytest
+    with pytest.raises(AssertionError, match="서술"):
+        save_report(out, "v1", cfg, rep, n=3)
+    assert out.exists()                                 # raw 보존 원칙 유지
+
+def test_save_report_accepts_normal_sentences(tmp_path):
+    out = tmp_path / "report.json"
+    rep = {"sentences": [{"sent_id": 0, "text": "남자가 상자를 연다 [seg#1]", "cites": [1]}],
+           "raw_output": "- 남자가 상자를 연다 [seg#1]", "map_raw_outputs": []}
+    save_report(out, "v1", {"report_model": "m", "map_chunk_size": 60}, rep, n=3)
+    assert json.loads(out.read_text(encoding="utf-8"))["video_id"] == "v1"
+
 def test_generate_report_single_call_when_small():
     calls = []
     def llm(prompt):
