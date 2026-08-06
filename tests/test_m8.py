@@ -106,6 +106,33 @@ def test_save_report_accepts_normal_sentences(tmp_path):
     save_report(out, "v1", {"report_model": "m", "map_chunk_size": 60}, rep, n=3)
     assert json.loads(out.read_text(encoding="utf-8"))["video_id"] == "v1"
 
+def test_drop_truncated_tail_removes_uncited_last_line():
+    # max_new_tokens 상한에 걸리면 마지막 줄이 단어 중간에서 끊긴다(2026-08-06 서버 실측:
+    # dev 3영상 전부 꼬리가 "배경에는", "푸른 하늘과 구름이"로 잘림). 인용이 없는 **마지막**
+    # 줄은 잘린 꼬리로 보고 떼어낸다. 중간의 인용 없는 줄은 건드리지 않는다(M9가 자동
+    # ungrounded로 처리하는 기존 계약 유지).
+    from m8_report import drop_truncated_tail
+    sents = [{"sent_id": 0, "text": "사건 A [seg#1]", "cites": [1]},
+             {"sent_id": 1, "text": "인용 없는 중간 줄", "cites": []},
+             {"sent_id": 2, "text": "사건 B [seg#2]", "cites": [2]},
+             {"sent_id": 3, "text": "화면에는 한 남성이", "cites": []}]
+    kept, tail = drop_truncated_tail(sents)
+    assert tail == "화면에는 한 남성이"
+    assert [s["cites"] for s in kept] == [[1], [], [2]]
+    # 꼬리가 정상(인용 있음)이면 아무것도 떼지 않는다
+    ok = [{"sent_id": 0, "text": "사건 A [seg#1]", "cites": [1]}]
+    kept2, tail2 = drop_truncated_tail(ok)
+    assert tail2 is None and len(kept2) == 1
+
+def test_system_prompt_forbids_caption_copying():
+    # 7B가 캡션 문구를 그대로 옮겨 적었다(2026-08-06 실측) — 사건 서술이 아니라 화면
+    # 묘사 나열이 되고 자막(발화)이 반영되지 않는다.
+    import m8_report
+    s = m8_report._SYSTEM
+    assert "캡션 문장을 그대로" in s      # 화면 묘사 복붙 금지
+    assert "사건 단위" in s               # 묘사 나열이 아니라 사건으로 묶을 것
+    assert "발화" in s                    # 자막 내용을 반영할 것
+
 def test_generate_report_single_call_when_small():
     calls = []
     def llm(prompt):
