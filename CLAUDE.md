@@ -5,7 +5,7 @@
 ## 절대 규칙 (방법론)
 
 1. **test 재평가 금지.** test 39건은 확정 config로 공식 평가가 끝났다(접촉 이력: 튜닝 0회,
-   확정 절차 재평가 4회 — DESIGN_SPEC 8-6). 확정 config가 바뀌는 예외 상황에만, dev 절차
+   확정 절차 **재평가 5회** — DESIGN_SPEC 8-6에 ①~⑤ 사유·경계 사례 1건 명시). 확정 config가 바뀌는 예외 상황에만, dev 절차
    완료 후 사용자 승인을 받아 재평가한다. 모든 튜닝·ablation·실험은 dev 전용.
 2. **캡션 수동 편집 금지.** 캡션 수정은 `common.is_corrupted_caption` 자동 판정분만
    `m3 --recaption-corrupted`로 재생성(leakage 방지). 내용을 보고 고르거나 고치면 안 된다.
@@ -34,7 +34,16 @@
   **최종 수치는 항상 UTF-8 JSON 파일에서 확인**한다. 완료 후 검증 절차는
   `.claude/skills/pipeline-verify` 참조.
 - **M8/M9는 로컬 실행 불가**(7B가 6GB 초과 실측, 3B는 예시 복사 오염으로 기각).
-  서버 GPU 확보 전에는 실행 시도하지 마라. 격리된 오염 산출물을 되살리지 마라.
+  격리된 오염 산출물을 되살리지 마라. **랩실 GPU 확보 완료(2026-08-06, <LAB_MACHINE> RTX 4090
+  24GB)** — 7B를 `llm_4bit: false`로 올린다(VRAM 20.1GB 실측). 서버 실행은 `config.yaml`
+  사본(`config_server.yaml`)으로 하고 본 config를 편집하지 마라. 저장은 `/ssd`,
+  `HF_HOME=/ssd/$USER/cache` 필수(비대화형 SSH는 `.bashrc`를 안 읽으므로 명령마다 명시).
+- **M9는 `split=="test"`가 하드코딩**돼 있어 **돌리는 것 자체가 test 접촉**이다. M8 출력이
+  dev에서 확정되기 전에 돌리면 그 수치를 보고 프롬프트를 고치게 되어 오염이다.
+- **자막 크레딧 환각 필터**(`common.is_subtitle_credit`, 2026-08-06): STT가 무발화 구간에
+  생성하는 `한글자막 by …`를 발화 단위로 제거한다. 캡션 쪽 `is_corrupted_caption`과 같은
+  원칙 — **자동 판정만, 내용 보고 고르지 않는다**. 전체 일치로만 판정한다(문장 안에 섞이면
+  실제 발화). 상세 DESIGN_SPEC 8-5(5).
 - **완료 주장 전 검증**: 테스트 전체 실행(`python3 -m pytest tests/ -q`) + 해당되면
   브라우저 E2E(`scripts/m7_browser_e2e.py`). 증거 없는 "될 것이다" 금지.
 - 코드 변경은 TDD(실패 테스트 먼저), 커밋 전 전체 테스트 통과 확인.

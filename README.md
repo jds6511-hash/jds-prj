@@ -1,98 +1,215 @@
 # 영상 장면 검색 및 AAR 보고서 자동 생성 시스템
 
-한국어 vlog 한 편을 업로드하고 자연어로 질의하면, 학습 없이(frozen 임베딩) **자막(말한 것)
-+ 장면 캡션(보이는 것)**을 결합해 원하는 순간을 찾아주는 검색 시스템. 확장으로 질의 없이
-영상 전체를 훑어 근거 인용([seg#N])이 달린 사후검토(AAR) 리포트를 자동 생성한다.
+한국어 vlog 한 편을 넣고 자연어로 질의하면, **학습 없이**(frozen 임베딩) **자막(말한 것)
++ 장면 캡션(보이는 것)** 을 결합해 원하는 순간을 찾는다. 확장으로 질의 없이 영상 전체를
+훑어 근거 인용(`[seg#N]`)이 달린 사후검토 리포트(AAR, After-Action Review)를 생성한다.
 
-## 핵심 결과 (공식 test, n=39)
+핵심 문제의식: **자막 검색은 아무도 말하지 않은 장면을 못 찾는다.** 실제 질의의 1/3이
+그런 유형이었고, 거기서 기존 방식의 MRR은 0.174였다.
 
-자막만 쓰는 baseline과, 자막+장면 캡션을 결합한 proposed를 동일 질의셋으로 비교했다.
+## 실제로 어떻게 동작하나
 
-| 지표 | baseline (자막만) | proposed (자막+캡션) | 비고 |
+아래는 공식 test 질의 `pb_q10`의 **실제 실행 출력**이다(발췌·요약 아님, 수치는
+`results/eval_test.json`과 일치).
+
+**질의:** `'HONG KONG'이라는 간판이 걸린 옷가게 거리 장면`
+
+| 방식 | 정답(seg#147) 순위 |
+|---|---|
+| baseline — 자막만 (α=1.0) | **204위** |
+| proposed — 자막+캡션 (α=0.5) | **1위** |
+
+왜 이런 차이가 나는가. 정답 세그먼트의 두 채널을 보면 바로 드러난다.
+
+```
+seg#147  (735s~740s)
+
+자막 : 아니 건널때 그런거있어 인도도 그러는데 갈까말까 멈추면 안되고
+        그냥 가는길 가면 오토바이들은 알아서 피해가더라고
+         → 간판·옷가게·거리에 관한 단어가 하나도 없다. 자막 검색이 못 찾는 이유.
+
+캡션 : 화면에는 세 명의 남성이 거리를 걷고 있습니다. … 배경에는 다양한 상점들이
+        보이며, 한 상점에는 "HONG KONG"이라는 글자가 크게 쓰여 있습니다.
+         → 질의가 가리키는 것이 여기에 있다.
+```
+
+재현:
+
+```bash
+python src/m5_search.py --video-id panibottle_vietnam1 --alpha 1.0 \
+  --query "'HONG KONG'이라는 간판이 걸린 옷가게 거리 장면"   # baseline
+python src/m5_search.py --video-id panibottle_vietnam1 --alpha 0.5 \
+  --query "'HONG KONG'이라는 간판이 걸린 옷가게 거리 장면"   # proposed
+```
+
+> 데모 GIF는 아직 없다. 웹 UI(`src/m7_webui.py`)는 로컬 실행 가능하다.
+
+## 핵심 결과 (공식 test, n=39 질의 / 영상 4편)
+
+| 지표 | baseline (자막만) | proposed (자막+캡션) | Δ 95% CI | 유의 |
+|---|---|---|---|---|
+| MRR | 0.649 | **0.829** | [+0.058, +0.310] | 예 |
+| Hit@1 | 0.564 | **0.769** | [+0.077, +0.359] | 예 |
+| Hit@5 | 0.769 | 0.872 | [−0.026, +0.256] | **아니오** |
+| Hit@10 | 0.795 | 0.923 | [−0.026, +0.282] | **아니오** |
+
+유형별 (같은 질의셋을 유형으로 쪼갠 것 — 사후 부분집합이라 검정하지 않는다):
+
+| 유형 | n | baseline MRR | proposed MRR |
 |---|---|---|---|
-| MRR | 0.649 | **0.829** | 95% CI로 유의 |
-| Hit@1 | 0.564 | **0.769** | 95% CI로 유의 |
-| 장면형 질의 MRR | 0.174 | **0.718** | 무발화 장면 사각지대 최대 개선 |
-| 자막형 질의 MRR | 0.958 | 0.880 | 소폭 하락(트레이드오프 명시) |
+| 장면형 (무발화 장면) | 13 | 0.174 | **0.718** |
+| 복합형 | 14 | 0.825 | 0.887 |
+| 자막형 | 12 | 0.958 | 0.880 ← **하락(트레이드오프)** |
 
-원본 확정 결과: [`results/eval_test.json`](results/eval_test.json)(test 평가),
-[`results/alpha_search_dev.json`](results/alpha_search_dev.json)(dev α 탐색). 확정치 전체
-요약표는 [`docs/DESIGN_SPEC.md`](docs/DESIGN_SPEC.md) §8-0 참조.
+CI는 **paired bootstrap**, B=2,000, seed 42, 양측 95%(`config.yaml`의 `bootstrap_B`·`seed`).
+원본: [`results/eval_test.json`](results/eval_test.json)(`diff_ci95` 필드),
+[`results/alpha_search_dev.json`](results/alpha_search_dev.json)(dev α 탐색).
+확정치 전체 표는 [`docs/DESIGN_SPEC.md`](docs/DESIGN_SPEC.md) §8-0.
 
-## 문서 읽는 순서 (진입점)
-
-- **[docs/DESIGN_SPEC.md](docs/DESIGN_SPEC.md)** — 모듈별 API·데이터 스키마 계약(코드 수준
-  명세). §8-0에 확정 상태 스냅샷 표, §8-1~8-7에 각 결정의 실측 근거.
-- **[docs/DESIGN_SPEC_CHANGELOG.md](docs/DESIGN_SPEC_CHANGELOG.md)** — 확정치에 도달한
-  날짜별 변천(문제 발견→처방→재개정).
-- **[docs/IMPLEMENTATION_GUIDE.md](docs/IMPLEMENTATION_GUIDE.md)** — 선행연구 기반 설계
-  근거(구현 착수 전 문헌 조사). 개정 배너로 최신 확정치와 정합.
-- **[docs/presentation/](docs/presentation/)** — 중간발표 슬라이드(평이화 버전)와 예상질문
-  방어 스크립트(Q1~Q15), 시연 런북.
-- **[docs/오류분석_test_2026-07-13.md](docs/오류분석_test_2026-07-13.md)** — 확정 결과의
-  사례 기반 정성 분석(왜 이겼는지/왜 졌는지).
-- **[docs/probes/](docs/probes/)** — 모든 대안·ablation 탐색의 재현 가능한 스크립트
-  (dev-only, 공식 결과 미접촉). 스크립트 상단 docstring에 목적·규율 준수 여부 명시.
-- 최신 진행 상황: `docs/작업현황_*.md` 중 가장 최근 날짜 파일.
-
-## 파이프라인 개요
-
-```
-M1 5초 분할+오디오 → M2 대표 프레임 선택 → M3 자막(Whisper)+캡션(Qwen2.5-VL) 생성
-  → M4 임베딩(KURE-v1) → M5 정규화(z-score)+α 가중합 검색 → M6 평가(dev grid search→test)
-  → M7 웹 UI 데모
-(+ M8 AAR 리포트 생성 → M9 이중 평가(Coverage·Groundedness), 서버 GPU 대기)
-```
-
-## 실행
+## Quick Start
 
 ```bash
+# 1) 시스템 의존성 — ffmpeg는 필수다(M1이 subprocess로 직접 호출한다)
+ffmpeg -version            # 없으면 먼저 설치
+
+# 2) 파이썬 패키지
 pip install -r requirements.txt
-```
 
-`data/videos/`(원본 mp4)와 `work/`(중간 산출물: 프레임·임베딩)는 대용량이라 저장소에서
-제외했다(`.gitignore`). 직접 재현하려면 `data/videos/{video_id}.mp4`를 두고 순서대로:
+# 3) 테스트 — GPU 없이 CPU만으로 통과한다(약 4초, 165건)
+python -m pytest tests/ -q
 
-```bash
-python src/m1_preprocess.py --config config.yaml --video-id {video_id}
-python src/m2_keyframe.py   --config config.yaml --video-id {video_id}
-python src/m3_generate.py   --config config.yaml --video-id {video_id}
-python src/m4_index.py      --config config.yaml --video-id {video_id}
-python src/m5_search.py     --config config.yaml --video-id {video_id} --query "..."
-```
+# 4) 영상 1편 인덱싱 → 검색
+cp <내영상>.mp4 data/videos/myvideo.mp4
+python src/m1_preprocess.py --config config.yaml --video-id myvideo   # 5초 분할+오디오
+python src/m2_keyframe.py   --config config.yaml --video-id myvideo   # 대표 프레임
+python src/m3_generate.py   --config config.yaml --video-id myvideo   # 자막+캡션 (가장 오래)
+python src/m4_index.py      --config config.yaml --video-id myvideo   # 임베딩
+python src/m5_search.py     --config config.yaml --video-id myvideo --query "찾고 싶은 장면"
 
-평가(`results/eval_test.json` 재현, 확정 config는 이미 `config.yaml`에 고정):
-
-```bash
-python src/m6_evaluate.py --config config.yaml
-```
-
-웹 UI 데모:
-
-```bash
+# 5) 웹 UI
 python src/m7_webui.py --alpha 0.5 --port 7860
 ```
 
-## 테스트
+모델은 최초 실행 시 HuggingFace에서 자동 다운로드된다(수동 준비 불필요).
 
-`tests/test_mN_*.py`는 `src/mN_*.py`와 1:1로 대응하는 단위 테스트다(TDD로 작성).
+## 시스템 요구사항
 
-```bash
-python -m pytest tests/ -q
+| 항목 | 값 | 비고 |
+|---|---|---|
+| Python | **3.12** | 개발·검증 환경 |
+| 외부 바이너리 | **ffmpeg** | M1의 오디오 추출. requirements.txt로 안 깔린다 |
+| GPU (M1~M7) | VRAM **6GB**로 충분 | 기본 config가 4bit(`vlm_4bit: true`) |
+| GPU (M8~M9) | VRAM **20GB** (bf16) | 6GB 불가 실측. `llm_4bit: true`면 축소 가능 |
+| CUDA / torch | cu12x·cu13x 모두 동작 확인 | 드라이버가 받쳐주면 무관 |
+| 디스크 (모델) | 검색만 **약 12GB** / M8~M9 포함 **약 27GB** | 실측: Whisper large-v3 2.9GB + Qwen2.5-VL-3B 7.1GB + KURE-v1 2.2GB (+Qwen2.5-7B 15GB) |
+| 디스크 (산출물) | 영상 1편당 **약 75MB** | 프레임+오디오+임베딩 |
+| CPU 전용 실행 | 이론상 가능, **비권장** | Whisper·VLM에 CPU 폴백은 있으나 수십 배 느리다 |
+
+**처리 시간 실측** (RTX 3060 Laptop 6GB 기준, 33분 영상 395세그먼트):
+M1 수 초 · M2 약 25분 · **M3 약 75분**(Whisper + 캡션 395회) · M4 약 2분 · M6 약 2분.
+M3가 전체의 대부분이다. GPU 성능에 비례해 줄어든다.
+
+## 재현 가능 범위 (정직하게)
+
+원본 영상은 YouTube 공개 vlog이고 저작물이므로 저장소에 넣지 않았다. 자막·캡션은 그
+영상에서 파생된 텍스트라 같은 이유로 제외했다.
+
+| 항목 | 저장소 포함 | 재현 방법 |
+|---|---|---|
+| 평가 질의·정답 라벨 (dev 96 / test 39 / 무관 20) | **O** `data/queries/` | 그대로 사용 |
+| 확정 평가 결과 JSON | **O** `results/` | 대조용 |
+| 코드·단위테스트·설정 | **O** | `pytest tests/ -q` (GPU 불필요) |
+| 원본 영상 | X | 사용자가 `data/videos/`에 직접 배치 |
+| 자막·캡션 (`work/*/segments.json`) | X | M1~M3 실행 |
+| 임베딩 (`work/*/emb_*.npy`) | X | M4 실행 |
+
+**따라서 `python src/m6_evaluate.py`는 clone 직후에 동작하지 않는다** —
+`work/{video_id}/emb_sub.npy`·`emb_cap.npy`·`meta.json`을 요구하고([m5_search.py:60-73](src/m5_search.py#L60-L73)),
+셋 다 저장소에 없다. 같은 영상을 구해 M1~M4를 돌린 뒤에야 평가가 재현된다.
+
+정리하면 **코드·절차·평가 라벨은 완전 공개, 데이터는 비공개**다. 동일 수치의 완전
+재현은 원본 영상 확보가 전제다.
+
+## 구현 상태
+
+| 범위 | 상태 |
+|---|---|
+| M1~M7 영상 검색 + 웹 UI | **완료 · 공식 평가 완료** |
+| M8~M9 AAR 생성·이중 평가 | **구현 완료 · 서버 GPU에서 실행 중**(2026-08-06 착수) |
+| 화자분리 (pyannote) | 실행 가능 확인 완료 — 화자 수 추정 오차 −3~0, 클러스터 순도 0.958(우연 기저 0.45) |
+| 회의록·화자별 요약 | 미착수 |
+
+M8은 첫 실행에서 결함 2건이 드러나 수정했다(리포트가 인용 마커만 남고 서술이 비는
+문제, 생성 상한에 걸려 뒷부분이 잘리는 문제 — DESIGN_SPEC 8-5(6)). **dev 영상에서만
+잡았으므로 test 접촉은 0회**다.
+
+## 파이프라인
+
+```
+M1 5초 분할+오디오 → M2 대표 프레임 → M3 자막(Whisper large-v3)+캡션(Qwen2.5-VL-3B)
+  → M4 임베딩(KURE-v1) → M5 z-score 정규화 + α 가중합 검색 → M6 평가(dev 탐색→test)
+  → M7 웹 UI
+(+ M8 AAR 리포트 생성 → M9 Coverage·Groundedness 이중 평가)
 ```
 
-## 방법론 규율 (요약)
+`src/mN_*.py` ↔ `tests/test_mN_*.py`가 1:1 대응한다(TDD로 작성).
 
-- **test(n=39) 재평가 금지** — 확정 config로 공식 평가 완료(튜닝 접촉 0회, 확정 절차
-  재평가 5회). 모든 튜닝·ablation은 dev(n=96)에서만.
-- **캡션 수동 편집 금지** — 재생성은 자동 오염 판정분만.
-- **라벨은 프레임 실물 검증** — 캡션·자막 텍스트를 보고 정답을 정하지 않는다.
+```
+src/        M1~M9 + common.py(공용 계약) + llm.py(로컬 LLM 로더)
+tests/      모듈별 단위테스트 165건
+config.yaml 확정 config (α는 여기 없다 — CLI 주입)
+data/queries/  질의·정답 라벨 (공개)
+results/    확정 평가 결과 (공개)
+docs/       설계 명세·변경 이력·오류 분석·발표 자료
+docs/probes/  모든 대안 탐색 스크립트 (dev-only)
+```
+
+## 평가 방법과 연구 규율
+
+- **dev/test 분리**: 모든 튜닝·ablation은 dev(96질의/영상 3편)에서만. α, 정규화 방식,
+  abstention 임계값 등 **모든 선택이 dev에서 끝난 뒤** test를 돌렸다.
+- **test 접촉 이력**: 튜닝 목적 접촉 **0회**, 확정 절차 재평가 **5회**. 5회 각각의 사유와
+  유일한 경계 사례 1건(pb_q08)까지 [DESIGN_SPEC §8-6](docs/DESIGN_SPEC.md)에 기록했다.
+  반복 접촉이 holdout 과적합이 아닌 이유는 적응성(adaptivity) 기준으로 §8-6에서 방어한다.
+- **캡션 수동 편집 금지**: 재생성은 자동 오염 판정분만(`common.is_corrupted_caption`).
+  자막 크레딧 환각 제거도 같은 원칙의 자동 판정이다(`common.is_subtitle_credit`).
+- **라벨은 프레임 실물 검증**: 캡션·자막 텍스트를 보고 정답을 정하지 않는다.
 - 상세: [CLAUDE.md](CLAUDE.md).
 
-## 한계 (정직하게 명시)
+## 한계
 
-n=39 소표본이라 hit@5/10은 95% CI가 0을 포함해 유의를 주장하지 않는다. 실사용 테스트에서
-발견된 두 실패 모드(동의어 갭, 언급≠행위)와 처방은 방어 문서 Q13·
-[오류분석 문서](docs/오류분석_test_2026-07-13.md)에 있다. M8/M9(AAR 리포트 생성·평가)는
-설계·구현·단위테스트 완료 상태이며, 실전 구동은 서버 GPU 확보 대기 중이다(로컬 7B는
-6GB 초과, 3B 하향은 예시 문장 복사 오염으로 기각 — 실측 확정).
+- **표본이 작다.** test는 질의 39건이지만 **영상은 4편**이다. 질의 단위 부트스트랩은 같은
+  영상 안 질의들의 상관을 무시해 분산을 과소추정한다 — 영상 수준 불확실성은 이 CI보다
+  크다. Hit@5·Hit@10은 CI가 0을 포함해 **유의를 주장하지 않는다.**
+- **유형별 수치는 검정하지 않았다.** 장면형 0.174→0.718은 강한 관측이지만 사후 부분집합
+  이므로 다중비교 문제가 있다. 헤드라인은 전체 MRR·Hit@1이다.
+- **자막형은 하락했다**(0.958→0.880). 캡션 채널이 이미 자막으로 맞히던 질의에 노이즈를
+  주는 구간이 있다.
+- **실사용 실패 모드 2종** — 동의어 갭, "언급 ≠ 행위". 처방은
+  [오류분석](docs/오류분석_test_2026-07-13.md)과 방어 문서 Q13.
+- **평가 도메인이 좁다.** 한국어 vlog 11편(그중 평가 대상 7편)이다.
+
+## 문서
+
+- **[docs/DESIGN_SPEC.md](docs/DESIGN_SPEC.md)** — 모듈 API·데이터 스키마 계약. §8-0 확정
+  상태 스냅샷, §8-1~8-7 각 결정의 실측 근거.
+- **[docs/DESIGN_SPEC_CHANGELOG.md](docs/DESIGN_SPEC_CHANGELOG.md)** — 확정치에 도달한
+  날짜별 변천(문제 발견→처방→재개정).
+- **[docs/IMPLEMENTATION_GUIDE.md](docs/IMPLEMENTATION_GUIDE.md)** — 선행연구 기반 설계 근거.
+- **[docs/presentation/](docs/presentation/)** — 발표 슬라이드, 예상질문 방어(Q1~Q17), 시연 런북.
+- **[docs/오류분석_test_2026-07-13.md](docs/오류분석_test_2026-07-13.md)** — 사례 기반 정성 분석.
+- **[docs/probes/](docs/probes/)** — 대안·ablation 탐색 스크립트 전부. 각 파일 docstring에
+  목적과 규율 준수 여부를 적었다(dev-only, 공식 결과 미접촉).
+- 최신 진행 상황: `docs/작업현황_*.md` 중 가장 최근 날짜 파일.
+
+## 사용 모델
+
+| 역할 | 모델 |
+|---|---|
+| 자막 (STT) | `faster-whisper large-v3` |
+| 장면 캡션 (VLM) | `Qwen/Qwen2.5-VL-3B-Instruct` (4bit NF4) |
+| 임베딩 | `nlpai-lab/KURE-v1` |
+| AAR 생성·판정 (M8/M9) | `Qwen/Qwen2.5-7B-Instruct` |
+| 화자분리 | `pyannote/speaker-diarization-community-1` |
+
+전부 로컬 실행이다. 클라우드 API는 쓰지 않는다.
