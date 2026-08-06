@@ -20,11 +20,12 @@ def test_uncited_sentence_auto_ungrounded_without_judge_call():
     assert len(calls) == 1
 
 def test_rates_computed():
-    # coverage 호출은 "언급했는지"로 식별, 세그먼트 헤더(idx)로만 판정
+    # 호출 구분은 프롬프트 **구조**로 한다 — 문구("언급했는지")로 분기했더니 프롬프트
+    # 개정(2026-08-06 judge 교정)에서 스텁이 조용히 깨졌다. 세그먼트 헤더(idx)로만 판정
     # [m8m9-prompt-critique A-1: fake judge가 리포트 본문의 "seg#0"에 반응해
     #  seg1도 covered 처리되던 결함을 수정]
     def judge(prompt):
-        if "언급했는지" in prompt:                       # coverage 호출
+        if "검증 대상 문장:" not in prompt:               # coverage 호출
             return '{"match": true}' if "(idx 0)" in prompt else '{"match": false}'
         return '{"match": true}'                          # groundedness 호출
     rep = _report([("사건 [seg#0]", [0]), ("무근거", [])])
@@ -64,6 +65,25 @@ def test_grounded_and_coverage_prompts_treat_segment_content_as_data():
     import m9_report_eval
     assert "데이터" in m9_report_eval._GROUNDED_PROMPT
     assert "데이터" in m9_report_eval._COVERAGE_PROMPT
+
+def test_prompts_ask_entailment_not_symmetric_match():
+    # 현행 프롬프트는 "두 내용이 일치하는지"라는 **대칭** 표현을 써서, 문장이 캡션의
+    # 세부를 생략하면 false를 냈다(2026-08-06 서버 7B 실측 CoT: "详细描述了周围的物品…
+    # 这些细节并没有在原句中提及。因此…不完全一致"). AAR 리포트는 요약이므로 구조적으로
+    # 항상 false가 된다. 합성 검증셋 정확도 groundedness 0.63(축자양성 0.40) →
+    # entailment 표현 0.97, coverage 0.60(포함재현 0.20) → 0.80(0.70).
+    import m9_report_eval as m
+    for p in (m._GROUNDED_PROMPT, m._COVERAGE_PROMPT):
+        assert "요약" in p                              # 세부 생략 허용을 명시
+        assert "일치하는지" not in p                     # 대칭 판정 표현 금지
+
+def test_prompts_do_not_demand_unexecuted_cot():
+    # 프롬프트가 "마지막 줄에 JSON"을 요구했으나 모델은 판정을 **첫 줄에** 쓰고 근거를
+    # 뒤에 붙였다 — 현행 arm은 근거 없이 JSON 한 줄로 끝나 3단계 CoT가 실행된 적이 없다.
+    # 지키지 않는 형식을 요구하지 않는다(DESIGN_SPEC 4-9의 "G-Eval 3단계 CoT" 철회).
+    import m9_report_eval as m
+    for p in (m._GROUNDED_PROMPT, m._COVERAGE_PROMPT):
+        assert "마지막 줄" not in p and "3단계" not in p
 
 def test_grounded_prompt_hides_corrupted_caption_from_judge():
     # 오염된 캡션이 grounded 판정의 "근거"로 그대로 들어가면 검증이 무력화됨 [8-3(c) 대응]
@@ -138,7 +158,7 @@ def test_coverage_by_type_breakdown_when_gt_types_given():
     # coverage_by_type: 기존 per_gt_segment를 질의 타입별로 재집계 [설계 점검 7].
     # 신규 judge 호출 없이 gt_types 매핑만으로 계산돼야 한다.
     def judge(prompt):
-        if "언급했는지" in prompt:
+        if "검증 대상 문장:" not in prompt:               # coverage 호출 (구조로 구분)
             return '{"match": true}' if "(idx 0)" in prompt else '{"match": false}'
         return '{"match": true}'
     rep = _report([("사건 [seg#0]", [0])])
