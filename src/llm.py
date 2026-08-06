@@ -12,7 +12,10 @@ def make_llm(model_name: str, max_new_tokens: int = 2048, load_4bit: bool = Fals
     # 조용히 재사용하는 무증상 오류 방지 [리뷰 2026-07-11 Major]
     cache_key = (model_name, load_4bit)
 
-    def generate(prompt: str) -> str:
+    def generate(prompt: str, **gen_kwargs) -> str:
+        """gen_kwargs는 `mdl.generate`에 그대로 전달된다 — M8이 반복 루프를 감지했을 때
+        `no_repeat_ngram_size`로 재생성하는 경로에만 쓴다(m8_report 참조).
+        """
         if cache_key not in _cache:
             import torch
             from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -33,6 +36,7 @@ def make_llm(model_name: str, max_new_tokens: int = 2048, load_4bit: bool = Fals
         import torch
         inputs = tok([text], return_tensors="pt").to(mdl.device)
         with torch.inference_mode():
-            out = mdl.generate(**inputs, max_new_tokens=max_new_tokens, do_sample=False)
+            out = mdl.generate(**inputs, max_new_tokens=max_new_tokens, do_sample=False,
+                               **gen_kwargs)
         return tok.decode(out[0][inputs.input_ids.shape[1]:], skip_special_tokens=True).strip()
     return generate

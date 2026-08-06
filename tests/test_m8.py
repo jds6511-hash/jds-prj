@@ -79,6 +79,53 @@ def test_generate_report_records_degenerate_drop():
     assert [s["cites"] for s in rep["sentences"]] == [[0]]
     assert rep["degenerate_dropped"][0]["n_cites"] == 3
 
+def test_distinct_ratio():
+    from m8_report import distinct_ratio
+    same = [{"text": "같은 줄 [seg#1]", "cites": [1]},
+            {"text": "같은 줄 [seg#2]", "cites": [2]},          # 인용만 다름 = 같은 서술
+            {"text": "다른 줄 [seg#3]", "cites": [3]}]
+    assert distinct_ratio(same) == 2 / 3
+    assert distinct_ratio([]) == 1.0
+
+def test_generate_report_retries_reduce_on_repetition_loop():
+    # 인용 상한 규칙을 넣자 반복적 캡션 영상에서 **문장 단위 반복 루프**가 생겼다
+    # (2026-08-06 서버 7B 실측: yunnamnopo 385문장 중 서로 다른 문장 20개, 같은 줄
+    # 362회). no_repeat_ngram_size=12로 재생성하면 28문장 전부 서로 다르고 커버가
+    # 0.123→0.860이 된다. 다만 정상 영상에는 정당한 반복이 있어 전역 적용은
+    # 커버를 반토막낸다(panibottle 0.897→0.466) — 감지 시에만 재생성한다.
+    from m8_report import NO_REPEAT_NGRAM_ON_RETRY
+    segs = _segs(70)                                    # chunk_size 60 초과 → map-reduce
+    calls = []
+
+    def llm(prompt, **gen):
+        calls.append(gen)
+        if "부분 리포트" not in prompt:                  # map 단계
+            return "\n".join(f"- 사건 {i} [seg#{i}]" for i in range(70))
+        if not gen:                                      # reduce 1차 — 루프
+            return "\n".join(f"- 같은 줄 [seg#{i}]" for i in range(10))
+        return "\n".join(f"- 서로 다른 사건 {i} [seg#{i}]" for i in range(10))
+
+    rep = generate_report(segs, llm, chunk_size=60, overlap=5)
+    assert rep["reduce_retry"]["no_repeat_ngram_size"] == NO_REPEAT_NGRAM_ON_RETRY
+    assert rep["reduce_retry"]["first_pass_distinct_ratio"] == 0.1
+    assert len({s["text"] for s in rep["sentences"]}) == 10       # 재생성분이 채택됨
+    assert calls[-1] == {"no_repeat_ngram_size": NO_REPEAT_NGRAM_ON_RETRY}
+
+def test_generate_report_does_not_retry_when_reduce_healthy():
+    # 정상 영상은 출력이 보존돼야 한다(재생성이 커버를 깎으므로).
+    segs = _segs(70)
+    calls = []
+
+    def llm(prompt, **gen):
+        calls.append(gen)
+        if "부분 리포트" not in prompt:
+            return "\n".join(f"- 사건 {i} [seg#{i}]" for i in range(70))
+        return "\n".join(f"- 사건 {i} 서술 [seg#{i}]" for i in range(10))
+
+    rep = generate_report(segs, llm, chunk_size=60, overlap=5)
+    assert rep["reduce_retry"] is None
+    assert all(g == {} for g in calls)                  # 추가 인자 없이 1회만
+
 def test_parse_citations():
     text = "- 화자가 재료를 준비한다 [seg#6, seg#7]\n- 근거 없는 문장\n- 요리를 시작한다 [seg#9]"
     sents = parse_citations(text)
@@ -166,6 +213,18 @@ def test_save_report_accepts_wide_but_plausible_citation(tmp_path):
            "raw_output": "…", "map_raw_outputs": []}
     save_report(out, "v1", {"report_model": "m", "map_chunk_size": 60}, rep, n=100)
     assert json.loads(out.read_text(encoding="utf-8"))["video_id"] == "v1"
+
+def test_save_report_rejects_repetition_loop_that_survived_retry(tmp_path):
+    # 재생성까지 했는데도 루프가 남으면 조용히 통과시키지 않는다. 개수만 세는 검증은
+    # 이미 세 번 놓쳤다(인용 범위 / 서술 공백 / 인용 비중) — 385문장 중 서로 다른
+    # 문장이 20개인 산출물이 셋 다 통과했다.
+    out = tmp_path / "report.json"
+    sents = [{"sent_id": i, "text": f"같은 줄 [seg#{i}]", "cites": [i]} for i in range(10)]
+    rep = {"sentences": sents, "raw_output": "…", "map_raw_outputs": []}
+    import pytest
+    with pytest.raises(AssertionError, match="반복"):
+        save_report(out, "v1", {"report_model": "m", "map_chunk_size": 60}, rep, n=100)
+    assert out.exists()
 
 def test_drop_truncated_tail_removes_uncited_last_line():
     # max_new_tokens 상한에 걸리면 마지막 줄이 단어 중간에서 끊긴다(2026-08-06 서버 실측:

@@ -51,6 +51,12 @@ DEGENERATE_CITE_FRAC = 0.5
 # 문장 1개 -> 343개, 고유 인용 357/357로 회복했다(2026-08-06 서버 7B 실측).
 MAX_CITES_PER_SENTENCE = 8
 
+# reduce 출력의 문장 다양성 하한. 이 아래면 반복 루프로 보고 재생성한다.
+# 실측(2026-08-06 서버 7B, 인용 상한 규칙 적용분): 정상 영상 0.75(panibottle)·
+# 0.79(itsub) / 루프 영상 0.05(yunnamnopo, 같은 줄 362회)·0.13(gwaktube, 28회).
+NO_REPEAT_NGRAM_ON_RETRY = 12
+MIN_DISTINCT_RATIO = 0.5
+
 
 def narration(text: str) -> str:
     """인용 마커를 걷어낸 서술 부분. 비면 그 줄은 정보량이 0이다."""
@@ -68,6 +74,13 @@ def drop_truncated_tail(sents: list[dict]) -> tuple[list[dict], str | None]:
     if sents and not sents[-1]["cites"]:
         return sents[:-1], sents[-1]["text"]
     return sents, None
+
+
+def distinct_ratio(sents: list[dict]) -> float:
+    """서로 다른 **서술**의 비율. 인용만 다르고 서술이 같은 줄은 같은 문장으로 센다."""
+    if not sents:
+        return 1.0
+    return len({narration(s["text"]) for s in sents}) / len(sents)
 
 
 def drop_degenerate_sentences(sents: list[dict], n: int) -> tuple[list[dict], list[dict]]:
@@ -157,7 +170,8 @@ def generate_report(segments: list[dict], llm, chunk_size: int = 60,
             print(f"[warn] 퇴화 문장 제거 {len(degen)}건: "
                   f"{[d['n_cites'] for d in degen]}/{len(segments)}세그먼트 인용")
         return {"sentences": sents, "raw_output": raw, "truncated_tail": tail,
-                "degenerate_dropped": degen, "map_raw_outputs": []}
+                "degenerate_dropped": degen, "reduce_retry": None,
+                "map_raw_outputs": []}
     # Map: overlap 세그먼트를 두고 청크 분할 [13-2]
     partials, start = [], 0
     while start < len(segments):
@@ -168,22 +182,42 @@ def generate_report(segments: list[dict], llm, chunk_size: int = 60,
         start += chunk_size - overlap
     # Reduce + 안전장치: reduce 인용 ⊆ map 인용 검사 [13-2]
     map_cites = {c for p in partials for s in parse_citations(p) for c in s["cites"]}
-    raw = llm(build_reduce_prompt(partials))
-    sents, tail = drop_truncated_tail(parse_citations(raw))
-    if tail:
-        print(f"[warn] 생성 상한으로 잘린 꼬리 제거: {tail[:60]!r}")
-    for s in sents:
-        dropped = [c for c in s["cites"] if c not in map_cites]
-        if dropped:
-            print(f"[warn] reduce 인용 유실/오귀속 필터: sent {s['sent_id']} {dropped}")
-            s["cites"] = [c for c in s["cites"] if c in map_cites]
+    prompt = build_reduce_prompt(partials)
+
+    def parse_reduce(raw):
+        sents, tail = drop_truncated_tail(parse_citations(raw))
+        if tail:
+            print(f"[warn] 생성 상한으로 잘린 꼬리 제거: {tail[:60]!r}")
+        for s in sents:
+            dropped = [c for c in s["cites"] if c not in map_cites]
+            if dropped:
+                print(f"[warn] reduce 인용 유실/오귀속 필터: sent {s['sent_id']} {dropped}")
+                s["cites"] = [c for c in s["cites"] if c in map_cites]
+        return sents, tail
+
+    raw = llm(prompt)
+    sents, tail = parse_reduce(raw)
+    # 문장 단위 반복 루프는 **감지 시에만** 재생성한다. no_repeat_ngram을 전역으로 켜면
+    # 정당한 반복 표현까지 막혀 정상 영상의 커버가 반토막난다(0.897→0.466 실측).
+    retry = None
+    ratio = distinct_ratio(sents)
+    if ratio < MIN_DISTINCT_RATIO:
+        print(f"[warn] reduce 문장 반복 루프 감지 (서로 다른 서술 비율 {ratio:.2f} < "
+              f"{MIN_DISTINCT_RATIO}) — no_repeat_ngram_size={NO_REPEAT_NGRAM_ON_RETRY}로 재생성")
+        retry = {"first_pass_distinct_ratio": round(ratio, 3),
+                 "first_pass_raw_output": raw,
+                 "no_repeat_ngram_size": NO_REPEAT_NGRAM_ON_RETRY}
+        raw = llm(prompt, no_repeat_ngram_size=NO_REPEAT_NGRAM_ON_RETRY)
+        sents, tail = parse_reduce(raw)
+        retry["retry_distinct_ratio"] = round(distinct_ratio(sents), 3)
     # 퇴화 판정은 map 밖 인용 필터 **뒤에** 한다 — 필터로 인용이 줄면 퇴화가 아닐 수 있다.
     sents, degen = drop_degenerate_sentences(sents, len(segments))
     if degen:
         print(f"[warn] 퇴화 문장 제거 {len(degen)}건: "
               f"{[d['n_cites'] for d in degen]}/{len(segments)}세그먼트 인용")
     return {"sentences": sents, "raw_output": raw, "truncated_tail": tail,
-            "degenerate_dropped": degen, "map_raw_outputs": partials}
+            "degenerate_dropped": degen, "reduce_retry": retry,
+            "map_raw_outputs": partials}
 
 
 def save_report(out, video_id: str, cfg: dict, rep: dict, n: int) -> None:
@@ -195,6 +229,12 @@ def save_report(out, video_id: str, cfg: dict, rep: dict, n: int) -> None:
     common.atomic_write_json(out, {"video_id": video_id,
                                    "model": cfg["report_model"],
                                    "map_chunk_size": cfg["map_chunk_size"], **rep})
+    # 반복 루프는 generate_report가 감지해 1회 재생성한다. 그래도 남으면 실패시킨다 —
+    # 개수만 세는 검증(범위·공백·비중)은 이미 세 번 놓쳤다. [8-5(6-c)]
+    ratio = distinct_ratio(rep["sentences"])
+    assert ratio >= MIN_DISTINCT_RATIO, \
+        (f"문장 반복 루프가 재생성 후에도 남음 — 서로 다른 서술 비율 {ratio:.2f} < "
+         f"{MIN_DISTINCT_RATIO} (report.json은 저장됨)")
     for s in rep["sentences"]:                          # 검증 포인트 [4-8]
         assert all(0 <= c < n for c in s["cites"]), \
             f"인용 범위 위반 (report.json은 저장됨): {s}"
