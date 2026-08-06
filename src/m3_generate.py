@@ -67,6 +67,10 @@ def assign_subtitles(utts: list[dict], segments: list[dict]) -> None:
     최대 겹침 세그먼트가 자동 포함되므로 '더 많이 걸친 쪽 귀속'을 상회 충족. [3-2]"""
     parts = {s["idx"]: [] for s in segments}
     for u in utts:
+        # 자막 크레딧 환각은 세그먼트에 들이지 않는다. stt_cache.json에는 원본이
+        # 남으므로 필터를 되돌리면 복원된다(재전사 불필요).
+        if common.is_subtitle_credit(u["text"]):
+            continue
         for s in segments:
             if min(u["t1"], s["end"]) - max(u["t0"], s["start"]) > 0:
                 parts[s["idx"]].append(u["text"])

@@ -86,6 +86,38 @@ def test_is_suspicious_instruction_allows_normal_narration():
     assert not common.is_suspicious_instruction("남자가 시스템 설정 화면에서 지시사항을 확인한다")
     assert not common.is_suspicious_instruction("오늘은 새우를 손질하는 방법을 알려드릴게요")
 
+def test_is_subtitle_credit_flags_observed_hallucinations():
+    # Whisper가 무발화 구간에서 자막 크레딧 문구를 생성한다. 본 인덱스 실측 5세그먼트
+    # (jissi_farm 3, softyeon_ceramics 2)가 전부 이 형태다.
+    assert common.is_subtitle_credit("한글자막 by 한효정")
+    assert common.is_subtitle_credit("한글자막 by 박진희")
+    assert common.is_subtitle_credit(" 한글 자막 by 한효정 ")
+    assert common.is_subtitle_credit("자막 제공 : 방송사")
+    assert common.is_subtitle_credit("자막제작 홍길동")
+    assert common.is_subtitle_credit("Amara.org 커뮤니티에서 제작했습니다")
+
+def test_is_subtitle_credit_allows_real_speech():
+    # 오탐이 나면 실제 발화를 지운다 — 아래는 전부 본 인덱스의 진짜 발화다.
+    assert not common.is_subtitle_credit("")
+    assert not common.is_subtitle_credit(
+        "그러면 오늘도 영상 봐주셔서 너무너무 감사하고요. 구독, 좋아요 부탁드릴게요.")
+    assert not common.is_subtitle_credit(
+        "우리 구독자분들은 사이다 등 섞어서 드셔보세요.")
+    assert not common.is_subtitle_credit(
+        "야 그러고 보니까 지금 MBC 얘기한 것처럼")
+    # 크레딧 어구가 문장 **안에** 있으면 실제 발화다 — 전체 일치일 때만 건다.
+    assert not common.is_subtitle_credit(
+        "이 영상은 한글자막 by 한효정 님이 달아주신 걸로 알고 있어요")
+
+def test_assign_subtitles_drops_credit_utterances():
+    import m3_generate
+    segs = [{"idx": 0, "start": 0, "end": 5}, {"idx": 1, "start": 5, "end": 10}]
+    utts = [{"text": "오늘은 밭을 갈아보겠습니다", "t0": 0.5, "t1": 3.0},
+            {"text": "한글자막 by 한효정", "t0": 6.0, "t1": 8.0}]
+    m3_generate.assign_subtitles(utts, segs)
+    assert segs[0]["subtitle"] == "오늘은 밭을 갈아보겠습니다"
+    assert segs[1]["subtitle"] == ""      # 무발화 세그먼트의 정상값
+
 def test_atomic_write_and_config(tmp_path):
     p = tmp_path / "x.json"
     common.atomic_write_json(p, {"a": 1})

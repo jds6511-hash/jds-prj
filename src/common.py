@@ -117,6 +117,34 @@ def is_corrupted_caption(text: str) -> bool:
     return False
 
 
+_CREDIT_PATTERNS = [
+    r"한글\s*자막\s*(by|바이|제공|제작)\s*[:：]?\s*.{0,20}",
+    r"자막\s*(제공|제작|by)\s*[:：]?\s*.{0,20}",
+    r".{0,30}amara\.org.{0,40}",
+]
+
+
+def is_subtitle_credit(text: str) -> bool:
+    """STT가 무발화 구간에 생성하는 **자막 크레딧 환각** 감지.
+
+    실측: 본 인덱스 적발분이 전부 `한글자막 by <이름>` 형태다 — 발화 3건
+    (jissi_farm 2, softyeon_ceramics 1)이 오버랩 귀속으로 세그먼트 5개에 걸쳐 있었다.
+    Phase 2 회의 오디오에서도 현행 설정으로 재현됐다.
+
+    **전체 일치로만 판정한다.** 크레딧 어구가 문장 안에 섞여 있으면 실제 발화이기
+    때문이다("이 영상은 한글자막 by … 님이 달아주신 걸로"). 같은 이유로 `구독`·
+    `좋아요`·`시청해주셔서 감사합니다`는 넣지 않았다 — 크리에이터가 실제로 말하는
+    문구라 오탐이 곧 발화 삭제다(본 인덱스에 실제 사례 존재).
+
+    is_corrupted_caption(VLM 캡션 품질)·is_suspicious_instruction(주입 안전)과는
+    관심사가 달라 분리한다. 이건 STT 산출물 결함이다.
+    """
+    t = (text or "").strip()
+    if not t:
+        return False
+    return any(re.fullmatch(p, t, re.IGNORECASE) for p in _CREDIT_PATTERNS)
+
+
 _INJECTION_PATTERNS = [
     r"이전\s*지시", r"위\s*지시", r"다음\s*지시를?\s*따라", r"지시를\s*따라",
     r"무시하고", r"무시해", r"위\s*규칙을?\s*무시",
