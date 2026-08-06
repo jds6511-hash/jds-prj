@@ -45,15 +45,14 @@ def test_reduce_prompt_forbids_new_facts():
     p = build_reduce_prompt(["부분1", "부분2"])
     assert "새로운 사실" in p and "부분1" in p         # [13-2]
 
-def test_reduce_prompt_caps_citations_per_sentence():
-    # reduce 규칙 1("중복 사건은 하나로 합칠 것")에 개수 상한이 없어서, 캡션이 거의
-    # 동일한 영상에서 모델이 "전부 같은 사건"으로 이행해 한 문장에 318/357세그먼트를
-    # 몰아 넣었다(2026-08-06 서버 7B 실측). 상한 규칙을 넣자 문장 343개·고유 인용
-    # 357/357로 회복했다. 상한 초과 문장은 5개로 줄었다(후처리로 제거).
+def test_reduce_prompt_cite_cap_is_opt_in():
+    # 상한 규칙은 **번호 몰아쓰기가 감지된 영상에만** 켠다. 기본 경로에 넣었더니
+    # 정상 영상이 깎였다(gemini_promo 커버 0.844→0.418 실측).
     from m8_report import MAX_CITES_PER_SENTENCE
-    p = build_reduce_prompt(["부분1"])
-    assert str(MAX_CITES_PER_SENTENCE) in p
-    assert "시간 구간" in p                             # 뭉치지 말고 나누라는 지시
+    plain = build_reduce_prompt(["부분1"])
+    capped = build_reduce_prompt(["부분1"], cite_cap=True)
+    assert str(MAX_CITES_PER_SENTENCE) not in plain and "시간 구간" not in plain
+    assert str(MAX_CITES_PER_SENTENCE) in capped and "시간 구간" in capped
 
 def test_drop_degenerate_sentences():
     from m8_report import drop_degenerate_sentences
@@ -87,12 +86,9 @@ def test_distinct_ratio():
     assert distinct_ratio(same) == 2 / 3
     assert distinct_ratio([]) == 1.0
 
-def test_generate_report_retries_reduce_on_repetition_loop():
-    # 인용 상한 규칙을 넣자 반복적 캡션 영상에서 **문장 단위 반복 루프**가 생겼다
-    # (2026-08-06 서버 7B 실측: yunnamnopo 385문장 중 서로 다른 문장 20개, 같은 줄
-    # 362회). no_repeat_ngram_size=12로 재생성하면 28문장 전부 서로 다르고 커버가
-    # 0.123→0.860이 된다. 다만 정상 영상에는 정당한 반복이 있어 전역 적용은
-    # 커버를 반토막낸다(panibottle 0.897→0.466) — 감지 시에만 재생성한다.
+def test_generate_report_escalates_on_repetition_loop():
+    # 반복 루프 감지 시 no_repeat_ngram_size로 1회 재생성한다. 정상 영상에는 정당한
+    # 반복이 있어 전역 적용은 커버를 반토막낸다(panibottle 0.897→0.466 실측).
     from m8_report import NO_REPEAT_NGRAM_ON_RETRY
     segs = _segs(70)                                    # chunk_size 60 초과 → map-reduce
     calls = []
@@ -106,12 +102,36 @@ def test_generate_report_retries_reduce_on_repetition_loop():
         return "\n".join(f"- 서로 다른 사건 {i} [seg#{i}]" for i in range(10))
 
     rep = generate_report(segs, llm, chunk_size=60, overlap=5)
-    assert rep["reduce_retry"]["no_repeat_ngram_size"] == NO_REPEAT_NGRAM_ON_RETRY
-    assert rep["reduce_retry"]["first_pass_distinct_ratio"] == 0.1
+    steps = rep["reduce_retry"]["steps"]
+    assert [s["trigger"] for s in steps] == ["repetition_loop"]
+    assert steps[0]["distinct_ratio"] == 0.1
+    assert rep["reduce_retry"]["cite_cap"] is False      # 몰아쓰기는 없었다
     assert len({s["text"] for s in rep["sentences"]}) == 10       # 재생성분이 채택됨
     assert calls[-1] == {"no_repeat_ngram_size": NO_REPEAT_NGRAM_ON_RETRY}
 
-def test_generate_report_does_not_retry_when_reduce_healthy():
+def test_generate_report_escalates_cite_dump_then_loop():
+    # yunnamnopo 실측 경로: 원본 프롬프트가 한 문장에 세그먼트를 몰아 씀 → 상한 규칙으로
+    # 재생성하니 반복 루프 → no_repeat_ngram으로 재생성해 해소(커버 0.860).
+    segs = _segs(70)
+    prompts = []
+
+    def llm(prompt, **gen):
+        if "부분 리포트" not in prompt:
+            return "\n".join(f"- 사건 {i} [seg#{i}]" for i in range(70))
+        prompts.append(("cap" if "최대 8개" in prompt else "plain", gen))
+        if len(prompts) == 1:                            # 1차: 전 세그먼트 몰아쓰기
+            return "- 전부 같은 사건 [" + ", ".join(f"seg#{i}" for i in range(70)) + "]"
+        if len(prompts) == 2:                            # 2차(상한): 반복 루프
+            return "\n".join(f"- 같은 줄 [seg#{i}]" for i in range(10))
+        return "\n".join(f"- 서로 다른 사건 {i} [seg#{i}]" for i in range(10))
+
+    rep = generate_report(segs, llm, chunk_size=60, overlap=5)
+    assert [s["trigger"] for s in rep["reduce_retry"]["steps"]] == ["cite_dump", "repetition_loop"]
+    assert rep["reduce_retry"]["cite_cap"] is True
+    # 3차도 상한 규칙을 유지한 프롬프트로 간다 — 몰아쓰기가 되살아나면 안 된다
+    assert prompts == [("plain", {}), ("cap", {}), ("cap", {"no_repeat_ngram_size": 12})]
+
+def test_generate_report_does_not_escalate_when_reduce_healthy():
     # 정상 영상은 출력이 보존돼야 한다(재생성이 커버를 깎으므로).
     segs = _segs(70)
     calls = []

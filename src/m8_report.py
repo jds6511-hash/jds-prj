@@ -52,10 +52,12 @@ DEGENERATE_CITE_FRAC = 0.5
 MAX_CITES_PER_SENTENCE = 8
 
 # reduce 출력의 문장 다양성 하한. 이 아래면 반복 루프로 보고 재생성한다.
-# 실측(2026-08-06 서버 7B, 인용 상한 규칙 적용분): 정상 영상 0.75(panibottle)·
-# 0.79(itsub) / 루프 영상 0.05(yunnamnopo, 같은 줄 362회)·0.13(gwaktube, 28회).
+# 실측 분포(2026-08-06 서버 7B, 전 7영상): 루프 0.05(yunnamnopo, 같은 줄 362회)·
+# 0.13(gwaktube) / 정상 0.50·0.57·0.75·0.80·0.89. 0.3이 유일하게 깨끗한 분리선이다
+# — 0.5로 뒀더니 정상이던 _10_000(0.49)·gemini(0.46)까지 재생성돼 커버가
+# 0.917→0.401, 0.844→0.459로 망가졌다.
 NO_REPEAT_NGRAM_ON_RETRY = 12
-MIN_DISTINCT_RATIO = 0.5
+MIN_DISTINCT_RATIO = 0.3
 
 
 def narration(text: str) -> str:
@@ -122,8 +124,16 @@ def build_map_prompt(chunk: list[dict]) -> str:
     return _SYSTEM + "\n입력:\n" + "\n".join(_fmt_seg(s) for s in chunk)
 
 
-def build_reduce_prompt(partials: list[str]) -> str:
+def build_reduce_prompt(partials: list[str], cite_cap: bool = False) -> str:
+    """`cite_cap`은 **번호 몰아쓰기가 감지된 영상에만** 켠다.
+
+    이 규칙을 기본 경로에 넣었더니 정상 영상까지 깎였다(gemini_promo 커버
+    0.844→0.418 실측) — 결함이 없는 영상의 출력을 바꾸지 않는다. [8-5(6-d)]
+    """
     joined = "\n\n---\n\n".join(partials)
+    cap = (f"5. **한 문장의 인용은 최대 {MAX_CITES_PER_SENTENCE}개.** 같은 장면이 더 길게 "
+           "이어지면 하나로 뭉치지 말고 시간 구간을 나눠 여러 문장으로 쓸 것. 세그먼트 "
+           "번호만 길게 나열하지 말 것.\n") if cite_cap else ""
     return (
         "아래는 같은 영상의 구간별 부분 리포트들입니다. 하나의 최종 리포트로 통합하세요.\n"
         "규칙:\n"
@@ -131,9 +141,7 @@ def build_reduce_prompt(partials: list[str]) -> str:
         "2. 시간 순서([seg#N] 번호 순)로 재정렬할 것.\n"
         "3. 부분 리포트에 없는 새로운 사실을 절대 추가하지 말 것.\n"
         "4. 각 문장의 [seg#N] 인용은 부분 리포트의 인용을 그대로 유지할 것.\n"
-        f"5. **한 문장의 인용은 최대 {MAX_CITES_PER_SENTENCE}개.** 같은 장면이 더 길게 "
-        "이어지면 하나로 뭉치지 말고 시간 구간을 나눠 여러 문장으로 쓸 것. 세그먼트 "
-        "번호만 길게 나열하지 말 것.\n"
+        + cap +
         "출력 형식은 동일: '- 문장 [seg#N]'. 그 외 텍스트 금지.\n\n부분 리포트:\n" + joined)
 
 
@@ -182,7 +190,6 @@ def generate_report(segments: list[dict], llm, chunk_size: int = 60,
         start += chunk_size - overlap
     # Reduce + 안전장치: reduce 인용 ⊆ map 인용 검사 [13-2]
     map_cites = {c for p in partials for s in parse_citations(p) for c in s["cites"]}
-    prompt = build_reduce_prompt(partials)
 
     def parse_reduce(raw):
         sents, tail = drop_truncated_tail(parse_citations(raw))
@@ -195,21 +202,36 @@ def generate_report(segments: list[dict], llm, chunk_size: int = 60,
                 s["cites"] = [c for c in s["cites"] if c in map_cites]
         return sents, tail
 
-    raw = llm(prompt)
+    # 기본 경로는 원래 프롬프트·그리디 그대로 두고, **결함이 감지된 영상만** 단계적으로
+    # 올린다. 규칙·디코딩을 전역으로 바꾸면 정상 영상이 깎인다(실측 근거 8-5(6-d)).
+    raw = llm(build_reduce_prompt(partials))
     sents, tail = parse_reduce(raw)
-    # 문장 단위 반복 루프는 **감지 시에만** 재생성한다. no_repeat_ngram을 전역으로 켜면
-    # 정당한 반복 표현까지 막혀 정상 영상의 커버가 반토막난다(0.897→0.466 실측).
-    retry = None
+    escalation, cite_cap = [], False
+    n = len(segments)
+
+    if any(len(s["cites"]) > n * DEGENERATE_CITE_FRAC for s in sents):
+        worst = max(len(s["cites"]) for s in sents)
+        print(f"[warn] reduce 번호 몰아쓰기 감지 (한 문장 {worst}/{n}세그먼트) — "
+              f"인용 상한 {MAX_CITES_PER_SENTENCE}개 규칙으로 재생성")
+        escalation.append({"trigger": "cite_dump", "worst_cites": worst,
+                           "distinct_ratio": round(distinct_ratio(sents), 3),
+                           "raw_output": raw})
+        cite_cap = True
+        raw = llm(build_reduce_prompt(partials, cite_cap=True))
+        sents, tail = parse_reduce(raw)
+
     ratio = distinct_ratio(sents)
     if ratio < MIN_DISTINCT_RATIO:
         print(f"[warn] reduce 문장 반복 루프 감지 (서로 다른 서술 비율 {ratio:.2f} < "
               f"{MIN_DISTINCT_RATIO}) — no_repeat_ngram_size={NO_REPEAT_NGRAM_ON_RETRY}로 재생성")
-        retry = {"first_pass_distinct_ratio": round(ratio, 3),
-                 "first_pass_raw_output": raw,
-                 "no_repeat_ngram_size": NO_REPEAT_NGRAM_ON_RETRY}
-        raw = llm(prompt, no_repeat_ngram_size=NO_REPEAT_NGRAM_ON_RETRY)
+        escalation.append({"trigger": "repetition_loop", "distinct_ratio": round(ratio, 3),
+                           "no_repeat_ngram_size": NO_REPEAT_NGRAM_ON_RETRY,
+                           "raw_output": raw})
+        raw = llm(build_reduce_prompt(partials, cite_cap=cite_cap),
+                  no_repeat_ngram_size=NO_REPEAT_NGRAM_ON_RETRY)
         sents, tail = parse_reduce(raw)
-        retry["retry_distinct_ratio"] = round(distinct_ratio(sents), 3)
+    retry = {"steps": escalation, "cite_cap": cite_cap,
+             "final_distinct_ratio": round(distinct_ratio(sents), 3)} if escalation else None
     # 퇴화 판정은 map 밖 인용 필터 **뒤에** 한다 — 필터로 인용이 줄면 퇴화가 아닐 수 있다.
     sents, degen = drop_degenerate_sentences(sents, len(segments))
     if degen:
