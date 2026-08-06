@@ -45,6 +45,12 @@ _CITE_RE = re.compile(r"\[?\s*seg\s*#\s*\d+\s*(?:,\s*seg\s*#\s*\d+\s*)*\]?", re.
 # 품질 튜닝 손잡이가 아니라 퇴화 감지용이므로 근거 없이 낮추지 말 것.
 DEGENERATE_CITE_FRAC = 0.5
 
+# reduce 규칙에 넣는 문장당 인용 상한. 정상 6영상의 문장당 평균 인용은 1.2~2.1이고
+# 최대가 27이었다. 8은 "여러 세그먼트를 사건 단위로 묶어라"(규칙 8)를 살리면서
+# 영상 전체를 한 문장에 몰아넣는 것만 막는 선이다. 이 규칙을 넣자 퇴화 영상이
+# 문장 1개 -> 343개, 고유 인용 357/357로 회복했다(2026-08-06 서버 7B 실측).
+MAX_CITES_PER_SENTENCE = 8
+
 
 def narration(text: str) -> str:
     """인용 마커를 걷어낸 서술 부분. 비면 그 줄은 정보량이 0이다."""
@@ -62,6 +68,24 @@ def drop_truncated_tail(sents: list[dict]) -> tuple[list[dict], str | None]:
     if sents and not sents[-1]["cites"]:
         return sents[:-1], sents[-1]["text"]
     return sents, None
+
+
+def drop_degenerate_sentences(sents: list[dict], n: int) -> tuple[list[dict], list[dict]]:
+    """영상의 절반 넘는 세그먼트를 인용하는 문장을 떼어낸다.
+
+    상한 규칙(규칙 5)을 넣어도 앞머리 5~6문장은 여전히 번호를 몰아 쓴다(2026-08-06
+    실측). 그런 문장은 서술이 있어도 정보량이 사실상 0이고, M9 groundedness judge에
+    수백 세그먼트를 한 번에 물려 판정 자체를 무의미하게 만든다. 잘린 꼬리·map 밖 인용과
+    같은 원칙으로 **제거하고 산출물에 기록**한다. [8-5(6-c)]
+    """
+    kept, dropped = [], []
+    for s in sents:
+        if len(s["cites"]) > n * DEGENERATE_CITE_FRAC:
+            dropped.append({"sent_id": s["sent_id"], "n_cites": len(s["cites"]),
+                            "text": s["text"][:200]})
+        else:
+            kept.append(s)
+    return kept, dropped
 
 
 def _sanitize(text: str) -> str:
@@ -94,6 +118,9 @@ def build_reduce_prompt(partials: list[str]) -> str:
         "2. 시간 순서([seg#N] 번호 순)로 재정렬할 것.\n"
         "3. 부분 리포트에 없는 새로운 사실을 절대 추가하지 말 것.\n"
         "4. 각 문장의 [seg#N] 인용은 부분 리포트의 인용을 그대로 유지할 것.\n"
+        f"5. **한 문장의 인용은 최대 {MAX_CITES_PER_SENTENCE}개.** 같은 장면이 더 길게 "
+        "이어지면 하나로 뭉치지 말고 시간 구간을 나눠 여러 문장으로 쓸 것. 세그먼트 "
+        "번호만 길게 나열하지 말 것.\n"
         "출력 형식은 동일: '- 문장 [seg#N]'. 그 외 텍스트 금지.\n\n부분 리포트:\n" + joined)
 
 
@@ -125,8 +152,12 @@ def generate_report(segments: list[dict], llm, chunk_size: int = 60,
         sents, tail = drop_truncated_tail(parse_citations(raw))
         if tail:
             print(f"[warn] 생성 상한으로 잘린 꼬리 제거: {tail[:60]!r}")
-        return {"sentences": sents, "raw_output": raw,
-                "truncated_tail": tail, "map_raw_outputs": []}
+        sents, degen = drop_degenerate_sentences(sents, len(segments))
+        if degen:
+            print(f"[warn] 퇴화 문장 제거 {len(degen)}건: "
+                  f"{[d['n_cites'] for d in degen]}/{len(segments)}세그먼트 인용")
+        return {"sentences": sents, "raw_output": raw, "truncated_tail": tail,
+                "degenerate_dropped": degen, "map_raw_outputs": []}
     # Map: overlap 세그먼트를 두고 청크 분할 [13-2]
     partials, start = [], 0
     while start < len(segments):
@@ -146,8 +177,13 @@ def generate_report(segments: list[dict], llm, chunk_size: int = 60,
         if dropped:
             print(f"[warn] reduce 인용 유실/오귀속 필터: sent {s['sent_id']} {dropped}")
             s["cites"] = [c for c in s["cites"] if c in map_cites]
+    # 퇴화 판정은 map 밖 인용 필터 **뒤에** 한다 — 필터로 인용이 줄면 퇴화가 아닐 수 있다.
+    sents, degen = drop_degenerate_sentences(sents, len(segments))
+    if degen:
+        print(f"[warn] 퇴화 문장 제거 {len(degen)}건: "
+              f"{[d['n_cites'] for d in degen]}/{len(segments)}세그먼트 인용")
     return {"sentences": sents, "raw_output": raw, "truncated_tail": tail,
-            "map_raw_outputs": partials}
+            "degenerate_dropped": degen, "map_raw_outputs": partials}
 
 
 def save_report(out, video_id: str, cfg: dict, rep: dict, n: int) -> None:

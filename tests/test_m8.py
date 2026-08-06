@@ -45,6 +45,40 @@ def test_reduce_prompt_forbids_new_facts():
     p = build_reduce_prompt(["부분1", "부분2"])
     assert "새로운 사실" in p and "부분1" in p         # [13-2]
 
+def test_reduce_prompt_caps_citations_per_sentence():
+    # reduce 규칙 1("중복 사건은 하나로 합칠 것")에 개수 상한이 없어서, 캡션이 거의
+    # 동일한 영상에서 모델이 "전부 같은 사건"으로 이행해 한 문장에 318/357세그먼트를
+    # 몰아 넣었다(2026-08-06 서버 7B 실측). 상한 규칙을 넣자 문장 343개·고유 인용
+    # 357/357로 회복했다. 상한 초과 문장은 5개로 줄었다(후처리로 제거).
+    from m8_report import MAX_CITES_PER_SENTENCE
+    p = build_reduce_prompt(["부분1"])
+    assert str(MAX_CITES_PER_SENTENCE) in p
+    assert "시간 구간" in p                             # 뭉치지 말고 나누라는 지시
+
+def test_drop_degenerate_sentences():
+    from m8_report import drop_degenerate_sentences
+    sents = [{"sent_id": 0, "text": "전부 같은 사건", "cites": list(range(60))},
+             {"sent_id": 1, "text": "사건 A", "cites": [1, 2]},
+             {"sent_id": 2, "text": "사건 B", "cites": list(range(20))}]
+    kept, dropped = drop_degenerate_sentences(sents, n=100)
+    assert [s["sent_id"] for s in kept] == [1, 2]        # 20/100 = 20%는 유지
+    assert len(dropped) == 1 and dropped[0]["n_cites"] == 60
+
+def test_drop_degenerate_sentences_keeps_all_when_normal():
+    from m8_report import drop_degenerate_sentences
+    sents = [{"sent_id": 0, "text": "사건 A", "cites": [1]},
+             {"sent_id": 1, "text": "사건 B", "cites": [2, 3]}]
+    kept, dropped = drop_degenerate_sentences(sents, n=10)
+    assert len(kept) == 2 and dropped == []
+
+def test_generate_report_records_degenerate_drop():
+    # 퇴화 문장을 떼고도 그 사실이 산출물에 남아야 한다(잘린 꼬리와 같은 원칙).
+    segs = _segs(3)
+    llm = lambda p: "- 전부 같은 사건 [seg#0, seg#1, seg#2]\n- 사건 A [seg#0]"
+    rep = generate_report(segs, llm, chunk_size=60, overlap=5)
+    assert [s["cites"] for s in rep["sentences"]] == [[0]]
+    assert rep["degenerate_dropped"][0]["n_cites"] == 3
+
 def test_parse_citations():
     text = "- 화자가 재료를 준비한다 [seg#6, seg#7]\n- 근거 없는 문장\n- 요리를 시작한다 [seg#9]"
     sents = parse_citations(text)
