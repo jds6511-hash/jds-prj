@@ -11,29 +11,46 @@
   2. **양자화와 모델 크기를 분리**한다. 현행은 3B-**4bit**인데 후보를 7B-**bf16**으로
      재면 두 요인이 섞인다. 3B-bf16 arm을 넣어 각각을 분리한다.
 
-arm 3종 (전부 dev 3영상 655프레임, 기존 rep_frame 재사용):
-  cur_3b_4bit  현행 그대로 — segments.json의 캡션을 그대로 쓴다(재생성 없음)
-  3b_bf16      같은 모델, 양자화만 해제      → cur 대비 = **양자화 효과**
-  7b_bf16      같은 계열 7B, bf16            → 3b_bf16 대비 = **모델 크기 효과**
-                                              cur 대비 = **시스템 효과(실제 교체분)**
+arm 4종 (전부 dev 3영상 655프레임, 기존 rep_frame 재사용):
+  cur_3b_4bit  현행 그대로 — segments.json의 캡션(과거 노트북 생성분, 재생성 없음)
+  3b_4bit      같은 설정을 **서버에서 새로 생성** → cur 대비 = **생성 환경 효과**
+  3b_bf16      같은 모델, 양자화만 해제         → 3b_4bit 대비 = **순수 양자화 효과**
+  7b_bf16      같은 계열 7B, bf16               → 3b_bf16 대비 = **모델 크기 효과**
+                                                 cur 대비 = **시스템 효과(실제 교체분)**
+`3b_4bit`은 2차 실행에서 추가했다(아래). 이게 없으면 양자화 효과와 생성 환경 효과가
+분리되지 않는다.
 
 프롬프트·max_new_tokens·rep_penalty·max_pixels는 arm 무관하게 config 값을 쓴다 —
 같은 계열이라 이 설정이 후보에게 불리하게 작용할 이유가 없다(Qwen3-VL·VARCO는
 계열이 달라 이 가정이 성립하지 않았다).
 
-**1차 실행(2026-08-07)에서 이 프로브 자체에 같은 종류의 결함이 있었다.** 현행 arm은
-`segments.json`의 캡션을 그대로 쓰는데 그건 `--recaption-corrupted`를 거쳐 오염 0으로
-정리된 산출물이고, 신규 arm에는 그 처리를 안 넣었다(3b_bf16 오염 22건 3.4%, 가타카나
-혼입 `카모フラ주제`). 그래서 나온 "양자화 해제가 유의하게 나쁘다"(Δ-0.0707,
-CI [-0.1409, -0.0061])는 양자화 효과가 아니라 **오염 정리 여부**를 잰 값이다.
-`gen_captions`에 운영과 동일한 오염 재시도를 넣어 재측정한다. 1차 수치는
+**1차 실행(2026-08-07)에서 이 프로브 자체에 결함이 있었다.** 현행 arm은 `segments.json`의
+캡션을 그대로 쓰는데 그건 `--recaption-corrupted`를 거쳐 오염 0으로 정리된 산출물이고,
+신규 arm에는 그 처리를 안 넣었다(3b_bf16 오염 22건 3.4%, 가타카나 혼입 `카모フラ주제`).
+운영과 동일한 오염 재시도를 넣어 재측정했다. 1차 수치는
 `_scratch/qwen25vl_size_probe_CONFOUNDED.json`으로 보존한다.
 
-교란 없이 관측된 사실 하나: **7B는 캡션 길이가 절반**(64.8자 vs 130.5자)이고, 그 결과
-장면형은 낫고(0.5501 vs 0.4911) 복합형은 나쁘다(0.6164 vs 0.7859).
+**2차 실행 결과 — 내 가설이 틀렸다(2026-08-07 16:33).** 오염을 통제하니(재시도 22건 중
+미해소 1건, 0.15%) 델타가 거의 그대로였다: Δ-0.0760 CI [-0.146, -0.0109] **유의**
+(1차 Δ-0.0707). 즉 "오염 정리 여부를 잰 것"이라는 설명은 **기각**된다. 그 차이는
+오염에서 온 게 아니다.
+
+**그래서 남은 교란이 진짜 문제다 — `cur_3b_4bit`는 신규 생성분이 아니다.** 이 arm은
+노트북(RTX 3060)에서 과거 라이브러리 버전으로 만들어 `segments.json`에 저장된 캡션이고,
+비교 대상은 서버(RTX 4090)에서 방금 생성한 것이다. 그리디 디코딩이라 원리상 재현돼야
+하지만 GPU·커널·라이브러리 버전이 다르면 수치가 갈린다. 따라서 `cur vs 3b_bf16`은
+**양자화 효과와 생성 환경 차이가 섞인 값**이고, 이대로는 "양자화를 풀면 나빠진다"고
+말할 수 없다.
+
+분리 방법은 하나뿐이다: **같은 서버에서 4bit로 새로 생성한 `3b_4bit` arm**을 대조군으로
+넣는다. `3b_4bit vs 3b_bf16`이 순수 양자화 효과이고, `3b_4bit vs cur`이 생성 환경 효과다.
+이 arm을 추가해 재측정한다(`run_cap_4bit.sh`, 다른 배치 종료 후 실행).
+
+교란 없이 관측된 사실 하나: **7B는 캡션 길이가 절반**(64.8자 vs 121.0자)이고, 그 결과
+장면형은 낫고(0.526 vs 0.423) 복합형은 나쁘다(0.616 vs 0.689).
 
 work/·results/ 불변, test 미접촉. 재임베딩은 메모리에서만.
-재현: python docs/probes/qwen25vl_size_probe.py [--arms 3b_bf16,7b_bf16]
+재현: python docs/probes/qwen25vl_size_probe.py [--arms 3b_4bit,3b_bf16,7b_bf16]
 """
 import argparse, gc, json, statistics as st, sys
 from pathlib import Path
@@ -50,6 +67,7 @@ from m6_evaluate import evaluate, grid_search_alpha    # noqa: E402
 
 OUT = Path(__file__).resolve().parent / "_scratch"
 ARMS = {
+    "3b_4bit": ("Qwen/Qwen2.5-VL-3B-Instruct", True),     # cur의 대조군(아래 참조)
     "3b_bf16": ("Qwen/Qwen2.5-VL-3B-Instruct", False),
     "7b_bf16": ("Qwen/Qwen2.5-VL-7B-Instruct", False),
 }
@@ -105,7 +123,7 @@ def gen_captions(cfg, arm, vids, idx_cur):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--arms", default="3b_bf16,7b_bf16")
+    ap.add_argument("--arms", default="3b_4bit,3b_bf16,7b_bf16")
     a = ap.parse_args()
     arms = [x for x in a.arms.split(",") if x]
 
@@ -170,8 +188,13 @@ def main():
                 "ci95": [round(float(lo), 4), round(float(hi), 4)],
                 "significant": bool(lo > 0 or hi < 0)}
 
-    pairs = {"quantization(3b_bf16 vs cur)": ("cur_3b_4bit", "3b_bf16"),
+    # `cur_3b_4bit`은 노트북에서 과거에 생성돼 저장된 캡션이라, cur을 기준으로 한 대비는
+    # 양자화·모델크기 효과에 **생성 환경 차이**가 섞인다. 서버에서 새로 만든 `3b_4bit`이
+    # 그 교란을 뺀 대조군이다. 둘 다 남겨 차이를 드러낸다.
+    pairs = {"quantization(3b_bf16 vs 3b_4bit)": ("3b_4bit", "3b_bf16"),
              "model_size(7b vs 3b_bf16)": ("3b_bf16", "7b_bf16"),
+             "env(3b_4bit vs cur)": ("cur_3b_4bit", "3b_4bit"),
+             "quantization_confounded(3b_bf16 vs cur)": ("cur_3b_4bit", "3b_bf16"),
              "system(7b_bf16 vs cur)": ("cur_3b_4bit", "7b_bf16")}
     for label, (b, c) in pairs.items():
         if b in vecs_fixed and c in vecs_fixed:
