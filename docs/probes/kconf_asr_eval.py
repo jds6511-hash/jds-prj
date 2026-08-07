@@ -31,7 +31,12 @@ CER도 배포본 정의를 따른다 — `hypersp/metrics/wer.py`에서 공백 �
 비교하면 그쪽에만 학습 데이터라 낙관 편향이 붙는다.** 공식 test 분할 없이 3자 비교를
 하지 마라.
 
-재현: python docs/probes/kconf_asr_eval.py --sample 700 --arms A_prod,A_prod_b1,C,C_b5
+데이터는 재배포 불가라 저장소에 없다. 서버 `/ssd/<SERVER_USER>/kconf_full`에 오디오 1,950건과
+정답이 든 manifest.json이 있고, `--pack`으로 그 디렉터리를 가리킨다(로컬 사본은 삭제).
+
+재현: python docs/probes/kconf_asr_eval.py --pack <팩경로> --arms A_prod,A_prod_b1,C,C_b5
+      (--reuse: 이미 나온 arm은 재추론 없이 저장분을 쓴다. arm 코드를 고쳤으면
+       그 arm의 kconf_hyp_<arm>.json을 지우고 써라)
 """
 import argparse, glob, json, os, re, sys, time, wave
 from pathlib import Path
@@ -225,15 +230,19 @@ def run_qwen3_asr(model_name, rows, beams):
     hyps, t0 = [], time.time()
     for i, r in enumerate(rows):
         arr, _ = read_wav(r["wav"])
+        # `.to(device, dtype)`로 한 번에 옮긴다. device만 옮기면 input_features가
+        # float32로 남아 fp16 conv와 충돌한다(RuntimeError: Input type (float) and
+        # bias type (c10::Half) should be the same — 1차 실행에서 arm C가 여기서 죽었다).
         inputs = proc.apply_transcription_request(
             audio=np.asarray(arr, dtype=np.float32), language="ko",
-            processor_kwargs={"pad_to_multiple_of": 100})
-        inputs = {k: (v.to(model.device) if hasattr(v, "to") else v)
-                  for k, v in inputs.items()}
+            processor_kwargs={"pad_to_multiple_of": 100},
+        ).to(model.device, model.dtype)
         with torch.inference_mode():
             out = model.generate(**inputs, max_new_tokens=440, **dec)
         txt = proc.batch_decode(out[:, inputs["input_ids"].shape[1]:],
-                                skip_special_tokens=True)[0]
+                                skip_special_tokens=True,
+                                return_format="transcription_only")[0]
+        txt = txt.replace("<asr_text>", "")
         hyps.append(prefix.sub("", txt).strip())
         if i % 100 == 0:
             print(f"  {i}/{len(rows)}", flush=True)
@@ -263,6 +272,9 @@ def main():
     ap.add_argument("--sample", type=int, default=700, help="세션별 층화 표집 총량")
     ap.add_argument("--arms", default="A_prod,A_prod_b1,C,C_b5")
     ap.add_argument("--pack", help="manifest.json이 있는 디렉터리 (서버 실행용)")
+    ap.add_argument("--reuse", action="store_true",
+                    help="이미 저장된 kconf_hyp_<arm>.json이 있으면 재추론하지 않는다. "
+                         "arm 코드가 바뀐 뒤에는 그 arm의 파일을 지우고 써라")
     a = ap.parse_args()
     arms = [x for x in a.arms.split(",") if x]
 
@@ -276,10 +288,17 @@ def main():
     hyps, elapsed = {}, {}
     for arm in arms:
         kind, name, beams = MODELS[arm]
+        p = OUT / f"kconf_hyp_{arm}.json"
+        if a.reuse and p.exists():
+            d = json.loads(p.read_text(encoding="utf-8"))
+            assert d["model"] == name and d["beams"] == beams and len(d["hyps"]) == len(rows), \
+                f"{p}가 지금 설정과 다르다 — 지우고 다시 돌려라"
+            hyps[arm], elapsed[arm] = d["hyps"], d["elapsed_sec"]
+            print(f"[{arm}] 저장분 재사용 ({p.name})", flush=True)
+            continue
         print(f"[{arm}] {kind} {name} beams={beams}", flush=True)
         fn = run_faster_whisper if kind == "faster-whisper" else run_qwen3_asr
         hyps[arm], elapsed[arm] = fn(name, rows, beams)
-        p = OUT / f"kconf_hyp_{arm}.json"
         p.write_text(json.dumps({"arm": arm, "model": name, "beams": beams,
                                  "elapsed_sec": round(elapsed[arm], 1),
                                  "audio_sec": round(sec, 1),
