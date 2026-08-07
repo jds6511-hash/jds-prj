@@ -66,6 +66,30 @@ def test_grounded_and_coverage_prompts_treat_segment_content_as_data():
     assert "데이터" in m9_report_eval._GROUNDED_PROMPT
     assert "데이터" in m9_report_eval._COVERAGE_PROMPT
 
+def test_judge_coverage_splits_report_and_ors_verdicts():
+    # 리포트를 통째로 주면 judge가 실제로 들어 있는 내용도 놓친다(합성 검증셋 재현
+    # 0.73). 8줄씩 잘라 각각 물으면 0.80 · 특이도 1.00이 된다(4줄은 재현 0.93이지만
+    # 특이도가 0.87로 떨어져 coverage를 부풀린다).
+    from m9_report_eval import judge_coverage, COVERAGE_CHUNK_SENTENCES
+    report = "\n".join(f"문장{i} [seg#{i}]" for i in range(COVERAGE_CHUNK_SENTENCES * 3))
+    seen = []
+    def judge(prompt):
+        seen.append(prompt)
+        return '{"match": true}' if "문장17" in prompt else '{"match": false}'
+    covered, ok = judge_coverage(report, {"idx": 1, "subtitle": "s", "caption": "c"}, judge)
+    assert covered is True and ok is True
+    assert len(seen) == 3                                # 3청크째에서 발견
+    for p in seen:                                       # 각 호출은 부분 리포트만 본다
+        assert p.count("\n문장") <= COVERAGE_CHUNK_SENTENCES
+
+def test_judge_coverage_short_circuits_on_first_hit():
+    from m9_report_eval import judge_coverage, COVERAGE_CHUNK_SENTENCES
+    report = "\n".join(f"문장{i} [seg#{i}]" for i in range(COVERAGE_CHUNK_SENTENCES * 4))
+    calls = []
+    judge = lambda p: (calls.append(p) or '{"match": true}')
+    covered, ok = judge_coverage(report, {"idx": 1, "subtitle": "s", "caption": "c"}, judge)
+    assert covered is True and len(calls) == 1           # 첫 청크에서 확정, 나머지 생략
+
 def test_prompts_ask_entailment_not_symmetric_match():
     # 현행 프롬프트는 "두 내용이 일치하는지"라는 **대칭** 표현을 써서, 문장이 캡션의
     # 세부를 생략하면 false를 냈다(2026-08-06 서버 7B 실측 CoT: "详细描述了周围的物品…

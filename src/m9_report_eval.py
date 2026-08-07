@@ -44,6 +44,12 @@ JSON으로만 답하라: {{"match": true}} 또는 {{"match": false}}
 # (재현 0.70·특이도 0.90). 계측기 정확도 자체를 결과에 병기한다. [8-5(6-f)]
 
 
+# coverage 판정 시 리포트를 몇 줄씩 잘라 물을지. 합성 검증셋 실측(2026-08-06):
+# 통째 정확도 0.83(재현 0.73·특이도 0.93) / 8줄 0.90(0.80·1.00) / 4줄 0.90(0.93·0.87).
+# 8줄을 쓴다 — 4줄은 재현이 높지만 특이도가 떨어져 coverage를 부풀린다. [8-5(6-f)]
+COVERAGE_CHUNK_SENTENCES = 8
+
+
 def _parse_verdict(text: str) -> bool:
     """judge 출력에서 최종 판정 파싱. 실패 시 보수적으로 False. [v2 17-4]
 
@@ -87,13 +93,26 @@ def judge_grounded(sentence: dict, cited_segments: list[dict], judge) -> bool:
 
 
 def judge_coverage(report_text: str, segment: dict, judge) -> tuple[bool, bool]:
-    """반환: (covered, judge_parse_ok) — groundedness와 동일하게 truncation 진단 병기
-    [리뷰 2026-07-11 Minor]."""
-    prompt = _COVERAGE_PROMPT.format(idx=segment["idx"], subtitle=_sanitize(segment["subtitle"]),
-                                     caption=_sanitize(_clean_caption(segment["caption"])),
-                                     report=report_text)
-    raw = judge(prompt)
-    return _parse_verdict(raw), _parse_ok(raw)
+    """리포트를 `COVERAGE_CHUNK_SENTENCES`줄씩 잘라 각각 묻고 **하나라도 true면 covered**.
+
+    반환: (covered, judge_parse_ok) — groundedness와 동일하게 truncation 진단 병기
+    [리뷰 2026-07-11 Minor].
+
+    리포트를 통째로 주면 judge가 실제로 들어 있는 내용도 놓친다(합성 검증셋 재현 0.73).
+    8줄 분할은 0.80·특이도 1.00이다. 4줄은 재현 0.93이지만 특이도가 0.87로 떨어져
+    coverage를 부풀리므로 쓰지 않는다 — 보고값은 하한이어야 한다. [8-5(6-f)]
+    """
+    lines = report_text.splitlines()
+    parse_ok = True
+    for i in range(0, max(len(lines), 1), COVERAGE_CHUNK_SENTENCES):
+        raw = judge(_COVERAGE_PROMPT.format(
+            idx=segment["idx"], subtitle=_sanitize(segment["subtitle"]),
+            caption=_sanitize(_clean_caption(segment["caption"])),
+            report="\n".join(lines[i:i + COVERAGE_CHUNK_SENTENCES])))
+        parse_ok = parse_ok and _parse_ok(raw)
+        if _parse_verdict(raw):
+            return True, parse_ok
+    return False, parse_ok
 
 
 def coverage_by_type(per_gt: list[dict], gt_types: dict[int, list[str]]) -> dict:
