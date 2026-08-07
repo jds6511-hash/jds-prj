@@ -21,6 +21,17 @@ arm 3종 (전부 dev 3영상 655프레임, 기존 rep_frame 재사용):
 같은 계열이라 이 설정이 후보에게 불리하게 작용할 이유가 없다(Qwen3-VL·VARCO는
 계열이 달라 이 가정이 성립하지 않았다).
 
+**1차 실행(2026-08-07)에서 이 프로브 자체에 같은 종류의 결함이 있었다.** 현행 arm은
+`segments.json`의 캡션을 그대로 쓰는데 그건 `--recaption-corrupted`를 거쳐 오염 0으로
+정리된 산출물이고, 신규 arm에는 그 처리를 안 넣었다(3b_bf16 오염 22건 3.4%, 가타카나
+혼입 `카모フラ주제`). 그래서 나온 "양자화 해제가 유의하게 나쁘다"(Δ-0.0707,
+CI [-0.1409, -0.0061])는 양자화 효과가 아니라 **오염 정리 여부**를 잰 값이다.
+`gen_captions`에 운영과 동일한 오염 재시도를 넣어 재측정한다. 1차 수치는
+`_scratch/qwen25vl_size_probe_CONFOUNDED.json`으로 보존한다.
+
+교란 없이 관측된 사실 하나: **7B는 캡션 길이가 절반**(64.8자 vs 130.5자)이고, 그 결과
+장면형은 낫고(0.5501 vs 0.4911) 복합형은 나쁘다(0.6164 vs 0.7859).
+
 work/·results/ 불변, test 미접촉. 재임베딩은 메모리에서만.
 재현: python docs/probes/qwen25vl_size_probe.py [--arms 3b_bf16,7b_bf16]
 """
@@ -49,22 +60,43 @@ def rr_vec(res):
 
 
 def gen_captions(cfg, arm, vids, idx_cur):
-    """arm 설정으로 dev 전 프레임 캡션 재생성. 모델은 arm당 1회만 로드."""
+    """arm 설정으로 dev 전 프레임 캡션 재생성. 모델은 arm당 1회만 로드.
+
+    **오염 재시도를 운영과 똑같이 적용한다(2026-08-07 수정).** 1차 실행에서 이걸 빠뜨려
+    비교가 오염됐다: 현행 arm은 `segments.json`의 캡션을 그대로 쓰는데 그건 이미
+    `--recaption-corrupted`를 거쳐 오염 0인 산출물이고, 신규 arm은 미처리라 3b_bf16에
+    오염이 22건(3.4%) 남았다(가타카나 혼입 `카모フラ주제`). 그 상태의 대비
+    Δ-0.0707(유의)는 양자화 효과가 아니라 **오염 정리 여부**를 잰 것이다.
+    운영 규칙: 오염 감지 시 샘플링(temperature 0.7, top_p 0.9) 최대 2회 재시도,
+    그래도 오염이면 greedy 결과 유지 [m3_generate.caption_all, 8-5(4)].
+    """
     model_name, use_4bit = ARMS[arm]
     acfg = {**cfg, "caption_model": model_name, "vlm_4bit": use_4bit}
     print(f"[{arm}] {model_name} 로딩...", flush=True)
     model, processor = load_vlm(acfg)
-    caps = {}
+    caps, retried, still = {}, 0, 0
     for v in vids:
         wdir = common.work_dir(cfg, v)
         out = []
         for i, s in enumerate(idx_cur[v].segments):
-            out.append(caption_frame(Path(wdir) / s["rep_frame"],
-                                     cfg["caption_prompt"], model, processor, acfg))
+            img = Path(wdir) / s["rep_frame"]
+            cap = caption_frame(img, cfg["caption_prompt"], model, processor, acfg)
+            if common.is_corrupted_caption(cap):
+                retried += 1
+                for _ in range(2):
+                    r = caption_frame(img, cfg["caption_prompt"], model, processor,
+                                      acfg, sample=True)
+                    if r and not common.is_corrupted_caption(r):
+                        cap = r
+                        break
+                else:
+                    still += 1
+            out.append(cap)
             if i % 50 == 0:
                 print(f"  {v[:20]} {i}", flush=True)
         caps[v] = out
         print(f"[{arm}] {v[:24]} {len(out)}개", flush=True)
+    print(f"[{arm}] 오염 재시도 {retried}건 중 미해소 {still}건", flush=True)
     del model, processor
     gc.collect()
     torch.cuda.empty_cache()
