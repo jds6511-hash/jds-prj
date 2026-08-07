@@ -26,10 +26,28 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 import common                                                    # noqa: E402
 from m5_search import VideoIndex                                 # noqa: E402
-from m6_evaluate import evaluate, load_queries, validate_gt_seg_idx  # noqa: E402
+from m6_evaluate import evaluate, validate_gt_seg_idx            # noqa: E402
 
 OUT = Path(__file__).resolve().parent / "_scratch"
 DISCRIMINATIVE_MAX_GT = 3            # 사전 등록: 부지표 기준
+
+
+def load_external_queries(path) -> list[dict]:
+    """외부 질의 로더. `m6_evaluate.load_queries`를 쓰지 않는다.
+
+    그쪽은 `split in ("dev","test")`를 assert한다 — 오탈자 split이 조용히 평가에서
+    빠지는 걸 막는 장치라 **본 파이프라인에서는 그대로 둬야 한다**. 이 파일의 split은
+    의도적으로 `external`이고(dev/test 경로와 섞이면 안 된다), 그 가드를 느슨하게
+    푸는 건 보호를 없애는 것이다. 그래서 여기서 별도로 읽되 같은 종류의 검사를 한다.
+    """
+    qs = [json.loads(l) for l in
+          Path(path).read_text(encoding="utf-8").splitlines() if l.strip()]
+    assert qs, f"{path}: 질의가 비어 있다"
+    for q in qs:
+        assert q["split"] == "external", f"{q['query_id']}: split={q['split']!r} — 이 파일은 전부 external이어야 한다"
+        assert q["gt_seg_idx"], f"{q['query_id']}: gt_seg_idx 비어있음"
+        assert q.get("text"), f"{q['query_id']}: text 없음"
+    return qs
 
 
 def rr(res):
@@ -76,7 +94,7 @@ def main():
         alpha = a.alpha
     assert alpha is not None, "alpha 확정값을 찾지 못했다"
 
-    qs_all = [q for q in load_queries(str(ROOT / a.queries)) if q["split"] == "external"]
+    qs_all = load_external_queries(ROOT / a.queries)
     vids_all = sorted({q["video_id"] for q in qs_all})
 
     # M1~M4를 194편 돌리는 데 10시간이 걸리고 배치는 실패 영상을 건너뛴다. 여기서
