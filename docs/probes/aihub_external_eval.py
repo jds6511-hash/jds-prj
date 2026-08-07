@@ -76,9 +76,27 @@ def main():
         alpha = a.alpha
     assert alpha is not None, "alpha 확정값을 찾지 못했다"
 
-    qs = [q for q in load_queries(str(ROOT / a.queries)) if q["split"] == "external"]
-    vids = sorted({q["video_id"] for q in qs})
-    idx = {v: VideoIndex.load(cfg, v) for v in vids}
+    qs_all = [q for q in load_queries(str(ROOT / a.queries)) if q["split"] == "external"]
+    vids_all = sorted({q["video_id"] for q in qs_all})
+
+    # M1~M4를 194편 돌리는 데 10시간이 걸리고 배치는 실패 영상을 건너뛴다. 여기서
+    # 전편 로드를 강제하면 1편만 실패해도 10시간이 결과 없이 날아간다. 로드되는
+    # 영상만 쓰되 **누락을 침묵시키지 않는다** — 제외 편수·사유를 결과 JSON에 남기고
+    # 표준출력에도 찍는다. 사후 배제라 표본이 사전 등록과 달라지므로, 누락이 있으면
+    # 수치를 보고할 때 반드시 병기해야 한다.
+    idx, missing = {}, []
+    for v in vids_all:
+        try:
+            idx[v] = VideoIndex.load(cfg, v)
+        except Exception as e:
+            missing.append({"video_id": v, "error": f"{type(e).__name__}: {e}"})
+    assert idx, "인덱스가 하나도 없다 — M1~M4 배치가 통째로 실패했다"
+    qs = [q for q in qs_all if q["video_id"] in idx]
+    vids = sorted(idx)
+    if missing:
+        print(f"!! 인덱스 없음 {len(missing)}편 / 질의 {len(qs_all) - len(qs)}건 제외", flush=True)
+        for m in missing[:10]:
+            print("   ", m["video_id"], m["error"][:80], flush=True)
     validate_gt_seg_idx(qs, idx, cfg["seg_len_sec"])
 
     rng = np.random.default_rng(cfg["seed"])
@@ -87,6 +105,10 @@ def main():
     rep = {"note": "채택 아님. AI Hub 제3자 라벨 외부 검증, 확정 config 1회 실행.",
            "alpha_from_dev": alpha, "seed": cfg["seed"], "bootstrap_B": B,
            "n_videos": len(vids), "n_queries": len(qs),
+           "n_videos_planned": len(vids_all), "n_queries_planned": len(qs_all),
+           "excluded_videos": missing,
+           "exclusion_note": ("인덱스 로드 실패분은 제외했다. 제외가 0이 아니면 표본이 "
+                              "사전 등록과 다르므로 수치 보고 시 반드시 병기할 것."),
            "caveat": ("영상 60초·세그먼트 12개라 절대값을 본 test(122~357세그먼트)와 "
                       "비교하지 말 것. 쌍체 차이만 비교 가능."),
            "prereg": {"primary": "전체 질의", "secondary": f"gt_seg_idx 길이<={DISCRIMINATIVE_MAX_GT}",
