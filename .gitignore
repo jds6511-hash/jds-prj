@@ -29,4 +29,7 @@ PROJECT_RULES.md
 docs/작업현황_2026-07-11.md
 docs/작업현황_2026-07-13.md
 data/meeting_probe/
+# AI Hub KconfSpeech 표본 — 실제 화자 음성·전사(개인정보 마스킹 @ 포함)이고
+# 라이선스가 재배포를 허용하지 않는다. 회의 오디오와 같은 취급.
+New_Sample/
 .venv*/
