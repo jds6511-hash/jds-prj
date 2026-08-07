@@ -14,10 +14,22 @@ arm 4종 (디코딩 대칭 2x2):
   C_b5       Qwen3-ASR, 빔 5              -> C 내 빔 효과
   A_prod vs C, A_prod_b1 vs C 가 디코딩을 맞춘 모델 대비다.
 
-**정규화를 하나로 고르지 않는다.** AI Hub 전사는 `(철자)/(발음)` 이중 전사와 간투어
-태그(`어/`, `뭐/`)를 쓰는데, 어느 쪽을 정답으로 잡느냐로 CER이 움직인다. 유리한 조합을
-고르는 것을 막기 위해 **4조합(철자·발음 x 간투어 유지·제거)을 전부 보고**한다.
-잡음 코드(b/ n/ l/ o/)는 발화가 아니므로 어느 조합에서도 제거한다.
+**정규화는 배포본 규칙을 그대로 쓴다.** AI Hub가 데이터와 함께 배포하는 베이스라인
+툴킷(hypersp, `03.AI모델/`)의 `tasks/SpeechRecognition/kconfspeech/local/cleaners.py`가
+공식 규칙이고, 전처리 기본 인자가 **발음(pronounciation) 모드**라 그것이 주지표다.
+CER도 배포본 정의를 따른다 — `hypersp/metrics/wer.py`에서 공백 제거 줄이 주석 처리돼
+있어 **공백을 문자로 센다**. 코퍼스 단위 마이크로 평균인 것도 동일하다.
+
+우리가 처음 추론했던 규칙과 배포본이 갈리는 지점이 둘 있다: 배포본은 제거 대상이
+**기호 문자**라서 간투어 낱말(`어/` -> `어`)과 끊긴 말 조각(`인+` -> `인`)이 살아남고,
+잡음 코드 중 `u/`만 `<unk>`로 남는다. 자체 변형 4조합(철자·발음 x 간투어 유지·제거,
+공백 제거)은 **민감도 확인용으로만** 병기한다.
+
+**주의 — 이 표본은 학습 분할이다.** 폴더명이 `KconfSpeech_train_D20`이고 배포본
+`preprocess_kconfspeech.sh`가 D20~D27을 train으로 돌린다. Whisper·Qwen은 이 데이터를
+본 적이 없어(zero-shot) 서로 비교하는 데는 문제가 없지만, **배포 베이스라인(Jasper)과
+비교하면 그쪽에만 학습 데이터라 낙관 편향이 붙는다.** 공식 test 분할 없이 3자 비교를
+하지 마라.
 
 재현: python docs/probes/kconf_asr_eval.py --sample 700 --arms A_prod,A_prod_b1,C,C_b5
 """
@@ -39,6 +51,65 @@ MODELS = {
     "C_b5":      ("qwen3-asr", "Qwen/Qwen3-ASR-1.7B-hf", 5),
 }
 
+# ── 공식 정규화 (AI Hub 배포 툴킷 hypersp: tasks/.../kconfspeech/local/cleaners.py) ──
+# 우리 규칙을 지어내지 않고 배포본을 그대로 옮긴다. 그래야 CER 정의가 표준과 같아진다.
+_OFFICIAL_NOISE = ["o", "n", "u", "b", "l"]
+_OFFICIAL_EXCEPT = ["/", "+", "*", "-", "@", "$", "^", "&", "[", "]", "=", ":", ";", ","]
+_OFFICIAL_MARK = ["?", "!", "."]
+
+
+def official_bracket_filter(sentence: str, mode: str) -> str:
+    """`(철자)/(발음)` 중 한쪽만 남긴다. cleaners.bracket_filter 그대로."""
+    out, flag = "", (False if mode == "pronunciation" else True)
+    if mode == "pronunciation":
+        for ch in sentence:
+            if ch == "(" and flag is False:
+                flag = True
+                continue
+            if ch == "(" and flag is True:
+                flag = False
+                continue
+            if ch != ")" and flag is False:
+                out += ch
+    else:                                                # spelling
+        for ch in sentence:
+            if ch == "(":
+                continue
+            if ch == ")":
+                flag = not flag
+                continue
+            if flag is True:
+                out += ch
+    return out
+
+
+def official_special_filter(sentence: str) -> str:
+    """잡음 코드·문장부호·기호 제거. cleaners.special_filter 그대로.
+
+    주의할 점 둘: **`u/`만 `<unk>`로 남고** 나머지 잡음 코드는 사라진다. 그리고 제거
+    대상은 **기호 문자**라서 간투어 낱말(`어/` -> `어`)과 끊긴 말 조각(`인+` -> `인`)은
+    **살아남는다** — 우리가 임의로 정했던 규칙과 다른 지점이다.
+    """
+    out = ""
+    for i, ch in enumerate(sentence):
+        if ch not in _OFFICIAL_MARK:
+            if i + 1 < len(sentence) and ch in _OFFICIAL_NOISE and sentence[i + 1] == "/":
+                if ch == "u":
+                    out += "<unk>"
+                continue
+        if ch in _OFFICIAL_MARK:
+            continue
+        elif ch not in _OFFICIAL_EXCEPT:
+            out += ch
+    return re.sub(r"\s\s+", " ", out.strip())
+
+
+def official_filter(sentence: str, mode: str = "pronunciation") -> str:
+    """배포본 `sentence_filter`. 전처리 기본 인자가 발음 모드라 그것이 공식 기준이다."""
+    return official_special_filter(official_bracket_filter(sentence, mode))
+
+
+# ── 아래는 민감도 확인용 자체 변형 (공식과 다른 처리를 의도적으로 넣은 것) ──
 # 발화가 아닌 잡음 코드. AI Hub 규약: b 숨소리 / n 잡음 / l 웃음 / o 기타 / u 불명.
 _NOISE = re.compile(r"(?:^|\s)[bnlou]/")
 # `(철자)/(발음)` 이중 전사.
@@ -169,11 +240,19 @@ def run_qwen3_asr(model_name, rows, beams):
     return hyps, time.time() - t0
 
 
-def cer_vec(refs, hyps, **nk):
-    """발화별 (편집거리, 정답 길이). 쌍체 부트스트랩을 위해 벡터로 남긴다."""
+def cer_vec(refs, hyps, official_mode=None, **nk):
+    """발화별 (편집거리, 정답 길이). 쌍체 부트스트랩을 위해 벡터로 남긴다.
+
+    `official_mode`가 주어지면 배포본 `sentence_filter`를 쓴다. 공식 CER은 공백을
+    **문자로 세므로**(hypersp/metrics/wer.py에서 공백 제거 줄이 주석 처리돼 있다)
+    지우지 않는다.
+    """
     d, n = [], []
     for r, h in zip(refs, hyps):
-        rr, hh = normalize(r, **nk), normalize(h, **nk)
+        if official_mode:
+            rr, hh = official_filter(r, official_mode), official_filter(h, official_mode)
+        else:
+            rr, hh = normalize(r, **nk), normalize(h, **nk)
         d.append(edit_distance(rr, hh))
         n.append(len(rr))
     return np.array(d, dtype=float), np.array(n, dtype=float)
@@ -220,27 +299,29 @@ def main():
 
     rng = np.random.default_rng(SEED)
     ib = rng.integers(0, len(rows), size=(BOOT_B, len(rows)))
-    for reading in ("spelling", "pronunciation"):
-        for fillers in ("keep", "drop"):
-            key = f"{reading}/{fillers}"
-            vecs = {arm: cer_vec(refs, hyps[arm], reading=reading, fillers=fillers)
-                    for arm in arms}
-            blk = {"cer": {arm: round(float(d.sum() / n.sum()), 4)
-                           for arm, (d, n) in vecs.items()}, "pairs": {}}
-            for i, b in enumerate(arms):
-                for c in arms[i + 1:]:
-                    db, nb = vecs[b]
-                    dc, nc = vecs[c]
-                    # 쌍체 부트스트랩: 발화 재표집 인덱스를 두 arm이 공유한다.
-                    diff = (dc[ib].sum(1) / nc[ib].sum(1)) - (db[ib].sum(1) / nb[ib].sum(1))
-                    lo, hi = np.percentile(diff, [2.5, 97.5])
-                    blk["pairs"][f"{c}_vs_{b}"] = {
-                        "delta_cer": round(float(dc.sum() / nc.sum() - db.sum() / nb.sum()), 4),
-                        "ci95": [round(float(lo), 4), round(float(hi), 4)],
-                        "significant": bool(lo > 0 or hi < 0)}
-            rep["by_normalization"][key] = blk
-            print(f"[{key:22s}] " + "  ".join(
-                f"{arm} {blk['cer'][arm]:.4f}" for arm in arms), flush=True)
+    # 공식 정규화 2종(주지표는 발음 모드 — 배포 전처리의 기본 인자)을 먼저,
+    # 자체 변형 4종을 민감도 확인으로 뒤에 둔다.
+    schemes = ([(f"OFFICIAL/{m}", {"official_mode": m}) for m in ("pronunciation", "spelling")]
+               + [(f"{r}/{f}", {"reading": r, "fillers": f})
+                  for r in ("spelling", "pronunciation") for f in ("keep", "drop")])
+    for key, nk in schemes:
+        vecs = {arm: cer_vec(refs, hyps[arm], **nk) for arm in arms}
+        blk = {"cer": {arm: round(float(d.sum() / n.sum()), 4)
+                       for arm, (d, n) in vecs.items()}, "pairs": {}}
+        for i, b in enumerate(arms):
+            for c in arms[i + 1:]:
+                db, nb = vecs[b]
+                dc, nc = vecs[c]
+                # 쌍체 부트스트랩: 발화 재표집 인덱스를 두 arm이 공유한다.
+                diff = (dc[ib].sum(1) / nc[ib].sum(1)) - (db[ib].sum(1) / nb[ib].sum(1))
+                lo, hi = np.percentile(diff, [2.5, 97.5])
+                blk["pairs"][f"{c}_vs_{b}"] = {
+                    "delta_cer": round(float(dc.sum() / nc.sum() - db.sum() / nb.sum()), 4),
+                    "ci95": [round(float(lo), 4), round(float(hi), 4)],
+                    "significant": bool(lo > 0 or hi < 0)}
+        rep["by_normalization"][key] = blk
+        print(f"[{key:22s}] " + "  ".join(
+            f"{arm} {blk['cer'][arm]:.4f}" for arm in arms), flush=True)
 
     p = OUT / "kconf_asr_eval.json"
     p.write_text(json.dumps(rep, ensure_ascii=False, indent=2), encoding="utf-8")

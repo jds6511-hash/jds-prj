@@ -32,4 +32,8 @@ data/meeting_probe/
 # AI Hub KconfSpeech 표본 — 실제 화자 음성·전사(개인정보 마스킹 @ 포함)이고
 # 라이선스가 재배포를 허용하지 않는다. 회의 오디오와 같은 취급.
 New_Sample/
+# AI Hub 배포 베이스라인 툴킷(hypersp). 데모 서버용 TLS 개인키
+# (demo/cert/future.key)가 들어 있고 배포 자료라 공개 저장소에 넣지 않는다.
+# 정규화 규칙은 docs/probes/kconf_asr_eval.py에 이식하고 전건 대조로 검증했다.
+03.AI모델/
 .venv*/
