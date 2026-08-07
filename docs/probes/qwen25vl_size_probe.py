@@ -159,8 +159,12 @@ def main():
                             "len_median": st.median(L),
                             "corrupted": corr, "corrupt_rate": round(corr / len(L), 4)}
 
-    # 지표 2종: (a) 고정 α=0.5, (b) arm별 α 재탐색 — 앞선 비교가 (a)만 봤다.
-    vecs_fixed, vecs_star = {}, {}
+    # 지표 3종: (a) 고정 α=0.5, (b) arm별 α 재탐색, (c) **캡션 단독 α=0.0**.
+    # (c)가 결정적이다 — α=0.5에서는 캡션 개선분이 자막 채널과 섞여 절반으로 희석된다.
+    # 후보가 캡션 단독에서도 현행을 못 넘으면 "캡션이 안 좋다"이고, 캡션 단독에서는
+    # 넘는데 융합에서 사라지면 "파이프라인이 이득을 못 살린다"다. 둘은 처방이 다르다.
+    # 2차까지 (c)가 없어서 이 구분을 못 했다(2026-08-07 추가).
+    vecs_fixed, vecs_star, vecs_cap = {}, {}, {}
     for k in keys:
         r = evaluate(dev, idx[k], 0.5, cfg)
         rep["by_arm"][k]["mrr_alpha_fixed"] = r["metrics"]["mrr"]
@@ -168,13 +172,26 @@ def main():
             t: m["mrr"] for t, m in r["metrics"]["by_type"].items()}
         vecs_fixed[k] = rr_vec(r)
 
+        rc = evaluate(dev, idx[k], 0.0, cfg)
+        rep["by_arm"][k]["mrr_caption_only"] = rc["metrics"]["mrr"]
+        rep["by_arm"][k]["by_type_caption_only"] = {
+            t: m["mrr"] for t, m in rc["metrics"]["by_type"].items()}
+        vecs_cap[k] = rr_vec(rc)
+
         gs = grid_search_alpha(dev, idx[k], cfg)
         astar = gs["dev_search"]["alpha_star"] if "dev_search" in gs else gs["alpha_star"]
         r2 = evaluate(dev, idx[k], astar, cfg)
         rep["by_arm"][k]["alpha_star"] = astar
         rep["by_arm"][k]["mrr_alpha_star"] = r2["metrics"]["mrr"]
+        # α*는 tie_set의 **최댓값**(자막 우선 tiebreak)이라 점최적보다 낮을 수 있다.
+        # 7B에서 α*=0.6의 MRR이 α=0.5보다 낮게 나온 것이 그 경우다 — 버그가 아니다.
+        # 곡선 전체를 남겨야 그 판단을 재현할 수 있다.
+        rep["by_arm"][k]["alpha_curve"] = {str(p["alpha"]): p["mrr"] for p in gs["per_alpha"]}
+        rep["by_arm"][k]["alpha_best_point"] = gs["alpha_best_point"]
+        rep["by_arm"][k]["tie_set"] = gs["tie_set"]
         vecs_star[k] = rr_vec(r2)
-        print(f"[{k}] α고정 {r['metrics']['mrr']:.4f} | α*={astar} {r2['metrics']['mrr']:.4f}",
+        print(f"[{k}] 캡션단독 {rc['metrics']['mrr']:.4f} | α고정 {r['metrics']['mrr']:.4f} "
+              f"| α*={astar} {r2['metrics']['mrr']:.4f} (점최적 {gs['alpha_best_point']})",
               flush=True)
 
     n, B = len(dev), cfg["bootstrap_B"]
@@ -199,12 +216,20 @@ def main():
     for label, (b, c) in pairs.items():
         if b in vecs_fixed and c in vecs_fixed:
             rep["contrasts"][label] = {"alpha_fixed": ci(b, c, vecs_fixed),
-                                       "alpha_star": ci(b, c, vecs_star)}
+                                       "alpha_star": ci(b, c, vecs_star),
+                                       "caption_only": ci(b, c, vecs_cap)}
 
     rep["samples"] = [{"video_id": v, "seg_idx": i,
                        **{k: texts[k][v][i] for k in keys}}
                       for v in vids for i in (0, 1, 2)]
     OUT.mkdir(parents=True, exist_ok=True)
+
+    # 생성 캡션 전량을 남긴다. 2차까지는 표본 3개만 남겨서, 나중에 다른 각도로 보려면
+    # (예: 캡션 단독 α=0 대비) GPU 1.5시간을 다시 써야 했다. 텍스트는 몇 MB뿐이다.
+    cp = OUT / "qwen25vl_captions.json"
+    cp.write_text(json.dumps({k: texts[k] for k in keys}, ensure_ascii=False), encoding="utf-8")
+    print(f"-> {cp}")
+
     p = OUT / "qwen25vl_size_probe.json"
     p.write_text(json.dumps(rep, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"-> {p}")
