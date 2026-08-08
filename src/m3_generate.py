@@ -21,15 +21,26 @@ if os.name == "nt":
             break
 
 
+DEFAULT_BEAM_SIZE = 5     # faster-whisper 기본값. 확정 인덱스가 이 값으로 만들어졌다.
+
+
 def transcribe(wav: Path, model_name: str = "large-v3", lang: str = "ko",
-               force: bool = False) -> list[dict]:
-    """utterance = {text, t0, t1} 리스트. 캐시: audio.wav 옆 stt_cache.json."""
+               force: bool = False, beam_size: int = DEFAULT_BEAM_SIZE) -> list[dict]:
+    """utterance = {text, t0, t1} 리스트. 캐시: audio.wav 옆 stt_cache.json.
+
+    `beam_size`는 **캐시 키에 포함**한다. 없으면 빔만 바꿔도 캐시가 적중해 옛 전사를
+    조용히 돌려주고, 그걸 "차이 없음"으로 읽게 된다(2026-08-08 실패 테스트로 적발).
+    구 캐시에는 이 키가 없으므로 기본값을 채워 비교한다 — 안 그러면 확정 인덱스
+    11편이 전부 재전사되고, 환경이 다르면 자막이 달라질 수 있다.
+    """
     cache = wav.parent / "stt_cache.json"
     meta = {"model": model_name, "lang": lang,
-            "mtime": os.path.getmtime(wav), "size": os.path.getsize(wav)}
+            "mtime": os.path.getmtime(wav), "size": os.path.getsize(wav),
+            "beam_size": beam_size}
     if not force and cache.exists():
         d = json.loads(cache.read_text(encoding="utf-8"))
-        if d.get("meta") == meta:
+        stored = {"beam_size": DEFAULT_BEAM_SIZE, **d.get("meta", {})}
+        if stored == meta:
             print(f"캐시된 전사 사용: {cache}")
             return d["utterances"]
 
@@ -41,7 +52,8 @@ def transcribe(wav: Path, model_name: str = "large-v3", lang: str = "ko",
         raw, _ = model.transcribe(
             str(wav), language=lang, word_timestamps=True,
             condition_on_previous_text=False,
-            hallucination_silence_threshold=1.0)
+            hallucination_silence_threshold=1.0,
+            beam_size=beam_size, best_of=beam_size)
         return [{"text": s.text.strip(), "t0": float(s.start), "t1": float(s.end)}
                 for s in raw if s.text.strip()]
 
@@ -181,11 +193,15 @@ def main():
                     help="Whisper 전사·자막 귀속을 건너뛰고 caption만 재생성 [8-5(3)]")
     ap.add_argument("--recaption-corrupted", action="store_true",
                     help="오염 감지(is_corrupted_caption)된 캡션만 재생성 [8-5(4)]")
+    ap.add_argument("--subtitles-only", action="store_true",
+                    help="캡션을 그대로 두고 자막만 재생성 — STT 설정 비교용 [8-5(7)]")
     args = ap.parse_args()
     if args.force and args.captions_only:
         ap.error("--force와 --captions-only는 동시 지정 불가(force는 전체 재실행)")
     if args.recaption_corrupted and (args.force or args.captions_only):
         ap.error("--recaption-corrupted는 --force/--captions-only와 동시 지정 불가")
+    if args.subtitles_only and (args.force or args.captions_only or args.recaption_corrupted):
+        ap.error("--subtitles-only는 다른 모드와 동시 지정 불가")
     cfg = common.load_config(args.config)
     wdir = common.work_dir(cfg, args.video_id)
 
@@ -202,6 +218,23 @@ def main():
                 "기준 work 디렉터리의 segments.json·frames/를 복사해 seeding하라 [8-5(3)]")
         for s in doc["segments"]:
             s.pop("caption", None)   # resume이 no-op 되는 것 방지 [8-5(3)]
+    elif args.subtitles_only:
+        # --captions-only의 반대 방향. 캡션 재생성은 환경이 바뀌면 인덱스를 열화시키므로
+        # (2026-08-07 실측: 같은 설정·다른 GPU에서 완전일치 25.6%), STT 설정을 비교할 때
+        # 캡션은 손대지 않는다. 캡션이 비어 있으면 캡션 없는 인덱스가 만들어지므로 먼저 막는다.
+        doc = common.load_segments(wdir / "segments.json", seg_len=cfg["seg_len_sec"])
+        if any(not (s.get("caption") or "").strip() for s in doc["segments"]):
+            raise SystemExit(
+                "--subtitles-only: segments.json에 caption이 비어 있습니다 — "
+                "이 모드는 기존 캡션을 보존만 하고 만들지 않는다 [8-5(7)]")
+        utts = transcribe(wdir / "audio.wav", cfg["stt_model"], cfg["stt_language"],
+                          beam_size=cfg.get("stt_beam_size", DEFAULT_BEAM_SIZE))
+        assign_subtitles(utts, doc["segments"])
+        covered = sum(1 for s in doc["segments"] if s["subtitle"])
+        print(f"자막 커버리지: {covered}/{doc['n_segments']} ({covered/doc['n_segments']:.1%})")
+        common.save_segments(wdir / "segments.json", doc)
+        print(f"M3 완료(자막만): {wdir / 'segments.json'}")
+        return
     elif args.recaption_corrupted:
         doc = common.load_segments(wdir / "segments.json", require=["rep_frame"],
                                    seg_len=cfg["seg_len_sec"])
@@ -219,7 +252,8 @@ def main():
 
         # (a) 자막
         utts = transcribe(wdir / "audio.wav", cfg["stt_model"], cfg["stt_language"],
-                          force=args.force)
+                          force=args.force,
+                          beam_size=cfg.get("stt_beam_size", DEFAULT_BEAM_SIZE))
         assign_subtitles(utts, doc["segments"])
         covered = sum(1 for s in doc["segments"] if s["subtitle"])
         print(f"자막 커버리지: {covered}/{doc['n_segments']} ({covered/doc['n_segments']:.1%})")
