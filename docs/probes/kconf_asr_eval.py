@@ -216,24 +216,35 @@ def read_wav(path: str):
     return arr, sr
 
 
-def run_faster_whisper(model_name, rows, beams):
+def windows(arr, cut_sec, sr=16000):
+    """오디오를 고정 길이로 강제 절단. cut_sec가 None이면 통째로 1개."""
+    if not cut_sec:
+        return [arr]
+    n = int(cut_sec * sr)
+    return [arr[i:i + n] for i in range(0, len(arr), n) if len(arr[i:i + n]) > sr * 0.2]
+
+
+def run_faster_whisper(model_name, rows, beams, cut_sec=None):
     from faster_whisper import WhisperModel
     m = WhisperModel(model_name, device="cuda", compute_type="float16")
     dec = {} if beams is None else {"beam_size": beams, "best_of": beams}
     hyps, t0 = [], time.time()
     for i, r in enumerate(rows):
         arr, _ = read_wav(r["wav"])
-        # m3_generate.py와 동일한 운영 호출 (한국어 환각 방지 2중 장치).
-        segs, _ = m.transcribe(arr, language="ko", word_timestamps=True,
-                               condition_on_previous_text=False,
-                               hallucination_silence_threshold=1.0, **dec)
-        hyps.append(" ".join(s.text.strip() for s in segs))
+        parts = []
+        for w in windows(arr, cut_sec):
+            # m3_generate.py와 동일한 운영 호출 (한국어 환각 방지 2중 장치).
+            segs, _ = m.transcribe(w, language="ko", word_timestamps=True,
+                                   condition_on_previous_text=False,
+                                   hallucination_silence_threshold=1.0, **dec)
+            parts.append(" ".join(s.text.strip() for s in segs))
+        hyps.append(" ".join(p for p in parts if p).strip())
         if i % 100 == 0:
             print(f"  {i}/{len(rows)}", flush=True)
     return hyps, time.time() - t0
 
 
-def run_qwen3_asr(model_name, rows, beams):
+def run_qwen3_asr(model_name, rows, beams, cut_sec=None):
     import torch
     from transformers import AutoProcessor, AutoModelForMultimodalLM
     proc = AutoProcessor.from_pretrained(model_name)
@@ -243,21 +254,23 @@ def run_qwen3_asr(model_name, rows, beams):
     prefix = re.compile(r"^\s*language\s+\w+\s*")
     hyps, t0 = [], time.time()
     for i, r in enumerate(rows):
-        arr, _ = read_wav(r["wav"])
-        # `.to(device, dtype)`로 한 번에 옮긴다. device만 옮기면 input_features가
-        # float32로 남아 fp16 conv와 충돌한다(RuntimeError: Input type (float) and
-        # bias type (c10::Half) should be the same — 1차 실행에서 arm C가 여기서 죽었다).
-        inputs = proc.apply_transcription_request(
-            audio=np.asarray(arr, dtype=np.float32), language="ko",
-            processor_kwargs={"pad_to_multiple_of": 100},
-        ).to(model.device, model.dtype)
-        with torch.inference_mode():
-            out = model.generate(**inputs, max_new_tokens=440, **dec)
-        txt = proc.batch_decode(out[:, inputs["input_ids"].shape[1]:],
-                                skip_special_tokens=True,
-                                return_format="transcription_only")[0]
-        txt = txt.replace("<asr_text>", "")
-        hyps.append(prefix.sub("", txt).strip())
+        arr_full, _ = read_wav(r["wav"])
+        parts = []
+        for arr in windows(arr_full, cut_sec):
+            # `.to(device, dtype)`로 한 번에 옮긴다. device만 옮기면 input_features가
+            # float32로 남아 fp16 conv와 충돌한다(RuntimeError: Input type (float) and
+            # bias type (c10::Half) should be the same — 1차 실행에서 arm C가 여기서 죽었다).
+            inputs = proc.apply_transcription_request(
+                audio=np.asarray(arr, dtype=np.float32), language="ko",
+                processor_kwargs={"pad_to_multiple_of": 100},
+            ).to(model.device, model.dtype)
+            with torch.inference_mode():
+                out = model.generate(**inputs, max_new_tokens=440, **dec)
+            txt = proc.batch_decode(out[:, inputs["input_ids"].shape[1]:],
+                                    skip_special_tokens=True,
+                                    return_format="transcription_only")[0]
+            parts.append(prefix.sub("", txt.replace("<asr_text>", "")).strip())
+        hyps.append(" ".join(p for p in parts if p).strip())
         if i % 100 == 0:
             print(f"  {i}/{len(rows)}", flush=True)
     return hyps, time.time() - t0
@@ -286,6 +299,11 @@ def main():
     ap.add_argument("--sample", type=int, default=700, help="세션별 층화 표집 총량")
     ap.add_argument("--arms", default="A_prod,A_prod_b1,C,C_b5")
     ap.add_argument("--pack", help="manifest.json이 있는 디렉터리 (서버 실행용)")
+    ap.add_argument("--cut-sec", type=float, default=None,
+                    help="발화를 이 길이(초)로 강제 절단해 조각별 전사 후 이어붙인다. "
+                         "타임스탬프 없는 ASR을 5초 세그먼트 격자에 꽂을 때의 조건 재현")
+    ap.add_argument("--suffix", default="",
+                    help="출력 파일명 접미사(절단 실험을 기존 결과와 분리)")
     ap.add_argument("--reuse", action="store_true",
                     help="이미 저장된 kconf_hyp_<arm>.json이 있으면 재추론하지 않는다. "
                          "arm 코드가 바뀐 뒤에는 그 arm의 파일을 지우고 써라")
@@ -302,7 +320,7 @@ def main():
     hyps, elapsed = {}, {}
     for arm in arms:
         kind, name, beams = MODELS[arm]
-        p = OUT / f"kconf_hyp_{arm}.json"
+        p = OUT / f"kconf_hyp_{arm}{a.suffix}.json"
         if a.reuse and p.exists():
             d = json.loads(p.read_text(encoding="utf-8"))
             assert d["model"] == name and d["beams"] == beams and len(d["hyps"]) == len(rows), \
@@ -312,7 +330,7 @@ def main():
             continue
         print(f"[{arm}] {kind} {name} beams={beams}", flush=True)
         fn = run_faster_whisper if kind == "faster-whisper" else run_qwen3_asr
-        hyps[arm], elapsed[arm] = fn(name, rows, beams)
+        hyps[arm], elapsed[arm] = fn(name, rows, beams, cut_sec=a.cut_sec)
         p.write_text(json.dumps({"arm": arm, "model": name, "beams": beams,
                                  "elapsed_sec": round(elapsed[arm], 1),
                                  "audio_sec": round(sec, 1),
@@ -325,6 +343,7 @@ def main():
     rep = {"note": "채택 아님. KconfSpeech 정답 전사 기반 CER 비교.",
            "dataset": "KconfSpeech D20 (교육/스튜디오, 방송)",
            "n_utterances": len(rows), "audio_min": round(sec / 60, 1),
+           "cut_sec": a.cut_sec,
            "seed": SEED, "bootstrap_B": BOOT_B, "arms": arms,
            "runtime": {k: {"elapsed_sec": round(v, 1), "rtf": round(v / sec, 4)}
                        for k, v in elapsed.items()},
@@ -356,7 +375,7 @@ def main():
         print(f"[{key:22s}] " + "  ".join(
             f"{arm} {blk['cer'][arm]:.4f}" for arm in arms), flush=True)
 
-    p = OUT / "kconf_asr_eval.json"
+    p = OUT / f"kconf_asr_eval{a.suffix}.json"
     p.write_text(json.dumps(rep, ensure_ascii=False, indent=2), encoding="utf-8")
     print("->", p)
 
