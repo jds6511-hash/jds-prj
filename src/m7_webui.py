@@ -105,8 +105,11 @@ def _log_search(cfg: dict, video_id: str, query: str, alpha: float,
         results_dir = Path(cfg["paths"]["results"])
         results_dir.mkdir(parents=True, exist_ok=True)
         tau = cfg.get("abstention_tau")
+        # per_seg는 표시 전용(타임라인 리본)이라 로그에서 뺀다 — 검색 1건마다
+        # 세그먼트 수만큼의 배열 3개가 쌓이면 시연 몇 번에 로그가 수 MB가 된다.
+        loggable = {k: v for k, v in stats.items() if k != "per_seg"}
         entry = {"ts": time.time(), "video_id": video_id, "query": query,
-                 "alpha": alpha, **stats,
+                 "alpha": alpha, **loggable,
                  # 당시 tau·배너 판정을 함께 기록 — tau 재캘리브레이션 후에도 "사용자가
                  # 실제로 본 경고"를 복원 가능하게 [리뷰 2026-07-11 Minor]
                  "abstention_tau": tau,
@@ -175,6 +178,13 @@ def create_app(cfg: dict, config_path: str, alpha: float,
             result["progress"] = progress
         return result
 
+    @app.get("/api/meta")
+    def meta():
+        """확정 설정 표시용. alpha는 config에 없고 CLI 주입값이라(절대규칙 5)
+        서버만 알고 있다 — 헤더에 띄워 두면 발표 중 되묻지 않아도 된다."""
+        return {"alpha": alpha, "seg_len_sec": cfg["seg_len_sec"],
+                "embed_model": cfg["embed_model"]}
+
     @app.get("/api/current")
     def current():
         video_id = jobs.current()
@@ -219,7 +229,9 @@ def create_app(cfg: dict, config_path: str, alpha: float,
         # stats 우선: search_stats_fn이 지정됐거나 search_fn이 기본값(search)이면
         # search_with_stats로 raw 코사인 통계를 얻는다. search_fn만 스텁 주입된
         # 경우(기존 M6/M7 테스트 패턴)는 stats 없이 결과만 사용 — 하위호환.
-        stats_fn = search_stats_fn or (search_with_stats if search_fn is search else None)
+        stats_fn = search_stats_fn or (
+            (lambda q, v, al, c: search_with_stats(q, v, al, c, with_per_seg=True))
+            if search_fn is search else None)
         stats = None
         if stats_fn is not None:
             results, stats = stats_fn(query, video, alpha, cfg)

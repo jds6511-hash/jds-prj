@@ -103,9 +103,14 @@ def expand_query(query: str, cfg: dict) -> list[str]:
 
 
 def search_with_stats(query: str, video: VideoIndex, alpha: float,
-                      cfg: dict) -> tuple[list[Result], dict]:
+                      cfg: dict, with_per_seg: bool = False) -> tuple[list[Result], dict]:
     """search와 동일 랭킹 + 정규화 이전 raw 코사인 통계 반환.
-    무관련 질의 판정(향후 abstention 임계값 설계)의 근거 데이터용 [HIGH-2]."""
+    무관련 질의 판정(향후 abstention 임계값 설계)의 근거 데이터용 [HIGH-2].
+
+    with_per_seg=True면 세그먼트별 채널 점수를 stats["per_seg"]에 덧붙인다 —
+    **표시 계층 전용**(웹 UI 타임라인 리본)이고 랭킹에 관여하지 않는다.
+    기본값이 False인 이유: stats는 search_log.jsonl에 통째로 기록되므로
+    세그먼트 수만큼의 배열이 기본으로 들어가면 로그가 폭증한다."""
     variants = expand_query(query, cfg)
     if len(variants) == 1:
         q = embed_texts([query], cfg["embed_model"])[0]
@@ -127,6 +132,10 @@ def search_with_stats(query: str, video: VideoIndex, alpha: float,
              # zscore의 sd<1e-9 분기 발동 여부 — 발동 빈도 미기록 gap 보완 [2026-07-14]
              "sub_degenerate": bool(s_sub.std() < 1e-9),
              "cap_degenerate": bool(s_cap.std() < 1e-9)}
+    if with_per_seg:
+        stats["per_seg"] = {"sub": [float(x) for x in s_sub],
+                            "cap": [float(x) for x in s_cap],
+                            "fused": [float(x) for x in score]}
     return results, stats
 
 

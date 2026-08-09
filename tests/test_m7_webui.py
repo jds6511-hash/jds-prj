@@ -272,6 +272,36 @@ def test_search_returns_raw_stats_and_logs_search(tmp_path):
         assert line[k] == v
 
 
+def test_meta_exposes_confirmed_settings(tmp_path):
+    # 헤더가 확정 설정을 표시한다 — 발표 중 "α는 얼마냐"가 나오면 화면이 이미 답한다.
+    # alpha는 config에 없고 CLI 주입값이라(절대규칙 5) 서버가 알려주는 수밖에 없다.
+    client, cfg = make_client(tmp_path)
+    body = client.get("/api/meta").json()
+    assert body["alpha"] == 0.5
+    assert body["seg_len_sec"] == cfg["seg_len_sec"]
+    assert body["embed_model"] == cfg["embed_model"]
+
+
+def test_per_seg_reaches_response_but_never_the_log(tmp_path):
+    # 타임라인 리본이 per_seg를 쓴다. 그런데 search_log.jsonl은 검색 1건마다
+    # 한 줄씩 쌓이므로, 세그먼트 수만큼의 배열 3개가 들어가면 시연 몇 번에
+    # 로그가 수 MB로 불어난다. 응답에는 넣고 로그에서는 뺀다.
+    per_seg = {"sub": [0.1, 0.2], "cap": [0.3, 0.4], "fused": [-1.0, 1.0]}
+    stats = {"raw_sub_max": 0.9, "raw_sub_mean": 0.5,
+             "raw_cap_max": 0.8, "raw_cap_mean": 0.4, "per_seg": per_seg}
+    client, cfg = make_client(
+        tmp_path,
+        search_stats_fn=lambda q, v, a, c: ([Result(0, 0.9, 0, 5)], stats),
+        load_index=lambda cfg, vid: _stub_index(2))
+    body = client.post("/api/search", json={"video_id": "v1", "query": "질의"}).json()
+    assert body["raw"]["per_seg"] == per_seg
+
+    line = json.loads((Path(cfg["paths"]["results"]) / "search_log.jsonl")
+                      .read_text(encoding="utf-8").strip().splitlines()[-1])
+    assert "per_seg" not in line
+    assert line["raw_sub_max"] == 0.9          # 나머지 통계는 그대로 남는다
+
+
 def _search_with_tau(tmp_path, raw_sub_max, tau, raw_cap_max=0.5):
     stats = {"raw_sub_max": raw_sub_max, "raw_sub_mean": 0.4,
              "raw_cap_max": raw_cap_max, "raw_cap_mean": 0.3}
@@ -350,9 +380,11 @@ def test_root_serves_html(tmp_path):
     client, _ = make_client(tmp_path)
     r = client.get("/")
     assert r.status_code == 200
-    assert "영상 장면 검색" in r.text
+    assert "영상 순간 검색" in r.text
     assert "text/html" in r.headers["content-type"]
     assert "/api/current" in r.text   # 재접속 복원 로직 존재 스모크
+    assert "/api/meta" in r.text      # 확정 설정 표시
+    assert 'id="canvas"' in r.text    # 채널 리본(시연의 시그니처 요소)
 
 
 def test_status_progress_during_m2(tmp_path):

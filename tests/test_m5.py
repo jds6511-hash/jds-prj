@@ -150,6 +150,50 @@ def test_search_with_stats_matches_search_ranking_and_raw_stats(monkeypatch):
         "cap_degenerate": False}
 
 
+def test_per_seg_is_absent_by_default(monkeypatch):
+    # 기본 stats 계약은 불변이어야 한다 — search_log.jsonl이 이 dict를 통째로
+    # 기록하므로, 세그먼트 수만큼의 배열이 기본으로 들어가면 로그가 폭증한다.
+    q = np.array([1.0, 0.0], dtype=np.float32)
+    monkeypatch.setattr(m5_search, "embed_texts", lambda texts, model: np.array([q]))
+    video = VideoIndex(
+        segments=[{"idx": i, "start": float(i * 5), "end": float(i * 5 + 5),
+                   "subtitle": ""} for i in range(3)],
+        emb_sub=np.array([[0.5, 0.5], [0.9, 0.1], [0.2, 0.8]], dtype=np.float32),
+        emb_cap=np.array([[0.1, 0.9], [0.3, 0.7], [0.6, 0.4]], dtype=np.float32),
+        static_mask=np.array([False, False, False]))
+    _, stats = search_with_stats("query", video, 0.5, {"embed_model": "m"})
+    assert "per_seg" not in stats
+
+
+def test_per_seg_exposes_channel_scores_without_changing_ranking(monkeypatch):
+    # 표시 계층(타임라인 리본)이 세그먼트별 채널 점수를 필요로 한다.
+    # 랭킹·기존 필드는 불변이고 per_seg만 추가된다.
+    q = np.array([1.0, 0.0], dtype=np.float32)
+    monkeypatch.setattr(m5_search, "embed_texts", lambda texts, model: np.array([q]))
+    emb_sub = np.array([[0.5, 0.5], [0.9, 0.1], [0.2, 0.8]], dtype=np.float32)
+    emb_cap = np.array([[0.1, 0.9], [0.3, 0.7], [0.6, 0.4]], dtype=np.float32)
+    video = VideoIndex(
+        segments=[{"idx": i, "start": float(i * 5), "end": float(i * 5 + 5),
+                   "subtitle": ""} for i in range(3)],
+        emb_sub=emb_sub, emb_cap=emb_cap,
+        static_mask=np.array([False, False, False]))
+    cfg = {"embed_model": "m"}
+    plain, _ = search_with_stats("query", video, 0.5, cfg)
+    ranked, stats = search_with_stats("query", video, 0.5, cfg, with_per_seg=True)
+    assert plain == ranked                              # (a) 랭킹 불변
+
+    ps = stats["per_seg"]
+    assert set(ps) == {"sub", "cap", "fused"}
+    assert all(len(ps[k]) == 3 for k in ps)             # (b) 세그먼트 수만큼
+    assert ps["sub"] == [pytest.approx(float(x)) for x in emb_sub @ q]
+    assert ps["cap"] == [pytest.approx(float(x)) for x in emb_cap @ q]
+
+    # (c) fused가 실제 랭킹 점수와 같은 배열이어야 한다 — 다른 값을 그리면
+    #     화면이 랭킹과 다른 이야기를 하게 된다.
+    assert [pytest.approx(ps["fused"][r.idx]) for r in ranked] == \
+           [pytest.approx(r.score) for r in ranked]
+
+
 def test_search_with_stats_flags_degenerate_normalization(monkeypatch):
     # s_sub가 전 세그먼트 동일(std<1e-9) → zscore가 0벡터 분기를 탐 → sub_degenerate=True.
     # 이 발동 빈도가 search_log.jsonl에 안 남아 원인 조사가 불가능했던 gap 보완.
