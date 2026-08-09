@@ -197,25 +197,50 @@ def load_captioner(spec: dict, cfg: dict, max_new: int | None = None):
         # 으로 바꿔도 매핑에 없어 "Unrecognized configuration class"가 난다(실측 2건).
         # 벤더 코드를 고치는 대신 원격 모듈에서 클래스를 직접 가져온다 — transformers가
         # 공식 지원하는 경로다.
+        # 추가 벽 2건(실측): ① einops·timm 미설치 → 원격 모듈 import 실패.
+        # ② 벤더 코드가 비전 인코더를 flash_attention_2로 만든다. 폴백 try/except가
+        #    있긴 한데 **망가져 있다** — 첫 시도가 config.vision_config에 flash를
+        #    써넣고 실패하고, 폴백이 같은 config 객체를 재사용해 또 flash로 간다.
+        #    from_pretrained의 attn_implementation="sdpa"도 하위 config까지 못 내려간다.
+        #    벤더 파일을 고치지 않고, transformers가 구현을 확정하는 지점만 잠시
+        #    가로채 flash 요청을 sdpa로 바꾼다(로드 동안만, 끝나면 원복).
         from transformers import AutoProcessor
+        from transformers.modeling_utils import PreTrainedModel
         from transformers.dynamic_module_utils import get_class_from_dynamic_module
         cls = get_class_from_dynamic_module(
             "modeling.KananaVForConditionalGeneration", mid)
-        model = cls.from_pretrained(
-            mid, dtype=torch.bfloat16, device_map={"": 0},
-            trust_remote_code=True).eval()
+        _orig = PreTrainedModel.get_correct_attn_implementation
+
+        def _no_flash(self, requested, is_init_check=False):
+            if isinstance(requested, str) and "flash_attention" in requested:
+                requested = "sdpa"
+            return _orig(self, requested, is_init_check)
+
+        PreTrainedModel.get_correct_attn_implementation = _no_flash
+        try:
+            model = cls.from_pretrained(
+                mid, dtype=torch.bfloat16, device_map={"": 0},
+                attn_implementation="sdpa", trust_remote_code=True).eval()
+        finally:
+            PreTrainedModel.get_correct_attn_implementation = _orig
         proc = AutoProcessor.from_pretrained(mid, trust_remote_code=True)
 
         def cap(p, prompt, sample=False):
+            # KananaVProcessor는 표준 apply_chat_template을 안 쓴다(프로세서 쪽
+            # chat_template이 비어 있어 ValueError). 벤더가 정의한 형식 그대로 준다:
+            #   {"conv": [{"role": "user", "content": "<image>"}, {...텍스트}],
+            #    "image": [PIL.Image]}
             img = _resize(Image.open(p).convert("RGB"), maxpx)
-            msgs = [{"role": "user", "content": [
-                {"type": "image", "image": img}, {"type": "text", "text": prompt}]}]
-            inputs = proc.apply_chat_template(
-                msgs, tokenize=True, add_generation_prompt=True,
-                return_dict=True, return_tensors="pt").to(model.device)
+            data = {"conv": [{"role": "user", "content": "<image>"},
+                             {"role": "user", "content": prompt}],
+                    "image": [img]}
+            batch = proc.batch_encode_collate([data], add_generation_prompt=True,
+                                              max_length=None)
+            batch = {k: (v.to(model.device) if hasattr(v, "to") else v)
+                     for k, v in batch.items()}
             with torch.inference_mode():
-                g = model.generate(**inputs, **_gen_kwargs(sample, max_new, rp))
-            n = inputs["input_ids"].shape[1]
+                g = model.generate(**batch, **_gen_kwargs(sample, max_new, rp))
+            n = batch["input_ids"].shape[1]
             return proc.batch_decode(g[:, n:], skip_special_tokens=True)[0].strip()
 
     else:
