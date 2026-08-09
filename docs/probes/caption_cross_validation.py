@@ -52,7 +52,7 @@ OUT = Path(__file__).resolve().parent / "_scratch"
 CAPDIR = OUT / "caption_sweep_captions"
 REF = "qwen25_3b_4bit__P0"
 CANDS = ["qwen3vl_4b__P1", "qwen3vl_4b__P2", "qwen3vl_4b__P3",
-         "varco_1_7b__P1", "qwen25_7b__P1"]
+         "varco_1_7b__P0", "varco_1_7b__P1", "qwen25_7b__P1"]
 SEEDS = [42, 1, 7, 2026]
 METRICS = ["mrr", "hit@1", "hit@5", "hit@10"]
 PERM_N = 20000
