@@ -43,3 +43,12 @@ New_Sample/
 Sample/
 data_aihub/
 .venv*/
+# 제3자 디자인 스킬(2026-08-09 설치). 저장소에 넣지 않는다 — impeccable만 2,965파일이고
+# 각자 별도 라이선스(Apache 2.0 / MIT)라 연구 저장소에 벤더 코드를 섞지 않는다.
+# 재설치: docs/작업현황_2026-08-07.md "디자인 스킬 설치" 참조.
+.claude/skills/taste-skill/
+.claude/skills/impeccable/
+.claude/skills/ui-ux-pro-max/
+.claude/skills/design/
+.claude/skills/design-system/
+.claude/skills/ui-styling/

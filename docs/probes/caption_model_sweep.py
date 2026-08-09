@@ -177,8 +177,16 @@ def load_captioner(spec: dict, cfg: dict):
             return proc.batch_decode(g[:, n:], skip_special_tokens=True)[0].strip()
 
     elif fam == "kanana":
-        from transformers import AutoModelForVision2Seq, AutoProcessor
-        model = AutoModelForVision2Seq.from_pretrained(
+        # 저장소 config의 auto_map이 **AutoModelForVision2Seq만** 선언하는데 그 Auto
+        # 클래스는 transformers 5.x에서 제거됐다. 후속 이름(AutoModelForImageTextToText)
+        # 으로 바꿔도 매핑에 없어 "Unrecognized configuration class"가 난다(실측 2건).
+        # 벤더 코드를 고치는 대신 원격 모듈에서 클래스를 직접 가져온다 — transformers가
+        # 공식 지원하는 경로다.
+        from transformers import AutoProcessor
+        from transformers.dynamic_module_utils import get_class_from_dynamic_module
+        cls = get_class_from_dynamic_module(
+            "modeling.KananaVForConditionalGeneration", mid)
+        model = cls.from_pretrained(
             mid, dtype=torch.bfloat16, device_map={"": 0},
             trust_remote_code=True).eval()
         proc = AutoProcessor.from_pretrained(mid, trust_remote_code=True)
@@ -229,6 +237,20 @@ def seg_similarity(idx, vids) -> dict:
     return {"adjacent": round(float(np.mean(adj)), 4),
             "all_pairs": round(float(np.mean(allp)), 4),
             "gap": round(float(np.mean(adj) - np.mean(allp)), 4)}
+
+
+def _cached_caps(mkey, pkey, vids, segs):
+    """이미 저장된 캡션 파일이 이번 실행의 세그먼트 수와 맞으면 그대로 쓴다."""
+    f = CAPDIR / f"{mkey}__{pkey}.json"
+    if not f.exists():
+        return None
+    try:
+        d = json.loads(f.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    if any(v not in d or len(d[v]) != len(segs[v]) for v in vids):
+        return None
+    return d
 
 
 def vision_sanity(cap, frame: Path, prompt: str, tmp: Path) -> dict:
@@ -336,22 +358,43 @@ def main():
         if not todo:
             print(f"[{mkey}] 전 프롬프트 완료 — 건너뜀", flush=True)
             continue
-        cap, close = load_captioner(spec, cfg)
+        # 이미 생성된 캡션 파일이 있으면 모델을 아예 안 올린다. 두 가지에 쓴다:
+        #  (a) 중단 후 재개, (b) **격리 환경에서 만든 캡션 채점** — HyperCLOVAX처럼
+        #      원격 코드가 구버전 transformers를 요구하는 모델은 별도 venv에서 생성만
+        #      하고, 채점은 본 환경에서 한다(벤더 코드를 고치지 않는다).
+        need_gen = [p for p in todo
+                    if not _cached_caps(mkey, p, vids, segs)]
+        if not need_gen:
+            cap, close = (lambda *a, **k: "", lambda: None)
+            print(f"[{mkey}] 캡션 파일 재사용 — 모델 로딩 생략", flush=True)
+        else:
+            cap, close = load_captioner(spec, cfg)
         try:
-            sanity = vision_sanity(cap, wdirs[vids[0]] / segs[vids[0]][0]["rep_frame"],
-                                   PROMPTS["P0"], OUT / f"_black_{mkey}.png")
-            print(f"[{mkey}] 비전 경로 {'정상' if sanity['ok'] else '★죽음★'}", flush=True)
+            sanity = ({"ok": None, "note": "캡션 파일 재사용 — 생성 없음"} if not need_gen
+                      else vision_sanity(cap, wdirs[vids[0]] / segs[vids[0]][0]["rep_frame"],
+                                         PROMPTS["P0"], OUT / f"_black_{mkey}.png"))
+            print(f"[{mkey}] 비전 경로 {sanity.get('ok')}", flush=True)
             for pkey in todo:
                 t0 = time.time()
                 print(f"[{mkey}/{pkey}] 생성 시작", flush=True)
-                caps, stats = gen_captions(cap, vids, segs, PROMPTS[pkey], wdirs)
+                cached = _cached_caps(mkey, pkey, vids, segs)
+                if cached is not None:
+                    caps = cached
+                    stats = {"retried": None, "unresolved": None, "truncated": None,
+                             "source": "cached"}
+                    print(f"[{mkey}/{pkey}] 저장된 캡션 재사용", flush=True)
+                else:
+                    caps, stats = gen_captions(cap, vids, segs, PROMPTS[pkey], wdirs)
+                    stats["source"] = "generated"
                 n = sum(len(caps[v]) for v in vids)
                 arm = {"model": spec["id"], "prompt": pkey, "vision_sanity": sanity,
                        "n_captions": n, "elapsed_sec": round(time.time() - t0, 1),
                        "len_mean": round(st.mean([len(t) for v in vids for t in caps[v]]), 1),
                        "corrupted": sum(1 for v in vids for t in caps[v]
                                         if common.is_corrupted_caption(t)),
-                       "truncate_rate": round(stats["truncated"] / max(n, 1), 4), **stats}
+                       "truncate_rate": (round(stats["truncated"] / max(n, 1), 4)
+                                         if stats["truncated"] is not None else None),
+                       **stats}
                 (CAPDIR / f"{mkey}__{pkey}.json").write_text(
                     json.dumps(caps, ensure_ascii=False), encoding="utf-8")
                 if not a.limit:
