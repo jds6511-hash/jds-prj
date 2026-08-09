@@ -52,3 +52,7 @@ data_aihub/
 .claude/skills/design/
 .claude/skills/design-system/
 .claude/skills/ui-styling/
+
+# 2인 라벨링 맹검 키트 — 클립 123MB(원본 영상 파생물)이고 seed 고정이라
+# scripts/labeling_agreement.py 로 언제든 동일 재생성된다. 산출물은 추적하지 않는다.
+label_kit/
