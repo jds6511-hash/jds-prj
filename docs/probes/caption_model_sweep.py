@@ -64,7 +64,18 @@ PROMPTS = {
            "추측하지 마라."),
     "P3": ("이 장면에서 인물이 무엇을 하고 있는지 한국어 한 문장으로 묘사하라. 인물이 "
            "없으면 화면의 상태 변화를 묘사하라. 보이지 않는 것은 쓰지 마라."),
+    # 2단계 전용(기본 격자에 없다). P0~P3이 전부 문장 수를 제한하는데, 그 제한이
+    # 모델마다 다르게 먹는다는 것이 1단계에서 드러났다 — 7B는 "한 문장"을 지켜
+    # 64.9자에서 멈추고(절단율 0.3%) 3B는 같은 지시에서 127.1자를 쓴다. 길이를
+    # 맞추면 순위가 뒤집힌다(caption_length_matched.json, 8개 대비 전부).
+    # P4는 문장 수 제한을 빼서 **전 모델에 같은 여지**를 준다.
+    "P4": ("이 장면에 보이는 인물의 행동, 주요 객체, 배경을 한국어로 구체적으로 "
+           "묘사하라. 문장 수는 제한하지 않는다. 화면에 보이지 않는 것은 쓰지 마라. "
+           "화면의 글자를 그대로 옮겨 적지 마라."),
 }
+# 1단계(사전 등록) 격자. P4는 사후 가설이라 기본값에서 뺀다 — 섞으면 사전 등록
+# 격자의 다중비교 구조가 바뀐다. 2단계는 `--prompts P4 --max-new 256`로 따로 돈다.
+STAGE1_PROMPTS = ["P0", "P1", "P2", "P3"]
 
 # 모델 6종. 로딩 인자는 각 공식 모델카드 기준(2026-08-08 확인).
 MODELS = {
@@ -310,7 +321,7 @@ def gen_captions(cap, vids, segs_by_vid, prompt, wdirs) -> tuple[dict, dict]:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--models", default=",".join(MODELS))
-    ap.add_argument("--prompts", default=",".join(PROMPTS))
+    ap.add_argument("--prompts", default=",".join(STAGE1_PROMPTS))
     ap.add_argument("--limit", type=int, default=None,
                     help="파일럿용: 영상당 프레임 수 제한(절단율·sanity만 볼 때)")
     ap.add_argument("--max-new", type=int, default=None,
