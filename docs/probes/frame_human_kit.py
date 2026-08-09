@@ -79,8 +79,13 @@ def main():
 
     rng = np.random.default_rng(SEED)
 
-    def pair(q, cross_video=None):
-        """(두 프레임 경로, 정답 위치 1|2|0). cross_video면 정답이 없으므로 0."""
+    def pair(q, cross_video, flip):
+        """(두 프레임 경로, 정답 위치 1|2|0). cross_video면 정답이 없으므로 0.
+
+        flip은 호출자가 **조건별로 균형 배정**해 넘긴다. 항목마다 무작위로 뒤집으면
+        소표본에서 위치가 치우쳐(실측 C가 9:3) "무조건 1번" 응답자가 양성 대조
+        관문을 통과할 수 있다.
+        """
         v = q["video_id"] if cross_video is None else cross_video
         segs = base[v].segments
         if cross_video is None:
@@ -95,11 +100,16 @@ def main():
             paths = [wdirs[v] / segs[int(i)]["rep_frame"],
                      wdirs[v] / segs[int(j)]["rep_frame"]]
             gt_pos = 0
-        if rng.random() < 0.5:                      # 위치 편향 통제
+        if flip:
             paths = paths[::-1]
             if gt_pos:
                 gt_pos = 2
         return paths, gt_pos
+
+    def balanced_flips(n):
+        """절반은 뒤집고 절반은 그대로. 홀수면 남는 하나만 무작위."""
+        f = np.array([True, False] * (n // 2) + ([bool(rng.integers(2))] if n % 2 else []))
+        return rng.permutation(f)
 
     items = []
     for q in failed:
@@ -110,12 +120,17 @@ def main():
         other = [v for v in vids if v != q["video_id"]]
         items.append(("N", q, str(rng.choice(other))))
 
+    flips = {}                                      # 조건별로 정답 위치를 반반 배정
+    for c in "ACN":
+        idx = [i for i, (cond, _, _) in enumerate(items) if cond == c]
+        flips.update(dict(zip(idx, balanced_flips(len(idx)))))
+
     order = rng.permutation(len(items))             # 조건이 순서로 드러나지 않게 섞는다
     (KIT / "frames").mkdir(parents=True, exist_ok=True)
     keymap, rows = {}, []
     for n, k in enumerate(order, 1):
         cond, q, cross = items[int(k)]
-        paths, gt_pos = pair(q, cross)
+        paths, gt_pos = pair(q, cross, bool(flips[int(k)]))
         iid = f"item_{n:03d}"
         for j, p in enumerate(paths, 1):
             Image.open(p).convert("RGB").save(KIT / "frames" / f"{iid}_{j}.jpg", quality=95)
