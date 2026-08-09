@@ -105,10 +105,14 @@ def _gen_kwargs(sample: bool, max_new: int, rep_penalty: float = 1.0) -> dict:
     return g
 
 
-def load_captioner(spec: dict, cfg: dict):
-    """(captioner, closer) 반환. captioner(image_path, prompt, sample=False) -> str."""
+def load_captioner(spec: dict, cfg: dict, max_new: int | None = None):
+    """(captioner, closer) 반환. captioner(image_path, prompt, sample=False) -> str.
+
+    max_new를 주면 config의 토큰 상한을 덮어쓴다 — 후속 절단 확인용(§arm_key 참조).
+    """
     fam, mid = spec["family"], spec["id"]
-    maxpx, max_new = cfg["vlm_max_pixels"], cfg.get("vlm_max_new_tokens", 128)
+    maxpx = cfg["vlm_max_pixels"]
+    max_new = max_new or cfg.get("vlm_max_new_tokens", 128)
     rp = cfg.get("vlm_rep_penalty", 1.0)
     print(f"  로딩: {mid} ({fam})", flush=True)
 
@@ -239,6 +243,17 @@ def seg_similarity(idx, vids) -> dict:
             "gap": round(float(np.mean(adj) - np.mean(allp)), 4)}
 
 
+def arm_key(pkey: str, max_new: int | None, default_max_new: int) -> str:
+    """arm·캡션파일 식별자. 토큰 상한을 덮어쓰면 반드시 키가 갈려야 한다.
+
+    안 갈리면 128토큰으로 만든 캡션을 상한 512 arm이 조용히 재사용해서
+    "상한을 올려도 안 변한다"는 완전히 틀린 결론이 나온다.
+    """
+    if max_new is None or max_new == default_max_new:
+        return pkey
+    return f"{pkey}@{max_new}"
+
+
 def _cached_caps(mkey, pkey, vids, segs):
     """이미 저장된 캡션 파일이 이번 실행의 세그먼트 수와 맞으면 그대로 쓴다."""
     f = CAPDIR / f"{mkey}__{pkey}.json"
@@ -298,11 +313,16 @@ def main():
     ap.add_argument("--prompts", default=",".join(PROMPTS))
     ap.add_argument("--limit", type=int, default=None,
                     help="파일럿용: 영상당 프레임 수 제한(절단율·sanity만 볼 때)")
+    ap.add_argument("--max-new", type=int, default=None,
+                    help="토큰 상한 덮어쓰기. 절단율이 높은 arm의 재측정용 "
+                         "(arm 키가 'P0@512'로 갈려 기존 캡션과 섞이지 않는다)")
     a = ap.parse_args()
     models = [m for m in a.models.split(",") if m]
     prompts = [p for p in a.prompts.split(",") if p]
 
     cfg = common.load_config(str(ROOT / "config.yaml"))
+    default_max_new = cfg.get("vlm_max_new_tokens", 128)
+    akey = lambda p: arm_key(p, a.max_new, default_max_new)          # noqa: E731
     qs = [json.loads(l) for l in (ROOT / "data/queries/queries.jsonl")
           .read_text(encoding="utf-8").splitlines() if l.strip()]
     dev = [q for q in qs if q["split"] == "dev"]
@@ -354,7 +374,7 @@ def main():
 
     for mkey in models:
         spec = MODELS[mkey]
-        todo = [p for p in prompts if f"{mkey}/{p}" not in rep["arms"]]
+        todo = [p for p in prompts if f"{mkey}/{akey(p)}" not in rep["arms"]]
         if not todo:
             print(f"[{mkey}] 전 프롬프트 완료 — 건너뜀", flush=True)
             continue
@@ -363,12 +383,12 @@ def main():
         #      원격 코드가 구버전 transformers를 요구하는 모델은 별도 venv에서 생성만
         #      하고, 채점은 본 환경에서 한다(벤더 코드를 고치지 않는다).
         need_gen = [p for p in todo
-                    if not _cached_caps(mkey, p, vids, segs)]
+                    if not _cached_caps(mkey, akey(p), vids, segs)]
         if not need_gen:
             cap, close = (lambda *a, **k: "", lambda: None)
             print(f"[{mkey}] 캡션 파일 재사용 — 모델 로딩 생략", flush=True)
         else:
-            cap, close = load_captioner(spec, cfg)
+            cap, close = load_captioner(spec, cfg, a.max_new)
         try:
             sanity = ({"ok": None, "note": "캡션 파일 재사용 — 생성 없음"} if not need_gen
                       else vision_sanity(cap, wdirs[vids[0]] / segs[vids[0]][0]["rep_frame"],
@@ -376,18 +396,20 @@ def main():
             print(f"[{mkey}] 비전 경로 {sanity.get('ok')}", flush=True)
             for pkey in todo:
                 t0 = time.time()
-                print(f"[{mkey}/{pkey}] 생성 시작", flush=True)
-                cached = _cached_caps(mkey, pkey, vids, segs)
+                print(f"[{mkey}/{akey(pkey)}] 생성 시작", flush=True)
+                cached = _cached_caps(mkey, akey(pkey), vids, segs)
                 if cached is not None:
                     caps = cached
                     stats = {"retried": None, "unresolved": None, "truncated": None,
                              "source": "cached"}
-                    print(f"[{mkey}/{pkey}] 저장된 캡션 재사용", flush=True)
+                    print(f"[{mkey}/{akey(pkey)}] 저장된 캡션 재사용", flush=True)
                 else:
                     caps, stats = gen_captions(cap, vids, segs, PROMPTS[pkey], wdirs)
                     stats["source"] = "generated"
                 n = sum(len(caps[v]) for v in vids)
-                arm = {"model": spec["id"], "prompt": pkey, "vision_sanity": sanity,
+                arm = {"model": spec["id"], "prompt": pkey,
+                       "max_new_tokens": a.max_new or default_max_new,
+                       "vision_sanity": sanity,
                        "n_captions": n, "elapsed_sec": round(time.time() - t0, 1),
                        "len_mean": round(st.mean([len(t) for v in vids for t in caps[v]]), 1),
                        "corrupted": sum(1 for v in vids for t in caps[v]
@@ -395,7 +417,7 @@ def main():
                        "truncate_rate": (round(stats["truncated"] / max(n, 1), 4)
                                          if stats["truncated"] is not None else None),
                        **stats}
-                (CAPDIR / f"{mkey}__{pkey}.json").write_text(
+                (CAPDIR / f"{mkey}__{akey(pkey)}.json").write_text(
                     json.dumps(caps, ensure_ascii=False), encoding="utf-8")
                 if not a.limit:
                     idx = {v: VideoIndex(segments=base[v].segments,
@@ -415,10 +437,10 @@ def main():
                     arm["alpha_star"] = gs["alpha_star"]
                     arm["alpha_best_point"] = gs["alpha_best_point"]
                     arm["alpha_curve"] = {str(x["alpha"]): x["mrr"] for x in gs["per_alpha"]}
-                rep["arms"][f"{mkey}/{pkey}"] = arm
+                rep["arms"][f"{mkey}/{akey(pkey)}"] = arm
                 rep_path.write_text(json.dumps(rep, ensure_ascii=False, indent=2),
                                     encoding="utf-8")
-                print(f"[{mkey}/{pkey}] 길이 {arm['len_mean']} 오염 {arm['corrupted']} "
+                print(f"[{mkey}/{akey(pkey)}] 길이 {arm['len_mean']} 오염 {arm['corrupted']} "
                       f"절단 {arm['truncate_rate']:.1%} "
                       f"캡션단독 {arm.get('mrr_caption_only', '-')} "
                       f"({arm['elapsed_sec']/60:.1f}분)", flush=True)
