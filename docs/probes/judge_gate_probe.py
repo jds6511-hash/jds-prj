@@ -41,8 +41,19 @@ segments가 이미 있다).
 잘한다는 뜻은 아니고**, 실패하면 확실히 못 쓴다는 뜻이다. 즉 이 게이트는
 **하한 검정**이다. 통과 시 그 사실을 결과에 적는다.
 
+**2차 — 판정자 후보 비교 (2026-08-10 22:50, 1차 결과 본 뒤 추가).** 1차에서 현행
+판정자가 coverage 양성 0.550으로 탈락했다. 그 탈락이 **판정자 탓인지 과제 탓인지**
+가르지 않으면 "판정자를 바꾸면 된다"와 "지표를 내려야 한다" 중 어느 쪽인지 모른다.
+용량 축(같은 패밀리 14B)과 패밀리 축(kanana 8B)을 같은 문항으로 돌린다.
+
+  - 통과하는 판정자가 있으면 → 판정자 문제. 교체로 지표를 살린다
+  - 셋 다 탈락하면 → **과제 자체가 판정 불가**. coverage를 공식 지표에서 내린다
+
+임계값(0.75)·문항 수·문항 자체는 1차와 같다. **1차 결과를 보고 바꾼 것은 후보
+목록뿐이고 판정 규칙은 그대로다.**
+
 work/·results/ 불변, test 미접촉, 새 생성 없음.
-재현: python docs/probes/judge_gate_probe.py [--n 60]
+재현: python docs/probes/judge_gate_probe.py [--n 60] [--judges all]
 """
 import argparse
 import io
@@ -62,6 +73,18 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 OUT = Path(__file__).resolve().parent / "_scratch"
 SEED = 42
 GATE = 0.75
+
+# 2차 — 판정자 후보군. 1차에서 현행(Qwen2.5-7B, 리포트와 같은 모델)이 coverage
+# 양성 0.550으로 탈락했다. **탈락이 판정자 탓인지 지표 탓인지 가른다.**
+#   용량 축   같은 패밀리 더 큰 모델이 통과하면 7B의 용량 문제다
+#   패밀리 축 다른 패밀리가 통과하면 자기평가·패밀리 문제다
+#   둘 다 탈락하면 **coverage 과제 자체가 판정 불가**이고 지표를 내려야 한다
+# 4bit는 24GB에 안 들어가는 모델에만 쓰고 arm마다 기록한다(양자화 교란 명시).
+JUDGES = {
+    "Qwen/Qwen2.5-7B-Instruct":  {"q4": False, "axis": "현행(대조군)"},
+    "Qwen/Qwen2.5-14B-Instruct": {"q4": True,  "axis": "용량(같은 패밀리)"},
+    "kakaocorp/kanana-1.5-8b-instruct-2505": {"q4": False, "axis": "패밀리(한국어 특화)"},
+}
 
 
 def load_dev(cfg):
@@ -83,31 +106,12 @@ def load_dev(cfg):
     return out
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--n", type=int, default=60, help="조건당 문항 수")
-    ap.add_argument("--config", default="config.yaml")
-    a = ap.parse_args()
+def run_gate(judge, data, vids, n, rep):
+    """판정자 하나로 두 과제의 게이트를 돌린다. rep에 셀 결과를 채우고 통과 여부 반환.
 
-    cfg = common.load_config(str(ROOT / a.config))
-    data = load_dev(cfg)
-    if len(data) < 2:
-        raise ValueError(f"영상이 {len(data)}편 — 다른 영상 음성 대조를 만들 수 없다")
-    vids = sorted(data)
+    **rng를 판정자마다 새로 만든다** — 같은 문항을 줘야 판정자끼리 비교가 된다.
+    """
     rng = random.Random(SEED)
-
-    judge = make_llm(cfg["judge_model"], max_new_tokens=512,
-                     load_4bit=cfg.get("llm_4bit", False))
-
-    rep = {"note": "M9 판정자 계측기 검정. dev only, 새 생성 없음, test 미접촉.",
-           "judge_model": cfg["judge_model"],
-           "same_model_judge": cfg.get("same_model_judge"),
-           "report_model": cfg.get("report_model"),
-           "prereg": {"gate": f"양성·음성 정답률 모두 ≥ {GATE}",
-                      "negative_source": "다른 영상의 세그먼트",
-                      "note": "양성이 캡션 복사라 쉬운 문항 — 하한 검정이다",
-                      "declared_before_run": True},
-           "seed": SEED, "n_per_cell": a.n}
 
     def other_seg(v):
         ov = rng.choice([x for x in vids if x != v])
@@ -117,7 +121,7 @@ def main():
     pool = [(v, s) for v in vids for s in data[v]["segs"]
             if s["caption"] and not common.is_corrupted_caption(s["caption"])]
     rng.shuffle(pool)
-    items = pool[:a.n]
+    items = pool[:n]
     g_pos, g_neg = [], []
     for i, (v, s) in enumerate(items):
         sent = {"sent_id": f"gate{i}", "text": s["caption"], "cites": [s["idx"]]}
@@ -128,7 +132,7 @@ def main():
 
     # ── coverage ──────────────────────────────────────────────────────────
     c_pos, c_neg = [], []
-    per_v = max(1, a.n // len(vids))
+    per_v = max(1, n // len(vids))
     ci = 0
     for v in vids:
         rtext = "\n".join(s["text"] for s in data[v]["report"]["sentences"])
@@ -149,7 +153,10 @@ def main():
         ok = pr >= GATE and nr >= GATE
         rep[name] = {"n": len(pos), "positive_correct": round(pr, 4),
                      "negative_correct": round(nr, 4), "yes_rate": round(yes, 4),
-                     "passed": ok}
+                     "passed": ok,
+                     # 원자료 보존(규약 5항) — 나중에 다른 각도로 볼 때 재실행 불필요
+                     "raw": {"positive": [bool(x) for x in pos],
+                             "negative": [bool(x) for x in neg]}}
         print(f"[{name}] 양성 {pr:.3f} · 음성 {nr:.3f} · 예비율 {yes:.3f} "
               f"→ {'통과' if ok else '탈락'}")
         return ok
@@ -162,17 +169,82 @@ def main():
         rep["verdict"] = ("통과(하한) — 두 과제 모두 답을 아는 문항을 가른다. "
                           "다만 양성이 캡션 복사라 어려운 판정까지 보장하지 않는다")
     else:
-        bad = [n for n, o in (("groundedness", ok_g), ("coverage", ok_c)) if not o]
+        bad = [t for t, o in (("groundedness", ok_g), ("coverage", ok_c)) if not o]
         rep["verdict"] = (f"탈락 — {', '.join(bad)}는 답을 아는 문항도 못 가른다. "
                           "해당 지표는 해석 불가이며 test에서 산출된 기존 수치에도 "
                           "이 한계를 명시해야 한다")
+    return ok_g, ok_c
 
-    OUT.mkdir(parents=True, exist_ok=True)
-    p = OUT / "judge_gate.json"
-    p.write_text(json.dumps(rep, ensure_ascii=False, indent=2), encoding="utf-8")
-    print()
-    print("판정:", rep["verdict"])
-    print("->", p)
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--n", type=int, default=60, help="조건당 문항 수")
+    ap.add_argument("--config", default="config.yaml")
+    ap.add_argument("--judges", default="",
+                    help="판정자 후보 비교(쉼표 구분 또는 'all'). 비우면 config 판정자 1개")
+    a = ap.parse_args()
+
+    cfg = common.load_config(str(ROOT / a.config))
+    data = load_dev(cfg)
+    if len(data) < 2:
+        raise ValueError(f"영상이 {len(data)}편 — 다른 영상 음성 대조를 만들 수 없다")
+    vids = sorted(data)
+
+    multi = bool(a.judges)
+    if not multi:
+        mids = [cfg["judge_model"]]
+    elif a.judges == "all":
+        mids = list(JUDGES)
+    else:
+        mids = [m.strip() for m in a.judges.split(",") if m.strip()]
+
+    prereg = {"gate": f"양성·음성 정답률 모두 ≥ {GATE}",
+              "negative_source": "다른 영상의 세그먼트",
+              "note": "양성이 캡션 복사라 쉬운 문항 — 하한 검정이다",
+              "declared_before_run": True}
+    if multi:
+        prereg["why_multi"] = (
+            "1차에서 현행 판정자가 coverage 양성 0.550으로 탈락했다. 용량 축(같은 "
+            "패밀리 14B)과 패밀리 축(kanana 8B)을 둘 다 통과 못 하면 coverage는 "
+            "판정자가 아니라 **과제 자체가 판정 불가**라는 뜻이다")
+        prereg["same_items"] = "판정자마다 rng를 SEED로 새로 만들어 동일 문항을 준다"
+        prereg["quant_note"] = "24GB에 안 들어가는 모델만 4bit — arm마다 기록"
+
+    top = {"note": "M9 판정자 계측기 검정. dev only, 새 생성 없음, test 미접촉.",
+           "report_model": cfg.get("report_model"),
+           "incumbent_judge": cfg["judge_model"],
+           "prereg": prereg, "seed": SEED, "n_per_cell": a.n, "judges": {}}
+
+    for mid in mids:
+        spec = JUDGES.get(mid, {"q4": cfg.get("llm_4bit", False), "axis": "config"})
+        print(f"\n=== {mid} ({spec['axis']}, {'4bit' if spec['q4'] else 'bf16'}) ===",
+              flush=True)
+        rep = {"judge_model": mid, "axis": spec["axis"], "load_4bit": spec["q4"],
+               "same_model_judge": mid == cfg.get("report_model")}
+        try:
+            judge = make_llm(mid, max_new_tokens=512, load_4bit=spec["q4"])
+            run_gate(judge, data, vids, a.n, rep)
+        except Exception as e:
+            rep["error"] = f"{type(e).__name__}: {str(e)[:300]}"
+            rep["verdict"] = "실행 실패 — 판정 없음"
+            print(f"  실패 — {type(e).__name__}: {str(e)[:160]}", flush=True)
+        top["judges"][mid] = rep
+        OUT.mkdir(parents=True, exist_ok=True)
+        (OUT / ("judge_gate_models.json" if multi else "judge_gate.json")).write_text(
+            json.dumps(top if multi else {**top, **rep}, ensure_ascii=False, indent=2),
+            encoding="utf-8")
+
+    if multi:
+        okc = [m for m, r in top["judges"].items() if r.get("coverage", {}).get("passed")]
+        top["verdict"] = (
+            f"coverage 통과 판정자: {okc} — 판정자 교체로 지표를 살릴 수 있다"
+            if okc else
+            "coverage를 통과한 판정자가 없다 — 판정자가 아니라 **과제 자체가 판정 "
+            "불가**다. M9 coverage는 공식 지표에서 내리고 test 기존 수치에도 한계를 명시")
+        (OUT / "judge_gate_models.json").write_text(
+            json.dumps(top, ensure_ascii=False, indent=2), encoding="utf-8")
+        print()
+        print("판정:", top["verdict"])
 
 
 if __name__ == "__main__":

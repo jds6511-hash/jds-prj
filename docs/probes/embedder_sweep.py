@@ -35,6 +35,12 @@
 서버 재임베딩이 저장분과 같은 점수를 내면, 생성 환경 효과는 자기회귀 생성 고유의
 문제이지 GPU 수치 전반의 문제가 아니라는 뜻이다.
 
+**2차(`--round 2`, 2026-08-10 추가).** 1차에서 미룬 접두어 모델 4종과, 적재에 실패해
+비교에서 통째로 빠진 gte를 넣는다. 접두어는 각 모델 카드값을 그대로 쓰고 결과에
+기록한다. 질의 접두어는 `m5_search.embed_texts`를 프로브 안에서만 임시 교체해
+끼운다(**본 코드는 건드리지 않는다**). **다중성은 1·2차를 합친 BH-FDR로 본다** —
+라운드를 나눠 각각 보정하면 시행을 늘리는 만큼 위양성이 늘어난다.
+
 **1차에서 뺀 것 — 제외가 아니라 연기다.** e5·KoE5·Qwen3-Embedding·arctic-embed는
 질의/문서에 서로 다른 접두어가 필수인데, `m5_search.search`가 질의를 내부에서
 임베딩하고 `expand_query` 변형까지 거치므로 접두어를 안전하게 끼우려면 검색 경로를
@@ -49,6 +55,7 @@ import argparse
 import io
 import json
 import sys
+from contextlib import contextmanager
 from pathlib import Path
 
 import numpy as np
@@ -71,6 +78,24 @@ INCUMBENT = "nlpai-lab/KURE-v1"
 # 접두어가 필요 없는 모델만. 사유는 docstring 참조.
 CANDIDATES = [INCUMBENT, "BAAI/bge-m3", "dragonkue/BGE-m3-ko",
               "upskyy/bge-m3-korean", "Alibaba-NLP/gte-multilingual-base"]
+
+# 2차 — 1차에서 접두어 때문에 미룬 모델들 + 적재 실패한 gte.
+# `query`/`doc`은 각 모델 카드가 요구하는 접두어다. **접두어 없이 돌리면 그 모델이
+# 부당하게 진다**(규약 3항). `trust_remote_code`는 벤더 코드가 필요한 모델만 True.
+ROUND2 = {
+    INCUMBENT:                              {"query": "", "doc": "", "trc": False},
+    "Alibaba-NLP/gte-multilingual-base":    {"query": "", "doc": "", "trc": True},
+    "intfloat/multilingual-e5-large":       {"query": "query: ", "doc": "passage: ",
+                                             "trc": False},
+    "nlpai-lab/KoE5":                       {"query": "query: ", "doc": "passage: ",
+                                             "trc": False},
+    "Snowflake/snowflake-arctic-embed-l-v2.0": {"query": "query: ", "doc": "",
+                                                "trc": True},
+    "Qwen/Qwen3-Embedding-0.6B": {
+        "query": ("Instruct: Given a search query in Korean, retrieve the video "
+                  "scene description that answers it\nQuery: "),
+        "doc": "", "trc": False},
+}
 SPLIT_SEED = 42
 B = 20_000
 
@@ -120,28 +145,74 @@ def load_side(cfg, queries_path, side, split_seed=SPLIT_SEED):
     return {v: idx0[v] for v in sorted(pick)}, qs, missing
 
 
-def measure(model_id, idx0, qs, cfg, alpha_grid):
+def _prep_model(model_id, trc):
+    """trust_remote_code가 필요한 모델을 임베더 캐시에 선점해 넣는다.
+
+    `m4_index._load_model`은 `SentenceTransformer(name)`만 부른다. 본 코드를 고치면
+    파이프라인 전체가 영향을 받으므로 **프로브 안에서 캐시를 채워 우회한다.**
+    1차에서 gte가 이것 없이 적재 실패해 비교에서 통째로 빠졌다.
+    """
+    if not trc:
+        return
+    import m4_index
+    if model_id not in m4_index._model_cache:
+        from sentence_transformers import SentenceTransformer
+        m4_index._model_cache[model_id] = SentenceTransformer(
+            model_id, trust_remote_code=True)
+
+
+@contextmanager
+def query_prefix(prefix):
+    """질의 임베딩 경로에 접두어를 끼운다 — 프로브 안에서만 유효.
+
+    `m5_search.search`가 질의를 **내부에서** 임베딩하므로 밖에서 접두어를 붙일 수
+    없다. 본 코드를 고치는 대신 모듈 이름을 임시 교체하고 끝나면 되돌린다.
+    e5·KoE5·arctic·Qwen3-Emb는 질의/문서 접두어가 성능 전제라 이게 없으면
+    부당하게 진다(규약 3항).
+    """
+    import m5_search
+    if not prefix:
+        yield
+        return
+    orig = m5_search.embed_texts
+
+    def patched(texts, model_name, batch_size=32):
+        return orig([prefix + t for t in texts], model_name, batch_size)
+
+    m5_search.embed_texts = patched
+    try:
+        yield
+    finally:
+        m5_search.embed_texts = orig
+
+
+def measure(model_id, idx0, qs, cfg, alpha_grid, pref=None):
     """모델 하나로 두 채널을 다시 임베딩하고 α를 재탐색한다."""
+    pref = pref or {"query": "", "doc": "", "trc": False}
+    _prep_model(model_id, pref.get("trc"))
     c = dict(cfg)
     c["embed_model"] = model_id
+    dp = pref.get("doc", "")
     idx = {}
     for v, ix in idx0.items():
-        subs = [s["subtitle"] for s in ix.segments]
-        caps = [s["caption"] for s in ix.segments]
+        subs = [dp + s["subtitle"] for s in ix.segments]
+        caps = [dp + s["caption"] for s in ix.segments]
         idx[v] = VideoIndex(segments=ix.segments,
                             emb_sub=embed_texts(subs, model_id, cfg["embed_batch_size"]),
                             emb_cap=embed_texts(caps, model_id, cfg["embed_batch_size"]),
                             static_mask=ix.static_mask)
-    curve = {}
-    for al in alpha_grid:
-        curve[al] = evaluate(qs, idx, al, c)["metrics"]["mrr"]
-    a_star = max(curve, key=lambda k: (curve[k], k))      # 동률 시 자막 우선(큰 α)
-    out = {"alpha_star": a_star, "alpha_curve": {str(k): v for k, v in curve.items()}}
-    for al, name in ((0.0, "caption_only"), (1.0, "subtitle_only"), (a_star, "fused")):
-        r = evaluate(qs, idx, al, c)
-        out[f"mrr_{name}"] = r["metrics"]["mrr"]
-        out[f"hit@1_{name}"] = r["metrics"]["hit@1"]
-        out[f"rr_{name}"] = [x["mrr"] for x in r["per_query"]]
+    with query_prefix(pref.get("query", "")):
+        curve = {}
+        for al in alpha_grid:
+            curve[al] = evaluate(qs, idx, al, c)["metrics"]["mrr"]
+        a_star = max(curve, key=lambda k: (curve[k], k))  # 동률 시 자막 우선(큰 α)
+        out = {"alpha_star": a_star, "alpha_curve": {str(k): v for k, v in curve.items()},
+               "prefix_query": pref.get("query", ""), "prefix_doc": dp}
+        for al, name in ((0.0, "caption_only"), (1.0, "subtitle_only"), (a_star, "fused")):
+            r = evaluate(qs, idx, al, c)
+            out[f"mrr_{name}"] = r["metrics"]["mrr"]
+            out[f"hit@1_{name}"] = r["metrics"]["hit@1"]
+            out[f"rr_{name}"] = [x["mrr"] for x in r["per_query"]]
     return out
 
 
@@ -151,6 +222,8 @@ def main():
     ap.add_argument("--model", help="confirm 단계에서 확증할 모델 하나")
     ap.add_argument("--config", default="config_aihub.yaml")
     ap.add_argument("--queries", default="data_aihub/queries/queries_aihub.jsonl")
+    ap.add_argument("--round", type=int, default=1, choices=[1, 2],
+                    help="2 = 접두어 모델 + gte(trust_remote_code)")
     a = ap.parse_args()
 
     cfg = common.load_config(str(ROOT / a.config))
@@ -165,18 +238,30 @@ def main():
               "confirm_rule": "95% CI가 0 배제하고 부호가 1단계와 같으면 재현됨",
               "deferred": "접두어 필요 모델(e5·KoE5·Qwen3-Emb·arctic)은 2차",
               "declared_before_run": True}
+    if a.round == 2:
+        prereg["round2"] = (
+            "1차에서 미룬 접두어 모델 4종 + 적재 실패한 gte. 접두어는 모델 카드값을 "
+            "그대로 쓰고 arm마다 기록한다(규약 3항 — 접두어 없이 돌리면 부당하게 진다)")
+        prereg["multiplicity_across_rounds"] = (
+            "**주 판정은 1·2차를 합친 BH-FDR**(비교 8개)이다. 라운드를 나눠 각각 "
+            "보정하면 시행 횟수를 늘리는 만큼 위양성이 늘어난다. 2차만의 BH는 참고로 병기")
     rep = {"note": "채택 아님. work_aihub 불변, dev·test 미접촉.", "stage": a.stage,
+           "round": a.round,
            "side": side, "split_seed": SPLIT_SEED, "prereg": prereg,
            "incumbent": INCUMBENT, "n_videos": len(idx0), "n_queries": len(qs),
            "arms": {}}
 
-    models = CANDIDATES if a.stage == "select" else [INCUMBENT, a.model]
+    if a.stage == "confirm":
+        models = [INCUMBENT, a.model]
+    else:
+        models = list(ROUND2) if a.round == 2 else CANDIDATES
     if a.stage == "confirm" and not a.model:
         ap.error("--model 이 필요하다")
 
     for mid in models:
         try:
-            rep["arms"][mid] = measure(mid, idx0, qs, cfg, cfg["alpha_grid"])
+            rep["arms"][mid] = measure(mid, idx0, qs, cfg, cfg["alpha_grid"],
+                                       ROUND2.get(mid) if a.round == 2 else None)
             m = rep["arms"][mid]
             print(f"[{mid}] α*={m['alpha_star']} 융합 {m['mrr_fused']:.4f} "
                   f"캡션 {m['mrr_caption_only']:.4f} 자막 {m['mrr_subtitle_only']:.4f}",
@@ -203,7 +288,24 @@ def main():
     if pvals:
         keep = bh_reject(np.array(pvals))
         for n, k in zip(names, keep):
+            contrasts[n]["bh_pass_this_round"] = bool(k)
             contrasts[n]["bh_pass"] = bool(k)
+
+    # 라운드를 합친 BH — 주 판정. 라운드마다 따로 보정하면 시행을 늘린 만큼
+    # 위양성이 늘어난다. 1차 p값을 저장된 JSON에서 읽어 한 family로 묶는다.
+    prev = OUT / "embedder_sweep_select.json"
+    if a.round == 2 and a.stage == "select" and prev.exists():
+        old = json.loads(prev.read_text(encoding="utf-8")).get("contrasts", {})
+        old = {k: v for k, v in old.items() if k not in contrasts and "perm_p" in v}
+        alln = names + list(old)
+        allp = pvals + [old[k]["perm_p"] for k in old]
+        keep = bh_reject(np.array(allp))
+        for n, k in zip(alln, keep):
+            (contrasts if n in contrasts else old)[n]["bh_pass"] = bool(k)
+        rep["combined_bh"] = {
+            "family_size": len(allp), "round1_arms": list(old),
+            "note": "주 판정. bh_pass는 이 값이고 bh_pass_this_round는 2차만의 보정",
+            "round1_contrasts": old}
     rep["contrasts"] = contrasts
 
     if a.stage == "select":
@@ -220,7 +322,9 @@ def main():
                           else "재현 실패 — 채택 근거 없음")
 
     OUT.mkdir(parents=True, exist_ok=True)
-    p = OUT / f"embedder_sweep_{a.stage}.json"
+    # 2차는 1차 결과 파일을 덮지 않는다 — 합친 BH가 1차 p값을 다시 읽어야 한다
+    suffix = "_r2" if a.round == 2 else ""
+    p = OUT / f"embedder_sweep_{a.stage}{suffix}.json"
     p.write_text(json.dumps(rep, ensure_ascii=False, indent=2), encoding="utf-8")
     print()
     for n, c in contrasts.items():
