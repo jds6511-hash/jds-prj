@@ -102,12 +102,28 @@ def gen(frames, cfg, prompt):
 
 
 def main():
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--side", choices=["A", "B", "all"], default="A",
+                    help="영상 절반만 쓴다. 기본 A — 노트북 생성이 프레임당 17초대라 "
+                         "전량이면 12시간을 넘긴다. n≈562로도 MDE ±0.036이라 "
+                         "재려는 0.09는 여유 있게 검출된다")
+    a = ap.parse_args()
+
     cfg = common.load_config(str(ROOT / CFG))
     prompt = cfg["caption_prompt"]
     qs_all = load_external_queries(ROOT / "data_aihub/queries/queries_aihub.jsonl")
 
-    srv = json.loads(SERVER_CAPS.read_text(encoding="utf-8"))
-    vids = sorted(srv)
+    srv_all = json.loads(SERVER_CAPS.read_text(encoding="utf-8"))
+    vids = sorted(srv_all)
+    if a.side != "all":
+        # 임베더·2단계와 **같은 분할·같은 시드**를 쓴다(embedder_sweep.load_side와 동일 규칙)
+        perm = np.random.default_rng(42).permutation(len(vids))
+        half = len(vids) // 2
+        pick = {vids[i] for i in (perm[:half] if a.side == "A" else perm[half:])}
+        vids = [v for v in vids if v in pick]
+    srv = {v: srv_all[v] for v in vids}
+    print(f"[{a.side} 절반] 영상 {len(vids)}편", flush=True)
     idx0 = {v: VideoIndex.load(cfg, v) for v in vids}
     qs = [q for q in qs_all if q["video_id"] in idx0]
     wdirs = {v: Path(common.work_dir(cfg, v)) for v in vids}
@@ -165,7 +181,7 @@ def main():
                       "rule": "CI가 0 배제하고 부호가 dev와 같으면 재현됨",
                       "dev_reference": "-0.0926 CI[-0.1608,-0.0252] p=0.0085 (서버-노트북)",
                       "declared_before_run": True},
-           "n_videos": len(vids), "n_queries": len(qs), "n_segments": n_seg,
+           "side": a.side, "n_videos": len(vids), "n_queries": len(qs), "n_segments": n_seg,
            "exact_match_rate": round(len(same) / n_seg, 4),
            "mrr_server": round(float(m_s), 4), "mrr_laptop": round(float(m_l), 4),
            "delta_laptop_minus_server": round(float(d.mean()), 4),
