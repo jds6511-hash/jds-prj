@@ -85,6 +85,10 @@ MODELS = {
     # 4bit 변형 — 6GB 노트북에 올리려면 필수(실측 최대 3.27GB). 서버에서 같은 환경으로
     # 재서 **양자화 효과와 생성 환경 효과를 분리**한다(규약 4항 동일 환경 대조군).
     "qwen3vl_4b_q4":  {"id": "Qwen/Qwen3-VL-4B-Instruct", "family": "qwen3vl", "q4": True},
+    # 8B — bf16 약 17GB로 서버 24GB에 들어간다. **P0~P4 전량**으로 돌린다: 7B가 P4에서만
+    # 자기 최고(0.4788)를 냈듯 문장 수 제한이 큰 모델을 누른다(규약 3항 현행 전용 설정
+    # 재탐색). 사후 추가이므로 family가 21→26 arm으로 늘어나는 것을 명시한다.
+    "qwen3vl_8b":     {"id": "Qwen/Qwen3-VL-8B-Instruct", "family": "qwen3vl", "q4": False},
     "varco_1_7b":     {"id": "NCSOFT/VARCO-VISION-2.0-1.7B", "family": "varco", "q4": False},
     "hyperclovax_3b": {"id": "naver-hyperclovax/HyperCLOVAX-SEED-Vision-Instruct-3B",
                        "family": "hyperclovax", "q4": False},
