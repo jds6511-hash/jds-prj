@@ -48,7 +48,9 @@ from aihub_external_eval import load_external_queries      # noqa: E402
 from aihub_model_confirm import gen_or_load                # noqa: E402
 from embedder_sweep import bh_reject, load_side            # noqa: E402
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+# reconfigure를 쓴다 — aihub_model_confirm이 임포트 시점에 이미 stdout을 감싸므로
+# TextIOWrapper로 다시 감싸면 첫 래퍼가 GC되며 하부 버퍼를 닫는다(ValueError).
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 OUT = Path(__file__).resolve().parent / "_scratch"
 SWEEP = OUT / "caption_sweep.json"
@@ -59,7 +61,13 @@ B, PERM_N, SEED = 20_000, 200_000, 42
 
 
 def pick_top(k):
-    """dev 스윕에서 모델별 최고 prompt를 뽑고 상위 k개 모델을 고른다."""
+    """dev 스윕에서 모델별 최고 prompt를 뽑고 상위 k개 모델을 고른다.
+
+    **모델은 HF id 기준으로 센다.** `qwen3vl_4b`와 `qwen3vl_4b_q4`는 같은 모델의
+    양자화 변형이므로 둘 다 세면 "상위 K개 모델"이 아니라 "상위 K개 arm"이 된다.
+    같은 id면 dev 지표가 높은 쪽만 남긴다.
+    """
+    from caption_model_sweep import MODELS
     arms = json.loads(SWEEP.read_text(encoding="utf-8"))["arms"]
     best = {}
     for key, v in arms.items():
@@ -68,7 +76,13 @@ def pick_top(k):
             continue
         if m not in best or v[SEL_METRIC] > best[m][1]:
             best[m] = (p, v[SEL_METRIC])
-    ranked = sorted(best.items(), key=lambda kv: -kv[1][1])
+    by_id = {}
+    for m, (p, s) in best.items():
+        mid = MODELS.get(m, {}).get("id", m)
+        if mid not in by_id or s > by_id[mid][2]:
+            by_id[mid] = (m, p, s)
+    ranked = sorted(((m, (p, s)) for m, p, s in by_id.values()),
+                    key=lambda kv: -kv[1][1])
     return [(m, p, s) for m, (p, s) in ranked[:k]], ranked
 
 

@@ -62,7 +62,9 @@ from m5_search import VideoIndex                           # noqa: E402
 from m6_evaluate import evaluate                           # noqa: E402
 from aihub_external_eval import load_external_queries      # noqa: E402
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+# 이 모듈은 다른 프로브가 임포트한다(aihub_stage2). TextIOWrapper로 감싸면
+# 두 번째 래핑 때 첫 래퍼가 GC되며 공유 버퍼를 닫는다 — reconfigure를 쓴다.
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 OUT = Path(__file__).resolve().parent / "_scratch"
 INCUMBENT = "nlpai-lab/KURE-v1"
