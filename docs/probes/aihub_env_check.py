@@ -65,7 +65,8 @@ CFG = "config_aihub.yaml"
 B, PERM_N, SEED = 20_000, 200_000, 42
 
 
-def gen(frames, cfg, prompt):
+def load_once(cfg):
+    """모델을 한 번만 올린다. 영상마다 재적재하면 97회 × 15초를 버린다."""
     import torch
     from qwen_vl_utils import process_vision_info
     from transformers import AutoProcessor, BitsAndBytesConfig, \
@@ -79,11 +80,14 @@ def gen(frames, cfg, prompt):
     gk = dict(max_new_tokens=cfg.get("vlm_max_new_tokens", 128), do_sample=False)
     if cfg.get("vlm_rep_penalty", 1.0) != 1.0:
         gk["repetition_penalty"] = cfg["vlm_rep_penalty"]
-    outs, t0 = [], time.time()
-    try:
+
+    def gen(frames):
+        import torch
+        outs, t0 = [], time.time()
         for i, f in enumerate(frames):
             msgs = [{"role": "user", "content": [
-                {"type": "image", "image": str(f)}, {"type": "text", "text": prompt}]}]
+                {"type": "image", "image": str(f)},
+                {"type": "text", "text": cfg["caption_prompt"]}]}]
             text = proc.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True)
             imgs, vids_ = process_vision_info(msgs)
             inp = proc(text=[text], images=imgs, videos=vids_, padding=True,
@@ -92,13 +96,14 @@ def gen(frames, cfg, prompt):
                 g = model.generate(**inp, **gk)
             outs.append(proc.batch_decode(g[:, inp.input_ids.shape[1]:],
                                           skip_special_tokens=True)[0].strip())
-            if i % 100 == 0:
-                print(f"  {i}/{len(frames)}  경과 {(time.time()-t0)/60:.1f}분", flush=True)
-    finally:
+        return outs, (time.time() - t0) / max(len(frames), 1)
+
+    def close():
+        import torch
         del model
-        import torch as t
-        t.cuda.empty_cache()
-    return outs
+        torch.cuda.empty_cache()
+
+    return gen, close
 
 
 def main():
@@ -108,6 +113,10 @@ def main():
                     help="영상 절반만 쓴다. 기본 A — 노트북 생성이 프레임당 17초대라 "
                          "전량이면 12시간을 넘긴다. n≈562로도 MDE ±0.036이라 "
                          "재려는 0.09는 여유 있게 검출된다")
+    ap.add_argument("--max-videos", type=int, default=None,
+                    help="영상 수 상한. AI Hub 프레임이 dev보다 커서 프레임당 50초대라 "
+                         "A 절반 97편이면 17시간이 걸린다. 표본을 줄여도 n≈280에서 "
+                         "MDE ±0.050이라 재려는 0.09는 검출된다")
     a = ap.parse_args()
 
     cfg = common.load_config(str(ROOT / CFG))
@@ -122,6 +131,14 @@ def main():
         half = len(vids) // 2
         pick = {vids[i] for i in (perm[:half] if a.side == "A" else perm[half:])}
         vids = [v for v in vids if v in pick]
+    if a.max_videos:
+        done = set()
+        if LAPTOP_CAPS.exists():
+            done = set(json.loads(LAPTOP_CAPS.read_text(encoding="utf-8")))
+        # 이미 만든 것을 먼저 채우고 나머지를 순서대로 — 생성분을 버리지 않는다
+        vids = ([v for v in vids if v in done] +
+                [v for v in vids if v not in done])[:a.max_videos]
+        vids = sorted(vids)
     srv = {v: srv_all[v] for v in vids}
     print(f"[{a.side} 절반] 영상 {len(vids)}편", flush=True)
     idx0 = {v: VideoIndex.load(cfg, v) for v in vids}
@@ -142,12 +159,18 @@ def main():
     if todo:
         print(f"생성 대상 {len(todo)}편 "
               f"({sum(len(idx0[v].segments) for v in todo)}장)", flush=True)
-        for n, v in enumerate(todo, 1):
-            frames = [wdirs[v] / s["rep_frame"] for s in idx0[v].segments]
-            lap[v] = gen(frames, cfg, prompt)
-            if n % 5 == 0 or n == len(todo):
-                LAPTOP_CAPS.write_text(json.dumps(lap, ensure_ascii=False), encoding="utf-8")
-                print(f"[{n}/{len(todo)}] 체크포인트 저장", flush=True)
+        gen, close = load_once(cfg)
+        try:
+            for n, v in enumerate(todo, 1):
+                frames = [wdirs[v] / s["rep_frame"] for s in idx0[v].segments]
+                lap[v], spf = gen(frames)
+                print(f"  [{n}/{len(todo)}] {v} {len(frames)}장 "
+                      f"{spf:.1f}초/장", flush=True)
+                if n % 5 == 0 or n == len(todo):
+                    LAPTOP_CAPS.write_text(json.dumps(lap, ensure_ascii=False),
+                                           encoding="utf-8")
+        finally:
+            close()
         LAPTOP_CAPS.write_text(json.dumps(lap, ensure_ascii=False, indent=1),
                                encoding="utf-8")
         print(f"저장 -> {LAPTOP_CAPS}", flush=True)
