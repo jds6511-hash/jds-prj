@@ -82,6 +82,9 @@ MODELS = {
     "qwen25_3b_4bit": {"id": "Qwen/Qwen2.5-VL-3B-Instruct", "family": "qwen25", "q4": True},
     "qwen25_7b":      {"id": "Qwen/Qwen2.5-VL-7B-Instruct", "family": "qwen25", "q4": False},
     "qwen3vl_4b":     {"id": "Qwen/Qwen3-VL-4B-Instruct", "family": "qwen3vl", "q4": False},
+    # 4bit 변형 — 6GB 노트북에 올리려면 필수(실측 최대 3.27GB). 서버에서 같은 환경으로
+    # 재서 **양자화 효과와 생성 환경 효과를 분리**한다(규약 4항 동일 환경 대조군).
+    "qwen3vl_4b_q4":  {"id": "Qwen/Qwen3-VL-4B-Instruct", "family": "qwen3vl", "q4": True},
     "varco_1_7b":     {"id": "NCSOFT/VARCO-VISION-2.0-1.7B", "family": "varco", "q4": False},
     "hyperclovax_3b": {"id": "naver-hyperclovax/HyperCLOVAX-SEED-Vision-Instruct-3B",
                        "family": "hyperclovax", "q4": False},
