@@ -140,8 +140,17 @@ def load_captioner(spec: dict, cfg: dict, max_new: int | None = None):
 
     elif fam == "qwen3vl":
         from transformers import Qwen3VLForConditionalGeneration, AutoProcessor
-        model = Qwen3VLForConditionalGeneration.from_pretrained(
-            mid, dtype=torch.bfloat16, device_map={"": 0}).eval()
+        # q4를 반영한다. 이 분기가 dtype을 하드코딩하고 있어서, 4bit arm을 추가해도
+        # 조용히 bf16으로 돌아 중복 arm이 나왔다(VRAM 11.4GB로 발각, 2026-08-10).
+        kw = dict(device_map={"": 0})
+        if spec["q4"]:
+            from transformers import BitsAndBytesConfig
+            kw["quantization_config"] = BitsAndBytesConfig(
+                load_in_4bit=True, bnb_4bit_compute_dtype=torch.bfloat16,
+                bnb_4bit_quant_type="nf4", bnb_4bit_use_double_quant=True)
+        else:
+            kw["dtype"] = torch.bfloat16
+        model = Qwen3VLForConditionalGeneration.from_pretrained(mid, **kw).eval()
         proc = AutoProcessor.from_pretrained(mid, min_pixels=256 * 28 * 28,
                                              max_pixels=maxpx)
 
