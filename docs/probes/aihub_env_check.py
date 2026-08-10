@@ -114,20 +114,30 @@ def main():
     print(f"영상 {len(vids)} · 질의 {len(qs)} · 세그먼트 "
           f"{sum(len(idx0[v].segments) for v in vids)}", flush=True)
 
+    # 부분 체크포인트에서 이어받는다. 파일이 있다고 생성을 통째로 건너뛰면
+    # 중간에 끊겼을 때 불완전한 캡션으로 평가하거나 KeyError로 죽는다.
+    lap = {}
     if LAPTOP_CAPS.exists():
         lap = json.loads(LAPTOP_CAPS.read_text(encoding="utf-8"))
-        print(f"저장된 노트북 캡션 재사용 {sum(len(v) for v in lap.values())}건", flush=True)
-    else:
-        lap = {}
-        for n, v in enumerate(vids, 1):
+        lap = {v: c for v, c in lap.items()
+               if v in idx0 and len(c) == len(idx0[v].segments)}   # 길이 안 맞으면 버린다
+        print(f"체크포인트 재사용 {len(lap)}/{len(vids)}편", flush=True)
+    todo = [v for v in vids if v not in lap]
+    if todo:
+        print(f"생성 대상 {len(todo)}편 "
+              f"({sum(len(idx0[v].segments) for v in todo)}장)", flush=True)
+        for n, v in enumerate(todo, 1):
             frames = [wdirs[v] / s["rep_frame"] for s in idx0[v].segments]
             lap[v] = gen(frames, cfg, prompt)
-            if n % 10 == 0:
-                print(f"[{n}/{len(vids)}] 영상 완료", flush=True)
+            if n % 5 == 0 or n == len(todo):
                 LAPTOP_CAPS.write_text(json.dumps(lap, ensure_ascii=False), encoding="utf-8")
+                print(f"[{n}/{len(todo)}] 체크포인트 저장", flush=True)
         LAPTOP_CAPS.write_text(json.dumps(lap, ensure_ascii=False, indent=1),
                                encoding="utf-8")
         print(f"저장 -> {LAPTOP_CAPS}", flush=True)
+    missing = [v for v in vids if v not in lap]
+    if missing:
+        raise ValueError(f"캡션 미생성 {len(missing)}편 — 이어서 재실행하라")
 
     def score(caps):
         idx = {v: VideoIndex(segments=idx0[v].segments, emb_sub=idx0[v].emb_sub,
