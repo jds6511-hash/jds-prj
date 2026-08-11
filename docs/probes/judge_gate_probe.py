@@ -215,6 +215,13 @@ def main():
            "incumbent_judge": cfg["judge_model"],
            "prereg": prereg, "seed": SEED, "n_per_cell": a.n, "judges": {}}
 
+    # 판정자마다 프로세스를 나눠 돌린 결과를 누적한다. `make_llm`이 모델을 캐시에
+    # 물고 안 놓기 때문에 한 프로세스에서 둘 이상 올리면 뒤가 VRAM 부족으로 죽는다
+    # (2026-08-11 실측 — 7B가 남아 있어 14B 4bit가 CPU로 밀렸다).
+    p_out = OUT / ("judge_gate_models.json" if multi else "judge_gate.json")
+    if multi and p_out.exists():
+        top["judges"] = json.loads(p_out.read_text(encoding="utf-8")).get("judges", {})
+
     for mid in mids:
         spec = JUDGES.get(mid, {"q4": cfg.get("llm_4bit", False), "axis": "config"})
         print(f"\n=== {mid} ({spec['axis']}, {'4bit' if spec['q4'] else 'bf16'}) ===",
@@ -230,7 +237,7 @@ def main():
             print(f"  실패 — {type(e).__name__}: {str(e)[:160]}", flush=True)
         top["judges"][mid] = rep
         OUT.mkdir(parents=True, exist_ok=True)
-        (OUT / ("judge_gate_models.json" if multi else "judge_gate.json")).write_text(
+        p_out.write_text(
             json.dumps(top if multi else {**top, **rep}, ensure_ascii=False, indent=2),
             encoding="utf-8")
 

@@ -224,6 +224,12 @@ def main():
     ap.add_argument("--queries", default="data_aihub/queries/queries_aihub.jsonl")
     ap.add_argument("--round", type=int, default=1, choices=[1, 2],
                     help="2 = 접두어 모델 + gte(trust_remote_code)")
+    ap.add_argument("--only", help="이 모델 하나만 재고 arm JSON으로 저장한다. "
+                                   "한 프로세스에서 여러 모델을 돌리면 앞 모델의 CUDA "
+                                   "오류가 컨텍스트를 오염시켜 뒤가 전부 죽는다"
+                                   "(2026-08-11 실측 — 5개 중 4개가 부수 피해)")
+    ap.add_argument("--assemble", action="store_true",
+                    help="저장된 arm JSON들을 모아 대비·BH만 계산한다(GPU 불필요)")
     a = ap.parse_args()
 
     cfg = common.load_config(str(ROOT / a.config))
@@ -253,10 +259,24 @@ def main():
 
     if a.stage == "confirm":
         models = [INCUMBENT, a.model]
+    elif a.only:
+        models = [a.only]
     else:
         models = list(ROUND2) if a.round == 2 else CANDIDATES
     if a.stage == "confirm" and not a.model:
         ap.error("--model 이 필요하다")
+
+    armdir = OUT / f"embedder_arms_r{a.round}"
+
+    def arm_path(mid):
+        return armdir / (mid.replace("/", "__") + ".json")
+
+    if a.assemble:
+        models = []
+        for f in sorted(armdir.glob("*.json")):
+            m = json.loads(f.read_text(encoding="utf-8"))
+            rep["arms"][m["model"]] = m
+        print(f"조립: arm {len(rep['arms'])}개 — {sorted(rep['arms'])}", flush=True)
 
     for mid in models:
         try:
@@ -266,9 +286,20 @@ def main():
             print(f"[{mid}] α*={m['alpha_star']} 융합 {m['mrr_fused']:.4f} "
                   f"캡션 {m['mrr_caption_only']:.4f} 자막 {m['mrr_subtitle_only']:.4f}",
                   flush=True)
+            armdir.mkdir(parents=True, exist_ok=True)
+            arm_path(mid).write_text(
+                json.dumps({"model": mid, **m}, ensure_ascii=False), encoding="utf-8")
         except Exception as e:
             rep["arms"][mid] = {"error": f"{type(e).__name__}: {e}"}
             print(f"[{mid}] 실패 — {type(e).__name__}: {e}", flush=True)
+            armdir.mkdir(parents=True, exist_ok=True)
+            arm_path(mid).write_text(
+                json.dumps({"model": mid, "error": f"{type(e).__name__}: {str(e)[:400]}"},
+                           ensure_ascii=False), encoding="utf-8")
+
+    if a.only:                      # 한 arm만 재고 끝낸다 — 대비는 --assemble이 한다
+        print(f"-> {arm_path(a.only)}")
+        return
 
     base = rep["arms"].get(INCUMBENT, {})
     if "rr_fused" not in base:

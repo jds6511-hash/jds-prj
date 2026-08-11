@@ -99,8 +99,13 @@ def load_once(cfg):
         return outs, (time.time() - t0) / max(len(frames), 1)
 
     def close():
+        # `nonlocal` 없이 `del model`을 쓰면 model이 이 함수의 지역변수로 잡혀
+        # UnboundLocalError가 난다. 캡션 1,164장을 다 만든 뒤 정리 단계에서 죽어
+        # 채점을 못 했다(2026-08-11 00:48).
+        nonlocal model
         import torch
         del model
+        model = None
         torch.cuda.empty_cache()
 
     return gen, close
