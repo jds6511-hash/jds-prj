@@ -88,7 +88,19 @@ def main():
     ap.add_argument("--queries", default="data_aihub/queries/queries_aihub.jsonl")
     ap.add_argument("--alpha", type=float, default=None,
                     help="융합 보조지표용. 미지정 시 results/alpha_search_dev.json의 alpha_star")
+    ap.add_argument("--control", help="대조군 arm (예: qwen25_3b/P0). 기본은 현행 4bit")
+    ap.add_argument("--candidate", help="후보 arm (예: qwen3vl_4b/P1)")
+    ap.add_argument("--out", default="aihub_model_confirm.json",
+                    help="결과 파일명 — 기존 확증 결과를 덮지 않도록 분리한다")
     a = ap.parse_args()
+
+    # 정밀도를 맞춘 대조 등 다른 짝을 재기 위해 CLI로 갈아끼운다. 기본값은 원래
+    # 사전 등록한 짝 그대로라 기존 재현에 영향이 없다.
+    global CONTROL, CANDIDATE
+    if a.control:
+        CONTROL = tuple(a.control.split("/", 1))
+    if a.candidate:
+        CANDIDATE = tuple(a.candidate.split("/", 1))
 
     cfg = common.load_config(str(ROOT / a.config))
     alpha = a.alpha
@@ -168,7 +180,7 @@ def main():
                       "부호 반전 — 채택 근거 없음")
 
     OUT.mkdir(parents=True, exist_ok=True)
-    p = OUT / "aihub_model_confirm.json"
+    p = OUT / a.out
     p.write_text(json.dumps(rep, ensure_ascii=False, indent=2), encoding="utf-8")
     print()
     print(f"주지표 ΔMRR {pri['delta']:+.4f} CI{pri['ci95']}")

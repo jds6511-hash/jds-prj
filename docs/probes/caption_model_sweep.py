@@ -80,6 +80,11 @@ STAGE1_PROMPTS = ["P0", "P1", "P2", "P3"]
 # 모델 6종. 로딩 인자는 각 공식 모델카드 기준(2026-08-08 확인).
 MODELS = {
     "qwen25_3b_4bit": {"id": "Qwen/Qwen2.5-VL-3B-Instruct", "family": "qwen25", "q4": True},
+    # 현행 모델의 **비압축** arm (2026-08-11 추가). 생성 환경 효과가 허구로 판명돼
+    # 서버 통일이 가능해졌는데, 그러면 현행도 bf16으로 돈다. 그런데 AI Hub 독립
+    # 확증은 **현행 4bit vs 후보 bf16**이라 모델 효과와 정밀도 효과가 섞여 있다.
+    # 이 arm이 정밀도를 맞춘 대조군이다.
+    "qwen25_3b":      {"id": "Qwen/Qwen2.5-VL-3B-Instruct", "family": "qwen25", "q4": False},
     "qwen25_7b":      {"id": "Qwen/Qwen2.5-VL-7B-Instruct", "family": "qwen25", "q4": False},
     "qwen3vl_4b":     {"id": "Qwen/Qwen3-VL-4B-Instruct", "family": "qwen3vl", "q4": False},
     # 4bit 변형 — 6GB 노트북에 올리려면 필수(실측 최대 3.27GB). 서버에서 같은 환경으로
