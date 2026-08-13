@@ -1,5 +1,5 @@
 // 국방 AI·SW 프로젝트 중간성과발표회 (2026-08-21) 발표자료 생성기
-// 발표 10분 + 질의응답 10분 → 12슬라이드.
+// 발표 10분 + 질의응답 10분 → 13슬라이드.
 // 슬라이드에 평가항목 표기는 넣지 않는다(2026-08-13 피드백). 대응 관계는 발표자 노트로만.
 const pptxgen = require("pptxgenjs");
 
@@ -270,7 +270,79 @@ function chip(s, x, y, label, color) {
   s.addNotes("M8은 군에서 말하는 사후검토(AAR) 리포트에 해당합니다. M8·M9는 Qwen2.5-7B-Instruct 하나를 요약과 채점에 함께 씁니다 — 자기평가 편향이 있어 채점자를 14B로 분리할 예정입니다(게이트 검정에서 7B는 탈락, 14B는 통과).");
 }
 
-// ── 7. 데이터 ────────────────────────────────────────────────────────
+// ── 7. M8 실제 출력 ──────────────────────────────────────────────────
+// 웹 시연에는 M8·M9 접점이 없다(PIPELINE = m1~m4). 실물을 보여주기 위해 서버
+// 산출물 work/panibottle_vietnam1/report.json(2026-08-06, Qwen2.5-7B-Instruct)에서
+// sentences[4:11]을 그대로 옮겼다. 문장은 편집하지 않았다. [2026-08-13 피드백]
+{
+  const s = pres.addSlide();
+  head(s, "M8 실제 출력 — 영상 요약에 근거 구간이 붙는다",
+    "panibottle_vietnam1(26분) 리포트에서 연속 7문장 발췌 · 서버 실행 산출물");
+
+  card(s, M, 1.7, 7.7, 4.55);
+  s.addText("work/panibottle_vietnam1/report.json  ·  sentences[4:11]  ·  Qwen2.5-7B-Instruct",
+    { x: M + 0.35, y: 1.88, w: 7.0, h: 0.28, fontFace: BFONT, fontSize: 10,
+      color: MUTED, margin: 0 });
+
+  const SENTS = [
+    "실내로 이동하여 여러 물건과 책이 있는 공간에서 남성의 대화가 계속된다 [seg#6, seg#7].",
+    "남성이 스위스 분위기를 좋아한다고 언급하며, 방이 따뜻한 분위기로 꾸며져 있다는 것을 보여준다 [seg#8].",
+    "여성과의 대화 중 물건들을 살펴보는 모습이 보인다 [seg#10, seg#11].",
+    "초콜릿을 먹는 남성의 모습이 보이며, 다양한 빵과 케이크가 진열된 장면이 보인다 [seg#12, seg#13].",
+    "남성이 초콜릿을 조금씩 먹는 것을 언급하며, 살이 찌지 않는 방법을 논의한다 [seg#14, seg#15].",
+    "음료와 음식이 진열된 가게 내부에서 남성의 대화가 계속된다 [seg#16, seg#17].",
+    "두 사람이 앉아 있는 모습이 보이며, 테이블 주변에 다양한 물건들이 놓여 있다 [seg#18, seg#19].",
+  ];
+  // 인용 표시 [seg#N]만 색을 달리해 "근거가 붙는다"는 점이 눈에 들어오게 한다
+  const runs = [];
+  SENTS.forEach((line, li) => {
+    const parts = line.split(/(\[seg#[^\]]*\])/);
+    parts.filter(Boolean).forEach((p, pi, arr) => {
+      runs.push({
+        text: p,
+        options: {
+          color: p.startsWith("[seg#") ? VISION : INK,
+          bold: p.startsWith("[seg#"),
+          breakLine: pi === arr.length - 1 && li < SENTS.length - 1,
+        },
+      });
+    });
+  });
+  s.addText(runs, { x: M + 0.35, y: 2.2, w: 7.0, h: 3.3, fontFace: BFONT,
+    fontSize: 12, lineSpacing: 15, paraSpaceAfter: 6, margin: 0 });
+  s.addText("전체 58문장 중 발췌 — 문장은 고치지 않았다. 58문장 중 1건에 한자 혼입이 남아 있다(7B의 알려진 한계).",
+    { x: M + 0.35, y: 5.62, w: 7.0, h: 0.5, fontFace: BFONT, fontSize: 10,
+      color: MUTED, lineSpacing: 14, margin: 0 });
+
+  card(s, M + 8.2, 1.7, 3.7, 4.55);
+  s.addText("이 번호가 하는 일", { x: M + 8.5, y: 1.9, w: 3.1, h: 0.35,
+    fontFace: HFONT, fontSize: 17, bold: true, color: INK, margin: 0 });
+  const how = [
+    ["근거로 되돌아간다", "seg 번호 × 5초 = 영상 시각. seg#12는 1분 00초 지점이다.", VISION],
+    ["M9가 자동 채점한다", "문장마다 인용된 구간을 실제로 확인해 근거 있음·없음을 판정한다.", SPEECH],
+    ["판정자를 먼저 검정했다", "정답을 아는 60문항으로 시험해 현행 7B는 coverage에서 탈락시켰다.", SLATE],
+  ];
+  how.forEach(([t, d, c], i) => {
+    const y = 2.4 + i * 1.28;
+    s.addShape(pres.ShapeType.roundRect, { x: M + 8.5, y, w: 0.36, h: 0.36,
+      rectRadius: 0.18, fill: { color: c } });
+    s.addText(String(i + 1), { x: M + 8.5, y, w: 0.36, h: 0.36, fontFace: BFONT,
+      fontSize: 11, bold: true, color: WHITE, align: "center", valign: "middle", margin: 0 });
+    s.addText(t, { x: M + 8.96, y: y + 0.02, w: 2.65, h: 0.32, fontFace: BFONT,
+      fontSize: 13, bold: true, color: INK, margin: 0 });
+    s.addText(d, { x: M + 8.5, y: y + 0.42, w: 3.1, h: 0.75, fontFace: BFONT,
+      fontSize: 11, color: MUTED, lineSpacing: 14.5, margin: 0 });
+  });
+
+  s.addShape(pres.ShapeType.roundRect, { x: M, y: 6.45, w: W - 2 * M, h: 0.62,
+    rectRadius: 0.1, fill: { color: "E8EDF0" } });
+  s.addText("오늘 시연 화면에는 이 단계가 없다 — 7B는 노트북 6GB에 올라가지 않아 서버에서 따로 돌린다. 채점 수치는 판정자를 14B로 바꾼 뒤 다시 낸다.",
+    { x: M + 0.35, y: 6.45, w: W - 2 * M - 0.7, h: 0.62, fontFace: BFONT,
+      fontSize: 12.5, color: INK, valign: "middle", margin: 0 });
+  s.addNotes("웹 시연에 M8·M9는 안 나옵니다. 서버 산출물을 그대로 옮긴 것이고 문장은 편집하지 않았습니다. 채점 수치를 묻거든: 현행 7B 판정자는 정답을 아는 60문항 게이트에서 coverage를 못 갈라 탈락시켰고(0.550), 14B는 통과했습니다(0.767). groundedness는 7B도 통과했습니다(양성 0.817·음성 1.000). 탈락한 계측기의 수치는 싣지 않습니다.");
+}
+
+// ── 8. 데이터 ────────────────────────────────────────────────────────
 {
   const s = pres.addSlide();
   head(s, "데이터 — 직접 만들고, 제3자 데이터로 검증했다");
@@ -303,7 +375,7 @@ function chip(s, x, y, label, color) {
   s.addNotes("라벨을 시스템 출력으로 만들면 평가가 무의미해집니다. 그래서 프레임 실물만 봅니다.");
 }
 
-// ── 8. 핵심 사례 ─────────────────────────────────────────────────────
+// ── 9. 핵심 사례 ─────────────────────────────────────────────────────
 {
   const s = pres.addSlide();
   s.background = { color: SLATE };
@@ -342,7 +414,7 @@ function chip(s, x, y, label, color) {
   s.addNotes("시연에서도 이 질의를 보여줍니다. 발표의 핵심 장면입니다.");
 }
 
-// ── 9. 성능 ──────────────────────────────────────────────────────────
+// ── 10. 성능 ──────────────────────────────────────────────────────────
 {
   const s = pres.addSlide();
   head(s, "성능 — 최종 평가 39건 (튜닝에 쓴 적 없는 데이터)");
@@ -392,7 +464,7 @@ function chip(s, x, y, label, color) {
   s.addNotes("유의하지 않은 항목을 먼저 밝히는 것이 방어에 유리합니다. 확장 계획도 같이 말합니다.");
 }
 
-// ── 10. 모델 선정 근거 ───────────────────────────────────────────────
+// ── 11. 모델 선정 근거 ───────────────────────────────────────────────
 {
   const s = pres.addSlide();
   head(s, "모델 선정 근거 — 고를 때와 확인할 때를 분리했다");
@@ -439,7 +511,7 @@ function chip(s, x, y, label, color) {
 // (구 11. 방법론 규율 슬라이드는 2026-08-13 피드백으로 삭제.
 //  '튜닝 0회'·'사전 등록'은 슬라이드 10 하단 띠와 발표자 노트로 남긴다.)
 
-// ── 11. 군 활용성 ────────────────────────────────────────────────────
+// ── 12. 군 활용성 ────────────────────────────────────────────────────
 {
   const s = pres.addSlide();
   head(s, "군 적용 가능성");
@@ -469,7 +541,7 @@ function chip(s, x, y, label, color) {
   s.addNotes("과장하지 않는 것이 중요합니다. 마지막 전제 문장을 반드시 말하세요.");
 }
 
-// ── 12. 로드맵 ───────────────────────────────────────────────────────
+// ── 13. 로드맵 ───────────────────────────────────────────────────────
 {
   const s = pres.addSlide();
   s.background = { color: SLATE };
