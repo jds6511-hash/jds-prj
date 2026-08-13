@@ -100,3 +100,27 @@ def test_caption_all_checkpoints_progress_for_crash_recovery(tmp_path):
     assert seen_at_checkpoint[2] == 2
     final = json.loads(seg_path.read_text(encoding="utf-8"))
     assert sum(1 for s in final["segments"] if s.get("caption")) >= 4  # 마지막 미만은 다음 체크포인트 전
+
+
+# --- VLM 계열 선택 (Qwen3-VL 채택 대비) ---------------------------------
+# 본 코드가 Qwen2_5_VLForConditionalGeneration을 하드코딩하고 있어서 config에
+# Qwen3-VL을 넣으면 적재부터 실패한다. 계열을 model id로 고르게 하고, 그 선택을
+# 여기서 고정한다(적재 자체는 GPU가 필요해 클래스 선택만 검증).
+import pytest
+
+
+@pytest.mark.parametrize("model_id,expected", [
+    ("Qwen/Qwen2.5-VL-3B-Instruct", "Qwen2_5_VLForConditionalGeneration"),
+    ("Qwen/Qwen2.5-VL-7B-Instruct", "Qwen2_5_VLForConditionalGeneration"),
+    ("Qwen/Qwen3-VL-4B-Instruct", "Qwen3VLForConditionalGeneration"),
+    ("Qwen/Qwen3-VL-8B-Instruct", "Qwen3VLForConditionalGeneration"),
+])
+def test_vlm_class_name_selected_by_model_id(model_id, expected):
+    from m3_generate import vlm_class_name
+    assert vlm_class_name(model_id) == expected
+
+
+def test_vlm_class_name_rejects_unknown_family():
+    from m3_generate import vlm_class_name
+    with pytest.raises(ValueError, match="지원하지 않는"):
+        vlm_class_name("meta-llama/Llama-3-8B")

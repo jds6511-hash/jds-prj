@@ -90,10 +90,24 @@ def assign_subtitles(utts: list[dict], segments: list[dict]) -> None:
         s["subtitle"] = " ".join(parts[s["idx"]])
 
 
+def vlm_class_name(model_id: str) -> str:
+    """model id로 transformers 클래스를 고른다.
+
+    Qwen2.5-VL과 Qwen3-VL은 클래스가 다르다. 예전에는 2.5 계열만 써서 클래스를
+    하드코딩했는데, 그 상태로 config만 Qwen3-VL로 바꾸면 적재에서 죽는다.
+    """
+    if "Qwen3-VL" in model_id:
+        return "Qwen3VLForConditionalGeneration"
+    if "Qwen2.5-VL" in model_id:
+        return "Qwen2_5_VLForConditionalGeneration"
+    raise ValueError(f"지원하지 않는 VLM 계열: {model_id}")
+
+
 def load_vlm(cfg):
-    """Qwen2.5-VL 로딩. 4bit NF4·max_pixels 설정은 기존 caption 실험 검증값 차용."""
+    """Qwen2.5-VL / Qwen3-VL 로딩. 4bit NF4·max_pixels는 기존 caption 실험 검증값."""
     import torch
-    from transformers import Qwen2_5_VLForConditionalGeneration, AutoProcessor
+    import transformers
+    from transformers import AutoProcessor
     kwargs = dict(device_map="auto")
     if cfg.get("vlm_4bit"):
         from transformers import BitsAndBytesConfig
@@ -102,7 +116,8 @@ def load_vlm(cfg):
             bnb_4bit_quant_type="nf4", bnb_4bit_use_double_quant=True)
     else:
         kwargs["torch_dtype"] = torch.bfloat16
-    model = Qwen2_5_VLForConditionalGeneration.from_pretrained(cfg["caption_model"], **kwargs)
+    cls = getattr(transformers, vlm_class_name(cfg["caption_model"]))
+    model = cls.from_pretrained(cfg["caption_model"], **kwargs)
     processor = AutoProcessor.from_pretrained(
         cfg["caption_model"], min_pixels=256 * 28 * 28, max_pixels=cfg["vlm_max_pixels"])
     return model, processor
