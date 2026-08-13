@@ -276,8 +276,8 @@ function chip(s, x, y, label, color) {
 // sentences[4:11]을 그대로 옮겼다. 문장은 편집하지 않았다. [2026-08-13 피드백]
 {
   const s = pres.addSlide();
-  head(s, "M8 실제 출력 — 영상 요약에 근거 구간이 붙는다",
-    "panibottle_vietnam1(26분) 리포트에서 연속 7문장 발췌 · 서버 실행 산출물");
+  head(s, "M8 현재 출력 — 근거는 붙지만 아직 “요약”이 아니다",
+    "panibottle_vietnam1(21.8분) 서버 산출물에서 연속 7문장 발췌 · 개선 예정 단계");
 
   card(s, M, 1.7, 7.7, 4.55);
   s.addText("work/panibottle_vietnam1/report.json  ·  sentences[4:11]  ·  Qwen2.5-7B-Instruct",
@@ -310,17 +310,17 @@ function chip(s, x, y, label, color) {
   });
   s.addText(runs, { x: M + 0.35, y: 2.2, w: 7.0, h: 3.3, fontFace: BFONT,
     fontSize: 12, lineSpacing: 15, paraSpaceAfter: 6, margin: 0 });
-  s.addText("전체 58문장 중 발췌 — 문장은 고치지 않았다. 58문장 중 1건에 한자 혼입이 남아 있다(7B의 알려진 한계).",
-    { x: M + 0.35, y: 5.62, w: 7.0, h: 0.5, fontFace: BFONT, fontSize: 10,
-      color: MUTED, lineSpacing: 14, margin: 0 });
+  s.addText("잘 되는 것 — 문장마다 근거 구간이 붙어 그 시각으로 되돌아갈 수 있다(seg 번호 × 5초). 문장은 고치지 않고 그대로 옮겼다.",
+    { x: M + 0.35, y: 5.6, w: 7.0, h: 0.55, fontFace: BFONT, fontSize: 11,
+      color: SPEECH, lineSpacing: 15, margin: 0 });
 
   card(s, M + 8.2, 1.7, 3.7, 4.55);
-  s.addText("이 번호가 하는 일", { x: M + 8.5, y: 1.9, w: 3.1, h: 0.35,
+  s.addText("측정된 문제 — 개선 예정", { x: M + 8.5, y: 1.9, w: 3.1, h: 0.35,
     fontFace: HFONT, fontSize: 17, bold: true, color: INK, margin: 0 });
   const how = [
-    ["근거로 되돌아간다", "seg 번호 × 5초 = 영상 시각. seg#12는 1분 00초 지점이다.", VISION],
-    ["M9가 자동 채점한다", "문장마다 인용된 구간을 실제로 확인해 근거 있음·없음을 판정한다.", SPEECH],
-    ["판정자를 먼저 검정했다", "정답을 아는 60문항으로 시험해 현행 7B는 coverage에서 탈락시켰다.", SLATE],
+    ["요약이 아니라 나열", "58문장이 88구간을 거의 1:1로 훑는다. 문장당 2.1구간, 인용은 100% 시간순.", VISION],
+    ["문장이 똑같이 생겼다", "34%가 “…이 보입니다”로 끝나고 41%가 “남성이”로 시작한다. 존댓말·평어도 섞인다.", VISION],
+    ["뒤 2/3가 없다", "262구간 중 87까지만 다루고 문장 중간에 끊긴다. 이건 문체가 아니라 결함이다.", SLATE],
   ];
   how.forEach(([t, d, c], i) => {
     const y = 2.4 + i * 1.28;
@@ -336,10 +336,10 @@ function chip(s, x, y, label, color) {
 
   s.addShape(pres.ShapeType.roundRect, { x: M, y: 6.45, w: W - 2 * M, h: 0.62,
     rectRadius: 0.1, fill: { color: "E8EDF0" } });
-  s.addText("오늘 시연 화면에는 이 단계가 없다 — 7B는 노트북 6GB에 올라가지 않아 서버에서 따로 돌린다. 채점 수치는 판정자를 14B로 바꾼 뒤 다시 낸다.",
+  s.addText("M8은 아직 완성 단계가 아니다 — 근거를 다는 구조는 동작하고, 요약답게 묶는 일과 뒷부분 절단이 다음 과제다. 오늘 시연 화면에는 이 단계가 없다(7B는 노트북 6GB에 안 올라간다).",
     { x: M + 0.35, y: 6.45, w: W - 2 * M - 0.7, h: 0.62, fontFace: BFONT,
       fontSize: 12.5, color: INK, valign: "middle", margin: 0 });
-  s.addNotes("웹 시연에 M8·M9는 안 나옵니다. 서버 산출물을 그대로 옮긴 것이고 문장은 편집하지 않았습니다. 채점 수치를 묻거든: 현행 7B 판정자는 정답을 아는 60문항 게이트에서 coverage를 못 갈라 탈락시켰고(0.550), 14B는 통과했습니다(0.767). groundedness는 7B도 통과했습니다(양성 0.817·음성 1.000). 탈락한 계측기의 수치는 싣지 않습니다.");
+  s.addNotes("웹 시연에 M8·M9는 안 나옵니다. 서버 산출물을 편집 없이 옮겼습니다. 오른쪽 세 가지는 이 리포트를 직접 재서 나온 수치입니다 — 지금 출력은 요약이라기보다 구간 나열에 가깝고, 뒤 2/3는 아예 빠져 있습니다. 절단은 reduce 단계 출력이 잘린 것으로 보이며 원인 규명이 다음 작업입니다. 채점 수치를 묻거든: 현행 7B 판정자는 정답을 아는 60문항 게이트에서 coverage를 못 갈라 탈락(0.550), 14B는 통과(0.767)했습니다. groundedness는 7B도 통과했습니다(양성 0.817·음성 1.000). 탈락한 계측기의 수치는 싣지 않습니다.");
 }
 
 // ── 8. 데이터 ────────────────────────────────────────────────────────
