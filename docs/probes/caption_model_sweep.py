@@ -382,6 +382,11 @@ def main():
     ap.add_argument("--prompts", default=",".join(STAGE1_PROMPTS))
     ap.add_argument("--limit", type=int, default=None,
                     help="파일럿용: 영상당 프레임 수 제한(절단율·sanity만 볼 때)")
+    ap.add_argument("--out", default=None,
+                    help="결과 파일명(_scratch/ 아래). 지정하면 캡션 저장 폴더도 "
+                         "같은 이름으로 갈라져 기존 arm 산출물을 덮지 않는다 "
+                         "[규약 5항]. 같은 arm을 새 세션에서 다시 재려면 필수 — "
+                         "안 쓰면 재개 로직이 완료된 arm을 건너뛴다.")
     ap.add_argument("--max-new", type=int, default=None,
                     help="토큰 상한 덮어쓰기. 절단율이 높은 arm의 재측정용 "
                          "(arm 키가 'P0@512'로 갈려 기존 캡션과 섞이지 않는다)")
@@ -400,8 +405,13 @@ def main():
     wdirs = {v: Path(common.work_dir(cfg, v)) for v in vids}
     segs = {v: (base[v].segments[:a.limit] if a.limit else base[v].segments) for v in vids}
 
+    if a.out:
+        global CAPDIR
+        stem = a.out[:-5] if a.out.endswith(".json") else a.out
+        CAPDIR = OUT / f"{stem}_captions"
     CAPDIR.mkdir(parents=True, exist_ok=True)
-    rep_path = OUT / ("caption_sweep_pilot.json" if a.limit else "caption_sweep.json")
+    rep_path = OUT / (a.out if a.out else
+                      ("caption_sweep_pilot.json" if a.limit else "caption_sweep.json"))
     rep = {"note": "dev-only, 채택 아님. 전 arm 서버 동일 환경 생성. test 미접촉.",
            "prompts": PROMPTS, "models": {k: MODELS[k] for k in models},
            "limit": a.limit, "seed": cfg["seed"],
