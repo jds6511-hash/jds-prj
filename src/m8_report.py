@@ -141,8 +141,29 @@ def chunk_coverage(partial: str, chunk: list[dict]) -> float:
     return len(cited & idxs) / len(idxs)
 
 
-def build_map_prompt(chunk: list[dict]) -> str:
-    return _SYSTEM + "\n입력:\n" + "\n".join(_fmt_seg(s) for s in chunk)
+# 요약 예산 — 구간 몇 개당 문장 하나까지 허용하나. 현행 리포트 4편의 실측 압축률은
+# 0.64~0.75 문장/구간(나열)이고 사전 등록한 목표는 0.35 이하다. 5구간당 1문장(=0.2)이면
+# 목표에 여유를 두고 도달한다 [docs/M8_개선_사전등록_2026-08-14.md §3-2].
+SEGMENTS_PER_SENTENCE = 5
+
+
+def build_map_prompt(chunk: list[dict], summary_budget: bool = False) -> str:
+    """`summary_budget`은 **기본 off**.
+
+    켠 것과 끈 것을 dev에서 비교해 사전 등록한 관문으로 판정해야 하므로 기본 경로를
+    미리 바꾸지 않는다 [M8_개선_사전등록 변경 3번].
+
+    규칙 8("사건 단위로 요약하라")은 이미 있는데 안 먹혔다 — 리포트 4편 전부 구간을
+    1:1로 훑는다. 말로 된 지시 대신 **숫자 상한**을 준다.
+    """
+    budget = ""
+    if summary_budget:
+        cap = max(1, len(chunk) // SEGMENTS_PER_SENTENCE)
+        budget = (f"10. **이 입력 {len(chunk)}구간을 {cap}문장 이내로 쓸 것.** "
+                  "구간마다 한 줄씩 쓰지 말고, 이어지는 장면을 하나의 사건으로 묶어 "
+                  "그 사건의 모든 구간을 한 문장에 인용하라. 문장 수가 상한을 넘으면 "
+                  "더 묶어라.\n")
+    return _SYSTEM + budget + "\n입력:\n" + "\n".join(_fmt_seg(s) for s in chunk)
 
 
 def build_reduce_prompt(partials: list[str], cite_cap: bool = False) -> str:
@@ -186,11 +207,11 @@ def parse_citations(text: str) -> list[dict]:
 
 
 def generate_report(segments: list[dict], llm, chunk_size: int = 60,
-                    overlap: int = 5) -> dict:
+                    overlap: int = 5, summary_budget: bool = False) -> dict:
     assert overlap < chunk_size, \
         f"map_chunk_overlap({overlap}) >= map_chunk_size({chunk_size})"  # [m8m9-prompt-critique B-3]
     if len(segments) <= chunk_size:                    # 단일 호출 [4-8]
-        raw = llm(build_map_prompt(segments))
+        raw = llm(build_map_prompt(segments, summary_budget))
         sents, tail = drop_truncated_tail(parse_citations(raw))
         if tail:
             print(f"[warn] 생성 상한으로 잘린 꼬리 제거: {tail[:60]!r}")
@@ -205,7 +226,7 @@ def generate_report(segments: list[dict], llm, chunk_size: int = 60,
     partials, start, map_retries = [], 0, []
     while start < len(segments):
         chunk = segments[start:start + chunk_size]
-        raw_p = llm(build_map_prompt(chunk))
+        raw_p = llm(build_map_prompt(chunk, summary_budget))
         cov = chunk_coverage(raw_p, chunk)
         # 청크가 담당 구간의 대부분을 인용하지 못하면 조기 종료로 본다. 캡션 오염으로
         # 생성이 중간에 끊기면 그 뒤 구간은 **어느 청크에도 안 들어간다**(겹침 5로는
@@ -213,7 +234,7 @@ def generate_report(segments: list[dict], llm, chunk_size: int = 60,
         if cov < MIN_CHUNK_COVERAGE:
             print(f"[warn] map 청크 {len(partials)} 커버 {cov:.2f} < {MIN_CHUNK_COVERAGE} "
                   f"— 조기 종료로 보고 재생성")
-            retry_p = llm(build_map_prompt(chunk))
+            retry_p = llm(build_map_prompt(chunk, summary_budget))
             cov2 = chunk_coverage(retry_p, chunk)
             map_retries.append({"chunk": len(partials),
                                 "coverage_before": round(cov, 4),

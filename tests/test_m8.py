@@ -361,3 +361,35 @@ def test_map_chunk_not_regenerated_when_coverage_ok():
 
     rep = generate_report(segs, llm, chunk_size=60, overlap=5)
     assert not rep.get("map_retries")          # 정상 영상은 호출 수가 늘지 않는다
+
+
+# --- 요약 예산 (M8_개선_사전등록_2026-08-14 변경 3번) -----------------------
+# 규칙 8("사건 단위로 요약하라")만으로는 안 먹혔다 — 리포트 4편 전부 구간을
+# 1:1로 훑는다. map이 60구간을 60줄 가깝게 뱉으면 reduce는 합칠 재료가 없다.
+# 출력 문장 수 상한을 숫자로 준다. **기본은 꺼둔다** — 켠 것과 끈 것을 dev에서
+# 비교해 사전 등록한 관문으로 판정해야 하므로, 기본 경로를 미리 바꾸면 안 된다.
+
+def test_map_prompt_has_no_budget_by_default():
+    p = build_map_prompt(_segs(60))
+    assert "문장 수" not in p
+
+
+def test_map_prompt_states_budget_when_requested():
+    p = build_map_prompt(_segs(60), summary_budget=True)
+    # 60구간이면 상한이 숫자로 명시돼야 한다(모델이 셀 수 있게)
+    assert "12" in p and "문장" in p
+    assert "[seg#0]" in p                       # 입력은 그대로 붙는다
+
+
+def test_generate_report_passes_budget_through():
+    segs = _segs(120)
+    seen = []
+
+    def llm(prompt, **gen):
+        seen.append(prompt)
+        first = min(int(x) for x in re.findall(r"\[seg#(\d+)\]", prompt))
+        return "\n".join(f"- 문장{i} [seg#{i}]" for i in range(first, first + 60))
+
+    generate_report(segs, llm, chunk_size=60, overlap=5, summary_budget=True)
+    map_prompts = [s for s in seen if "입력:" in s]
+    assert map_prompts and all("문장" in s for s in map_prompts)
