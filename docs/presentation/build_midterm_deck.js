@@ -467,45 +467,54 @@ function chip(s, x, y, label, color) {
 // ── 11. 모델 선정 근거 ───────────────────────────────────────────────
 {
   const s = pres.addSlide();
-  head(s, "모델 선정 근거 — 고를 때와 확인할 때를 분리했다");
-  const steps = [
-    ["1", "후보 26개 조합 비교", "장면 설명 모델 6종 × 프롬프트 5종을 학습용 데이터에서 비교", SLATE],
-    ["2", "제3자 데이터로 확증", "AI Hub 194편·1,086건에서 재측정 → 개선 재현 (+0.038, 신뢰구간이 0 배제)", VISION],
-    ["3", "다른 갈래는 닫았다", "음성 인식·프레임 선택·임베딩 모델 — 모두 개선 근거 없음으로 종결", MUTED],
+  head(s, "모델 선정 근거 — 무엇을 얼마나 이겼나",
+    "고를 때는 dev 96건, 확인할 때는 제3자 데이터(AI Hub). 판정 기준은 전부 결과를 보기 전에 커밋했다.");
+
+  // 수치는 전부 결과 파일에서 그대로 옮겼다(기억으로 쓰지 않는다):
+  //   장면 설명  _scratch/caption_sweep.json · _scratch/aihub_confirm_bf16matched.json
+  //   임베딩     _scratch/embedder_sweep_select_r2.json (combined_bh, family_size 7)
+  //   판정자     _scratch/judge_gate_models.json (n_per_cell 60, 통과선 0.75)
+  //   α          results/alpha_search_dev.json (alpha_best_point 0.4 · tie_set · alpha_star)
+  //   생성 환경  _scratch/aihub_env_check.json
+  const rows = [
+    ["장면 설명 모델", "Qwen2.5-VL-3B → Qwen3-VL-4B",
+     "후보 6종 26조합 — Qwen2.5-VL 3B·7B / Qwen3-VL 4B·8B / VARCO-VISION-2.0 / HyperCLOVAX / Kanana",
+     "dev 96 캡션 단독 MRR 0.461 → 0.552 · AI Hub 1,086건 확증 +0.0377 CI[0.013, 0.061] · 절단율 15% → 0.15%",
+     "교체", VISION],
+    ["임베딩 모델", "KURE-v1 유지",
+     "후보 7종 — BGE-m3 계열 3종 / multilingual-e5-large / KoE5 / Qwen3-Embedding / gte-multilingual",
+     "AI Hub 562건 · 후보 7개를 한 가족으로 BH-FDR q=0.05 → 통과 0건. 최선 bge-m3 +0.0135 CI[−0.005, +0.032]",
+     "현행 유지", SLATE],
+    ["M9 채점자", "Qwen2.5-7B → 14B",
+     "정답을 아는 60문항으로 계측기를 먼저 시험했다 — 통과선 0.75",
+     "coverage 정답률: 7B 0.550 탈락  ·  kanana-8B 0.417 탈락  ·  14B 0.767 통과",
+     "교체", VISION],
+    ["융합 가중치 α", "α = 0.5",
+     "dev 96에서 11점 격자 탐색. 점추정 최적은 0.4다",
+     "쌍체 차이 신뢰구간으로 동률집합 {0.2, 0.4, 0.5} → 사전 규칙(동률이면 자막 쪽)에 따라 0.5",
+     "확정", SPEECH],
+    ["생성 환경(노트북/서버)", "차이 없음",
+     "dev 96에서 −0.088로 보였던 효과를 독립 표본에서 다시 쟀다",
+     "AI Hub 562건 −0.0046 CI[−0.027, +0.017] p=0.68 → 재현 실패. 6GB 제약의 근거가 사라졌다",
+     "기각", MUTED],
   ];
-  steps.forEach(([n, t, d, c], i) => {
-    const y = 1.68 + i * 1.2;
-    card(s, M, y, W - 2 * M, 1.02);
-    s.addShape(pres.ShapeType.ellipse, { x: M + 0.35, y: y + 0.24, w: 0.55, h: 0.55,
-      fill: { color: c } });
-    s.addText(n, { x: M + 0.35, y: y + 0.24, w: 0.55, h: 0.55, fontFace: HFONT,
-      fontSize: 18, bold: true, color: WHITE, align: "center", valign: "middle", margin: 0 });
-    s.addText(t, { x: M + 1.15, y: y + 0.15, w: 4.2, h: 0.4, fontFace: HFONT,
-      fontSize: 18, bold: true, color: INK, margin: 0 });
-    s.addText(d, { x: M + 5.5, y: y + 0.2, w: W - 2 * M - 5.9, h: 0.6,
-      fontFace: BFONT, fontSize: 13.5, color: MUTED, valign: "middle", margin: 0 });
+  rows.forEach(([t, sub, why, num, verdict, c], i) => {
+    const y = 1.62 + i * 1.06;
+    card(s, M, y, W - 2 * M, 0.98);
+    s.addText(t, { x: M + 0.3, y: y + 0.12, w: 2.35, h: 0.3, fontFace: HFONT,
+      fontSize: 14.5, bold: true, color: INK, margin: 0 });
+    s.addText(sub, { x: M + 0.3, y: y + 0.44, w: 2.35, h: 0.34, fontFace: BFONT,
+      fontSize: 11, bold: true, color: c, margin: 0 });
+    s.addText(why, { x: M + 2.85, y: y + 0.12, w: 6.9, h: 0.32, fontFace: BFONT,
+      fontSize: 10.5, color: MUTED, margin: 0 });
+    s.addText(num, { x: M + 2.85, y: y + 0.44, w: 6.9, h: 0.48, fontFace: BFONT,
+      fontSize: 11.5, color: INK, lineSpacing: 14, margin: 0 });
+    s.addShape(pres.ShapeType.roundRect, { x: M + 10.0, y: y + 0.3, w: 1.55, h: 0.38,
+      rectRadius: 0.19, fill: { color: c } });
+    s.addText(verdict, { x: M + 10.0, y: y + 0.3, w: 1.55, h: 0.38, fontFace: BFONT,
+      fontSize: 11.5, bold: true, color: WHITE, align: "center", valign: "middle", margin: 0 });
   });
-
-  // 후보 실명을 묻는 질문이 나오므로 슬라이드에 싣는다(2026-08-13 피드백)
-  card(s, M, 5.3, W - 2 * M, 1.1);
-  s.addText("비교한 후보 (전량 기록)", { x: M + 0.35, y: 5.44, w: 5, h: 0.32,
-    fontFace: HFONT, fontSize: 16, bold: true, color: INK, margin: 0 });
-  s.addText([
-    { text: "장면 설명 ", options: { bold: true, color: VISION } },
-    { text: "Qwen2.5-VL 3B·7B · Qwen3-VL 4B·8B · VARCO-VISION-2.0 · HyperCLOVAX-SEED-Vision · Kanana-1.5-v",
-      options: { color: MUTED, breakLine: true } },
-    { text: "임베딩 ", options: { bold: true, color: SPEECH } },
-    { text: "KURE-v1(현행) · BGE-m3 계열 3종 · multilingual-e5-large · KoE5 · Qwen3-Embedding · gte-multilingual",
-      options: { color: MUTED } },
-  ], { x: M + 0.35, y: 5.76, w: W - 2 * M - 0.7, h: 0.55, fontFace: BFONT,
-       fontSize: 11.5, lineSpacing: 16, margin: 0 });
-
-  s.addShape(pres.ShapeType.roundRect, { x: M, y: 6.55, w: W - 2 * M, h: 0.62,
-    rectRadius: 0.1, fill: { color: SLATE } });
-  s.addText("판정 기준은 결과를 보기 전에 코드에 적고 커밋했다 — 결과를 본 뒤 기준을 바꾸는 경로를 구조적으로 없앴다",
-    { x: M + 0.4, y: 6.55, w: W - 2 * M - 0.8, h: 0.62, fontFace: BFONT,
-      fontSize: 14, color: WHITE, valign: "middle", margin: 0 });
-  s.addNotes("모델 선정 근거 배점이 큽니다. 선별과 확증을 분리한 점, 사전 등록한 점을 강조하세요. 최종 채택은 Qwen3-VL-4B입니다. 임베딩은 7개 arm을 한 가족으로 묶어 다중비교 보정했고 통과가 0건입니다.");
+  s.addNotes("모델 선정 근거 배점이 큽니다. 핵심은 dev에서 고르고 제3자 데이터에서 확증했다는 분리입니다. 마지막 두 줄이 특히 강합니다 — α는 점추정이 아니라 신뢰구간 동률집합과 사전 규칙으로 골랐고, 생성 환경 효과는 우리가 믿던 값이 독립 표본에서 재현되지 않아 스스로 기각했습니다. 융합 지표에서는 +0.0187 CI[−0.002, +0.040]로 비유의라는 점도 먼저 밝히세요.");
 }
 
 // (구 11. 방법론 규율 슬라이드는 2026-08-13 피드백으로 삭제.
