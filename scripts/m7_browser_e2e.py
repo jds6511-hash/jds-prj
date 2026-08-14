@@ -23,7 +23,16 @@ with sync_playwright() as p:
     page.wait_for_load_state("networkidle")
 
     # 1) 초기 상태: 질의 입력 비활성(업로드 전)
-    check("초기 질의 입력 비활성", page.locator("#q").is_disabled())
+    # 단, 서버가 직전 영상을 기억하고 있으면(/api/current) 페이지가 그걸 자동 복원해
+    # 입력이 활성인 것이 정상이다. 이 조건을 안 걸면 시연 한 번 돌린 뒤부터 매번
+    # 거짓 실패가 난다(2026-08-14 실측 — 코드 회귀 아님).
+    cur = page.evaluate("fetch('/api/current').then(r => r.json())")
+    restored = bool(cur and cur.get("video_id") and cur.get("stage") == "done")
+    if restored:
+        check("직전 영상 복원 시 질의 입력 활성", not page.locator("#q").is_disabled(),
+              f"복원된 영상: {cur.get('video_id')}")
+    else:
+        check("초기 질의 입력 비활성", page.locator("#q").is_disabled())
     # 확정 설정이 헤더에 뜬다 — 발표 중 "α는 얼마냐"에 화면이 답한다
     spec = page.locator("#spec").inner_text()
     check("헤더에 α 표시", "α" in spec and "0.5" in spec, spec)
