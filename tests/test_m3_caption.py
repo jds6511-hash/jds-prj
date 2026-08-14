@@ -156,6 +156,10 @@ import pytest
     ("Qwen/Qwen2.5-VL-7B-Instruct", "Qwen2_5_VLForConditionalGeneration"),
     ("Qwen/Qwen3-VL-4B-Instruct", "Qwen3VLForConditionalGeneration"),
     ("Qwen/Qwen3-VL-8B-Instruct", "Qwen3VLForConditionalGeneration"),
+    ("Qwen/Qwen3-VL-32B-Instruct", "Qwen3VLForConditionalGeneration"),
+    # MoE는 별도 클래스다. "Qwen3-VL" 부분일치로 고르면 조용히 틀린 클래스를
+    # 집어 적재가 깨진다 — 30B-A3B 확인(2026-08-14 결정)을 위해 분기한다.
+    ("Qwen/Qwen3-VL-30B-A3B-Instruct", "Qwen3VLMoeForConditionalGeneration"),
 ])
 def test_vlm_class_name_selected_by_model_id(model_id, expected):
     from m3_generate import vlm_class_name

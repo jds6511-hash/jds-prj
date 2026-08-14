@@ -94,6 +94,13 @@ MODELS = {
     # 자기 최고(0.4788)를 냈듯 문장 수 제한이 큰 모델을 누른다(규약 3항 현행 전용 설정
     # 재탐색). 사후 추가이므로 family가 21→26 arm으로 늘어나는 것을 명시한다.
     "qwen3vl_8b":     {"id": "Qwen/Qwen3-VL-8B-Instruct", "family": "qwen3vl", "q4": False},
+    # 큰 모델 확인(2026-08-14 튜터 결정 3번). 32B·30B-A3B는 bf16이 24GB에 안 들어가
+    # **4bit로만** 올라간다. 그래서 판정은 4bit끼리 비교로 한다 — qwen3vl_4b_q4가
+    # 그 대조군이다. bf16 4B와의 대비는 양자화 손실(4B 실측 -0.0604)이 섞이므로
+    # 참고로만 병기한다. 상세: docs/튜터결정_2026-08-14.md §3
+    "qwen3vl_32b_q4": {"id": "Qwen/Qwen3-VL-32B-Instruct", "family": "qwen3vl", "q4": True},
+    "qwen3vl_30ba3b_q4": {"id": "Qwen/Qwen3-VL-30B-A3B-Instruct", "family": "qwen3vl",
+                          "q4": True},
     "varco_1_7b":     {"id": "NCSOFT/VARCO-VISION-2.0-1.7B", "family": "varco", "q4": False},
     "hyperclovax_3b": {"id": "naver-hyperclovax/HyperCLOVAX-SEED-Vision-Instruct-3B",
                        "family": "hyperclovax", "q4": False},
@@ -148,7 +155,12 @@ def load_captioner(spec: dict, cfg: dict, max_new: int | None = None):
             return caption_frame(p, prompt, model, proc, acfg, sample=sample)
 
     elif fam == "qwen3vl":
-        from transformers import Qwen3VLForConditionalGeneration, AutoProcessor
+        import transformers
+        from transformers import AutoProcessor
+        from m3_generate import vlm_class_name
+        # MoE(30B-A3B)는 클래스가 다르다. 규칙을 여기에 또 쓰면 본 코드와 어긋나므로
+        # m3_generate의 판정을 그대로 쓴다 [2026-08-14 큰 모델 확인].
+        _cls = getattr(transformers, vlm_class_name(mid))
         # q4를 반영한다. 이 분기가 dtype을 하드코딩하고 있어서, 4bit arm을 추가해도
         # 조용히 bf16으로 돌아 중복 arm이 나왔다(VRAM 11.4GB로 발각, 2026-08-10).
         kw = dict(device_map={"": 0})
@@ -159,7 +171,7 @@ def load_captioner(spec: dict, cfg: dict, max_new: int | None = None):
                 bnb_4bit_quant_type="nf4", bnb_4bit_use_double_quant=True)
         else:
             kw["dtype"] = torch.bfloat16
-        model = Qwen3VLForConditionalGeneration.from_pretrained(mid, **kw).eval()
+        model = _cls.from_pretrained(mid, **kw).eval()
         proc = AutoProcessor.from_pretrained(mid, min_pixels=256 * 28 * 28,
                                              max_pixels=maxpx)
 

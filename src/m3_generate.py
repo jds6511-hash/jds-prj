@@ -1,6 +1,6 @@
 """M3 자막·캡션 생성. 자막: faster-whisper(stt_test/stt_local.py 검증 설정 차용),
 캡션: Qwen2.5-VL(caption/qwen_caption_test 검증 설정 차용). [DESIGN_SPEC 4-3]"""
-import argparse, json, os, sys
+import argparse, json, os, re, sys
 from pathlib import Path
 import common
 
@@ -97,6 +97,10 @@ def vlm_class_name(model_id: str) -> str:
     하드코딩했는데, 그 상태로 config만 Qwen3-VL로 바꾸면 적재에서 죽는다.
     """
     if "Qwen3-VL" in model_id:
+        # MoE(30B-A3B 등)는 별도 클래스다. 부분일치로 뭉뚱그리면 조용히 틀린 클래스를
+        # 집어 적재가 깨진다 [2026-08-14 큰 모델 확인 결정].
+        if re.search(r"-A\d+B", model_id):
+            return "Qwen3VLMoeForConditionalGeneration"
         return "Qwen3VLForConditionalGeneration"
     if "Qwen2.5-VL" in model_id:
         return "Qwen2_5_VLForConditionalGeneration"
