@@ -102,6 +102,48 @@ def test_caption_all_checkpoints_progress_for_crash_recovery(tmp_path):
     assert sum(1 for s in final["segments"] if s.get("caption")) >= 4  # 마지막 미만은 다음 체크포인트 전
 
 
+# --- 전건 실패 시 산출물 보존 (2026-08-13 사고) --------------------------
+# 서버 재캡셔닝 배치에서 프레임이 없어 1,525건이 전부 실패했는데, 빈 캡션이
+# segments.json을 덮고 그대로 재임베딩까지 됐다. 부분 실패의 체크포인트 보존과
+# 전량 파괴를 구분한다.
+
+def test_caption_all_does_not_checkpoint_when_nothing_succeeded(tmp_path):
+    doc = _doc(6)
+    for s in doc["segments"]:
+        s["caption"] = "기존 캡션"
+    seg_path = tmp_path / "segments.json"
+    common.save_segments(seg_path, doc)
+    for s in doc["segments"]:            # 재생성 대상으로 비운다(--captions-only와 동일)
+        s["caption"] = ""
+
+    def always_fails(p, sample=False):
+        raise FileNotFoundError("frames/seg_0000.jpg")
+
+    failed = caption_all(doc, tmp_path, {}, captioner=always_fails, checkpoint_every=2)
+
+    assert failed == [0, 1, 2, 3, 4, 5]
+    saved = json.loads(seg_path.read_text(encoding="utf-8"))
+    # 체크포인트가 빈 캡션으로 디스크를 덮으면 안 된다
+    assert all(s["caption"] == "기존 캡션" for s in saved["segments"])
+
+
+def test_caption_all_checkpoints_when_at_least_one_succeeded(tmp_path):
+    # 부분 실패는 기존 동작 유지 — 성공분 보존이 체크포인트의 목적이다 [4-3]
+    doc = _doc(4)
+    seg_path = tmp_path / "segments.json"
+    common.save_segments(seg_path, doc)
+
+    def half(p, sample=False):
+        if "0000" in str(p):
+            raise RuntimeError("실패")
+        return "ok"
+
+    failed = caption_all(doc, tmp_path, {}, captioner=half, checkpoint_every=2)
+    assert failed == [0]
+    saved = json.loads(seg_path.read_text(encoding="utf-8"))
+    assert sum(1 for s in saved["segments"] if s.get("caption") == "ok") >= 1
+
+
 # --- VLM 계열 선택 (Qwen3-VL 채택 대비) ---------------------------------
 # 본 코드가 Qwen2_5_VLForConditionalGeneration을 하드코딩하고 있어서 config에
 # Qwen3-VL을 넣으면 적재부터 실패한다. 계열을 model id로 고르게 하고, 그 선택을

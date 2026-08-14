@@ -152,6 +152,7 @@ def caption_all(doc, wdir, cfg, captioner, checkpoint_every: int = 20) -> list[i
     checkpoint_every개마다 중간 저장 — GPU 크래시(OOM 등) 시 이미 완료한 캡션 보존. [4-3]"""
     failed = []
     since_checkpoint = 0
+    n_ok = 0
     for seg in doc["segments"]:
         if seg.get("caption"):                        # resume: 이미 있으면 건너뜀
             continue
@@ -176,16 +177,39 @@ def caption_all(doc, wdir, cfg, captioner, checkpoint_every: int = 20) -> list[i
                     break
         if not cap_text:
             failed.append(seg["idx"])
+        else:
+            n_ok += 1
         # 8-3(b)(c) 후처리 — config 플래그 켜졌을 때만(기본 off = 동작 불변)
         clean, raw = common.postprocess_caption(cap_text, cfg)
         seg["caption"] = clean
         if raw is not None:
             seg["caption_raw"] = raw
         since_checkpoint += 1
-        if since_checkpoint >= checkpoint_every:
+        # 성공이 하나도 없으면 체크포인트를 찍지 않는다. 체크포인트의 목적은 완료한
+        # 캡션 보존인데, 전건 실패 상태에서 저장하면 기존 산출물을 빈 문자열로 덮는다
+        # (2026-08-13 서버 배치 사고: 프레임 부재로 1,525건 전부 실패 → 7편 소실).
+        if since_checkpoint >= checkpoint_every and n_ok > 0:
             common.save_segments(Path(wdir) / "segments.json", doc)
             since_checkpoint = 0
     return failed
+
+
+def assert_rep_frames_exist(doc, wdir) -> None:
+    """캡션이 필요한 세그먼트의 rep_frame 이미지가 실제로 있는지 확인한다.
+
+    segments.json의 `rep_frame` **필드**만 검사하던 것으로는 부족하다 — 다른 기계로
+    segments.json만 옮기면 필드는 있고 이미지는 없다. 2026-08-13 서버 배치가 정확히
+    이 상태에서 1,525건을 전부 실패시켰다. VLM 적재 전에 멈춘다.
+    """
+    missing = [s["idx"] for s in doc["segments"]
+               if not (s.get("caption") or "").strip()
+               and not (Path(wdir) / s["rep_frame"]).exists()]
+    if missing:
+        head = ", ".join(str(i) for i in missing[:5])
+        raise SystemExit(
+            f"프레임 이미지 {len(missing)}개가 없습니다 (예: seg {head}) — "
+            f"{Path(wdir) / 'frames'}에 대표 프레임을 복사하거나 m2를 먼저 실행하라. "
+            "rep_frame 필드만 있고 이미지가 없으면 캡션이 전부 빈 문자열이 된다 [8-5(3)]")
 
 
 def clear_corrupted_captions(doc) -> list[int]:
@@ -274,10 +298,16 @@ def main():
         print(f"자막 커버리지: {covered}/{doc['n_segments']} ({covered/doc['n_segments']:.1%})")
 
     # (b) 캡션
+    assert_rep_frames_exist(doc, wdir)          # VLM 적재 전에 막는다
+    n_target = sum(1 for s in doc["segments"] if not (s.get("caption") or "").strip())
     model, processor = load_vlm(cfg)
     failed = caption_all(doc, wdir, cfg,
                          captioner=lambda p, sample=False: caption_frame(
                              p, cfg["caption_prompt"], model, processor, cfg, sample=sample))
+    if n_target and len(failed) == n_target:
+        # 전건 실패 — 저장하면 기존 캡션이 빈 문자열로 덮인다. 저장하지 않고 죽는다.
+        sys.exit(f"캡션 {n_target}건이 전부 실패했습니다 — segments.json을 저장하지 "
+                 f"않고 중단합니다. 원인을 해결한 뒤 다시 실행하라 (기존 캡션 보존).")
     common.save_segments(wdir / "segments.json", doc)
     if failed:
         print(f"⚠️ 캡션 실패 세그먼트 {len(failed)}개: {failed}")  # 검증 포인트 [4-3]

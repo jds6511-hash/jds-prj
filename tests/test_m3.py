@@ -7,7 +7,7 @@ import common
 import m3_generate
 
 
-def _seed_work_dir(tmp_path, video_id="v1", filled=True):
+def _seed_work_dir(tmp_path, video_id="v1", filled=True, frames=True):
     wdir = tmp_path / "work" / video_id
     wdir.mkdir(parents=True)
     segs = [{"idx": i, "start": i * 5, "end": i * 5 + 5,
@@ -17,6 +17,10 @@ def _seed_work_dir(tmp_path, video_id="v1", filled=True):
     if not filled:
         for s in segs:
             del s["subtitle"]
+    if frames:                       # rep_frame 필드만이 아니라 이미지 실물도 만든다
+        (wdir / "frames").mkdir()
+        for s in segs:
+            (wdir / s["rep_frame"]).write_bytes(b"jpg")
     common.save_segments(wdir / "segments.json", {"n_segments": 2, "segments": segs})
     return wdir
 
@@ -64,6 +68,49 @@ def test_captions_only_fails_fast_when_subtitle_missing(tmp_path, monkeypatch):
                                       "--video-id", video_id, "--captions-only"])
     with pytest.raises(SystemExit, match="seeding"):
         m3_generate.main()
+
+
+def test_captions_only_aborts_when_frame_images_missing(tmp_path, monkeypatch):
+    # 2026-08-13 사고: segments.json에 rep_frame 필드는 있는데 이미지 파일이 서버에
+    # 없었다. 필드 존재 검사만으로는 못 잡는다 — 실물을 확인하고 시작 전에 멈춘다.
+    video_id = "v1"
+    wdir = _seed_work_dir(tmp_path, video_id, filled=True, frames=False)
+    cfg = _cfg(tmp_path)
+    monkeypatch.setattr(common, "load_config", lambda path: cfg)
+
+    def _no_vlm(cfg):
+        raise AssertionError("프레임이 없으면 VLM을 적재하기 전에 멈춰야 한다")
+    monkeypatch.setattr(m3_generate, "load_vlm", _no_vlm)
+    monkeypatch.setattr(sys, "argv", ["m3_generate.py", "--config", "c.yaml",
+                                      "--video-id", video_id, "--captions-only"])
+
+    with pytest.raises(SystemExit, match="프레임"):
+        m3_generate.main()
+
+    doc = json.loads((wdir / "segments.json").read_text(encoding="utf-8"))
+    assert all(s["caption"] == "이전 캡션" for s in doc["segments"])   # 원본 보존
+
+
+def test_captions_only_does_not_overwrite_when_every_caption_fails(tmp_path, monkeypatch):
+    # 프레임은 있는데 캡션 생성이 전건 실패하는 경우(모델 적재 실패 등).
+    # 빈 캡션이 기존 산출물을 덮으면 안 된다.
+    video_id = "v1"
+    wdir = _seed_work_dir(tmp_path, video_id, filled=True)
+    cfg = _cfg(tmp_path)
+    monkeypatch.setattr(common, "load_config", lambda path: cfg)
+    monkeypatch.setattr(m3_generate, "load_vlm", lambda cfg: (None, None))
+
+    def _boom(p, prompt, model, processor, cfg, sample=False):
+        raise RuntimeError("VLM 실패")
+    monkeypatch.setattr(m3_generate, "caption_frame", _boom)
+    monkeypatch.setattr(sys, "argv", ["m3_generate.py", "--config", "c.yaml",
+                                      "--video-id", video_id, "--captions-only"])
+
+    with pytest.raises(SystemExit):
+        m3_generate.main()
+
+    doc = json.loads((wdir / "segments.json").read_text(encoding="utf-8"))
+    assert all(s["caption"] == "이전 캡션" for s in doc["segments"])
 
 
 def test_captions_only_and_force_mutually_exclusive(monkeypatch):
