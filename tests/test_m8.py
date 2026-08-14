@@ -1,4 +1,5 @@
 import json
+import re
 from m8_report import (build_map_prompt, build_reduce_prompt, parse_citations,
                        generate_report, save_report, _fmt_seg)
 
@@ -309,3 +310,54 @@ def test_save_report_preserves_raw_output_on_range_violation(tmp_path):
     assert out.exists()                                 # report.json 소실되지 않음
     saved = json.loads(out.read_text(encoding="utf-8"))
     assert saved["raw_output"] == "- 유령 인용 [seg#999]"  # raw_output 보존
+
+
+# --- 2026-08-14 규명: 캡션 속 한자 2글자가 리포트 생성을 조기 종료시켰다 -----
+# panibottle seg 88의 "靠垫"에서 모델이 중국어로 전환해 EOS를 냈고, 같은 일이
+# map 청크와 reduce에서 두 번 일어나 영상 커버가 32.4%로 떨어졌다.
+# is_corrupted_caption은 3글자 이상만 잡아 2글자가 통과한다.
+
+def test_fmt_seg_strips_small_cjk_run_that_passes_corruption_filter():
+    seg = {"idx": 88, "start": 440, "end": 445, "subtitle": "자막",
+           "caption": "비행기 내부에서 파란색 좌석에 헤드靠垫이 달린 좌석들이 가득 차 있습니다."}
+    import common
+    assert not common.is_corrupted_caption(seg["caption"])   # 필터를 통과하는 상태
+    line = _fmt_seg(seg)
+    assert "靠垫" not in line
+    assert "캡션 품질 문제로 제외됨" not in line              # 문장 자체는 살린다
+    assert "비행기 내부에서" in line and "달린 좌석들이" in line
+
+
+def test_map_chunk_regenerated_when_output_stops_early():
+    # 청크가 담당 구간의 뒷부분을 전혀 인용하지 않으면 조기 종료로 보고 1회 재생성한다.
+    segs = _segs(120)                       # chunk_size=60 → 청크 2개
+    calls = []
+
+    def llm(prompt, **gen):
+        calls.append(prompt)
+        first_seg = min(int(x) for x in re.findall(r"\[seg#(\d+)\]", prompt))
+        if first_seg == 0 and len(calls) == 1:
+            return "- 앞부분만 [seg#0, seg#1]"          # 60구간 중 2개만
+        return "\n".join(f"- 문장{i} [seg#{i}]" for i in range(first_seg, first_seg + 60))
+
+    rep = generate_report(segs, llm, chunk_size=60, overlap=5)
+    retried = rep.get("map_retries") or []
+    assert [r["chunk"] for r in retried] == [0]
+    assert retried[0]["coverage_before"] < 0.1
+    assert retried[0]["coverage_after"] > 0.9
+    # 재생성분이 채택돼 map 인용에 뒷부분이 들어와야 한다
+    cited = {c for p in rep["map_raw_outputs"] for s in parse_citations(p) for c in s["cites"]}
+    assert 59 in cited
+
+
+def test_map_chunk_not_regenerated_when_coverage_ok():
+    segs = _segs(120)
+    calls = []
+
+    def llm(prompt, **gen):
+        calls.append(prompt)
+        first_seg = min(int(x) for x in re.findall(r"\[seg#(\d+)\]", prompt))
+        return "\n".join(f"- 문장{i} [seg#{i}]" for i in range(first_seg, first_seg + 60))
+
+    rep = generate_report(segs, llm, chunk_size=60, overlap=5)
+    assert not rep.get("map_retries")          # 정상 영상은 호출 수가 늘지 않는다

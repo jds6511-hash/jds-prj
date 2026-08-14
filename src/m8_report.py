@@ -59,6 +59,11 @@ MAX_CITES_PER_SENTENCE = 8
 NO_REPEAT_NGRAM_ON_RETRY = 12
 MIN_DISTINCT_RATIO = 0.3
 
+# map 청크가 담당 구간의 이 비율 미만만 인용하면 조기 종료로 보고 1회 재생성한다.
+# 0.5는 겹침(5/60)으로 메울 수 없는 결손을 잡되, 요약이 성기게 인용하는 정상 경우를
+# 건드리지 않는 선이다 — 실측 4편의 청크 커버는 조기 종료분을 빼면 전부 0.9 이상이었다.
+MIN_CHUNK_COVERAGE = 0.5
+
 
 def narration(text: str) -> str:
     """인용 마커를 걷어낸 서술 부분. 비면 그 줄은 정보량이 0이다."""
@@ -114,10 +119,26 @@ def _fmt_seg(s) -> str:
     caption = s["caption"]
     if common.is_corrupted_caption(caption):    # 오염된 캡션을 근거로 인용하는 것 방지 [8-3(c) 대응]
         caption = "(캡션 품질 문제로 제외됨)"
+    else:
+        # 필터를 통과하는 1~2글자 한자·가나도 리포트를 죽인다 — 모델이 그 지점에서
+        # 중국어로 전환하며 EOS를 낸다(2026-08-14 규명: panibottle seg 88의 "靠垫"
+        # 2글자가 map·reduce를 두 번 조기 종료시켜 영상 커버가 32.4%가 됐다).
+        # 인덱스는 건드리지 않고 **리포트 입력에서만** 제거한다 — 캡션을 바꾸면
+        # 재임베딩·재평가 절차가 따라온다(config caption_normalize_cjk는 별건).
+        caption = common.strip_residual_cjk(caption)
     subtitle = _sanitize(s["subtitle"])
     caption = _sanitize(caption)
     return (f'[seg#{s["idx"]}] {hms(s["start"])}-{hms(s["end"])} '
             f'subtitle: "{subtitle}" caption: "{caption}"')
+
+
+def chunk_coverage(partial: str, chunk: list[dict]) -> float:
+    """청크 출력이 담당 구간 중 몇 %를 인용했나 — 조기 종료 감지용."""
+    idxs = {s["idx"] for s in chunk}
+    if not idxs:
+        return 1.0
+    cited = {c for s in parse_citations(partial) for c in s["cites"]}
+    return len(cited & idxs) / len(idxs)
 
 
 def build_map_prompt(chunk: list[dict]) -> str:
@@ -179,12 +200,28 @@ def generate_report(segments: list[dict], llm, chunk_size: int = 60,
                   f"{[d['n_cites'] for d in degen]}/{len(segments)}세그먼트 인용")
         return {"sentences": sents, "raw_output": raw, "truncated_tail": tail,
                 "degenerate_dropped": degen, "reduce_retry": None,
-                "map_raw_outputs": []}
+                "map_raw_outputs": [], "map_retries": []}
     # Map: overlap 세그먼트를 두고 청크 분할 [13-2]
-    partials, start = [], 0
+    partials, start, map_retries = [], 0, []
     while start < len(segments):
         chunk = segments[start:start + chunk_size]
-        partials.append(llm(build_map_prompt(chunk)))
+        raw_p = llm(build_map_prompt(chunk))
+        cov = chunk_coverage(raw_p, chunk)
+        # 청크가 담당 구간의 대부분을 인용하지 못하면 조기 종료로 본다. 캡션 오염으로
+        # 생성이 중간에 끊기면 그 뒤 구간은 **어느 청크에도 안 들어간다**(겹침 5로는
+        # 못 메운다) — 2026-08-14 panibottle에서 seg 88~109가 그렇게 사라졌다.
+        if cov < MIN_CHUNK_COVERAGE:
+            print(f"[warn] map 청크 {len(partials)} 커버 {cov:.2f} < {MIN_CHUNK_COVERAGE} "
+                  f"— 조기 종료로 보고 재생성")
+            retry_p = llm(build_map_prompt(chunk))
+            cov2 = chunk_coverage(retry_p, chunk)
+            map_retries.append({"chunk": len(partials),
+                                "coverage_before": round(cov, 4),
+                                "coverage_after": round(cov2, 4),
+                                "raw_output": raw_p})
+            if cov2 > cov:                      # 나아졌을 때만 교체(악화 시 원본 유지)
+                raw_p = retry_p
+        partials.append(raw_p)
         if start + chunk_size >= len(segments):
             break
         start += chunk_size - overlap
@@ -239,7 +276,7 @@ def generate_report(segments: list[dict], llm, chunk_size: int = 60,
               f"{[d['n_cites'] for d in degen]}/{len(segments)}세그먼트 인용")
     return {"sentences": sents, "raw_output": raw, "truncated_tail": tail,
             "degenerate_dropped": degen, "reduce_retry": retry,
-            "map_raw_outputs": partials}
+            "map_raw_outputs": partials, "map_retries": map_retries}
 
 
 def save_report(out, video_id: str, cfg: dict, rep: dict, n: int) -> None:
