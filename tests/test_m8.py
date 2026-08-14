@@ -393,3 +393,51 @@ def test_generate_report_passes_budget_through():
     generate_report(segs, llm, chunk_size=60, overlap=5, summary_budget=True)
     map_prompts = [s for s in seen if "입력:" in s]
     assert map_prompts and all("문장" in s for s in map_prompts)
+
+
+def test_map_prompt_has_no_copyable_placeholder():
+    # 규칙 7이 `- 실제 사건 서술 [seg#9999]`라는 **복사 가능한 문구**를 담고 있었다.
+    # 2026-08-14 dev A/B에서 gwaktube 청크2의 39줄이 전부 "실제 사건 서술 [seg#N] …"로
+    # 시작했다(prefix arm에서는 중국어로 번역까지 됐다: "实际事件描述"). 7B가 규칙의
+    # 예시 문구를 출력 템플릿으로 삼은 것이다 — 3B 예시 복사 사고와 같은 계열이다.
+    from m8_report import build_map_prompt
+    chunk = [{"idx": i, "start": i * 5, "end": i * 5 + 5,
+              "subtitle": "", "caption": f"장면{i}"} for i in range(3)]
+    p = build_map_prompt(chunk)
+    assert "실제 사건 서술" not in p
+    assert "실제 사건" not in p
+
+
+def test_map_retry_prompt_differs_from_first():
+    # 청크 커버 미달 재생성이 **같은 프롬프트를 그리디로 다시 돌렸다**. 그리디는
+    # 결정적이라 결과가 같을 수밖에 없다 — 2026-08-14 실측 coverage_before 0.15,
+    # coverage_after 0.15로 완전 동일. GPU만 한 번 더 쓰고 아무것도 못 고쳤다.
+    # 재생성은 프롬프트를 바꿔야 의미가 있다.
+    from m8_report import build_map_prompt
+    chunk = [{"idx": i, "start": i * 5, "end": i * 5 + 5,
+              "subtitle": "", "caption": f"장면{i}"} for i in range(10, 70)]
+    base = build_map_prompt(chunk)
+    forced = build_map_prompt(chunk, enforce_range=True)
+    assert forced != base
+    assert "seg#10" in forced and "seg#69" in forced   # 담당 범위를 명시한다
+
+
+def test_generate_report_retry_uses_range_directive():
+    # 재생성 호출이 실제로 다른 프롬프트를 쓰는지 — 경로까지 확인한다.
+    import m8_report as m8
+    segs = [{"idx": i, "start": i * 5, "end": i * 5 + 5,
+             "subtitle": "", "caption": f"장면{i}"} for i in range(70)]
+    prompts = []
+
+    def llm(prompt, **kw):
+        prompts.append(prompt)
+        if "빠짐없이" in prompt:                       # 재생성: 전 구간 인용
+            return "\n".join(f"- 사건 {i} [seg#{i}]" for i in range(0, 60))
+        if "부분 리포트" in prompt:                     # reduce
+            return "- 사건 0 [seg#0]"
+        return "- 사건 0 [seg#0]\n- 사건 1 [seg#1]"     # 첫 map: 커버 2/60
+    rep = m8.generate_report(segs, llm, chunk_size=60, overlap=5)
+    assert rep["map_retries"], "커버 0.03인데 재생성이 안 걸렸다"
+    r = rep["map_retries"][0]
+    assert r["coverage_after"] > r["coverage_before"]
+    assert any("빠짐없이" in p for p in prompts)

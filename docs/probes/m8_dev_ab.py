@@ -113,7 +113,18 @@ def main():
                    max_new_tokens=cfg.get("report_max_new_tokens", 2048),
                    load_4bit=cfg.get("llm_4bit", False))
 
+    # 코드 판을 결과에 박는다. arm 이름이 같아도 프롬프트가 바뀌면 다른 측정이다 —
+    # 2026-08-14 1회차 뒤 규칙 7 문구와 재생성 프롬프트를 고쳤고, 그러면 `prefix`조차
+    # 1회차와 다른 것을 재는 게 된다. 나중에 두 파일을 나란히 놓고 헷갈리지 않으려면
+    # 여기 남겨야 한다.
+    try:
+        import subprocess
+        rev = subprocess.run(["git", "-C", str(ROOT), "rev-parse", "--short", "HEAD"],
+                             capture_output=True, text=True, timeout=10).stdout.strip()
+    except Exception:
+        rev = None
     res = {"note": __doc__.strip().splitlines()[0],
+           "code_rev": rev or "unknown",
            "prereg": "docs/M8_개선_사전등록_2026-08-14.md §3 (임계 고정)",
            "gates": GATES, "primary_max": PRIMARY_MAX,
            "model": cfg["report_model"], "llm_4bit": cfg.get("llm_4bit", False),
