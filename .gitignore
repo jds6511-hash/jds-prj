@@ -56,3 +56,6 @@ data_aihub/
 # 2인 라벨링 맹검 키트 — 클립 123MB(원본 영상 파생물)이고 seed 고정이라
 # scripts/labeling_agreement.py 로 언제든 동일 재생성된다. 산출물은 추적하지 않는다.
 label_kit/
+
+# 서버 접속 정보(공개 저장소 노출 방지)
+SERVER_LOCAL.md

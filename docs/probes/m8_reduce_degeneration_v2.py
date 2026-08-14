@@ -7,7 +7,9 @@ map 중복줄 병합은 문장 1개 -> 398개로 구조를 살렸으나 한 문�
 """
 import json, re, sys, time
 from pathlib import Path
-ROOT = Path("/ssd/<SERVER_USER>/jds-prj")
+# 저장소 루트에서 도출한다. 서버 절대경로를 박으면 계정명이 공개 저장소에
+# 노출되고, 다른 기계에서 못 돌린다. 다른 프로브와 같은 방식이다.
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
