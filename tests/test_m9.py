@@ -210,3 +210,26 @@ def test_parse_ok_requires_value_not_just_key():
     assert _parse_ok('{"match": true}') is True
     assert _parse_ok('{"match": "false"}') is True
     assert _parse_ok('{"match": maybe}') is False
+
+
+def test_groundedness_rate_none_when_no_sentences():
+    # coverage_rate는 gt가 비면 None인데 groundedness_rate는 0.0으로 저장됐다 —
+    # "문장 0개(측정 불가)"와 "전부 ungrounded(0%)"가 같은 값이 된다. 리포트 생성이
+    # 통째로 실패한 상태를 0% 성능으로 읽게 만드는 무증상 경로다.
+    # (2026-08-14 사고 유형 감사: m3/m4의 '실패해도 저장'과 같은 계열)
+    judge = lambda prompt: '{"match": true}'
+    out = eval_report({"video_id": "v", "sentences": []}, _segs(3),
+                      gt_seg_indices=[0], judge=judge)
+    assert out["groundedness_rate"] is None
+    assert out["per_sentence"] == []
+
+
+def test_result_paths_are_per_video():
+    # 고정 파일명이면 test 4편을 평가할 때 마지막 영상 것만 남는다 — 8회차 재평가에서
+    # 3편의 결과가 조용히 사라진다. 파일명에 video_id를 넣는다.
+    from pathlib import Path
+    from m9_report_eval import result_paths
+    a_eval, a_human = result_paths(Path("results"), "video_a")
+    b_eval, b_human = result_paths(Path("results"), "video_b")
+    assert a_eval != b_eval and a_human != b_human
+    assert "video_a" in a_eval.name and "video_a" in a_human.name

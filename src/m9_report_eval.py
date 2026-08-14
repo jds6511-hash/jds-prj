@@ -150,14 +150,26 @@ def eval_report(report: dict, segments: list[dict], gt_seg_indices: list[int],
     # gt_seg_indices가 비면(예: video_id에 test 질의가 없는 dev 영상에 잘못 실행) 0.0으로
     # 조용히 묻히지 않도록 null로 구분 — "커버리지 0%"와 "측정 불가"는 다른 상태다.
     coverage_rate = round(sum(p["covered"] for p in per_gt) / len(per_gt), 4) if per_gt else None
+    # groundedness도 같은 원칙 — 문장이 0개면 "0% grounded"가 아니라 **측정 불가**다.
+    # max(len,1)로 나누면 리포트 생성이 통째로 실패한 상태가 0.0이라는 정상 수치처럼
+    # 저장된다(2026-08-14 사고 유형 감사에서 발견 — m3/m4의 '실패해도 저장'과 같은 계열).
+    grounded_rate = round(
+        sum(p["grounded"] for p in per_sentence) / len(per_sentence), 4) if per_sentence else None
     out = {
-        "groundedness_rate": round(
-            sum(p["grounded"] for p in per_sentence) / max(len(per_sentence), 1), 4),
+        "groundedness_rate": grounded_rate,
         "coverage_rate": coverage_rate,
         "per_sentence": per_sentence, "per_gt_segment": per_gt}
     if gt_types is not None:
         out["coverage_by_type"] = coverage_by_type(per_gt, gt_types)
     return out
+
+
+def result_paths(rdir, video_id: str):
+    """영상별 결과 파일 경로. 고정 이름이면 여러 영상을 평가할 때 **마지막 것만 남는다** —
+    8회차 재평가는 test 4편에 M9를 돌리므로 3편의 결과가 조용히 사라진다
+    (2026-08-14 사고 유형 감사). 반환: (report_eval, human_check_sample)."""
+    return (rdir / f"report_eval_{video_id}.json",
+            rdir / f"human_check_sample_{video_id}.json")
 
 
 def check_judge_config(cfg: dict) -> None:
@@ -197,7 +209,8 @@ def main():
                      load_4bit=cfg.get("llm_4bit", False))
     out = eval_report(report, doc["segments"], gt_idx, judge, gt_types=gt_types)
     rdir = Path(cfg["paths"]["results"]); rdir.mkdir(exist_ok=True)
-    common.atomic_write_json(rdir / "report_eval.json",
+    eval_path, human_path = result_paths(rdir, args.video_id)
+    common.atomic_write_json(eval_path,
                              {"video_id": args.video_id,
                               "judge_model": cfg["judge_model"], **out})
     print(f"M9 완료: coverage={out['coverage_rate']} groundedness={out['groundedness_rate']}")
@@ -206,7 +219,7 @@ def main():
         rng = random.Random(cfg["seed"])
         pool = [s for s in report["sentences"]]
         sample = rng.sample(pool, min(cfg["human_check_n"], len(pool)))
-        common.atomic_write_json(rdir / "human_check_sample.json", sample)
+        common.atomic_write_json(human_path, sample)
         print(f"same_model_judge=true → 사람 스팟체크 {len(sample)}문장 추출")
 
 

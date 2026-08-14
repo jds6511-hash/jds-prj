@@ -46,7 +46,7 @@ project/
 ├── results/
 │   ├── alpha_search_dev.json    # M6: dev셋 grid search 결과
 │   ├── eval_test.json           # M6: 최종 평가 결과 (3-4)
-│   └── report_eval.json         # M9: AAR 평가 결과
+│   └── report_eval_<video_id>.json  # M9: AAR 평가 결과 (영상별)
 └── src/
     ├── m1_preprocess.py
     ├── m2_keyframe.py
@@ -366,7 +366,9 @@ def generate_report(segments, llm, chunk_size: int = 60,
 ## 4-9. M9 AAR 평가 (v2 16~17장)
 
 - **입력:** report.json, segments.json, queries.jsonl(test), judge LLM
-- **출력:** report_eval.json — {video_id, judge_model, coverage_rate, groundedness_rate, per_sentence, per_gt_segment, coverage_by_type}
+- **출력:** `report_eval_<video_id>.json` — {video_id, judge_model, coverage_rate, groundedness_rate, per_sentence, per_gt_segment, coverage_by_type}
+  - 파일명에 video_id를 넣는다. 고정 이름이면 test 여러 편을 평가할 때 마지막 영상 것만 남아 앞의 결과가 조용히 사라진다(2026-08-14 사고 유형 감사). `human_check_sample_<video_id>.json`도 같다.
+  - `coverage_rate`·`groundedness_rate`는 **표본이 없으면 `null`** 이다. gt 세그먼트 0개 또는 리포트 문장 0개일 때 0.0으로 적으면 "측정 불가"가 "성능 0%"로 읽힌다.
   - `per_sentence` 항목: {sent_id, cites, grounded, judge_parse_ok} — `judge_parse_ok`(bool)는 judge 응답에서 판정값 파싱 성공 여부(truncation 편향 진단용). cites==[]인 문장은 judge 호출 없이 grounded=false, judge_parse_ok=true로 기록된다.
   - `coverage_by_type`: {"자막형": rate, "장면형": rate, "복합형": rate} — 아래 설계 점검 7 참조.
 - **핵심 함수:**
