@@ -1,6 +1,6 @@
 """M4 임베딩·인덱싱: subtitle/caption → emb_sub.npy·emb_cap.npy (L2 정규화, float32).
 자막·캡션·질의는 반드시 같은 embed_model. [DESIGN_SPEC 4-4, v2 7-8]"""
-import argparse, json
+import argparse, json, sys
 from pathlib import Path
 import numpy as np
 import common
@@ -45,6 +45,14 @@ def main():
 
     subs = [s["subtitle"] for s in doc["segments"]]
     caps = [s["caption"] for s in doc["segments"]]
+    # 캡션 전량 공백은 정상 인덱스일 수 없다 — 캡션 생성이 통째로 실패한 상태다.
+    # 2026-08-13 서버 배치에서 m3가 빈 캡션을 저장했고 m4가 그걸 그대로 임베딩한 뒤
+    # 새 text_hash까지 찍어 손상을 확정지었다. m3 쪽은 막았지만(2e33fd0) 여기도 막는다.
+    # subtitle 공백은 무발화 구간의 정상값이므로 검사하지 않는다 [3-1].
+    if caps and not any(c.strip() for c in caps):
+        sys.exit(f"캡션이 {len(caps)}건 전부 공백입니다 — 임베딩하지 않고 중단합니다. "
+                 "m3 캡션 생성이 실패한 상태이며, 이대로 저장하면 낡은 인덱스가 "
+                 "손상된 인덱스로 확정됩니다.")
     emb_sub = embed_texts(subs, cfg["embed_model"], cfg["embed_batch_size"])
     emb_cap = embed_texts(caps, cfg["embed_model"], cfg["embed_batch_size"])
 

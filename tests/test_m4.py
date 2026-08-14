@@ -91,3 +91,34 @@ def test_skip_only_when_text_hash_matches(monkeypatch, tmp_path, capsys):
     import json as _json
     meta = _json.loads((wdir / "meta.json").read_text(encoding="utf-8"))
     assert meta["text_hash"] == common.index_text_hash(doc)   # 새 해시로 갱신
+
+
+# --- 2026-08-13 사고의 두 번째 고리 ------------------------------------
+# m3가 빈 캡션을 저장했고, m4가 그 262건을 그대로 임베딩한 뒤 새 text_hash까지
+# 찍어줬다. m3 쪽은 막았지만(2e33fd0) m4에도 방어를 둔다 — 캡션 전량이 공백인
+# 인덱스는 정상일 수 없다. subtitle 공백은 무발화의 정상값이라 건드리지 않는다.
+
+def test_m4_refuses_when_every_caption_is_empty(monkeypatch, tmp_path):
+    import pytest
+    video_id = "v1"
+    wdir = tmp_path / video_id
+    wdir.mkdir()
+    segments = [{"idx": i, "start": i * 5, "end": i * 5 + 5,
+                 "subtitle": f"s{i}", "caption": ""} for i in range(3)]
+    common.save_segments(wdir / "segments.json", {"n_segments": 3, "segments": segments})
+    with pytest.raises(SystemExit, match="캡션"):
+        _run_m4(monkeypatch, tmp_path, video_id)
+    assert not (wdir / "emb_cap.npy").exists()      # 아무것도 쓰지 않는다
+    assert not (wdir / "meta.json").exists()
+
+
+def test_m4_allows_empty_subtitles(monkeypatch, tmp_path):
+    # 무발화 구간은 subtitle=""이 정상이다 [3-1]. 막으면 안 된다.
+    video_id = "v2"
+    wdir = tmp_path / video_id
+    wdir.mkdir()
+    segments = [{"idx": i, "start": i * 5, "end": i * 5 + 5,
+                 "subtitle": "", "caption": f"c{i}"} for i in range(3)]
+    common.save_segments(wdir / "segments.json", {"n_segments": 3, "segments": segments})
+    _run_m4(monkeypatch, tmp_path, video_id)
+    assert (wdir / "emb_cap.npy").exists() and (wdir / "meta.json").exists()
