@@ -441,3 +441,99 @@ def test_generate_report_retry_uses_range_directive():
     r = rep["map_retries"][0]
     assert r["coverage_after"] > r["coverage_before"]
     assert any("빠짐없이" in p for p in prompts)
+
+
+# ── 구조화 map + 규칙 기반 병합 (2026-08-16 자문 반영) ──────────────────────
+# free-form reduce를 폐기한다. LLM이 전체 근거를 다시 쓰면서 정보를 임의로 버리는
+# 것이 최종 커버의 병목이었다(map 294구간 → reduce 150구간 실측).
+
+def _chunk(a, b):
+    return [{"idx": i, "start": i * 5, "end": i * 5 + 5,
+             "subtitle": "", "caption": f"장면{i}"} for i in range(a, b)]
+
+
+def test_parse_events_tolerates_fences_and_prose():
+    from m8_report import parse_events
+    raw = ('설명을 조금 붙이고\n```json\n'
+           '[{"event": "묘 이장 작업", "segments": [3, 4, 5]},\n'
+           ' {"event": "편지 소개", "segments": [7]}]\n```\n끝')
+    ev = parse_events(raw)
+    assert [e["event"] for e in ev] == ["묘 이장 작업", "편지 소개"]
+    assert ev[0]["segments"] == [3, 4, 5]
+
+
+def test_parse_events_returns_empty_on_broken_json():
+    from m8_report import parse_events
+    assert parse_events("이건 JSON이 아니다") == []
+    assert parse_events('[{"event": "잘림", "segm') == []
+
+
+def test_validate_events_rejects_by_code_not_model():
+    from m8_report import validate_events
+    chunk = _chunk(0, 10)
+    kept, rejected = validate_events([
+        {"event": "정상 사건", "segments": [1, 2]},
+        {"event": "범위 밖", "segments": [1, 99]},          # 담당 구간 밖
+        {"event": "", "segments": [3]},                     # 서술 공백
+        {"event": "画面完全变黑没有内容", "segments": [4]},   # 다른 언어 이탈
+        {"event": "인용 없음", "segments": []},
+    ], chunk)
+    assert [e["event"] for e in kept] == ["정상 사건"]
+    assert {r["reason"] for r in rejected} == {"seg_out_of_range", "empty_event",
+                                               "foreign_language", "no_segments"}
+
+
+def test_merge_events_dedups_and_orders():
+    from m8_report import merge_events
+    out = merge_events([
+        {"event": "묘 이장 작업", "segments": [10, 11]},
+        {"event": "도착", "segments": [1, 2]},
+        {"event": "묘 이장 작업", "segments": [11, 12]},   # 겹침에서 온 중복
+    ])
+    assert [e["event"] for e in out] == ["도착", "묘 이장 작업"]
+    assert out[1]["segments"] == [10, 11, 12]              # 병합·중복 제거
+
+
+def test_events_to_sentences_keeps_m9_contract():
+    from m8_report import events_to_sentences
+    s = events_to_sentences([{"event": "도착", "segments": [1, 2]}])
+    assert s[0]["sent_id"] == 0 and s[0]["cites"] == [1, 2]
+    assert "도착" in s[0]["text"] and "[seg#1, seg#2]" in s[0]["text"]
+
+
+def test_structured_report_has_no_reduce_call():
+    # 최종 리포트를 LLM이 다시 쓰지 않는다 — 호출은 청크 수만큼만 난다.
+    import m8_report as m8
+    segs = _chunk(0, 130)
+    calls = []
+
+    def llm(prompt, **kw):
+        calls.append(prompt)
+        lo = int(re.findall(r"seg#(\d+)", prompt)[0])
+        return json.dumps([{"event": f"사건 {lo}", "segments": [lo, lo + 1]}],
+                          ensure_ascii=False)
+    rep = m8.generate_report_structured(segs, llm, chunk_size=60, overlap=5)
+    assert len(calls) == 3                                  # 0-59, 55-114, 110-129
+    assert all("부분 리포트" not in p for p in calls)        # reduce 프롬프트 없음
+    assert rep["sentences"] and rep["sentences"][0]["cites"] == [0, 1]
+    assert rep["events"] and "rejected" in rep
+
+
+def test_structured_report_regenerates_only_failed_chunk():
+    # 실패한 청크만 국소 재생성한다. 전체를 다시 만들지 않는다.
+    import m8_report as m8
+    segs = _chunk(0, 130)
+    seen = []
+
+    def llm(prompt, **kw):
+        # 담당 구간은 **머리말**로 판정한다. 입력 본문에는 다른 청크의 번호도 그대로
+        # 들어 있어서 문자열 포함으로 세면 어긋난다(2026-08-16 이 테스트에서 실측).
+        lo = int(re.findall(r"seg#(\d+)부터", prompt)[0])
+        seen.append(lo)
+        if lo == 55 and seen.count(55) == 1:
+            return "망가진 출력"                              # 첫 시도만 실패
+        return json.dumps([{"event": f"사건 {lo}", "segments": [lo]}],
+                          ensure_ascii=False)
+    rep = m8.generate_report_structured(segs, llm, chunk_size=60, overlap=5)
+    assert len(seen) == 4                                   # 3청크 + 재생성 1회
+    assert rep["chunk_retries"] == [{"chunk": 1, "recovered": True}]
