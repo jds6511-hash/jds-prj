@@ -143,7 +143,7 @@ def chunk_coverage(partial: str, chunk: list[dict]) -> float:
 
 # 요약 예산 — 구간 몇 개당 문장 하나까지 허용하나. 현행 리포트 4편의 실측 압축률은
 # 0.64~0.75 문장/구간(나열)이고 사전 등록한 목표는 0.35 이하다. 5구간당 1문장(=0.2)이면
-# 목표에 여유를 두고 도달한다 [docs/M8_개선_사전등록_2026-08-14.md §3-2].
+# 목표에 여유를 두고 도달한다 [docs/preregistration/M8_개선_사전등록_2026-08-14.md §3-2].
 SEGMENTS_PER_SENTENCE = 5
 
 

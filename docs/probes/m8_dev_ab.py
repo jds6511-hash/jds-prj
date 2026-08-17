@@ -1,6 +1,6 @@
 """[M8 리포트 개선 A/B — dev 3편 전용, GPU 필요, test 미접촉]
 
-**무엇을 가르는가.** 사전등록(docs/M8_개선_사전등록_2026-08-14.md) §2는 변경을 두
+**무엇을 가르는가.** 사전등록(docs/preregistration/M8_개선_사전등록_2026-08-14.md) §2는 변경을 두
 성격으로 나눠 적었다 — **결함 수정**(1·2번)과 **품질 개선**(3·4번). 한 번에 켜서
 재보면 커버가 올라갔을 때 그게 결함이 고쳐진 덕인지 요약이 좋아진 덕인지 못 가린다.
 그래서 arm을 셋으로 쪼갠다.
@@ -125,7 +125,7 @@ def main():
         rev = None
     res = {"note": __doc__.strip().splitlines()[0],
            "code_rev": rev or "unknown",
-           "prereg": "docs/M8_개선_사전등록_2026-08-14.md §3 (임계 고정)",
+           "prereg": "docs/preregistration/M8_개선_사전등록_2026-08-14.md §3 (임계 고정)",
            "gates": GATES, "primary_max": PRIMARY_MAX,
            "model": cfg["report_model"], "llm_4bit": cfg.get("llm_4bit", False),
            "map_chunk_size": cfg["map_chunk_size"],

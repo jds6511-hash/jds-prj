@@ -97,7 +97,7 @@ MODELS = {
     # 큰 모델 확인(2026-08-14 튜터 결정 3번). 32B·30B-A3B는 bf16이 24GB에 안 들어가
     # **4bit로만** 올라간다. 그래서 판정은 4bit끼리 비교로 한다 — qwen3vl_4b_q4가
     # 그 대조군이다. bf16 4B와의 대비는 양자화 손실(4B 실측 -0.0604)이 섞이므로
-    # 참고로만 병기한다. 상세: docs/튜터결정_2026-08-14.md §3
+    # 참고로만 병기한다. 상세: docs/tutor/튜터결정_2026-08-14.md §3
     "qwen3vl_32b_q4": {"id": "Qwen/Qwen3-VL-32B-Instruct", "family": "qwen3vl", "q4": True},
     "qwen3vl_30ba3b_q4": {"id": "Qwen/Qwen3-VL-30B-A3B-Instruct", "family": "qwen3vl",
                           "q4": True},

@@ -1059,7 +1059,7 @@ Chrono(2406.18113)와 "MLLM for VMR"은 동일 논문이므로 참고문헌에�
     것을 메타분석으로 보이고, GLUE의 여러 태스크도 test set이 작아 SOTA
     대비 비교에 검정력이 부족함을 보고.
     → n=39에서 hit@5/10이 비유의인 것의 구조적 맥락 근거
-    (docs/평가확장_계획.md 1-1). **방패가 아니라 처방으로 인용: 그
+    (docs/planning/평가확장_계획.md 1-1). **방패가 아니라 처방으로 인용: 그
     논문의 요구는 "검정력을 사전에 계산해 보고하라"이고, 우리의 이행은
     hit@5 유의 전환 필요 n≈73 추정 공개다.**
 -   **Dwork, Feldman, Hardt, Pitassi, Reingold, Roth** --- "The reusable

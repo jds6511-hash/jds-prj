@@ -8,7 +8,7 @@ DESIGN_SPEC.md 본문은 **확정 근거**만 담고, 이 파일은 각 결정�
 
 ## 2026-07-09 — v1.1 정합성 감사
 
-- 정합성 감사(docs/설계점검_2026-07-09.md) 반영: 3-2 오버랩 자막 귀속 규칙 재기술, 4-2 motion_score를 픽셀 정규화 RMS로 명시, §6 config 동기화, 4-6 derive_gt_seg_idx·4-9 check_judge_config 등재.
+- 정합성 감사(docs/archive/설계점검_2026-07-09.md) 반영: 3-2 오버랩 자막 귀속 규칙 재기술, 4-2 motion_score를 픽셀 정규화 RMS로 명시, §6 config 동기화, 4-6 derive_gt_seg_idx·4-9 check_judge_config 등재.
 - M2 샘플 수집을 순차 디코딩(`sample_segments_sequential`)으로 확정 — 시크 방식과 동등성 실측 검증(2영상, motion/is_static/t_rep 완전 일치).
 - M5 `search_with_stats` 등재(정규화 이전 raw 코사인 통계 반환 — abstention 설계 데이터).
 - 캡션 프롬프트에 anti-OCR 문구 추가(번인 자막 OCR 전사로 s_cap≈s_sub 되는 문제 부분 완화).
@@ -17,7 +17,7 @@ DESIGN_SPEC.md 본문은 **확정 근거**만 담고, 이 파일은 각 결정�
 ## 2026-07-10 — dev 확장·α 경과·임베딩 확정
 
 - **dev 3영상 96건으로 확장**(Wilderness/kheritage_grave_excavation/gwaktube_soviet_apartment).
-- **α 경과(핵심):** 1차 dev 33건에서는 tiebreak(larger)가 α*를 1.0(=baseline)으로 수렴시킴 → dev 확장(59·81·96건)에서 0.6으로 안정화 → **오염 캡션 21건 선별 재생성 후 α=0.6이 tie_set에서 탈락하며 α*=0.5로 최종 확정**. 상세: docs/평가분석_2026-07-10.md.
+- **α 경과(핵심):** 1차 dev 33건에서는 tiebreak(larger)가 α*를 1.0(=baseline)으로 수렴시킴 → dev 확장(59·81·96건)에서 0.6으로 안정화 → **오염 캡션 21건 선별 재생성 후 α=0.6이 tie_set에서 탈락하며 α*=0.5로 최종 확정**. 상세: docs/archive/평가분석_2026-07-10.md.
 - KURE-v1 vs BGE-M3 dev 비교 — KURE-v1이 전 지점(α 양끝 포함) 우세, embed_model=KURE-v1 확정.
 - spiderman_trailer(구 test) 장르 부적합으로 전면 제외. 당시 test n=19.
 - 오염 캡션 선별 재생성 경로(M3 `--recaption-corrupted`) 구현 — greedy 결정성 때문에 오염 감지 시 샘플링(temp 0.7) 재시도.

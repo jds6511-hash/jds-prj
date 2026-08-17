@@ -51,7 +51,7 @@ def main():
                    max_new_tokens=cfg.get("report_max_new_tokens", 2048),
                    load_4bit=cfg.get("llm_4bit", False))
     res = {"note": __doc__.strip().splitlines()[0],
-           "prereg": "docs/M8_구조변경_사전등록_2026-08-16.md",
+           "prereg": "docs/preregistration/M8_구조변경_사전등록_2026-08-16.md",
            "model": cfg["report_model"], "dev_videos": vids, "arms": {}}
 
     for arm, fn in (("structured", m8.generate_report_structured),
