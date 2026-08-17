@@ -113,7 +113,10 @@ def test_build_eval_result_schema_and_alignment():
     assert len(result["per_query"]) == 2
     for row, q in zip(result["per_query"], test_queries):     # positional 정렬 고정
         assert row["query_id"] == q["query_id"]
-        assert set(row.keys()) == {"query_id", "baseline_rank", "proposed_rank"}
+        # 재실행 없이 재집계·재표집이 가능하도록 확장됨 [감사_2026-08-17 §3]
+        assert set(row.keys()) == {"query_id", "video_id", "type",
+                                   "baseline_rank", "proposed_rank",
+                                   "baseline", "proposed"}
 
 
 def _eval_cfg():
@@ -262,6 +265,7 @@ def test_grid_search_alpha_schema_keys():
     fake_search = lambda q, video, alpha, cfg: _r([0, 1, 2])
     result = grid_search_alpha(queries, {"v1": None}, cfg, search_fn=fake_search)
     assert set(result.keys()) == {"select_metric", "bootstrap", "alpha_best_point",
+                                   "query_index",     # [감사_2026-08-17 §3]
                                    "per_alpha", "by_video", "tie_set", "alpha_star"}
     assert result["select_metric"] == "mrr"
     assert result["bootstrap"] == {"B": cfg["bootstrap_B"], "seed": cfg["seed"],
@@ -424,3 +428,58 @@ def test_load_queries_rejects_unknown_split(tmp_path):
     p.write_text("\n".join(json.dumps(r, ensure_ascii=False) for r in rows), encoding="utf-8")
     with pytest.raises(AssertionError, match="split"):
         load_queries(p)
+
+
+# ── per_query 저장 결함 수정 [감사_2026-08-17 §3] ────────────────────────────
+# AI Hub 재분석에서 재표집 단위를 영상으로 바꾸려 했더니 저장된 산출물에 질의별
+# 순위도, 질의↔영상 대응도 없었다. 캡션이 보존돼 있어 복구됐을 뿐 원인은 저장
+# 누락이다. 아래 세 건이 재발 방지 계약이다.
+
+def test_evaluate_per_query_carries_video_id():
+    # 클러스터 재표집·영상 단위 분해에 필요한 최소 정보. metrics에는 섞이면 안 된다.
+    qs = [{"query_id": "q1", "video_id": "vA", "text": "t", "type": "자막형",
+           "gt_start": 0.0, "gt_end": 5.0, "gt_seg_idx": [0], "split": "test"},
+          {"query_id": "q2", "video_id": "vB", "text": "t", "type": "장면형",
+           "gt_start": 5.0, "gt_end": 10.0, "gt_seg_idx": [1], "split": "test"}]
+    cfg = {"eval_k": [1, 5], "iou_thresholds": [0.5]}
+    r = evaluate(qs, {"vA": None, "vB": None}, 1.0, cfg, lambda *a: _r([0, 1]))
+    assert [x["video_id"] for x in r["per_query"]] == ["vA", "vB"]
+    assert "video_id" not in r["metrics"]                      # 평균 대상 아님
+    for m in r["metrics"]["by_type"].values():
+        assert "video_id" not in m
+
+
+def test_build_eval_result_per_query_keeps_legacy_keys_and_adds_full_rows():
+    # baseline_rank/proposed_rank는 case_analysis_probe가 읽는다 — 제거 금지.
+    # 추가로 두 arm의 전체 지표 행을 실어 재실행 없이 재집계가 가능해야 한다.
+    tq = [_tq("q1", 0), _tq("q2", 1, "장면형")]
+    cfg = _eval_cfg()
+    base = evaluate(tq, {"v1": None}, 1.0, cfg, lambda *a: _r([0, 1]))
+    prop = evaluate(tq, {"v1": None}, 0.5, cfg, lambda *a: _r([1, 0]))
+    res = build_eval_result(tq, base, prop, alpha=0.5, cfg=cfg)
+    row = res["per_query"][0]
+    assert {"query_id", "baseline_rank", "proposed_rank"} <= set(row.keys())
+    assert row["video_id"] == "v1" and row["type"] == "자막형"
+    for arm, src in (("baseline", base), ("proposed", prop)):
+        assert row[arm]["mrr"] == src["per_query"][0]["mrr"]
+        assert row[arm]["hit@1"] == src["per_query"][0]["hit@1"]
+        assert row[arm]["rank"] == row[f"{arm}_rank"]          # 중복분 정합
+    # 저장분만으로 mrr을 재집계할 수 있어야 한다(재실행 없이)
+    got = sum(r["proposed"]["mrr"] for r in res["per_query"]) / len(res["per_query"])
+    assert abs(got - res["metrics"]["proposed"]["mrr"]) < 1e-9
+
+
+def test_grid_search_alpha_saves_query_index_aligned_with_per_query_rr():
+    # per_query_rr은 벡터라 어느 질의·어느 영상인지 알 수 없었다. 순서 대응표를 같이 낸다.
+    qs = [{"query_id": "d1", "video_id": "vA", "text": "t", "type": "자막형",
+           "gt_start": 0.0, "gt_end": 5.0, "gt_seg_idx": [0], "split": "dev"},
+          {"query_id": "d2", "video_id": "vB", "text": "t", "type": "장면형",
+           "gt_start": 5.0, "gt_end": 10.0, "gt_seg_idx": [1], "split": "dev"}]
+    cfg = {"alpha_grid": [0.0, 1.0], "alpha_select_metric": "mrr",
+           "alpha_tiebreak": "larger", "eval_k": [1, 5], "iou_thresholds": [0.5],
+           "seed": 42, "bootstrap_B": 50}
+    res = grid_search_alpha(qs, {"vA": None, "vB": None}, cfg, lambda *a: _r([0, 1]))
+    assert res["query_index"] == [{"query_id": "d1", "video_id": "vA", "type": "자막형"},
+                                  {"query_id": "d2", "video_id": "vB", "type": "장면형"}]
+    for block in res["per_alpha"]:                             # 벡터 길이 대응
+        assert len(block["per_query_rr"]) == len(res["query_index"])

@@ -130,11 +130,22 @@ Whisper 발화 [t0, t1]이 겹치는 시간이 0초를 초과하는 **모든** �
     },
     "proposed": { ... }               // α=alpha_from_dev, 동일 구조
   },
-  "per_query": [ {"query_id": "q001", "baseline_rank": 3, "proposed_rank": 1}, ... ]
+  "per_query": [ {"query_id": "q001", "video_id": "v01", "type": "장면형",
+                  "baseline_rank": 3, "proposed_rank": 1,
+                  "baseline": {"rank": 3, "hit@1": 0.0, "mrr": 0.333, ...},
+                  "proposed": {"rank": 1, "hit@1": 1.0, "mrr": 1.0, ...}}, ... ]
 }
 ```
 
 `per_query`는 오류 분석(10주차)용 원자료. 질의별 랭크를 남겨야 "장면 결합이 도운/해친 질의"를 사례로 뽑을 수 있다.
+
+> **2026-08-17 확장 — 집계값만 남기지 않는다.** 원래는 `query_id`·양쪽 랭크만 실었다.
+> AI Hub 재분석에서 **재표집 단위를 영상으로 바꾸려 했더니 질의↔영상 대응도, 질의별
+> 지표도 저장돼 있지 않아 막혔다**(감사_2026-08-17 §3 — 그때는 arm 캡션이 보존돼 있어
+> 재임베딩으로 복구했지만, 원인은 저장 누락이다). 그래서 `video_id`·`type`과 **두 arm의
+> 전체 지표 행**을 함께 싣는다. 저장분만으로 재집계·재표집이 되어야 한다.
+> `baseline_rank`/`proposed_rank`는 `case_analysis_probe`가 읽으므로 **유지**한다(중복 허용).
+> **기존 `results/eval_test.json`은 이전 스키마 그대로 둔다** — 재생성은 test 접촉이다.
 
 ## 3-5. report.json — AAR 리포트 (M8, v2 15장)
 
@@ -532,6 +543,9 @@ paths:
   "select_metric": "mrr",
   "bootstrap": {"B": 2000, "seed": 42, "method": "paired-diff"},
   "alpha_best_point": 0.5,          // 점 추정 1위 (차이의 기준점)
+  "query_index": [                  // per_query_rr 벡터의 순서 대응표 [2026-08-17 추가]
+    {"query_id": "d01", "video_id": "v01", "type": "장면형"}, ...
+  ],
   "per_alpha": [
     {"alpha": 0.5, "mrr": 0.63, "hit@5": 0.83,
      "diff_vs_best_ci95": [0.0, 0.0],       // 기준점 자신은 [0,0]

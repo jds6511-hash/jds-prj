@@ -83,18 +83,22 @@ def _rank_of(ranked, gt_seg_idx) -> int:
 
 
 def _mean_metrics(rows) -> dict:
-    keys = [k for k in rows[0] if k not in ("query_id", "type", "rank")]
+    keys = [k for k in rows[0] if k not in ("query_id", "video_id", "type", "rank")]
     return {k: round(sum(r[k] for r in rows) / len(rows), 4) for k in keys}
 
 
 def evaluate(queries, indexes, alpha, cfg, search_fn=search) -> dict:
-    """질의셋 평균 지표 + per_query 랭크. by_type 분리 집계 포함. [3-4]"""
+    """질의셋 평균 지표 + per_query 랭크. by_type 분리 집계 포함. [3-4]
+
+    per_query에 video_id를 싣는다 — 재표집 단위를 영상으로 바꾸는 재분석에
+    필수인데 없어서 AI Hub 재분석이 막혔었다(감사_2026-08-17 §3). _mean_metrics의
+    제외 목록에 함께 넣어 집계에는 섞이지 않게 한다."""
     if not queries:
         raise ValueError("평가할 질의가 없습니다 (queries 비어 있음)")
     per_q, buckets = [], defaultdict(list)
     for q in queries:
         ranked = search_fn(q["text"], indexes[q["video_id"]], alpha, cfg)
-        row = {"query_id": q["query_id"], "type": q["type"],
+        row = {"query_id": q["query_id"], "video_id": q["video_id"], "type": q["type"],
                "rank": _rank_of(ranked, q["gt_seg_idx"]),
                **{f"hit@{k}": hit_at_k(ranked, q["gt_seg_idx"], k) for k in cfg["eval_k"]},
                "mrr": mrr(ranked, q["gt_seg_idx"]),
@@ -157,8 +161,16 @@ def build_eval_result(test_queries, base, prop, alpha, cfg) -> dict:
         "rank_summary": {"baseline": {"median_rank": _median_rank(base["per_query"])},
                          "proposed": {"median_rank": _median_rank(prop["per_query"])}},
         "contested": contested_block,
-        "per_query": [{"query_id": b["query_id"],
-                       "baseline_rank": b["rank"], "proposed_rank": p["rank"]}
+        # 두 arm의 전체 지표 행을 싣는다 — 재실행 없이 재집계·재표집이 가능해야 한다
+        # (집계값만 남겨 AI Hub 재분석이 막혔던 전례, 감사_2026-08-17 §3).
+        # baseline_rank/proposed_rank는 case_analysis_probe가 읽으므로 유지한다.
+        "per_query": [{"query_id": b["query_id"], "video_id": b["video_id"],
+                       "type": b["type"],
+                       "baseline_rank": b["rank"], "proposed_rank": p["rank"],
+                       "baseline": {k: v for k, v in b.items()
+                                    if k not in ("query_id", "video_id", "type")},
+                       "proposed": {k: v for k, v in p.items()
+                                    if k not in ("query_id", "video_id", "type")}}
                       for b, p in pairs]}
 
 
@@ -214,9 +226,15 @@ def grid_search_alpha(dev_queries, indexes, cfg, search_fn=search) -> dict:
         by_video[vid] = {str(a): round(float(per_query_vec[a][idxs].mean()), 4)
                           for a in grid}
 
+    # per_query_rr은 벡터라 어느 질의·어느 영상인지 알 수 없었다 — 순서 대응표를
+    # 같이 낸다. dev에서도 영상 단위 재분석이 가능해진다 [감사_2026-08-17 §3].
+    query_index = [{"query_id": q["query_id"], "video_id": q["video_id"],
+                    "type": q["type"]} for q in dev_queries]
+
     return {"select_metric": metric,
             "bootstrap": {"B": B, "seed": cfg["seed"], "method": "paired-diff"},
             "alpha_best_point": alpha_best_point,
+            "query_index": query_index,
             "per_alpha": per_alpha,
             "by_video": by_video,
             "tie_set": tie_set,
