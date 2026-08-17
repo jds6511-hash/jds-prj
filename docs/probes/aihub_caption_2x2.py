@@ -46,8 +46,9 @@ from aihub_external_eval import load_external_queries      # noqa: E402
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
 OUT = Path(__file__).resolve().parent / "_scratch"
-CAPDIR = OUT / "aihub_2x2_captions"           # 신규 전용 — 기존 산출물과 분리
+CAPROOT = OUT / "aihub_2x2_captions"          # 신규 전용 — 기존 산출물과 분리
 OLDDIR = OUT / "aihub_confirm_captions"       # 부수 분석용, 읽기 전용
+CAPDIR = None                                 # run_id별로 main에서 확정
 ARMS = [("qwen25_3b", "P0"), ("qwen25_3b", "P1"),
         ("qwen3vl_4b", "P0"), ("qwen3vl_4b", "P1")]
 CONTRASTS = [("C1_prompt_at_3B", "qwen25_3b/P1", "qwen25_3b/P0"),
@@ -281,22 +282,51 @@ def main():
     ap.add_argument("--alpha", type=float, default=None)
     ap.add_argument("--canary", action="store_true",
                     help="배관 점검 전용 — CANARY_VIDEOS 4편만. 결과를 보고하지 않는다")
+    ap.add_argument("--run-id", default=None,
+                    help="FULL 실행 필수. 산출물을 aihub_2x2_captions/<run_id>/ 로 분리한다 "
+                         "— canary 산출물과 과거 실행을 덮지 않기 위해")
     ap.add_argument("--out", default="aihub_caption_2x2.json")
     a = ap.parse_args()
+
+    global CAPDIR
     if a.canary:
         a.out = f"_canary_{a.out}"
+        run_id = a.run_id or "canary"
+    else:
+        assert a.run_id, "FULL 실행은 --run-id 필수 (덮어쓰기 방지)"
+        run_id = a.run_id
+        a.out = f"{Path(a.out).stem}_{run_id}.json"
+    CAPDIR = CAPROOT / run_id
 
     # K10: 신규 산출물 경로가 기존 자산과 절대 겹치지 않아야 한다. 기존 5개 파일은
     # run-to-run 비교용 자산이라 덮으면 복구 불가다. 경로 분리를 실행 전에 단언한다.
     assert CAPDIR.resolve() != OLDDIR.resolve(), "K10: 신규/기존 캡션 경로가 같다"
+    assert CAPROOT.resolve() != OLDDIR.resolve(), "K10: 신규 루트가 기존 자산 경로다"
     for m, p in ARMS:
-        new_f = (CAPDIR / f"{m}__{p}.json").resolve()
-        assert new_f != (OLDDIR / f"{m}__{p}.json").resolve(), f"K10: {m}/{p} 경로 충돌"
-    if OLDDIR.is_dir():
-        pre_old = {f.name: f.stat().st_mtime_ns for f in sorted(OLDDIR.iterdir())}
-        print(f"K10: 기존 산출물 {len(pre_old)}개 보호 대상 — {OLDDIR.name}/", flush=True)
-    else:
-        pre_old = {}
+        assert (CAPDIR / f"{m}__{p}.json").resolve() \
+            != (OLDDIR / f"{m}__{p}.json").resolve(), f"K10: {m}/{p} 경로 충돌"
+    # 다른 run_id의 산출물도 덮지 않는다 — CAPDIR가 이미 있고 완료 마커까지 있으면 정지
+    if (CAPDIR / "RUN_COMPLETE.json").is_file():
+        raise SystemExit(f"이미 완료된 run_id다: {CAPDIR} — 다른 --run-id를 쓰라")
+    pre_old = ({f.name: f.stat().st_mtime_ns for f in sorted(OLDDIR.iterdir())}
+               if OLDDIR.is_dir() else {})
+
+    t_start = time.time()
+    print("=" * 72, flush=True)
+    print("caption model×prompt 2×2 contemporaneous batch", flush=True)
+    print("  목적: configuration / model / prompt effect 분해.", flush=True)
+    print("  **test 재평가도 배포 채택도 아니다.** AI Hub/probe 실험이며,", flush=True)
+    print("  8회차 HOLD 판정(I1·A2 FAIL)과 test 미접촉 상태는 그대로 유지된다.", flush=True)
+    print(f"  사전등록: docs/preregistration/caption_2x2_사전등록_2026-08-17.md", flush=True)
+    print(f"  {'CANARY' if a.canary else 'FULL'} execution commit = "
+          f"{_git('rev-parse', 'HEAD')[:7]} (dirty={bool(_git('status', '--porcelain'))})",
+          flush=True)
+    print(f"  run_id = {run_id}   산출물 = {CAPDIR}", flush=True)
+    print(f"  시작 = {time.strftime('%Y-%m-%d %H:%M:%S')}", flush=True)
+    print(f"  완료 마커 = {CAPDIR / 'RUN_COMPLETE.json'}", flush=True)
+    print(f"  arm별 마커 = {CAPDIR}/<arm>.provenance.json", flush=True)
+    print(f"  기존 자산 {len(pre_old)}개는 read-only — {OLDDIR.name}/", flush=True)
+    print("=" * 72, flush=True)
 
     cfg = common.load_config(str(ROOT / a.config))
     alpha = a.alpha
@@ -424,6 +454,33 @@ def main():
 
     rep["canary_videos"] = [{"video_id": v, "why": w} for v, w in CANARY_VIDEOS] \
         if a.canary else None
+
+    # ── validator — 완료 판정은 프로세스 존재 여부가 아니라 이것으로 한다 ──────
+    checks = {
+        "arms_present": sorted(rep["arms"]) == sorted(f"{m}/{p}" for m, p in ARMS),
+        "provenance_per_arm": len(rep["provenance"]) == len(ARMS),
+        "captions_per_arm_match_segments": all(
+            rep["i1"][f"{m}/{p}"]["n_captions"] == n_seg for m, p in ARMS),
+        "per_query_rows_match_queries": all(len(v) == len(qs) for v in pq.values()),
+        "no_empty_captions": all(rep["i1"][f"{m}/{p}"]["empty"] == 0 for m, p in ARMS),
+        "K10_old_artifacts_unchanged": rep["K10_old_artifacts_intact"]["unchanged"],
+        "git_not_dirty": not rep["git_dirty"],
+        "prompt_hashes_distinct_by_key": (
+            len({rep["provenance"][f"{m}/P0"]["prompt_sha256"] for m, _ in ARMS}) == 1
+            and len({rep["provenance"][f"{m}/P1"]["prompt_sha256"] for m, _ in ARMS}) == 1
+            and rep["provenance"][f"{ARMS[0][0]}/P0"]["prompt_sha256"]
+            != rep["provenance"][f"{ARMS[0][0]}/P1"]["prompt_sha256"]),
+        "P0_forbids_ocr_P1_not": all(
+            rep["provenance"][f"{m}/P0"]["prompt_forbids_ocr"]
+            and not rep["provenance"][f"{m}/P1"]["prompt_forbids_ocr"]
+            for m, _ in ARMS),
+        "all_bf16_unquantized": all(
+            not rep["provenance"][f"{m}/{p}"]["quantized_effective"] for m, p in ARMS),
+    }
+    rep["validator"] = {"checks": checks, "PASS": all(checks.values()),
+                        "failed": [k for k, v in checks.items() if not v]}
+    rep["elapsed_sec"] = round(time.time() - t_start, 1)
+    rep["run_id"] = run_id
     rep["per_query"] = pq
     OUT.mkdir(parents=True, exist_ok=True)
     p = OUT / a.out
@@ -434,7 +491,23 @@ def main():
         bh = rep["bh_fdr"]["per_contrast"][name]
         print(f"  {name:20s} Δ{c['delta']:+.4f} CI{c['ci95']} "
               f"p={c['p_boot']:.4f} BH={'유의' if bh['significant_bh'] else '비유의'}")
+    v = rep["validator"]
+    print(f"\nvalidator: {'PASS' if v['PASS'] else 'FAIL ' + str(v['failed'])}")
+    print(f"소요 {rep['elapsed_sec']/3600:.2f}시간 · 종료 {time.strftime('%Y-%m-%d %H:%M:%S')}")
     print("->", p)
+    # 완료 마커는 **validator PASS일 때만** 쓴다 — 마커 존재가 곧 성공 판정이다
+    if v["PASS"]:
+        (CAPDIR / "RUN_COMPLETE.json").write_text(json.dumps({
+            "run_id": run_id, "canary": bool(a.canary),
+            "git_head": rep["git_head"], "n_videos": rep["n_videos"],
+            "n_segments": n_seg, "n_queries": rep["n_queries"],
+            "arms": sorted(rep["arms"]), "elapsed_sec": rep["elapsed_sec"],
+            "finished_at": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "result_file": str(p), "validator_PASS": True,
+        }, ensure_ascii=False, indent=2), encoding="utf-8")
+        print("완료 마커:", CAPDIR / "RUN_COMPLETE.json")
+    else:
+        raise SystemExit(f"validator FAIL — 완료 마커를 쓰지 않는다: {v['failed']}")
 
 
 if __name__ == "__main__":
