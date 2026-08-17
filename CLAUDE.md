@@ -12,6 +12,11 @@
 3. **라벨 작성 시 검색 결과 참조 금지.** GT는 프레임 실물 검증으로만(캡션 불신).
    test 라벨은 병합 전 유형별 목표 사전 등록. gt_seg_idx는 gt_start/end 파생 규칙 준수
    (유일한 예외 wl_q03은 8-6에 문서화됨 — 새 예외를 만들지 마라).
+   **라벨용 도구는 `m5_search`·`m6_evaluate`를 import조차 하지 마라** — 제시 항목을
+   순위로 고르면 선정 자체가 오염이다. `docs/probes/frame_human_kit.py`는 `rank==1`로
+   항목을 고르므로 **라벨 작성에 쓰지 마라**(프레임 내용 진단 전용). 허용 도구는
+   `scripts/label_contact_sheet.py`(프레임+시각만, 캡션·자막 없음)와
+   `scripts/label_intake.py`(gt_seg_idx 자동 파생, 자동 병합 없음)다.
 4. **변형 실험 격리.** config 사본에 paths.work/results 동시 분리, 항상 config.yaml에서
    재생성(scratchpad의 gen_ablation_configs.py 패턴). 본 config·본 인덱스를 실험으로
    오염시키지 않는다.
