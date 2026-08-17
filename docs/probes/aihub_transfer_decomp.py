@@ -292,6 +292,8 @@ def main():
 
     # ① 재현 검증 게이트 — 통과 못 하면 아래 수치를 쓰지 않는다
     ref = next((f for f, p in REPRO.items() if p == pair), None)
+    if a.limit_videos:       # 부분 표본이라 전수 기준과 일치할 수 없다
+        ref = None
     rep["reproduce"] = {"reference": ref}
     if ref and (OUT / ref).is_file():
         st = json.loads((OUT / ref).read_text(encoding="utf-8"))["contrasts"]
