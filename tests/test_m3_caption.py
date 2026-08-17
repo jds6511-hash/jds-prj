@@ -1,5 +1,6 @@
 import json
 import common
+import m3_generate as m3
 from m3_generate import caption_all, clear_corrupted_captions
 
 def _doc(n=3):
@@ -170,3 +171,103 @@ def test_vlm_class_name_rejects_unknown_family():
     from m3_generate import vlm_class_name
     with pytest.raises(ValueError, match="지원하지 않는"):
         vlm_class_name("meta-llama/Llama-3-8B")
+
+
+# --- 캡션 생성 provenance (2026-08-17) ------------------------------------
+# 08-10·08-14·08-17 세 번의 4B 생성물이 얼마나·왜 달랐는지 오늘 추적하려 했는데,
+# **당시 조건이 아무 데도 기록돼 있지 않아** 코드 경로 차이까지만 좁히고 멈췄다.
+# 기록 대상은 "config에 뭐라고 적혀 있었나"가 아니라 **실제로 무엇이 로드됐나**다
+# — q4 플래그가 무시된 채 돌았던 전례가 있다.
+
+def _fake_model(dtype="torch.bfloat16", attn="sdpa", commit="abc123", quant=None):
+    class C:
+        pass
+    c = C()
+    c._attn_implementation = attn
+    c._commit_hash = commit
+    c._name_or_path = "Qwen/Qwen3-VL-4B-Instruct"
+    c.quantization_config = quant
+
+    class M:
+        pass
+    m = M()
+    m.config = c
+    m.dtype = dtype
+    return m
+
+
+def test_provenance_records_effective_values_not_config():
+    """config는 4bit라고 적혀 있어도 실제 로드가 bf16이면 bf16을 남긴다."""
+    cfg = {"vlm_4bit": True, "caption_model": "무시돼야 함",
+           "caption_prompt": "p", "vlm_max_new_tokens": 128,
+           "vlm_max_pixels": 602112, "vlm_rep_penalty": 1.1}
+    prov = m3.caption_provenance(cfg, _fake_model(), prompt="p",
+                                 entrypoint="m3_generate")
+    assert prov["dtype"] == "torch.bfloat16"
+    assert prov["quantized"] is False          # 모델이 실제로 양자화돼 있지 않다
+    assert prov["config_vlm_4bit"] is True     # 요청값은 따로 남긴다(불일치 감지용)
+    assert prov["attn_implementation"] == "sdpa"
+    assert prov["model_revision"] == "abc123"
+    assert prov["model_id"] == "Qwen/Qwen3-VL-4B-Instruct"
+
+
+def test_provenance_flags_config_model_mismatch():
+    """실제 로드된 모델과 config의 model id가 다르면 그대로 둘 다 남긴다."""
+    cfg = {"caption_model": "Qwen/Qwen2.5-VL-3B-Instruct", "caption_prompt": "p"}
+    prov = m3.caption_provenance(cfg, _fake_model(), prompt="p",
+                                 entrypoint="m3_generate")
+    assert prov["model_id"] == "Qwen/Qwen3-VL-4B-Instruct"
+    assert prov["config_caption_model"] == "Qwen/Qwen2.5-VL-3B-Instruct"
+
+
+def test_provenance_prompt_sha_and_entrypoint():
+    import hashlib
+    prompt = "이 장면을 묘사하라"
+    prov = m3.caption_provenance({"caption_prompt": prompt}, _fake_model(),
+                                 prompt=prompt, entrypoint="caption_model_sweep")
+    assert prov["prompt_sha256"] == hashlib.sha256(prompt.encode()).hexdigest()
+    assert prov["entrypoint"] == "caption_model_sweep"
+
+
+def test_provenance_records_env_and_git():
+    prov = m3.caption_provenance({"caption_prompt": "p"}, _fake_model(),
+                                 prompt="p", entrypoint="m3_generate")
+    for k in ("torch", "transformers", "cuda", "gpu", "git_head", "git_dirty",
+              "generated_at"):
+        assert k in prov, f"{k} 누락"
+    assert isinstance(prov["git_dirty"], bool)
+
+
+def test_provenance_attaches_to_doc_without_breaking_load(tmp_path):
+    """provenance를 붙여도 load_segments 계약이 깨지지 않는다."""
+    doc = {"video_id": "v1", "duration_sec": 10, "fps": 1, "n_segments": 2,
+           "segments": [{"idx": 0, "start": 0, "end": 5, "subtitle": "a", "caption": "c"},
+                        {"idx": 1, "start": 5, "end": 10, "subtitle": "b", "caption": "d"}]}
+    before = common.index_text_hash(doc)
+    m3.attach_provenance(doc, {"entrypoint": "m3_generate"})
+    assert doc["caption_provenance"]["entrypoint"] == "m3_generate"
+    # 텍스트 해시는 불변이어야 한다 — provenance가 재임베딩을 유발하면 안 된다
+    assert common.index_text_hash(doc) == before
+    p = tmp_path / "segments.json"
+    common.save_segments(p, doc)
+    loaded = common.load_segments(p, seg_len=5)
+    assert loaded["caption_provenance"]["entrypoint"] == "m3_generate"
+
+
+def test_provenance_frame_manifest_hash_changes_with_frames(tmp_path):
+    """입력 프레임이 바뀌면 해시가 바뀐다 — '같은 입력이었나'를 사후에 확인하는 유일한 수단.
+    08-10 산출물이 왜 달랐는지 추적할 때 프레임 동일성을 대조할 방법이 없었다."""
+    doc = {"segments": [{"idx": 0, "rep_frame": "frames/a.jpg"},
+                        {"idx": 1, "rep_frame": "frames/b.jpg"}]}
+    (tmp_path / "frames").mkdir()
+    (tmp_path / "frames" / "a.jpg").write_bytes(b"AAA")
+    (tmp_path / "frames" / "b.jpg").write_bytes(b"BBB")
+    h1 = m3.frame_manifest_hash(doc, tmp_path)
+    (tmp_path / "frames" / "b.jpg").write_bytes(b"CCC")
+    assert m3.frame_manifest_hash(doc, tmp_path) != h1
+
+
+def test_provenance_frame_manifest_hash_missing_frame_is_none(tmp_path):
+    """프레임이 없으면 None — 해시를 못 냈다는 사실을 거짓 값으로 덮지 않는다."""
+    doc = {"segments": [{"idx": 0, "rep_frame": "frames/none.jpg"}]}
+    assert m3.frame_manifest_hash(doc, tmp_path) is None

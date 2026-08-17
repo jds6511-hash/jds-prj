@@ -21,6 +21,86 @@ if os.name == "nt":
             break
 
 
+def _git(*args) -> str:
+    import subprocess
+    try:
+        return subprocess.run(["git", *args], cwd=Path(__file__).resolve().parents[1],
+                              capture_output=True, text=True, timeout=10).stdout.strip()
+    except Exception:
+        return ""
+
+
+def frame_manifest_hash(doc: dict, wdir) -> str | None:
+    """캡션 입력 프레임 전체의 내용 해시. 하나라도 없으면 None.
+
+    "같은 입력이었나"를 사후에 확인할 유일한 수단이다 — 2026-08-17에 세 번의
+    생성물 차이를 추적할 때 프레임 동일성을 대조할 방법이 없었다. 못 냈으면
+    **None으로 남긴다**(거짓 해시로 덮지 않는다)."""
+    import hashlib
+    h = hashlib.sha256()
+    for s in doc["segments"]:
+        p = Path(wdir) / s.get("rep_frame", "")
+        if not p.is_file():
+            return None
+        h.update(p.read_bytes())
+        h.update(b"\x1e")
+    return h.hexdigest()
+
+
+def caption_provenance(cfg: dict, model, prompt: str, entrypoint: str) -> dict:
+    """캡션 생성 조건 기록. **요청값이 아니라 실효값을 남긴다.**
+
+    2026-08-17에 08-10·08-14·08-17 세 번의 4B 생성물이 왜 달랐는지 추적하다,
+    당시 라이브러리 버전·attention backend가 어디에도 없어 **코드 경로 차이까지만
+    좁히고 멈췄다.** config를 남기는 것으로는 부족하다 — `vlm_4bit` 플래그가 무시된
+    채 돌았던 전례가 있어, "적혀 있던 값"과 "실제 로드된 값"을 **둘 다** 남긴다.
+    불일치 자체가 신호다."""
+    import hashlib, platform
+    conf = getattr(model, "config", None)
+    quant = getattr(conf, "quantization_config", None)
+    head = _git("rev-parse", "HEAD")
+
+    prov = {
+        "entrypoint": entrypoint,             # m3_generate / caption_model_sweep / …
+        "model_id": getattr(conf, "_name_or_path", None),
+        "model_revision": getattr(conf, "_commit_hash", None),
+        "dtype": str(getattr(model, "dtype", None)),
+        "quantized": quant is not None,
+        "attn_implementation": getattr(conf, "_attn_implementation", None),
+        "prompt_sha256": hashlib.sha256((prompt or "").encode("utf-8")).hexdigest(),
+        "git_head": head,
+        "git_dirty": bool(_git("status", "--porcelain")),
+        "python": platform.python_version(),
+        "generated_at": __import__("datetime").datetime.now().isoformat(timespec="seconds"),
+    }
+    # 요청값 — 실효값과 갈리면 그 자체가 사고다
+    for k in ("caption_model", "vlm_4bit", "vlm_max_pixels", "vlm_max_new_tokens",
+              "vlm_rep_penalty"):
+        if k in cfg:
+            prov[f"config_{k}"] = cfg[k]
+
+    try:
+        import torch
+        prov["torch"] = torch.__version__
+        prov["cuda"] = torch.version.cuda
+        prov["gpu"] = (torch.cuda.get_device_name(0)
+                       if torch.cuda.is_available() else None)
+    except Exception:
+        prov["torch"] = prov["cuda"] = prov["gpu"] = None
+    try:
+        import transformers
+        prov["transformers"] = transformers.__version__
+    except Exception:
+        prov["transformers"] = None
+    return prov
+
+
+def attach_provenance(doc: dict, prov: dict) -> None:
+    """doc 최상위에 붙인다. `index_text_hash`는 segments의 텍스트만 보므로
+    이 필드가 재임베딩을 유발하지 않는다."""
+    doc["caption_provenance"] = prov
+
+
 DEFAULT_BEAM_SIZE = 5     # faster-whisper 기본값. 확정 인덱스가 이 값으로 만들어졌다.
 
 
@@ -312,6 +392,11 @@ def main():
         # 전건 실패 — 저장하면 기존 캡션이 빈 문자열로 덮인다. 저장하지 않고 죽는다.
         sys.exit(f"캡션 {n_target}건이 전부 실패했습니다 — segments.json을 저장하지 "
                  f"않고 중단합니다. 원인을 해결한 뒤 다시 실행하라 (기존 캡션 보존).")
+    if n_target:                                 # 실제로 생성한 경우에만 갱신
+        prov = caption_provenance(cfg, model, prompt=cfg["caption_prompt"],
+                                  entrypoint="m3_generate")
+        prov["frame_manifest_sha256"] = frame_manifest_hash(doc, wdir)
+        attach_provenance(doc, prov)
     common.save_segments(wdir / "segments.json", doc)
     if failed:
         print(f"⚠️ 캡션 실패 세그먼트 {len(failed)}개: {failed}")  # 검증 포인트 [4-3]
