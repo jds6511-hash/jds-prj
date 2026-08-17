@@ -546,6 +546,11 @@ paths:
   "query_index": [                  // per_query_rr 벡터의 순서 대응표 [2026-08-17 추가]
     {"query_id": "d01", "video_id": "v01", "type": "장면형"}, ...
   ],
+  // 현재 results/alpha_search_dev.json은 이 필드가 없는 legacy 스키마다.
+  // **채우려고 재생성하지 마라 (2026-08-17 결정).** 이 파일은 확정 alpha_star=0.5의
+  // 출처이고, 재생성은 임베딩 부동소수 차이로 tie 경계를 건드려 alpha_star를 바꿀 수
+  // 있다 — 그러면 분석 보강이 아니라 확정 config 변경 후보가 된다. dev는 영상 3편이라
+  // 클러스터 분석 실익도 작다. 다음 정당한 dev 실행에서 자연히 채워진다.
   "per_alpha": [
     {"alpha": 0.5, "mrr": 0.63, "hit@5": 0.83,
      "diff_vs_best_ci95": [0.0, 0.0],       // 기준점 자신은 [0,0]
