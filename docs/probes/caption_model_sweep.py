@@ -288,6 +288,10 @@ def load_captioner(spec: dict, cfg: dict, max_new: int | None = None):
         gc.collect()
         torch.cuda.empty_cache()
 
+    # provenance를 **실효값**으로 남기려면 로드된 모델 객체가 필요하다. spec만 적으면
+    # 2026-08-10 사고(q4 요청이 조용히 무시되고 bf16으로 돌아 중복 arm 생성)를 다시
+    # 놓친다. 반환 시그니처는 그대로 두고 속성만 붙인다 — 기존 호출자에 영향 없다.
+    cap.model, cap.processor, cap.spec = model, proc, spec
     return cap, close
 
 
