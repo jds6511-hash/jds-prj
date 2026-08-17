@@ -204,6 +204,77 @@ def transfer_buckets(ctl, cnd) -> dict:
     }
 
 
+def icc1(ctl, cnd, key: str) -> dict:
+    """쌍체 차이의 영상내 상관 ICC(1)과 설계효과. 클러스터 보정이 필요한지를
+    부트스트랩 결과와 독립적으로 판정한다 — 설계효과 ≤1이면 질의 단위 CI가
+    좁은 것이 아니다(오히려 보수적)."""
+    g = {}
+    for b, k in zip(ctl, cnd):
+        g.setdefault(b["video_id"], []).append(k[key] - b[key])
+    grp = [np.array(v) for v in g.values() if len(v) > 1]
+    allv = np.concatenate(grp)
+    n, K, gm = len(allv), len(grp), allv.mean()
+    msb = sum(len(x) * (x.mean() - gm) ** 2 for x in grp) / (K - 1)
+    msw = sum(((x - x.mean()) ** 2).sum() for x in grp) / (n - K)
+    m = float(np.mean([len(x) for x in grp]))
+    icc = (msb - msw) / (msb + (m - 1) * msw)
+    return {"icc1": round(float(icc), 4), "mean_cluster_size": round(m, 2),
+            "design_effect": round(1 + (m - 1) * float(icc), 3),
+            "cluster_adjustment_needed": bool(1 + (m - 1) * float(icc) > 1.0)}
+
+
+def saturation_adjusted(ctl, cnd) -> dict:
+    """arm 대칭 포화 제거 후 전달률. 포화 = 양쪽 모두 융합 rank 1(두 arm을 구분할
+    수 없는 질의) — m6_evaluate의 contested 정의와 같다. 기준값만으로 조건화하면
+    Δfus가 상향 편향되므로 대칭 조건을 쓴다."""
+    def strat(b):
+        if b["rank_sub"] == 1:
+            return "sub_rank1"
+        return "sub_rank2_5" if 2 <= b["rank_sub"] <= 5 else "sub_rank6plus_or_miss"
+
+    out = {}
+    for s in ("ALL", "sub_rank1", "sub_rank2_5", "sub_rank6plus_or_miss"):
+        p = [(b, k) for b, k in zip(ctl, cnd) if s == "ALL" or strat(b) == s]
+        con = [(b, k) for b, k in p
+               if not (b["rank_fus"] == 1 and k["rank_fus"] == 1)]
+        dc = float(np.mean([k["rr_cap"] - b["rr_cap"] for b, k in con]))
+        df = float(np.mean([k["rr_fus"] - b["rr_fus"] for b, k in con]))
+        out[s] = {"n": len(p), "n_saturated": len(p) - len(con), "n_contested": len(con),
+                  "d_mrr_cap": round(dc, 4), "d_mrr_fus": round(df, 4),
+                  "transfer_pct": round(df / dc * 100, 1) if dc else None}
+    return out
+
+
+def by_group(ctl, cnd) -> dict:
+    """도메인·질의수 구간별로 영상평균 Δ와 질의가중 Δ를 나란히 본다.
+    video-macro 추정이 질의가중보다 작은 이유를 귀속하기 위한 분해."""
+    g = {}
+    for b, k in zip(ctl, cnd):
+        g.setdefault(b["video_id"], []).append((k["rr_cap"] - b["rr_cap"], b["domain"]))
+    vids = sorted(g)
+    dv = np.array([np.mean([x[0] for x in g[v]]) for v in vids])
+    nq = np.array([len(g[v]) for v in vids])
+    dom = {v: g[v][0][1] for v in vids}
+
+    def blk(mask):
+        if not mask.any():
+            return {"n_videos": 0}
+        return {"n_videos": int(mask.sum()), "n_queries": int(nq[mask].sum()),
+                "d_video_macro": round(float(dv[mask].mean()), 4),
+                "d_query_weighted": round(float((dv[mask] * nq[mask]).sum()
+                                                / nq[mask].sum()), 4)}
+
+    return {
+        "videos_improved": int((dv > 0).sum()), "videos_worse": int((dv < 0).sum()),
+        "videos_tied": int((dv == 0).sum()),
+        "corr_nqueries_delta": round(float(np.corrcoef(nq, dv)[0, 1]), 3),
+        "by_domain": {d: blk(np.array([dom[v] == d for v in vids]))
+                      for d in sorted(set(dom.values()))},
+        "by_nqueries": {f"{lo}-{hi}": blk((nq >= lo) & (nq <= hi))
+                        for lo, hi in ((2, 3), (4, 5), (6, 8), (9, 14))},
+    }
+
+
 def by_sub_strength(ctl, cnd) -> dict:
     """자막 단독 순위를 유형 프록시로 쓴 층별 ΔMRR. 자막이 이미 GT를 1위로
     두는 질의에서는 캡션 개선이 최종 순위를 바꿀 여지가 작다는 가설의 검정."""
@@ -329,9 +400,21 @@ def main():
             print(f"  {name:20s} {u:14s} Δ{c['delta']:+.4f} CI{c['ci95']} "
                   f"{'0배제' if c['excludes_zero'] else '0포함'}")
 
+    # ②-b 클러스터 보정 필요성을 부트스트랩과 독립으로 판정
+    rep["icc"] = {n: icc1(ctl, cnd, k)
+                  for k, n in (("rr_cap", "caption_only"), ("rr_fus", "fused"))}
+    for n, v in rep["icc"].items():
+        print(f"  ICC {n:14s} {v['icc1']:+.4f} 설계효과 {v['design_effect']:.3f} "
+              f"{'보정 필요' if v['cluster_adjustment_needed'] else '보정 불필요'}")
+
     # ③ 융합 전달 분해
     rep["transfer"] = transfer_buckets(ctl, cnd)
     rep["by_sub_strength"] = by_sub_strength(ctl, cnd)
+    rep["saturation_adjusted"] = saturation_adjusted(ctl, cnd)
+    rep["by_group"] = by_group(ctl, cnd)
+    rep["exploratory_note"] = ("saturation_adjusted·by_group·by_sub_strength는 "
+                              "사전등록되지 않은 사후 분해다. 가설 생성용으로만 쓰고 "
+                              "확증으로 세지 않는다.")
     rep["per_query"] = {"control": ctl, "candidate": cnd}
 
     OUT.mkdir(parents=True, exist_ok=True)
