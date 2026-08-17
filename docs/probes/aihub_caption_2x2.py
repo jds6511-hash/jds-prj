@@ -56,6 +56,15 @@ CONTRASTS = [("C1_prompt_at_3B", "qwen25_3b/P1", "qwen25_3b/P0"),
              ("C4_model_under_P1", "qwen3vl_4b/P1", "qwen25_3b/P1")]
 BASE = "qwen25_3b/P0"                          # configuration effect의 기준 셀
 
+# canary 영상 — 성격이 섞이도록 **기존 산출물만 보고** 고정했다(신규 결과 무관).
+# 앞 N편을 그냥 자르면 전부 같은 도메인·같은 성격이라 P0/P1 차이도 I1 검출기도 안 보인다.
+CANARY_VIDEOS = [
+    ("D3_DR_0922_000266", "I1 적중 이력 (기존 arm에서 오염 2건·CJK 4건)"),
+    ("D3_DR_0922_000267", "CJK 포함하나 미적중 — scene text 후보"),
+    ("D3_TR_0914_000785", "평범한 여행 장면 (오염 0·CJK 0)"),
+    ("D3_FO_0907_000089", "평범한 요리음식 장면 (오염 0·CJK 0)"),
+]
+
 
 def _git(*a) -> str:
     import subprocess
@@ -270,12 +279,24 @@ def main():
     ap.add_argument("--config", default="config_aihub.yaml")
     ap.add_argument("--queries", default="data_aihub/queries/queries_aihub.jsonl")
     ap.add_argument("--alpha", type=float, default=None)
-    ap.add_argument("--canary", type=int, default=None,
-                    help="배관 점검 전용 — 앞 N편만. 결과를 보고하지 않는다")
+    ap.add_argument("--canary", action="store_true",
+                    help="배관 점검 전용 — CANARY_VIDEOS 4편만. 결과를 보고하지 않는다")
     ap.add_argument("--out", default="aihub_caption_2x2.json")
     a = ap.parse_args()
     if a.canary:
         a.out = f"_canary_{a.out}"
+
+    # K10: 신규 산출물 경로가 기존 자산과 절대 겹치지 않아야 한다. 기존 5개 파일은
+    # run-to-run 비교용 자산이라 덮으면 복구 불가다. 경로 분리를 실행 전에 단언한다.
+    assert CAPDIR.resolve() != OLDDIR.resolve(), "K10: 신규/기존 캡션 경로가 같다"
+    for m, p in ARMS:
+        new_f = (CAPDIR / f"{m}__{p}.json").resolve()
+        assert new_f != (OLDDIR / f"{m}__{p}.json").resolve(), f"K10: {m}/{p} 경로 충돌"
+    if OLDDIR.is_dir():
+        pre_old = {f.name: f.stat().st_mtime_ns for f in sorted(OLDDIR.iterdir())}
+        print(f"K10: 기존 산출물 {len(pre_old)}개 보호 대상 — {OLDDIR.name}/", flush=True)
+    else:
+        pre_old = {}
 
     cfg = common.load_config(str(ROOT / a.config))
     alpha = a.alpha
@@ -286,7 +307,9 @@ def main():
     qs_all = load_external_queries(ROOT / a.queries)
     want = sorted({q["video_id"] for q in qs_all})
     if a.canary:
-        want = want[:a.canary]
+        want = [v for v, _ in CANARY_VIDEOS]
+        missing = [v for v in want if v not in {q["video_id"] for q in qs_all}]
+        assert not missing, f"canary 영상이 질의셋에 없다: {missing}"
     idx0 = {}
     for v in want:
         try:
@@ -389,6 +412,18 @@ def main():
             blk[arm] = boot(b, k, g, B, seed, "video-cluster")
         rep["halves_detail"][h] = {"n_queries": len(sel), "vs_base": blk}
 
+    # K10 사후 확인 — 경로 분리 단언만으로는 부족하다. 실제로 안 바뀌었는지 본다.
+    post_old = ({f.name: f.stat().st_mtime_ns for f in sorted(OLDDIR.iterdir())}
+                if OLDDIR.is_dir() else {})
+    rep["K10_old_artifacts_intact"] = {
+        "checked": len(pre_old), "unchanged": pre_old == post_old,
+        "changed_files": [k for k in set(pre_old) | set(post_old)
+                          if pre_old.get(k) != post_old.get(k)]}
+    assert pre_old == post_old, (
+        f"K10 위반: 기존 산출물이 변경됐다 — {rep['K10_old_artifacts_intact']['changed_files']}")
+
+    rep["canary_videos"] = [{"video_id": v, "why": w} for v, w in CANARY_VIDEOS] \
+        if a.canary else None
     rep["per_query"] = pq
     OUT.mkdir(parents=True, exist_ok=True)
     p = OUT / a.out
