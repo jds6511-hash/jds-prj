@@ -455,11 +455,13 @@ def _chunk(a, b):
 def test_parse_events_tolerates_fences_and_prose():
     from m8_report import parse_events
     raw = ('설명을 조금 붙이고\n```json\n'
-           '[{"event": "묘 이장 작업", "segments": [3, 4, 5]},\n'
-           ' {"event": "편지 소개", "segments": [7]}]\n```\n끝')
+           '[{"event": "묘 이장 작업", "span": [3, 5], "evidence_segments": [3, 4],'
+           '  "description": "후손들이 묘를 이장한다."},\n'
+           ' {"event": "편지 소개", "span": [7, 7], "evidence_segments": [7],'
+           '  "description": "편지를 소개한다."}]\n```\n끝')
     ev = parse_events(raw)
     assert [e["event"] for e in ev] == ["묘 이장 작업", "편지 소개"]
-    assert ev[0]["segments"] == [3, 4, 5]
+    assert ev[0]["span"] == [3, 5] and ev[0]["evidence_segments"] == [3, 4]
 
 
 def test_parse_events_returns_empty_on_broken_json():
@@ -471,12 +473,14 @@ def test_parse_events_returns_empty_on_broken_json():
 def test_validate_events_rejects_by_code_not_model():
     from m8_report import validate_events
     chunk = _chunk(0, 10)
+    D = "충분히 긴 서술을 여기에 적어 근거당 최소 글자수를 넘기도록 한다."
     kept, rejected = validate_events([
-        {"event": "정상 사건", "segments": [1, 2]},
-        {"event": "범위 밖", "segments": [1, 99]},          # 담당 구간 밖
-        {"event": "", "segments": [3]},                     # 서술 공백
-        {"event": "画面完全变黑没有内容", "segments": [4]},   # 다른 언어 이탈
-        {"event": "인용 없음", "segments": []},
+        {"event": "정상 사건", "span": [1, 3], "evidence_segments": [1, 2], "description": D},
+        {"event": "범위 밖", "span": [1, 3], "evidence_segments": [1, 99], "description": D},
+        {"event": "", "span": [1, 3], "evidence_segments": [3], "description": D},
+        {"event": "画面完全变黑没有内容", "span": [4, 4], "evidence_segments": [4],
+         "description": D},
+        {"event": "근거 없음", "span": [1, 3], "evidence_segments": [], "description": D},
     ], chunk)
     assert [e["event"] for e in kept] == ["정상 사건"]
     assert {r["reason"] for r in rejected} == {"seg_out_of_range", "empty_event",
@@ -486,19 +490,23 @@ def test_validate_events_rejects_by_code_not_model():
 def test_merge_events_dedups_and_orders():
     from m8_report import merge_events
     out = merge_events([
-        {"event": "묘 이장 작업", "segments": [10, 11]},
-        {"event": "도착", "segments": [1, 2]},
-        {"event": "묘 이장 작업", "segments": [11, 12]},   # 겹침에서 온 중복
+        {"event": "묘 이장 작업", "span": [10, 11], "evidence_segments": [10],
+         "description": "이장한다."},
+        {"event": "도착", "span": [1, 2], "evidence_segments": [1], "description": "도착한다."},
+        {"event": "묘 이장 작업", "span": [11, 12], "evidence_segments": [12],
+         "description": "이어진다."},                       # 겹침에서 온 중복
     ])
     assert [e["event"] for e in out] == ["도착", "묘 이장 작업"]
-    assert out[1]["segments"] == [10, 11, 12]              # 병합·중복 제거
+    assert out[1]["span"] == [10, 12]
+    assert out[1]["evidence_segments"] == [10, 12]
 
 
 def test_events_to_sentences_keeps_m9_contract():
     from m8_report import events_to_sentences
-    s = events_to_sentences([{"event": "도착", "segments": [1, 2]}])
+    s = events_to_sentences([{"event": "도착", "span": [1, 2],
+                              "evidence_segments": [1, 2], "description": "현장에 도착한다."}])
     assert s[0]["sent_id"] == 0 and s[0]["cites"] == [1, 2]
-    assert "도착" in s[0]["text"] and "[seg#1, seg#2]" in s[0]["text"]
+    assert "현장에 도착한다." in s[0]["text"] and "[seg#1, seg#2]" in s[0]["text"]
 
 
 def test_structured_report_has_no_reduce_call():
@@ -509,8 +517,10 @@ def test_structured_report_has_no_reduce_call():
 
     def llm(prompt, **kw):
         calls.append(prompt)
-        lo = int(re.findall(r"seg#(\d+)", prompt)[0])
-        return json.dumps([{"event": f"사건 {lo}", "segments": [lo, lo + 1]}],
+        lo = int(re.findall(r"seg#(\d+)부터", prompt)[0])
+        return json.dumps([{"event": f"사건 {lo}", "span": [lo, lo + 1],
+                            "evidence_segments": [lo, lo + 1],
+                            "description": "충분히 긴 서술을 여기에 적어 근거당 하한을 넉넉히 넘기도록 채운다."}],
                           ensure_ascii=False)
     rep = m8.generate_report_structured(segs, llm, chunk_size=60, overlap=5)
     assert len(calls) == 3                                  # 0-59, 55-114, 110-129
@@ -532,8 +542,74 @@ def test_structured_report_regenerates_only_failed_chunk():
         seen.append(lo)
         if lo == 55 and seen.count(55) == 1:
             return "망가진 출력"                              # 첫 시도만 실패
-        return json.dumps([{"event": f"사건 {lo}", "segments": [lo]}],
+        return json.dumps([{"event": f"사건 {lo}", "span": [lo, lo],
+                            "evidence_segments": [lo],
+                            "description": "충분히 긴 서술을 적어 근거당 하한을 넘긴다."}],
                           ensure_ascii=False)
     rep = m8.generate_report_structured(segs, llm, chunk_size=60, overlap=5)
     assert len(seen) == 4                                   # 3청크 + 재생성 1회
     assert rep["chunk_retries"] == [{"chunk": 1, "recovered": True}]
+
+
+# ── span / evidence 분리 (2026-08-17) ────────────────────────────────────────
+# segments 하나가 '사건의 시간 범위'와 '서술의 근거'를 겸하고 있었다. 그래서
+# "사건을 길게 잡는 것"과 "근거를 많이 다는 것"이 구분되지 않고, 모델이 후자로
+# 커버를 올렸다(dev 3편 실측: 사건 9개로 149구간, 인용당 6.2자).
+
+def test_validate_events_rejects_thin_description():
+    # 근거당 서술량 하한. 번호만 잔뜩 붙이는 전략을 코드가 막는다.
+    from m8_report import validate_events
+    chunk = _chunk(0, 30)
+    kept, rejected = validate_events([
+        {"event": "묘 이장", "span": [0, 20], "evidence_segments": [1, 5, 9],
+         "description": "후손들이 현장에 모여 묘를 이장하며 작업 과정을 차례로 진행하고 "
+                        "주변을 정리한 뒤 마무리한다."},
+        {"event": "짧음", "span": [0, 20], "evidence_segments": [2, 6, 10],
+         "description": "이동."},                                   # 서술량 미달
+    ], chunk)
+    assert [e["event"] for e in kept] == ["묘 이장"]
+    assert rejected[0]["reason"] == "thin_description"
+
+
+def test_validate_events_rejects_evidence_faults():
+    from m8_report import validate_events, MAX_EVIDENCE_PER_EVENT
+    chunk = _chunk(0, 30)
+    base = {"description": "충분히 긴 서술을 여기에 적어 근거당 글자수를 넘긴다 " * 2}
+    kept, rejected = validate_events([
+        {**base, "event": "근거 과다", "span": [0, 25],
+         "evidence_segments": list(range(MAX_EVIDENCE_PER_EVENT + 1))},
+        {**base, "event": "중복 근거", "span": [0, 25], "evidence_segments": [3, 3, 4]},
+        {**base, "event": "span 밖 근거", "span": [0, 5], "evidence_segments": [9]},
+        {**base, "event": "span 역전", "span": [20, 3], "evidence_segments": [3]},
+    ], chunk)
+    assert kept == []
+    assert [r["reason"] for r in rejected] == [
+        "too_many_evidence", "duplicate_evidence", "evidence_outside_span", "bad_span"]
+
+
+def test_events_to_sentences_cites_evidence_not_span():
+    # 본문에는 **근거만** 인용한다. span 전체를 달면 다시 번호 나열이 된다.
+    from m8_report import events_to_sentences
+    s = events_to_sentences([{"event": "묘 이장", "span": [10, 40],
+                              "evidence_segments": [11, 25],
+                              "description": "후손들이 묘를 이장한다."}])
+    assert s[0]["cites"] == [11, 25]
+    assert "seg#40" not in s[0]["text"]
+    assert "후손들이 묘를 이장한다." in s[0]["text"]
+
+
+def test_merge_events_uses_span_overlap_not_exact_text():
+    # 표현이 조금 달라도 같은 사건이면 합친다. 완전 일치만 합치면 겹침 구간에서
+    # 온 중복이 그대로 남는다(예비 실행에서 병합 0건이었다).
+    from m8_report import merge_events
+    out = merge_events([
+        {"event": "묘 이장 작업", "span": [10, 20], "evidence_segments": [11],
+         "description": "후손들이 묘를 이장한다."},
+        {"event": "묘 이장 작업", "span": [18, 30], "evidence_segments": [25],
+         "description": "이장 작업이 이어진다."},
+        {"event": "도착", "span": [0, 5], "evidence_segments": [1],
+         "description": "현장에 도착한다."},
+    ])
+    assert [e["event"] for e in out] == ["도착", "묘 이장 작업"]
+    assert out[1]["span"] == [10, 30]
+    assert out[1]["evidence_segments"] == [11, 25]
