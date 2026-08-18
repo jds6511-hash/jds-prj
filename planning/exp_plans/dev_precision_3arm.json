@@ -1,0 +1,43 @@
+{
+  "name": "dev_precision_3arm",
+  "_prereg": "docs/preregistration/dev_precision_3arm_사전등록_2026-08-18.md (+ 보충_CI해석)",
+  "_purpose": "정밀도 장벽만 닫는다 — 캡션 모델 채택 결정이 아니다. PRIMARY는 caption-only MRR이고 α가 개입하지 않는다.",
+  "command": [
+    "{experiment_python}",
+    "docs/probes/caption_model_sweep.py",
+    "--models",
+    "qwen3vl_4b_q4,qwen3vl_4b,qwen25_3b_4bit",
+    "--prompts",
+    "P0",
+    "--out",
+    "{run_dir}/dev_precision_3arm_{stage}.json"
+  ],
+  "canary_args": [
+    "--limit",
+    "8"
+  ],
+  "full_args": [],
+  "run_root": "docs/probes/_scratch/launcher_runs",
+  "log_dir": "${EXP_LOG_DIR}",
+  "_canary_note": "--limit 8이면 sweep이 임베딩·평가를 건너뛴다. CANARY는 3 arm 모델 적재(4bit bitsandbytes 포함)와 캡션 생성 배관만 확인한다.",
+  "expected_files": [
+    "dev_precision_3arm_full.json"
+  ],
+  "canary_expected_files": [
+    "dev_precision_3arm_canary.json"
+  ],
+  "full_expected_files": [
+    "dev_precision_3arm_full.json"
+  ],
+  "requires_modules": [
+    "numpy",
+    "torch",
+    "transformers",
+    "yaml",
+    "bitsandbytes"
+  ],
+  "provenance_key": "prereg",
+  "protected_splits": [
+    "test"
+  ]
+}

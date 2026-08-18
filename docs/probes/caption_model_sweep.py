@@ -380,6 +380,20 @@ def gen_captions(cap, vids, segs_by_vid, prompt, wdirs) -> tuple[dict, dict]:
     return caps, {"retried": retried, "unresolved": still, "truncated": truncated}
 
 
+def _peak_vram_gb():
+    """**서버 GPU의** peak VRAM. 6GB 노트북 적합성 수치가 아니다 — 그래서 호출부의
+    키 이름을 `server_peak_vram_gb`로 둔다(사전등록 보충 §3)."""
+    try:
+        import torch
+        if not torch.cuda.is_available():
+            return None
+        v = round(torch.cuda.max_memory_allocated() / 1024 ** 3, 2)
+        torch.cuda.reset_peak_memory_stats()
+        return v
+    except Exception:
+        return None
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--models", default=",".join(MODELS))
@@ -409,13 +423,18 @@ def main():
     wdirs = {v: Path(common.work_dir(cfg, v)) for v in vids}
     segs = {v: (base[v].segments[:a.limit] if a.limit else base[v].segments) for v in vids}
 
+    # launcher가 `{run_dir}`를 절대경로로 넘긴다 — 그때는 그대로 쓴다. 상대경로면
+    # 예전처럼 프로브 기본 위치(`_scratch`). 이걸 안 하면 산출물이 run 디렉터리 밖에
+    # 떨어져 validator의 expected_files가 항상 FAIL이다(m8_dev_pilot 2026-08-18 실측).
     if a.out:
         global CAPDIR
-        stem = a.out[:-5] if a.out.endswith(".json") else a.out
-        CAPDIR = OUT / f"{stem}_captions"
+        op = Path(a.out)
+        rep_path = op if op.is_absolute() else OUT / op
+        CAPDIR = rep_path.with_name(rep_path.stem + "_captions")
+    else:
+        rep_path = OUT / ("caption_sweep_pilot.json" if a.limit else "caption_sweep.json")
     CAPDIR.mkdir(parents=True, exist_ok=True)
-    rep_path = OUT / (a.out if a.out else
-                      ("caption_sweep_pilot.json" if a.limit else "caption_sweep.json"))
+    rep_path.parent.mkdir(parents=True, exist_ok=True)
     rep = {"note": "dev-only, 채택 아님. 전 arm 서버 동일 환경 생성. test 미접촉.",
            "prompts": PROMPTS, "models": {k: MODELS[k] for k in models},
            "limit": a.limit, "seed": cfg["seed"],
@@ -433,6 +452,10 @@ def main():
     cur_texts = {v: [s.get("caption") or "" for s in base[v].segments] for v in vids}
     cur_rr = np.array([x["mrr"] for x in evaluate(dev, base, 0.0, cfg)["per_query"]])
     contested = [i for i, x in enumerate(cur_rr) if x < 1.0]
+    # paired 분석(`dev_precision_3arm.py`)이 arm 간 대응을 확인할 근거. arm별
+    # `rr_*` 배열은 이 순서와 1:1이다 — 순서가 밀리면 Δ가 조용히 오염된다.
+    rep["queries"] = [{"query_id": q["query_id"], "video_id": q["video_id"]}
+                      for q in dev]
     rep["prereg"] = {
         "primary": "캡션 단독 α=0.0 MRR (전체 dev 96)",
         "secondary": f"경합 부분집합 n={len(contested)} (현행이 캡션 단독에서 rank 1 아님)",
@@ -499,6 +522,9 @@ def main():
                                         if common.is_corrupted_caption(t)),
                        "truncate_rate": (round(stats["truncated"] / max(n, 1), 4)
                                          if stats["truncated"] is not None else None),
+                       # 서버 4090 측정값이다. **6GB 노트북 적합성 증명이 아니다** —
+                       # 그것은 별도 deployment validation이다(사전등록 보충 §3).
+                       "server_peak_vram_gb": _peak_vram_gb(),
                        **stats}
                 (CAPDIR / f"{mkey}__{akey(pkey)}.json").write_text(
                     json.dumps(caps, ensure_ascii=False), encoding="utf-8")
