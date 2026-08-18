@@ -3,8 +3,11 @@ cites==[] 문장은 judge 없이 자동 ungrounded. [DESIGN_SPEC 4-9, v2 14·17�
 import argparse, json, random, re
 from pathlib import Path
 import common
-from llm import make_llm
+from llm import llm_provenance, make_llm
 from m6_evaluate import load_queries
+
+# report_eval_*.json 스키마 버전. judge 원문 보존(judge_raw)이 추가된 판이 2다.
+SCHEMA_VERSION = 2
 
 _GROUNDED_PROMPT = """인용된 세그먼트의 내용이 아래 문장을 뒷받침하는지 판정하세요.
 - 문장의 주장이 세그먼트의 자막·캡션에 나타나면 true입니다. 표현이 달라도 같은
@@ -95,24 +98,27 @@ def judge_grounded(sentence: dict, cited_segments: list[dict], judge) -> bool:
 def judge_coverage(report_text: str, segment: dict, judge) -> tuple[bool, bool]:
     """리포트를 `COVERAGE_CHUNK_SENTENCES`줄씩 잘라 각각 묻고 **하나라도 true면 covered**.
 
-    반환: (covered, judge_parse_ok) — groundedness와 동일하게 truncation 진단 병기
-    [리뷰 2026-07-11 Minor].
+    반환: (covered, judge_parse_ok, raws) — groundedness와 동일하게 truncation 진단
+    병기 [리뷰 2026-07-11 Minor]. `raws`는 judge **원문 응답 목록**이다(청크마다 한
+    번 묻고 하나라도 true면 단락하므로 개수가 청크 수보다 적을 수 있다). 파싱 결과만
+    남기면 판정이 왜 그렇게 나왔는지 사후에 재검증할 수 없다.
 
     리포트를 통째로 주면 judge가 실제로 들어 있는 내용도 놓친다(합성 검증셋 재현 0.73).
     8줄 분할은 0.80·특이도 1.00이다. 4줄은 재현 0.93이지만 특이도가 0.87로 떨어져
     coverage를 부풀리므로 쓰지 않는다 — 보고값은 하한이어야 한다. [8-5(6-f)]
     """
     lines = report_text.splitlines()
-    parse_ok = True
+    parse_ok, raws = True, []
     for i in range(0, max(len(lines), 1), COVERAGE_CHUNK_SENTENCES):
         raw = judge(_COVERAGE_PROMPT.format(
             idx=segment["idx"], subtitle=_sanitize(segment["subtitle"]),
             caption=_sanitize(_clean_caption(segment["caption"])),
             report="\n".join(lines[i:i + COVERAGE_CHUNK_SENTENCES])))
         parse_ok = parse_ok and _parse_ok(raw)
+        raws.append(raw)
         if _parse_verdict(raw):
-            return True, parse_ok
-    return False, parse_ok
+            return True, parse_ok, raws
+    return False, parse_ok, raws
 
 
 def coverage_by_type(per_gt: list[dict], gt_types: dict[int, list[str]]) -> dict:
@@ -136,17 +142,21 @@ def eval_report(report: dict, segments: list[dict], gt_seg_indices: list[int],
     per_sentence = []
     for s in report["sentences"]:
         if not s["cites"]:
-            grounded, parse_ok = False, True             # 자동 ungrounded, judge 호출 없음
+            # 자동 ungrounded, judge 호출 없음 — 원문이 없는 것과 "판정 실패"는
+            # 다른 상태이므로 None으로 둔다(빈 문자열이면 구분이 안 된다)
+            grounded, parse_ok, raw = False, True, None
         else:
             raw = judge(_grounded_prompt(s, [by_idx[c] for c in s["cites"]]))
             grounded, parse_ok = _parse_verdict(raw), _parse_ok(raw)
         per_sentence.append({"sent_id": s["sent_id"], "cites": s["cites"],
-                             "grounded": grounded, "judge_parse_ok": parse_ok})
+                             "grounded": grounded, "judge_parse_ok": parse_ok,
+                             "judge_raw": raw})
     report_text = "\n".join(s["text"] for s in report["sentences"])
     per_gt = []
     for i in sorted(set(gt_seg_indices)):
-        covered, parse_ok = judge_coverage(report_text, by_idx[i], judge)
-        per_gt.append({"seg_idx": i, "covered": covered, "judge_parse_ok": parse_ok})
+        covered, parse_ok, raws = judge_coverage(report_text, by_idx[i], judge)
+        per_gt.append({"seg_idx": i, "covered": covered, "judge_parse_ok": parse_ok,
+                       "judge_raw": raws})
     # gt_seg_indices가 비면(예: video_id에 test 질의가 없는 dev 영상에 잘못 실행) 0.0으로
     # 조용히 묻히지 않도록 null로 구분 — "커버리지 0%"와 "측정 불가"는 다른 상태다.
     coverage_rate = round(sum(p["covered"] for p in per_gt) / len(per_gt), 4) if per_gt else None
@@ -162,6 +172,23 @@ def eval_report(report: dict, segments: list[dict], gt_seg_indices: list[int],
     if gt_types is not None:
         out["coverage_by_type"] = coverage_by_type(per_gt, gt_types)
     return out
+
+
+def prompt_sources() -> dict:
+    """judge 프롬프트 해시 대상. M8과 달리 M9 프롬프트는 모듈 상수라 그대로 해시한다."""
+    return {"grounded": _GROUNDED_PROMPT, "coverage": _COVERAGE_PROMPT}
+
+
+def judge_provenance(judge, cfg: dict) -> dict:
+    """평가 **후에** 부른다 — 지연 로딩이라 그 전에는 실효 모델을 알 수 없다."""
+    prov = llm_provenance(judge, role="judge", prompts=prompt_sources())
+    prov["schema_version"] = SCHEMA_VERSION
+    for k in ("judge_model", "report_model", "same_model_judge", "llm_4bit",
+              "human_check_n", "seed"):
+        if k in cfg:
+            prov[f"config_{k}"] = cfg[k]
+    prov["coverage_chunk_sentences"] = COVERAGE_CHUNK_SENTENCES
+    return prov
 
 
 def result_paths(rdir, video_id: str):
@@ -212,7 +239,9 @@ def main():
     eval_path, human_path = result_paths(rdir, args.video_id)
     common.atomic_write_json(eval_path,
                              {"video_id": args.video_id,
-                              "judge_model": cfg["judge_model"], **out})
+                              "schema_version": SCHEMA_VERSION,
+                              "judge_model": cfg["judge_model"],
+                              "provenance": judge_provenance(judge, cfg), **out})
     print(f"M9 완료: coverage={out['coverage_rate']} groundedness={out['groundedness_rate']}")
 
     if cfg.get("same_model_judge"):                     # 사람 스팟체크 자동 추출 [4-9]

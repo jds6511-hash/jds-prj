@@ -1,7 +1,11 @@
 """M8 AAR 리포트 생성: [seg#N] 인용 강제 + map-reduce. [DESIGN_SPEC 4-8, v2 13장]"""
-import argparse, json, re
+import argparse, inspect, json, re
 import common
-from llm import make_llm
+from llm import llm_provenance, make_llm
+
+# report.json 스키마 버전. 필드가 추가·의미 변경될 때만 올린다 — 어느 판본의
+# 산출물인지 파일만 보고 알 수 있어야 한다.
+SCHEMA_VERSION = 2
 
 _SYSTEM = """당신은 영상 사후검토(AAR) 리포트 작성자입니다.
 아래는 5초 단위 세그먼트별 자막(subtitle)과 장면 캡션(caption)입니다.
@@ -501,15 +505,40 @@ def generate_report_structured(segments: list[dict], llm, chunk_size: int = 60,
             "map_raw_outputs": raws, "map_retries": [], "chunk_retries": retries}
 
 
-def save_report(out, video_id: str, cfg: dict, rep: dict, n: int) -> None:
+def prompt_sources() -> dict:
+    """프롬프트 해시 대상. **M8 프롬프트는 상수가 아니라 함수**(청크마다 다른 내용을
+    끼워 넣는다)라 인스턴스를 해시하면 매 청크 값이 달라진다. 템플릿 변경을 잡으려면
+    **빌더 함수의 소스**를 해시해야 한다. `_SYSTEM`·`_EVENT_RULES`는 그 소스에
+    문자열로 들어가지 않으므로 따로 넣는다."""
+    return {"system": _SYSTEM, "event_rules": _EVENT_RULES,
+            "build_map_prompt": inspect.getsource(build_map_prompt),
+            "build_reduce_prompt": inspect.getsource(build_reduce_prompt),
+            "build_event_prompt": inspect.getsource(build_event_prompt)}
+
+
+def report_provenance(llm, cfg: dict) -> dict:
+    """생성 **후에** 부른다 — 지연 로딩이라 그 전에는 실효 모델을 알 수 없다."""
+    prov = llm_provenance(llm, role="report", prompts=prompt_sources())
+    prov["schema_version"] = SCHEMA_VERSION
+    for k in ("report_model", "llm_4bit", "map_chunk_size", "map_chunk_overlap",
+              "report_max_new_tokens"):
+        if k in cfg:
+            prov[f"config_{k}"] = cfg[k]
+    return prov
+
+
+def save_report(out, video_id: str, cfg: dict, rep: dict, n: int,
+                provenance: dict | None = None) -> None:
     """report.json을 먼저 저장한 뒤 인용 범위를 검증한다 (raw_output은 항상 보존). [DESIGN_SPEC 3-5]
 
     LLM이 out-of-range 인용을 환각해 assert가 실패해도 report.json은 이미
     기록된 상태로 남는다 (raw_output 포함). [m8m9-final-review Finding 1]
     """
     common.atomic_write_json(out, {"video_id": video_id,
+                                   "schema_version": SCHEMA_VERSION,
                                    "model": cfg["report_model"],
-                                   "map_chunk_size": cfg["map_chunk_size"], **rep})
+                                   "map_chunk_size": cfg["map_chunk_size"],
+                                   "provenance": provenance, **rep})
     # 반복 루프는 generate_report가 감지해 1회 재생성한다. 그래도 남으면 실패시킨다 —
     # 개수만 세는 검증(범위·공백·비중)은 이미 세 번 놓쳤다. [8-5(6-c)]
     ratio = distinct_ratio(rep["sentences"])
@@ -551,7 +580,9 @@ def main():
                    load_4bit=cfg.get("llm_4bit", False))
     rep = generate_report(doc["segments"], llm,
                           cfg["map_chunk_size"], cfg["map_chunk_overlap"])
-    save_report(out, args.video_id, cfg, rep, doc["n_segments"])
+    # 생성 후에 캡처한다 — 그 전에는 모델이 안 올라가 실효값을 알 수 없다
+    save_report(out, args.video_id, cfg, rep, doc["n_segments"],
+                provenance=report_provenance(llm, cfg))
     print(f"M8 완료: 문장 {len(rep['sentences'])}개 → {out}")
 
 

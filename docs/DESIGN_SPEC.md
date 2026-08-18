@@ -152,8 +152,23 @@ Whisper 발화 [t0, t1]이 겹치는 시간이 0초를 초과하는 **모든** �
 ```
 {
   "video_id": "vlog_001",
+  "schema_version": 2,                // 2 = provenance 도입 (2026-08-18)
   "model": "Qwen2.5-...-Instruct",
   "map_chunk_size": 60,               // map 단계 청크당 세그먼트 수
+  "provenance": {                     // 생성 조건 — 아래 3-5(1)
+    "role": "report", "model_loaded": true,
+    "requested_model": "...", "requested_4bit": false, "max_new_tokens": 16384,
+    "effective_model_id": "...", "effective_model_revision": "...",
+    "effective_dtype": "torch.bfloat16", "effective_quantized": false,
+    "quantization_mismatch": false,   // 요청≠실효면 true — 그 자체가 사고 신호
+    "attn_implementation": "sdpa",
+    "prompt_sha256": {"system": "...", "event_rules": "...",
+                      "build_map_prompt": "...", "build_reduce_prompt": "...",
+                      "build_event_prompt": "..."},
+    "env": {"git_head": "...", "git_dirty": false, "torch": "...",
+            "transformers": "...", "gpu": "...", "generated_at": "..."},
+    "config_report_model": "...", "config_llm_4bit": false
+  },
   "sentences": [
     {"sent_id": 0,
      "text": "영상 초반, 화자가 조리 재료를 도마 위에 준비한다",
@@ -165,6 +180,14 @@ Whisper 발화 [t0, t1]이 겹치는 시간이 0초를 초과하는 **모든** �
 ```
 
 규칙: `cites`가 빈 리스트인 문장도 저장은 하되(검열 금지), M9에서 자동으로 ungrounded 처리된다 (v2 15-1).
+
+### 3-5(1). provenance — 요청값과 실효값을 둘 다 남긴다 (2026-08-18)
+
+M3 캡션 쪽(`caption_provenance`)과 같은 원칙을 M8·M9로 확장한 것이다. 근거는 실제 사고 둘이다. ① `vlm_4bit` 플래그가 무시된 채 arm이 bf16으로 돌았고, config만 남겨서는 사후에 그것을 볼 수 없었다 — 그래서 `quantization_mismatch`를 **명시적 신호**로 만든다. ② 2026-08-17에 생성물 세 판이 왜 달랐는지 추적하다 라이브러리 버전·attention backend가 어디에도 없어 코드 경로 차이까지만 좁히고 멈췄다 — 그래서 `env`를 남긴다.
+
+**프롬프트는 해시만 남긴다.** 원문을 넣으면 결과 파일이 프롬프트 사본이 된다. **M8 프롬프트는 상수가 아니라 함수**(청크마다 다른 내용을 끼워 넣는다)라 인스턴스를 해시하면 매 청크 값이 달라진다 — 그래서 `inspect.getsource`로 **빌더 함수의 소스**를 해시한다. M9 프롬프트는 모듈 상수라 그대로 해시한다.
+
+**생성이 끝난 뒤에 캡처한다.** `llm.make_llm`은 지연 로딩이라 첫 호출 전에는 실효 모델을 알 수 없다. 호출이 한 번도 없었으면 `model_loaded: false`로 밝힌다 — 조용히 `null`로 두면 "기록됐는데 비어 있다"와 구분되지 않는다.
 
 # 4. 모듈별 명세
 
@@ -377,7 +400,8 @@ def generate_report(segments, llm, chunk_size: int = 60,
 ## 4-9. M9 AAR 평가 (v2 16~17장)
 
 - **입력:** report.json, segments.json, queries.jsonl(test), judge LLM
-- **출력:** `report_eval_<video_id>.json` — {video_id, judge_model, coverage_rate, groundedness_rate, per_sentence, per_gt_segment, coverage_by_type}
+- **출력:** `report_eval_<video_id>.json` — {video_id, **schema_version**, judge_model, **provenance**(3-5(1)), coverage_rate, groundedness_rate, per_sentence, per_gt_segment, coverage_by_type}
+  - `per_sentence[]`에 **`judge_raw`**(judge 원문 응답, 인용 없는 문장은 `null` — judge를 부르지 않았다), `per_gt_segment[]`에 **`judge_raw`**(청크마다 묻고 하나라도 true면 단락하므로 **목록**). **파싱 결과만 남기면 판정이 왜 그렇게 나왔는지 사후에 재검증할 수 없다** — `judge_parse_ok`는 파싱 실패 여부만 알려줄 뿐 응답 내용을 복원하지 못한다.
   - 파일명에 video_id를 넣는다. 고정 이름이면 test 여러 편을 평가할 때 마지막 영상 것만 남아 앞의 결과가 조용히 사라진다(2026-08-14 사고 유형 감사). `human_check_sample_<video_id>.json`도 같다.
   - `coverage_rate`·`groundedness_rate`는 **표본이 없으면 `null`** 이다. gt 세그먼트 0개 또는 리포트 문장 0개일 때 0.0으로 적으면 "측정 불가"가 "성능 0%"로 읽힌다.
   - `per_sentence` 항목: {sent_id, cites, grounded, judge_parse_ok} — `judge_parse_ok`(bool)는 judge 응답에서 판정값 파싱 성공 여부(truncation 편향 진단용). cites==[]인 문장은 judge 호출 없이 grounded=false, judge_parse_ok=true로 기록된다.

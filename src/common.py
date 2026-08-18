@@ -161,3 +161,41 @@ def is_suspicious_instruction(text: str) -> bool:
     if not text:
         return False
     return any(re.search(p, text, re.IGNORECASE) for p in _INJECTION_PATTERNS)
+
+
+def env_provenance() -> dict:
+    """실행 환경 캡처 — 어떤 코드·라이브러리·하드웨어에서 나온 산출물인지.
+
+    **왜 필요한가.** 2026-08-17에 4B 생성물 세 판이 왜 달랐는지 추적하다가, 당시
+    라이브러리 버전·attention backend가 어디에도 없어 코드 경로 차이까지만 좁히고
+    멈췄다. m3_generate.caption_provenance가 같은 항목을 캡션 쪽에서 남긴다 —
+    M8/M9도 같은 정보가 필요해 공용으로 뺀다.
+    """
+    import platform, subprocess, datetime
+
+    def _git(*a) -> str:
+        try:
+            return subprocess.run(["git", *a], cwd=Path(__file__).resolve().parents[1],
+                                  capture_output=True, encoding="utf-8",
+                                  errors="replace").stdout.strip()
+        except Exception:
+            return ""
+
+    env = {"git_head": _git("rev-parse", "HEAD"),
+           "git_dirty": bool(_git("status", "--porcelain")),
+           "python": platform.python_version(),
+           "generated_at": datetime.datetime.now().isoformat(timespec="seconds")}
+    try:
+        import torch
+        env["torch"] = torch.__version__
+        env["cuda"] = torch.version.cuda
+        env["gpu"] = (torch.cuda.get_device_name(0)
+                      if torch.cuda.is_available() else None)
+    except Exception:
+        env["torch"] = env["cuda"] = env["gpu"] = None
+    try:
+        import transformers
+        env["transformers"] = transformers.__version__
+    except Exception:
+        env["transformers"] = None
+    return env

@@ -76,8 +76,10 @@ def test_judge_coverage_splits_report_and_ors_verdicts():
     def judge(prompt):
         seen.append(prompt)
         return '{"match": true}' if "문장17" in prompt else '{"match": false}'
-    covered, ok = judge_coverage(report, {"idx": 1, "subtitle": "s", "caption": "c"}, judge)
+    covered, ok, raws = judge_coverage(
+        report, {"idx": 1, "subtitle": "s", "caption": "c"}, judge)
     assert covered is True and ok is True
+    assert len(raws) == 3                            # judge 원문도 청크마다 보존
     assert len(seen) == 3                                # 3청크째에서 발견
     for p in seen:                                       # 각 호출은 부분 리포트만 본다
         assert p.count("\n문장") <= COVERAGE_CHUNK_SENTENCES
@@ -87,8 +89,9 @@ def test_judge_coverage_short_circuits_on_first_hit():
     report = "\n".join(f"문장{i} [seg#{i}]" for i in range(COVERAGE_CHUNK_SENTENCES * 4))
     calls = []
     judge = lambda p: (calls.append(p) or '{"match": true}')
-    covered, ok = judge_coverage(report, {"idx": 1, "subtitle": "s", "caption": "c"}, judge)
-    assert covered is True and len(calls) == 1           # 첫 청크에서 확정, 나머지 생략
+    covered, ok, raws = judge_coverage(
+        report, {"idx": 1, "subtitle": "s", "caption": "c"}, judge)
+    assert covered is True and len(calls) == 1 and len(raws) == 1           # 첫 청크에서 확정, 나머지 생략
 
 def test_prompts_ask_entailment_not_symmetric_match():
     # 현행 프롬프트는 "두 내용이 일치하는지"라는 **대칭** 표현을 써서, 문장이 캡션의
@@ -176,7 +179,8 @@ def test_per_gt_records_judge_parse_ok():
     out2 = eval_report(rep, _segs(3), gt_seg_indices=[1],
                        judge=lambda p: "판정 불가")
     assert out2["per_gt_segment"][0] == {"seg_idx": 1, "covered": False,
-                                          "judge_parse_ok": False}
+                                         "judge_parse_ok": False,
+                                         "judge_raw": ["판정 불가"]}
 
 def test_coverage_by_type_breakdown_when_gt_types_given():
     # coverage_by_type: 기존 per_gt_segment를 질의 타입별로 재집계 [설계 점검 7].
