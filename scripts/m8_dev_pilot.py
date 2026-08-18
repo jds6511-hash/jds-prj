@@ -38,6 +38,12 @@ def dev_video_ids(queries_path: Path) -> list:
     return vids
 
 
+def pilot_report_path(wdir, run_id: str) -> Path:
+    """영상별 예비 산출물 경로. **run_id·stage에 귀속돼야 한다** — 이름이 같으면
+    FULL이 중간에 죽었을 때 CANARY 산출물(1편·2청크)이 full 결과 행세를 한다."""
+    return Path(wdir) / f"report_pilot_{run_id}.json"
+
+
 def catastrophic_flags(rep: dict) -> dict:
     """원 사전등록 C1과 같은 정의 — 다른 언어 이탈·조기 종료·반복 루프.
     **판정하지 않고 관측만 한다**(관문 집행은 판정 사이클의 일이다)."""
@@ -96,7 +102,7 @@ def main():
         rep = m8_report.generate_report_structured(
             segs, llm, cfg["map_chunk_size"], cfg["map_chunk_overlap"])
         # 확정 산출물을 건드리지 않는다 — 별도 파일명
-        (wdir / f"report_pilot_{a.run_id}.json").write_text(
+        pilot_report_path(wdir, a.run_id).write_text(
             json.dumps(rep, ensure_ascii=False, indent=2), encoding="utf-8")
         # 원시 산출물은 launcher REPORT 게이트 밖에 있다. 기술적으로 막지는
         # 않지만(과하다) 표식을 남긴다 — 정식 열람 경로는 REPORT뿐이다.
@@ -109,8 +115,10 @@ def main():
                         **structural_summary(rep, len(segs)),
                         **run_stats(rep),
                         "catastrophic": catastrophic_flags(rep)}
-        print(f"  {v}: 사건 {per_video[v]['valid_events']} · "
-              f"기각 {per_video[v]['rejected_events']}", flush=True)
+        # **구조 수치를 stdout에 찍지 않는다.** 로그는 REPORT 게이트 밖이라,
+        # 영상별 사건 수가 여기 찍히면 정답 목록을 쓰기 전에 사람 눈에 들어온다
+        # (2026-08-18 실측 — 배관 진단 중 `_10_000`의 사건 수가 노출됐다).
+        print(f"  {v}: 완료", flush=True)
 
     rep_all = {"probe": "m8_dev_pilot",
                "prereg": "docs/preregistration/M8_dev예비실행_사전등록_2026-08-18.md",
@@ -121,7 +129,12 @@ def main():
                    1 for s in per_video.values() if any(s["catastrophic"].values())),
                "per_video": per_video,
                "provenance": m8_report.report_provenance(llm, cfg)}
-    p = OUT / a.out
+    # launcher가 `{run_dir}`를 절대경로로 넘긴다 — 그때는 그대로 쓴다. 상대경로면
+    # 예전처럼 프로브 기본 위치. 이걸 안 하면 산출물이 run 디렉터리 밖에 떨어져
+    # validator의 expected_files가 항상 FAIL이다(2026-08-18 실측).
+    p = Path(a.out)
+    if not p.is_absolute():
+        p = OUT / p
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(rep_all, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"저장: {p}")

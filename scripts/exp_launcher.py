@@ -116,6 +116,17 @@ def run_dir(plan: dict, run_id: str, root) -> Path:
     return Path(root) / plan["run_root"] / run_id
 
 
+# CANARY와 FULL은 **같은 run_id를 공유**한다. 파생 파일 이름이 stage에 귀속되지
+# 않으면, FULL이 중간에 죽었을 때 CANARY 산출물(1편·2청크)이 full 결과 행세를 한다.
+STAGES = ("CANARY", "FULL")
+
+
+def expected_files(plan: dict, stage: str) -> list:
+    """stage별 기대 산출물. 선언이 없으면 공통 `expected_files`로 떨어진다."""
+    key = {"CANARY": "canary_expected_files", "FULL": "full_expected_files"}[stage]
+    return list(plan.get(key) or plan["expected_files"])
+
+
 def state_path(plan, run_id, root) -> Path:
     return run_dir(plan, run_id, root) / "_launcher_state.json"
 
@@ -249,6 +260,11 @@ def require_stage_approval(plan, run_id, state, stage, approve_full, approve_tes
         raise LauncherError(
             f"protected split 접촉 {touched} — FULL 승인으로는 열리지 않는다. "
             f"`--approve-test-open {run_id}`가 별도로 필요하다")
+    # 배관을 확인하지 않은 채 GPU를 몇 시간 태우지 않는다. 승인 검사 **뒤**에 둔다 —
+    # 오염 위험(protected split)이 배관 순서보다 먼저 보고돼야 한다.
+    if stage == "FULL" and not state.get("canary_validated"):
+        raise LauncherError(
+            "CANARY validator를 통과하지 않았다 — `validate`를 먼저 돌려라")
 
 
 def launch(plan, run_id, state, stage, root, dirty_recheck_sec: float = 3.0):
@@ -257,6 +273,16 @@ def launch(plan, run_id, state, stage, root, dirty_recheck_sec: float = 3.0):
     FULL 시작 시점에 깨끗해도, 리다이렉트나 런타임 파일 생성으로 **바로** 더러워지는
     유형이 있다(2×2 1차 기동의 `nohup` 로그). 6시간 뒤 validator에서 알면 늦다."""
     root = Path(root)
+    if stage not in STAGES:
+        raise LauncherError(f"알 수 없는 stage: {stage} — {STAGES} 중 하나여야 한다")
+    d = run_dir(plan, run_id, root)
+    # **stage별** 부분 산출물 검사. 정상적인 CANARY 산출물이 FULL을 막으면 안 되고,
+    # 반대로 이전 FULL 산출물 위에 덮어쓰면 provenance가 섞인다.
+    dup = [f for f in expected_files(plan, stage) if (d / f).exists()]
+    if dup:
+        raise LauncherError(
+            f"{stage}의 부분 산출물이 이미 있다({dup[:3]}) — 재개하지 않는다. "
+            f"새 run_id를 써라")
     args = plan["command"] + plan.get(
         "canary_args" if stage == "CANARY" else "full_args", [])
     # 실험 인터프리터는 precheck가 고정한 값만 쓴다 — launcher 자신의
@@ -264,7 +290,10 @@ def launch(plan, run_id, state, stage, root, dirty_recheck_sec: float = 3.0):
     py = state.get("resolved_python")
     if needs_experiment_python(plan) and not py:
         raise LauncherError("precheck가 실험 인터프리터를 고정하지 않았다 — 다시 실행하라")
-    args = [str(a).replace("{run_id}", run_id).replace(PY_TOKEN, py or "")
+    args = [str(a).replace("{run_id}", run_id)
+                  .replace("{run_dir}", str(d))
+                  .replace("{stage}", stage.lower())
+                  .replace(PY_TOKEN, py or "")
             for a in args]
     log = Path(plan["log_dir"]) / f"{plan['name']}_{run_id}_{stage.lower()}.log"
     with open(log, "w", encoding="utf-8") as f:
@@ -280,12 +309,14 @@ def launch(plan, run_id, state, stage, root, dirty_recheck_sec: float = 3.0):
     return {"returncode": rc, "log": str(log), "argv": args}
 
 
-def validate(plan, run_id, state, root, hook=None) -> tuple:
+def validate(plan, run_id, state, root, hook=None, stage="FULL") -> tuple:
     """공통 검사 + 실험별 훅. **공통화가 검증을 약하게 만들면 안 되므로** 실험별
-    검사(프롬프트 해시·arm 수·지표 스키마 등)는 훅에서 추가한다."""
+    검사(프롬프트 해시·arm 수·지표 스키마 등)는 훅에서 추가한다.
+
+    stage를 받는 이유는 **CANARY 산출물이 full 산출물로 통과하면 안 되기** 때문이다."""
     root, d = Path(root), run_dir(plan, run_id, root)
     rs = repo_state(root)
-    files = [d / f for f in plan["expected_files"]]
+    files = [d / f for f in expected_files(plan, stage)]
     present = all(f.is_file() for f in files)
     checks = {
         "expected_files_present": present,
@@ -311,9 +342,14 @@ def validate(plan, run_id, state, root, hook=None) -> tuple:
     return all(checks.values()), checks
 
 
-def finalize(plan, run_id, state, checks, ok, root) -> Path:
+def finalize(plan, run_id, state, checks, ok, root, stage="FULL") -> Path:
     """**완료 마커를 쓰는 유일한 경로.** PASS가 아니면 쓰지 않는다 —
-    "프로세스가 사라졌는가"가 아니라 이 마커가 완료 판정 근거다."""
+    "프로세스가 사라졌는가"가 아니라 이 마커가 완료 판정 근거다.
+
+    CANARY는 공식 완료로 승격하지 않는다 — 1편·2청크짜리 배관 점검일 뿐이다."""
+    if stage != "FULL":
+        raise LauncherError(
+            f"{stage}는 완료 마커를 만들지 않는다 — CANARY는 배관 점검이다")
     if not ok:
         failed = [k for k, v in checks.items() if not v]
         raise LauncherError(f"validator가 PASS가 아니다 {failed} — 완료 마커를 쓰지 않는다")
@@ -351,7 +387,8 @@ def report_inputs(plan, run_id, root) -> list:
                 f"정답 사건 목록이 아직 **동결**되지 않았다: {missing} — "
                 f"결과를 먼저 보면 사람이 사건 단위를 그쪽에 맞추게 된다. "
                 f"`event_inventory_kit.py freeze`를 먼저 하라")
-    return [d / f for f in plan["expected_files"]]
+    # CANARY 산출물은 정식 열람 대상이 아니다 — FULL 것만 낸다
+    return [d / f for f in expected_files(plan, "FULL")]
 
 
 # ---- CLI -----------------------------------------------------------------
@@ -392,9 +429,21 @@ def main():
         return 0 if r["returncode"] == 0 else 1
 
     if a.stage == "validate":
-        ok, checks = validate(plan, a.run_id, st, root)
-        print(json.dumps(checks, ensure_ascii=False, indent=2))
-        m = finalize(plan, a.run_id, st, checks, ok, root)
+        # 무엇을 검증하는지는 **직전에 무엇을 돌렸는지**로 정한다
+        vstage = st.get("stage", "FULL")
+        ok, checks = validate(plan, a.run_id, st, root, stage=vstage)
+        print(json.dumps({"validated_stage": vstage, **checks},
+                         ensure_ascii=False, indent=2))
+        if vstage == "CANARY":
+            if not ok:
+                raise LauncherError(
+                    f"CANARY validator FAIL {[k for k, v in checks.items() if not v]}")
+            st["canary_validated"] = True
+            sp.write_text(json.dumps(st, ensure_ascii=False, indent=2),
+                          encoding="utf-8")
+            print("CANARY PASS — 배관만 확인했다. 완료 마커는 만들지 않는다")
+            return 0
+        m = finalize(plan, a.run_id, st, checks, ok, root, stage=vstage)
         print(f"PASS — 완료 마커: {m}")
         return 0
 

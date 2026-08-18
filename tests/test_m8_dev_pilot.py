@@ -63,3 +63,25 @@ def test_run_stats_recovery_rate_none_when_no_retries():
     """재시도가 0건이면 비율은 0.0이 아니라 **측정 불가**다."""
     assert P.run_stats({"map_raw_outputs": ["x"],
                         "chunk_retries": []})["chunk_retry_recovery_rate"] is None
+
+
+# ---- run/stage 귀속 (2026-08-18 배관 결함 3건) ------------------------------
+
+def test_pilot_report_path_is_scoped_to_run_and_stage(tmp_path):
+    """서로 다른 run·stage가 같은 파일을 덮어쓰면 안 된다."""
+    a = P.pilot_report_path(tmp_path, "r1_canary")
+    b = P.pilot_report_path(tmp_path, "r1_full")
+    c = P.pilot_report_path(tmp_path, "r2_full")
+    assert len({a, b, c}) == 3
+    assert a.name == "report_pilot_r1_canary.json"
+
+
+def test_plan_scopes_output_and_run_id_by_stage():
+    """계획이 `{stage}`를 넘기지 않으면 CANARY 산출물이 FULL 자리에 남는다."""
+    plan = json.loads((ROOT / "planning" / "exp_plans" / "m8_dev_pilot.json")
+                      .read_text(encoding="utf-8"))
+    argv = " ".join(plan["command"])
+    assert "{run_dir}" in argv and "{stage}" in argv
+    i = plan["command"].index("--run-id")
+    assert "{stage}" in plan["command"][i + 1]
+    assert plan["canary_expected_files"] != plan["full_expected_files"]

@@ -185,6 +185,7 @@ def test_full_approval_does_not_grant_test_open(repo, tmp_path):
                              full_args=["--queries", "queries_test.jsonl"]),
                        root=repo)
     st = L.precheck(plan, "r1", root=repo)
+    st["canary_validated"] = True
     L.require_stage_approval(plan, "r1", st, stage="FULL",
                              approve_full="r1", approve_test_open="r1")   # 통과
 
@@ -362,6 +363,105 @@ def test_plan_hash_excludes_resolved_env_values(repo, tmp_path, monkeypatch):
     monkeypatch.setenv("EXP_LOG_DIR", str(tmp_path / "b"))
     h2 = L.plan_hash(L.load_plan(f, root=repo))
     assert h1 == h2
+
+
+# ---- stage 분리 ----------------------------------------------------------
+#
+# CANARY와 FULL이 **같은 run_id를 공유**한다. 산출물 이름이 같으면 FULL이 중간에
+# 죽었을 때 CANARY 파일(1편·2청크)이 full 결과 행세를 한다 — 2026-08-18 실측.
+# 그래서 모든 파생 파일이 stage에 귀속돼야 한다.
+
+def _stageplan(repo, tmp_path, **over):
+    over.setdefault("command", [
+        sys.executable, "-c",
+        "import sys,pathlib; pathlib.Path(sys.argv[1]).write_text('{\"provenance\":1}')",
+        "{run_dir}/out_{stage}.json"])
+    over.setdefault("canary_expected_files", ["out_canary.json"])
+    over.setdefault("full_expected_files", ["out_full.json"])
+    return _plan(repo, tmp_path, **over)
+
+
+def test_run_dir_token_matches_actual_run_dir(repo, tmp_path):
+    plan = L.load_plan(_stageplan(repo, tmp_path), root=repo)
+    st = L.precheck(plan, "r1", root=repo)
+    r = L.launch(plan, "r1", st, stage="CANARY", root=repo, dirty_recheck_sec=0.1)
+    outs = [Path(x) for x in r["argv"] if x.endswith("out_canary.json")]
+    assert outs == [L.run_dir(plan, "r1", repo) / "out_canary.json"]
+
+
+def test_canary_and_full_write_different_files(repo, tmp_path):
+    plan = L.load_plan(_stageplan(repo, tmp_path), root=repo)
+    st = L.precheck(plan, "r1", root=repo)
+    L.launch(plan, "r1", st, stage="CANARY", root=repo, dirty_recheck_sec=0.1)
+    st["canary_validated"] = True
+    L.launch(plan, "r1", st, stage="FULL", root=repo, dirty_recheck_sec=0.1)
+    d = L.run_dir(plan, "r1", repo)
+    assert (d / "out_canary.json").is_file() and (d / "out_full.json").is_file()
+
+
+def test_full_starts_even_though_canary_output_exists(repo, tmp_path):
+    """정상 CANARY 산출물이 FULL을 막으면 안 된다."""
+    plan = L.load_plan(_stageplan(repo, tmp_path), root=repo)
+    st = L.precheck(plan, "r1", root=repo)
+    L.launch(plan, "r1", st, stage="CANARY", root=repo, dirty_recheck_sec=0.1)
+    st["canary_validated"] = True
+    assert L.launch(plan, "r1", st, stage="FULL", root=repo,
+                    dirty_recheck_sec=0.1)["returncode"] == 0
+
+
+def test_full_refused_when_full_output_already_exists(repo, tmp_path):
+    """재개하지 않는다 — 이전 FULL 산출물이 있으면 새 run_id를 쓴다."""
+    plan = L.load_plan(_stageplan(repo, tmp_path), root=repo)
+    st = L.precheck(plan, "r1", root=repo)
+    st["canary_validated"] = True
+    (L.run_dir(plan, "r1", repo) / "out_full.json").write_text("{}", encoding="utf-8")
+    with pytest.raises(L.LauncherError, match="부분 산출물"):
+        L.launch(plan, "r1", st, stage="FULL", root=repo, dirty_recheck_sec=0.1)
+
+
+def test_canary_refused_when_canary_output_already_exists(repo, tmp_path):
+    plan = L.load_plan(_stageplan(repo, tmp_path), root=repo)
+    st = L.precheck(plan, "r1", root=repo)
+    (L.run_dir(plan, "r1", repo) / "out_canary.json").write_text("{}", encoding="utf-8")
+    with pytest.raises(L.LauncherError, match="부분 산출물"):
+        L.launch(plan, "r1", st, stage="CANARY", root=repo, dirty_recheck_sec=0.1)
+
+
+def test_canary_pass_does_not_write_run_complete(repo, tmp_path):
+    """CANARY는 공식 완료로 승격하지 않는다 — state에 표시만 남긴다."""
+    plan = L.load_plan(_stageplan(repo, tmp_path), root=repo)
+    st = L.precheck(plan, "r1", root=repo)
+    L.launch(plan, "r1", st, stage="CANARY", root=repo, dirty_recheck_sec=0.1)
+    ok, checks = L.validate(plan, "r1", st, root=repo, stage="CANARY")
+    assert ok
+    with pytest.raises(L.LauncherError, match="CANARY"):
+        L.finalize(plan, "r1", st, checks, ok, root=repo, stage="CANARY")
+    assert not (L.run_dir(plan, "r1", repo) / "RUN_COMPLETE.json").exists()
+
+
+def test_full_validator_does_not_accept_canary_output(repo, tmp_path):
+    """CANARY 파일만 있는 상태에서 FULL validator가 통과하면 안 된다."""
+    plan = L.load_plan(_stageplan(repo, tmp_path), root=repo)
+    st = L.precheck(plan, "r1", root=repo)
+    L.launch(plan, "r1", st, stage="CANARY", root=repo, dirty_recheck_sec=0.1)
+    ok, checks = L.validate(plan, "r1", st, root=repo, stage="FULL")
+    assert not ok and checks["expected_files_present"] is False
+
+
+def test_full_refused_without_canary_validation(repo, tmp_path):
+    """CANARY validator를 통과하지 않은 채 FULL로 갈 수 없다."""
+    plan = L.load_plan(_stageplan(repo, tmp_path), root=repo)
+    st = L.precheck(plan, "r1", root=repo)
+    with pytest.raises(L.LauncherError, match="CANARY"):
+        L.require_stage_approval(plan, "r1", st, "FULL", approve_full="r1",
+                                 approve_test_open=None)
+
+
+def test_stage_token_rejects_unknown_stage(repo, tmp_path):
+    plan = L.load_plan(_stageplan(repo, tmp_path), root=repo)
+    st = L.precheck(plan, "r1", root=repo)
+    with pytest.raises(L.LauncherError, match="stage"):
+        L.launch(plan, "r1", st, stage="SMOKE", root=repo, dirty_recheck_sec=0.1)
 
 
 # ---- 환경변수 로그 경로 (공개 저장소에 서버 계정명을 박지 않기 위함) ---------

@@ -6,7 +6,9 @@
     "--config",
     "config_server.yaml",
     "--out",
-    "{run_id}/m8_dev_pilot.json"
+    "{run_dir}/m8_dev_pilot_{stage}.json",
+    "--run-id",
+    "{run_id}_{stage}"
   ],
   "canary_args": [
     "--limit-videos",
@@ -18,7 +20,13 @@
   "run_root": "docs/probes/_scratch/launcher_runs",
   "log_dir": "${EXP_LOG_DIR}",
   "expected_files": [
-    "m8_dev_pilot.json"
+    "m8_dev_pilot_full.json"
+  ],
+  "canary_expected_files": [
+    "m8_dev_pilot_canary.json"
+  ],
+  "full_expected_files": [
+    "m8_dev_pilot_full.json"
   ],
   "requires_modules": [
     "numpy",
