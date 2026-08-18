@@ -29,7 +29,7 @@
     python scripts/exp_launcher.py validate --plan p.json --run-id r1
     python scripts/exp_launcher.py report   --plan p.json --run-id r1
 """
-import argparse, datetime, hashlib, io, json, subprocess, sys, time
+import argparse, datetime, hashlib, io, json, os, subprocess, sys, time
 from pathlib import Path
 
 # validator 로직이 바뀌면 올린다 — 어떤 판본이 이 결과를 승인했는지 마커에 남는다
@@ -67,6 +67,13 @@ def load_plan(path, root) -> dict:
     missing = [k for k in REQUIRED_PLAN_KEYS if k not in plan]
     if missing:
         raise LauncherError(f"계획에 필수 키 누락: {missing}")
+    # 서버 로그 경로에는 계정명이 들어가는데 계획 파일은 추적된다(공개 저장소).
+    # `${EXP_LOG_DIR}` 같은 환경변수로 두고 실행 시점에 확장한다.
+    plan["log_dir"] = os.path.expandvars(plan["log_dir"])
+    if "$" in plan["log_dir"]:
+        raise LauncherError(
+            f"log_dir의 환경변수가 확장되지 않았다: {plan['log_dir']} — "
+            f"실행 전에 export 하라")
     # nohup 리다이렉트가 repo 안에 로그를 만들어 트리를 더럽힌 사고(2026-08-17).
     # 주의사항이 아니라 여기서 막는다.
     log = Path(plan["log_dir"]).resolve()

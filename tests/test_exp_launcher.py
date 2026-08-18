@@ -276,3 +276,18 @@ def test_launch_aborts_when_tree_dirtied_by_spawn(repo, tmp_path):
     st = L.precheck(plan, "r1", root=repo)
     with pytest.raises(L.LauncherError, match="시작 직후"):
         L.launch(plan, "r1", st, stage="CANARY", root=repo, dirty_recheck_sec=1.0)
+
+
+# ---- 환경변수 로그 경로 (공개 저장소에 서버 계정명을 박지 않기 위함) ---------
+
+def test_log_dir_env_var_is_expanded(repo, tmp_path, monkeypatch):
+    monkeypatch.setenv("EXP_LOG_DIR", str(tmp_path / "srvlogs"))
+    plan = L.load_plan(_plan(repo, tmp_path, log_dir="${EXP_LOG_DIR}"), root=repo)
+    assert plan["log_dir"] == str(tmp_path / "srvlogs")
+
+
+def test_unexpanded_env_var_is_refused(repo, tmp_path, monkeypatch):
+    """확장 실패를 조용히 넘기면 repo 안에 `${EXP_LOG_DIR}` 디렉터리가 생긴다."""
+    monkeypatch.delenv("EXP_LOG_DIR", raising=False)
+    with pytest.raises(L.LauncherError, match="확장되지 않았다"):
+        L.load_plan(_plan(repo, tmp_path, log_dir="${EXP_LOG_DIR}"), root=repo)

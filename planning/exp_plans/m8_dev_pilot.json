@@ -1,0 +1,13 @@
+{
+  "name": "m8_dev_pilot",
+  "command": ["python", "scripts/m8_dev_pilot.py",
+              "--config", "config_server.yaml",
+              "--out", "{run_id}/m8_dev_pilot.json"],
+  "canary_args": ["--limit-videos", "1", "--limit-chunks", "2"],
+  "full_args": [],
+  "run_root": "docs/probes/_scratch/launcher_runs",
+  "log_dir": "${EXP_LOG_DIR}",
+  "expected_files": ["m8_dev_pilot.json"],
+  "provenance_key": "provenance",
+  "protected_splits": ["test"]
+}
