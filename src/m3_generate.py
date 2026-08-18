@@ -1,4 +1,4 @@
-"""M3 자막·캡션 생성. 자막: faster-whisper(stt_test/stt_local.py 검증 설정 차용),
+"""M3 자막·캡션 생성. 자막: faster-whisper(archive/초기탐색/stt_test/stt_local.py 검증 설정 차용),
 캡션: Qwen2.5-VL(caption/qwen_caption_test 검증 설정 차용). [DESIGN_SPEC 4-3]"""
 import argparse, json, os, re, sys
 from pathlib import Path
