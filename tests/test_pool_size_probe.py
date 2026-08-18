@@ -239,6 +239,32 @@ def test_grid_is_declared_in_advance():
     assert P.SMALL_POOL == 12
 
 
+# ---- 계약 4: universe 무결성 (P1-b) ---------------------------------------
+
+def test_global_universe_has_no_duplicate_or_missing_ids():
+    caps = {"v1": ["a", "b"], "v2": ["c", "d", "e"]}
+    ids = P.global_segment_ids(caps)
+    assert ids == ["v1#0", "v1#1", "v2#0", "v2#1", "v2#2"]
+    assert len(ids) == len(set(ids)) == sum(len(v) for v in caps.values())
+
+
+def test_global_universe_is_identical_for_every_arm():
+    a = {"v1": ["a", "b"], "v2": ["c"]}
+    b = {"v1": ["X", "Y"], "v2": ["Z"]}                        # 다른 캡션, 같은 구조
+    assert P.global_segment_ids(a) == P.global_segment_ids(b)
+
+
+def test_global_universe_refuses_arm_shape_mismatch():
+    a = {"v1": ["a", "b"], "v2": ["c"]}
+    b = {"v1": ["X"], "v2": ["Z"]}                             # 세그먼트 수가 다르다
+    with pytest.raises(P.ProbeError, match="세그먼트 수"):
+        P.check_arm_shapes({"A": a, "B": b})
+
+
+def test_universe_mode_is_explicit():
+    assert P.UNIVERSE_MODES == ("within_video", "global")
+
+
 # ---- 계약 9: cp949 콘솔 --------------------------------------------------
 
 def test_cli_output_is_ascii_safe():
@@ -262,6 +288,92 @@ def test_cli_survives_cp949_console():
                         "--help"], capture_output=True, text=True, env=env)
     assert r.returncode == 0, r.stderr[-400:]
     assert r.stdout.isascii()
+
+
+# ---- 창에 담을 수 없는 gold — 명시 제외만 허용 ---------------------------
+
+WIDE = {"q1": ["vA#0", "vA#39"], "q2": ["vA#30"]}              # 범위 40 > 창 12
+
+
+def test_unwindowable_gold_fails_closed_by_default():
+    """조용히 버리지 않는다. 제외는 명령줄에 이름을 적어야 한다."""
+    with pytest.raises(P.ProbeError, match="범위"):
+        P.analyze(_orders({"q1": "vA#0", "q2": "vA#30"},
+                          {"q1": "vA#0", "q2": "vA#30"}),
+                  Q, UNIV, WIDE, {"cand": "A4B", "cur": "A3B"}, "t",
+                  rule="P1a_local_window_12")
+
+
+def test_explicit_exclusion_is_recorded_and_applies_to_all_arms():
+    r = P.analyze(_orders({"q1": "vA#0", "q2": "vA#30"},
+                          {"q1": "vA#0", "q2": "vA#30"}),
+                  Q, UNIV, WIDE, {"cand": "A4B", "cur": "A3B"}, "t",
+                  rule="P1a_local_window_12", exclude=("q1",))
+    assert r["excluded_queries"] == ["q1"]
+    assert r["n_queries"] == 1                                 # 분모가 줄었다고 적힌다
+    assert r["excluded_reason"]
+
+
+def test_reproduction_gate_uses_full_set_even_when_excluding():
+    """게이트는 임베딩 경로 검증이다 — 제외 때문에 게이트를 잃으면 안 된다.
+
+    q1만 gold 1위, q2는 gold 최하위 → 96(여기선 2)질의 전체 평균은 (1+1/40)/2.
+    q1을 제외하면 조작 지표는 q2만 쓰지만 게이트는 여전히 전체로 잰다.
+    """
+    orders = {"A4B": {"q1": ["vA#0"] + [s for s in SEGS if s != "vA#0"],
+                      "q2": [s for s in SEGS if s != "vA#30"] + ["vA#30"]},
+              "A3B": {"q1": ["vA#0"] + [s for s in SEGS if s != "vA#0"],
+                      "q2": [s for s in SEGS if s != "vA#30"] + ["vA#30"]}}
+    want = round((1.0 + 1.0 / 40) / 2, 4)
+    r = P.analyze(orders, Q, UNIV, WIDE, {"cand": "A4B", "cur": "A3B"}, "t",
+                  rule="P1a_local_window_12",
+                  stored_mrr={"A4B": want, "A3B": want}, exclude=("q1",))
+    assert all(v["match"] for v in r["reproduction_check"].values())
+    assert r["reproduction_check"]["A4B"]["n_queries"] == 2      # 게이트는 전체
+    assert r["n_queries"] == 1                                   # 조작 지표는 제외 후
+
+
+def test_gate_universe_is_the_original_experimental_condition():
+    """확대 조작에서는 `full`이 원 조건이 아니다 — 게이트는 원 조건에서 잰다.
+
+    AI Hub를 2,328로 확대하면 전체 풀 MRR은 당연히 저장값(영상 내 12)과 다르다.
+    그때 게이트를 끄면 임베딩 검증을 잃는다. 전체 순위를 원래 후보로 되돌려
+    재는 것이 맞다.
+    """
+    small = SEGS[:12]
+    orders = {"A4B": {"q1": list(SEGS), "q2": list(SEGS)},
+              "A3B": {"q1": list(SEGS), "q2": list(SEGS)}}
+    gold = {"q1": ["vA#3"], "q2": ["vA#7"]}
+    # 원 조건(앞 12개)에서는 gold가 4위·8위 → (1/4 + 1/8)/2
+    want = round((1 / 4 + 1 / 8) / 2, 4)
+    r = P.analyze(orders, Q, UNIV, gold, {"cand": "A4B", "cur": "A3B"}, "t",
+                  grid=(12,), stored_mrr={"A4B": want, "A3B": want},
+                  gate_universe={"vA": small})
+    assert all(v["match"] for v in r["reproduction_check"].values())
+    assert r["reproduction_check"]["A4B"]["gate_universe"] == "explicit"
+
+
+def test_gate_defaults_to_manipulation_universe():
+    orders = _orders({"q1": "vA#5", "q2": "vA#30"}, {"q1": "vA#5", "q2": "vA#30"})
+    r = P.analyze(orders, Q, UNIV, GOLD, {"cand": "A4B", "cur": "A3B"}, "t",
+                  stored_mrr={"A4B": 1.0, "A3B": 1.0})
+    assert r["reproduction_check"]["A4B"]["gate_universe"] == "full_pool"
+
+
+def test_exclusion_of_unknown_query_id_is_refused():
+    with pytest.raises(P.ProbeError, match="제외"):
+        P.analyze(_orders({"q1": "vA#5", "q2": "vA#30"},
+                          {"q1": "vA#5", "q2": "vA#30"}),
+                  Q, UNIV, GOLD, {"cand": "A4B", "cur": "A3B"}, "t",
+                  exclude=("nope",))
+
+
+def test_no_exclusion_means_key_absent_not_empty_lie():
+    r = P.analyze(_orders({"q1": "vA#5", "q2": "vA#30"},
+                          {"q1": "vA#5", "q2": "vA#30"}),
+                  Q, UNIV, GOLD, {"cand": "A4B", "cur": "A3B"}, "t")
+    assert r["excluded_queries"] == []
+    assert r["n_queries"] == 2
 
 
 # ---- 계약 8: parity 어휘 --------------------------------------------------

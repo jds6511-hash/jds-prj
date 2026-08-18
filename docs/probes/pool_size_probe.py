@@ -44,6 +44,25 @@ class ProbeError(RuntimeError):
     pass
 
 
+UNIVERSE_MODES = ("within_video", "global")
+
+
+def global_segment_ids(caps: dict) -> list:
+    """전체 풀의 세그먼트 ID. 영상 이름 정렬 고정이라 arm·실행에 무관하게 같다."""
+    return [f"{v}#{i}" for v in sorted(caps) for i in range(len(caps[v]))]
+
+
+def check_arm_shapes(caps_by_arm: dict) -> None:
+    """arm들이 같은 세그먼트 구조를 갖는지. 다르면 universe가 arm에 의존한다."""
+    shapes = {a: {v: len(c) for v, c in caps.items()}
+              for a, caps in caps_by_arm.items()}
+    ref_arm, ref = next(iter(shapes.items()))
+    for a, s in shapes.items():
+        if s != ref:
+            bad = sorted(v for v in set(s) | set(ref) if s.get(v) != ref.get(v))
+            raise ProbeError(f"arm 간 세그먼트 수 불일치: {ref_arm} vs {a} — {bad[:5]}")
+
+
 def parity_audit(sweep: dict, keys: list) -> dict:
     """parity 어휘를 재사용한다 — 기록 없음은 `unknown_not_recorded`이고 PASS도
     FAIL도 아니다. 두 번째 구현을 만들면 한쪽이 그 상태를 잃는다."""
@@ -125,11 +144,15 @@ def score_order(cap_emb: np.ndarray, q_emb: np.ndarray, seg_ids: list) -> list:
 
 def analyze(orders: dict, queries: list, universe: dict, gold: dict,
             arms: dict, run_tag: str, grid=DEV_GRID, rule: str = PRIMARY_RULE,
-            stored_mrr: dict = None) -> dict:
+            stored_mrr: dict = None, exclude=(), gate_universe: dict = None) -> dict:
     """`orders[arm][query_id]` = 전체 순위(세그먼트 ID 목록).
 
     `arms` = {"cand": arm_key, "cur": arm_key}. `stored_mrr`가 주어지면 전체 풀
     재현 게이트를 적용한다.
+
+    `exclude`는 **명시 목록만** 받는다. 창에 담을 수 없는 gold를 코드가 알아서
+    버리면 분모가 조용히 줄어든다 — 제외는 명령줄에 이름을 적고 산출물에
+    기록한다. 제외는 모든 arm·모든 풀 크기에 같이 적용돼 대응이 유지된다.
     """
     for role in ("cand", "cur"):
         if arms.get(role) not in orders:
@@ -137,6 +160,14 @@ def analyze(orders: dict, queries: list, universe: dict, gold: dict,
     qids = [q["query_id"] for q in queries]
     if len(set(qids)) != len(qids):
         raise ProbeError("query_id 중복")
+    exclude = list(exclude)
+    unknown = [q for q in exclude if q not in set(qids)]
+    if unknown:
+        raise ProbeError(f"제외 목록에 없는 query_id: {unknown}")
+    all_queries = list(queries)          # 재현 게이트는 제외 전 전체로 잰다
+    queries = [q for q in queries if q["query_id"] not in set(exclude)]
+    if not queries:
+        raise ProbeError("제외 후 질의가 없다")
 
     # 계약 2 — 같은 질의의 모든 arm이 동일한 후보 ID 목록을 받는다.
     # arm별로 따로 뽑으면 조작이 arm에 의존하게 된다
@@ -166,17 +197,31 @@ def analyze(orders: dict, queries: list, universe: dict, gold: dict,
            "candidate_rule": rule, "candidate_rule_version": RULE_VERSION,
            "run_tag": run_tag, "arms": dict(arms),
            "n_queries": len(queries), "grid": list(grid),
+           "excluded_queries": exclude,
+           "excluded_reason": ("gold 범위가 창보다 넓어 연속 창에 담을 수 없다 — "
+                              "구조적 GT 속성이고 성능을 보고 고른 것이 아니다"
+                               if exclude else None),
            "mrr": {role: {str(k): round(float(v.mean()), 4)
                           for k, v in rr[role].items()} for role in rr}}
 
-    # 재현 게이트 — 완화(임베딩 재계산)를 검증 가능하게 만드는 장치다
+    # 재현 게이트 — 완화(임베딩 재계산)를 검증 가능하게 만드는 장치다.
+    # **제외 전 전체 질의로 잰다** — 제외 때문에 게이트를 잃으면 안 된다
     if stored_mrr:
+        # 확대 조작에서는 `full`이 원 조건이 아니다 — 원 조건을 명시로 받는다
+        gu = gate_universe or universe
         rep = {}
         for role in ("cand", "cur"):
-            got = round(float(rr[role]["full"].mean()), 4)
-            want = stored_mrr.get(arms[role])
-            rep[arms[role]] = {"recomputed": got, "stored": want,
-                               "match": want is not None and got == round(want, 4)}
+            a = arms[role]
+            full = np.array([restricted_rr(orders[a][q["query_id"]],
+                                           gold[q["query_id"]],
+                                           gu[q["video_id"]])
+                             for q in all_queries])
+            got = round(float(full.mean()), 4)
+            want = stored_mrr.get(a)
+            rep[a] = {"recomputed": got, "stored": want,
+                      "n_queries": len(all_queries),
+                      "gate_universe": "explicit" if gate_universe else "full_pool",
+                      "match": want is not None and got == round(want, 4)}
         out["reproduction_check"] = rep
         bad = [k for k, v in rep.items() if not v["match"]]
         if bad:
@@ -248,6 +293,67 @@ def load_dev(sweep_path, caption_dir, cfg_path=None) -> tuple:
     return orders, qs, universe, gold, stored, shas
 
 
+def load_aihub(twox2_path, caption_dir, universe_mode: str,
+               cfg_path=None) -> tuple:
+    """AI Hub — 영상당 12세그먼트뿐이라 **확대는 영상 경계를 넘는다**(보충1 §2-3).
+
+    `within_video`는 원 실행 조건(후보 12)이고 재현 게이트의 기준이다.
+    `global`은 2,328 전체 풀이며 풀 크기 **+ 영상 간 혼동**을 동시에 바꾼다.
+    """
+    import common
+    from m4_index import embed_texts
+    from m5_search import expand_query
+    if universe_mode not in UNIVERSE_MODES:
+        raise ProbeError(f"universe_mode: {universe_mode!r} — {UNIVERSE_MODES}")
+
+    cfg = common.load_config(cfg_path or ROOT / "config_aihub.yaml")
+    rep = json.loads(Path(twox2_path).read_text(encoding="utf-8"))
+    qs = [json.loads(l) for l in (ROOT / "data_aihub" / "queries" /
+                                  "queries_aihub.jsonl")
+          .read_text(encoding="utf-8").splitlines() if l.strip()]
+
+    caps_by_arm, shas = {}, {}
+    for arm in rep["arms"]:
+        p = Path(caption_dir) / f"{arm.replace('/', '__')}.json"
+        if p.exists():
+            caps_by_arm[arm] = json.loads(p.read_text(encoding="utf-8"))
+            shas[arm] = caption_sha(caps_by_arm[arm])
+    if not caps_by_arm:
+        raise ProbeError(f"캡션 파일이 없다: {caption_dir}")
+    check_arm_shapes(caps_by_arm)
+
+    any_caps = next(iter(caps_by_arm.values()))
+    all_ids = global_segment_ids(any_caps)
+    per_video = {v: [f"{v}#{i}" for i in range(len(any_caps[v]))] for v in any_caps}
+    universe = ({v: all_ids for v in any_caps} if universe_mode == "global"
+                else per_video)
+    gold = {q["query_id"]: [f"{q['video_id']}#{i}" for i in q["gt_seg_idx"]]
+            for q in qs}
+
+    qemb = {}
+    for q in qs:
+        variants = expand_query(q["text"], cfg)
+        qemb[q["query_id"]] = embed_texts(
+            variants if len(variants) > 1 else [q["text"]], cfg["embed_model"])
+
+    orders = {}
+    for arm, caps in caps_by_arm.items():
+        if universe_mode == "global":
+            emb = np.vstack([embed_texts(caps[v], cfg["embed_model"])
+                             for v in sorted(caps)])
+            orders[arm] = {q["query_id"]: score_order(emb, qemb[q["query_id"]],
+                                                      all_ids) for q in qs}
+        else:
+            e = {v: embed_texts(caps[v], cfg["embed_model"]) for v in caps}
+            orders[arm] = {q["query_id"]: score_order(e[q["video_id"]],
+                                                      qemb[q["query_id"]],
+                                                      per_video[q["video_id"]])
+                           for q in qs}
+    stored = {a: v.get("cap") for a, v in rep["arms"].items()}
+    # 게이트는 항상 원 실험 조건(영상 내 12)에서 잰다
+    return orders, qs, universe, gold, stored, shas, per_video
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--sweep", required=True)
@@ -257,10 +363,24 @@ def main():
     ap.add_argument("--cur", default="qwen25_3b_4bit/P0")
     ap.add_argument("--rule", default=PRIMARY_RULE, choices=RULES)
     ap.add_argument("--run-tag", required=True)
+    ap.add_argument("--exclude", default="",
+                    help="comma-separated query_id to exclude; recorded in output")
+    ap.add_argument("--dataset", default="dev", choices=("dev", "aihub"))
+    ap.add_argument("--universe-mode", default="within_video",
+                    choices=UNIVERSE_MODES, help="aihub only")
     a = ap.parse_args()
-    orders, qs, universe, gold, stored, shas = load_dev(a.sweep, a.caption_dir)
+    ex = tuple(x for x in a.exclude.split(",") if x)
+    if a.dataset == "dev":
+        orders, qs, universe, gold, stored, shas = load_dev(a.sweep, a.caption_dir)
+        grid, gate_u = DEV_GRID, None
+    else:
+        (orders, qs, universe, gold, stored, shas,
+         gate_u) = load_aihub(a.sweep, a.caption_dir, a.universe_mode)
+        grid = AIHUB_GRID if a.universe_mode == "global" else (SMALL_POOL,)
     r = analyze(orders, qs, universe, gold, {"cand": a.cand, "cur": a.cur},
-                a.run_tag, DEV_GRID, a.rule, stored)
+                a.run_tag, grid, a.rule, stored, ex, gate_u)
+    r["dataset"] = a.dataset
+    r["universe_mode"] = a.universe_mode if a.dataset == "aihub" else "within_video"
     r["caption_sha256"] = shas
     r["source_sweep"] = str(a.sweep)
     sweep = json.loads(Path(a.sweep).read_text(encoding="utf-8"))
