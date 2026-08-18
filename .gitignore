@@ -58,7 +58,15 @@ data_aihub/
 
 # 2인 라벨링 맹검 키트 — 클립 123MB(원본 영상 파생물)이고 seed 고정이라
 # scripts/labeling_agreement.py 로 언제든 동일 재생성된다. 산출물은 추적하지 않는다.
-label_kit/
+#
+# 예외: 동결된 정답 사건 목록(`FROZEN_*.json`)은 **추적한다.** 보고하는 temporal
+# 지표의 분모라서 저장소에 없으면 결과를 재현할 수 없다. 내용은 사건 이름·시각뿐
+# (프레임·개인정보 없음). 부모 디렉터리를 통째로 ignore하면 Git이 그 아래로 내려가지
+# 않아 `!` 재포함이 먹지 않는다 — 단계별로 열고 다시 막는다.
+label_kit/*
+!label_kit/event_inventory/
+label_kit/event_inventory/*
+!label_kit/event_inventory/FROZEN_*.json
 
 # 서버 접속 정보(공개 저장소 노출 방지)
 SERVER_LOCAL.md

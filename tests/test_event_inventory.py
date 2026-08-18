@@ -175,3 +175,32 @@ def test_extra_columns_with_values_are_flagged_not_ignored():
 def test_empty_extra_columns_are_fine():
     text = "start_sec,end_sec,event,unclear,,,,\n0,35,설명,,,,,\n"
     assert K.validate(K.parse_rows(text), duration_sec=100, seg_len=5) == []
+
+
+# ---- 동결본만 git에 올라간다 (2026-08-18) ----------------------------------
+
+def _ignored(rel: str) -> bool:
+    import subprocess
+    return subprocess.run(["git", "check-ignore", "-q", rel],
+                          cwd=ROOT, capture_output=True).returncode == 0
+
+
+@pytest.mark.parametrize("rel", [
+    "label_kit/event_inventory/FROZEN_gwaktube_soviet_apartment.json",
+    "label_kit/event_inventory/FROZEN_kheritage_grave_excavation.json",
+])
+def test_frozen_reference_is_tracked(rel):
+    """**보고하는 지표의 분모다.** 저장소에 없으면 결과를 재현할 수 없다."""
+    assert not _ignored(rel), rel
+
+
+@pytest.mark.parametrize("rel", [
+    "label_kit/event_inventory/kheritage_grave_excavation.csv",     # 원본 CSV
+    "label_kit/event_inventory/README.md",
+    "label_kit/event_inventory/kheritage_grave_excavation/storyboard_01.jpg",
+    "label_kit/i1_frames/README.md",
+])
+def test_other_label_kit_files_stay_ignored(rel):
+    """예외는 `FROZEN_*.json`뿐이다 — 프레임·시트가 같이 올라가면 안 된다.
+    부모 디렉터리를 통째로 ignore하면 `!` 재포함이 먹지 않아 실수하기 쉽다."""
+    assert _ignored(rel), rel
