@@ -291,3 +291,44 @@ def test_unexpanded_env_var_is_refused(repo, tmp_path, monkeypatch):
     monkeypatch.delenv("EXP_LOG_DIR", raising=False)
     with pytest.raises(L.LauncherError, match="확장되지 않았다"):
         L.load_plan(_plan(repo, tmp_path, log_dir="${EXP_LOG_DIR}"), root=repo)
+
+
+# ---- REPORT 게이트: 정답 목록 동결 전에는 사람이 읽는 산출을 만들지 않는다 ----
+
+def _frozen(repo, vid):
+    d = repo / "out" / "inv"
+    d.mkdir(parents=True, exist_ok=True)
+    (d / f"FROZEN_{vid}.json").write_text("{}", encoding="utf-8")
+
+
+def _validated(repo, tmp_path, **over):
+    plan = L.load_plan(_plan(repo, tmp_path, **over), root=repo)
+    st = L.precheck(plan, "r1", root=repo)
+    _finish(repo, "r1")
+    ok, checks = L.validate(plan, "r1", st, root=repo)
+    L.finalize(plan, "r1", st, checks, ok, root=repo)
+    return plan
+
+
+def test_report_refused_until_inventory_frozen(repo, tmp_path):
+    """**M8 출력 → 사람 목록** 방향의 오염을 사람 주의가 아니라 코드로 막는다.
+    실행은 병렬로 해도 되지만 사람이 읽는 단계는 동결 뒤에만 연다."""
+    plan = _validated(repo, tmp_path,
+                      requires_frozen_inventory=["A", "B"], inventory_dir="out/inv")
+    _frozen(repo, "A")                                  # B는 아직 미동결
+    with pytest.raises(L.LauncherError, match="동결"):
+        L.report_inputs(plan, "r1", root=repo)
+
+
+def test_report_allowed_once_all_frozen(repo, tmp_path):
+    plan = _validated(repo, tmp_path,
+                      requires_frozen_inventory=["A", "B"], inventory_dir="out/inv")
+    _frozen(repo, "A")
+    _frozen(repo, "B")
+    assert [f.name for f in L.report_inputs(plan, "r1", root=repo)] == ["result.json"]
+
+
+def test_report_gate_absent_when_not_declared(repo, tmp_path):
+    """게이트를 선언하지 않은 실험은 영향을 받지 않는다."""
+    plan = _validated(repo, tmp_path)
+    assert L.report_inputs(plan, "r1", root=repo)

@@ -72,13 +72,18 @@ def event_temporal_alignment(refs: list, gens: list):
     return round(float(np.mean(matched_ious(refs, gens))), 4)
 
 
-def iou_recall(refs: list, gens: list, thetas=IOU_THETAS) -> dict:
-    """부지표 — `IoU ≥ θ`인 정답 사건 비율. **세 θ를 전부 보고한다.**"""
+def temporal_event_recall(refs: list, gens: list, thetas=IOU_THETAS) -> dict:
+    """부지표 — `IoU ≥ θ`인 정답 사건 비율. **세 θ를 전부 보고한다.**
+
+    이름에 `temporal`을 박는다. 이 값이 검증하는 것은 **같은 시간대의 사건을
+    분리해서 잡았는가**이지, 그 사건을 의미적으로 옳게 서술했는가가 아니다.
+    `event recall`이라고 줄여 부르면 의미 커버리지를 잰 것처럼 읽힌다 —
+    현행 M9 coverage judge는 positive accuracy 0.550으로 그 자리를 못 메운다."""
     if not refs:
-        return {str(t): None for t in thetas}
+        return {f"temporal_event_recall@IoU>={t}": None for t in thetas}
     ious = matched_ious(refs, gens)
-    return {str(t): round(sum(1 for v in ious if v >= t) / len(ious), 4)
-            for t in thetas}
+    return {f"temporal_event_recall@IoU>={t}":
+            round(sum(1 for v in ious if v >= t) / len(ious), 4) for t in thetas}
 
 
 def _union_len(events: list) -> int:

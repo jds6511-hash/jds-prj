@@ -234,10 +234,24 @@ def finalize(plan, run_id, state, checks, ok, root) -> Path:
 
 def report_inputs(plan, run_id, root) -> list:
     """REPORT가 읽어도 되는 파일. **검증된 산출물만** — 보고서를 만들다가 결과가
-    바뀌는 일을 막는다(REPORT는 재생성·재평가를 하지 않는다)."""
+    바뀌는 일을 막는다(REPORT는 재생성·재평가를 하지 않는다).
+
+    `requires_frozen_inventory`를 선언한 실험은 **정답 목록이 동결된 뒤에만** 읽을
+    수 있다. `load_reference`는 목록→분석 방향만 막는데, 반대 방향(**모델 출력을
+    먼저 보고 사람이 사건 단위를 정하는 것**)은 사람의 주의에 의존한다. 그쪽을
+    여기서 막는다 — 실행은 병렬로 해도 되지만 사람이 읽는 단계는 동결 뒤에만 연다."""
     d = run_dir(plan, run_id, root)
     if not (d / "RUN_COMPLETE.json").is_file():
         raise LauncherError(f"RUN_COMPLETE.json이 없다 — 검증되지 않은 run은 읽지 않는다")
+    need = plan.get("requires_frozen_inventory") or []
+    if need:
+        inv = Path(root) / plan.get("inventory_dir", "label_kit/event_inventory")
+        missing = [v for v in need if not (inv / f"FROZEN_{v}.json").is_file()]
+        if missing:
+            raise LauncherError(
+                f"정답 사건 목록이 아직 **동결**되지 않았다: {missing} — "
+                f"결과를 먼저 보면 사람이 사건 단위를 그쪽에 맞추게 된다. "
+                f"`event_inventory_kit.py freeze`를 먼저 하라")
     return [d / f for f in plan["expected_files"]]
 
 

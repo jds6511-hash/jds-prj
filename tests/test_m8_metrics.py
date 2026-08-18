@@ -12,8 +12,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from m8_metrics import (event_temporal_alignment, iou_recall, match_events,  # noqa: E402
-                        structural_summary, temporal_iou, timeline_span_coverage)
+from m8_metrics import (event_temporal_alignment, match_events,  # noqa: E402
+                        structural_summary, temporal_event_recall, temporal_iou,
+                        timeline_span_coverage)
 
 
 def _ev(a, b, **kw):
@@ -94,12 +95,19 @@ def test_alignment_none_when_no_references():
 
 # ---- 부지표: 임계 recall --------------------------------------------------
 
-def test_iou_recall_reports_all_three_thetas():
+def test_temporal_event_recall_reports_all_three_thetas():
     refs = [_ev(0, 9), _ev(20, 29)]
     gens = [_ev(0, 9), _ev(20, 24)]                    # 두 번째 IoU = 5/10 = 0.5
-    r = iou_recall(refs, gens)
-    assert set(r) == {"0.3", "0.5", "0.7"}
-    assert r["0.3"] == 1.0 and r["0.5"] == 1.0 and r["0.7"] == 0.5
+    r = temporal_event_recall(refs, gens)
+    assert set(r) == {f"temporal_event_recall@IoU>={t}" for t in (0.3, 0.5, 0.7)}
+    assert r["temporal_event_recall@IoU>=0.3"] == 1.0
+    assert r["temporal_event_recall@IoU>=0.7"] == 0.5
+
+
+def test_metric_names_stay_temporal_qualified():
+    """`event recall`로 줄여 부르면 의미 커버리지를 잰 것처럼 읽힌다."""
+    keys = temporal_event_recall([_ev(0, 9)], [_ev(0, 9)])
+    assert all(k.startswith("temporal_event_recall@") for k in keys)
 
 
 # ---- timeline span coverage (진단) ---------------------------------------
