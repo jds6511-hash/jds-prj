@@ -33,12 +33,15 @@ RR = "rr_caption_only"
 MRR = "mrr_caption_only"
 # 층은 **파일에 이미 있는 값**만 쓴다. 결과를 보고 새 strata를 만들지 않는다.
 ALLOWED_STRATA = ("type",)
-# 두 실험의 비교 가능성을 기계적으로 대조할 항목
-PARITY_FIELDS = ("prompt_sha256", "effective_quantized", "effective_model_revision",
+# 두 실험의 비교 가능성을 기계적으로 대조할 항목.
+# **키 이름은 산출물의 실제 키다.** 처음에 `effective_model_revision`으로 찾았는데
+# 산출물의 키는 `model_revision`이었고, 전부 None이라 항목이 조용히 사라졌다.
+# 그 공백을 "측정이 없다"로 읽었다 — 없는 것과 이름을 틀린 것은 다르다.
+PARITY_FIELDS = ("prompt_sha256", "model_id", "model_revision", "effective_quantized",
                  "attn_implementation", "dtype", "config_vlm_max_pixels",
                  "config_vlm_max_new_tokens", "config_vlm_rep_penalty")
 # arm마다 다른 것이 정상인 항목 — 불일치를 결함으로 세지 않는다
-PARITY_EXPECTED_TO_DIFFER = ("effective_model_revision", "effective_quantized")
+PARITY_EXPECTED_TO_DIFFER = ("model_id", "model_revision", "effective_quantized")
 
 
 class DiagError(RuntimeError):
@@ -68,14 +71,25 @@ def _dist(d: np.ndarray) -> dict:
 
 
 def _parity(sweep: dict, keys: list) -> dict:
+    """선언한 필드를 **전부** 낸다. 기록이 없는 것은 PASS도 FAIL도 아니다.
+
+    빠진 항목을 조용히 지우면 사람이 그 공백을 못 본다. `match`는 판정이 가능할
+    때만 bool이고, 기록이 없거나 일부만 있으면 `None`이다 — `False`로 두면
+    불일치로 읽힌다.
+    """
     arms = sweep["arms"]
     out = {}
     for f in PARITY_FIELDS:
         vals = {k: (arms[k].get("provenance") or {}).get(f) for k in keys}
-        if all(v is None for v in vals.values()):
-            continue
-        out[f] = {"values": vals,
-                  "match": len(set(map(str, vals.values()))) == 1,
+        n_missing = sum(v is None for v in vals.values())
+        if n_missing == len(vals):
+            status, match = "unknown_not_recorded", None
+        elif n_missing:
+            status, match = "partially_recorded", None
+        else:
+            match = len(set(map(str, vals.values()))) == 1
+            status = "match" if match else "mismatch"
+        out[f] = {"values": vals, "status": status, "match": match,
                   "expected_to_differ": f in PARITY_EXPECTED_TO_DIFFER}
     return out
 

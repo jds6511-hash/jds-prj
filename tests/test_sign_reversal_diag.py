@@ -25,21 +25,27 @@ def _sweep(cand, cur, bf16=None):
     arms = {"qwen3vl_4b_q4/P0": {"rr_caption_only": cand,
                                  "mrr_caption_only": round(sum(cand) / len(cand), 4),
                                  "corrupted": 14, "len_mean": 82.0,
-                                 "provenance": {"effective_model_revision": "r4",
+                                 "provenance": {"model_id": "4B",
+                                                "model_revision": "r4",
                                                 "effective_quantized": True,
+                                                "dtype": "torch.bfloat16",
                                                 "prompt_sha256": "p"}},
             "qwen25_3b_4bit/P0": {"rr_caption_only": cur,
                                   "mrr_caption_only": round(sum(cur) / len(cur), 4),
                                   "corrupted": 3, "len_mean": 131.4,
-                                  "provenance": {"effective_model_revision": "r3",
+                                  "provenance": {"model_id": "3B",
+                                                 "model_revision": "r3",
                                                  "effective_quantized": True,
+                                                 "dtype": "torch.bfloat16",
                                                  "prompt_sha256": "p"}}}
     if bf16:
         arms["qwen3vl_4b/P0"] = {"rr_caption_only": bf16,
                                  "mrr_caption_only": round(sum(bf16) / len(bf16), 4),
                                  "corrupted": 15, "len_mean": 71.9,
-                                 "provenance": {"effective_model_revision": "r4",
+                                 "provenance": {"model_id": "4B",
+                                                "model_revision": "r4",
                                                 "effective_quantized": False,
+                                                "dtype": "torch.bfloat16",
                                                 "prompt_sha256": "p"}}
     return {"queries": Q, "arms": arms}
 
@@ -110,7 +116,45 @@ def test_parity_audit_reports_fields_and_mismatches():
     assert p["effective_quantized"]["values"] == {"qwen3vl_4b_q4/P0": True,
                                                  "qwen25_3b_4bit/P0": True}
     # 모델 revision은 arm마다 다른 것이 정상 — 불일치로 세지 않는다
-    assert "effective_model_revision" in p
+    assert p["model_revision"]["expected_to_differ"] is True
+
+
+def test_every_declared_parity_field_appears():
+    """선언한 필드가 조용히 빠지면 안 된다.
+
+    실제 사고: `effective_model_revision`이라는 이름으로 찾았는데 산출물의 키는
+    `model_revision`이었다. 전부 None이라 항목이 그냥 사라지고, 그것을 "측정이
+    없다"로 읽었다. 없는 것과 이름을 틀린 것은 다르다.
+    """
+    r = D.analyze(_sweep(CAND, CUR), Q)
+    assert set(r["parity_audit"]) == set(D.PARITY_FIELDS)
+
+
+def test_unrecorded_field_is_neither_pass_nor_fail():
+    """기록이 없으면 `unknown_not_recorded`다 — PASS도 FAIL도 아니다."""
+    s = _sweep(CAND, CUR)
+    for k in ("qwen3vl_4b_q4/P0", "qwen25_3b_4bit/P0"):
+        s["arms"][k]["provenance"].pop("dtype", None)
+    r = D.analyze(s, Q)
+    f = r["parity_audit"]["dtype"]
+    assert f["status"] == "unknown_not_recorded"
+    assert f["match"] is None                                # False면 불일치로 읽힌다
+
+
+def test_partially_recorded_is_flagged_separately():
+    s = _sweep(CAND, CUR)
+    s["arms"]["qwen25_3b_4bit/P0"]["provenance"]["dtype"] = None
+    r = D.analyze(s, Q)
+    assert r["parity_audit"]["dtype"]["status"] == "partially_recorded"
+    assert r["parity_audit"]["dtype"]["match"] is None
+
+
+def test_model_revision_is_audited():
+    """모델 revision은 사전등록 §2-(1)이 명시한 항목이다."""
+    r = D.analyze(_sweep(CAND, CUR), Q)
+    f = r["parity_audit"]["model_revision"]
+    assert f["status"] == "mismatch"                          # arm마다 다른 게 정상
+    assert f["expected_to_differ"] is True
 
 
 def test_parity_audit_flags_prompt_mismatch():
