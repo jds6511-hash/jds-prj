@@ -94,6 +94,12 @@ def _parity(sweep: dict, keys: list) -> dict:
     return out
 
 
+def parity_audit(sweep: dict, keys: list) -> dict:
+    """`_parity`의 공개 이름. P1 프로브가 같은 어휘를 재사용한다 — 구현을 둘로
+    만들면 한쪽만 `unknown_not_recorded`를 잃는다."""
+    return _parity(sweep, keys)
+
+
 def analyze(sweep: dict, queries: list, stratum_key: str = "type") -> dict:
     if stratum_key not in ALLOWED_STRATA:
         raise DiagError(
