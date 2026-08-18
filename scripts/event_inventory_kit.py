@@ -45,15 +45,33 @@ def _git(*a) -> str:
                           encoding="utf-8", errors="replace").stdout.strip()
 
 
+def read_csv_text(path) -> str:
+    """**한국어 Windows Excel은 CSV를 cp949로 저장한다.** utf-8 고정이면 한글이
+    들어간 순간 UnicodeDecodeError로 터진다(2026-08-18 실측). BOM도 함께 처리한다."""
+    b = Path(path).read_bytes()
+    for enc in ("utf-8-sig", "utf-8", "cp949"):
+        try:
+            return b.decode(enc)
+        except UnicodeDecodeError:
+            continue
+    raise InventoryError(f"{path}: utf-8/cp949 어느 쪽으로도 못 읽는다")
+
+
 def parse_rows(text: str) -> list:
     rows = []
     for r in csv.DictReader(io.StringIO(text)):
         if not any((r.get(k) or "").strip() for k in HEADER):
             continue
+        # Excel이 붙인 이름 없는 여분 열. 값이 들어 있으면 **조용히 버리지 않는다** —
+        # 사용자가 뭔가 적었는데 파싱이 무시하는 상황이다(validate가 잡는다).
+        extra = [str(x) for x in (r.get(None) or []) if str(x).strip()]
+        extra += [v for k, v in r.items()
+                  if k is not None and k not in HEADER and (v or "").strip()]
         rows.append({"start_sec": float(r["start_sec"] or 0),
                      "end_sec": float(r["end_sec"] or 0),
                      "event": (r["event"] or "").strip(),
-                     "unclear": (r.get("unclear") or "").strip() in ("1", "true", "y")})
+                     "unclear": (r.get("unclear") or "").strip() in ("1", "true", "y"),
+                     "extra": extra})
     return rows
 
 
@@ -69,6 +87,10 @@ def validate(rows: list, duration_sec: float, seg_len: int) -> list:
                         f"{r['start_sec']}~{r['end_sec']}")
         if not r["event"]:
             errs.append(f"{i}행 V3: event 이름이 비어 있다")
+        if r.get("extra"):
+            errs.append(f"{i}행 V3b: 여분 열에 값이 있다 {r['extra']} — "
+                        f"파싱이 버리는 자리다. 의도한 값이면 제 열로 옮기고, "
+                        f"아니면 지워라")
     return errs
 
 
@@ -107,7 +129,7 @@ def freeze(csv_path, video_id: str, duration_sec: float, n_segments: int,
            seg_len: int, out_dir=None) -> Path:
     """검증 통과분만 동결한다. **여기서만** 목록이 읽기 가능해진다."""
     csv_path = Path(csv_path)
-    rows = parse_rows(csv_path.read_text(encoding="utf-8"))
+    rows = parse_rows(read_csv_text(csv_path))
     errs = validate(rows, duration_sec, seg_len)
     if errs:
         raise InventoryError("검증 실패 — 동결하지 않는다:\n  " + "\n  ".join(errs))
@@ -211,7 +233,7 @@ def main():
         print("탐색용이다 — 경계는 영상을 재생하며 정한다")
         return 0
 
-    rows = parse_rows(f.read_text(encoding="utf-8"))
+    rows = parse_rows(read_csv_text(f))
     errs = validate(rows, dur, seg_len)
     s = summarize(rows, nseg, seg_len)
     print(json.dumps(s, ensure_ascii=False, indent=2))

@@ -141,3 +141,37 @@ def test_kit_does_not_import_generation_or_search_modules():
     body = src.split('"""', 2)[2]
     for forbidden in ("s[\"caption\"]", "s['caption']", "subtitle"):
         assert forbidden not in body, forbidden
+
+
+# ---- 인코딩·여분 열 (Excel 저장 실측) --------------------------------------
+
+CP949_CSV = "start_sec,end_sec,event,unclear\n0,35,숙소밖에서 설명,\n"
+EXTRA_COLS = ("start_sec,end_sec,event,unclear,,,,\n"
+              "0,35,설명,,,,,\n"
+              "35,60,입실,,,,,1153\n")
+
+
+def test_reads_cp949_csv(tmp_path):
+    """한국어 Windows Excel은 CSV를 **cp949**로 저장한다. utf-8 고정이면 터진다."""
+    f = tmp_path / "vid.csv"
+    f.write_bytes(CP949_CSV.encode("cp949"))
+    rows = K.parse_rows(K.read_csv_text(f))
+    assert rows[0]["event"] == "숙소밖에서 설명"
+
+
+def test_reads_utf8_bom_csv(tmp_path):
+    f = tmp_path / "vid.csv"
+    f.write_text(CP949_CSV, encoding="utf-8-sig")
+    assert K.parse_rows(K.read_csv_text(f))[0]["event"] == "숙소밖에서 설명"
+
+
+def test_extra_columns_with_values_are_flagged_not_ignored():
+    """Excel이 붙인 빈 열에 값이 들어가면 **조용히 무시하면 안 된다** —
+    사용자가 뭔가 적었는데 파싱이 버리는 상황이다."""
+    errs = K.validate(K.parse_rows(EXTRA_COLS), duration_sec=100, seg_len=5)
+    assert any("여분 열" in e and "1153" in e for e in errs)
+
+
+def test_empty_extra_columns_are_fine():
+    text = "start_sec,end_sec,event,unclear,,,,\n0,35,설명,,,,,\n"
+    assert K.validate(K.parse_rows(text), duration_sec=100, seg_len=5) == []
