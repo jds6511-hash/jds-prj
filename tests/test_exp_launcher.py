@@ -278,19 +278,90 @@ def test_launch_aborts_when_tree_dirtied_by_spawn(repo, tmp_path):
         L.launch(plan, "r1", st, stage="CANARY", root=repo, dirty_recheck_sec=1.0)
 
 
-# ---- 인터프리터 (`python`은 서버에 없다 — python3만 있다) --------------------
+# ---- 실험 인터프리터 -----------------------------------------------------
+#
+# 두 번 연달아 났다. ① 계획에 `python`을 박았는데 서버엔 `python3`만 있다.
+# ② `{python}`을 launcher의 `sys.executable`로 두니, launcher를 `/usr/bin/python3`로
+# 띄운 순간 실험이 의존성 없는 시스템 파이썬에서 돌아 `ModuleNotFoundError: numpy`.
+#
+# 그래서 **launcher를 띄운 파이썬과 실험을 돌리는 파이썬을 분리한다.** 실험 쪽은
+# `${EXP_PYTHON}`만 본다 — 호출자가 무엇으로 launcher를 띄웠는지가 실험을 바꾸지 않는다.
 
-def test_python_token_is_substituted(repo, tmp_path):
-    """계획에 `python`을 박으면 서버에서 `command not found`로 죽는다.
-    실측: 랩실 서버는 `python3`만 있다. 어느 쪽 이름인지를 계획이 알면 안 된다."""
-    plan = L.load_plan(
-        _plan(repo, tmp_path,
-              command=["{python}", "-c", "open('out/x','w').write('1')"]),
-        root=repo)
+def _pyplan(repo, tmp_path, **over):
+    over.setdefault("command",
+                    ["{experiment_python}", "-c", "open('out/x','w').write('1')"])
+    over.setdefault("requires_modules", ["json"])
+    return _plan(repo, tmp_path, **over)
+
+
+def test_experiment_python_comes_from_env_not_launcher(repo, tmp_path, monkeypatch):
+    """치환값은 launcher의 `sys.executable`이 아니라 `${EXP_PYTHON}`이어야 한다."""
+    monkeypatch.setenv("EXP_PYTHON", sys.executable)
+    plan = L.load_plan(_pyplan(repo, tmp_path), root=repo)
     st = L.precheck(plan, "r1", root=repo)
+    assert st["resolved_python"] == sys.executable
     r = L.launch(plan, "r1", st, stage="CANARY", root=repo, dirty_recheck_sec=0.1)
-    assert r["argv"][0] == sys.executable
-    assert r["returncode"] == 0
+    assert r["argv"][0] == sys.executable and r["returncode"] == 0
+
+
+def test_precheck_refuses_when_exp_python_unset(repo, tmp_path, monkeypatch):
+    monkeypatch.delenv("EXP_PYTHON", raising=False)
+    plan = L.load_plan(_pyplan(repo, tmp_path), root=repo)
+    with pytest.raises(L.LauncherError, match="EXP_PYTHON"):
+        L.precheck(plan, "r1", root=repo)
+
+
+def test_precheck_refuses_relative_exp_python(repo, tmp_path, monkeypatch):
+    """상대 경로는 cwd에 따라 다른 인터프리터를 가리킨다."""
+    monkeypatch.setenv("EXP_PYTHON", "python3")
+    plan = L.load_plan(_pyplan(repo, tmp_path), root=repo)
+    with pytest.raises(L.LauncherError, match="절대경로"):
+        L.precheck(plan, "r1", root=repo)
+
+
+def test_precheck_refuses_missing_exp_python(repo, tmp_path, monkeypatch):
+    monkeypatch.setenv("EXP_PYTHON", str(tmp_path / "nope" / "python"))
+    plan = L.load_plan(_pyplan(repo, tmp_path), root=repo)
+    with pytest.raises(L.LauncherError, match="실행 가능"):
+        L.precheck(plan, "r1", root=repo)
+
+
+def test_precheck_refuses_when_required_module_missing(repo, tmp_path, monkeypatch):
+    """`numpy` 없는 인터프리터로 FULL을 돌리면 모델 로드 뒤에야 죽는다."""
+    monkeypatch.setenv("EXP_PYTHON", sys.executable)
+    plan = L.load_plan(
+        _pyplan(repo, tmp_path, requires_modules=["json", "no_such_module_xyz"]),
+        root=repo)
+    with pytest.raises(L.LauncherError, match="no_such_module_xyz"):
+        L.precheck(plan, "r1", root=repo)
+
+
+def test_precheck_records_python_fingerprint(repo, tmp_path, monkeypatch):
+    """`같은 commit인데 왜 실행이 달랐나`를 인터프리터부터 볼 수 있어야 한다."""
+    monkeypatch.setenv("EXP_PYTHON", sys.executable)
+    plan = L.load_plan(_pyplan(repo, tmp_path), root=repo)
+    st = L.precheck(plan, "r1", root=repo)
+    fp = st["python_fingerprint"]
+    assert fp["python_executable"] and fp["python_version"]
+    assert "torch_version" in fp and "gpu_name" in fp        # 없으면 None
+
+
+def test_plan_without_token_needs_no_exp_python(repo, tmp_path, monkeypatch):
+    """`${EXP_PYTHON}`은 쓰는 계획만 강제한다 — fail-closed의 범위를 넓히지 않는다."""
+    monkeypatch.delenv("EXP_PYTHON", raising=False)
+    plan = L.load_plan(_plan(repo, tmp_path), root=repo)
+    assert L.precheck(plan, "r1", root=repo)["resolved_python"] is None
+
+
+def test_plan_hash_excludes_resolved_env_values(repo, tmp_path, monkeypatch):
+    """서버 고유 경로가 plan_hash에 섞이면 안 된다 — 같은 계획 파일이 기계마다
+    다른 해시를 갖게 되고, 공개 이력과 대조할 수 없다."""
+    f = _plan(repo, tmp_path, log_dir="${EXP_LOG_DIR}")
+    monkeypatch.setenv("EXP_LOG_DIR", str(tmp_path / "a"))
+    h1 = L.plan_hash(L.load_plan(f, root=repo))
+    monkeypatch.setenv("EXP_LOG_DIR", str(tmp_path / "b"))
+    h2 = L.plan_hash(L.load_plan(f, root=repo))
+    assert h1 == h2
 
 
 # ---- 환경변수 로그 경로 (공개 저장소에 서버 계정명을 박지 않기 위함) ---------

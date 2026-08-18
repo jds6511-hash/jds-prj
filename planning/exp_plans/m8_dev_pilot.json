@@ -1,7 +1,7 @@
 {
   "name": "m8_dev_pilot",
   "command": [
-    "{python}",
+    "{experiment_python}",
     "scripts/m8_dev_pilot.py",
     "--config",
     "config_server.yaml",
@@ -19,6 +19,12 @@
   "log_dir": "${EXP_LOG_DIR}",
   "expected_files": [
     "m8_dev_pilot.json"
+  ],
+  "requires_modules": [
+    "numpy",
+    "torch",
+    "transformers",
+    "yaml"
   ],
   "provenance_key": "provenance",
   "protected_splits": [

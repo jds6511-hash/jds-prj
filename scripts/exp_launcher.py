@@ -13,6 +13,7 @@
 | FULL은 자동 진입 없음 | `--approve-full <run_id>` — run_id가 일치해야 한다 |
 | test 접촉은 **다른** 승인 | `--approve-test-open <run_id>`. FULL 승인이 이걸 대신하지 않는다 |
 | 로그는 repo 밖 | `load_plan`이 거부 |
+| 실험 인터프리터는 `${EXP_PYTHON}` | precheck가 존재·실행·의존성까지 확인, 없으면 거부 |
 | 편집본 = 실행본 | precheck가 commit을 고정하고 validate가 대조 |
 | 시작 직후 오염 감지 | spawn 후 한 번 더 dirty 확인 |
 | `RUN_COMPLETE`는 PASS 뒤에만 | `finalize`가 유일한 기록 경로 |
@@ -33,7 +34,9 @@ import argparse, datetime, hashlib, io, json, os, subprocess, sys, time
 from pathlib import Path
 
 # validator 로직이 바뀌면 올린다 — 어떤 판본이 이 결과를 승인했는지 마커에 남는다
-VALIDATOR_VERSION = 1
+# 2 (2026-08-18): plan_hash가 계획 **원문** 기준으로 바뀌었고(확장값 제외),
+#                 마커에 실험 인터프리터 fingerprint가 추가됐다
+VALIDATOR_VERSION = 2
 REQUIRED_PLAN_KEYS = ("name", "command", "run_root", "log_dir", "expected_files")
 # 이 문자열이 인자·경로에 있으면 test 접촉으로 본다. 넓게 잡는다 — 놓치는 쪽이
 # 오탐보다 훨씬 비싸다(M9는 실행 자체가 test 접촉이다).
@@ -59,15 +62,18 @@ def repo_state(root) -> dict:
 
 
 def plan_hash(plan: dict) -> str:
-    """계획 내용의 해시. 마커에 남겨 **어떤 계획이 이 결과를 만들었는지** 고정한다."""
-    body = {k: v for k, v in plan.items() if k != "_path"}
-    return hashlib.sha256(
-        json.dumps(body, sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest()
+    """계획 **파일 원문**의 해시. 마커에 남겨 어떤 계획이 이 결과를 만들었는지 고정한다.
+
+    확장된 값(`${EXP_LOG_DIR}`·`${EXP_PYTHON}`의 실제 경로)은 넣지 않는다. 넣으면
+    같은 계획 파일이 기계마다 다른 해시를 갖게 되고, 공개 이력과 대조할 수 없다."""
+    return hashlib.sha256(plan["_raw"].encode("utf-8")).hexdigest()
 
 
 def load_plan(path, root) -> dict:
     root = Path(root).resolve()
-    plan = json.loads(Path(path).read_text(encoding="utf-8"))
+    raw = Path(path).read_text(encoding="utf-8")
+    plan = json.loads(raw)
+    plan["_raw"] = raw
     missing = [k for k in REQUIRED_PLAN_KEYS if k not in plan]
     if missing:
         raise LauncherError(f"계획에 필수 키 누락: {missing}")
@@ -122,6 +128,74 @@ def touches_protected(plan: dict, stage: str) -> list:
     return [p for p in plan["protected_splits"] if p in hay]
 
 
+# ---- 실험 인터프리터 -------------------------------------------------------
+#
+# **launcher를 띄운 파이썬과 실험을 돌리는 파이썬은 다른 것이다.** 앞의 것으로
+# 뒤의 것을 대신하면(= `sys.executable` 치환) launcher를 어떻게 호출했는지가
+# 실험 환경을 바꾼다 — 2026-08-18에 `/usr/bin/python3`로 띄워 `numpy` 없는
+# 인터프리터에서 M8이 죽었다. 실험 쪽은 `${EXP_PYTHON}`만 본다.
+PY_TOKEN = "{experiment_python}"
+DEFAULT_REQUIRED_MODULES = ("numpy", "torch", "transformers")
+
+_PROBE = (
+    "import importlib.util as u, json, sys\n"
+    "req = json.loads(sys.argv[1])\n"
+    "miss = [m for m in req if u.find_spec(m) is None]\n"
+    "d = {'python_executable': sys.executable,\n"
+    "     'python_version': sys.version.split()[0],\n"
+    "     'missing_modules': miss,\n"
+    "     'torch_version': None, 'cuda_version': None, 'gpu_name': None,\n"
+    "     'transformers_version': None, 'numpy_version': None}\n"
+    "if u.find_spec('numpy'):\n"
+    "    import numpy; d['numpy_version'] = numpy.__version__\n"
+    "if u.find_spec('torch'):\n"
+    "    import torch; d['torch_version'] = torch.__version__\n"
+    "    d['cuda_version'] = torch.version.cuda\n"
+    "    d['gpu_name'] = torch.cuda.get_device_name(0) if torch.cuda.is_available() else None\n"
+    "if u.find_spec('transformers'):\n"
+    "    import transformers; d['transformers_version'] = transformers.__version__\n"
+    "print(json.dumps(d))\n"
+)
+
+
+def needs_experiment_python(plan: dict) -> bool:
+    args = plan["command"] + plan.get("canary_args", []) + plan.get("full_args", [])
+    return any(PY_TOKEN in str(a) for a in args)
+
+
+def resolve_experiment_python(plan: dict) -> tuple:
+    """`${EXP_PYTHON}`을 해석하고 **실제로 쓸 수 있는지 실행해서** 확인한다.
+
+    경로가 있다는 것만으로는 부족하다 — 의존성이 없는 인터프리터는 모델 로드
+    직전까지 멀쩡해 보이다가 죽는다. GPU를 쓰기 전에 여기서 건다."""
+    raw = os.environ.get("EXP_PYTHON")
+    if not raw:
+        raise LauncherError(
+            "EXP_PYTHON이 설정되지 않았다 — 실험을 돌릴 인터프리터를 실행 환경에서 "
+            "주입하라. 계획 파일에는 서버 경로를 박지 않는다")
+    p = Path(raw)
+    if not p.is_absolute():
+        raise LauncherError(f"EXP_PYTHON이 절대경로가 아니다: {raw} — cwd에 따라 달라진다")
+    if not (p.is_file() and os.access(p, os.X_OK)):
+        raise LauncherError(f"EXP_PYTHON이 실행 가능한 파일이 아니다: {raw}")
+    req = list(plan.get("requires_modules", DEFAULT_REQUIRED_MODULES))
+    r = subprocess.run([str(p), "-c", _PROBE, json.dumps(req)],
+                       capture_output=True, encoding="utf-8", errors="replace")
+    if r.returncode != 0:
+        raise LauncherError(
+            f"EXP_PYTHON으로 프로브를 실행하지 못했다: {raw}\n{r.stderr.strip()[-400:]}")
+    fp = json.loads(r.stdout.strip().splitlines()[-1])
+    if fp["missing_modules"]:
+        raise LauncherError(
+            f"EXP_PYTHON에 필수 모듈이 없다: {fp['missing_modules']} ({raw}) — "
+            f"실험 환경이 아닌 인터프리터다")
+    if os.path.realpath(fp["python_executable"]) != os.path.realpath(str(p)):
+        raise LauncherError(
+            f"EXP_PYTHON이 다른 인터프리터로 넘어갔다: 요청 {p} → 실제 "
+            f"{fp['python_executable']}")
+    return str(p), fp
+
+
 # ---- 단계 ----------------------------------------------------------------
 
 def precheck(plan: dict, run_id: str, root) -> dict:
@@ -141,11 +215,16 @@ def precheck(plan: dict, run_id: str, root) -> dict:
         raise LauncherError(
             f"run_id '{run_id}'에 부분 산출물이 있다({leftovers[:3]}) — "
             f"재개하지 않는다. 새 run_id를 써라")
+    py, fp = resolve_experiment_python(plan) if needs_experiment_python(plan) \
+        else (None, None)
     d.mkdir(parents=True, exist_ok=True)
     Path(plan["log_dir"]).mkdir(parents=True, exist_ok=True)
     st = {"run_id": run_id, "stage": "PRECHECK", "plan_name": plan["name"],
           "plan_hash": plan_hash(plan), "execution_commit": rs["head"],
           "protected_touched": touches_protected(plan, "FULL"),
+          # 해석된 경로는 **state에만** 남긴다(gitignore된 run_root). 계획 파일과
+          # plan_hash에는 토큰만 있으므로 서버 경로가 git 이력에 들어가지 않는다.
+          "resolved_python": py, "python_fingerprint": fp,
           "started_at": datetime.datetime.now().isoformat(timespec="seconds")}
     state_path(plan, run_id, root).write_text(
         json.dumps(st, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -180,9 +259,12 @@ def launch(plan, run_id, state, stage, root, dirty_recheck_sec: float = 3.0):
     root = Path(root)
     args = plan["command"] + plan.get(
         "canary_args" if stage == "CANARY" else "full_args", [])
-    # `{python}` — 계획 파일이 인터프리터 이름을 알면 안 된다. 노트북은 `python`,
-    # 랩실 서버는 `python3`만 있어서 `python`을 박으면 `command not found`로 죽는다.
-    args = [str(a).replace("{run_id}", run_id).replace("{python}", sys.executable)
+    # 실험 인터프리터는 precheck가 고정한 값만 쓴다 — launcher 자신의
+    # `sys.executable`은 여기 들어오지 않는다.
+    py = state.get("resolved_python")
+    if needs_experiment_python(plan) and not py:
+        raise LauncherError("precheck가 실험 인터프리터를 고정하지 않았다 — 다시 실행하라")
+    args = [str(a).replace("{run_id}", run_id).replace(PY_TOKEN, py or "")
             for a in args]
     log = Path(plan["log_dir"]) / f"{plan['name']}_{run_id}_{stage.lower()}.log"
     with open(log, "w", encoding="utf-8") as f:
@@ -241,6 +323,9 @@ def finalize(plan, run_id, state, checks, ok, root) -> Path:
          "plan_hash": state["plan_hash"],
          "execution_commit": state["execution_commit"],
          "validator_version": VALIDATOR_VERSION,
+         # "같은 commit인데 왜 실행이 달랐나"를 인터프리터부터 확인할 수 있게 한다
+         "resolved_python": state.get("resolved_python"),
+         "python_fingerprint": state.get("python_fingerprint"),
          "validated_at": datetime.datetime.now().isoformat(timespec="seconds"),
          "checks": checks}, ensure_ascii=False, indent=2), encoding="utf-8")
     return m
