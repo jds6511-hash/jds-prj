@@ -180,7 +180,10 @@ def launch(plan, run_id, state, stage, root, dirty_recheck_sec: float = 3.0):
     root = Path(root)
     args = plan["command"] + plan.get(
         "canary_args" if stage == "CANARY" else "full_args", [])
-    args = [str(a).replace("{run_id}", run_id) for a in args]
+    # `{python}` — 계획 파일이 인터프리터 이름을 알면 안 된다. 노트북은 `python`,
+    # 랩실 서버는 `python3`만 있어서 `python`을 박으면 `command not found`로 죽는다.
+    args = [str(a).replace("{run_id}", run_id).replace("{python}", sys.executable)
+            for a in args]
     log = Path(plan["log_dir"]) / f"{plan['name']}_{run_id}_{stage.lower()}.log"
     with open(log, "w", encoding="utf-8") as f:
         proc = subprocess.Popen(args, cwd=root, stdout=f, stderr=subprocess.STDOUT)

@@ -1,7 +1,7 @@
 {
   "name": "m8_dev_pilot",
   "command": [
-    "python",
+    "{python}",
     "scripts/m8_dev_pilot.py",
     "--config",
     "config_server.yaml",

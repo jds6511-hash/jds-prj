@@ -278,6 +278,21 @@ def test_launch_aborts_when_tree_dirtied_by_spawn(repo, tmp_path):
         L.launch(plan, "r1", st, stage="CANARY", root=repo, dirty_recheck_sec=1.0)
 
 
+# ---- 인터프리터 (`python`은 서버에 없다 — python3만 있다) --------------------
+
+def test_python_token_is_substituted(repo, tmp_path):
+    """계획에 `python`을 박으면 서버에서 `command not found`로 죽는다.
+    실측: 랩실 서버는 `python3`만 있다. 어느 쪽 이름인지를 계획이 알면 안 된다."""
+    plan = L.load_plan(
+        _plan(repo, tmp_path,
+              command=["{python}", "-c", "open('out/x','w').write('1')"]),
+        root=repo)
+    st = L.precheck(plan, "r1", root=repo)
+    r = L.launch(plan, "r1", st, stage="CANARY", root=repo, dirty_recheck_sec=0.1)
+    assert r["argv"][0] == sys.executable
+    assert r["returncode"] == 0
+
+
 # ---- 환경변수 로그 경로 (공개 저장소에 서버 계정명을 박지 않기 위함) ---------
 
 def test_log_dir_env_var_is_expanded(repo, tmp_path, monkeypatch):
