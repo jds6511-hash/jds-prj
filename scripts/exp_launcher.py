@@ -18,6 +18,7 @@
 | 시작 직후 오염 감지 | spawn 후 한 번 더 dirty 확인 |
 | `RUN_COMPLETE`는 PASS 뒤에만 | `finalize`가 유일한 기록 경로 |
 | REPORT는 검증된 것만 | `report_inputs`가 마커 없으면 거부 |
+| 완료된 계획은 소급 수정 불가 | REPORT가 `plan_hash` 불일치를 거부. 열람 조건 강화는 `planning/report_access.json`에서 **합집합**으로 |
 | **재개하지 않는다** | 부분 산출물이 있으면 실패 → 새 run_id |
 
 **재개(resume)를 넣지 않은 것은 누락이 아니라 결정이다.** 부분 재개는 provenance와
@@ -367,7 +368,26 @@ def finalize(plan, run_id, state, checks, ok, root, stage="FULL") -> Path:
     return m
 
 
-def report_inputs(plan, run_id, root) -> list:
+DEFAULT_POLICY_PATH = "planning/report_access.json"
+
+
+def report_policy(run_id, plan_name, root, policy_path=None) -> dict:
+    """**완료된 실행 계획을 소급 수정하지 않기 위한 별도 층.**
+
+    열람 조건을 뒤늦게 조여야 하는 상황이 실제로 생겼다(2026-08-18: FULL 산출물에
+    아직 정답 목록을 쓰지 않은 영상이 들어 있었다). 계획 파일을 고치면 "실행 당시
+    계획"과 "현재 계획"이 갈리고, 그러면 어떤 게이트가 그 run에 적용됐는지 사후에
+    말할 수 없다. 그래서 계획은 그대로 두고 여기서 조인다 — **조이는 방향만**."""
+    p = Path(policy_path) if policy_path else Path(root) / DEFAULT_POLICY_PATH
+    if not p.is_file():
+        return {}
+    for pol in json.loads(p.read_text(encoding="utf-8")).get("policies", []):
+        if pol.get("run_id") == run_id and pol.get("plan_name") in (None, plan_name):
+            return pol
+    return {}
+
+
+def report_inputs(plan, run_id, root, policy_path=None) -> list:
     """REPORT가 읽어도 되는 파일. **검증된 산출물만** — 보고서를 만들다가 결과가
     바뀌는 일을 막는다(REPORT는 재생성·재평가를 하지 않는다).
 
@@ -376,9 +396,20 @@ def report_inputs(plan, run_id, root) -> list:
     먼저 보고 사람이 사건 단위를 정하는 것**)은 사람의 주의에 의존한다. 그쪽을
     여기서 막는다 — 실행은 병렬로 해도 되지만 사람이 읽는 단계는 동결 뒤에만 연다."""
     d = run_dir(plan, run_id, root)
-    if not (d / "RUN_COMPLETE.json").is_file():
+    m = d / "RUN_COMPLETE.json"
+    if not m.is_file():
         raise LauncherError(f"RUN_COMPLETE.json이 없다 — 검증되지 않은 run은 읽지 않는다")
-    need = plan.get("requires_frozen_inventory") or []
+    # 계획이 완료 후에 바뀌었으면 열지 않는다. 이 검사가 없으면 계획 파일을 고쳐
+    # **게이트를 갈아끼울 수 있다** — 열람 조건 강화는 정책 층에서 한다.
+    done = json.loads(m.read_text(encoding="utf-8"))
+    if done.get("plan_hash") != plan_hash(plan):
+        raise LauncherError(
+            f"완료 당시와 plan_hash가 다르다 — 실행 당시 계획만 유효하다. "
+            f"열람 조건을 조이려면 {DEFAULT_POLICY_PATH}를 쓰라")
+    pol = report_policy(run_id, plan["name"], root, policy_path)
+    # **합집합**이다 — 정책은 조일 수만 있고 풀 수 없다
+    need = sorted(set(plan.get("requires_frozen_inventory") or [])
+                  | set(pol.get("requires_frozen_inventory") or []))
     if need:
         inv = Path(root) / plan.get("inventory_dir", "label_kit/event_inventory")
         missing = [v for v in need if not (inv / f"FROZEN_{v}.json").is_file()]
@@ -404,6 +435,9 @@ def main():
                     help="FULL 진입 승인. run_id와 정확히 일치해야 한다")
     ap.add_argument("--approve-test-open", default=None,
                     help="protected split 접촉 승인. FULL 승인과 별개다")
+    ap.add_argument("--access-policy", default=None,
+                    help=f"REPORT 열람 정책 (기본 {DEFAULT_POLICY_PATH}). 계획의 "
+                         f"동결 요구와 합집합으로 적용된다 — 조일 수만 있다")
     a = ap.parse_args()
     root = Path(a.root)
     plan = load_plan(a.plan, root=root)
@@ -447,7 +481,7 @@ def main():
         print(f"PASS — 완료 마커: {m}")
         return 0
 
-    for f in report_inputs(plan, a.run_id, root):
+    for f in report_inputs(plan, a.run_id, root, policy_path=a.access_policy):
         print(f)
     return 0
 

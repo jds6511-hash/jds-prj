@@ -514,6 +514,78 @@ def test_report_allowed_once_all_frozen(repo, tmp_path):
     assert [f.name for f in L.report_inputs(plan, "r1", root=repo)] == ["result.json"]
 
 
+# ---- REPORT 접근 정책: 완료된 실행 계획을 소급 수정하지 않는다 ---------------
+#
+# `m8pilot_0818d`가 `plan_hash`·`execution_commit`에 묶여 완료된 뒤, 열람 조건만
+# 강화해야 하는 상황이 생겼다(FULL 산출물에 아직 깨끗한 영상이 들어 있었다).
+# 계획 파일을 고치면 "실행 당시 계획"과 "현재 계획"이 갈린다. 그래서 계획은
+# 그대로 두고 **별도 층**에서 조인다.
+
+def _policy(repo, run_id, need, plan_name="demo"):
+    p = repo / "planning"
+    p.mkdir(parents=True, exist_ok=True)
+    f = p / "report_access.json"
+    f.write_text(json.dumps({"policies": [
+        {"run_id": run_id, "plan_name": plan_name,
+         "requires_frozen_inventory": need, "reason": "테스트"}]}),
+        encoding="utf-8")
+    return f
+
+
+def test_policy_can_tighten_report_gate(repo, tmp_path):
+    """계획은 1편만 요구하는데 정책이 2편을 요구하면 2편이 필요하다."""
+    plan = L.load_plan(_plan(repo, tmp_path, requires_frozen_inventory=["a"],
+                             inventory_dir="out/inv"), root=repo)
+    st = L.precheck(plan, "r1", root=repo)
+    _finish(repo, "r1")
+    L.finalize(plan, "r1", st, {"x": True}, True, root=repo)
+    _frozen(repo, "a")
+    pol = _policy(repo, "r1", ["a", "b"])
+    with pytest.raises(L.LauncherError, match="b"):
+        L.report_inputs(plan, "r1", root=repo, policy_path=pol)
+    _frozen(repo, "b")
+    assert L.report_inputs(plan, "r1", root=repo, policy_path=pol)
+
+
+def test_policy_cannot_loosen_report_gate(repo, tmp_path):
+    """정책은 **조이는 방향만** 가능하다 — 합집합으로 적용한다."""
+    plan = L.load_plan(_plan(repo, tmp_path, requires_frozen_inventory=["a", "b"],
+                             inventory_dir="out/inv"), root=repo)
+    st = L.precheck(plan, "r1", root=repo)
+    _finish(repo, "r1")
+    L.finalize(plan, "r1", st, {"x": True}, True, root=repo)
+    _frozen(repo, "a")
+    pol = _policy(repo, "r1", [])                    # 비우려는 시도
+    with pytest.raises(L.LauncherError, match="b"):
+        L.report_inputs(plan, "r1", root=repo, policy_path=pol)
+
+
+def test_policy_for_other_run_is_ignored(repo, tmp_path):
+    plan = L.load_plan(_plan(repo, tmp_path), root=repo)
+    st = L.precheck(plan, "r1", root=repo)
+    _finish(repo, "r1")
+    L.finalize(plan, "r1", st, {"x": True}, True, root=repo)
+    pol = _policy(repo, "other_run", ["a", "b"])
+    assert L.report_inputs(plan, "r1", root=repo, policy_path=pol)
+
+
+def test_report_refuses_when_plan_drifted_since_completion(repo, tmp_path):
+    """계획을 고쳐서 게이트를 갈아끼우는 경로를 막는다 — 실행 당시 계획만 유효하다."""
+    f = _plan(repo, tmp_path, requires_frozen_inventory=["a"],
+              inventory_dir="out/inv")
+    plan = L.load_plan(f, root=repo)
+    st = L.precheck(plan, "r1", root=repo)
+    _finish(repo, "r1")
+    L.finalize(plan, "r1", st, {"x": True}, True, root=repo)
+    _frozen(repo, "a")
+    assert L.report_inputs(plan, "r1", root=repo)            # 그대로면 통과
+    body = json.loads(f.read_text(encoding="utf-8"))
+    body["requires_frozen_inventory"] = []                   # 게이트를 빼려는 시도
+    f.write_text(json.dumps(body), encoding="utf-8")
+    with pytest.raises(L.LauncherError, match="plan_hash"):
+        L.report_inputs(L.load_plan(f, root=repo), "r1", root=repo)
+
+
 def test_report_gate_absent_when_not_declared(repo, tmp_path):
     """게이트를 선언하지 않은 실험은 영향을 받지 않는다."""
     plan = _validated(repo, tmp_path)

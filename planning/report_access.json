@@ -1,0 +1,20 @@
+{
+  "_purpose": "완료된 실행 계획을 소급 수정하지 않고 열람 조건만 조인다. `exp_launcher.py report`가 계획의 requires_frozen_inventory와 **합집합**으로 적용한다 — 정책은 조일 수만 있고 풀 수 없다.",
+  "_why_separate": "run은 plan_hash·execution_commit에 묶여 완료된다. 계획 파일을 고치면 '실행 당시 계획'과 '현재 계획'이 갈리고, 어떤 게이트가 그 run에 적용됐는지 사후에 말할 수 없다. report는 plan_hash 불일치를 거부하므로 계획을 고치는 경로 자체가 막혀 있다.",
+  "policies": [
+    {
+      "run_id": "m8pilot_0818d",
+      "plan_name": "m8_dev_pilot",
+      "requires_frozen_inventory": [
+        "gwaktube_soviet_apartment",
+        "kheritage_grave_excavation"
+      ],
+      "reason": "계획은 gwaktube 1편만 요구하지만(작업현황 §5-3) FULL 산출물에는 kheritage도 들어 있다. 1편만 동결된 상태로 열면 아직 깨끗한 kheritage가 M8 출력에 노출돼 오염된다 — _10_000에서 실제로 일어난 일이다(§5-4). 근거: 작업현황 §5-5.",
+      "excluded_from_reference": [
+        "_10_000_Every_Day_You_Survive_In_The_Wilderness"
+      ],
+      "excluded_reason": "배관 진단 중 M8 사건 수가 launcher 로그에 노출됐다(§5-4). 독립 reference로 쓸 수 없으므로 temporal 지표의 분모에서 제외하고, 필요하면 exploratory로만 별도 표시한다.",
+      "added_at": "2026-08-18"
+    }
+  ]
+}
