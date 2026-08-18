@@ -332,3 +332,18 @@ def test_report_gate_absent_when_not_declared(repo, tmp_path):
     """게이트를 선언하지 않은 실험은 영향을 받지 않는다."""
     plan = _validated(repo, tmp_path)
     assert L.report_inputs(plan, "r1", root=repo)
+
+
+def test_precheck_marks_run_dir_when_inventory_gate_declared(repo, tmp_path):
+    """게이트는 REPORT 진입만 막는다 — 사람이 파일을 직접 여는 것까지는 못 막는다.
+    표식을 남겨 **정식 열람 경로는 REPORT뿐**임을 알린다."""
+    plan = L.load_plan(_plan(repo, tmp_path, requires_frozen_inventory=["A"],
+                             inventory_dir="out/inv"), root=repo)
+    L.precheck(plan, "r1", root=repo)
+    assert (repo / "out" / "r1" / L.INSPECT_MARKER).is_file()
+
+
+def test_no_marker_when_gate_not_declared(repo, tmp_path):
+    plan = L.load_plan(_plan(repo, tmp_path), root=repo)
+    L.precheck(plan, "r1", root=repo)
+    assert not (repo / "out" / "r1" / L.INSPECT_MARKER).exists()

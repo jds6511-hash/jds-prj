@@ -38,6 +38,10 @@ REQUIRED_PLAN_KEYS = ("name", "command", "run_root", "log_dir", "expected_files"
 # 이 문자열이 인자·경로에 있으면 test 접촉으로 본다. 넓게 잡는다 — 놓치는 쪽이
 # 오탐보다 훨씬 비싸다(M9는 실행 자체가 test 접촉이다).
 DEFAULT_PROTECTED = ("test",)
+# 게이트는 REPORT 진입만 막는다. 사람이 파일을 직접 여는 것까지 기술적으로 막지는
+# 않는다(OS 권한·암호화는 과하다). 대신 표식을 남기고 **정식 열람 경로는 REPORT뿐**
+# 임을 문서·파일 양쪽에 박는다.
+INSPECT_MARKER = "DO_NOT_INSPECT_BEFORE_INVENTORY_FREEZE.txt"
 
 
 class LauncherError(RuntimeError):
@@ -145,6 +149,13 @@ def precheck(plan: dict, run_id: str, root) -> dict:
           "started_at": datetime.datetime.now().isoformat(timespec="seconds")}
     state_path(plan, run_id, root).write_text(
         json.dumps(st, ensure_ascii=False, indent=2), encoding="utf-8")
+    if plan.get("requires_frozen_inventory"):
+        (d / INSPECT_MARKER).write_text("\n".join([
+            "이 실행의 산출물은 정답 사건 목록이 **동결된 뒤에만** 열람한다.",
+            f"대상 영상: {plan['requires_frozen_inventory']}",
+            "먼저 보면 사람이 사건 단위를 모델 출력에 맞추게 되어 분모가 오염된다.",
+            "정식 열람 경로는 `exp_launcher.py report`뿐이다 — 그것이 동결을 확인한다.",
+        ]) + "\n", encoding="utf-8")
     return st
 
 

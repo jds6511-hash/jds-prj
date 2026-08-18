@@ -98,6 +98,13 @@ def main():
         # 확정 산출물을 건드리지 않는다 — 별도 파일명
         (wdir / f"report_pilot_{a.run_id}.json").write_text(
             json.dumps(rep, ensure_ascii=False, indent=2), encoding="utf-8")
+        # 원시 산출물은 launcher REPORT 게이트 밖에 있다. 기술적으로 막지는
+        # 않지만(과하다) 표식을 남긴다 — 정식 열람 경로는 REPORT뿐이다.
+        (wdir / "DO_NOT_INSPECT_BEFORE_INVENTORY_FREEZE.txt").write_text(
+            f"{v}의 정답 사건 목록이 동결되기 전에는 report_pilot_*.json을 열지 마라.\n"
+            f"먼저 보면 사건 단위를 모델 출력에 맞추게 되어 분모가 오염된다.\n"
+            f"동결: python scripts/event_inventory_kit.py freeze --video-id {v}\n",
+            encoding="utf-8")
         per_video[v] = {"n_segments": len(segs),
                         **structural_summary(rep, len(segs)),
                         **run_stats(rep),
