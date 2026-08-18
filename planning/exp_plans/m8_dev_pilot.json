@@ -25,9 +25,8 @@
     "test"
   ],
   "requires_frozen_inventory": [
-    "_10_000_Every_Day_You_Survive_In_The_Wilderness",
-    "kheritage_grave_excavation",
     "gwaktube_soviet_apartment"
   ],
+  "_inventory_scope_note": "2026-08-18 축소: 3편→1편. 사유·비용은 작업현황 §5-3. reference가 있는 것은 gwaktube 1편뿐이므로 event 지표는 그 1편의 사례 진단으로만 보고한다(CI 없음).",
   "inventory_dir": "label_kit/event_inventory"
 }
