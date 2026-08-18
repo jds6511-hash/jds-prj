@@ -7,7 +7,8 @@
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "docs/probes"))
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "docs/probes"))
 from caption_model_sweep import arm_key                    # noqa: E402
 
 DEFAULT = 128
@@ -29,3 +30,27 @@ def test_override_splits_the_key():
 def test_distinct_overrides_do_not_collide():
     keys = {arm_key("P2", n, DEFAULT) for n in (None, 256, 512)}
     assert len(keys) == 3
+
+
+def test_sweep_records_effective_precision_and_vram_axes():
+    """정밀도가 주 판정인 배치에서 **실효 양자화**를 남기지 않으면 arm 정체성을
+    증명할 수 없다(2026-08-18 prec3_0818a). provenance는 production과 같은 함수로
+    읽고, VRAM은 baseline/peak/incremental 3축으로 남긴다."""
+    src = (ROOT / "docs" / "probes" / "caption_model_sweep.py").read_text(
+        encoding="utf-8")
+    assert "from m3_generate import caption_provenance" in src
+    for k in ('"provenance": _arm_provenance(', '"generation_failures"',
+              '"server_vram_baseline_gb"', '"server_incremental_peak_vram_gb"',
+              '"expected_captions"'):
+        assert k in src, k
+    # arm 경계: 정리 → baseline → peak reset → load 순서여야 한다
+    assert src.index("_vram_arm_boundary()") < src.index("cap, close = load_captioner")
+    assert "cap.model = locals().get(\"model\")" in src
+
+
+def test_gen_captions_counts_failures():
+    """실패를 빈 문자열로 조용히 넘기면 그 arm이 완주한 것처럼 보인다."""
+    src = (ROOT / "docs" / "probes" / "caption_model_sweep.py").read_text(
+        encoding="utf-8")
+    assert '"failed": failed' in src and '"fail_reasons": fail_reasons' in src
+    assert "except Exception as e:" in src

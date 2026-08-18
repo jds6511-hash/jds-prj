@@ -292,6 +292,9 @@ def load_captioner(spec: dict, cfg: dict, max_new: int | None = None):
     # 2026-08-10 사고(q4 요청이 조용히 무시되고 bf16으로 돌아 중복 arm 생성)를 다시
     # 놓친다. 반환 시그니처는 그대로 두고 속성만 붙인다 — 기존 호출자에 영향 없다.
     cap.model, cap.processor, cap.spec = model, proc, spec
+    # provenance가 **실효** 양자화를 읽으려면 모델 객체가 필요하다. src/llm.py의
+    # `generate.model`과 같은 방식으로 노출한다(반환 시그니처를 깨지 않는다).
+    cap.model = locals().get("model")
     return cap, close
 
 
@@ -355,12 +358,25 @@ def vision_sanity(cap, frame: Path, prompt: str, tmp: Path) -> dict:
 
 
 def gen_captions(cap, vids, segs_by_vid, prompt, wdirs) -> tuple[dict, dict]:
-    caps, retried, still, truncated = {}, 0, 0, 0
+    """**생성 실패를 세서 반환한다.** 실패 자체가 배포 결과다(사전등록 §5) — 조용히
+    빈 문자열로 넘기면 그 arm이 완주한 것처럼 보인다. 실패가 하나라도 있으면
+    validator hook이 그 arm을 invalid로 잡는다."""
+    caps, retried, still, truncated, failed = {}, 0, 0, 0, 0
+    fail_reasons = {}
     for v in vids:
         out = []
         for i, s in enumerate(segs_by_vid[v]):
             img = wdirs[v] / s["rep_frame"]
-            c = cap(img, prompt)
+            try:
+                c = cap(img, prompt)
+            except Exception as e:                 # OOM 포함
+                failed += 1
+                fail_reasons[type(e).__name__] = fail_reasons.get(type(e).__name__, 0) + 1
+                out.append("")
+                continue
+            if not c:
+                failed += 1
+                fail_reasons["empty"] = fail_reasons.get("empty", 0) + 1
             if common.is_corrupted_caption(c):
                 retried += 1
                 for _ in range(2):
@@ -377,21 +393,55 @@ def gen_captions(cap, vids, segs_by_vid, prompt, wdirs) -> tuple[dict, dict]:
             if i % 100 == 0:
                 print(f"    {v[:18]} {i}", flush=True)
         caps[v] = out
-    return caps, {"retried": retried, "unresolved": still, "truncated": truncated}
+    return caps, {"retried": retried, "unresolved": still, "truncated": truncated,
+                  "failed": failed, "fail_reasons": fail_reasons}
 
 
-def _peak_vram_gb():
-    """**서버 GPU의** peak VRAM. 6GB 노트북 적합성 수치가 아니다 — 그래서 호출부의
-    키 이름을 `server_peak_vram_gb`로 둔다(사전등록 보충 §3)."""
+def _arm_provenance(cap, spec: dict, cfg: dict, prompt: str) -> dict:
+    """production과 **같은** 함수로 실효값을 읽는다. 모델이 아직 살아 있을 때
+    호출해야 한다 — 해제 후에는 `quantization_config`를 읽을 수 없다."""
+    from m3_generate import caption_provenance
+    mdl = getattr(cap, "model", None)
+    acfg = {**cfg, "caption_model": spec["id"], "vlm_4bit": spec["q4"]}
+    if mdl is None:
+        return {"error": "모델 참조 없음 — 캡션 재사용 경로이거나 loader가 노출하지 않았다",
+                "requested_quantized": bool(spec["q4"]), "effective_quantized": None,
+                "quantization_mismatch": None}
+    return caption_provenance(acfg, mdl, prompt, "caption_model_sweep")
+
+
+def _vram_gb(which="current"):
+    """**서버 GPU** VRAM. 6GB 노트북 적합성 수치가 아니다 — 호출부 키 이름에
+    `server_`를 박는다(사전등록 보충 §3)."""
     try:
         import torch
         if not torch.cuda.is_available():
             return None
-        v = round(torch.cuda.max_memory_allocated() / 1024 ** 3, 2)
-        torch.cuda.reset_peak_memory_stats()
-        return v
+        b = (torch.cuda.max_memory_allocated() if which == "peak"
+             else torch.cuda.memory_allocated())
+        return round(b / 1024 ** 3, 2)
     except Exception:
         return None
+
+
+def _vram_arm_boundary():
+    """**arm 경계 정리 → baseline 기록 → peak reset.** 이 순서가 아니면 이전 arm의
+    잔존 allocation이 다음 arm의 baseline에 섞인다 — 2026-08-18 `prec3_0818a`에서
+    3B-4bit가 12.68GB로 나온 것이 그 증상이다(peak을 읽고 그 자리에서 reset하면
+    reset이 **현재 allocated**를 새 high-water mark로 잡는다).
+
+    정체성 판정은 이 값이 아니라 provenance가 한다 — 여기 값은 진단용이다."""
+    try:
+        import torch
+        gc.collect()
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+            base = _vram_gb("current")
+            torch.cuda.reset_peak_memory_stats()
+            return base
+    except Exception:
+        pass
+    return None
 
 
 def main():
@@ -440,6 +490,9 @@ def main():
            "limit": a.limit, "seed": cfg["seed"],
            "caveat": ("arm 24개, 다중비교 보정 없음. vlm_max_pixels·max_new_tokens는 "
                       "현행 기준값을 전 arm 대칭 적용(후보별 재탐색 없음, 절단율 병기)."),
+           # arm별 caption 완결성 기준. 하나라도 누락되면 그 arm은 invalid다 —
+           # 성공 subset 비교도, 누락을 RR=0으로 바꾸는 것도 금지다.
+           "expected_captions": sum(len(segs[v]) for v in vids),
            "arms": {}}
     if rep_path.exists():                      # 재개: 이미 끝난 arm은 건너뛴다
         rep = json.loads(rep_path.read_text(encoding="utf-8"))
@@ -491,9 +544,11 @@ def main():
         need_gen = [p for p in todo
                     if not _cached_caps(mkey, akey(p), vids, segs)]
         if not need_gen:
+            vram_base = _vram_arm_boundary()
             cap, close = (lambda *a, **k: "", lambda: None)
             print(f"[{mkey}] 캡션 파일 재사용 — 모델 로딩 생략", flush=True)
         else:
+            vram_base = _vram_arm_boundary()      # 정리 → baseline → peak reset → load
             cap, close = load_captioner(spec, cfg, a.max_new)
         try:
             sanity = ({"ok": None, "note": "캡션 파일 재사용 — 생성 없음"} if not need_gen
@@ -522,9 +577,20 @@ def main():
                                         if common.is_corrupted_caption(t)),
                        "truncate_rate": (round(stats["truncated"] / max(n, 1), 4)
                                          if stats["truncated"] is not None else None),
+                       # **실효 정밀도를 남긴다.** 요청과 실효가 갈리면 그 자체가
+                       # 사고다 — 정밀도가 주 판정인 실험에서 arm 정체성의 근거다.
+                       # production과 같은 `m3_generate.caption_provenance`를 쓴다
+                       # (복제하면 probe와 배포가 다시 갈라진다).
+                       "provenance": _arm_provenance(cap, spec, cfg, PROMPTS[pkey]),
+                       "generation_failures": stats.get("failed") or 0,
                        # 서버 4090 측정값이다. **6GB 노트북 적합성 증명이 아니다** —
                        # 그것은 별도 deployment validation이다(사전등록 보충 §3).
-                       "server_peak_vram_gb": _peak_vram_gb(),
+                       # 정체성 판정에 쓰지 마라 — provenance가 source of truth다.
+                       "server_vram_baseline_gb": vram_base,
+                       "server_peak_vram_gb": _vram_gb("peak"),
+                       "server_incremental_peak_vram_gb": (
+                           None if (_vram_gb("peak") is None or vram_base is None)
+                           else round(_vram_gb("peak") - vram_base, 2)),
                        **stats}
                 (CAPDIR / f"{mkey}__{akey(pkey)}.json").write_text(
                     json.dumps(caps, ensure_ascii=False), encoding="utf-8")

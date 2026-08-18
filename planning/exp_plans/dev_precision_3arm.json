@@ -37,6 +37,7 @@
     "bitsandbytes"
   ],
   "provenance_key": "prereg",
+  "validator_hook": "scripts/hooks/dev_precision_3arm_hook.py",
   "protected_splits": [
     "test"
   ]

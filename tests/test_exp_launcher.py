@@ -605,3 +605,52 @@ def test_no_marker_when_gate_not_declared(repo, tmp_path):
     plan = L.load_plan(_plan(repo, tmp_path), root=repo)
     L.precheck(plan, "r1", root=repo)
     assert not (repo / "out" / "r1" / L.INSPECT_MARKER).exists()
+
+
+# ---- 실험별 validator hook을 계획에서 불러온다 (2026-08-18) -----------------
+#
+# `prec3_0818a`에서 공통 6항목이 전부 PASS인데 실험 계약(arm 정체성)은 확인되지
+# 않았다. 실험별 검사를 사람 눈이 아니라 계획이 선언하고 launcher가 강제한다.
+
+def _hookfile(tmp_path, ok):
+    f = tmp_path / "myhook.py"
+    f.write_text(f"def check(run_dir):\n"
+                 f"    return {ok}, {{'experiment_specific': {ok}}}\n", encoding="utf-8")
+    return f
+
+
+def test_plan_declared_hook_is_loaded_and_applied(repo, tmp_path):
+    plan = L.load_plan(_plan(repo, tmp_path,
+                             validator_hook=str(_hookfile(tmp_path, False))), root=repo)
+    st = L.precheck(plan, "r1", root=repo)
+    _finish(repo, "r1")
+    ok, checks = L.validate(plan, "r1", st, root=repo, hook=L.load_hook(plan, repo))
+    assert checks["experiment_specific"] is False and ok is False
+
+
+def test_hook_pass_lets_common_checks_decide(repo, tmp_path):
+    plan = L.load_plan(_plan(repo, tmp_path,
+                             validator_hook=str(_hookfile(tmp_path, True))), root=repo)
+    st = L.precheck(plan, "r1", root=repo)
+    _finish(repo, "r1")
+    ok, checks = L.validate(plan, "r1", st, root=repo, hook=L.load_hook(plan, repo))
+    assert ok and checks["experiment_specific"] is True
+
+
+def test_missing_hook_file_is_refused_not_skipped(repo, tmp_path):
+    """훅이 선언됐는데 없으면 **조용히 통과시키면 안 된다.**"""
+    plan = L.load_plan(_plan(repo, tmp_path,
+                             validator_hook=str(tmp_path / "nope.py")), root=repo)
+    with pytest.raises(L.LauncherError, match="훅"):
+        L.load_hook(plan, repo)
+
+
+def test_no_hook_declared_returns_none(repo, tmp_path):
+    assert L.load_hook(L.load_plan(_plan(repo, tmp_path), root=repo), repo) is None
+
+
+def test_real_3arm_plan_declares_its_hook():
+    plan = json.loads((ROOT / "planning" / "exp_plans"
+                       / "dev_precision_3arm.json").read_text(encoding="utf-8"))
+    assert plan["validator_hook"] == "scripts/hooks/dev_precision_3arm_hook.py"
+    assert (ROOT / plan["validator_hook"]).is_file()

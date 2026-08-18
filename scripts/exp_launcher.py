@@ -310,6 +310,33 @@ def launch(plan, run_id, state, stage, root, dirty_recheck_sec: float = 3.0):
     return {"returncode": rc, "log": str(log), "argv": args}
 
 
+def load_hook(plan: dict, root):
+    """계획이 선언한 **실험별** validator를 불러온다.
+
+    2026-08-18 `prec3_0818a`: 공통 6항목이 전부 PASS인데 실험 계약(arm의 실효 정밀도)은
+    확인되지 않아 연구적으로는 FAIL이었다. 실험별 검사를 사람 눈에 맡기지 않는다.
+    **선언됐는데 파일이 없으면 조용히 통과시키지 않고 거부한다.**"""
+    rel = plan.get("validator_hook")
+    if not rel:
+        return None
+    p = Path(rel)
+    if not p.is_absolute():
+        p = Path(root) / rel
+    if not p.is_file():
+        raise LauncherError(f"실험별 validator 훅이 없다: {p}")
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(f"_hook_{plan['name']}", p)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    if not hasattr(mod, "check"):
+        raise LauncherError(f"훅에 `check(run_dir)`가 없다: {p}")
+
+    def _hook(run_dir):
+        r = mod.check(run_dir)
+        return r[1] if isinstance(r, tuple) else r          # (ok, checks) 또는 checks
+    return _hook
+
+
 def validate(plan, run_id, state, root, hook=None, stage="FULL") -> tuple:
     """공통 검사 + 실험별 훅. **공통화가 검증을 약하게 만들면 안 되므로** 실험별
     검사(프롬프트 해시·arm 수·지표 스키마 등)는 훅에서 추가한다.
@@ -465,7 +492,8 @@ def main():
     if a.stage == "validate":
         # 무엇을 검증하는지는 **직전에 무엇을 돌렸는지**로 정한다
         vstage = st.get("stage", "FULL")
-        ok, checks = validate(plan, a.run_id, st, root, stage=vstage)
+        ok, checks = validate(plan, a.run_id, st, root,
+                               hook=load_hook(plan, root), stage=vstage)
         print(json.dumps({"validated_stage": vstage, **checks},
                          ensure_ascii=False, indent=2))
         if vstage == "CANARY":

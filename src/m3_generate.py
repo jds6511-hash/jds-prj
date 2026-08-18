@@ -79,6 +79,25 @@ def caption_provenance(cfg: dict, model, prompt: str, entrypoint: str) -> dict:
         if k in cfg:
             prov[f"config_{k}"] = cfg[k]
 
+    # **요청 정밀도와 실효 양자화를 별도 축으로 둔다** (2026-08-18). `dtype` 하나로
+    # q4를 판정하면 안 된다 — 4bit 모델도 계산 dtype과 일부 비양자화 tensor는
+    # bf16이다. 정밀도가 주 판정인 실험에서 arm 정체성을 증명할 근거다.
+    def _q(name, default=None):
+        if quant is None:
+            return default
+        if isinstance(quant, dict):
+            return quant.get(name, default)
+        return getattr(quant, name, default)
+
+    prov["requested_quantized"] = bool(cfg.get("vlm_4bit"))
+    prov["effective_quantized"] = quant is not None
+    prov["quantization_mismatch"] = (
+        prov["requested_quantized"] != prov["effective_quantized"])
+    prov["bnb_quant_type"] = _q("bnb_4bit_quant_type")
+    cd = _q("bnb_4bit_compute_dtype")
+    prov["bnb_compute_dtype"] = None if cd is None else str(cd)
+    prov["bnb_double_quant"] = _q("bnb_4bit_use_double_quant")
+
     try:
         import torch
         prov["torch"] = torch.__version__
