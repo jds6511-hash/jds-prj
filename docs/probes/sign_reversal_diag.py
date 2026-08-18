@@ -180,8 +180,9 @@ def main():
     Path(a.out).write_text(json.dumps(r, ensure_ascii=False, indent=2),
                            encoding="utf-8")
     print(f"저장: {a.out}")
+    # 콘솔은 cp949다 — U+2212을 쓰면 산출을 낸 뒤에 죽는다. ASCII 하이픈만 쓴다
     print(f"부호 분포 +{r['paired_delta']['n_positive']} "
-          f"−{r['paired_delta']['n_negative']} 0:{r['paired_delta']['n_zero']}")
+          f"-{r['paired_delta']['n_negative']} 0:{r['paired_delta']['n_zero']}")
     return 0
 
 

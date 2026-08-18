@@ -182,6 +182,27 @@ def test_no_alpha_or_tau_anywhere():
         assert bad not in flat, bad
 
 
+def test_cli_survives_cp949_console(tmp_path):
+    """콘솔이 cp949다 — stdout에 U+2212를 쓰면 산출을 낸 뒤에 죽는다.
+
+    소스 문자열만 훑으면 놓친다(문제의 `−`가 print의 **다음 물리행**에 있었다).
+    실제 실행으로 잡는다.
+    """
+    import json
+    import os
+    import subprocess
+    sw = tmp_path / "sweep.json"
+    sw.write_text(json.dumps(_sweep(CAND, CUR)), encoding="utf-8")
+    out = tmp_path / "r.json"
+    env = {**os.environ, "PYTHONIOENCODING": "cp949"}
+    p = subprocess.run([sys.executable,
+                        str(ROOT / "docs" / "probes" / "sign_reversal_diag.py"),
+                        "--sweep", str(sw), "--out", str(out)],
+                       capture_output=True, text=True, env=env)
+    assert p.returncode == 0, p.stderr[-400:]
+    assert out.exists()
+
+
 def test_source_module_does_not_read_alpha_keys():
     src = (ROOT / "docs" / "probes" / "sign_reversal_diag.py").read_text(
         encoding="utf-8")
