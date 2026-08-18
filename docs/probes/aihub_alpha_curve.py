@@ -137,7 +137,10 @@ def main():
                     help="배관 점검 전용 — H2가 성립하지 않으므로 보고하지 않는다")
     args = ap.parse_args()
     if args.limit_videos:
-        args.out = f"_canary_{args.out}"
+        # 접두는 **파일명에만** 붙인다. 경로 전체에 붙이면 `run/x.json`이
+        # `_canary_run/x.json`이 되어 존재하지 않는 디렉터리를 가리킨다
+        # (exp_launcher가 run 디렉터리 상대 경로로 부를 때 드러난 결함)
+        args.out = str(Path(args.out).with_name(f"_canary_{Path(args.out).name}"))
 
     cfg = common.load_config(str(ROOT / args.config))
     B, seed = cfg["bootstrap_B"], cfg["seed"]

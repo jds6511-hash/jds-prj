@@ -1,0 +1,12 @@
+{
+  "name": "aihub_alpha_curve",
+  "command": ["python", "docs/probes/aihub_alpha_curve.py",
+              "--out", "launcher_runs/{run_id}/aihub_alpha_curve_2x2.json"],
+  "canary_args": ["--limit-videos", "8"],
+  "full_args": [],
+  "run_root": "docs/probes/_scratch/launcher_runs",
+  "log_dir": "C:/Users/UserK/AppData/Local/Temp/claude/c--Users-UserK-Desktop-prj/f443ead9-6036-4c8c-8abc-28dc150439d3/scratchpad/logs",
+  "expected_files": ["aihub_alpha_curve_2x2.json"],
+  "provenance_key": "gates",
+  "protected_splits": ["test"]
+}
