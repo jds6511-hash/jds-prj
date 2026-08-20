@@ -31,7 +31,11 @@ RUN_GLOB = "p2_index_batch_run*.json"
 
 
 def _report(run_dir: Path) -> dict:
-    for p in sorted(Path(run_dir).glob(RUN_GLOB)):
+    """**FULL 산출물을 우선한다.** CANARY와 FULL이 같은 run_id를 공유하므로 두 파일이
+    함께 있을 수 있고, 이름순으로 집으면 1편짜리 CANARY 결과를 FULL로 검증하게 된다."""
+    ps = sorted(Path(run_dir).glob(RUN_GLOB))
+    full = [p for p in ps if p.stem.endswith("_full")]
+    for p in (full or ps):
         return json.loads(p.read_text(encoding="utf-8"))
     return {}
 

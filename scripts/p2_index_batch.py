@@ -263,7 +263,10 @@ def main():
            "provenance": _env_provenance(),
            "arms": _collect(configs, vids, expected),
            "note": "색인만 만든다 — 평가는 GT 라벨 뒤 별도 단계다"}
-    out = run_dir / "p2_index_batch_run.json"
+    # **stage별 파일명.** launcher는 CANARY와 FULL이 같은 run_id를 공유하고, 같은
+    # 이름을 쓰면 FULL 진입에서 CANARY 산출물이 "부분 산출물"로 잡혀 막힌다. 이름이
+    # stage에 귀속되지 않으면 반대 사고(1편짜리 CANARY 결과가 FULL 결과 행세)도 난다.
+    out = run_dir / f"p2_index_batch_run_{a.stage}.json"
     out.write_text(json.dumps(rep, ensure_ascii=False, indent=2),
                    encoding="utf-8")
     print(f"[P2] 완료 {rep['total_sec']}s → {out}")

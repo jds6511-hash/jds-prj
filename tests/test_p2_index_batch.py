@@ -179,7 +179,7 @@ def _run(tmp_path, segs=3, cap=True, arms=("3b", "4b"), same_prompt=True,
 
 
 def test_hook_passes_a_clean_run(tmp_path):
-    (tmp_path / "p2_index_batch_run.json").write_text(
+    (tmp_path / "p2_index_batch_run_full.json").write_text(
         json.dumps(_run(tmp_path), ensure_ascii=False), encoding="utf-8")
     ok, checks = H.check(tmp_path)
     assert ok is True, checks
@@ -190,14 +190,14 @@ def test_hook_passes_a_clean_run(tmp_path):
 
 def test_hook_fails_when_segment_count_drifts(tmp_path):
     r = _run(tmp_path, segs=4)          # 사전등록값 3과 다르다
-    (tmp_path / "p2_index_batch_run.json").write_text(
+    (tmp_path / "p2_index_batch_run_full.json").write_text(
         json.dumps(r, ensure_ascii=False), encoding="utf-8")
     ok, checks = H.check(tmp_path)
     assert ok is False and checks["segments_match_preregistered"] is False
 
 
 def test_hook_fails_when_prompt_differs_between_arms(tmp_path):
-    (tmp_path / "p2_index_batch_run.json").write_text(
+    (tmp_path / "p2_index_batch_run_full.json").write_text(
         json.dumps(_run(tmp_path, same_prompt=False), ensure_ascii=False),
         encoding="utf-8")
     ok, checks = H.check(tmp_path)
@@ -205,7 +205,7 @@ def test_hook_fails_when_prompt_differs_between_arms(tmp_path):
 
 
 def test_hook_fails_when_subtitles_differ_between_arms(tmp_path):
-    (tmp_path / "p2_index_batch_run.json").write_text(
+    (tmp_path / "p2_index_batch_run_full.json").write_text(
         json.dumps(_run(tmp_path, sub_same=False), ensure_ascii=False),
         encoding="utf-8")
     ok, checks = H.check(tmp_path)
@@ -213,7 +213,7 @@ def test_hook_fails_when_subtitles_differ_between_arms(tmp_path):
 
 
 def test_hook_fails_on_empty_captions(tmp_path):
-    (tmp_path / "p2_index_batch_run.json").write_text(
+    (tmp_path / "p2_index_batch_run_full.json").write_text(
         json.dumps(_run(tmp_path, cap=False), ensure_ascii=False),
         encoding="utf-8")
     ok, checks = H.check(tmp_path)
@@ -221,7 +221,7 @@ def test_hook_fails_on_empty_captions(tmp_path):
 
 
 def test_hook_fails_when_an_arm_is_missing(tmp_path):
-    (tmp_path / "p2_index_batch_run.json").write_text(
+    (tmp_path / "p2_index_batch_run_full.json").write_text(
         json.dumps(_run(tmp_path, arms=("3b",)), ensure_ascii=False),
         encoding="utf-8")
     ok, checks = H.check(tmp_path)
@@ -231,7 +231,7 @@ def test_hook_fails_when_an_arm_is_missing(tmp_path):
 def test_hook_fails_when_an_arm_ran_unquantized(tmp_path):
     r = _run(tmp_path)
     r["arms"]["4b"]["caption_provenance"]["quantized"] = False
-    (tmp_path / "p2_index_batch_run.json").write_text(
+    (tmp_path / "p2_index_batch_run_full.json").write_text(
         json.dumps(r, ensure_ascii=False), encoding="utf-8")
     ok, checks = H.check(tmp_path)
     assert ok is False and checks["both_arms_quantized"] is False
@@ -240,7 +240,7 @@ def test_hook_fails_when_an_arm_ran_unquantized(tmp_path):
 def test_hook_fails_when_a_model_id_is_not_the_declared_one(tmp_path):
     r = _run(tmp_path)
     r["arms"]["4b"]["caption_provenance"]["model_id"] = "Qwen/Qwen3-VL-8B-Instruct"
-    (tmp_path / "p2_index_batch_run.json").write_text(
+    (tmp_path / "p2_index_batch_run_full.json").write_text(
         json.dumps(r, ensure_ascii=False), encoding="utf-8")
     ok, checks = H.check(tmp_path)
     assert ok is False and checks["model_ids_as_declared"] is False
@@ -252,3 +252,28 @@ def test_hook_reports_no_verdict_words():
         encoding="utf-8").split('"""', 2)[2]
     for bad in ("adopt", "채택", "우세", "significant"):
         assert bad not in src, bad
+
+
+# ---- stage별 산출물 이름 ------------------------------------------------
+
+def test_output_name_is_stage_scoped():
+    """CANARY와 FULL이 같은 run_id를 공유한다 — 이름이 갈리지 않으면 서로를 막거나
+    1편짜리 CANARY 결과가 FULL 결과 행세를 한다."""
+    src = (ROOT / "scripts" / "p2_index_batch.py").read_text(encoding="utf-8")
+    assert 'p2_index_batch_run_{a.stage}.json' in src
+    plan = json.loads((ROOT / "docs" / "planning" / "p2_index_plan.json")
+                      .read_text(encoding="utf-8"))
+    assert plan["canary_expected_files"] == ["p2_index_batch_run_canary.json"]
+    assert plan["full_expected_files"] == ["p2_index_batch_run_full.json"]
+    assert plan["expected_files"] == plan["full_expected_files"]
+
+
+def test_hook_prefers_the_full_report_when_both_exist(tmp_path):
+    can = _run(tmp_path, segs=4)          # CANARY: 사전등록값과 다른 구간 수
+    full = _run(tmp_path, segs=3)         # FULL: 정상
+    (tmp_path / "p2_index_batch_run_canary.json").write_text(
+        json.dumps(can, ensure_ascii=False), encoding="utf-8")
+    (tmp_path / "p2_index_batch_run_full.json").write_text(
+        json.dumps(full, ensure_ascii=False), encoding="utf-8")
+    ok, checks = H.check(tmp_path)
+    assert ok is True, checks           # canary 파일을 집었다면 FAIL이 났을 것이다
