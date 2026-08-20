@@ -1,0 +1,30 @@
+{
+  "name": "p2_index",
+  "note": "P2 신규 표본 35편 두 arm 색인. 평가는 포함하지 않는다 — GT 라벨 뒤 별도 단계다.",
+  "prereg": [
+    "docs/preregistration/부호역전_확증_사전등록_2026-08-18.md",
+    "docs/preregistration/부호역전_확증_보충2_P2설계_2026-08-20.md",
+    "docs/preregistration/부호역전_확증_보충4_P2표집틀검증_2026-08-20.md"
+  ],
+  "decision_docs": [
+    "docs/P2_승인1_규모확정_2026-08-20.md",
+    "docs/P2_선정표본_2026-08-20.md"
+  ],
+  "command": [
+    "{experiment_python}",
+    "scripts/p2_index_batch.py",
+    "--stage", "{stage}",
+    "--run-dir", "{run_dir}"
+  ],
+  "canary_args": [],
+  "full_args": [],
+  "run_root": "docs/probes/_scratch/launcher_runs",
+  "log_dir": "${EXP_LOG_DIR}",
+  "expected_files": ["p2_index_batch_run.json"],
+  "canary_expected_files": ["p2_index_batch_run.json"],
+  "full_expected_files": ["p2_index_batch_run.json"],
+  "provenance_key": "provenance",
+  "protected_splits": ["test"],
+  "validator_hook": "scripts/hooks/p2_index_hook.py",
+  "requires_modules": ["numpy", "torch", "transformers", "cv2", "faster_whisper"]
+}
