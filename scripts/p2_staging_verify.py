@@ -42,6 +42,10 @@ C_CAP = 0.80
 STAGING = ROOT / "artifacts" / "p2_sampling_frame"
 OUT_OF_SCOPE = ("lecture_dialog",)
 NON_EBS = ("kbs", "other", "free")
+# **완성 파일만 받는다.** `<id>.f137.mp4`(병합 전 video-only)나 `<id>.mp4.part`
+# (중단된 다운로드)를 glob으로 집으면 음성 없는/잘린 입력이 조용히
+# verified_eligible이 된다 — cv2는 그런 파일도 열고 duration을 준다
+FINAL_EXT = (".mp4", ".mkv", ".webm")
 # 보충4 §1-2. 기확보 4편의 production 실측값 — 게이트 기준
 GATE_REF = {"baekmansonghee_jirisan": 183, "jissi_farm": 211,
             "softyeon_ceramics": 192, "pland_costco_hosting": 395}
@@ -134,6 +138,31 @@ def sha256_file(path) -> str:
     return h.hexdigest()
 
 
+def final_file(dest_dir, video_id):
+    """**완성 파일만 인정한다.** 중간 산출물·부분 파일을 입력으로 쓰지 않는다."""
+    for ext in FINAL_EXT:
+        f = Path(dest_dir) / f"{video_id}{ext}"
+        if f.exists() and f.stat().st_size > 0:
+            return f
+    return None
+
+
+def has_audio(path) -> bool:
+    """**provenance 전용.** 병합 실패로 video-only가 남았는지 드러낸다.
+
+    eligibility는 `n_segments`만 본다(보충4 §1). 이 값은 판정에 쓰지 않고,
+    승인 ② 전에 STT가 깨질 입력을 미리 드러내기 위해 기록한다.
+    """
+    try:
+        r = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "a",
+                            "-show_entries", "stream=codec_type", "-of",
+                            "csv=p=0", str(path)],
+                           capture_output=True, text=True, timeout=60)
+        return "audio" in (r.stdout or "")
+    except Exception:
+        return False
+
+
 def download(video_id: str, dest_dir) -> tuple:
     """staging에만 내려받는다. **이미 있으면 재다운로드하지 않는다.**
 
@@ -143,23 +172,63 @@ def download(video_id: str, dest_dir) -> tuple:
     """
     dest_dir = Path(dest_dir)
     dest_dir.mkdir(parents=True, exist_ok=True)
-    existing = list(dest_dir.glob(f"{video_id}.*"))
-    if existing:
-        return existing[0], None, "pre_existing"
+    done = final_file(dest_dir, video_id)
+    if done is not None:
+        return done, None, "pre_existing"
     cmd = ["yt-dlp", "--no-warnings", "-f", FORMAT,
            "--merge-output-format", "mp4",
            "-o", str(dest_dir / f"{video_id}.%(ext)s"),
            f"https://www.youtube.com/watch?v={video_id}"]
     p = subprocess.run(cmd, capture_output=True, text=True,
                        encoding="utf-8", errors="replace", timeout=1800)
-    got = list(dest_dir.glob(f"{video_id}.*"))
-    if p.returncode != 0 or not got:
+    got = final_file(dest_dir, video_id)
+    if p.returncode != 0 or got is None:
         err = (p.stderr or "").strip().splitlines()
-        return None, (err[-1][:200] if err else "no output"), "download_failed"
-    return got[0], None, "downloaded"
+        leftovers = sorted(x.name for x in dest_dir.glob(f"{video_id}.*"))
+        msg = (err[-1][:200] if err else "no complete output")
+        if leftovers and p.returncode == 0:
+            msg = f"incomplete artifacts only: {leftovers[:3]}"
+        return None, msg, "download_failed"
+    return got, None, "downloaded"
 
 
-def verify_one(row: dict, staging) -> dict:
+def attribute(vid: str, how: str, origin: dict = None) -> dict:
+    """**현재 파일이 어떻게 취득됐는가**를 기록한다.
+
+    "이번 실행에서 다운로드했는가"와 구별한다. 재검증 실행에서는 모든 파일이
+    `pre_existing`으로 보이지만, 그 파일을 만든 조건은 이미 알고 있을 수 있다.
+    **아는 것을 잃지 않고, 모르는 것을 복원하지도 않는다.**
+    """
+    if how == "downloaded":
+        return {"source": "downloaded_in_this_run",
+                "acquired_by": "this_run",
+                "yt_dlp_version": tool_version(),
+                "format_selector": FORMAT, "note": ""}
+    known = ((origin or {}).get("acquired_by_map") or {}).get(vid)
+    if known:
+        return {"source": "pre_existing",
+                "acquired_by": known.get("acquired_by"),
+                "yt_dlp_version": known.get("yt_dlp_version"),
+                "format_selector": known.get("format_selector"),
+                "note": "이번 검증 실행에서 다운로드하지 않았다. 조건은 동결 "
+                        "origin 기록에서 가져왔다"}
+    return {"source": "pre_existing_unknown_acquisition",
+            "acquired_by": None, "yt_dlp_version": None,
+            "format_selector": None,
+            "note": "취득 조건을 관측하지 못했고 origin 기록에도 없다 — "
+                    "downloaded로 복원하지 않는다"}
+
+
+def hash_check(vid: str, digest: str, origin: dict = None) -> dict:
+    prior = ((origin or {}).get("prior_sha256") or {}).get(vid)
+    if prior is None:
+        return {"prior_sha256": None, "match": None,
+                "note": "이 실행이 최초 기록이다 — 두 실행 일치라고 쓰지 않는다"}
+    return {"prior_sha256": prior, "match": prior == digest,
+            "note": "동결된 이전 실행 해시와 대조"}
+
+
+def verify_one(row: dict, staging, origin: dict = None) -> dict:
     """한 편. **다운로드 실패와 세그먼트 탈락을 다른 상태로 남긴다.**"""
     vid = row["video_id"]
     out = {"source_id": vid,
@@ -170,19 +239,14 @@ def verify_one(row: dict, staging) -> dict:
            "file_sha256": None, "duration_sec": None, "n_segments": None,
            "verification_status": "verification_unavailable", "error": ""}
     path, err, how = download(vid, Path(staging) / "videos")
-    out["acquisition"] = {
-        "source": how,
-        "yt_dlp_version": tool_version() if how == "downloaded" else None,
-        "format_selector": FORMAT if how == "downloaded" else None,
-        "note": ("" if how == "downloaded" else
-                 "이번 실행이 이 파일의 취득 조건을 관측하지 않았다"),
-    }
+    out["acquisition"] = attribute(vid, how, origin)
     if err or path is None:
         out["download_status"] = "failed"
         out["error"] = err or "unknown"
         return out                      # segment_ineligible이 아니다
     out["local_filename"] = path.name
     out["file_sha256"] = sha256_file(path)
+    out["sha256_check"] = hash_check(vid, out["file_sha256"], origin)
     try:
         duration, n = probe(path)
         out["duration_sec"] = round(duration, 2)
@@ -193,6 +257,7 @@ def verify_one(row: dict, staging) -> dict:
     out["n_segments"] = n
     out["verification_status"] = classify_segments(n)
     out["media"] = media_info(path)          # provenance 전용
+    out["media"]["has_audio"] = has_audio(path)
     return out
 
 
@@ -226,7 +291,7 @@ def counts(manifest_rows: list, free_verified: int = 0) -> dict:
 
 
 def run(rows: list, staging, video_dir, work_dir, ref: dict = None,
-        limit: int = None, free_verified: int = 0) -> dict:
+        limit: int = None, free_verified: int = 0, origin: dict = None) -> dict:
     staging = Path(staging)
     staging.mkdir(parents=True, exist_ok=True)
     gate = reproduction_gate(video_dir, work_dir, ref)
@@ -235,7 +300,7 @@ def run(rows: list, staging, video_dir, work_dir, ref: dict = None,
             f"재현 게이트 FAIL: {gate['by_video']} — 검증기가 production과 다르다. "
             "신규 파일 판정으로 넘어가지 않는다")
     todo = in_scope(rows)[:limit] if limit else in_scope(rows)
-    out_rows = [verify_one(r, staging) for r in todo]
+    out_rows = [verify_one(r, staging, origin) for r in todo]
     c = counts(out_rows, free_verified)
     man = {
         "stage": "p2_sampling_frame_verification",
@@ -252,6 +317,15 @@ def run(rows: list, staging, video_dir, work_dir, ref: dict = None,
         "yt_dlp_version": tool_version(),
         "ffmpeg_version": ffmpeg_version(),
         "counts": c,
+        "acquisition_origin_supplied": bool(origin),
+        "sha256_mismatches": [r["source_id"] for r in out_rows
+                              if (r.get("sha256_check") or {}).get("match")
+                              is False],
+        "unknown_acquisition": [
+            r["source_id"] for r in out_rows
+            if r["acquisition"]["source"] == "pre_existing_unknown_acquisition"],
+        "no_audio": [r["source_id"] for r in out_rows
+                     if r.get("media", {}).get("has_audio") is False],
         "achieved_k": achieved_k(c["non_ebs_verified"], c["ebs_verified"]),
         "achieved_k_formula": "min(target_k, N + min(floor(c/(1-c)*N), E))",
         "videos": out_rows,
@@ -268,6 +342,7 @@ def main():
     ap.add_argument("--config", default="config.yaml")
     ap.add_argument("--limit", type=int, help="canary: first N only")
     ap.add_argument("--gate-only", action="store_true")
+    ap.add_argument("--origin", help="frozen acquisition origin JSON")
     ap.add_argument("--free-verified", type=int, default=0,
                     help="already-indexed FREE videos counted as non-EBS")
     a = ap.parse_args()
@@ -281,8 +356,10 @@ def main():
         return 0 if g["all_match"] else 1
     rows = list(csv.DictReader(
         Path(ROOT / a.pool).read_text(encoding="utf-8-sig").splitlines()))
+    origin = (json.loads(Path(a.origin).read_text(encoding="utf-8"))
+              if a.origin else None)
     man = run(rows, a.staging, vdir, wdir, limit=a.limit,
-              free_verified=a.free_verified)
+              free_verified=a.free_verified, origin=origin)
     c = man["counts"]
     print(f"gate: {man['reproduction_gate']['all_match']}")
     print(f"rows: {c['n_rows']}  verified: {c['verified_eligible']}")
@@ -290,6 +367,9 @@ def main():
           f"unavailable: {c['verification_unavailable']}")
     print(f"ebs: {c['ebs_verified']}  non_ebs: {c['non_ebs_verified']}")
     print(f"target_k: {man['target_k']}  achieved_k: {man['achieved_k']}")
+    print(f"sha256 mismatches: {man['sha256_mismatches']}")
+    print(f"unknown acquisition: {man['unknown_acquisition']}")
+    print(f"no audio: {man['no_audio']}")
     print(f"manifest: {Path(a.staging) / 'manifest.json'}")
     return 0
 

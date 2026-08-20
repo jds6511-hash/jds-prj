@@ -155,10 +155,15 @@ def test_acquisition_condition_is_recorded_per_video(monkeypatch, tmp_path):
     a = S.verify_one({"video_id": "z", "family": "kbs_docu"}, tmp_path)
     monkeypatch.setattr(S, "download", lambda v, d: (f, None, "pre_existing"))
     b = S.verify_one({"video_id": "z", "family": "kbs_docu"}, tmp_path)
+    c = S.verify_one({"video_id": "z", "family": "kbs_docu"}, tmp_path,
+                     origin=ORIGIN)
     assert a["acquisition"]["yt_dlp_version"] and a["acquisition"]["format_selector"]
-    assert b["acquisition"]["source"] == "pre_existing"
+    # origin이 없으면 unknown으로 남는다 — downloaded로 복원하지 않는다
+    assert b["acquisition"]["source"] == "pre_existing_unknown_acquisition"
     assert b["acquisition"]["yt_dlp_version"] is None
     assert b["acquisition"]["note"]
+    # origin이 있으면 아는 조건을 잃지 않는다
+    assert c["acquisition"]["acquired_by"] == "canary_run"
 
 
 def test_manifest_records_ffmpeg_version(monkeypatch, tmp_path):
@@ -174,6 +179,107 @@ def test_manifest_records_ffmpeg_version(monkeypatch, tmp_path):
               staging=tmp_path, video_dir=tmp_path, work_dir=tmp_path)
     assert m["ffmpeg_version"]
     assert m["yt_dlp_version"]
+
+
+# ---- 취득 귀속: "이번에 받았나"와 "어떻게 받았나"를 구별한다 ----------------
+
+ORIGIN = {"acquired_by_map": {"z": {"acquired_by": "canary_run",
+                                   "yt_dlp_version": "2026.08.19",
+                                   "format_selector": "avc1-pref"}},
+          "prior_sha256": {"z": "deadbeef"}}
+
+
+def test_downloaded_in_this_run_records_current_condition():
+    a = S.attribute("z", "downloaded", ORIGIN)
+    assert a["acquired_by"] == "this_run"
+    assert a["yt_dlp_version"] and a["format_selector"] == S.FORMAT
+
+
+def test_pre_existing_keeps_known_condition_from_frozen_origin():
+    """재검증 실행에서 모든 파일이 pre_existing으로 보이지만, 조건은 이미 안다.
+
+    **아는 것을 잃지 않는다** — 커밋 메시지만으로는 manifest provenance가 아니다.
+    """
+    a = S.attribute("z", "pre_existing", ORIGIN)
+    assert a["acquired_by"] == "canary_run"
+    assert a["yt_dlp_version"] == "2026.08.19"
+    assert a["format_selector"] == "avc1-pref"
+
+
+def test_pre_existing_without_origin_is_unknown_not_downloaded():
+    """**모르는 것을 복원하지 않는다.**"""
+    a = S.attribute("q", "pre_existing", ORIGIN)
+    assert a["source"] == "pre_existing_unknown_acquisition"
+    assert a["acquired_by"] is None and a["yt_dlp_version"] is None
+    assert S.attribute("q", "pre_existing", None)["yt_dlp_version"] is None
+
+
+def test_hash_check_never_claims_agreement_without_a_prior():
+    assert S.hash_check("q", "abc", ORIGIN)["match"] is None
+    assert "최초" in S.hash_check("q", "abc", ORIGIN)["note"]
+    assert S.hash_check("z", "deadbeef", ORIGIN)["match"] is True
+    assert S.hash_check("z", "other", ORIGIN)["match"] is False
+
+
+def test_manifest_reports_mismatches_and_unknowns(monkeypatch, tmp_path):
+    f = tmp_path / "a.mp4"
+    f.write_bytes(b"x")
+    monkeypatch.setattr(S, "download", lambda v, d: (f, None, "pre_existing"))
+    monkeypatch.setattr(S, "probe", lambda p: (1000.0, 200))
+    monkeypatch.setattr(S, "media_info", lambda p: {"width": 1920})
+    monkeypatch.setattr(S, "has_audio", lambda p: False)
+    monkeypatch.setattr(S, "reproduction_gate",
+                        lambda *a, **k: {"all_match": True, "by_video": {}})
+    m = S.run(rows=[{"video_id": "a", "family": "kbs_docu", "eligible": "True"}],
+              staging=tmp_path, video_dir=tmp_path, work_dir=tmp_path,
+              origin={"acquired_by_map": {}, "prior_sha256": {"a": "nope"}})
+    assert m["sha256_mismatches"] == ["a"]
+    assert m["unknown_acquisition"] == ["a"]
+    assert m["no_audio"] == ["a"]
+    assert m["acquisition_origin_supplied"] is True
+
+
+# ---- 완성 파일만 인정한다 -------------------------------------------------
+
+def test_partial_and_intermediate_files_are_not_accepted(tmp_path):
+    """`.part`·병합 전 `.f137.mp4`를 완성 파일로 쓰면 음성 없는/잘린 입력이
+    조용히 verified_eligible이 된다 — cv2는 그런 파일도 열고 duration을 준다."""
+    (tmp_path / "vid.f137.mp4").write_bytes(b"x")
+    (tmp_path / "vid.mp4.part").write_bytes(b"x")
+    assert S.final_file(tmp_path, "vid") is None
+    (tmp_path / "vid.mp4").write_bytes(b"x")
+    assert S.final_file(tmp_path, "vid").name == "vid.mp4"
+
+
+def test_zero_byte_file_is_not_accepted(tmp_path):
+    (tmp_path / "vid.mp4").write_bytes(b"")
+    assert S.final_file(tmp_path, "vid") is None
+
+
+def test_download_reports_incomplete_artifacts(monkeypatch, tmp_path):
+    """exit 0이어도 완성 파일이 없으면 실패다."""
+    class R:
+        returncode = 0
+        stdout = ""
+        stderr = ""
+    monkeypatch.setattr(S.subprocess, "run", lambda *a, **k: R())
+    (tmp_path / "vid.f137.mp4").write_bytes(b"x")
+    path, err, how = S.download("vid", tmp_path)
+    assert path is None and how == "download_failed"
+    assert "incomplete" in err
+
+
+def test_audio_presence_is_provenance_not_eligibility(monkeypatch, tmp_path):
+    """병합 실패로 video-only가 남으면 승인 ②의 STT가 깨진다 — 미리 드러낸다."""
+    f = tmp_path / "z.mp4"
+    f.write_bytes(b"x")
+    monkeypatch.setattr(S, "download", lambda v, d: (f, None, "downloaded"))
+    monkeypatch.setattr(S, "probe", lambda p: (1000.0, 200))
+    monkeypatch.setattr(S, "media_info", lambda p: {"width": 1920})
+    monkeypatch.setattr(S, "has_audio", lambda p: False)
+    m = S.verify_one({"video_id": "z", "family": "kbs_docu"}, tmp_path)
+    assert m["media"]["has_audio"] is False
+    assert m["verification_status"] == "verified_eligible"   # 판정 기준 아님
 
 
 # ---- achieved_k ---------------------------------------------------------
