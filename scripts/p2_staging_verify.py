@@ -101,9 +101,12 @@ def media_info(path) -> dict:
     import cv2
     c = cv2.VideoCapture(str(path))
     try:
+        fourcc = int(c.get(cv2.CAP_PROP_FOURCC))
+        codec = "".join(chr((fourcc >> (8 * i)) & 0xFF) for i in range(4))
         return {"width": int(c.get(cv2.CAP_PROP_FRAME_WIDTH)),
                 "height": int(c.get(cv2.CAP_PROP_FRAME_HEIGHT)),
-                "fps": round(c.get(cv2.CAP_PROP_FPS), 3)}
+                "fps": round(c.get(cv2.CAP_PROP_FPS), 3),
+                "codec": codec.replace(chr(0), "")}
     finally:
         c.release()
 
@@ -111,6 +114,16 @@ def media_info(path) -> dict:
 def tool_version() -> str:
     p = subprocess.run(["yt-dlp", "--version"], capture_output=True, text=True)
     return (p.stdout or "").strip()
+
+
+def ffmpeg_version() -> str:
+    """merge 단계가 ffmpeg를 쓴다 — 컨테이너가 그 손을 거친다."""
+    try:
+        p = subprocess.run(["ffmpeg", "-version"], capture_output=True,
+                           text=True, timeout=30)
+        return (p.stdout or "").splitlines()[0][:120]
+    except Exception as e:
+        return f"unavailable: {type(e).__name__}"
 
 
 def sha256_file(path) -> str:
@@ -122,12 +135,17 @@ def sha256_file(path) -> str:
 
 
 def download(video_id: str, dest_dir) -> tuple:
-    """staging에만 내려받는다. 이미 있으면 재다운로드하지 않는다."""
+    """staging에만 내려받는다. **이미 있으면 재다운로드하지 않는다.**
+
+    세 번째 반환값은 취득 경로다 — `downloaded`면 이번 실행 조건
+    (`yt_dlp_version` · `download_format`)이 그 파일에 적용되고, `pre_existing`
+    이면 이번 실행이 그 조건을 관측하지 않았다는 뜻이다.
+    """
     dest_dir = Path(dest_dir)
     dest_dir.mkdir(parents=True, exist_ok=True)
     existing = list(dest_dir.glob(f"{video_id}.*"))
     if existing:
-        return existing[0], None
+        return existing[0], None, "pre_existing"
     cmd = ["yt-dlp", "--no-warnings", "-f", FORMAT,
            "--merge-output-format", "mp4",
            "-o", str(dest_dir / f"{video_id}.%(ext)s"),
@@ -137,8 +155,8 @@ def download(video_id: str, dest_dir) -> tuple:
     got = list(dest_dir.glob(f"{video_id}.*"))
     if p.returncode != 0 or not got:
         err = (p.stderr or "").strip().splitlines()
-        return None, (err[-1][:200] if err else "no output")
-    return got[0], None
+        return None, (err[-1][:200] if err else "no output"), "download_failed"
+    return got[0], None, "downloaded"
 
 
 def verify_one(row: dict, staging) -> dict:
@@ -151,7 +169,14 @@ def verify_one(row: dict, staging) -> dict:
            "download_status": "ok", "local_filename": None,
            "file_sha256": None, "duration_sec": None, "n_segments": None,
            "verification_status": "verification_unavailable", "error": ""}
-    path, err = download(vid, Path(staging) / "videos")
+    path, err, how = download(vid, Path(staging) / "videos")
+    out["acquisition"] = {
+        "source": how,
+        "yt_dlp_version": tool_version() if how == "downloaded" else None,
+        "format_selector": FORMAT if how == "downloaded" else None,
+        "note": ("" if how == "downloaded" else
+                 "이번 실행이 이 파일의 취득 조건을 관측하지 않았다"),
+    }
     if err or path is None:
         out["download_status"] = "failed"
         out["error"] = err or "unknown"
@@ -225,6 +250,7 @@ def run(rows: list, staging, video_dir, work_dir, ref: dict = None,
         "c_cap": C_CAP, "target_k": TARGET_K,
         "download_format": FORMAT,
         "yt_dlp_version": tool_version(),
+        "ffmpeg_version": ffmpeg_version(),
         "counts": c,
         "achieved_k": achieved_k(c["non_ebs_verified"], c["ebs_verified"]),
         "achieved_k_formula": "min(target_k, N + min(floor(c/(1-c)*N), E))",

@@ -94,7 +94,8 @@ def test_verify_refuses_to_run_without_gate_pass(monkeypatch, tmp_path):
 # ---- 상태 3분리 ---------------------------------------------------------
 
 def test_download_failure_is_not_segment_ineligible(monkeypatch, tmp_path):
-    monkeypatch.setattr(S, "download", lambda v, d: (None, "Private video"))
+    monkeypatch.setattr(S, "download",
+                        lambda v, d: (None, "Private video", "download_failed"))
     row = {"video_id": "z", "family": "ebs_docuprime", "domain": "x"}
     m = S.verify_one(row, tmp_path)
     assert m["download_status"] == "failed"
@@ -106,7 +107,7 @@ def test_download_failure_is_not_segment_ineligible(monkeypatch, tmp_path):
 def test_verified_row_records_provenance(monkeypatch, tmp_path):
     f = tmp_path / "z.mp4"
     f.write_bytes(b"fake-bytes")
-    monkeypatch.setattr(S, "download", lambda v, d: (f, None))
+    monkeypatch.setattr(S, "download", lambda v, d: (f, None, "downloaded"))
     monkeypatch.setattr(S, "probe", lambda p: (1000.0, 200))
     m = S.verify_one({"video_id": "z", "family": "kbs_docu", "domain": "d"},
                      tmp_path)
@@ -132,7 +133,7 @@ def test_media_info_is_provenance_only(monkeypatch, tmp_path):
     """해상도는 기록만 한다 — eligibility는 n_segments만 본다."""
     f = tmp_path / "z.mp4"
     f.write_bytes(b"x")
-    monkeypatch.setattr(S, "download", lambda v, d: (f, None))
+    monkeypatch.setattr(S, "download", lambda v, d: (f, None, "downloaded"))
     monkeypatch.setattr(S, "probe", lambda p: (1000.0, 200))
     monkeypatch.setattr(S, "media_info", lambda p: {"width": 640,
                                                     "height": 360, "fps": 30.0})
@@ -142,6 +143,37 @@ def test_media_info_is_provenance_only(monkeypatch, tmp_path):
     hi = S.verify_one({"video_id": "z", "family": "kbs_docu"}, tmp_path)
     assert lo["verification_status"] == hi["verification_status"]
     assert lo["media"]["height"] != hi["media"]["height"]
+
+
+def test_acquisition_condition_is_recorded_per_video(monkeypatch, tmp_path):
+    """pre_existing 파일에는 이번 실행 조건을 적용했다고 쓰지 않는다."""
+    f = tmp_path / "z.mp4"
+    f.write_bytes(b"x")
+    monkeypatch.setattr(S, "probe", lambda p: (1000.0, 200))
+    monkeypatch.setattr(S, "media_info", lambda p: {"width": 1920})
+    monkeypatch.setattr(S, "download", lambda v, d: (f, None, "downloaded"))
+    a = S.verify_one({"video_id": "z", "family": "kbs_docu"}, tmp_path)
+    monkeypatch.setattr(S, "download", lambda v, d: (f, None, "pre_existing"))
+    b = S.verify_one({"video_id": "z", "family": "kbs_docu"}, tmp_path)
+    assert a["acquisition"]["yt_dlp_version"] and a["acquisition"]["format_selector"]
+    assert b["acquisition"]["source"] == "pre_existing"
+    assert b["acquisition"]["yt_dlp_version"] is None
+    assert b["acquisition"]["note"]
+
+
+def test_manifest_records_ffmpeg_version(monkeypatch, tmp_path):
+    """merge가 ffmpeg를 거친다 — 컨테이너를 만든 손을 기록한다."""
+    f = tmp_path / "a.mp4"
+    f.write_bytes(b"x")
+    monkeypatch.setattr(S, "download", lambda v, d: (f, None, "downloaded"))
+    monkeypatch.setattr(S, "probe", lambda p: (1000.0, 200))
+    monkeypatch.setattr(S, "media_info", lambda p: {"width": 1920})
+    monkeypatch.setattr(S, "reproduction_gate",
+                        lambda *a, **k: {"all_match": True, "by_video": {}})
+    m = S.run(rows=[{"video_id": "a", "family": "kbs_docu", "eligible": "True"}],
+              staging=tmp_path, video_dir=tmp_path, work_dir=tmp_path)
+    assert m["ffmpeg_version"]
+    assert m["yt_dlp_version"]
 
 
 # ---- achieved_k ---------------------------------------------------------
@@ -203,7 +235,7 @@ def test_in_scope_excludes_lecture_dialog():
 def test_manifest_reports_counts_and_achieved_k(monkeypatch, tmp_path):
     f = tmp_path / "a.mp4"
     f.write_bytes(b"x")
-    monkeypatch.setattr(S, "download", lambda v, d: (f, None))
+    monkeypatch.setattr(S, "download", lambda v, d: (f, None, "downloaded"))
     monkeypatch.setattr(S, "probe", lambda p: (1000.0, 200))
     monkeypatch.setattr(S, "reproduction_gate",
                         lambda *a, **k: {"all_match": True, "by_video": {}})
