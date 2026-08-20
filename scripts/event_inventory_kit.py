@@ -29,7 +29,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 import common                                              # noqa: E402
-from m6_evaluate import derive_gt_seg_idx                  # noqa: E402
+from common import derive_gt_seg_idx                      # noqa: E402
 
 OUT = ROOT / "label_kit" / "event_inventory"
 HEADER = ["start_sec", "end_sec", "event", "unclear"]

@@ -29,9 +29,9 @@
    두 도구는 `segments.json`을 직접 읽지 않고 **`scripts/label_guard.py`의
    allowlist**(`idx`·`start`·`end`·`rep_frame`)를 거친다 — 같은 파일에 `caption`·
    `subtitle`이 들어 있고 **기확보 영상에는 그것이 이미 존재**하므로 관행이 아니라
-   도구가 막는다. `label_intake`가 `m6_evaluate`에서 가져오는 것은
-   `derive_gt_seg_idx` **하나뿐**이며(시각→세그먼트 번호 순수 파생, 순위·점수에
-   닿지 않음) 그 외 심볼·모듈 전체 import는 금지다.
+   도구가 막는다. `derive_gt_seg_idx`는 중립 모듈 `common`에 있다(2026-08-20에
+   `m6_evaluate`에서 옮겼다 — 라벨 도구가 그 함수 때문에 평가 모듈을 import하는
+   특례가 있었다). **이 조항에 예외는 없다.**
 4. **변형 실험 격리.** config 사본에 paths.work/results 동시 분리, 항상 config.yaml에서
    재생성(scratchpad의 gen_ablation_configs.py 패턴). 본 config·본 인덱스를 실험으로
    오염시키지 않는다.

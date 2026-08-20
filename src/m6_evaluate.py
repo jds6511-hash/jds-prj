@@ -5,6 +5,10 @@ from collections import defaultdict
 from pathlib import Path
 import numpy as np
 import common
+# **사본을 만들지 않는다.** 정의는 `common`에 있고 여기서는 재수출한다 —
+# 라벨 도구가 이 함수 때문에 `m6_evaluate`를 import하지 않게 하기 위해
+# 옮겼다(CLAUDE.md 절대규칙 3)
+from common import derive_gt_seg_idx                    # noqa: F401
 from m5_search import VideoIndex, search
 
 
@@ -29,16 +33,6 @@ def _iou(a0, a1, b0, b1) -> float:
 def iou_recall_at_k(ranked, gt_start, gt_end, k: int, thr: float) -> float:
     return 1.0 if any(_iou(r.start, r.end, gt_start, gt_end) >= thr
                       for r in ranked[:k]) else 0.0
-
-
-def derive_gt_seg_idx(gt_start, gt_end, n_segments, seg_len: int) -> list[int]:
-    """1초 이상 겹치는 모든 세그먼트, 없으면 최대 겹침 1개. [3-3]"""
-    overlaps = []
-    for i in range(n_segments):
-        s, e = i * seg_len, (i + 1) * seg_len
-        overlaps.append((i, max(0.0, min(e, gt_end) - max(s, gt_start))))
-    idx = [i for i, ov in overlaps if ov >= 1.0]
-    return idx if idx else [max(overlaps, key=lambda t: t[1])[0]]
 
 
 def validate_gt_seg_idx(queries, indexes, seg_len: int) -> None:

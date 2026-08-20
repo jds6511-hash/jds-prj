@@ -31,10 +31,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 import common                                              # noqa: E402
 import label_guard                                        # noqa: E402
-# **순수 파생 함수 하나만** 가져온다 — 시각 -> 세그먼트 번호.
-# 순위·검색·점수에 닿지 않는다. CLAUDE.md 절대규칙 3이 이 도구를 허용
-# 도구로 명시하면서 `gt_seg_idx 자동 파생`을 그 역할로 지정한다
-from m6_evaluate import derive_gt_seg_idx                  # noqa: E402
+from common import derive_gt_seg_idx                      # noqa: E402
 
 KIT = ROOT / "label_kit"
 CSV_PATH = KIT / "label_intake.csv"

@@ -133,10 +133,15 @@ def test_load_reference_returns_events_after_freeze(tmp_path):
 
 def test_kit_does_not_import_generation_or_search_modules():
     """캡션·검색·M8 출력이 라벨 화면에 들어가면 안 된다 [사전등록 §1].
-    `derive_gt_seg_idx` 하나만 가져오는 것은 label_intake.py의 선례와 같다."""
+
+    `derive_gt_seg_idx`는 **중립 모듈 `common`에서** 가져온다. 이전에는
+    `m6_evaluate`에서 가져왔고 그것이 CLAUDE.md 절대규칙 3의 문언에 특례를
+    만들었다 — 함수를 옮겨 특례를 없앴다(`test_gt_seg_idx_relocation.py`).
+    """
     src = (ROOT / "scripts" / "event_inventory_kit.py").read_text(encoding="utf-8")
     assert "m5_search" not in src and "m8_report" not in src
-    assert "from m6_evaluate import derive_gt_seg_idx" in src
+    assert "m6_evaluate" not in src
+    assert "from common import derive_gt_seg_idx" in src
     assert "caption" not in src.split('"""', 2)[2] or True   # 본문에 캡션 사용 없음
     body = src.split('"""', 2)[2]
     for forbidden in ("s[\"caption\"]", "s['caption']", "subtitle"):

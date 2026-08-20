@@ -84,6 +84,22 @@ def postprocess_caption(text: str, cfg: dict) -> tuple[str, str | None]:
     return (clean, text) if clean != text else (clean, None)
 
 
+def derive_gt_seg_idx(gt_start, gt_end, n_segments, seg_len: int) -> list[int]:
+    """1초 이상 겹치는 모든 세그먼트, 없으면 최대 겹침 1개. [DESIGN_SPEC 3-3]
+
+    **중립 모듈에 둔다.** 라벨 도구가 이 함수를 쓰려고 `m6_evaluate`를 import하면
+    CLAUDE.md 절대규칙 3의 문언을 위반한다(라벨용 도구는 `m5_search`·`m6_evaluate`를
+    import조차 하지 마라). 순수 파생이므로 평가 모듈에 있을 이유가 없다.
+    `m6_evaluate`는 이 함수를 재수출한다 — 사본을 만들지 마라(표류한다).
+    """
+    overlaps = []
+    for i in range(n_segments):
+        s, e = i * seg_len, (i + 1) * seg_len
+        overlaps.append((i, max(0.0, min(e, gt_end) - max(s, gt_start))))
+    idx = [i for i, ov in overlaps if ov >= 1.0]
+    return idx if idx else [max(overlaps, key=lambda t: t[1])[0]]
+
+
 def index_text_hash(doc) -> str:
     """임베딩 입력 텍스트(subtitle·caption)의 내용 해시. M4가 meta.json에 기록하고
     스킵 판정·M5 로드에서 대조 — 재캡셔닝 후 --force 누락 시 낡은 임베딩이 무증상으로

@@ -100,16 +100,7 @@ def test_label_tools_use_the_guard(tool):
 def test_label_tools_never_import_search_or_eval(tool):
     body = (ROOT / "scripts" / f"{tool}.py").read_text(
         encoding="utf-8").split('"""', 2)[2]
-    for bad in ("m5_search", "frame_human_kit", "m8_report"):
+    # `derive_gt_seg_idx`를 `common`으로 옮겨 특례를 없앴다
+    # (`test_gt_seg_idx_relocation.py`). 이제 문언 그대로 전면 금지다
+    for bad in ("m5_search", "m6_evaluate", "frame_human_kit", "m8_report"):
         assert bad not in body, (tool, bad)
-    # `m6_evaluate`는 **순수 파생 함수 하나만** 허용한다 — 시각 -> 세그먼트 번호.
-    # CLAUDE.md 절대규칙 3이 label_intake를 허용 도구로 명시하면서 그 역할을
-    # `gt_seg_idx 자동 파생`으로 지정한다. 그 외 심볼은 금지다
-    for line in body.splitlines():
-        if "m6_evaluate" in line:
-            assert line.strip().startswith(
-                "from m6_evaluate import derive_gt_seg_idx"), line
-    for bad in ("m6_evaluate.search", "from m6_evaluate import evaluate"):
-        assert bad not in body, (tool, bad)
-    for line in body.splitlines():
-        assert line.strip() != "import m6_evaluate", (tool, line)
