@@ -41,6 +41,10 @@ POSITIVE = "drift"
 EXCLUDED = "excluded_unclear"
 # `docs/재분석_I1검증셋B_2026-08-18.md` 공표값. 대조군 재현 게이트의 기준이다
 PUBLISHED_BASELINE = {"precision_sample": 0.9861, "recall_est": 0.0815}
+# `docs/I1_detector_candidate_freeze_2026-08-20.md`에서 고정한 후보.
+# **코드가 단일 출처다** — 문서와 어긋나면 테스트가 잡는다
+FROZEN_PRIMARY = {"combiner": "R_or_T", "R": 2, "T": 0.02}
+FROZEN_FALLBACK = {"combiner": "R_only", "R": 2, "T": None}
 # 단순한 규칙을 선호한다 — 동률 처리용 순위
 _SIMPLICITY = {"R_only": 0, "T_only": 0, "R_or_T": 1, "R_and_T": 1}
 

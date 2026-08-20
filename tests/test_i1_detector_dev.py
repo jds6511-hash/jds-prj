@@ -339,3 +339,11 @@ def test_cli_output_is_ascii_safe():
     for line in src.split("if __name__")[0].splitlines():
         if line.strip().startswith("print("):
             assert line.isascii(), line
+
+
+def test_frozen_candidates_are_pinned():
+    """freeze 문서와 코드가 어긋나면 여기서 잡는다."""
+    assert D.FROZEN_PRIMARY == {"combiner": "R_or_T", "R": 2, "T": 0.02}
+    assert D.FROZEN_FALLBACK == {"combiner": "R_only", "R": 2, "T": None}
+    assert D.FROZEN_PRIMARY in list(D.grid())
+    assert D.FROZEN_FALLBACK in list(D.grid())
