@@ -43,9 +43,15 @@ POSITIVE, EXCLUDED = "drift", "excluded_unclear"
 # 희석하면서 precision을 올린다
 PRIMARY_EVIDENCE_BLOCK = "fresh_strata_only"
 PRECISION_NAME = "freshly sampled rule-expansion region precision"
-# 보충3 §4 재현 게이트 기준값 — development 공표 carried-over TP
-# (C4 68 + C5 3 + C1 0). 현행 detector 기준만 잰다
-PUBLISHED_CARRIED_TP = {"baseline": 71}
+# 보충3 §4 재현 게이트 기준값 — development 공표 carried-over 값
+# (freeze 문서 표: C1 drift 0 / C4 drift 68 / C5 drift 3)
+#
+# **세 규칙 전부 잰다.** combined recall이 `c["tp"][name]`으로 후보의 carried TP를
+# 쓰고 분모로 rule-independent carried drift를 쓴다. baseline만 대조하면 후보
+# carried 값과 분모가 조용히 바뀌는 경로가 남는다 — C4에서 primary/fallback이
+# 1건 갈렸던 바로 그 자리다
+PUBLISHED_CARRIED_TP = {"baseline": 71, "primary": 71, "fallback": 70}
+PUBLISHED_CARRIED_DRIFT = 71
 
 
 class AnalysisError(RuntimeError):
@@ -139,7 +145,8 @@ def _combine(fresh: dict, carried: dict, name: str) -> dict:
 
 
 def analyze(rows: list, a_labels: dict, b_labels: dict, pop: dict,
-            carried: dict = None, published_carried_tp: dict = None) -> dict:
+            carried: dict = None, published_carried_tp: dict = None,
+            published_carried_drift: int = None) -> dict:
     """`rows`는 매니페스트 인스턴스. `pop`은 **fresh 층의 잔여 모집단**이다."""
     need_a = [r for r in rows if r["cjk_count"] > 0]
     missing_a = [r["sample_id"] for r in need_a
@@ -203,12 +210,21 @@ def analyze(rows: list, a_labels: dict, b_labels: dict, pop: dict,
             got = {k: sum(c["tp"][k] for c in carried.values())
                    for k in published_carried_tp}
             match = all(got[k] == v for k, v in published_carried_tp.items())
-            out["reproduction_check"] = {"published": dict(published_carried_tp),
-                                         "recomputed": got, "match": match}
-            if not match:
+            got_drift = sum(c["drift"] for c in carried.values())
+            drift_match = (published_carried_drift is None
+                           or got_drift == published_carried_drift)
+            out["reproduction_check"] = {
+                "published_tp": dict(published_carried_tp),
+                "recomputed_tp": got,
+                "published_drift": published_carried_drift,
+                "recomputed_drift": got_drift,
+                "rules_checked": sorted(published_carried_tp),
+                "match": match and drift_match}
+            if not (match and drift_match):
                 raise AnalysisError(
-                    f"carried-over 재현 게이트 FAIL: {got} vs "
-                    f"{published_carried_tp} — 이어받은 census가 development "
+                    f"carried-over 재현 게이트 FAIL: tp {got} vs "
+                    f"{published_carried_tp} · drift {got_drift} vs "
+                    f"{published_carried_drift} — 이어받은 census가 development "
                     "공표값과 다르다. candidate 결과를 열지 않는다")
         out["combined_with_carried_over"] = {
             **{name: _combine(fresh[name], carried, name) for name in RULES},
@@ -247,7 +263,9 @@ def main():
     # **게이트를 선택 인자로 두지 않는다**(보충3 §4). carried를 주면 공표값 재현이
     # 필수고, 실패하면 candidate 결과를 열지 않는다
     r = analyze(man["instances"], al, bl, man["remaining_population"], carried,
-                published_carried_tp=(PUBLISHED_CARRIED_TP if carried else None))
+                published_carried_tp=(PUBLISHED_CARRIED_TP if carried else None),
+                published_carried_drift=(PUBLISHED_CARRIED_DRIFT if carried
+                                         else None))
     Path(a.out).write_text(json.dumps(r, ensure_ascii=False, indent=2),
                            encoding="utf-8")
     print(f"saved: {a.out}")

@@ -234,8 +234,60 @@ def test_fresh_precision_is_ratio_of_estimated_totals_not_cell_average():
     assert m["precision_weighted"] == round(m["est_tp"] / m["est_fired"], 4)
 
 
-def test_published_carried_baseline_is_a_module_constant():
-    assert A.PUBLISHED_CARRIED_TP == {"baseline": 71}
+def test_published_carried_covers_every_rule_used_by_combined_recall():
+    """combined recall이 후보 carried TP와 carried drift를 쓴다 — 둘 다 대조한다."""
+    assert A.PUBLISHED_CARRIED_TP == {"baseline": 71, "primary": 71,
+                                      "fallback": 70}
+    assert A.PUBLISHED_CARRIED_DRIFT == 71
+    assert set(A.PUBLISHED_CARRIED_TP) == set(A.RULES)
+
+
+def test_gate_catches_candidate_carried_tp_drift():
+    """C4에서 primary/fallback이 1건 갈렸던 자리다 — 조용히 바뀌면 안 된다."""
+    rows = [_inst("V001", "C2", 2, 2, 0.02)]
+    carried = {"C4": {"population": 78, "analyzable": 68, "drift": 68,
+                      "tp": {"baseline": 68, "primary": 60, "fallback": 67}},
+               "C5": {"population": 3, "analyzable": 3, "drift": 3,
+                      "tp": {"baseline": 3, "primary": 3, "fallback": 3}},
+               "C1": {"population": 1, "analyzable": 1, "drift": 0,
+                      "tp": {"baseline": 0, "primary": 0, "fallback": 0}}}
+    with pytest.raises(A.AnalysisError, match="재현"):
+        A.analyze(rows, {"V001": "korean_text_only"}, {}, FRESH_POP,
+                  carried=carried,
+                  published_carried_tp=A.PUBLISHED_CARRIED_TP,
+                  published_carried_drift=A.PUBLISHED_CARRIED_DRIFT)
+
+
+def test_gate_catches_carried_drift_denominator_change():
+    """분모가 움직이면 recall이 움직인다 — rule-independent 경로도 잠근다."""
+    rows = [_inst("V001", "C2", 2, 2, 0.02)]
+    carried = {"C4": {"population": 78, "analyzable": 68, "drift": 60,
+                      "tp": {"baseline": 68, "primary": 68, "fallback": 67}},
+               "C5": {"population": 3, "analyzable": 3, "drift": 3,
+                      "tp": {"baseline": 3, "primary": 3, "fallback": 3}}}
+    with pytest.raises(A.AnalysisError, match="재현"):
+        A.analyze(rows, {"V001": "korean_text_only"}, {}, FRESH_POP,
+                  carried=carried,
+                  published_carried_tp={"baseline": 71},
+                  published_carried_drift=A.PUBLISHED_CARRIED_DRIFT)
+
+
+def test_gate_passes_on_the_frozen_carried_census():
+    rows = [_inst("V001", "C2", 2, 2, 0.02)]
+    carried = {"C4": {"population": 78, "analyzable": 68, "drift": 68,
+                      "tp": {"baseline": 68, "primary": 68, "fallback": 67}},
+               "C5": {"population": 3, "analyzable": 3, "drift": 3,
+                      "tp": {"baseline": 3, "primary": 3, "fallback": 3}},
+               "C1": {"population": 1, "analyzable": 1, "drift": 0,
+                      "tp": {"baseline": 0, "primary": 0, "fallback": 0}}}
+    r = A.analyze(rows, {"V001": "korean_text_only"}, {}, FRESH_POP,
+                  carried=carried,
+                  published_carried_tp=A.PUBLISHED_CARRIED_TP,
+                  published_carried_drift=A.PUBLISHED_CARRIED_DRIFT)
+    g = r["reproduction_check"]
+    assert g["match"] is True
+    assert g["rules_checked"] == ["baseline", "fallback", "primary"]
+    assert g["recomputed_drift"] == 71
 
 
 def test_cli_wires_the_reproduction_gate():
