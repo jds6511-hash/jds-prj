@@ -210,3 +210,40 @@ def test_label_file_is_created_with_blank_column_and_not_overwritten(tmp_path):
     p.write_text("sample_id,label\nV001,no_text\n", encoding="utf-8")
     V.write_label_file(rows, p)                            # 두 번째 호출
     assert "no_text" in p.read_text(encoding="utf-8")      # 덮어쓰지 않는다
+
+
+# ---- 라벨 디렉터리에 메타데이터를 두지 않는다 ---------------------------
+
+LEAK_KEYS = ("arm", "cell", "caption", "i1a_hit", "cjk_count", "cjk_ratio",
+             "longest_cjk_run", "video_id", "seg_idx")
+
+
+def test_manifest_lives_outside_the_labeling_dir():
+    """경고문에 의존하지 않는다 — 라벨러가 열 이유가 없는 곳에 둔다."""
+    assert V.OUT.name == "i1_validation"
+    assert V.META.name != V.OUT.name
+    assert V.META.parent == V.OUT.parent
+    assert not str(V.META).startswith(str(V.OUT) + "\\")
+    assert not str(V.META).startswith(str(V.OUT) + "/")
+
+
+def test_labeling_dir_contains_no_metadata_file():
+    """실제 산출물 검사 — 라벨 디렉터리의 텍스트 파일에 누출 키가 없어야 한다."""
+    if not V.OUT.exists():
+        pytest.skip("표집 미실행")
+    for p in V.OUT.rglob("*"):
+        if not p.is_file() or p.suffix.lower() in (".jpg", ".jpeg", ".png"):
+            continue
+        txt = p.read_text(encoding="utf-8", errors="replace")
+        for k in LEAK_KEYS:
+            assert k not in txt, f"{p.name}에 {k}가 있다"
+
+
+def test_readme_is_written_for_the_labeler():
+    if not V.OUT.exists():
+        pytest.skip("표집 미실행")
+    r = V.OUT / "README.md"
+    assert r.exists()
+    txt = r.read_text(encoding="utf-8")
+    for lab in ("cjk_text_present", "korean_text_only", "no_text", "unclear"):
+        assert lab in txt

@@ -35,6 +35,9 @@ import common                                                  # noqa: E402
 
 AKIT = ROOT / "label_kit" / "i1_frames"
 OUT = ROOT / "label_kit" / "i1_validation"
+# 매니페스트는 **라벨 디렉터리 밖**에 둔다. arm·셀·캡션·현행 적중이 들어 있어서
+# 같은 폴더에 두면 경고문 하나에 블라인드가 걸린다 — A116은 그 구조였다
+META = ROOT / "label_kit" / "i1_validation_meta"
 # 보충3 §1-1. 잔여 0인 셀은 여기 없다
 QUOTA = {"C2": 60, "C0": 24}
 SEED = 20260820
@@ -46,6 +49,35 @@ RULES = {"baseline": "baseline",
 HIDDEN_FROM_SHEET = ("arm", "cell", "i1a_hit", "caption", "cjk_count",
                      "cjk_ratio", "longest_cjk_run", "video_id",
                      "fires_baseline", "fires_primary", "fires_fallback")
+
+
+README = """# I1 detector validation — A단계 라벨 (프레임 83장)
+
+**화면에 글자가 있는지만 본다.** 캡션은 보지 않는다 — 이 시트에 캡션이 없는 이유다.
+
+## 라벨 값 하나를 `labels_v.csv`의 `label` 칸에 적는다
+
+| 값 | 뜻 |
+|---|---|
+| `cjk_text_present` | 화면에 **한자·가나**가 보인다 (간판·자막·자수·포장 등) |
+| `korean_text_only` | 화면에 글자가 있는데 **한글(또는 로마자)뿐**이다 |
+| `no_text` | 화면에 읽을 수 있는 글자가 없다 |
+| `unclear` | 글자가 있는지, 어떤 문자인지 판단이 안 된다 |
+
+## 순서
+
+1. `sheet_01.jpg` ~ `sheet_03.jpg`를 열어 훑는다
+2. 작은 글자가 애매하면 `full/<sample_id>.jpg` 원본(1920×1080)을 연다
+3. `labels_v.csv`에 값을 적는다. **83행 전부 채운다** (빈 칸이 있으면 분석이 거부한다)
+
+## 하지 말 것
+
+- **캡션을 찾아보지 마라.** 캡션에 적힌 글자를 화면에서 봤다고 믿게 된다
+- 검색 결과·모델명·판정 결과를 참고하지 마라
+- 이 폴더에는 메타데이터가 없다. `label_kit/i1_validation_meta/`도 열지 마라
+
+B단계는 `cjk_text_present`로 라벨한 것만 대상이고, 그때 별도 시트를 만든다.
+"""
 
 
 class SheetError(RuntimeError):
@@ -189,8 +221,9 @@ def main():
     check_c0_invariant(picked)
 
     OUT.mkdir(parents=True, exist_ok=True)
+    META.mkdir(parents=True, exist_ok=True)
     man = manifest(picked, kept, n_ex, remaining)
-    (OUT / "manifest_v.json").write_text(
+    (META / "manifest_v.json").write_text(
         json.dumps(man, ensure_ascii=False, indent=2), encoding="utf-8")
     # 시트는 sample_id 순서로 — 번호는 이미 섞여 있으므로 셀이 드러나지 않는다
     frames, seen = [], set()
@@ -199,6 +232,7 @@ def main():
             seen.add(r["sample_id"])
             frames.append(r)
     write_label_file(picked, OUT / "labels_v.csv")
+    (OUT / "README.md").write_text(README, encoding="utf-8")
     if not a.dry_run:
         build_sheets(frames, cfg, OUT)
         # 시트 썸네일(300px)에서는 간판·자막 같은 작은 글자가 안 읽힌다.
@@ -215,7 +249,7 @@ def main():
     print(f"remaining pool by cell: {remaining}")
     print(f"label file: {OUT / 'labels_v.csv'}")
     print("labels: cjk_text_present / korean_text_only / no_text / unclear")
-    print("do NOT open manifest_v.json while labeling (arm/caption/cell inside)")
+    print(f"metadata kept OUTSIDE the labeling dir: {META}")
     return 0
 
 
