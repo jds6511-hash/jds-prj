@@ -277,3 +277,29 @@ def test_hook_prefers_the_full_report_when_both_exist(tmp_path):
         json.dumps(full, ensure_ascii=False), encoding="utf-8")
     ok, checks = H.check(tmp_path)
     assert ok is True, checks           # canary 파일을 집었다면 FAIL이 났을 것이다
+
+
+def test_module_args_survive_a_leading_dash_video_id(tmp_path, monkeypatch):
+    """표본에 `-_mgcIUbbX4`가 있다 — 공백 형식이면 argparse가 옵션으로 읽는다."""
+    seen = {}
+
+    class _R:
+        returncode = 0
+
+    def fake_run(cmd, **kw):
+        seen["cmd"] = cmd
+        return _R()
+
+    monkeypatch.setattr(B.subprocess, "run", fake_run)
+    B._run_module("m1_preprocess", "config_p2_3b.yaml", "-_mgcIUbbX4")
+    cmd = seen["cmd"]
+    assert "--video-id=-_mgcIUbbX4" in cmd
+    assert "--video-id" not in cmd          # 공백 형식이 남아 있으면 안 된다
+    assert any(a.startswith("--config=") for a in cmd)
+
+
+def test_real_sample_contains_a_dash_prefixed_id():
+    """이 테스트가 깨지면 위 방어의 근거가 사라진 것이다 — 그때 지워라."""
+    sel = json.loads((ROOT / "docs" / "P2_선정표본_2026-08-20.json")
+                     .read_text(encoding="utf-8"))["selected"]
+    assert any(r["source_id"].startswith("-") for r in sel)

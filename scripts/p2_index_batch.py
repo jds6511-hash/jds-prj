@@ -135,8 +135,10 @@ def mirror(src_vdir, dst_vdir) -> None:
 
 
 def _run_module(module: str, config: str, video_id: str, extra=None) -> None:
+    # **등호 형식으로 넘긴다.** YouTube video_id는 `-`로 시작할 수 있고(표본에 실재:
+    # `-_mgcIUbbX4`), 공백 형식이면 argparse가 그것을 옵션으로 읽어 죽는다.
     cmd = [sys.executable, str(ROOT / "src" / f"{module}.py"),
-           "--config", config, "--video-id", video_id, *(extra or [])]
+           f"--config={config}", f"--video-id={video_id}", *(extra or [])]
     print(f"    $ {' '.join(cmd[1:])}", flush=True)
     r = subprocess.run(cmd, cwd=ROOT)
     if r.returncode != 0:
