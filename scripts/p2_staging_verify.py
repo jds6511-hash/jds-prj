@@ -170,6 +170,58 @@ def has_audio(path):
         return None
 
 
+def container_audio_lang(path):
+    """**provenance 전용. 판정에 쓰지 않는다.**
+
+    실측에서 신뢰할 수 없었다 — 플랫폼이 `ko`로 선언한 영상의 병합 산출물이
+    `eng`로 태깅돼 있었다(9lxOsvPb3kw · d-ReqwAtWUI). 병합이 붙인 기본값이라
+    이것으로 판정하면 전 편이 비한국어로 오판된다. 나중에 누가 이 필드를 기준으로
+    쓰지 않도록 관측 사실을 남긴다.
+    """
+    try:
+        r = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "a:0",
+                            "-show_entries", "stream_tags=language", "-of",
+                            "csv=p=0", str(path)],
+                           capture_output=True, text=True, timeout=60)
+        return (r.stdout or "").strip() or None
+    except Exception:
+        return None
+
+
+def platform_language(video_id: str):
+    """플랫폼이 선언한 오디오 언어. **메타데이터만 읽는다 — 다운로드 없음.**
+
+    STT는 승인 ② 전까지 금지이므로 한국어 발화를 file 수준에서 완전 검증할 수
+    없다. 이것이 그 조건에 대해 얻을 수 있는 유일한 outcome-blind 신호다.
+    """
+    try:
+        r = subprocess.run(["yt-dlp", "--skip-download", "--no-warnings",
+                            "--print", "%(language)s",
+                            f"https://www.youtube.com/watch?v={video_id}"],
+                           capture_output=True, text=True, timeout=180,
+                           encoding="utf-8", errors="replace")
+        if r.returncode != 0:
+            return None
+        v = (r.stdout or "").strip().splitlines()
+        v = v[0].strip() if v else ""
+        return None if v in ("", "NA", "None") else v
+    except Exception:
+        return None
+
+
+def speech_status(lang) -> str:
+    """**`verified`라는 이름을 쓰지 않는다.** 증거는 플랫폼 선언 수준이다.
+
+    배제는 **반증된 경우만** 한다 — 다른 언어로 선언된 영상. 선언이 없는 것을
+    비한국어로 취급하지 않는다.
+    """
+    if lang is None:
+        return "platform_language_unknown"
+    if lang.lower().startswith("ko"):
+        return "platform_language_ko"
+    return "platform_language_other"
+
+
 def acquisition_status(audio) -> str:
     """취득 파일의 integrity. **segment 판정과 다른 축이다.**"""
     if audio is True:
@@ -253,6 +305,8 @@ def verify_one(row: dict, staging, origin: dict = None) -> dict:
            "file_sha256": None, "duration_sec": None, "n_segments": None,
            "verification_status": "verification_unavailable",
            "acquisition_status": "no_final_file",
+           "speech_status": "platform_language_unknown",
+           "platform_language": None,
            "sampling_frame_usable": False, "error": ""}
     path, err, how = download(vid, Path(staging) / "videos")
     out["acquisition"] = attribute(vid, how, origin)
@@ -278,9 +332,15 @@ def verify_one(row: dict, staging, origin: dict = None) -> dict:
     # **두 축이다.** n_segments는 길이 eligibility, audio는 취득 integrity.
     # achieved_k에는 둘 다 통과한 영상만 들어간다
     out["acquisition_status"] = acquisition_status(audio)
+    out["media"]["container_audio_lang"] = container_audio_lang(path)
+    out["platform_language"] = platform_language(vid)
+    out["speech_status"] = speech_status(out["platform_language"])
+    # 세 축 전부 통과해야 표집틀에 들어간다. 발화 축은 **반증만** 배제한다 —
+    # 완전 검증은 STT가 필요하고 그것은 승인 ② 자원이다
     out["sampling_frame_usable"] = (
         out["verification_status"] == "verified_eligible"
-        and out["acquisition_status"] == "ok")
+        and out["acquisition_status"] == "ok"
+        and out["speech_status"] != "platform_language_other")
     return out
 
 
@@ -320,6 +380,15 @@ def counts(manifest_rows: list, free_verified: int = 0) -> dict:
         "acquisition_audio_unknown": sum(
             1 for r in manifest_rows
             if r.get("acquisition_status") == "audio_unknown"),
+        "speech_platform_ko": sum(
+            1 for r in manifest_rows
+            if r.get("speech_status") == "platform_language_ko"),
+        "speech_platform_other": sum(
+            1 for r in manifest_rows
+            if r.get("speech_status") == "platform_language_other"),
+        "speech_unknown": sum(
+            1 for r in manifest_rows
+            if r.get("speech_status") == "platform_language_unknown"),
         "ebs_verified": ebs,
         "non_ebs_verified": non_ebs,
         "free_carried": free_verified,
@@ -364,7 +433,21 @@ def run(rows: list, staging, video_dir, work_dir, ref: dict = None,
                      if r.get("acquisition_status") == "no_audio"],
         "audio_unknown": [r["source_id"] for r in out_rows
                           if r.get("acquisition_status") == "audio_unknown"],
-        "usable_rule": ("sampling_frame_usable = segment PASS AND audio ok. "
+        "speech_evidence": {
+            "level": "platform_declared_audio_language",
+            "not_verified_by": "STT — 승인 ② 자원이므로 이 단계에서 돌리지 않는다",
+            "exclusion_rule": ("반증된 경우(platform_language_other)만 배제한다. "
+                               "선언이 없는 것을 비한국어로 취급하지 않는다"),
+            "container_tag_unusable": ("병합 산출물의 오디오 스트림 태그는 "
+                                       "신뢰할 수 없다 — 플랫폼이 ko로 선언한 "
+                                       "영상이 eng로 태깅돼 있었다. provenance로만 "
+                                       "남기고 판정에 쓰지 않는다"),
+            "post_approval_2_rule": ("승인 ② STT 산출에서 무발화·비한국어가 "
+                                     "드러나면 표본에서 조용히 빼지 않고 보고 "
+                                     "항목으로 남긴다 — 사후 제외를 만들지 않는다"),
+        },
+        "usable_rule": ("sampling_frame_usable = segment PASS AND audio ok AND "
+                        "speech NOT refuted. "
                         "표집틀 hard 조건이 한국어 발화 포함이므로 음성 없는 "
                         "파일은 취득 실패다 (스크리닝 규격 §1)"),
         "attribution_basis": ("frozen pre-run inventory. 이 목록에 없고 실행 후 "
@@ -417,6 +500,8 @@ def main():
     print(f"sha256 mismatches: {man['sha256_mismatches']}")
     print(f"unknown acquisition: {man['unknown_acquisition']}")
     print(f"no audio: {man['no_audio']}")
+    print(f"speech ko/other/unknown: {c['speech_platform_ko']}/"
+          f"{c['speech_platform_other']}/{c['speech_unknown']}")
     print(f"manifest: {Path(a.staging) / 'manifest.json'}")
     return 0
 
