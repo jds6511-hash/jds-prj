@@ -70,3 +70,6 @@ label_kit/event_inventory/*
 
 # 서버 접속 정보(공개 저장소 노출 방지)
 SERVER_LOCAL.md
+
+# P2 표집틀 검증 staging (승인 ① 작업 — 승격은 승인 ②)
+artifacts/
