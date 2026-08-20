@@ -1,0 +1,200 @@
+{
+  "note": "신규 영상은 M1 실행 전에 여기 기록해야 한다. 인덱싱 후에는 붙일 수 없다. 면제는 데이터로만 존재하며 코드가 조용히 넘어가지 않는다",
+  "id_level_dedup": {
+    "verified": false,
+    "reason": "기존 영상에 출처 ID가 없어 ID 단위 대조가 불가능하다"
+  },
+  "not_used_for": "지표·eligibility 계산에 쓰지 않는다. 기록 전용",
+  "videos": {
+    "JN1ZSWorQb8": {
+      "source_url": "https://www.youtube.com/watch?v=JN1ZSWorQb8",
+      "source_id": "JN1ZSWorQb8",
+      "file_sha256": "6f8473363477ab9681f019b4bc1b791f6f2bbb7689a591804ea3833ea8c65db1"
+    },
+    "JPaaxxI3CEY": {
+      "source_url": "https://www.youtube.com/watch?v=JPaaxxI3CEY",
+      "source_id": "JPaaxxI3CEY",
+      "file_sha256": "6e95e064069676b6fbf325e8016183f72dc388acf63e0a907fe847e62664c9ba"
+    },
+    "KkCyYAlFOZI": {
+      "source_url": "https://www.youtube.com/watch?v=KkCyYAlFOZI",
+      "source_id": "KkCyYAlFOZI",
+      "file_sha256": "b3bff5b433b7741926a765ac63f2d27cdbc88fd7b4d05a976c606583d6d03a10"
+    },
+    "UdIJe8H7Sfc": {
+      "source_url": "https://www.youtube.com/watch?v=UdIJe8H7Sfc",
+      "source_id": "UdIJe8H7Sfc",
+      "file_sha256": "6df00f2ac2c28703ee93edc58e454ae75073ba5274398563bb1ac6c68e7565fb"
+    },
+    "gAhzF8VUyMs": {
+      "source_url": "https://www.youtube.com/watch?v=gAhzF8VUyMs",
+      "source_id": "gAhzF8VUyMs",
+      "file_sha256": "d739a59509f5187b9b67351de6acce735f36e4706f792d1c459f3ef758d877d7"
+    },
+    "qJf4nz7mQ7Q": {
+      "source_url": "https://www.youtube.com/watch?v=qJf4nz7mQ7Q",
+      "source_id": "qJf4nz7mQ7Q",
+      "file_sha256": "fb5a4ef2da8c0fb015289432ae28517130d7159fdf8eb11c875db833802eab10"
+    },
+    "NANwv2tR1kk": {
+      "source_url": "https://www.youtube.com/watch?v=NANwv2tR1kk",
+      "source_id": "NANwv2tR1kk",
+      "file_sha256": "21992f46c1f6ede52449b5b47727b25c3a06eb29374834dff8580496b7b210f5"
+    },
+    "YIi02SZGRY0": {
+      "source_url": "https://www.youtube.com/watch?v=YIi02SZGRY0",
+      "source_id": "YIi02SZGRY0",
+      "file_sha256": "a2df6b5d942eebe46c37fe8bcfae2051d0b16667ee1b89ae73f38902250392ee"
+    },
+    "_tIV2aAN5rk": {
+      "source_url": "https://www.youtube.com/watch?v=_tIV2aAN5rk",
+      "source_id": "_tIV2aAN5rk",
+      "file_sha256": "d22a5122eaf691ed8cffb16f191595f9e1e1b4f2451ccb49fb9d790451c1f461"
+    },
+    "qI4uHZgmk94": {
+      "source_url": "https://www.youtube.com/watch?v=qI4uHZgmk94",
+      "source_id": "qI4uHZgmk94",
+      "file_sha256": "6ed6504d1da83049d447f2d5c77d5c9f5f7eabc6ea34b6f74ef3ef264336def5"
+    },
+    "rIkKCHV2Lyg": {
+      "source_url": "https://www.youtube.com/watch?v=rIkKCHV2Lyg",
+      "source_id": "rIkKCHV2Lyg",
+      "file_sha256": "efe884e164885925ffab6f40aa28f21e5dec72e9fecc6a51522999ca0572566e"
+    },
+    "vzv3u8y-IfU": {
+      "source_url": "https://www.youtube.com/watch?v=vzv3u8y-IfU",
+      "source_id": "vzv3u8y-IfU",
+      "file_sha256": "b0fa819905404741fe40bbd5db8bce27af781decea4ba81f35b0a6e3ffa5b0aa"
+    },
+    "-_mgcIUbbX4": {
+      "source_url": "https://www.youtube.com/watch?v=-_mgcIUbbX4",
+      "source_id": "-_mgcIUbbX4",
+      "file_sha256": "5051a27d988921b6d26c5f90ced454ad7eecee7a340703277296f2ff5f3a1cc8"
+    },
+    "UYb5ftwIk7M": {
+      "source_url": "https://www.youtube.com/watch?v=UYb5ftwIk7M",
+      "source_id": "UYb5ftwIk7M",
+      "file_sha256": "95cd2ad2c7fa10217f16ead925d7dc73c2015bbd9851142370aefd310ee23072"
+    },
+    "k6vdlL-4VwQ": {
+      "source_url": "https://www.youtube.com/watch?v=k6vdlL-4VwQ",
+      "source_id": "k6vdlL-4VwQ",
+      "file_sha256": "f4c1bfb5f621ba764d3448497a81f9fa18d7c2934fc584a7724cdff24b9052d3"
+    },
+    "uShXVBhyck0": {
+      "source_url": "https://www.youtube.com/watch?v=uShXVBhyck0",
+      "source_id": "uShXVBhyck0",
+      "file_sha256": "5e1a5f3ee393bcb2264d58d91a4e21def95b30bb955d6ad4fb14e234657cf758"
+    },
+    "63n5qovgjqY": {
+      "source_url": "https://www.youtube.com/watch?v=63n5qovgjqY",
+      "source_id": "63n5qovgjqY",
+      "file_sha256": "749fa361a5f298ccf3ad2ba2ca261762ec9a0aa22c8dcc979f8fb0adf471568e"
+    },
+    "9lxOsvPb3kw": {
+      "source_url": "https://www.youtube.com/watch?v=9lxOsvPb3kw",
+      "source_id": "9lxOsvPb3kw",
+      "file_sha256": "42423ba6e62760b5737c16f5db720f1dac942f60b136c557196d121cc3f72a47"
+    },
+    "DGIT_HGk_EI": {
+      "source_url": "https://www.youtube.com/watch?v=DGIT_HGk_EI",
+      "source_id": "DGIT_HGk_EI",
+      "file_sha256": "5d8e471d9c429b3d59266bf5e05c5b6722dbf5123bcb8d3e6f99ae8a86970d74"
+    },
+    "OBxKlA5rxjQ": {
+      "source_url": "https://www.youtube.com/watch?v=OBxKlA5rxjQ",
+      "source_id": "OBxKlA5rxjQ",
+      "file_sha256": "f2329b051e6ac79e2557b6a16521a28d77a01b6294784db7a1db0221cc8925f1"
+    },
+    "YhBHWPx45DE": {
+      "source_url": "https://www.youtube.com/watch?v=YhBHWPx45DE",
+      "source_id": "YhBHWPx45DE",
+      "file_sha256": "ccdfff28cda1f9ea76ef2767170bc8fe16021b663f779bf91ffac78b46a6ef4a"
+    },
+    "d-ReqwAtWUI": {
+      "source_url": "https://www.youtube.com/watch?v=d-ReqwAtWUI",
+      "source_id": "d-ReqwAtWUI",
+      "file_sha256": "5b4721102cd4c39f3df6607dcd45b9cabebfa0fc5bbfbd013961d2cce0ce5db8"
+    },
+    "gutbv-k4gV8": {
+      "source_url": "https://www.youtube.com/watch?v=gutbv-k4gV8",
+      "source_id": "gutbv-k4gV8",
+      "file_sha256": "2bbd3c9e6794515512920336822034f16366935cdcf7864b23eeefaeb7c82ef6"
+    },
+    "x7F1gYS94Nc": {
+      "source_url": "https://www.youtube.com/watch?v=x7F1gYS94Nc",
+      "source_id": "x7F1gYS94Nc",
+      "file_sha256": "7e4a1405bc2ae04a92bbed5125ee903db0fb43a87a751b6e7676a7684db00dfb"
+    },
+    "yN9u1nSw8tk": {
+      "source_url": "https://www.youtube.com/watch?v=yN9u1nSw8tk",
+      "source_id": "yN9u1nSw8tk",
+      "file_sha256": "961cc5e6f089a0dd2be23beaa9c55f299679cb5ce0ae26865d25009d1bd9170c"
+    },
+    "83RmLQ9FppI": {
+      "source_url": "https://www.youtube.com/watch?v=83RmLQ9FppI",
+      "source_id": "83RmLQ9FppI",
+      "file_sha256": "369562bdf431a0e5b698ffc186ab325fde3feb3e514b87e659a30c7d295cab7d"
+    },
+    "85ZqMepT2pY": {
+      "source_url": "https://www.youtube.com/watch?v=85ZqMepT2pY",
+      "source_id": "85ZqMepT2pY",
+      "file_sha256": "72f95e5d2ac51ffa0c2397fb2abf09413da3d4f097cb449a27741f8c151fa0fe"
+    },
+    "onrevt-KD2g": {
+      "source_url": "https://www.youtube.com/watch?v=onrevt-KD2g",
+      "source_id": "onrevt-KD2g",
+      "file_sha256": "d0fb0c9b388b783d5ed0dec6db7137b3c6ce70b43ba319c9af8c1f2169a36865"
+    },
+    "H-8aCxwdPu0": {
+      "source_url": "https://www.youtube.com/watch?v=H-8aCxwdPu0",
+      "source_id": "H-8aCxwdPu0",
+      "file_sha256": "84bd7c6f542e9650e644969aede9c23f17141284e9ea44c76e1ca85060eeb519"
+    },
+    "OX9C6N1cifg": {
+      "source_url": "https://www.youtube.com/watch?v=OX9C6N1cifg",
+      "source_id": "OX9C6N1cifg",
+      "file_sha256": "4cbdb21f5804bba6c33d1f5bc304f17399d4a87131a36126535298ae3549fdaa"
+    },
+    "o-KjIc9MqfY": {
+      "source_url": "https://www.youtube.com/watch?v=o-KjIc9MqfY",
+      "source_id": "o-KjIc9MqfY",
+      "file_sha256": "415f7ae1f3f9daeffd502e0a4f4c89babd949b8ef32ab1d7b644ee45b843e1d8"
+    }
+  },
+  "legacy_exempt": {
+    "_10_000_Every_Day_You_Survive_In_The_Wilderness": {
+      "reason": "출처 URL·ID 없이 인덱싱된 기존 영상 — 사후에 붙이면 추측이 된다(사전등록 보충3 §7)"
+    },
+    "baekmansonghee_jirisan": {
+      "reason": "출처 URL·ID 없이 인덱싱된 기존 영상 — 사후에 붙이면 추측이 된다(사전등록 보충3 §7)"
+    },
+    "gemini_promo": {
+      "reason": "출처 URL·ID 없이 인덱싱된 기존 영상 — 사후에 붙이면 추측이 된다(사전등록 보충3 §7)"
+    },
+    "gwaktube_soviet_apartment": {
+      "reason": "출처 URL·ID 없이 인덱싱된 기존 영상 — 사후에 붙이면 추측이 된다(사전등록 보충3 §7)"
+    },
+    "itsub_viral_gadgets": {
+      "reason": "출처 URL·ID 없이 인덱싱된 기존 영상 — 사후에 붙이면 추측이 된다(사전등록 보충3 §7)"
+    },
+    "jissi_farm": {
+      "reason": "출처 URL·ID 없이 인덱싱된 기존 영상 — 사후에 붙이면 추측이 된다(사전등록 보충3 §7)"
+    },
+    "kheritage_grave_excavation": {
+      "reason": "출처 URL·ID 없이 인덱싱된 기존 영상 — 사후에 붙이면 추측이 된다(사전등록 보충3 §7)"
+    },
+    "panibottle_vietnam1": {
+      "reason": "출처 URL·ID 없이 인덱싱된 기존 영상 — 사후에 붙이면 추측이 된다(사전등록 보충3 §7)"
+    },
+    "pland_costco_hosting": {
+      "reason": "출처 URL·ID 없이 인덱싱된 기존 영상 — 사후에 붙이면 추측이 된다(사전등록 보충3 §7)"
+    },
+    "softyeon_ceramics": {
+      "reason": "출처 URL·ID 없이 인덱싱된 기존 영상 — 사후에 붙이면 추측이 된다(사전등록 보충3 §7)"
+    },
+    "yunnamnopo_tongyeong": {
+      "reason": "출처 URL·ID 없이 인덱싱된 기존 영상 — 사후에 붙이면 추측이 된다(사전등록 보충3 §7)"
+    }
+  }
+}

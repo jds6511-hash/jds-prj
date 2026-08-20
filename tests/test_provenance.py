@@ -1,161 +1,276 @@
-"""M8/M9 provenance — 어떤 조건에서 나온 산출물인지 사후에 복원 가능한가.
+"""영상 출처 provenance — **인덱싱 전에 기록해야 한다.**
 
-M3에서 provenance가 **요청값과 실효값의 불일치**를 잡았다(`vlm_4bit`가 무시된 채
-bf16으로 돈 전례). M8/M9에는 그 장치가 없다. judge 모델·프롬프트·생성 kwargs가
-바뀌어도 결과 파일만 보고는 알 수 없다.
-
-여기서 검증하는 것:
-  (1) 환경 캡처가 필요한 키를 빠뜨리지 않는가
-  (2) **요청값과 실효값을 둘 다** 남기는가 — 하나만 남기면 불일치를 못 본다
-  (3) 프롬프트 해시가 프롬프트가 바뀌면 같이 바뀌는가
-  (4) M9가 judge의 **원문 응답**을 남기는가 — 파싱 결과만 남기면 재검증이 불가능하다
+막는 것 여덟.
+1. 레지스트리에 없는 신규 영상으로 M1을 돌리는 것
+2. 필드가 비어 있는데 통과하는 것
+3. `file_sha256` 불일치를 통과하는 것 (검증한 바이트와 다른 파일)
+4. selected set 안에서 `source_id`가 중복되는 것
+5. 면제를 코드가 조용히 적용하는 것 (면제는 데이터로만 존재한다)
+6. 과거에 알 수 없던 값을 추측해 채우는 것
+7. downstream meta가 값을 덮어쓰는 것
+8. provenance가 지표·eligibility 계산에 쓰이는 것
 """
 import json
 import sys
 from pathlib import Path
 
+import pytest
+
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-import common                                              # noqa: E402
-import llm as llm_mod                                      # noqa: E402
-import m8_report                                           # noqa: E402
-import m9_report_eval                                      # noqa: E402
+sys.path.insert(0, str(ROOT / "scripts"))
+import provenance as P                                           # noqa: E402
 
 
-class FakeConfig:
-    _name_or_path = "Qwen/Qwen2.5-7B-Instruct"
-    _commit_hash = "abc123"
-    _attn_implementation = "sdpa"
-    quantization_config = None
+def _reg(videos=None, exempt=None):
+    return {"videos": videos or {}, "legacy_exempt": exempt or {}}
 
 
-class FakeModel:
-    config = FakeConfig()
-    dtype = "torch.bfloat16"
+def _vid(tmp_path, name="v.mp4", data=b"bytes"):
+    p = tmp_path / name
+    p.write_bytes(data)
+    return p, P.sha256_file(p)
 
 
-def _fake_gen(load_4bit=False, loaded=True):
-    def gen(prompt, **kw):
-        return ""
-    gen.spec = {"model_name": "Qwen/Qwen2.5-7B-Instruct", "max_new_tokens": 2048,
-                "requested_4bit": load_4bit}
-    gen.model = FakeModel() if loaded else None
-    return gen
+def test_required_fields_are_declared():
+    assert P.PROV_FIELDS == ("source_url", "source_id", "file_sha256")
+    assert P.REGISTRY_REL == "data/provenance/videos.json"
 
 
-# ---- (1) 환경 캡처 -------------------------------------------------------
+# ---- fail-closed --------------------------------------------------------
 
-def test_env_provenance_has_required_keys():
-    env = common.env_provenance()
-    for k in ("git_head", "git_dirty", "python", "torch", "transformers",
-              "gpu", "generated_at"):
-        assert k in env, k
-
-
-# ---- (2) 요청값 vs 실효값 ------------------------------------------------
-
-def test_llm_provenance_records_requested_and_effective():
-    prov = llm_mod.llm_provenance(_fake_gen(load_4bit=True), role="judge",
-                                  prompts={"grounded": "abc"})
-    assert prov["role"] == "judge"
-    assert prov["requested_4bit"] is True
-    # 실효값: FakeModel은 quantization_config가 None이므로 양자화되지 않았다
-    assert prov["effective_quantized"] is False
-    # 요청과 실효가 갈리면 그 자체가 사고다 — 플래그로 드러나야 한다
-    assert prov["quantization_mismatch"] is True
-    assert prov["effective_model_id"] == "Qwen/Qwen2.5-7B-Instruct"
-    assert prov["effective_model_revision"] == "abc123"
-    assert prov["effective_dtype"] == "torch.bfloat16"
-    assert prov["max_new_tokens"] == 2048
+def test_unregistered_new_video_is_blocked(tmp_path):
+    f, _ = _vid(tmp_path)
+    with pytest.raises(P.ProvenanceError, match="레지스트리에 없다"):
+        P.resolve(_reg(), "newvid", f)
 
 
-def test_llm_provenance_no_mismatch_when_consistent():
-    prov = llm_mod.llm_provenance(_fake_gen(load_4bit=False), role="report",
-                                  prompts={"map": "x"})
-    assert prov["quantization_mismatch"] is False
+def test_missing_fields_are_blocked(tmp_path):
+    f, h = _vid(tmp_path)
+    reg = _reg({"v": {"source_url": "u", "source_id": "", "file_sha256": h}})
+    with pytest.raises(P.ProvenanceError, match="누락"):
+        P.resolve(reg, "v", f)
 
 
-def test_llm_provenance_marks_model_not_loaded():
-    """생성 호출이 한 번도 없었으면 실효값을 알 수 없다 — 조용히 None으로
-    두지 말고 명시한다."""
-    prov = llm_mod.llm_provenance(_fake_gen(loaded=False), role="report", prompts={})
-    assert prov["model_loaded"] is False
-    assert prov["effective_model_id"] is None
+def test_sha256_mismatch_is_fail_closed(tmp_path):
+    f, _ = _vid(tmp_path)
+    reg = _reg({"v": {"source_url": "u", "source_id": "s",
+                      "file_sha256": "deadbeef"}})
+    with pytest.raises(P.ProvenanceError, match="file_sha256 불일치"):
+        P.resolve(reg, "v", f)
 
 
-def test_make_llm_exposes_spec_before_any_call():
-    gen = llm_mod.make_llm("some/model", max_new_tokens=512, load_4bit=True)
-    assert gen.spec["model_name"] == "some/model"
-    assert gen.spec["max_new_tokens"] == 512
-    assert gen.spec["requested_4bit"] is True
-    assert gen.model is None            # 지연 로딩 — 아직 안 올라왔다
+def test_duplicate_source_id_is_fail_closed(tmp_path):
+    f, h = _vid(tmp_path)
+    reg = _reg({"a": {"source_url": "u1", "source_id": "same",
+                      "file_sha256": h},
+                "b": {"source_url": "u2", "source_id": "same",
+                      "file_sha256": h}})
+    assert P.duplicate_source_ids(reg) == {"same": ["a", "b"]}
+    with pytest.raises(P.ProvenanceError, match="source_id 중복"):
+        P.resolve(reg, "a", f)
 
 
-# ---- (3) 프롬프트 해시 ---------------------------------------------------
-
-def test_prompt_hashes_change_with_prompt():
-    a = llm_mod.llm_provenance(_fake_gen(), role="r", prompts={"p": "hello"})
-    b = llm_mod.llm_provenance(_fake_gen(), role="r", prompts={"p": "hello!"})
-    assert a["prompt_sha256"]["p"] != b["prompt_sha256"]["p"]
-
-
-def test_m8_prompt_sources_cover_all_builders():
-    """M8 프롬프트는 상수가 아니라 **함수**다 — 소스를 해시해야 템플릿 변경이 잡힌다."""
-    src = m8_report.prompt_sources()
-    for k in ("build_map_prompt", "build_reduce_prompt", "build_event_prompt"):
-        assert k in src and len(src[k]) > 50
+def test_hash_verification_requires_a_file(tmp_path):
+    f, h = _vid(tmp_path)
+    reg = _reg({"v": {"source_url": "u", "source_id": "s", "file_sha256": h}})
+    with pytest.raises(P.ProvenanceError, match="파일 경로"):
+        P.resolve(reg, "v", None)
 
 
-def test_m9_prompt_sources_cover_both_judge_prompts():
-    src = m9_report_eval.prompt_sources()
-    assert set(src) == {"grounded", "coverage"}
+# ---- 정상 경로 ---------------------------------------------------------
+
+def test_registered_video_passes_and_records_verification(tmp_path):
+    f, h = _vid(tmp_path)
+    reg = _reg({"v": {"source_url": "https://x/y", "source_id": "y",
+                      "file_sha256": h}})
+    out = P.resolve(reg, "v", f)
+    assert out["provenance_status"] == "recorded"
+    assert out["file_sha256"] == h and out["source_id"] == "y"
+    assert out["sha256_verified_at_m1"] is True
 
 
-# ---- (4) M9 원문 응답 보존 ------------------------------------------------
+# ---- 면제는 데이터로만 존재한다 -------------------------------------------
 
-SEGS = [{"idx": 0, "start": 0, "end": 5, "subtitle": "안녕하세요", "caption": "사람이 걷는다"},
-        {"idx": 1, "start": 5, "end": 10, "subtitle": "", "caption": "문이 열린다"}]
-REPORT = {"sentences": [{"sent_id": 0, "text": "사람이 걸어 들어온다", "cites": [0]},
-                        {"sent_id": 1, "text": "인용 없는 문장", "cites": []}]}
-
-
-def test_eval_report_keeps_raw_judge_output():
-    judge = lambda p: '{"match": true}'      # noqa: E731
-    out = m9_report_eval.eval_report(REPORT, SEGS, [0, 1], judge)
-    cited = [p for p in out["per_sentence"] if p["cites"]][0]
-    assert cited["judge_raw"] == '{"match": true}'
-    # coverage는 청크마다 물으므로 원문이 여러 개일 수 있다 — 리스트로 남긴다
-    assert isinstance(out["per_gt_segment"][0]["judge_raw"], list)
-    assert out["per_gt_segment"][0]["judge_raw"][0] == '{"match": true}'
+def test_legacy_exemption_is_data_not_code_silence(tmp_path):
+    f, _ = _vid(tmp_path)
+    reg = _reg(exempt={"old": {"reason": "출처 기록 없이 인덱싱된 기존 영상"}})
+    out = P.resolve(reg, "old", f)
+    assert out["provenance_status"] == P.EXEMPT_MARK
+    assert out["reason"]
+    # **추측해서 채우지 않는다**
+    assert all(out[k] is None for k in P.PROV_FIELDS)
+    # 목록에 없으면 여전히 차단된다
+    with pytest.raises(P.ProvenanceError):
+        P.resolve(reg, "other_old", f)
 
 
-def test_uncited_sentence_has_no_raw_because_judge_not_called():
-    judge = lambda p: '{"match": true}'      # noqa: E731
-    out = m9_report_eval.eval_report(REPORT, SEGS, [0], judge)
-    uncited = [p for p in out["per_sentence"] if not p["cites"]][0]
-    assert uncited["judge_raw"] is None
+# ---- downstream 전달 ----------------------------------------------------
+
+def test_propagate_copies_the_value():
+    src = {"provenance": {"source_id": "y", "file_sha256": "h"}}
+    dst = P.propagate(src, {"text_hash": "t"})
+    assert dst["provenance"] == src["provenance"]
+    assert dst["text_hash"] == "t"
 
 
-# ---- 스키마 버전 ---------------------------------------------------------
-
-def test_save_report_writes_schema_version_and_provenance(tmp_path):
-    rep = {"sentences": [{"sent_id": 0, "text": "사람이 걷는다", "cites": [0]}],
-           "raw_output": "x"}
-    cfg = {"report_model": "m", "map_chunk_size": 60}
-    out = tmp_path / "report.json"
-    m8_report.save_report(out, "vid", cfg, rep, n=2, provenance={"role": "report"})
-    d = json.loads(out.read_text(encoding="utf-8"))
-    assert d["schema_version"] == m8_report.SCHEMA_VERSION
-    assert d["provenance"] == {"role": "report"}
+def test_propagate_refuses_to_overwrite_a_different_value():
+    src = {"provenance": {"source_id": "y"}}
+    with pytest.raises(P.ProvenanceError, match="덮어쓰기"):
+        P.propagate(src, {"provenance": {"source_id": "OTHER"}})
 
 
-def test_save_report_provenance_optional(tmp_path):
-    """provenance 없이 부르는 기존 호출부가 깨지지 않아야 한다."""
-    rep = {"sentences": [{"sent_id": 0, "text": "사람이 걷는다", "cites": [0]}],
-           "raw_output": "x"}
-    out = tmp_path / "report.json"
-    m8_report.save_report(out, "vid", {"report_model": "m", "map_chunk_size": 60},
-                          rep, n=2)
-    d = json.loads(out.read_text(encoding="utf-8"))
-    assert d["schema_version"] == m8_report.SCHEMA_VERSION
-    assert d.get("provenance") is None
+def test_propagate_is_idempotent():
+    src = {"provenance": {"source_id": "y"}}
+    once = P.propagate(src, {})
+    assert P.propagate(src, once) == once
+
+
+def test_missing_source_provenance_leaves_dst_untouched():
+    assert P.propagate({}, {"text_hash": "t"}) == {"text_hash": "t"}
+
+
+# ---- 파이프라인 배선 ----------------------------------------------------
+
+def test_m1_requires_provenance_before_writing_segments():
+    src = (ROOT / "src" / "m1_preprocess.py").read_text(encoding="utf-8")
+    assert "provenance" in src
+    # 해시 대조 없이 통과하는 경로가 없어야 한다
+    assert "resolve(" in src
+
+
+def test_m4_propagates_instead_of_recomputing():
+    src = (ROOT / "src" / "m4_index.py").read_text(encoding="utf-8")
+    assert "propagate" in src
+    assert "sha256_file" not in src        # m4가 다시 계산하지 않는다
+
+
+def test_provenance_is_not_used_in_metrics_or_eligibility():
+    """기록 전용이다 — 지표·적격 판정에 들어가면 안 된다."""
+    for name in ("m6_evaluate.py", "m5_search.py"):
+        src = (ROOT / "src" / name).read_text(encoding="utf-8")
+        assert "provenance" not in src, name
+    gate = (ROOT / "scripts" / "p2_staging_verify.py").read_text(
+        encoding="utf-8")
+    # 게이트는 provenance를 기록하지만 판정식에는 n_segments만 쓴다
+    assert "def classify_segments" in gate
+    assert "source_url" not in gate.split("def classify_segments")[1][:400]
+
+
+def test_registry_lives_in_a_tracked_path():
+    """영상은 gitignore 대상이지만 출처 기록은 저장소에 남아야 한다."""
+    ignore = (ROOT / ".gitignore").read_text(encoding="utf-8").splitlines()
+    assert "data/provenance/" not in ignore
+    assert "data/provenance/videos.json" not in ignore
+
+
+# ---- text_hash 불변 (기존 인덱스 보호) -----------------------------------
+
+def test_adding_provenance_does_not_change_text_hash():
+    """`provenance`가 text_hash를 바꾸면 **기존 인덱스 전부가 무효화된다.**"""
+    import common
+    doc = {"video_id": "v", "n_segments": 1,
+           "segments": [{"idx": 0, "start": 0, "end": 5,
+                         "subtitle": "s", "caption": "c"}]}
+    before = common.index_text_hash(doc)
+    doc2 = {**doc, "provenance": {"source_id": "y", "file_sha256": "h"}}
+    assert common.index_text_hash(doc2) == before
+
+
+def test_load_segments_accepts_the_extra_top_level_key(tmp_path):
+    import common
+    doc = {"video_id": "v", "duration_sec": 5.0, "fps": 30.0, "n_segments": 1,
+           "provenance": {"source_id": "y"},
+           "segments": [{"idx": 0, "start": 0, "end": 5}]}
+    p = tmp_path / "segments.json"
+    p.write_text(json.dumps(doc, ensure_ascii=False), encoding="utf-8")
+    assert common.load_segments(p)["provenance"]["source_id"] == "y"
+
+
+# ---- validator: 기록 가능성이 아니라 기록 완결성 --------------------------
+
+import p2_provenance_validate as V                                # noqa: E402
+
+SEL = [{"source_id": "a", "pre_indexed": False},
+       {"source_id": "b", "pre_indexed": False},
+       {"source_id": "old", "pre_indexed": True}]
+REG = {"videos": {"a": {"source_url": "u/a", "source_id": "a",
+                        "file_sha256": "ha"},
+                  "b": {"source_url": "u/b", "source_id": "b",
+                        "file_sha256": "hb"}},
+       "legacy_exempt": {"old": {"reason": "출처 없음"}}}
+STAGE = {"videos": [{"source_id": "a", "file_sha256": "ha"},
+                    {"source_id": "b", "file_sha256": "hb"}]}
+
+
+def test_validator_passes_on_a_complete_registry():
+    r = V.validate(SEL, REG, STAGE)
+    assert r["ok"] is True
+    assert r["recorded"] == 2 and r["legacy_exempt"] == 1
+    assert r["sha256_checked"] == 2
+
+
+def test_validator_catches_a_single_missing_video():
+    """한 편만 누락돼도 FULL로 넘어가면 안 된다."""
+    reg = {"videos": {k: v for k, v in REG["videos"].items() if k != "b"},
+           "legacy_exempt": REG["legacy_exempt"]}
+    r = V.validate(SEL, reg, STAGE)
+    assert r["ok"] is False and r["missing"] == 1
+    assert any("b" in p for p in r["problems"])
+
+
+def test_validator_catches_staging_hash_drift():
+    stage = {"videos": [{"source_id": "a", "file_sha256": "DIFFERENT"},
+                        {"source_id": "b", "file_sha256": "hb"}]}
+    r = V.validate(SEL, REG, stage)
+    assert r["ok"] is False
+    assert any("staging과 다르다" in p for p in r["problems"])
+
+
+def test_validator_rejects_a_new_video_marked_as_legacy():
+    """신규 영상을 면제로 처리하는 우회 경로를 막는다."""
+    reg = {"videos": {"a": REG["videos"]["a"]},
+           "legacy_exempt": {"b": {"reason": "x"}, "old": {"reason": "y"}}}
+    r = V.validate(SEL, reg, STAGE)
+    assert r["ok"] is False
+    assert any("신규는 기록 필수" in p for p in r["problems"])
+
+
+def test_validator_checks_indexed_outputs_when_asked(tmp_path):
+    w = tmp_path / "a"
+    w.mkdir()
+    prov = {"source_url": "u/a", "source_id": "a", "file_sha256": "ha"}
+    (w / "segments.json").write_text(
+        json.dumps({"provenance": prov}), encoding="utf-8")
+    (w / "meta.json").write_text(
+        json.dumps({"provenance": {**prov, "source_id": "TAMPERED"}}),
+        encoding="utf-8")
+    r = V.validate([SEL[0]], REG, STAGE, work_dir=tmp_path)
+    row = r["rows"][0]
+    assert row["segments"] == "match" and row["meta"] == "MISMATCH"
+    assert r["ok"] is False
+
+
+def test_validator_flags_indexed_output_without_provenance(tmp_path):
+    w = tmp_path / "a"
+    w.mkdir()
+    (w / "segments.json").write_text(json.dumps({}), encoding="utf-8")
+    r = V.validate([SEL[0]], REG, STAGE, work_dir=tmp_path)
+    assert r["ok"] is False
+    assert any("provenance가 없다" in p for p in r["problems"])
+
+
+def test_real_registry_and_selected_list_pass():
+    """실제 산출물로 돌린다 — 계약이 아니라 완결성 검사다."""
+    sel_p = ROOT / "docs" / "P2_선정표본_2026-08-20.json"
+    if not sel_p.exists():
+        pytest.skip("선정 목록 없음")
+    sel = json.loads(sel_p.read_text(encoding="utf-8"))["selected"]
+    reg = P.load_registry(P.registry_path(ROOT))
+    stage_p = ROOT / "artifacts" / "p2_sampling_frame" / "manifest.json"
+    stage = (json.loads(stage_p.read_text(encoding="utf-8"))
+             if stage_p.exists() else None)
+    r = V.validate(sel, reg, stage)
+    assert r["ok"] is True, r["problems"][:5]
+    assert r["n_selected"] == 35
+    assert r["recorded"] == 31 and r["legacy_exempt"] == 4

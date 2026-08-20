@@ -4,6 +4,7 @@ import argparse, json, sys
 from pathlib import Path
 import numpy as np
 import common
+import provenance
 
 _model_cache = {}
 
@@ -65,9 +66,11 @@ def main():
 
     np.save(wdir / "emb_sub.npy", emb_sub)
     np.save(wdir / "emb_cap.npy", emb_cap)
-    common.atomic_write_json(wdir / "meta.json", {
+    # **그대로 전달한다.** 여기서 다시 계산하거나 덮어쓰지 않는다
+    meta = provenance.propagate(doc, {
         "embed_model": cfg["embed_model"], "dim": int(emb_sub.shape[1]),
         "n_segments": doc["n_segments"], "text_hash": text_hash})
+    common.atomic_write_json(wdir / "meta.json", meta)
     print(f"M4 완료: ({emb_sub.shape[0]}, {emb_sub.shape[1]}) x2 저장")
 
 

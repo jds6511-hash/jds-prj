@@ -3,6 +3,7 @@ import argparse, math, subprocess, sys
 from pathlib import Path
 import cv2
 import common
+import provenance
 
 
 def make_segments(duration_sec: float, seg_len: int = 5) -> list[dict]:
@@ -46,6 +47,13 @@ def main():
     if seg_path.exists() and not args.force:
         print(f"이미 존재: {seg_path} (--force로 재생성)"); return
 
+    # **출처를 먼저 확정한다.** 인덱싱 후에는 붙일 수 없다 — 기존 11편이 그래서
+    # ID 단위 중복 대조가 불가능하다(사전등록 보충3 §7). 레지스트리에도 면제
+    # 목록에도 없으면 여기서 차단된다
+    reg = provenance.load_registry(provenance.registry_path(
+        Path(__file__).resolve().parents[1]))
+    prov = provenance.resolve(reg, args.video_id, video)
+
     duration, fps = get_video_info(video)
     extract_audio(video, wdir / "audio.wav")
     segs = make_segments(duration, cfg["seg_len_sec"])
@@ -56,7 +64,7 @@ def main():
 
     common.save_segments(seg_path, {
         "video_id": args.video_id, "duration_sec": duration, "fps": fps,
-        "n_segments": len(segs), "segments": segs})
+        "n_segments": len(segs), "provenance": prov, "segments": segs})
     print(f"M1 완료: {len(segs)}개 세그먼트, duration={duration:.1f}s → {seg_path}")
 
 
