@@ -233,6 +233,7 @@ def test_manifest_reports_mismatches_and_unknowns(monkeypatch, tmp_path):
     m = S.run(rows=[{"video_id": "a", "family": "kbs_docu", "eligible": "True"}],
               staging=tmp_path, video_dir=tmp_path, work_dir=tmp_path,
               origin={"acquired_by_map": {}, "prior_sha256": {"a": "nope"}})
+    assert m["counts"]["verified_eligible"] == 0        # usable 아님
     assert m["sha256_mismatches"] == ["a"]
     assert m["unknown_acquisition"] == ["a"]
     assert m["no_audio"] == ["a"]
@@ -269,8 +270,12 @@ def test_download_reports_incomplete_artifacts(monkeypatch, tmp_path):
     assert "incomplete" in err
 
 
-def test_audio_presence_is_provenance_not_eligibility(monkeypatch, tmp_path):
-    """병합 실패로 video-only가 남으면 승인 ②의 STT가 깨진다 — 미리 드러낸다."""
+def test_audio_is_a_second_axis_not_a_segment_criterion(monkeypatch, tmp_path):
+    """표집틀 hard 조건이 한국어 발화 포함이다(규격 §1) — 음성 없음은 취득 실패다.
+
+    길이 판정과 취득 integrity를 **다른 축**으로 남긴다. 길이만 통과한 파일을
+    pool에 넣었다가 선정 뒤 승인 ②에서 빼면 그것이 사후 제외다.
+    """
     f = tmp_path / "z.mp4"
     f.write_bytes(b"x")
     monkeypatch.setattr(S, "download", lambda v, d: (f, None, "downloaded"))
@@ -278,8 +283,49 @@ def test_audio_presence_is_provenance_not_eligibility(monkeypatch, tmp_path):
     monkeypatch.setattr(S, "media_info", lambda p: {"width": 1920})
     monkeypatch.setattr(S, "has_audio", lambda p: False)
     m = S.verify_one({"video_id": "z", "family": "kbs_docu"}, tmp_path)
-    assert m["media"]["has_audio"] is False
-    assert m["verification_status"] == "verified_eligible"   # 판정 기준 아님
+    assert m["verification_status"] == "verified_eligible"   # 길이 축은 통과
+    assert m["acquisition_status"] == "no_audio"             # 취득 축은 실패
+    assert m["sampling_frame_usable"] is False
+
+
+def test_audio_unknown_is_not_no_audio_and_not_usable(monkeypatch, tmp_path):
+    """확인하지 못한 것을 "음성 없음"으로도, usable로도 세지 않는다."""
+    f = tmp_path / "z.mp4"
+    f.write_bytes(b"x")
+    monkeypatch.setattr(S, "download", lambda v, d: (f, None, "downloaded"))
+    monkeypatch.setattr(S, "probe", lambda p: (1000.0, 200))
+    monkeypatch.setattr(S, "media_info", lambda p: {"width": 1920})
+    monkeypatch.setattr(S, "has_audio", lambda p: None)
+    m = S.verify_one({"video_id": "z", "family": "kbs_docu"}, tmp_path)
+    assert m["acquisition_status"] == "audio_unknown"
+    assert m["sampling_frame_usable"] is False
+
+
+def test_ffprobe_failure_is_unknown_not_false(monkeypatch, tmp_path):
+    class R:
+        returncode = 1
+        stdout = ""
+        stderr = "boom"
+    monkeypatch.setattr(S.subprocess, "run", lambda *a, **k: R())
+    assert S.has_audio(tmp_path / "x.mp4") is None
+    assert S.acquisition_status(None) == "audio_unknown"
+    assert S.acquisition_status(False) == "no_audio"
+    assert S.acquisition_status(True) == "ok"
+
+
+def test_achieved_k_counts_only_usable(monkeypatch, tmp_path):
+    """길이만 통과한 영상은 E/N에 들어가지 않는다."""
+    rows = [{"source_id": "a", "publisher": "ebs", "sampling_frame_usable": True,
+             "verification_status": "verified_eligible",
+             "acquisition_status": "ok"},
+            {"source_id": "b", "publisher": "ebs", "sampling_frame_usable": False,
+             "verification_status": "verified_eligible",
+             "acquisition_status": "no_audio"}]
+    c = S.counts(rows, free_verified=0)
+    assert c["verified_eligible"] == 1
+    assert c["segment_eligible_any_audio"] == 2
+    assert c["acquisition_no_audio"] == 1
+    assert c["ebs_verified"] == 1
 
 
 # ---- achieved_k ---------------------------------------------------------
@@ -343,6 +389,8 @@ def test_manifest_reports_counts_and_achieved_k(monkeypatch, tmp_path):
     f.write_bytes(b"x")
     monkeypatch.setattr(S, "download", lambda v, d: (f, None, "downloaded"))
     monkeypatch.setattr(S, "probe", lambda p: (1000.0, 200))
+    monkeypatch.setattr(S, "media_info", lambda p: {"width": 1920})
+    monkeypatch.setattr(S, "has_audio", lambda p: True)
     monkeypatch.setattr(S, "reproduction_gate",
                         lambda *a, **k: {"all_match": True, "by_video": {}})
     rows = [{"video_id": "a", "family": "ebs_docuprime", "domain": "d",

@@ -147,20 +147,34 @@ def final_file(dest_dir, video_id):
     return None
 
 
-def has_audio(path) -> bool:
-    """**provenance 전용.** 병합 실패로 video-only가 남았는지 드러낸다.
+def has_audio(path):
+    """`True` · `False` · `None`(확인 불가). **셋을 뭉개지 않는다.**
 
-    eligibility는 `n_segments`만 본다(보충4 §1). 이 값은 판정에 쓰지 않고,
-    승인 ② 전에 STT가 깨질 입력을 미리 드러내기 위해 기록한다.
+    audio stream이 없으면 취득 실패다 — 표집틀의 hard 조건이 "한국어 발화 포함
+    (STT 산출이 나와야 자막 채널이 생긴다)"이므로(스크리닝 규격 §1), 음성 없는
+    파일은 **P2가 대상으로 삼은 입력을 재현하지 못한 것**이다. 화질 같은 부수
+    metadata가 아니다.
+
+    `None`은 "음성이 없다"가 아니라 "확인하지 못했다"다. 확인하지 못한 파일을
+    usable로 세지 않는다.
     """
     try:
         r = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "a",
                             "-show_entries", "stream=codec_type", "-of",
                             "csv=p=0", str(path)],
                            capture_output=True, text=True, timeout=60)
+        if r.returncode != 0:
+            return None
         return "audio" in (r.stdout or "")
     except Exception:
-        return False
+        return None
+
+
+def acquisition_status(audio) -> str:
+    """취득 파일의 integrity. **segment 판정과 다른 축이다.**"""
+    if audio is True:
+        return "ok"
+    return "no_audio" if audio is False else "audio_unknown"
 
 
 def download(video_id: str, dest_dir) -> tuple:
@@ -237,7 +251,9 @@ def verify_one(row: dict, staging, origin: dict = None) -> dict:
            "program": row["family"], "domain": row.get("domain", ""),
            "download_status": "ok", "local_filename": None,
            "file_sha256": None, "duration_sec": None, "n_segments": None,
-           "verification_status": "verification_unavailable", "error": ""}
+           "verification_status": "verification_unavailable",
+           "acquisition_status": "no_final_file",
+           "sampling_frame_usable": False, "error": ""}
     path, err, how = download(vid, Path(staging) / "videos")
     out["acquisition"] = attribute(vid, how, origin)
     if err or path is None:
@@ -256,8 +272,15 @@ def verify_one(row: dict, staging, origin: dict = None) -> dict:
         return out
     out["n_segments"] = n
     out["verification_status"] = classify_segments(n)
-    out["media"] = media_info(path)          # provenance 전용
-    out["media"]["has_audio"] = has_audio(path)
+    out["media"] = media_info(path)          # 해상도·codec은 provenance 전용
+    audio = has_audio(path)
+    out["media"]["has_audio"] = audio
+    # **두 축이다.** n_segments는 길이 eligibility, audio는 취득 integrity.
+    # achieved_k에는 둘 다 통과한 영상만 들어간다
+    out["acquisition_status"] = acquisition_status(audio)
+    out["sampling_frame_usable"] = (
+        out["verification_status"] == "verified_eligible"
+        and out["acquisition_status"] == "ok")
     return out
 
 
@@ -271,19 +294,32 @@ def achieved_k(n_non_ebs: int, n_ebs: int, target: int = TARGET_K) -> int:
 
 
 def counts(manifest_rows: list, free_verified: int = 0) -> dict:
-    ok = [r for r in manifest_rows
-          if r["verification_status"] == "verified_eligible"]
+    """`achieved_k`의 분모는 **`sampling_frame_usable`**이다.
+
+    segment 길이만 통과하고 음성이 없는 파일을 pool에 넣었다가 선정 뒤 승인 ②에서
+    빼면 그것이 사후 제외다. 취득 단계에서 거른다.
+    """
+    ok = [r for r in manifest_rows if r.get("sampling_frame_usable")]
     ebs = sum(1 for r in ok if r["publisher"] == "ebs")
     non_ebs = sum(1 for r in ok if r["publisher"] in NON_EBS) + free_verified
     return {
         "n_rows": len(manifest_rows),
         "verified_eligible": len(ok),
+        "segment_eligible_any_audio": sum(
+            1 for r in manifest_rows
+            if r["verification_status"] == "verified_eligible"),
         "segment_ineligible": sum(
             1 for r in manifest_rows
             if r["verification_status"] == "segment_ineligible"),
         "verification_unavailable": sum(
             1 for r in manifest_rows
             if r["verification_status"] == "verification_unavailable"),
+        "acquisition_no_audio": sum(
+            1 for r in manifest_rows
+            if r.get("acquisition_status") == "no_audio"),
+        "acquisition_audio_unknown": sum(
+            1 for r in manifest_rows
+            if r.get("acquisition_status") == "audio_unknown"),
         "ebs_verified": ebs,
         "non_ebs_verified": non_ebs,
         "free_carried": free_verified,
@@ -325,7 +361,15 @@ def run(rows: list, staging, video_dir, work_dir, ref: dict = None,
             r["source_id"] for r in out_rows
             if r["acquisition"]["source"] == "pre_existing_unknown_acquisition"],
         "no_audio": [r["source_id"] for r in out_rows
-                     if r.get("media", {}).get("has_audio") is False],
+                     if r.get("acquisition_status") == "no_audio"],
+        "audio_unknown": [r["source_id"] for r in out_rows
+                          if r.get("acquisition_status") == "audio_unknown"],
+        "usable_rule": ("sampling_frame_usable = segment PASS AND audio ok. "
+                        "표집틀 hard 조건이 한국어 발화 포함이므로 음성 없는 "
+                        "파일은 취득 실패다 (스크리닝 규격 §1)"),
+        "attribution_basis": ("frozen pre-run inventory. 이 목록에 없고 실행 후 "
+                              "존재하는 파일은 해당 run이 취득한 것으로 귀속한다"),
+        "staging_exclusive_assumption": True,
         "achieved_k": achieved_k(c["non_ebs_verified"], c["ebs_verified"]),
         "achieved_k_formula": "min(target_k, N + min(floor(c/(1-c)*N), E))",
         "videos": out_rows,
@@ -362,7 +406,10 @@ def main():
               free_verified=a.free_verified, origin=origin)
     c = man["counts"]
     print(f"gate: {man['reproduction_gate']['all_match']}")
-    print(f"rows: {c['n_rows']}  verified: {c['verified_eligible']}")
+    print(f"rows: {c['n_rows']}  usable: {c['verified_eligible']}")
+    print(f"segment ok (any audio): {c['segment_eligible_any_audio']}  "
+          f"no_audio: {c['acquisition_no_audio']}  "
+          f"audio_unknown: {c['acquisition_audio_unknown']}")
     print(f"segment_ineligible: {c['segment_ineligible']}  "
           f"unavailable: {c['verification_unavailable']}")
     print(f"ebs: {c['ebs_verified']}  non_ebs: {c['non_ebs_verified']}")
