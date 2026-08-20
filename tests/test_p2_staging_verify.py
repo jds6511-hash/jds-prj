@@ -111,7 +111,8 @@ def test_verified_row_records_provenance(monkeypatch, tmp_path):
     monkeypatch.setattr(S, "probe", lambda p: (1000.0, 200))
     monkeypatch.setattr(S, "has_audio", lambda p: True)
     monkeypatch.setattr(S, "container_audio_lang", lambda p: None)
-    monkeypatch.setattr(S, "platform_language", lambda v: "ko")
+    monkeypatch.setattr(S, "platform_audio_probe",
+                        lambda v: {"selected_audio_language": "ko"})
     m = S.verify_one({"video_id": "z", "family": "kbs_docu", "domain": "d"},
                      tmp_path)
     import hashlib
@@ -140,7 +141,8 @@ def test_media_info_is_provenance_only(monkeypatch, tmp_path):
     monkeypatch.setattr(S, "probe", lambda p: (1000.0, 200))
     monkeypatch.setattr(S, "has_audio", lambda p: True)
     monkeypatch.setattr(S, "container_audio_lang", lambda p: None)
-    monkeypatch.setattr(S, "platform_language", lambda v: "ko")
+    monkeypatch.setattr(S, "platform_audio_probe",
+                        lambda v: {"selected_audio_language": "ko"})
     monkeypatch.setattr(S, "media_info", lambda p: {"width": 640,
                                                     "height": 360, "fps": 30.0})
     lo = S.verify_one({"video_id": "z", "family": "kbs_docu"}, tmp_path)
@@ -158,7 +160,8 @@ def test_acquisition_condition_is_recorded_per_video(monkeypatch, tmp_path):
     monkeypatch.setattr(S, "probe", lambda p: (1000.0, 200))
     monkeypatch.setattr(S, "media_info", lambda p: {"width": 1920})
     monkeypatch.setattr(S, "container_audio_lang", lambda p: None)
-    monkeypatch.setattr(S, "platform_language", lambda v: "ko")
+    monkeypatch.setattr(S, "platform_audio_probe",
+                        lambda v: {"selected_audio_language": "ko"})
     monkeypatch.setattr(S, "has_audio", lambda p: True)
     monkeypatch.setattr(S, "download", lambda v, d: (f, None, "downloaded"))
     a = S.verify_one({"video_id": "z", "family": "kbs_docu"}, tmp_path)
@@ -193,19 +196,37 @@ def test_manifest_records_ffmpeg_version(monkeypatch, tmp_path):
 # ---- 발화 축: 이름을 증거 강도에 맞춘다 -----------------------------------
 
 def test_speech_status_names_never_claim_verification():
-    """STT를 안 돌렸다 — `verified`라고 부르지 않는다."""
-    for lang in ("ko", "ko-KR", "en", None):
-        st = S.speech_status(lang)
-        assert "verified" not in st
-        assert st.startswith("platform_language_")
-    assert S.speech_status("ko") == "platform_language_ko"
-    assert S.speech_status("ko-KR") == "platform_language_ko"
-    assert S.speech_status("en") == "platform_language_other"
-    assert S.speech_status(None) == "platform_language_unknown"
+    """STT를 안 돌렸다 — 어떤 값도 `verified`라고 부르지 않는다."""
+    for probe in ({"selected_audio_language": "ko"},
+                  {"selected_audio_language": "en"},
+                  {"platform_language": "ko"},
+                  {"platform_language": "en"}, {}):
+        assert "verified" not in S.speech_status(probe)
+
+
+def test_evidence_tiers_prefer_the_selected_audio_track():
+    """페이지 수준 언어를 트랙 언어로 상속하지 않는다."""
+    assert S.speech_status({"selected_audio_language": "ko-KR"}) \
+        == "audio_track_ko"
+    # 트랙이 다른 언어면 페이지가 ko라도 반증이다
+    assert S.speech_status({"selected_audio_language": "en",
+                            "platform_language": "ko"}) == "audio_track_other"
+    # 트랙 정보가 없을 때만 페이지 수준으로 내려간다
+    assert S.speech_status({"platform_language": "ko"}) \
+        == "platform_language_ko"
+    assert S.speech_status({}) == "speech_unresolved"
+
+
+def test_criterion_claim_is_not_refuted_not_verified():
+    assert S.speech_criterion("audio_track_ko") == "korean_speech_not_refuted"
+    assert S.speech_criterion("speech_unresolved") \
+        == "korean_speech_not_refuted"
+    assert S.speech_criterion("audio_track_other") == "refuted_non_korean"
+    assert S.speech_criterion("platform_language_other") == "refuted_non_korean"
 
 
 def test_only_refuted_speech_is_excluded(monkeypatch, tmp_path):
-    """선언이 없는 것을 비한국어로 취급하지 않는다 — 반증만 배제한다."""
+    """정보가 없는 것을 비한국어로 취급하지 않는다 — 반증만 배제한다."""
     f = tmp_path / "z.mp4"
     f.write_bytes(b"x")
     monkeypatch.setattr(S, "download", lambda v, d: (f, None, "downloaded"))
@@ -214,10 +235,32 @@ def test_only_refuted_speech_is_excluded(monkeypatch, tmp_path):
     monkeypatch.setattr(S, "has_audio", lambda p: True)
     monkeypatch.setattr(S, "container_audio_lang", lambda p: "eng")
     row = {"video_id": "z", "family": "kbs_docu"}
-    for lang, usable in (("ko", True), (None, True), ("en", False)):
-        monkeypatch.setattr(S, "platform_language", lambda v, l=lang: l)
+    cases = [({"selected_audio_language": "ko"}, True),
+             ({"platform_language": "ko"}, True),
+             ({}, True),
+             ({"selected_audio_language": "en"}, False)]
+    for pr, usable in cases:
+        monkeypatch.setattr(S, "platform_audio_probe", lambda v, p=pr: dict(p))
         m = S.verify_one(row, tmp_path)
-        assert m["sampling_frame_usable"] is usable, lang
+        assert m["sampling_frame_usable"] is usable, pr
+
+
+def test_selected_audio_track_provenance_is_recorded(monkeypatch, tmp_path):
+    f = tmp_path / "z.mp4"
+    f.write_bytes(b"x")
+    monkeypatch.setattr(S, "download", lambda v, d: (f, None, "downloaded"))
+    monkeypatch.setattr(S, "probe", lambda p: (1000.0, 200))
+    monkeypatch.setattr(S, "media_info", lambda p: {"width": 1920})
+    monkeypatch.setattr(S, "has_audio", lambda p: True)
+    monkeypatch.setattr(S, "container_audio_lang", lambda p: "eng")
+    monkeypatch.setattr(S, "platform_audio_probe", lambda v: {
+        "platform_language": "ko", "selected_format_id": "137+140",
+        "selected_audio_format_id": "140", "selected_audio_language": "ko"})
+    m = S.verify_one({"video_id": "z", "family": "kbs_docu"}, tmp_path)
+    assert m["selected_audio_format_id"] == "140"
+    assert m["selected_audio_language"] == "ko"
+    assert m["selected_format_id"] == "137+140"
+    assert m["speech_status"] == "audio_track_ko"
 
 
 def test_container_audio_tag_is_provenance_only(monkeypatch, tmp_path):
@@ -229,17 +272,19 @@ def test_container_audio_tag_is_provenance_only(monkeypatch, tmp_path):
     monkeypatch.setattr(S, "media_info", lambda p: {"width": 1920})
     monkeypatch.setattr(S, "has_audio", lambda p: True)
     monkeypatch.setattr(S, "container_audio_lang", lambda p: "eng")
-    monkeypatch.setattr(S, "platform_language", lambda v: "ko")
+    monkeypatch.setattr(S, "platform_audio_probe",
+                        lambda v: {"selected_audio_language": "ko"})
     m = S.verify_one({"video_id": "z", "family": "kbs_docu"}, tmp_path)
     assert m["media"]["container_audio_lang"] == "eng"
-    assert m["sampling_frame_usable"] is True     # eng 태그로 배제하지 않는다
+    assert m["sampling_frame_usable"] is True
 
 
-def test_platform_language_reads_metadata_only():
+def test_probe_reads_metadata_only():
     import inspect
-    src = inspect.getsource(S.platform_language)
+    src = inspect.getsource(S.platform_audio_probe)
     assert "--skip-download" in src
-    assert "whisper" not in src.lower() and "m3_" not in src
+    for bad in ("whisper", "m3_", "faster_whisper"):
+        assert bad not in src.lower()
 
 
 def test_manifest_records_speech_evidence_limits(monkeypatch, tmp_path):
@@ -250,17 +295,20 @@ def test_manifest_records_speech_evidence_limits(monkeypatch, tmp_path):
     monkeypatch.setattr(S, "media_info", lambda p: {"width": 1920})
     monkeypatch.setattr(S, "has_audio", lambda p: True)
     monkeypatch.setattr(S, "container_audio_lang", lambda p: "eng")
-    monkeypatch.setattr(S, "platform_language", lambda v: "ko")
+    monkeypatch.setattr(S, "platform_audio_probe",
+                        lambda v: {"selected_audio_language": "ko"})
     monkeypatch.setattr(S, "reproduction_gate",
                         lambda *a, **k: {"all_match": True, "by_video": {}})
     m = S.run(rows=[{"video_id": "a", "family": "kbs_docu", "eligible": "True"}],
               staging=tmp_path, video_dir=tmp_path, work_dir=tmp_path)
     e = m["speech_evidence"]
-    assert e["level"] == "platform_declared_audio_language"
-    assert "STT" in e["not_verified_by"]
-    assert e["exclusion_rule"] and e["container_tag_unusable"]
-    assert "조용히" in e["post_approval_2_rule"]
-    assert m["counts"]["speech_platform_ko"] == 1
+    assert e["claim_level"] == "korean_speech_not_refuted"
+    assert "검증됐다고 주장하지" in e["statement"]
+    assert e["evidence_tiers"] and e["inheritance_forbidden"]
+    assert e["other_available_evidence"] and e["container_tag_unusable"]
+    assert "PRIMARY를 바꾸지" in e["post_approval_2_rule"]
+    assert m["counts"]["speech_audio_track_ko"] == 1
+    assert m["counts"]["speech_refuted"] == 0
 
 
 # ---- 취득 귀속: "이번에 받았나"와 "어떻게 받았나"를 구별한다 ----------------
@@ -311,7 +359,8 @@ def test_manifest_reports_mismatches_and_unknowns(monkeypatch, tmp_path):
     monkeypatch.setattr(S, "media_info", lambda p: {"width": 1920})
     monkeypatch.setattr(S, "has_audio", lambda p: False)
     monkeypatch.setattr(S, "container_audio_lang", lambda p: None)
-    monkeypatch.setattr(S, "platform_language", lambda v: "ko")
+    monkeypatch.setattr(S, "platform_audio_probe",
+                        lambda v: {"selected_audio_language": "ko"})
     monkeypatch.setattr(S, "reproduction_gate",
                         lambda *a, **k: {"all_match": True, "by_video": {}})
     m = S.run(rows=[{"video_id": "a", "family": "kbs_docu", "eligible": "True"}],
@@ -366,7 +415,8 @@ def test_audio_is_a_second_axis_not_a_segment_criterion(monkeypatch, tmp_path):
     monkeypatch.setattr(S, "probe", lambda p: (1000.0, 200))
     monkeypatch.setattr(S, "media_info", lambda p: {"width": 1920})
     monkeypatch.setattr(S, "container_audio_lang", lambda p: None)
-    monkeypatch.setattr(S, "platform_language", lambda v: "ko")
+    monkeypatch.setattr(S, "platform_audio_probe",
+                        lambda v: {"selected_audio_language": "ko"})
     monkeypatch.setattr(S, "has_audio", lambda p: False)
     m = S.verify_one({"video_id": "z", "family": "kbs_docu"}, tmp_path)
     assert m["verification_status"] == "verified_eligible"   # 길이 축은 통과
@@ -382,7 +432,8 @@ def test_audio_unknown_is_not_no_audio_and_not_usable(monkeypatch, tmp_path):
     monkeypatch.setattr(S, "probe", lambda p: (1000.0, 200))
     monkeypatch.setattr(S, "media_info", lambda p: {"width": 1920})
     monkeypatch.setattr(S, "container_audio_lang", lambda p: None)
-    monkeypatch.setattr(S, "platform_language", lambda v: "ko")
+    monkeypatch.setattr(S, "platform_audio_probe",
+                        lambda v: {"selected_audio_language": "ko"})
     monkeypatch.setattr(S, "has_audio", lambda p: None)
     m = S.verify_one({"video_id": "z", "family": "kbs_docu"}, tmp_path)
     assert m["acquisition_status"] == "audio_unknown"
@@ -480,7 +531,8 @@ def test_manifest_reports_counts_and_achieved_k(monkeypatch, tmp_path):
     monkeypatch.setattr(S, "media_info", lambda p: {"width": 1920})
     monkeypatch.setattr(S, "has_audio", lambda p: True)
     monkeypatch.setattr(S, "container_audio_lang", lambda p: None)
-    monkeypatch.setattr(S, "platform_language", lambda v: "ko")
+    monkeypatch.setattr(S, "platform_audio_probe",
+                        lambda v: {"selected_audio_language": "ko"})
     monkeypatch.setattr(S, "reproduction_gate",
                         lambda *a, **k: {"all_match": True, "by_video": {}})
     rows = [{"video_id": "a", "family": "ebs_docuprime", "domain": "d",
