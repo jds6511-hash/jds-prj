@@ -197,3 +197,51 @@ def test_cli_output_is_ascii_safe():
     for line in src.split("if __name__")[0].splitlines():
         if line.strip().startswith("print("):
             assert line.isascii(), line
+
+
+# ---- 보충4: combined precision 제거 · 게이트 CLI 배선 ----------------------
+
+def test_combined_block_omits_precision():
+    """carried 셀 FP를 0으로 가정하는 구현이었다 — 고쳐서 남기지 않고 지운다."""
+    rows = [_inst("V001", "C2", 2, 2, 0.02)]
+    carried = {"C4": {"population": 78, "analyzable": 68, "drift": 68,
+                      "tp": {"baseline": 68, "primary": 68, "fallback": 67}}}
+    r = A.analyze(rows, {"V001": "korean_text_only"}, {}, FRESH_POP,
+                  carried=carried)
+    c = r["combined_with_carried_over"]
+    for name in A.RULES:
+        assert "precision_weighted" not in c[name], name
+        assert "est_fired" not in c[name], name
+        assert "recall_est" in c[name]
+    assert c["precision_omitted"]
+
+
+def test_primary_evidence_block_is_declared_fresh_only():
+    """판정 근거 블록을 산출물에 박는다. **판정 자체를 내리지는 않는다** —
+    키 이름에 `verdict`를 쓰지 않는 기존 계약과 양립해야 한다."""
+    rows = [_inst("V001", "C2", 2, 2, 0.02)]
+    r = A.analyze(rows, {"V001": "korean_text_only"}, {}, FRESH_POP)
+    assert r["primary_evidence_block"] == "fresh_strata_only"
+    assert "rule-expansion" in r["precision_name"]
+
+
+def test_fresh_precision_is_ratio_of_estimated_totals_not_cell_average():
+    """C0은 `n_fired == 0`이다 — 층별 precision 평균이면 0/0 대입이 판정을 정한다."""
+    rows = [_inst("V001", "C2", 2, 2, 0.02), _inst("V002", "C0", 0, 0, 0.0)]
+    r = A.analyze(rows, {"V001": "korean_text_only"}, {}, FRESH_POP)
+    m = r["fresh_strata_only"]["primary"]
+    assert m["by_cell"]["C0"]["est_fired"] == 0.0
+    assert m["precision_weighted"] == round(m["est_tp"] / m["est_fired"], 4)
+
+
+def test_published_carried_baseline_is_a_module_constant():
+    assert A.PUBLISHED_CARRIED_TP == {"baseline": 71}
+
+
+def test_cli_wires_the_reproduction_gate():
+    """`--carried`만 주고 게이트 없이 combined를 내는 경로가 없어야 한다."""
+    src = (ROOT / "docs" / "probes" / "i1_validation_analysis.py").read_text(
+        encoding="utf-8")
+    call = src.split("r = A.analyze")[-1] if "r = A.analyze" in src else src
+    body = src.split("def main()")[1]
+    assert "PUBLISHED_CARRIED_TP" in body

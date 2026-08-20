@@ -38,6 +38,14 @@ CARRIED_OVER_STRATA = ("C1", "C4", "C5")
 A_LABELS = ("no_text", "korean_text_only", "cjk_text_present", "unclear")
 NO_SCREEN = ("no_text", "korean_text_only")
 POSITIVE, EXCLUDED = "drift", "excluded_unclear"
+# 보충4 §1. verdict는 fresh 블록에서만 계산한다 — carried census는 후보를 고른
+# 데이터이고(C4 1건이 primary/fallback을 갈랐다), combined는 recall 대비를
+# 희석하면서 precision을 올린다
+PRIMARY_EVIDENCE_BLOCK = "fresh_strata_only"
+PRECISION_NAME = "freshly sampled rule-expansion region precision"
+# 보충3 §4 재현 게이트 기준값 — development 공표 carried-over TP
+# (C4 68 + C5 3 + C1 0). 현행 detector 기준만 잰다
+PUBLISHED_CARRIED_TP = {"baseline": 71}
 
 
 class AnalysisError(RuntimeError):
@@ -116,15 +124,18 @@ def _metrics(rows: list, name: str, pop: dict) -> dict:
 
 
 def _combine(fresh: dict, carried: dict, name: str) -> dict:
-    """carried-over census를 더한다. **전수라 스케일링하지 않는다.**"""
+    """carried-over census를 더한다. **전수라 스케일링하지 않는다.**
+
+    **precision을 내지 않는다**(보충4 §4). carried census는 `tp`·`drift`만
+    기록하고 `fired`가 없어서, 이 블록의 precision은 carried 셀 FP를 0으로
+    가정해야만 계산된다 — development에서 C1에 선언범주 밖 FP 1건이 있었고,
+    그 가정은 **세 규칙 모두를 실제보다 좋게 보이게 하는 방향**이다.
+    부정확한 값을 고쳐서 남기지 않고 지운다.
+    """
     est_tp = fresh["est_tp"] + sum(c["tp"][name] for c in carried.values())
     est_drift = fresh["est_drift_total"] + sum(c["drift"] for c in carried.values())
-    est_fired = fresh["est_fired"] + sum(c["tp"][name] for c in carried.values())
     return {"est_tp": est_tp, "est_drift_total": est_drift,
-            "est_fired": est_fired,
-            "recall_est": (round(est_tp / est_drift, 4) if est_drift else None),
-            "precision_weighted": (round(est_tp / est_fired, 4)
-                                   if est_fired else None)}
+            "recall_est": (round(est_tp / est_drift, 4) if est_drift else None)}
 
 
 def analyze(rows: list, a_labels: dict, b_labels: dict, pop: dict,
@@ -163,6 +174,14 @@ def analyze(rows: list, a_labels: dict, b_labels: dict, pop: dict,
         "fresh_strata": list(FRESH_STRATA),
         "carried_over_strata": list(CARRIED_OVER_STRATA),
         "fresh_strata_only": {**fresh, "contains_carried_over": False},
+        # 보충4 §1·§3. 판정 근거 블록과 지표 명칭을 산출물에 박는다
+        "primary_evidence_block": PRIMARY_EVIDENCE_BLOCK,
+        "precision_name": PRECISION_NAME,
+        "precision_definition": "sum(est_TP) / sum(est_Fired) over fresh strata",
+        "precision_scope_note": ("fresh 층에서 후보가 발동하는 곳은 C2뿐이다 — 이 "
+                                 "값은 규칙 확장분의 precision이고 whole-detector "
+                                 "fresh precision이 아니다. 현행 규칙의 발동 층 "
+                                 "잔여가 0이라 후자는 이 모집단에서 측정 불가다"),
         "ci_interpretation": "descriptive_only",
         # primary와 fallback의 development 차이는 C4 인스턴스 1건이었고 C4 잔여가
         # 0이다. **그 1건을 다시 꺼내 두 후보를 가르지 않는다** — 후보 선정에 쓰인
@@ -195,9 +214,14 @@ def analyze(rows: list, a_labels: dict, b_labels: dict, pop: dict,
             **{name: _combine(fresh[name], carried, name) for name in RULES},
             "contains_carried_over": True,
             "carried_over_strata": sorted(carried),
+            "is_primary_evidence_block": False,
+            "precision_omitted": ("carried census에 fired가 없어 FP 0을 가정해야 "
+                                  "계산된다 — 방향이 세 규칙 모두 유리한 쪽이다. "
+                                  "보충4 §4에 따라 출력하지 않는다"),
             "note": ("이 블록은 development census를 이어받은 성분을 포함한다. "
                      "그 층들은 이번에 **재검증되지 않았다** — 전체가 fresh한 "
-                     "추정값이 아니다"),
+                     "추정값이 아니다. **판정 근거가 아니라 descriptive "
+                     "context다**"),
         }
     return out
 
@@ -220,7 +244,10 @@ def main():
           if bp.exists() else {})
     carried = (json.loads(Path(a.carried).read_text(encoding="utf-8"))
                if a.carried else None)
-    r = analyze(man["instances"], al, bl, man["remaining_population"], carried)
+    # **게이트를 선택 인자로 두지 않는다**(보충3 §4). carried를 주면 공표값 재현이
+    # 필수고, 실패하면 candidate 결과를 열지 않는다
+    r = analyze(man["instances"], al, bl, man["remaining_population"], carried,
+                published_carried_tp=(PUBLISHED_CARRIED_TP if carried else None))
     Path(a.out).write_text(json.dumps(r, ensure_ascii=False, indent=2),
                            encoding="utf-8")
     print(f"saved: {a.out}")
