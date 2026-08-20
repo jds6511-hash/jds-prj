@@ -23,6 +23,8 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
+import label_guard
+
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 import common                                              # noqa: E402
@@ -39,8 +41,10 @@ def mmss(sec: float) -> str:
 
 def build(video_id: str, cfg) -> list[Path]:
     wdir = Path(common.work_dir(cfg, video_id))
-    doc = json.loads((wdir / "segments.json").read_text(encoding="utf-8"))
-    segs = doc["segments"] if isinstance(doc, dict) else doc
+    # **캡션·자막을 메모리에 들이지 않는다.** 같은 파일에 들어 있으므로
+    # allowlist 로더를 거친다 (기확보 영상에는 캡션이 이미 존재한다)
+    doc = label_guard.load_segments_for_labeling(wdir / "segments.json")
+    segs = doc["segments"]
     OUT.mkdir(parents=True, exist_ok=True)
     made = []
     for page, i0 in enumerate(range(0, len(segs), PER_SHEET), 1):

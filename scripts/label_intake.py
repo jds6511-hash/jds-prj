@@ -30,6 +30,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 import common                                              # noqa: E402
+import label_guard                                        # noqa: E402
+# **순수 파생 함수 하나만** 가져온다 — 시각 -> 세그먼트 번호.
+# 순위·검색·점수에 닿지 않는다. CLAUDE.md 절대규칙 3이 이 도구를 허용
+# 도구로 명시하면서 `gt_seg_idx 자동 파생`을 그 역할로 지정한다
 from m6_evaluate import derive_gt_seg_idx                  # noqa: E402
 
 KIT = ROOT / "label_kit"
@@ -49,9 +53,13 @@ TYPE_TARGET = {"자막형": 11, "복합형": 12, "장면형": 11}      # 합 34
 
 
 def load_segs(cfg, vid):
+    """**allowlist 로더를 거친다** — 캡션·자막을 읽지 않는다.
+
+    같은 `segments.json`에 캡션이 들어 있고, 기확보 영상에는 그것이 이미
+    존재한다. 관행이 아니라 도구가 차단해야 한다(`label_guard`).
+    """
     p = Path(common.work_dir(cfg, vid)) / "segments.json"
-    d = json.loads(p.read_text(encoding="utf-8"))
-    return d["segments"] if isinstance(d, dict) else d
+    return label_guard.load_segments_for_labeling(p)["segments"]
 
 
 def cmd_make(cfg):
