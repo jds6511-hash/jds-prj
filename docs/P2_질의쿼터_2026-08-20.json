@@ -1,0 +1,288 @@
+{
+  "seed": 20260820,
+  "per_video": 9,
+  "n_videos": 35,
+  "total_queries": 315,
+  "global_target_quota": {
+    "mixed": 111,
+    "subtitle": 79,
+    "scene": 125
+  },
+  "dev_proportions": {
+    "mixed": 34,
+    "subtitle": 24,
+    "scene": 38
+  },
+  "rounding": "largest_remainder_hamilton",
+  "tie_order": [
+    "mixed",
+    "scene",
+    "subtitle"
+  ],
+  "video_sort_before_shuffle": "(program, source_id) ascending",
+  "rng_consumption_order": [
+    "video_permutation",
+    "type_label_pool"
+  ],
+  "base_per_type": 1,
+  "extra_per_video": 6,
+  "seed_order": [
+    "YIi02SZGRY0",
+    "OBxKlA5rxjQ",
+    "x7F1gYS94Nc",
+    "JN1ZSWorQb8",
+    "9lxOsvPb3kw",
+    "UdIJe8H7Sfc",
+    "gAhzF8VUyMs",
+    "d-ReqwAtWUI",
+    "qJf4nz7mQ7Q",
+    "o-KjIc9MqfY",
+    "_tIV2aAN5rk",
+    "qI4uHZgmk94",
+    "JPaaxxI3CEY",
+    "vzv3u8y-IfU",
+    "pland_costco_hosting",
+    "gutbv-k4gV8",
+    "OX9C6N1cifg",
+    "rIkKCHV2Lyg",
+    "83RmLQ9FppI",
+    "85ZqMepT2pY",
+    "NANwv2tR1kk",
+    "jissi_farm",
+    "UYb5ftwIk7M",
+    "KkCyYAlFOZI",
+    "63n5qovgjqY",
+    "DGIT_HGk_EI",
+    "-_mgcIUbbX4",
+    "baekmansonghee_jirisan",
+    "yN9u1nSw8tk",
+    "YhBHWPx45DE",
+    "k6vdlL-4VwQ",
+    "H-8aCxwdPu0",
+    "onrevt-KD2g",
+    "uShXVBhyck0",
+    "softyeon_ceramics"
+  ],
+  "per_video_quota": {
+    "JN1ZSWorQb8": {
+      "mixed": 3,
+      "subtitle": 3,
+      "scene": 3
+    },
+    "JPaaxxI3CEY": {
+      "mixed": 1,
+      "subtitle": 2,
+      "scene": 6
+    },
+    "KkCyYAlFOZI": {
+      "mixed": 4,
+      "subtitle": 2,
+      "scene": 3
+    },
+    "UdIJe8H7Sfc": {
+      "mixed": 2,
+      "subtitle": 4,
+      "scene": 3
+    },
+    "gAhzF8VUyMs": {
+      "mixed": 3,
+      "subtitle": 1,
+      "scene": 5
+    },
+    "qJf4nz7mQ7Q": {
+      "mixed": 2,
+      "subtitle": 2,
+      "scene": 5
+    },
+    "NANwv2tR1kk": {
+      "mixed": 2,
+      "subtitle": 3,
+      "scene": 4
+    },
+    "YIi02SZGRY0": {
+      "mixed": 4,
+      "subtitle": 2,
+      "scene": 3
+    },
+    "_tIV2aAN5rk": {
+      "mixed": 2,
+      "subtitle": 3,
+      "scene": 4
+    },
+    "qI4uHZgmk94": {
+      "mixed": 3,
+      "subtitle": 2,
+      "scene": 4
+    },
+    "rIkKCHV2Lyg": {
+      "mixed": 4,
+      "subtitle": 2,
+      "scene": 3
+    },
+    "vzv3u8y-IfU": {
+      "mixed": 2,
+      "subtitle": 1,
+      "scene": 6
+    },
+    "-_mgcIUbbX4": {
+      "mixed": 3,
+      "subtitle": 2,
+      "scene": 4
+    },
+    "UYb5ftwIk7M": {
+      "mixed": 4,
+      "subtitle": 1,
+      "scene": 4
+    },
+    "k6vdlL-4VwQ": {
+      "mixed": 3,
+      "subtitle": 4,
+      "scene": 2
+    },
+    "uShXVBhyck0": {
+      "mixed": 4,
+      "subtitle": 1,
+      "scene": 4
+    },
+    "63n5qovgjqY": {
+      "mixed": 3,
+      "subtitle": 2,
+      "scene": 4
+    },
+    "9lxOsvPb3kw": {
+      "mixed": 4,
+      "subtitle": 3,
+      "scene": 2
+    },
+    "DGIT_HGk_EI": {
+      "mixed": 3,
+      "subtitle": 3,
+      "scene": 3
+    },
+    "OBxKlA5rxjQ": {
+      "mixed": 2,
+      "subtitle": 1,
+      "scene": 6
+    },
+    "YhBHWPx45DE": {
+      "mixed": 4,
+      "subtitle": 2,
+      "scene": 3
+    },
+    "d-ReqwAtWUI": {
+      "mixed": 2,
+      "subtitle": 4,
+      "scene": 3
+    },
+    "gutbv-k4gV8": {
+      "mixed": 5,
+      "subtitle": 3,
+      "scene": 1
+    },
+    "x7F1gYS94Nc": {
+      "mixed": 5,
+      "subtitle": 2,
+      "scene": 2
+    },
+    "yN9u1nSw8tk": {
+      "mixed": 1,
+      "subtitle": 1,
+      "scene": 7
+    },
+    "83RmLQ9FppI": {
+      "mixed": 4,
+      "subtitle": 3,
+      "scene": 2
+    },
+    "85ZqMepT2pY": {
+      "mixed": 3,
+      "subtitle": 2,
+      "scene": 4
+    },
+    "onrevt-KD2g": {
+      "mixed": 5,
+      "subtitle": 3,
+      "scene": 1
+    },
+    "baekmansonghee_jirisan": {
+      "mixed": 3,
+      "subtitle": 3,
+      "scene": 3
+    },
+    "jissi_farm": {
+      "mixed": 3,
+      "subtitle": 2,
+      "scene": 4
+    },
+    "pland_costco_hosting": {
+      "mixed": 5,
+      "subtitle": 1,
+      "scene": 3
+    },
+    "softyeon_ceramics": {
+      "mixed": 2,
+      "subtitle": 3,
+      "scene": 4
+    },
+    "H-8aCxwdPu0": {
+      "mixed": 4,
+      "subtitle": 1,
+      "scene": 4
+    },
+    "OX9C6N1cifg": {
+      "mixed": 4,
+      "subtitle": 3,
+      "scene": 2
+    },
+    "o-KjIc9MqfY": {
+      "mixed": 3,
+      "subtitle": 2,
+      "scene": 4
+    }
+  },
+  "achieved_type_quota": {
+    "mixed": 111,
+    "subtitle": 79,
+    "scene": 125
+  },
+  "deviation": {},
+  "note": "target과 achieved가 다르면 '달성'이라고 쓰지 않고 deviation으로 보고한다. type_unavailable swap·종단 조항은 보충4 §3-3",
+  "selected_source": "docs/P2_선정표본_2026-08-20.json",
+  "program_of": {
+    "JN1ZSWorQb8": "ebs_docuprime",
+    "JPaaxxI3CEY": "ebs_docuprime",
+    "KkCyYAlFOZI": "ebs_docuprime",
+    "UdIJe8H7Sfc": "ebs_docuprime",
+    "gAhzF8VUyMs": "ebs_docuprime",
+    "qJf4nz7mQ7Q": "ebs_docuprime",
+    "NANwv2tR1kk": "ebs_geonchuktamgu",
+    "YIi02SZGRY0": "ebs_geonchuktamgu",
+    "_tIV2aAN5rk": "ebs_geonchuktamgu",
+    "qI4uHZgmk94": "ebs_geonchuktamgu",
+    "rIkKCHV2Lyg": "ebs_geonchuktamgu",
+    "vzv3u8y-IfU": "ebs_geonchuktamgu",
+    "-_mgcIUbbX4": "ebs_geukhanjigeop",
+    "UYb5ftwIk7M": "ebs_geukhanjigeop",
+    "k6vdlL-4VwQ": "ebs_geukhanjigeop",
+    "uShXVBhyck0": "ebs_geukhanjigeop",
+    "63n5qovgjqY": "ebs_hangukgihaeng",
+    "9lxOsvPb3kw": "ebs_hangukgihaeng",
+    "DGIT_HGk_EI": "ebs_hangukgihaeng",
+    "OBxKlA5rxjQ": "ebs_hangukgihaeng",
+    "YhBHWPx45DE": "ebs_hangukgihaeng",
+    "d-ReqwAtWUI": "ebs_hangukgihaeng",
+    "gutbv-k4gV8": "ebs_hangukgihaeng",
+    "x7F1gYS94Nc": "ebs_hangukgihaeng",
+    "yN9u1nSw8tk": "ebs_hangukgihaeng",
+    "83RmLQ9FppI": "ebs_other",
+    "85ZqMepT2pY": "ebs_other",
+    "onrevt-KD2g": "ebs_other",
+    "H-8aCxwdPu0": "kbs_docu",
+    "OX9C6N1cifg": "kbs_docu",
+    "o-KjIc9MqfY": "other_docu_public",
+    "baekmansonghee_jirisan": "free_creator",
+    "jissi_farm": "free_creator",
+    "pland_costco_hosting": "free_creator",
+    "softyeon_ceramics": "free_creator"
+  }
+}
