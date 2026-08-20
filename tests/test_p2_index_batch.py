@@ -88,9 +88,20 @@ def test_canary_paths_do_not_collide_with_full(tmp_path):
 
 def test_stage_order_puts_m4_after_m3():
     order = [s["name"] for s in B.STAGES]
-    assert order.index("m3_captions") > order.index("m3_subtitles")
+    # 기준 arm이 STT·캡션을 먼저 만들고(m3_base), 그 자막을 복제한 뒤 후보 arm이
+    # 캡션만 만든다 — `--subtitles-only`는 캡션 없는 인덱스에서 거부된다(8-5(7))
+    assert order.index("mirror_frames") > order.index("m3_base")
+    assert order.index("m3_captions") > order.index("mirror_frames")
     assert order.index("m4_index") > order.index("m3_captions")
-    assert order.index("mirror_frames") < order.index("m3_subtitles")
+
+
+def test_stt_runs_once_and_only_the_candidate_arm_recaptions():
+    by = {s["name"]: s for s in B.STAGES}
+    assert by["m3_base"]["arms"] == (B.BASE_ARM,), "STT는 기준 arm에서 1회만 돈다"
+    assert B.BASE_ARM not in by["m3_captions"]["arms"], \
+        "기준 arm 캡션을 두 번 만들면 같은 arm에서 생성이 두 판본 생긴다"
+    assert by["m3_captions"]["extra"] == ["--captions-only"]
+    assert set(by["m4_index"]["arms"]) == set(B.ARMS)
 
 
 def test_frames_and_subtitles_are_mirrored_not_regenerated(tmp_path):

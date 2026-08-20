@@ -54,14 +54,17 @@ ARMS = {
 }
 BASE_ARM = "3b"          # 프레임·자막을 만드는 arm. 여기서 복제한다
 
+        # `--subtitles-only`는 캡션이 이미 있는 인덱스에만 쓸 수 있다(8-5(7): STT 설정
+# 비교용). 신규 인덱스에서는 거부되므로 기준 arm은 기본 모드로 STT와 캡션을 함께
+# 만들고, 그 자막을 후보 arm으로 복제한 뒤 후보는 `--captions-only`로 캡션만 만든다.
+# 결과적으로 STT는 1회이고 두 arm의 자막이 바이트 단위로 같다.
 STAGES = (
     {"name": "m1_segments", "module": "m1_preprocess", "arms": (BASE_ARM,)},
     {"name": "m2_frames", "module": "m2_keyframe", "arms": (BASE_ARM,)},
+    {"name": "m3_base", "module": "m3_generate", "arms": (BASE_ARM,)},
     {"name": "mirror_frames", "module": None, "arms": ()},
-    {"name": "m3_subtitles", "module": "m3_generate", "arms": (BASE_ARM,),
-     "extra": ["--subtitles-only"]},
-    {"name": "mirror_subtitles", "module": None, "arms": ()},
-    {"name": "m3_captions", "module": "m3_generate", "arms": tuple(ARMS),
+    {"name": "m3_captions", "module": "m3_generate",
+     "arms": tuple(a for a in ARMS if a != BASE_ARM),
      "extra": ["--captions-only"]},
     {"name": "m4_index", "module": "m4_index", "arms": tuple(ARMS)},
 )
@@ -238,13 +241,12 @@ def main():
         ts = time.time()
         print(f"=== {st['name']} ({time.strftime('%H:%M:%S')}) ===", flush=True)
         if st["name"] == "mirror_frames":
-            for vid in vids:
-                mirror(_work(configs[BASE_ARM]) / vid,
-                       _work(configs["4b"]) / vid)
-        elif st["name"] == "mirror_subtitles":
-            for vid in vids:
-                mirror(_work(configs[BASE_ARM]) / vid,
-                       _work(configs["4b"]) / vid)
+            for arm in ARMS:
+                if arm == BASE_ARM:
+                    continue
+                for vid in vids:
+                    mirror(_work(configs[BASE_ARM]) / vid,
+                           _work(configs[arm]) / vid)
         else:
             for arm in st["arms"]:
                 for vid in vids:
