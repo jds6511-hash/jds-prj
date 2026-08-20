@@ -45,6 +45,10 @@ NON_EBS = ("kbs", "other", "free")
 # 보충4 §1-2. 기확보 4편의 production 실측값 — 게이트 기준
 GATE_REF = {"baekmansonghee_jirisan": 183, "jissi_farm": 211,
             "softyeon_ceramics": 192, "pland_costco_hosting": 395}
+# **avc1 우선.** production duration을 cv2가 읽고 M2가 프레임을 뽑는다 —
+# vp9/av1 컨테이너는 그 경로에서 덜 안전하다. 기존 코퍼스도 avc1 720p·1080p다
+FORMAT = ("bv*[height<=1080][vcodec^=avc1]+ba[ext=m4a]/"
+          "bv*[height<=1080]+ba/b[height<=1080]/b")
 BOUNDARY_NOTE = ("승인 ① 작업이다 — sampling-frame verification. production 경로로의 "
                  "승격(promotion)과 모델 실행은 승인 ②다. 다운로드가 실행 승인이 "
                  "아니다")
@@ -92,6 +96,23 @@ def reproduction_gate(video_dir, work_dir, ref: dict = None) -> dict:
             "note": "허용 오차 없음. 불일치면 검증기가 production과 다르다"}
 
 
+def media_info(path) -> dict:
+    """**provenance 전용.** 판정에 쓰지 않는다 — eligibility는 n_segments만 본다."""
+    import cv2
+    c = cv2.VideoCapture(str(path))
+    try:
+        return {"width": int(c.get(cv2.CAP_PROP_FRAME_WIDTH)),
+                "height": int(c.get(cv2.CAP_PROP_FRAME_HEIGHT)),
+                "fps": round(c.get(cv2.CAP_PROP_FPS), 3)}
+    finally:
+        c.release()
+
+
+def tool_version() -> str:
+    p = subprocess.run(["yt-dlp", "--version"], capture_output=True, text=True)
+    return (p.stdout or "").strip()
+
+
 def sha256_file(path) -> str:
     h = hashlib.sha256()
     with open(path, "rb") as f:
@@ -107,7 +128,7 @@ def download(video_id: str, dest_dir) -> tuple:
     existing = list(dest_dir.glob(f"{video_id}.*"))
     if existing:
         return existing[0], None
-    cmd = ["yt-dlp", "--no-warnings", "-f", "bv*[height<=720]+ba/b[height<=720]/b",
+    cmd = ["yt-dlp", "--no-warnings", "-f", FORMAT,
            "--merge-output-format", "mp4",
            "-o", str(dest_dir / f"{video_id}.%(ext)s"),
            f"https://www.youtube.com/watch?v={video_id}"]
@@ -146,6 +167,7 @@ def verify_one(row: dict, staging) -> dict:
         return out
     out["n_segments"] = n
     out["verification_status"] = classify_segments(n)
+    out["media"] = media_info(path)          # provenance 전용
     return out
 
 
@@ -201,6 +223,8 @@ def run(rows: list, staging, video_dir, work_dir, ref: dict = None,
         "bounds": {"seg_len_sec": SEG_LEN,
                    "target_segments": list(TARGET_SEGMENTS)},
         "c_cap": C_CAP, "target_k": TARGET_K,
+        "download_format": FORMAT,
+        "yt_dlp_version": tool_version(),
         "counts": c,
         "achieved_k": achieved_k(c["non_ebs_verified"], c["ebs_verified"]),
         "achieved_k_formula": "min(target_k, N + min(floor(c/(1-c)*N), E))",

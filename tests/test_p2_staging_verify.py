@@ -122,6 +122,28 @@ def test_verified_row_records_provenance(monkeypatch, tmp_path):
         assert k in m, k
 
 
+def test_format_prefers_avc1_for_the_cv2_path():
+    """production duration을 cv2가 읽는다 — avc1이 그 경로에서 안전하다."""
+    assert "avc1" in S.FORMAT
+    assert "height<=1080" in S.FORMAT
+
+
+def test_media_info_is_provenance_only(monkeypatch, tmp_path):
+    """해상도는 기록만 한다 — eligibility는 n_segments만 본다."""
+    f = tmp_path / "z.mp4"
+    f.write_bytes(b"x")
+    monkeypatch.setattr(S, "download", lambda v, d: (f, None))
+    monkeypatch.setattr(S, "probe", lambda p: (1000.0, 200))
+    monkeypatch.setattr(S, "media_info", lambda p: {"width": 640,
+                                                    "height": 360, "fps": 30.0})
+    lo = S.verify_one({"video_id": "z", "family": "kbs_docu"}, tmp_path)
+    monkeypatch.setattr(S, "media_info", lambda p: {"width": 1920,
+                                                    "height": 1080, "fps": 30.0})
+    hi = S.verify_one({"video_id": "z", "family": "kbs_docu"}, tmp_path)
+    assert lo["verification_status"] == hi["verification_status"]
+    assert lo["media"]["height"] != hi["media"]["height"]
+
+
 # ---- achieved_k ---------------------------------------------------------
 
 @pytest.mark.parametrize("n,e,k", [(7, 30, 35), (7, 26, 33), (6, 29, 30),
