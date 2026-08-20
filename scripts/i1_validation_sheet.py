@@ -99,9 +99,35 @@ def check_c0_invariant(rows: list) -> None:
             "human label 생략을 적용할 수 없다. 셀 정의와 데이터를 대조하라")
 
 
-def assign_ids(rows: list) -> list:
-    """`V###`. A116의 `S###`와 겹치지 않게 접두를 바꾼다."""
-    return [{**r, "sample_id": f"V{i:03d}"} for i, r in enumerate(rows, 1)]
+def assign_ids(rows: list, seed: int) -> list:
+    """프레임 단위로 `V###` 부여. `S###`와 겹치지 않게 접두를 바꿨다.
+
+    **번호를 뽑은 순서대로 매기면 셀이 드러난다** — 쿼터 순서가 C2 60 → C0 24라서
+    `V001~V060`이 전부 C2가 된다. 라벨하는 사람이 앞쪽 60장이 같은 층이라는 것을
+    알면 판정이 끌린다. 그래서 프레임 목록을 seed 고정으로 섞은 뒤 번호를 준다.
+
+    프레임 1장은 여러 arm에 공유되므로 **프레임 단위로 id를 주고 인스턴스에
+    되돌려 붙인다.**
+    """
+    frames, seen = [], set()
+    for r in rows:
+        key = (r["video_id"], r["seg_idx"])
+        if key not in seen:
+            seen.add(key)
+            frames.append(key)
+    random.Random(seed).shuffle(frames)
+    fid = {k: f"V{i:03d}" for i, k in enumerate(frames, 1)}
+    return [{**r, "sample_id": fid[(r["video_id"], r["seg_idx"])]} for r in rows]
+
+
+def write_label_file(rows: list, path) -> None:
+    """빈 label 칸만 있는 CSV. **이미 라벨한 파일을 덮어쓰지 않는다.**"""
+    path = Path(path)
+    if path.exists():
+        return
+    ids = sorted({r["sample_id"] for r in rows})
+    path.write_text("sample_id,label\n" + "".join(f"{s},\n" for s in ids),
+                    encoding="utf-8")
 
 
 def sheet_rows(rows: list) -> list:
@@ -159,25 +185,37 @@ def main():
     remaining = {}
     for r in kept:
         remaining[r["cell"]] = remaining.get(r["cell"], 0) + 1
-    picked = assign_ids(sample(kept, SEED))
+    picked = assign_ids(sample(kept, SEED), SEED)
     check_c0_invariant(picked)
 
     OUT.mkdir(parents=True, exist_ok=True)
     man = manifest(picked, kept, n_ex, remaining)
     (OUT / "manifest_v.json").write_text(
         json.dumps(man, ensure_ascii=False, indent=2), encoding="utf-8")
-    frames = []
-    seen = set()
-    for r in picked:
-        key = (r["video_id"], r["seg_idx"])
-        if key not in seen:
-            seen.add(key)
+    # 시트는 sample_id 순서로 — 번호는 이미 섞여 있으므로 셀이 드러나지 않는다
+    frames, seen = [], set()
+    for r in sorted(picked, key=lambda x: x["sample_id"]):
+        if r["sample_id"] not in seen:
+            seen.add(r["sample_id"])
             frames.append(r)
+    write_label_file(picked, OUT / "labels_v.csv")
     if not a.dry_run:
-        build_sheets(frames, cfg)
+        build_sheets(frames, cfg, OUT)
+        # 시트 썸네일(300px)에서는 간판·자막 같은 작은 글자가 안 읽힌다.
+        # 판정 대상이 바로 그 글자다 — 원본도 sample_id 이름으로 낸다
+        full = OUT / "full"
+        full.mkdir(parents=True, exist_ok=True)
+        for f in frames:
+            dst = full / f"{f['sample_id']}.jpg"
+            if not dst.exists():
+                dst.write_bytes((Path(common.work_dir(cfg, f["video_id"]))
+                                 / f["rep_frame"]).read_bytes())
     print(f"sampled: {len(picked)} instances / {len(frames)} frames")
     print(f"excluded A116 instances: {n_ex}")
     print(f"remaining pool by cell: {remaining}")
+    print(f"label file: {OUT / 'labels_v.csv'}")
+    print("labels: cjk_text_present / korean_text_only / no_text / unclear")
+    print("do NOT open manifest_v.json while labeling (arm/caption/cell inside)")
     return 0
 
 

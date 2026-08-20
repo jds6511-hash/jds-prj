@@ -122,9 +122,14 @@ def sample(rows: list[dict], seed: int) -> list[dict]:
     return picked
 
 
-def build_sheets(frames: list[dict], cfg) -> list[Path]:
-    """프레임 + 시각 + sample_id만. 캡션·arm·판정은 넣지 않는다."""
-    OUT.mkdir(parents=True, exist_ok=True)
+def build_sheets(frames: list[dict], cfg, out: Path = None) -> list[Path]:
+    """프레임 + 시각 + sample_id만. 캡션·arm·판정은 넣지 않는다.
+
+    **`out`을 반드시 넘겨라.** 모듈 전역을 기본값으로 쓰면 다른 라벨셋의 시트를
+    덮어쓴다 — 실제로 검증 시트가 A116 디렉터리에 들어가 시트 3장을 덮어썼다.
+    """
+    out = Path(out or OUT)
+    out.mkdir(parents=True, exist_ok=True)
     made = []
     for page, i0 in enumerate(range(0, len(frames), PER_SHEET), 1):
         chunk = frames[i0:i0 + PER_SHEET]
@@ -144,7 +149,7 @@ def build_sheets(frames: list[dict], cfg) -> list[Path]:
             draw.text((x + 2, y + th + 5),
                       f"{f['sample_id']}   {int(f['start'])//60}:"
                       f"{int(f['start']) % 60:02d}", fill="black")
-        p = OUT / f"sheet_{page:02d}.jpg"
+        p = out / f"sheet_{page:02d}.jpg"
         sheet.save(p, quality=90)
         made.append(p)
     return made
