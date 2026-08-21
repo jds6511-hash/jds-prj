@@ -142,15 +142,24 @@ def test_mirror_refuses_to_clobber_existing_captions(tmp_path):
         B.mirror(a, b)
 
 
-def test_canary_uses_one_video_and_full_uses_the_whole_sample():
+def test_canary_covers_every_input_class():
+    """CANARY가 신규분만 돌면 기확보분 코덱 결함을 FULL 12시간 뒤에 알게 된다
+    (2026-08-21 AV1 사고). 종류마다 가장 작은 것을 고른다."""
     sel = json.loads((ROOT / "docs" / "P2_선정표본_2026-08-20.json")
                      .read_text(encoding="utf-8"))["selected"]
     assert len(B.video_ids(sel, stage="full")) == 35
     can = B.video_ids(sel, stage="canary")
-    assert len(can) == 1
-    # 가장 짧은 영상을 쓴다 — 전 경로를 돌리면서 GPU를 가장 적게 쓴다
-    smallest = min(sel, key=lambda r: r["n_segments"])["source_id"]
-    assert can == [smallest]
+    assert len(can) == 2
+    new_only = [r for r in sel if not r.get("pre_indexed")]
+    pre_only = [r for r in sel if r.get("pre_indexed")]
+    assert can[0] == min(new_only, key=lambda r: r["n_segments"])["source_id"]
+    assert can[1] == min(pre_only, key=lambda r: r["n_segments"])["source_id"]
+
+
+def test_canary_handles_a_sample_with_one_class_only():
+    sel = [{"source_id": "a", "n_segments": 9, "pre_indexed": False},
+           {"source_id": "b", "n_segments": 3, "pre_indexed": False}]
+    assert B.video_ids(sel, stage="canary") == ["b"]
 
 
 # ---- 7. 검증 훅 -------------------------------------------------------

@@ -104,9 +104,22 @@ def make_configs(base_config, out_dir, stage: str = "full") -> dict:
 
 
 def video_ids(selected: list, stage: str = "full") -> list:
+    """CANARY는 **입력 종류마다 한 편씩** 돌린다.
+
+    2026-08-21 FULL이 12시간짜리 캡션 단계 직전, m2에서 죽었다 — 기확보 영상 2편이
+    AV1이고 서버 cv2가 그것을 디코드하지 못했다. 그때 CANARY는 신규 avc1 1편만
+    돌렸으므로 그 경로를 밟지 않았다. 가장 싼 영상 하나로는 **입력 다양성**을
+    확인할 수 없다. 신규분과 기확보분에서 각각 가장 작은 것을 고른다.
+    """
     if stage == "canary":
-        # 전 경로를 돌리면서 GPU를 가장 적게 쓰는 영상 하나
-        return [min(selected, key=lambda r: r["n_segments"])["source_id"]]
+        groups, out = {}, []
+        for r in selected:
+            groups.setdefault(bool(r.get("pre_indexed")), []).append(r)
+        for key in (False, True):                     # 신규 먼저, 기확보 다음
+            g = groups.get(key)
+            if g:
+                out.append(min(g, key=lambda r: r["n_segments"])["source_id"])
+        return out
     return [r["source_id"] for r in selected]
 
 
