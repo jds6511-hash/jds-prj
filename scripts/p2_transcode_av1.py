@@ -41,12 +41,25 @@ SEG_LEN = 5
 # 화질 손실을 캡션에 옮기지 않도록 낮은 crf를 쓴다. veryslow는 필요 없다 —
 # 목적은 압축률이 아니라 디코드 가능성이다.
 VCODEC = ["-c:v", "libx264", "-crf", "16", "-preset", "medium",
-          "-pix_fmt", "yuv420p", "-fps_mode", "passthrough"]
+          "-pix_fmt", "yuv420p"]
 ACODEC = ["-c:a", "copy"]
+# 프레임 타이밍을 그대로 옮기는 플래그. `-fps_mode`는 ffmpeg 5.1부터고 서버는 4.4.2라
+# 옵션 자체를 모른다(실측). **버전 문자열로 추측하지 않고 실제로 돌려서 고른다.**
+TIMING_NEW = ["-fps_mode", "passthrough"]
+TIMING_OLD = ["-vsync", "0"]
 
 
 class TranscodeError(RuntimeError):
     pass
+
+
+def timing_flags() -> list:
+    """`-fps_mode`를 쓸 수 있는지 **실제로 돌려서** 확인하고, 없으면 `-vsync 0`."""
+    r = subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error",
+                        "-f", "lavfi", "-i", "nullsrc", "-frames:v", "1",
+                        *TIMING_NEW, "-f", "null", "-"],
+                       capture_output=True)
+    return list(TIMING_NEW) if r.returncode == 0 else list(TIMING_OLD)
 
 
 def probe_codec(path) -> str:
@@ -85,7 +98,7 @@ def transcode(video: Path, expected_segments: int) -> dict:
         raise TranscodeError(f"{src_backup.name}가 이미 있다 — 두 번 변환하지 않는다")
 
     cmd = ["ffmpeg", "-y", "-hide_banner", "-loglevel", "error",
-           "-i", str(video), *VCODEC, *ACODEC, str(out_tmp)]
+           "-i", str(video), *VCODEC, *timing_flags(), *ACODEC, str(out_tmp)]
     row["ffmpeg_cmd"] = " ".join(cmd)
     r = subprocess.run(cmd)
     if r.returncode != 0 or not out_tmp.is_file():

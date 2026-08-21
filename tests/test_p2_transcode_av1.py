@@ -17,9 +17,30 @@ import p2_transcode_av1 as T                                      # noqa: E402
 
 def test_settings_keep_audio_and_timing():
     assert "-c:a" in T.ACODEC and "copy" in T.ACODEC, "오디오를 재인코딩하면 자막이 바뀐다"
-    assert "-fps_mode" in T.VCODEC and "passthrough" in T.VCODEC
     assert T.SUFFIX == ".av1source.mp4"
     assert T.SEG_LEN == 5
+
+
+def test_timing_flag_is_probed_not_guessed(monkeypatch):
+    """서버 ffmpeg는 4.4.2라 `-fps_mode`를 모른다 — 버전 문자열로 추측하지 않는다."""
+    class R:
+        def __init__(self, rc):
+            self.returncode = rc
+
+    monkeypatch.setattr(T.subprocess, "run", lambda *a, **k: R(0))
+    assert T.timing_flags() == T.TIMING_NEW
+    monkeypatch.setattr(T.subprocess, "run", lambda *a, **k: R(1))
+    assert T.timing_flags() == T.TIMING_OLD
+    assert T.TIMING_OLD == ["-vsync", "0"]
+
+
+def test_transcode_command_includes_a_timing_flag(tmp_path, monkeypatch):
+    f = tmp_path / "v.mp4"
+    f.write_bytes(b"av1-bytes")
+    _fake_av1(monkeypatch, tmp_path, segs_after=100)
+    monkeypatch.setattr(T, "timing_flags", lambda: ["-vsync", "0"])
+    row = T.transcode(f, 100)
+    assert "-vsync 0" in row["ffmpeg_cmd"]
 
 
 def test_non_av1_is_skipped(tmp_path, monkeypatch):
