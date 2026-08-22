@@ -146,9 +146,13 @@ def collect(status_doc=None, run_root=RUN_ROOT, test_result=None) -> dict:
 def render(collected: dict) -> str:
     f = collected["facts"]
     out = ["# 세션 인수 (자동 생성)", "",
-           "> 이 파일은 `scripts/make_handoff.py`가 만든다. **수집기이고 해석기가 "
-           "아니다** — 수치를 보고 판정을 만들지 않고, 각 항목에 출처를 붙인다.",
+           "> **직접 편집하지 마라.** `scripts/make_handoff.py`로 다시 생성한다. "
+           "이 도구는 수집기이고 해석기가 아니다 — 수치를 보고 판정을 만들지 않고, "
+           "각 항목에 출처를 붙인다.",
            "> 판정·근거는 출처 문서에서 읽어라.", ""]
+    if f["git_dirty"]["value"]:
+        out += ["> **작업 트리가 dirty다.** 아래 사실은 커밋되지 않은 변경을 포함한 "
+                "상태에서 수집됐다 — 재현하려면 `git status`를 먼저 봐라.", ""]
 
     def block(title, key, fenced=True):
         fact = f[key]

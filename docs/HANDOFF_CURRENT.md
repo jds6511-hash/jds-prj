@@ -1,11 +1,13 @@
 # 세션 인수 (자동 생성)
 
-> 이 파일은 `scripts/make_handoff.py`가 만든다. **수집기이고 해석기가 아니다** — 수치를 보고 판정을 만들지 않고, 각 항목에 출처를 붙인다.
+> **직접 편집하지 마라.** `scripts/make_handoff.py`로 다시 생성한다. 이 도구는 수집기이고 해석기가 아니다 — 수치를 보고 판정을 만들지 않고, 각 항목에 출처를 붙인다.
 > 판정·근거는 출처 문서에서 읽어라.
+
+> **작업 트리가 dirty다.** 아래 사실은 커밋되지 않은 변경을 포함한 상태에서 수집됐다 — 재현하려면 `git status`를 먼저 봐라.
 
 ## git HEAD
 
-`ab73e1c76badb56538784b9db7e049ef3936e243`
+`9907a6430ad2cbe2f69396e5358e4431e2b67651`
 
 source: git rev-parse HEAD
 
@@ -18,11 +20,11 @@ source: git status --porcelain
 ## 최근 커밋
 
 ```
+9907a64 feat(infra): CANARY 커버리지·세션 인수·provenance registry·실행 상태 판독기
 ab73e1c fix(p2): 타이밍 플래그를 버전으로 추측하지 않고 실제로 돌려서 고른다
 e328823 fix(p2): AV1 입력을 H.264로 옮기고 CANARY가 입력 종류를 전부 밟게 한다
 5fd70b9 fix(p2): video_id가 하이픈으로 시작하면 argparse가 옵션으로 읽는다
 b6f4f65 fix(p2): 산출물 이름을 stage에 귀속시킨다
-3decf9d feat(p2): FULL 직전 입력 해시 재검증 — 전송된 바이트가 검증한 바이트인지
 ```
 
 source: git log -5 --oneline

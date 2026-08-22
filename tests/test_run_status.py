@@ -148,3 +148,47 @@ def test_it_does_not_write_run_complete():
     assert "RUN_COMPLETE" in CODE          # 읽기는 한다
     assert "RUN_COMPLETE.json\").write" not in CODE
     assert "write_run_complete" not in CODE
+
+
+# ------------------------------------------------- --verify (산출물 대조)
+
+def _out(d, name="p2_index_batch_run_full.json", body=b"{}"):
+    (Path(d) / name).write_bytes(body)
+    import hashlib
+    return hashlib.sha256(body).hexdigest()
+
+
+def test_verify_confirms_the_recorded_output_hash(tmp_path):
+    h = _out(tmp_path)
+    _mark(tmp_path, "m4_index", output_hash=h,
+          output_file="p2_index_batch_run_full.json")
+    v = S.verify(tmp_path, run_id="r1", mode="FULL", commit="c" * 40)
+    assert v["ok"] is True
+    assert v["checked"] == [["m4_index", "match"]]
+
+
+def test_verify_catches_a_changed_output(tmp_path):
+    h = _out(tmp_path)
+    _out(tmp_path, body=b'{"changed": true}')
+    _mark(tmp_path, "m4_index", output_hash=h,
+          output_file="p2_index_batch_run_full.json")
+    v = S.verify(tmp_path, run_id="r1", mode="FULL", commit="c" * 40)
+    assert v["ok"] is False and v["checked"] == [["m4_index", "mismatch"]]
+
+
+def test_verify_reports_a_missing_output(tmp_path):
+    _mark(tmp_path, "m4_index", output_hash="a" * 64,
+          output_file="gone.json")
+    v = S.verify(tmp_path, run_id="r1", mode="FULL", commit="c" * 40)
+    assert v["ok"] is False and v["checked"] == [["m4_index", "missing"]]
+
+
+def test_verify_skips_markers_without_a_recorded_hash(tmp_path):
+    _mark(tmp_path, "m1_segments")
+    v = S.verify(tmp_path, run_id="r1", mode="FULL", commit="c" * 40)
+    assert v["ok"] is True and v["unverifiable"] == ["m1_segments"]
+
+
+def test_status_does_not_hash_anything(tmp_path):
+    """status는 가볍게 유지한다 — 해시 계산은 --verify에서만."""
+    assert "sha256" not in _code_only(SRC).split("def verify")[0]

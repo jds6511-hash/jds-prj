@@ -34,6 +34,7 @@
       --commit <sha>
 """
 import argparse
+import hashlib
 import json
 import subprocess
 import sys
@@ -60,13 +61,15 @@ def marker_name(mode: str, stage: str) -> str:
 
 def write_marker(run_dir, stage: str, mode: str, run_id: str, commit: str,
                  created_at: str, output_hash: str = None,
-                 elapsed_sec: float = None) -> Path:
+                 output_file: str = None, elapsed_sec: float = None) -> Path:
     """단계 완료 마커. **판독기가 현재 실행의 것인지 확인할 수 있는 형태**로 쓴다."""
     p = Path(run_dir) / marker_name(mode, stage)
     body = {"mode": mode, "run_id": run_id, "commit": commit, "stage": stage,
             "created_at": created_at}
     if output_hash is not None:
         body["output_hash"] = output_hash
+    if output_file is not None:
+        body["output_file"] = output_file
     if elapsed_sec is not None:
         body["elapsed_sec"] = elapsed_sec
     p.write_text(json.dumps(body, ensure_ascii=False), encoding="utf-8")
@@ -136,6 +139,50 @@ def status(run_dir, run_id: str, mode: str, commit: str,
                                    "알 수 없어 완료로 세지 않는다")}
 
 
+def _matching_markers(run_dir: Path, run_id: str, mode: str, commit: str):
+    """현재 실행과 맞는 마커만 (경로, 본문)으로 돌려준다."""
+    for p in sorted(run_dir.iterdir()):
+        if not p.name.endswith("_DONE.json"):
+            continue
+        body = _read(p)
+        if body and (body.get("mode") == mode and body.get("run_id") == run_id
+                     and body.get("commit") == commit):
+            yield p, body
+
+
+def verify(run_dir, run_id: str, mode: str, commit: str) -> dict:
+    """마커가 기록한 산출물 해시를 **실제 파일과 대조**한다.
+
+    `status`는 가볍게 유지하고(해시 계산 없음) 이 대조는 별도 모드로 둔다 — 매 조회마다
+    전 산출물을 해싱하면 상태 조회가 무거워진다. **해시가 맞아도 완료 선언이 아니다.**
+    """
+    d = Path(run_dir)
+    if not d.is_dir():
+        raise StatusError(f"run 디렉터리가 없다: {d}")
+    checked, unverifiable = [], []
+    for _, body in _matching_markers(d, run_id, mode, commit):
+        stage, want = body.get("stage"), body.get("output_hash")
+        if not want:
+            unverifiable.append(stage)
+            continue
+        target = d / (body.get("output_file") or "")
+        if not target.is_file():
+            checked.append([stage, "missing"])
+            continue
+        h = hashlib.sha256()
+        with open(target, "rb") as fh:
+            for chunk in iter(lambda: fh.read(1 << 20), b""):
+                h.update(chunk)
+        checked.append([stage, "match" if h.hexdigest() == want else "mismatch"])
+    return {"run_id": run_id, "mode": mode, "commit": commit,
+            "checked": checked, "unverifiable": unverifiable,
+            "ok": all(v == "match" for _, v in checked),
+            "note": (f"해시가 맞아도 완료 선언이 아니다 — 완료 근거는 "
+                     f"{RUN_COMPLETE}뿐이다"),
+            "unverifiable_note": ("output_hash를 기록하지 않은 마커는 대조할 수 "
+                                  "없다. 대조 불가를 통과로 세지 않는다")}
+
+
 def render(st: dict) -> str:
     lines = [f"run_id: {st['run_id']}", f"mode: {st['mode']}",
              f"commit: {st['commit']}"]
@@ -158,6 +205,8 @@ def main():
     ap.add_argument("--mode", required=True, choices=list(MODES))
     ap.add_argument("--commit")
     ap.add_argument("--process-alive", action="store_true")
+    ap.add_argument("--verify", action="store_true",
+                    help="마커의 output_hash를 실제 산출물과 대조한다")
     a = ap.parse_args()
     commit = a.commit
     if not commit:
@@ -166,6 +215,13 @@ def main():
         commit = (r.stdout or "").strip()
     print(render(status(a.run_dir, run_id=a.run_id, mode=a.mode, commit=commit,
                         process_alive=a.process_alive)), end="")
+    if a.verify:
+        v = verify(a.run_dir, run_id=a.run_id, mode=a.mode, commit=commit)
+        print(f"verify: ok={v['ok']}")
+        for stage, res in v["checked"]:
+            print(f"  {stage}: {res}")
+        for stage in v["unverifiable"]:
+            print(f"  {stage}: 대조 불가 (output_hash 없음)")
     return 0
 
 

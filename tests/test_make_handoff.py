@@ -163,3 +163,31 @@ def test_render_includes_sources_for_each_block(tmp_path):
                             test_result=None))
     assert "source:" in md and "작업현황_2026-09-09.md" in md
     assert "4B 채택" in md
+
+
+def test_render_marks_the_file_as_generated(tmp_path):
+    doc = _docs(tmp_path) / "작업현황_2026-09-09.md"
+    md = H.render(H.collect(status_doc=doc, run_root=tmp_path / "none",
+                            test_result=None))
+    head = md.splitlines()[:6]
+    assert any("자동 생성" in ln for ln in head)
+    assert any("직접 편집하지 마라" in ln for ln in head)
+    assert any("scripts/make_handoff.py" in ln for ln in head)
+
+
+def test_dirty_tree_is_surfaced_at_the_top(tmp_path, monkeypatch):
+    doc = _docs(tmp_path) / "작업현황_2026-09-09.md"
+    monkeypatch.setattr(H, "_git",
+                        lambda *a: "M x" if a[0] == "status" else "sha")
+    md = H.render(H.collect(status_doc=doc, run_root=tmp_path / "none",
+                            test_result=None))
+    top = md.split("## ")[0]
+    assert "작업 트리가 dirty" in top
+
+
+def test_clean_tree_has_no_dirty_banner(tmp_path, monkeypatch):
+    doc = _docs(tmp_path) / "작업현황_2026-09-09.md"
+    monkeypatch.setattr(H, "_git", lambda *a: "" if a[0] == "status" else "sha")
+    md = H.render(H.collect(status_doc=doc, run_root=tmp_path / "none",
+                            test_result=None))
+    assert "작업 트리가 dirty" not in md.split("## ")[0]

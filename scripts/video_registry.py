@@ -34,6 +34,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SELECTION = ROOT / "docs" / "P2_선정표본_2026-08-20.json"
+DURATION_ARTIFACT = ROOT / "docs" / "P2_FREE4_duration_2026-08-22.json"
 DEFAULT_PATH = ROOT / "data" / "registry" / "videos.jsonl"
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
 
@@ -136,14 +137,64 @@ def assert_identity_unchanged(before: list, after: list) -> bool:
     return True
 
 
-def project_from_selection(path=SELECTION) -> list:
+def _duration_index(artifact, selection: dict) -> dict:
+    """측정 artifact를 읽는다 — **값을 그대로 베끼지 않고 격자를 대조한다.**
+
+    artifact가 다른 바이트를 잰 것이면 격자가 사전등록 `n_segments`와 어긋난다.
+    그때는 그 길이를 쓰지 않는다.
+    """
+    if artifact is None:
+        return {}
+    p = Path(artifact)
+    if not p.is_file():
+        raise RegistryError(f"duration artifact가 없다: {p}")
+    doc = json.loads(p.read_text(encoding="utf-8"))
+    rel = (str(p.relative_to(ROOT)).replace("\\", "/")
+           if p.is_relative_to(ROOT) else str(p))
+    out = {}
+    for row in doc["rows"]:
+        vid = row["video_id"]
+        pre = selection.get(vid, {}).get("n_segments")
+        if row.get("n_segments_derived") != pre:
+            raise RegistryError(
+                f"{vid}: artifact의 격자 {row.get('n_segments_derived')}가 "
+                f"사전등록 n_segments {pre}와 다르다 — 이 길이를 쓰지 않는다")
+        out[vid] = {"duration_sec": row["duration_sec"],
+                    "duration_status": "measured",
+                    "duration_source": rel,
+                    "duration_measurement_path": row.get("measurement_path")}
+    return out
+
+
+def require_duration(records: list) -> dict:
+    """duration이 필요한 검사의 진입점. **unknown을 조용히 빼지 않는다.**"""
+    unknown = sorted(r["video_id"] for r in records
+                     if r.get("duration_status") != "recorded"
+                     and r.get("duration_sec") is None)
+    if unknown:
+        raise RegistryError(
+            f"duration이 unknown인 영상 {len(unknown)}편: {unknown} — 이 검사는 "
+            f"그 행에 대해 unsupported다. 행을 제외하고 통과시키지 않는다")
+    return {"ok": True, "n": len(records)}
+
+
+def project_from_selection(path=SELECTION,
+                           duration_artifact=DURATION_ARTIFACT) -> list:
     """기존 선정표본을 canonical schema로 **투영**한다(변환이 아니라 읽기다).
 
     없는 값을 만들지 않는다 — 기확보 4편에는 `source_url`·해시 키를 넣지 않고
-    `legacy_exempt`와 사유만 적는다.
+    `legacy_exempt`와 사유만 적는다. 길이는 세 상태로 구분한다.
+
+    ```
+    recorded   선정표본에 기록돼 있다
+    measured   측정 artifact를 참조했다 (출처를 함께 적는다)
+    unknown    둘 다 없다 — **키를 비우지 않고 상태로 드러낸다**
+    ```
     """
     sel = json.loads(Path(path).read_text(encoding="utf-8"))["selected"]
     rel = str(Path(path).relative_to(ROOT)).replace("\\", "/")
+    by_id = {r["source_id"]: r for r in sel}
+    dur = _duration_index(duration_artifact, by_id)
     out = []
     for r in sel:
         rec = {"video_id": r["source_id"], "source_id": r["source_id"],
@@ -152,6 +203,15 @@ def project_from_selection(path=SELECTION) -> list:
                "provenance_reference": rel}
         if r.get("duration_sec") is not None:
             rec["duration_sec"] = r["duration_sec"]
+            rec["duration_status"] = "recorded"
+            rec["duration_source"] = rel
+        elif r["source_id"] in dur:
+            rec.update(dur[r["source_id"]])
+        else:
+            rec["duration_status"] = "unknown"
+            rec["duration_unknown_reason"] = (
+                "취득 시점에 기록되지 않았고 측정 artifact도 주어지지 않았다 — "
+                "n_segments*seg_len으로 추정해 채우지 않는다")
         if r.get("file_sha256"):
             rec.update({"acquisition_class": "downloaded",
                         "source_url": r["source_url"],

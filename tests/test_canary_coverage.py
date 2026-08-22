@@ -158,3 +158,42 @@ def test_selection_does_not_read_the_corpus_order():
     inv_a = C.inventory(CORPUS, CODECS)
     inv_b = C.inventory(list(reversed(CORPUS)), CODECS)
     assert C.select_representatives(inv_a) == C.select_representatives(inv_b)
+
+
+# ------------------------------------------------- 조합 커버리지 (확장점)
+
+COMBO = ("provenance:legacy", "id_shape:cli_sensitive")
+# 조합을 한 편에 가진 영상. 이 편 없이는 FULL에도 그 조합이 없다.
+COMBO_CORPUS = CORPUS + [{"source_id": "-ddd", "n_segments": 150,
+                          "pre_indexed": True,
+                          "speech_status": "audio_track_ko"}]
+COMBO_CODECS = {**CODECS, "-ddd": "transcoded_h264"}
+
+
+def test_marginal_coverage_can_pass_while_a_combination_is_unmet():
+    """현재 기본 검사는 **축별 marginal**이다 — 그 한계를 테스트로 드러낸다."""
+    inv = C.inventory(COMBO_CORPUS, COMBO_CODECS)
+    ids = [v["source_id"] for v in COMBO_CORPUS]
+    partial = ["aaa", "-bbb", "ccc"]            # -ddd만 빼면 조합이 안 밟힌다
+    r = C.coverage(ids, partial, inv)
+    assert r["ok"] is True and r["coverage_kind"] == "marginal_per_axis"
+    r2 = C.coverage(ids, partial, inv, required_combinations=[COMBO])
+    assert r2["ok"] is False
+    assert r2["missing_combinations"] == [sorted(COMBO)]
+    assert C.coverage(ids, ids, inv, required_combinations=[COMBO])["ok"] is True
+
+
+def test_required_combination_absent_from_full_input_is_refused():
+    """FULL에 없는 조합을 요구하면 영원히 통과 못 한다 — 설정 오류로 잡는다."""
+    inv = _inv()
+    ids = [v["source_id"] for v in CORPUS]
+    with pytest.raises(C.CoverageError, match="FULL 입력에 그 조합이 없다"):
+        C.coverage(ids, ids, inv, required_combinations=[COMBO])
+
+
+def test_default_has_no_required_combinations():
+    """사고가 난 조합만 승격한다 — 기본값으로 Cartesian product를 요구하지 않는다."""
+    assert C.REQUIRED_COMBINATIONS == ()
+    inv = _inv()
+    ids = [v["source_id"] for v in CORPUS]
+    assert "missing_combinations" in C.coverage(ids, ids, inv)

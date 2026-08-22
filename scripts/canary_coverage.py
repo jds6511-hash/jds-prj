@@ -43,6 +43,10 @@ VIDEOS = ROOT / "data" / "videos"
 TRANSCODED_SUFFIX = ".av1source.mp4"
 AXES = ("codec", "provenance", "id_shape", "duration", "audio")
 AUDIO_KNOWN = "audio_track_ko"
+# 사고가 실제로 난 조합만 여기에 승격한다. **기본값은 비어 있다** — 축의 Cartesian
+# product를 요구하면 CANARY가 corpus만큼 커진다. 기본 검사는 축별 marginal이고 그
+# 한계는 결과 JSON의 coverage_limit에 적힌다.
+REQUIRED_COMBINATIONS = ()
 
 
 class CoverageError(RuntimeError):
@@ -102,8 +106,18 @@ def inventory(corpus: list, codec_of: dict) -> dict:
     return inv
 
 
-def coverage(full_ids: list, canary_ids: list, inv: dict) -> dict:
-    """FULL 입력의 클래스 집합과 CANARY가 밟은 집합을 비교한다."""
+def coverage(full_ids: list, canary_ids: list, inv: dict,
+             required_combinations=REQUIRED_COMBINATIONS) -> dict:
+    """FULL 입력의 클래스 집합과 CANARY가 밟은 집합을 비교한다.
+
+    기본 검사는 **축별 marginal coverage**다 — 모든 클래스가 어딘가에서 한 번씩
+    밟히면 통과한다. 클래스 조합(interaction)까지 보장하지 않는다. 예를 들어
+    `legacy × transcoded_h264 × cli_sensitive`가 존재해도 각 클래스가 서로 다른
+    영상에서 커버되면 marginal은 통과한다.
+
+    `required_combinations`에 넣은 조합은 **한 영상이 동시에** 만족해야 한다. 사고가
+    실제로 난 조합만 승격한다 — 전 조합을 요구하면 CANARY가 FULL만큼 커진다.
+    """
     unknown = [v for v in list(full_ids) + list(canary_ids) if v not in inv]
     if unknown:
         raise CoverageError(f"inventory에 없는 영상: {sorted(set(unknown))}")
@@ -115,23 +129,42 @@ def coverage(full_ids: list, canary_ids: list, inv: dict) -> dict:
     canary_classes = {c for v in canary_ids for c in inv[v]}
     covered = sorted(full_classes & canary_classes)
     missing = sorted(full_classes - canary_classes)
+
+    missing_combos = []
+    for combo in required_combinations or ():
+        want = set(combo)
+        if not any(want <= inv[v] for v in full_ids):
+            raise CoverageError(
+                f"required_combination {sorted(want)}: FULL 입력에 그 조합이 없다 "
+                f"— 영원히 통과할 수 없는 요구다")
+        if not any(want <= inv[v] for v in canary_ids):
+            missing_combos.append(sorted(want))
+
     return {"axes": list(AXES),
+            "coverage_kind": "marginal_per_axis",
+            "coverage_limit": ("축별 marginal이다 — 클래스 조합까지 보장하지 않는다. "
+                               "사고가 난 조합만 required_combinations로 승격한다"),
+            "required_combinations": [sorted(c) for c in
+                                      (required_combinations or ())],
+            "missing_combinations": missing_combos,
             "n_full": len(set(full_ids)), "n_canary": len(set(canary_ids)),
             "full_classes": sorted(full_classes),
             "canary_classes": sorted(canary_classes),
             "covered": covered, "missing": missing,
-            "ok": not missing,
+            "ok": not missing and not missing_combos,
             "note": ("클래스는 corpus에서 관측된 것만이다. 성능·캡션·검색 결과는 "
                      "입력으로 쓰지 않는다")}
 
 
-def require_coverage(full_ids: list, canary_ids: list, inv: dict) -> dict:
+def require_coverage(full_ids: list, canary_ids: list, inv: dict,
+                     required_combinations=REQUIRED_COMBINATIONS) -> dict:
     """fail-closed 진입점. **아직 launcher에 연결하지 않았다.**"""
-    r = coverage(full_ids, canary_ids, inv)
+    r = coverage(full_ids, canary_ids, inv, required_combinations)
     if not r["ok"]:
         raise CoverageError(
-            f"CANARY 미포함 입력 클래스 {len(r['missing'])}종: {r['missing']} — "
-            f"이 상태로 FULL에 들어가면 그 종류는 FULL에서 처음 밟는다")
+            f"CANARY 미포함 입력 클래스 {len(r['missing'])}종: {r['missing']} · "
+            f"미포함 조합 {r['missing_combinations']} — 이 상태로 FULL에 들어가면 "
+            f"그 종류는 FULL에서 처음 밟는다")
     return r
 
 

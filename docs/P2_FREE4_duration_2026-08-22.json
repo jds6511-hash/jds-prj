@@ -1,0 +1,68 @@
+{
+  "artifact": "p2_free4_duration",
+  "why": "선정표본에 이 4편의 duration_sec이 없다. 소비자가 n_segments*5로 추정하면 최대 한 구간만큼 느슨한 값이 사실로 남는다",
+  "measurement_path": "cv2 CAP_PROP_FRAME_COUNT / CAP_PROP_FPS (m1과 동일)",
+  "source_ref": "docs/P2_선정표본_2026-08-20.json",
+  "seg_len_sec": 5,
+  "commit": "9907a6430ad2cbe2f69396e5358e4431e2b67651",
+  "n": 4,
+  "rows": [
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "duration_sec": 914.28,
+      "fps": 50.0,
+      "frame_count": 45714,
+      "file_sha256": "c57fda68b12ae3a54f41202fe7c938b39d41884a789dc14396b29d36ef5fab09",
+      "n_segments_preregistered": 183,
+      "n_segments_derived": 183,
+      "grid_matches_preregistered": true,
+      "measurement_path": "cv2 CAP_PROP_FRAME_COUNT / CAP_PROP_FPS (m1과 동일)",
+      "tool": "opencv-python 4.13.0",
+      "grid_upper_bound_sec": 915,
+      "looseness_closed_sec": 0.72
+    },
+    {
+      "video_id": "jissi_farm",
+      "duration_sec": 1054.43,
+      "fps": 30.0,
+      "frame_count": 31633,
+      "file_sha256": "0188ee5946873190f0ceaf17ce4969744325c4451aeb12f4a605edc30f8f4bb6",
+      "n_segments_preregistered": 211,
+      "n_segments_derived": 211,
+      "grid_matches_preregistered": true,
+      "measurement_path": "cv2 CAP_PROP_FRAME_COUNT / CAP_PROP_FPS (m1과 동일)",
+      "tool": "opencv-python 4.13.0",
+      "grid_upper_bound_sec": 1055,
+      "looseness_closed_sec": 0.57
+    },
+    {
+      "video_id": "pland_costco_hosting",
+      "duration_sec": 1971.63,
+      "fps": 30.0,
+      "frame_count": 59149,
+      "file_sha256": "5843ad909a24051149999691a220c7374c6a3cd3097e65ade78400f3acc55a65",
+      "n_segments_preregistered": 395,
+      "n_segments_derived": 395,
+      "grid_matches_preregistered": true,
+      "measurement_path": "cv2 CAP_PROP_FRAME_COUNT / CAP_PROP_FPS (m1과 동일)",
+      "tool": "opencv-python 4.13.0",
+      "grid_upper_bound_sec": 1975,
+      "looseness_closed_sec": 3.37
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "duration_sec": 957.89,
+      "fps": 59.94005994005994,
+      "frame_count": 57416,
+      "file_sha256": "33fcca0f5a93abe956c06f40d9e4e2d28771c99f1bde36a4ba2999ae74e02227",
+      "n_segments_preregistered": 192,
+      "n_segments_derived": 192,
+      "grid_matches_preregistered": true,
+      "measurement_path": "cv2 CAP_PROP_FRAME_COUNT / CAP_PROP_FPS (m1과 동일)",
+      "tool": "opencv-python 4.13.0",
+      "grid_upper_bound_sec": 960,
+      "looseness_closed_sec": 2.11
+    }
+  ],
+  "not_claimed": "취득 시점 provenance를 복원한 것이 아니다 — 현재 파일의 바이트와 길이를 관측한 기록이다. legacy_exempt는 유지된다"
+}

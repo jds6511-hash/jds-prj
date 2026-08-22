@@ -159,3 +159,41 @@ def test_projection_does_not_invent_missing_values():
                 "softyeon_ceramics"):
         assert "source_url" not in recs[vid]
         assert "production_sha256" not in recs[vid]
+
+
+# --------------------------------------- duration 공백은 unknown으로 드러낸다
+
+def test_missing_duration_is_explicit_unknown_not_absent():
+    """조용히 비우면 소비자가 행을 빼먹는다 — 상태를 값으로 드러낸다."""
+    recs = {r["source_id"]: r for r in R.project_from_selection(
+        duration_artifact=None)}
+    for vid in ("baekmansonghee_jirisan", "jissi_farm"):
+        assert recs[vid]["duration_status"] == "unknown"
+        assert "duration_sec" not in recs[vid]
+    assert recs["JN1ZSWorQb8"]["duration_status"] == "recorded"
+
+
+def test_duration_artifact_is_referenced_not_copied_blindly():
+    recs = {r["source_id"]: r for r in R.project_from_selection()}
+    row = recs["pland_costco_hosting"]
+    assert row["duration_status"] == "measured"
+    assert row["duration_sec"] == 1971.63
+    assert row["duration_source"].endswith("P2_FREE4_duration_2026-08-22.json")
+
+
+def test_duration_artifact_with_a_hash_mismatch_is_refused(tmp_path):
+    """artifact가 다른 바이트를 재고 있으면 그 길이를 쓰지 않는다."""
+    import json as J
+    art = J.loads(R.DURATION_ARTIFACT.read_text(encoding="utf-8"))
+    art["rows"][0]["n_segments_derived"] = 1
+    p = tmp_path / "bad.json"
+    p.write_text(J.dumps(art, ensure_ascii=False), encoding="utf-8")
+    with pytest.raises(R.RegistryError, match="n_segments"):
+        R.project_from_selection(duration_artifact=p)
+
+
+def test_require_duration_declares_unsupported_instead_of_dropping():
+    recs = R.project_from_selection(duration_artifact=None)
+    with pytest.raises(R.RegistryError, match="unknown"):
+        R.require_duration(recs)
+    assert R.require_duration(R.project_from_selection())["ok"] is True
