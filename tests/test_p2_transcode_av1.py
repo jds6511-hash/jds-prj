@@ -60,7 +60,10 @@ def _fake_av1(monkeypatch, tmp_path, segs_after, readable=True):
                         lambda p: (500.0, 30.0, segs_after, readable))
 
     def fake_run(cmd, **kw):
-        Path(cmd[-1]).write_bytes(b"transcoded")
+        # timing_flags()의 능력 탐지도 이 fake를 타고 오는데 그 명령은 `-f null -`로
+        # 끝난다 — 그때 파일을 만들면 **저장소 루트에 `-`가 생긴다**(실제로 생겼다).
+        if str(cmd[-1]).endswith(".mp4"):
+            Path(cmd[-1]).write_bytes(b"transcoded")
 
         class R:
             returncode = 0
