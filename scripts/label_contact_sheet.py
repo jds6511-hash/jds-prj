@@ -30,8 +30,23 @@ sys.path.insert(0, str(ROOT / "src"))
 import common                                              # noqa: E402
 
 OUT = ROOT / "label_kit" / "contact_sheets"
+P2_SAMPLE = ROOT / "docs" / "P2_선정표본_2026-08-20.json"
 COLS, THUMB_W, PAD, LABEL_H = 6, 320, 8, 22
 PER_SHEET = 60          # 시트당 세그먼트 수 — 한 화면에 들어오는 상한
+
+
+class SheetError(RuntimeError):
+    pass
+
+
+def p2_expected_segments(path=P2_SAMPLE) -> dict:
+    """P2 35편의 **사전등록** 구간 수. 목록을 하드코딩하지 않는다."""
+    sel = json.loads(Path(path).read_text(encoding="utf-8"))["selected"]
+    return {r["source_id"]: r["n_segments"] for r in sel}
+
+
+def p2_targets(path=P2_SAMPLE) -> list:
+    return sorted(p2_expected_segments(path))
 
 
 def mmss(sec: float) -> str:
@@ -39,13 +54,23 @@ def mmss(sec: float) -> str:
     return f"{s // 60}:{s % 60:02d}"
 
 
-def build(video_id: str, cfg) -> list[Path]:
+def build(video_id: str, cfg, out=None, expect_n: int = None) -> list[Path]:
+    out = Path(out) if out else OUT
     wdir = Path(common.work_dir(cfg, video_id))
     # **캡션·자막을 메모리에 들이지 않는다.** 같은 파일에 들어 있으므로
     # allowlist 로더를 거친다 (기확보 영상에는 캡션이 이미 존재한다)
     doc = label_guard.load_segments_for_labeling(wdir / "segments.json")
     segs = doc["segments"]
-    OUT.mkdir(parents=True, exist_ok=True)
+    if expect_n is not None and len(segs) != expect_n:
+        # 격자가 사전등록과 다르면 시트의 #idx가 GT 파생 규칙과 어긋난다
+        raise SheetError(f"{video_id}: n_segments {len(segs)} != 사전등록 "
+                         f"{expect_n} — 시트를 만들지 않는다")
+    missing = [s["idx"] for s in segs if not (wdir / s["rep_frame"]).is_file()]
+    if missing:
+        raise SheetError(f"{video_id}: rep_frame이 없는 세그먼트 "
+                         f"{len(missing)}건 (예: {missing[:5]}) — 조용히 "
+                         f"건너뛰지 않는다")
+    out.mkdir(parents=True, exist_ok=True)
     made = []
     for page, i0 in enumerate(range(0, len(segs), PER_SHEET), 1):
         chunk = segs[i0:i0 + PER_SHEET]
@@ -64,7 +89,7 @@ def build(video_id: str, cfg) -> list[Path]:
             # 시각과 세그먼트 번호만 적는다 — 캡션·자막은 넣지 않는다(위 docstring)
             draw.text((x + 2, y + th + 4),
                       f"{mmss(s['start'])}-{mmss(s['end'])}  #{s['idx']}", fill="black")
-        p = OUT / f"{video_id}_p{page:02d}.jpg"
+        p = out / f"{video_id}_p{page:02d}.jpg"
         sheet.save(p, quality=88)
         made.append(p)
         print(f"  {p.name}  세그먼트 {chunk[0]['idx']}~{chunk[-1]['idx']}", flush=True)
@@ -76,17 +101,24 @@ def main():
     ap.add_argument("--video")
     ap.add_argument("--all", action="store_true",
                     help="신규 test 후보 3편 전부")
+    ap.add_argument("--p2-all", action="store_true",
+                    help="P2 선정표본 35편 전부 (사전등록 구간 수와 대조한다)")
+    ap.add_argument("--out", help="시트 출력 디렉터리 (기본 label_kit/contact_sheets)")
     ap.add_argument("--config", default="config.yaml")
     a = ap.parse_args()
     cfg = common.load_config(str(ROOT / a.config))
-    vids = (["jissi_farm", "softyeon_ceramics", "baekmansonghee_jirisan"]
+    expected = p2_expected_segments() if a.p2_all else {}
+    vids = (p2_targets() if a.p2_all
+            else ["jissi_farm", "softyeon_ceramics", "baekmansonghee_jirisan"]
             if a.all else [a.video])
     if not vids or vids == [None]:
-        ap.error("--video 또는 --all 이 필요하다")
+        ap.error("--video · --all · --p2-all 중 하나가 필요하다")
+    out = Path(a.out) if a.out else OUT
+    total = 0
     for v in vids:
         print(f"[{v}]", flush=True)
-        build(v, cfg)
-    print(f"\n-> {OUT}")
+        total += len(build(v, cfg, out=out, expect_n=expected.get(v)))
+    print(f"\n-> {out}  시트 {total}장")
 
 
 if __name__ == "__main__":
