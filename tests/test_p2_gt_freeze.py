@@ -82,10 +82,28 @@ def test_declares_what_is_not_frozen(tmp_path):
     assert "caption" in r["not_frozen_here"]
 
 
+def _recorded():
+    p = F.OUT if hasattr(F, "OUT") else None
+    return json.loads(p.read_text(encoding="utf-8")) if p and p.is_file() else None
+
+
 def test_real_inputs_freeze_and_match_the_expected_scale():
+    """작성 전에는 다시 찍어 대조하고, 작성이 시작된 뒤에는 기록된 동결본을 본다.
+
+    `freeze()`가 채워진 CSV를 거부하는 것은 의도된 fail-closed다(동결은 작성 전
+    상태의 스냅샷이다). 라벨링이 시작된 뒤 이 테스트를 통과시키기 위해 그 규칙을
+    느슨하게 만들지 않는다 — 검증 대상을 산출물로 옮긴다.
+    """
     if not F.CSV_PATH.is_file() or not F.SHEETS.is_dir():
         pytest.skip("실제 입력이 없다")
-    r = F.freeze()
+    try:
+        r = F.freeze()
+    except F.FreezeError as e:
+        if "이미 채워져" not in str(e):
+            raise
+        r = _recorded()
+        if r is None:
+            pytest.skip("동결 기록이 없다")
     assert r["inputs"]["contact_sheets"]["n_sheets"] == 172
     assert r["inputs"]["contact_sheets"]["n_videos"] == 35
     assert json.loads(F.QUOTA.read_text(encoding="utf-8"))["total_queries"] == 315

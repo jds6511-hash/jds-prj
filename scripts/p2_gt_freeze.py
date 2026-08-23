@@ -28,6 +28,7 @@ CSV_PATH = ROOT / "label_kit" / "p2" / "p2_label_intake.csv"
 SHEETS = ROOT / "label_kit" / "p2" / "contact_sheets"
 QUOTA = ROOT / "docs" / "P2_질의쿼터_2026-08-20.json"
 SELECTION = ROOT / "docs" / "P2_선정표본_2026-08-20.json"
+OUT = ROOT / "docs" / "probes" / "_scratch" / "p2_gt_freeze.json"
 HUMAN_COLUMNS = ("text", "gt_start", "gt_end")
 # 시트를 만든 경로. 3B arm의 m2 프레임이 공통 소스이고 4B는 그것을 미러링했다 —
 # 즉 두 arm이 같은 프레임을 봤고, 시트는 arm 선택과 무관하다.
@@ -122,7 +123,7 @@ def freeze(csv_path=CSV_PATH, sheets_dir=SHEETS, quota=QUOTA,
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--out", default="docs/probes/_scratch/p2_gt_freeze.json")
+    ap.add_argument("--out", default=str(OUT))
     a = ap.parse_args()
     r = freeze()
     p = Path(a.out)
