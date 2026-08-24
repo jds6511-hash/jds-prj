@@ -1,0 +1,63 @@
+{
+  "probe": "p3_opcost_verdict",
+  "protocol": "p3_opcost_v1",
+  "purpose": "동결된 4분기 해석 규칙(p3_opcost_interpretation_rules.json)을 2차 FULL 결과에 적용한 결과를 기록한다. 규칙 파일은 수정하지 않는다.",
+  "verdict_note": "규칙은 결과 전에 고정됐고, 여기서 한 일은 조건 대조뿐이다.",
+  "inputs": {
+    "authoritative_timing": "docs/probes/_scratch/p3_opcost_full_prelim_no_reserved.json",
+    "vram_and_replication": "docs/probes/_scratch/p3_opcost_full.json",
+    "summaries": [
+      "docs/probes/_scratch/p3_opcost_full_prelim_summary.json",
+      "docs/probes/_scratch/p3_opcost_full_summary.json"
+    ],
+    "hardware": "실제 6GB 배포 노트북 (RTX 3060 Laptop, vram_total 6.0GB, 시작 free 3B 5.01 / 4B 4.96GB)",
+    "precision": "양 arm 실효 4bit (quantization_mismatch false)"
+  },
+
+  "branch_applied": {
+    "condition": "4B가 6GB에서 안정적으로 fit + throughput이 3B와 비슷하거나 빠름",
+    "rule_index": 1,
+    "evidence": {
+      "fit": "reserved peak 3.068GB / 6.0GB. 생성 중 최소 free 1.906GB. OOM 0, 실패 0, 로드 3회×2블록 전부 성공",
+      "throughput": "frame당 wall-clock 중위수 4B 5.895s < 3B 8.344s (2차), 4B 5.974s < 3B 8.061s (1차). 비 0.7065 / 0.7411 — 두 실행 모두 4B가 짧다",
+      "replication": "출력 길이·토큰이 두 실행에서 완전 동일(3B 133.6자·92.2토큰, 4B 82.9자·59.7토큰) — 생성은 결정적이다. timing만 3B +0.283s(+3.5%), 4B −0.079s(−1.3%) 움직였고 방향은 불변"
+    }
+  },
+
+  "tradeoff_recorded": {
+    "vram_peak_reserved_delta_gb": 0.431,
+    "generation_free_vram_gb": {"3b": [2.338, 2.42], "4b": [1.906, 1.906]},
+    "model_storage_delta_gb": 1.28,
+    "end_to_end_output_tokens_per_sec": {"3b": 11.05, "4b": 10.127, "ratio": 0.9165},
+    "reading": "추가 operational penalty가 관측되지 않았다 — trade-off는 VRAM reserved +0.431GB · 생성 중 headroom 약 0.45GB 감소 · 저장 +1.28GB이고, throughput 페널티는 없다(오히려 wall-clock이 짧다)"
+  },
+
+  "consequence_for_decision_0": {
+    "per_frozen_rule": "최소 가치 효과를 작게 잡을 근거가 된다 → 필요한 precision이 높아지고 P3-A가 대형 annotation 문제라는 사실을 정면으로 받아들여야 한다",
+    "uncomfortable_implication": "운영 페널티가 작다는 것은 라벨링 부담을 줄여주지 않는다. 오히려 작은 gain도 deployment-relevant해지므로 half-width를 좁게 잡아야 하고, 필요한 표본이 커진다. 방향 불변식대로 라벨 부담을 보고 최소 가치 효과를 키우지 않는다"
+  },
+
+  "not_resolved_by_this_measurement": [
+    "3B vs 4B retrieval 우열 — dev(−0.0903)와 AI Hub(+0.0310)의 부호 역전은 그대로다",
+    "짧은 캡션이 검색에 유리한지 불리한지",
+    "캡션 품질·MRR·순위",
+    "전력 소비·실제 금전 비용",
+    "수천 구간 연속 실행의 장기 안정성",
+    "model load 구간의 free VRAM 수치 (로드 성공 사실만 관측)"
+  ],
+
+  "wording_compliance": {
+    "used": "동일 prompt/config에서 4B가 더 짧은 출력을 생성했고, 그 결과 end-to-end caption wall-clock이 더 짧게 관측됐다",
+    "avoided": [
+      "'4B가 계산적으로 더 효율적이다'",
+      "'4B의 운영비가 낮다' (전력 미측정)",
+      "'4B의 frame당 우위는 대부분 출력이 35% 짧기 때문이다' (generation kernel 속도 미분리)",
+      "'토큰당 처리속도' (측정한 것은 전체 wall-clock 대비 출력 토큰 rate)",
+      "'order effect 없음' (블록 2개)"
+    ],
+    "grade": "deployment operational feasibility의 descriptive measurement. 40장은 통계적 모집단 추정이 아니다"
+  },
+
+  "profile_status_after_verdict": "complete — 운영 프로필을 닫는다. 온도·전력·클럭 등 추가 지표를 받지 않는다",
+  "next_step": "decision 0 (최소 deployment-relevant gain) 을 사용자가 정한다. 그 뒤 half-width → k×m → 라벨 경로 → P3-A 실행 GO/HOLD"
+}
