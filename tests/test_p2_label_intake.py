@@ -109,7 +109,7 @@ def test_make_emits_blank_human_columns(tmp_path):
     p = tmp_path / "intake.csv"
     I.make(p)
     rows = list(csv.DictReader(p.read_text(encoding="utf-8-sig").splitlines()))
-    assert len(rows) == 315
+    assert len(rows) == I.active_total()
     assert list(rows[0].keys()) == list(I.COLUMNS)
     assert all(not r["text"] and not r["gt_start"] and not r["gt_end"]
                for r in rows)
@@ -120,7 +120,7 @@ def test_make_emits_blank_human_columns(tmp_path):
 def _filled(tmp_path, mutate=None):
     """배정 전량을 최소 유효값으로 채운 CSV. `mutate(rows)`로 한 행만 망친다."""
     rows = [{**r, "text": f"{r['query_id']} 질의", "gt_start": "10",
-             "gt_end": "20", "note": ""} for r in I.load_allocation()]
+             "gt_end": "20", "note": ""} for r in I.active_allocation()]
     if mutate:
         mutate(rows)
     p = tmp_path / "filled.csv"
@@ -133,7 +133,7 @@ def _filled(tmp_path, mutate=None):
 
 def test_build_derives_gt_seg_idx_with_the_shared_rule(tmp_path):
     out = I.build(_filled(tmp_path))
-    assert len(out) == 315
+    assert len(out) == I.active_total()
     seg_len = common.load_config(ROOT / "config.yaml")["seg_len_sec"]
     n = I.n_segments_of()
     for r in out:
@@ -235,7 +235,7 @@ def test_build_refuses_an_unknown_query_id(tmp_path):
 @pytest.mark.parametrize("mutate", [lambda rows: rows.pop(),
                                     lambda rows: rows.append(dict(rows[0]))])
 def test_build_refuses_partial_or_oversized_submission(tmp_path, mutate):
-    with pytest.raises(I.IntakeError, match="315"):
+    with pytest.raises(I.IntakeError, match=str(I.active_total())):
         I.build(_filled(tmp_path, mutate))
 
 
@@ -259,6 +259,6 @@ def test_write_staging_does_not_touch_the_official_file(tmp_path):
     p = tmp_path / "staging.jsonl"
     I.write_jsonl(out, p)
     lines = p.read_text(encoding="utf-8").strip().splitlines()
-    assert len(lines) == 315
+    assert len(lines) == I.active_total()
     assert json.loads(lines[0])["split"] == "p2"
     assert official.read_bytes() == before

@@ -3,7 +3,8 @@
 `p2_evaluate.py`가 두 arm을 비교한다. 이 모듈은 비교하지 않는다.
 
 ```
-입력   split="p2" 최종 동결 GT JSONL (315행) + 그 파일의 sha256
+입력   split="p2" 최종 동결 GT JSONL + 그 파일의 sha256
+       행 수는 활성 설계(p2_active_design)에서 읽는다 — 상수로 박지 않는다
 채널   alpha=0.0 캡션 단독. 자막 임베딩을 읽지 않는다
 후보   질의의 video_id에 속한 세그먼트 전체
        근거: 보충2 §2-1 "후보 풀 크기(영상별 세그먼트 수)" ·
@@ -33,12 +34,12 @@ from pathlib import Path
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
 sys.path.insert(0, str(ROOT / "src"))
 import common                                                     # noqa: E402
 
 ALPHA = 0.0
 SPLIT = "p2"
-N_QUERIES_REQUIRED = 315
 SELECTION = ROOT / "docs" / "P2_선정표본_2026-08-20.json"
 ARM_CAPTION_MODEL = {"3b": "Qwen/Qwen2.5-VL-3B-Instruct",
                      "4b": "Qwen/Qwen3-VL-4B-Instruct"}
@@ -48,6 +49,16 @@ REQUIRED_GT_FIELDS = ("query_id", "video_id", "text", "gt_start", "gt_end",
 
 class RetrieveError(Exception):
     pass
+
+
+def n_queries_required() -> int:
+    """활성 설계에서 읽는다 — 규모를 이 파일에 상수로 박지 않는다.
+
+    2026-08-24 amendment로 175가 됐다. 여러 모듈에 315를 박아 두면 amendment가
+    한 군데만 반영되고 나머지가 조용히 거짓말을 한다.
+    """
+    import p2_active_design
+    return p2_active_design.total_queries()
 
 
 @dataclass
@@ -62,8 +73,10 @@ class CaptionIndex:
 
 # ------------------------------------------------------------- 동결 GT 게이트
 
-def load_frozen_gt(path, sha256, require_count: int = N_QUERIES_REQUIRED) -> list:
+def load_frozen_gt(path, sha256, require_count: int = None) -> list:
     """최종 동결 GT만 받는다. 부분 GT·해시 없는 파일은 거부한다."""
+    require_count = n_queries_required() if require_count is None \
+        else require_count
     path = Path(path)
     if not path.is_file():
         raise RetrieveError(f"{path} 없음")
@@ -257,7 +270,8 @@ def main():
         description="P2 캡션 단독 검색 — arm 하나만 돌린다. 비교는 p2_evaluate가 한다")
     ap.add_argument("--arm", required=True, choices=sorted(ARM_CAPTION_MODEL))
     ap.add_argument("--config", required=True, help="config_p2_<arm>.yaml")
-    ap.add_argument("--gt", required=True, help="최종 동결 GT JSONL (315행)")
+    ap.add_argument("--gt", required=True,
+                    help="최종 동결 GT JSONL (행 수는 활성 설계에서 읽는다)")
     ap.add_argument("--gt-sha256", required=True)
     ap.add_argument("--selection", default=str(SELECTION))
     ap.add_argument("--out", required=True)

@@ -134,9 +134,10 @@ def test_empty_gold_is_an_error():
 # --------------------------------------------------------------- 동결 GT 게이트
 
 def test_frozen_gt_requires_the_full_count(tmp_path):
+    """행 수는 활성 설계에서 온다 — 이 파일에 규모를 박지 않는다."""
     rows = [_q(f"p2_v0_q{i:02d}", "v0", f"질의 {i}", [0]) for i in range(3)]
     p, h = _gt_file(tmp_path, rows)
-    with pytest.raises(R.RetrieveError, match="315"):
+    with pytest.raises(R.RetrieveError, match=str(R.n_queries_required())):
         R.load_frozen_gt(p, h)
 
 
@@ -233,7 +234,13 @@ def test_a_video_without_a_frozen_entry_is_refused(tmp_path):
 
 def test_alpha_is_frozen_at_caption_only():
     assert R.ALPHA == 0.0
-    assert R.SPLIT == "p2" and R.N_QUERIES_REQUIRED == 315
+    assert R.SPLIT == "p2"
+
+
+def test_the_required_count_comes_from_the_active_design():
+    import p2_active_design
+    assert R.n_queries_required() == p2_active_design.total_queries() == 175
+    assert "315" not in CODE
 
 
 def test_it_runs_without_any_subtitle_artifact(tmp_path):

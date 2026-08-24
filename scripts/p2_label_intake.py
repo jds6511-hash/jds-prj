@@ -19,8 +19,12 @@
 **유형은 배정에서 온다.** 사람이 CSV의 `query_type`을 바꾸면 build가 거부한다. 유형을
 질의 내용에 맞춰 옮기면 사전등록된 쿼터가 사후 조정되기 때문이다.
 
+**작업 대상 행 수는 여기에 박지 않는다.** 2026-08-24 amendment로 영상당 9 → 5
+(총 175)가 됐고, 단일 출처는 `p2_active_design`이다. `load_allocation()`은 동결
+배정표 315행의 불변성 검사로 남고, `make`·`build`는 `active_allocation()`을 쓴다.
+
 재현:
-  python scripts/p2_label_intake.py make      # 315행 빈 CSV
+  python scripts/p2_label_intake.py make      # 활성 설계 행 수의 빈 CSV
   python scripts/p2_label_intake.py build     # 채운 CSV → 검증 → 스테이징 JSONL
 """
 import argparse
@@ -92,6 +96,24 @@ def load_allocation() -> list:
     return rows
 
 
+def active_allocation() -> list:
+    """활성 설계가 유지하는 행만. **배정을 새로 하지 않는다 — mask로 거르기만 한다.**
+
+    2026-08-24 amendment로 영상당 9 → 5(총 175)가 됐다. `load_allocation()`은
+    동결 배정표 315행의 불변성 검사로 남겨 두고, 실제 작업 대상은 여기서 만든다.
+    규모를 이 파일에 상수로 박지 않는다 — `p2_active_design`이 단일 출처다.
+    """
+    import p2_active_design as ACTIVE
+    alloc = load_allocation()
+    kept = set(ACTIVE.load(allocation=alloc)["kept_query_ids"])
+    return [r for r in alloc if r["query_id"] in kept]
+
+
+def active_total() -> int:
+    import p2_active_design as ACTIVE
+    return ACTIVE.load(allocation=load_allocation())["total_queries"]
+
+
 def _sample() -> dict:
     return {r["source_id"]: r
             for r in json.loads(SAMPLE.read_text(encoding="utf-8"))["selected"]}
@@ -153,7 +175,7 @@ def make(path=CSV_PATH) -> Path:
     with open(path, "w", encoding="utf-8", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(COLUMNS))
         w.writeheader()
-        for r in load_allocation():
+        for r in active_allocation():
             w.writerow({**r, "text": "", "gt_start": "", "gt_end": "",
                         "note": ""})
     return path
@@ -168,14 +190,15 @@ def _num(val, col, qid) -> float:
 
 def build(path=CSV_PATH) -> list:
     """채운 CSV를 검증하고 gt_seg_idx를 파생한다. **하나라도 어긋나면 멈춘다.**"""
-    alloc = {r["query_id"]: r for r in load_allocation()}
+    alloc = {r["query_id"]: r for r in active_allocation()}
     seg_len = common.load_config(ROOT / "config.yaml")["seg_len_sec"]
     nseg, dur = n_segments_of(), time_bound_of(seg_len)
     raw = list(csv.DictReader(
         Path(path).read_text(encoding="utf-8-sig").splitlines()))
-    if len(raw) != TOTAL:
-        raise IntakeError(f"{len(raw)}행이다 — 배정은 {TOTAL}행이고 부분 제출을 "
-                          f"받지 않는다")
+    want = active_total()
+    if len(raw) != want:
+        raise IntakeError(f"{len(raw)}행이다 — 활성 설계는 {want}행이고 "
+                          f"부분 제출을 받지 않는다")
 
     out, seen = [], set()
     for r in raw:

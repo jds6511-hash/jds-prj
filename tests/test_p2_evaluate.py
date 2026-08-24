@@ -251,11 +251,20 @@ def test_pool_size_is_recorded_as_continuous_not_binned():
 
 def test_run_is_gated_until_the_gt_file_is_frozen():
     """실행 진입점은 GT 동결 해시를 요구한다 — 부분 GT로 돌리지 않는다."""
+    n = E.n_queries_required()
     with pytest.raises(E.EvalError, match="동결"):
-        E.require_frozen_gt({"n": 200, "sha256": None})
-    assert E.require_frozen_gt({"n": 315, "sha256": "a" * 64})["ok"] is True
+        E.require_frozen_gt({"n": n, "sha256": None})
+    assert E.require_frozen_gt({"n": n, "sha256": "a" * 64})["ok"] is True
 
 
 def test_partial_gt_is_refused_by_count():
-    with pytest.raises(E.EvalError, match="315"):
-        E.require_frozen_gt({"n": 200, "sha256": "a" * 64})
+    n = E.n_queries_required()
+    with pytest.raises(E.EvalError, match=str(n)):
+        E.require_frozen_gt({"n": n - 1, "sha256": "a" * 64})
+
+
+def test_the_required_count_comes_from_the_active_design():
+    """규모를 이 모듈에 박지 않는다 — amendment가 한 군데만 반영되는 것을 막는다."""
+    import p2_active_design
+    assert E.n_queries_required() == p2_active_design.total_queries() == 175
+    assert "315" not in CODE

@@ -21,8 +21,9 @@ PRIMARY   Δ_deploy = MRR_caption(4B q4 / P0) − MRR_caption(3B 4bit / P0)
 **제외는 사전 정의 목록으로만** 하고 개수와 사유를 산출물에 적는다. 조용히 분모에서
 빼지 않고, 제외 후에는 같은 common support에서 다시 계산한다.
 
-**부분 GT로 돌리지 않는다.** `require_frozen_gt`가 315건 완성과 동결 해시를 요구한다 —
-80건만 보고 남은 235건의 문장·경계를 고치는 경로를 막는다.
+**부분 GT로 돌리지 않는다.** `require_frozen_gt`가 활성 설계 전량과 동결 해시를
+요구한다(2026-08-24 amendment로 175건) — 일부만 보고 남은 질의의 문장·경계를
+고치는 경로를 막는다.
 
 실행은 GT 완성 후다. 지금은 구현과 테스트까지만이다.
 """
@@ -35,6 +36,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
 
 PRIMARY = ("Δ_deploy = MRR_caption(qwen3vl_4b_q4/P0) − "
            "MRR_caption(qwen25_3b_4bit/P0), 캡션 단독 α=0.0")
@@ -44,7 +46,6 @@ CLUSTER_KEY = "video_id"
 CI_METHOD = "paired_video_cluster_bootstrap_percentile"
 HALF_WIDTH_TARGET = 0.04
 MIN_CLUSTERS_FOR_VERDICT = 16
-N_QUERIES_REQUIRED = 315
 B, SEED = 2000, 20260820
 EXCLUSION_REASONS = ("gold_count_exceeds_pool",
                      "gold_span_incompatible_with_rule",
@@ -57,14 +58,25 @@ class EvalError(RuntimeError):
     pass
 
 
-def require_frozen_gt(gt_meta: dict) -> dict:
+def n_queries_required() -> int:
+    """활성 설계에서 읽는다 — 규모를 이 파일에 상수로 박지 않는다.
+
+    2026-08-24 amendment로 175가 됐다. 여러 모듈에 315를 박아 두면 amendment가
+    한 군데만 반영되고 나머지가 조용히 거짓말을 한다.
+    """
+    import p2_active_design
+    return p2_active_design.total_queries()
+
+
+def require_frozen_gt(gt_meta: dict, require_count: int = None) -> dict:
     """GT가 완성·동결된 뒤에만 통과한다. **부분 GT 평가를 막는 문이다.**"""
+    want = n_queries_required() if require_count is None else require_count
     n, sha = gt_meta.get("n"), gt_meta.get("sha256")
     if not sha:
         raise EvalError("GT 파일 동결 해시가 없다 — 동결 전에는 평가하지 않는다")
-    if n != N_QUERIES_REQUIRED:
+    if n != want:
         raise EvalError(
-            f"GT가 {n}건이다 — {N_QUERIES_REQUIRED}건 전량이 아니면 돌리지 않는다. "
+            f"GT가 {n}건이다 — {want}건 전량이 아니면 돌리지 않는다. "
             f"부분 GT 결과를 보면 남은 질의 작성에 영향을 준다")
     return {"ok": True, "n": n, "sha256": sha}
 

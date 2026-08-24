@@ -280,3 +280,13 @@ def test_icc_scenarios_are_labelled_as_assumptions_not_estimates(tmp_path):
     rep = S.report(source=p, replicates=5, boot=50)
     assert "추정이 아니다" in rep["icc_scenarios_note"]
     assert len(rep["icc_scenarios"]) == len(S.ICC_SCENARIOS)
+
+
+def test_the_icc_upper_bound_claim_is_scoped_to_the_variance_model(tmp_path):
+    """'상한'은 이 분산 모형 안에서의 상대 손실 상한이다 — 보편적 상한이 아니다."""
+    p = _fake_source(tmp_path, 9, 60, spread_between=0.1, spread_within=0.2,
+                     seed=12)
+    note = S.report(source=p, replicates=5, boot=50)["icc_scenarios_note"]
+    assert "모형 안에서" in note
+    assert "보편적 상한이 아니다" in note
+    assert "상대 손실" in note

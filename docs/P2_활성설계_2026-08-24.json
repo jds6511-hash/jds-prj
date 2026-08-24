@@ -1,0 +1,20 @@
+{
+  "design": "p2_175",
+  "approved_at": "2026-08-24",
+  "amendment": "docs/P2_GT_sample_size_amendment_2026-08-24.md",
+  "total_queries": 175,
+  "queries_per_video": 5,
+  "n_videos": 35,
+  "quota": {
+    "복합형": 62,
+    "자막형": 44,
+    "장면형": 69
+  },
+  "frozen_allocation_total": 315,
+  "seed": 20260820,
+  "keep_mask": "docs/P2_keepmask_175_2026-08-24.json",
+  "keep_mask_sha256": "f689a023215636022ab16e74a5eb55adf921962579af7293d88c4107376ff19b",
+  "fixed_n": true,
+  "no_outcome_based_top_up": true,
+  "note": "승인된 175가 이 P2의 fixed sample size다. 결과를 본 뒤 315로 늘리려면 별도 사전등록과 별개의 분석 사건이 필요하다"
+}

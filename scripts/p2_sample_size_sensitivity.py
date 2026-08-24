@@ -141,8 +141,14 @@ def icc_scenarios(total_variance: float, k: int, grid=M_GRID,
     AI Hub에서 관측된 ICC는 0이었다. 그러나 dev 3편의 영상별 mean_delta는
     −0.0418 / −0.0276 / −0.2112로 흩어져 있어 장편에서는 between 분산이 0이
     아닐 가능성이 있다(cluster 3 · 자유도 2라 **추정이 아니다**).
-    ICC가 커지면 m을 줄이는 손해가 작아지므로, ICC=0 행은 **손해의 상한**으로
-    읽는다. 두 표본의 분산 성분을 섞어 하나의 점추정을 만들지는 않는다.
+
+    ICC가 커지면 m을 줄이는 손해가 작아진다. 그래서 ICC=0 행은
+    **이 일원 랜덤효과 분산 모형 안에서 m=4·m=5의 m=9 대비 상대 손실의 상한**이다.
+    P2의 실제 자료생성 구조 전체에 대한 보편적 상한이 아니다 — 이 모형이 담지
+    못하는 구조(질의 유형별 이질 분산, 영상×유형 상호작용, 후보 풀 크기 의존성
+    등)가 있으면 그 상한은 성립하지 않는다.
+
+    두 표본의 분산 성분을 섞어 하나의 점추정을 만들지는 않는다.
     """
     out = []
     for icc in scenarios:
@@ -273,8 +279,10 @@ def report(source=AIHUB, k: int = K_TARGET, grid=M_GRID, seed: int = SEED,
             "icc_scenarios": icc_scenarios(
                 dec["sigma2_between"] + dec["sigma2_within"], k, grid=grid),
             "icc_scenarios_note": ("관측 ICC는 0이었다. ICC가 크면 m 축소의 손해가 "
-                                   "작아지므로 ICC=0 행이 손해의 상한이다. "
-                                   "가정값 훑기이고 추정이 아니다"),
+                                   "작아지므로 ICC=0 행은 **이 일원 랜덤효과 분산 "
+                                   "모형 안에서** m=4·m=5의 m=9 대비 상대 손실의 "
+                                   "상한이다. P2 자료생성 구조 전체에 대한 보편적 "
+                                   "상한이 아니다. 가정값 훑기이고 추정이 아니다"),
             "dev_usability": dev_usability(),
             "half_width_target": HALF_WIDTH_TARGET,
             "half_width_target_note": ("사전등록 규칙이다. 이 분석으로 완화하지 "
