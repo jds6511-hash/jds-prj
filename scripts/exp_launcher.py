@@ -117,6 +117,10 @@ def run_dir(plan: dict, run_id: str, root) -> Path:
     return Path(root) / plan["run_root"] / run_id
 
 
+# `require_stage_approval`의 인자 이름이 `run_dir`이라 함수를 가린다. 별칭을 둔다.
+_run_dir_of = run_dir
+
+
 # CANARY와 FULL은 **같은 run_id를 공유**한다. 파생 파일 이름이 stage에 귀속되지
 # 않으면, FULL이 중간에 죽었을 때 CANARY 산출물(1편·2청크)이 full 결과 행세를 한다.
 STAGES = ("CANARY", "FULL")
@@ -250,8 +254,15 @@ def precheck(plan: dict, run_id: str, root) -> dict:
     return st
 
 
-def require_stage_approval(plan, run_id, state, stage, approve_full, approve_test_open):
-    """CANARY는 자동, FULL은 명시 승인. test 접촉은 **별도** 승인."""
+def require_stage_approval(plan, run_id, state, stage, approve_full,
+                           approve_test_open, root=None, run_dir=None,
+                           codec_of=None):
+    """CANARY는 자동, FULL은 명시 승인. test 접촉은 **별도** 승인.
+
+    FULL은 마지막으로 **입력 커버리지**를 본다 — 계획이 `canary_coverage`를 선언한
+    경우에만. "CANARY N편 PASS"로는 입력 종류를 보장하지 못한다는 2026-08-21 사고
+    3건에서 나온 게이트다(`scripts/canary_coverage.py`).
+    """
     if stage == "FULL" and approve_full != run_id:
         raise LauncherError(
             f"FULL 승인이 없다 — `--approve-full {run_id}`가 필요하다"
@@ -266,6 +277,20 @@ def require_stage_approval(plan, run_id, state, stage, approve_full, approve_tes
     if stage == "FULL" and not state.get("canary_validated"):
         raise LauncherError(
             "CANARY validator를 통과하지 않았다 — `validate`를 먼저 돌려라")
+    if stage == "FULL":
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import canary_coverage
+        if run_dir is None and root is not None \
+                and plan.get(canary_coverage.COVERAGE_KEY) \
+                and plan.get("run_root"):
+            run_dir = _run_dir_of(plan, run_id, root)
+        cov = canary_coverage.gate_for_full(
+            plan, run_dir=run_dir,
+            root=root if root is not None
+            else Path(__file__).resolve().parents[1],
+            codec_of=codec_of)
+        state["canary_coverage"] = cov
+        return cov
 
 
 def launch(plan, run_id, state, stage, root, dirty_recheck_sec: float = 3.0):
@@ -481,8 +506,12 @@ def main():
 
     if a.stage in ("canary", "full"):
         stage = a.stage.upper()
-        require_stage_approval(plan, a.run_id, st, stage,
-                               a.approve_full, a.approve_test_open)
+        cov = require_stage_approval(plan, a.run_id, st, stage,
+                                     a.approve_full, a.approve_test_open,
+                                     root=root)
+        if cov is not None:
+            st["canary_coverage"] = cov
+            print(json.dumps({"canary_coverage": cov}, ensure_ascii=False))
         r = launch(plan, a.run_id, st, stage, root)
         st["stage"] = stage
         sp.write_text(json.dumps(st, ensure_ascii=False, indent=2), encoding="utf-8")

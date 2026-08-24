@@ -30,6 +30,7 @@ m4_index        arm별 임베딩·색인
 정식 실행은 `exp_launcher.py`가 감싼다 — 이 스크립트를 직접 nohup으로 돌리지 마라.
 """
 import argparse
+import datetime
 import json
 import shutil
 import subprocess
@@ -40,6 +41,8 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import run_status                                                  # noqa: E402
 sys.path.insert(0, str(ROOT / "src"))
 
 PRIMARY = ("Δ_deploy = MRR_caption(qwen3vl_4b_q4/P0) − "
@@ -71,6 +74,33 @@ STAGES = (
 
 # 복제 대상. 캡션은 **포함하지 않는다** — arm마다 새로 만드는 유일한 값이다
 MIRROR_SEG_DROP = ("caption",)
+
+
+def _head_commit() -> str:
+    try:
+        r = subprocess.run(["git", "rev-parse", "HEAD"], cwd=str(ROOT),
+                           capture_output=True, text=True)
+        return r.stdout.strip()[:7]
+    except Exception:
+        return ""
+
+
+def stage_marker(run_dir, stage: str, mode: str, run_id: str, commit: str,
+                 elapsed_sec: float, created_at: str = None):
+    """단계 완료 마커. **이름공간은 `run_status`가 정한다.**
+
+    2026-08-22 사고: 같은 run_id로 CANARY를 돌린 뒤 FULL을 시작했는데 CANARY가 남긴
+    이름 없는 `STAGE_*_DONE`이 "m4까지 끝났다"로 읽혔다. 스키마를 배치가 손으로
+    만들지 않고 판독기와 같은 모듈에서 쓴다.
+
+    출력 해시는 남기지 않는다 — 색인 단계의 산출물은 영상별 파일 다수라 단일 파일
+    해시가 없다. 판독기는 그것을 `unverifiable`로 적는다(통과로 세지 않는다).
+    """
+    return run_status.write_marker(
+        run_dir, stage=stage, mode=mode, run_id=run_id, commit=commit,
+        created_at=created_at or datetime.datetime.now().isoformat(
+            timespec="seconds"),
+        elapsed_sec=elapsed_sec)
 MIRROR_FILES = ("audio.wav", "stt_cache.json")
 
 
@@ -268,8 +298,9 @@ def main():
                     _run_module(st["module"], configs[arm], vid,
                                 st.get("extra"))
         timing[st["name"]] = round(time.time() - ts, 1)
-        (run_dir / f"STAGE_{st['name']}_DONE").write_text(
-            json.dumps({"elapsed_sec": timing[st["name"]]}), encoding="utf-8")
+        stage_marker(run_dir, st["name"], mode=a.stage.upper(),
+                     run_id=run_dir.name, commit=_head_commit(),
+                     elapsed_sec=timing[st["name"]])
 
     rep = {"probe": "p2_index_batch", "stage": a.stage.upper(),
            "primary": PRIMARY, "n_videos": len(vids), "video_ids": vids,

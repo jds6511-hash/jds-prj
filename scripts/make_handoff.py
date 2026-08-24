@@ -91,9 +91,17 @@ def _latest_run(run_root) -> dict:
     return {"run_id": d.name,
             "launcher_state": (json.loads(state.read_text(encoding="utf-8"))
                                if state.is_file() else None),
-            "markers_present": sorted(p.name for p in d.glob("STAGE_*")),
+            "markers_present": marker_names(d),
             "reports_present": sorted(p.name for p in d.glob("*.json")),
             "run_complete": (d / "RUN_COMPLETE.json").is_file()}
+
+
+def marker_names(d) -> list:
+    """단계 마커 파일 이름. 이름공간 마커(`FULL_STAGE_*_DONE.json`)와 옛 이름
+    (`STAGE_*_DONE`)을 **둘 다** 관측한다 — 마커는 관측이고 완료 근거가 아니다."""
+    d = Path(d)
+    return sorted({p.name for p in d.glob("STAGE_*")}
+                  | {p.name for p in d.glob("*_STAGE_*_DONE.json")})
 
 
 def _fact(value, source, note=None) -> dict:

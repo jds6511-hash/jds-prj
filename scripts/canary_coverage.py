@@ -25,8 +25,19 @@ audio       known · unresolved (플랫폼 audio-language proxy 판정)
 **성능·캡션·자막·검색 결과는 입력으로 쓰지 않는다.** 대표 표본을 모델 산출물로 고르면
 CANARY 선정 자체가 오염된다. 정렬 키는 구간 수와 video_id뿐이다.
 
-**이 모듈은 아직 launcher에 연결되지 않았다** — 실행 중인 FULL의 control flow를 바꾸지
-않기 위해 검사 API까지만 만든다(`require_coverage`가 fail-closed 진입점이다).
+**launcher 연결 (2026-08-24).** `gate_for_full`이 FULL 승인 경로의 fail-closed 게이트다.
+적용 범위는 **계획이 `canary_coverage`를 선언한 경우로 한정**한다.
+
+```
+선언 없음   요구하지 않는다. 대신 required=False를 남긴다 — "검사했다"로 읽히지 않게
+선언 있음   sample·CANARY 결과가 없거나 video_ids가 없으면 막는다(조용한 통과 없음)
+CANARY 식별  예측하지 않고 **CANARY가 실제로 돌린 video_ids**를 결과 JSON에서 읽는다
+읽는 키      video_ids 하나뿐. 같은 파일에 캡션·점수가 있어도 보지 않는다
+```
+
+**완료된 P2 계획(`docs/planning/p2_index_plan.json`)에는 선언을 넣지 않는다.** REPORT가
+`plan_hash` 불일치를 거부하므로(exp_launcher L432) 계획 파일을 고치면 이미 끝난
+`p2idx_0821d`의 정식 열람 경로가 막힌다. 소급 적용하지 않는다는 요구와도 같은 방향이다.
 
 재현:
   python scripts/canary_coverage.py --canary OBxKlA5rxjQ,baekmansonghee_jirisan
@@ -166,6 +177,68 @@ def require_coverage(full_ids: list, canary_ids: list, inv: dict,
             f"미포함 조합 {r['missing_combinations']} — 이 상태로 FULL에 들어가면 "
             f"그 종류는 FULL에서 처음 밟는다")
     return r
+
+
+COVERAGE_KEY = "canary_coverage"
+CANARY_ID_KEY = "video_ids"
+
+
+def _canary_ids(path: Path) -> list:
+    """CANARY 결과에서 **video_ids만** 읽는다. 다른 키는 열지 않는다."""
+    p = Path(path)
+    if not p.is_file():
+        raise CoverageError(
+            f"CANARY 결과가 없다: {p} — 무엇을 밟았는지 관측할 수 없다. "
+            f"CANARY를 먼저 돌려라")
+    try:
+        doc = json.loads(p.read_text(encoding="utf-8"))
+    except Exception as e:
+        raise CoverageError(f"CANARY 결과를 읽지 못했다: {p} ({e})")
+    ids = doc.get(CANARY_ID_KEY)
+    if not isinstance(ids, list) or not ids:
+        raise CoverageError(
+            f"CANARY 결과에 {CANARY_ID_KEY}가 없거나 비었다: {p} — 밟은 영상을 "
+            f"추측해 채우지 않는다")
+    return [str(v) for v in ids]
+
+
+def gate_for_full(plan: dict, run_dir, root, codec_of: dict = None) -> dict:
+    """FULL 승인 경로의 게이트. **선언한 계획에만** 적용한다.
+
+    선언이 없으면 요구하지 않되 `required=False`를 남긴다 — 검사하지 않은 것이
+    통과로 읽히면 이 게이트를 만든 이유가 없어진다.
+    """
+    decl = plan.get(COVERAGE_KEY)
+    if not decl:
+        return {"required": False, "coverage_kind": None,
+                "reason": f"계획에 {COVERAGE_KEY} 선언이 없다 — 요구하지 않았다. "
+                          f"통과로 읽지 마라"}
+    if run_dir is None:
+        raise CoverageError(
+            f"{COVERAGE_KEY}를 선언했는데 run_dir이 없다 — CANARY가 무엇을 밟았는지 "
+            f"확인할 수 없다. 조용히 넘기지 않는다")
+    sample = Path(decl["sample"])
+    if not sample.is_absolute():
+        sample = Path(root) / sample
+    if not sample.is_file():
+        raise CoverageError(f"선정표본이 없다: {sample}")
+    result = Path(run_dir) / decl.get("canary_result",
+                                      "p2_index_batch_run_canary.json")
+    canary_ids = _canary_ids(result)
+
+    corpus = load_corpus(sample)
+    full_ids = [r["source_id"] for r in corpus]
+    if codec_of is None:
+        videos = Path(decl.get("videos_dir") or VIDEOS)
+        if not videos.is_absolute():
+            videos = Path(root) / videos
+        codec_of = {v: probe_codec_class(v, videos_dir=videos)
+                    for v in full_ids}
+    inv = inventory(corpus, codec_of)
+    combos = tuple(tuple(c) for c in (decl.get("required_combinations") or ()))
+    r = require_coverage(full_ids, canary_ids, inv, combos)
+    return dict(r, required=True, read_keys=[CANARY_ID_KEY],
+                canary_result=str(result), sample=str(sample))
 
 
 def select_representatives(inv: dict) -> list:

@@ -60,6 +60,13 @@ def _hash_ok(v) -> bool:
     return isinstance(v, str) and bool(SHA256.match(v))
 
 
+def _rel(p) -> str:
+    """저장소 밖(테스트 tmp) 경로면 절대경로 그대로 남긴다."""
+    p = Path(p)
+    return (str(p.relative_to(ROOT)).replace("\\", "/")
+            if p.is_relative_to(ROOT) else str(p))
+
+
 def validate(records: list) -> dict:
     """fail-closed 검증. 하나라도 어긋나면 예외를 던진다."""
     if not records:
@@ -192,7 +199,7 @@ def project_from_selection(path=SELECTION,
     ```
     """
     sel = json.loads(Path(path).read_text(encoding="utf-8"))["selected"]
-    rel = str(Path(path).relative_to(ROOT)).replace("\\", "/")
+    rel = _rel(path)
     by_id = {r["source_id"]: r for r in sel}
     dur = _duration_index(duration_artifact, by_id)
     out = []
@@ -213,6 +220,10 @@ def project_from_selection(path=SELECTION,
                 "취득 시점에 기록되지 않았고 측정 artifact도 주어지지 않았다 — "
                 "n_segments*seg_len으로 추정해 채우지 않는다")
         if r.get("file_sha256"):
+            if not str(r.get("source_url") or "").strip():
+                raise RegistryError(
+                    f"{r['source_id']}: 해시는 있는데 source_url이 없다 — "
+                    f"신규 취득의 출처를 추측해 채우지 않는다")
             rec.update({"acquisition_class": "downloaded",
                         "source_url": r["source_url"],
                         "staging_sha256": r["file_sha256"],
@@ -227,12 +238,97 @@ def project_from_selection(path=SELECTION,
     return out
 
 
+DURATION_STATES = ("recorded", "measured", "unknown")
+
+
+def dry_run(selection=SELECTION, duration_artifact=DURATION_ARTIFACT) -> dict:
+    """SoT 전환 전 일관성 검사. **전환을 스스로 선언하지 않는다.**
+
+    검사가 전부 통과하는 것은 전환의 필요조건이고 충분조건이 아니다. 어떤 provenance
+    축이 필요한지는 다음 실험의 자료 출처(외부 데이터셋 / 신규 수집)에 따라 달라지므로,
+    그것이 정해지기 전에 SoT를 옮기면 곧 다시 열게 된다.
+    """
+    sel = json.loads(Path(selection).read_text(encoding="utf-8"))["selected"]
+    try:
+        recs = project_from_selection(selection, duration_artifact)
+        proj_err = None
+    except RegistryError as e:
+        # 격자 불일치처럼 **측정 자료가 다른 바이트를 잰** 경우는 계약 실패로 덮지 않고
+        # 그대로 올린다 — 그건 이 dry-run이 판단할 일이 아니다
+        if "격자" in str(e):
+            raise
+        recs, proj_err = [], str(e)
+
+    if proj_err is not None:
+        schema_ok, schema_err = False, proj_err
+    else:
+        try:
+            validate(recs)
+            schema_ok, schema_err = True, None
+        except RegistryError as e:
+            schema_ok, schema_err = False, str(e)
+
+    sel_ids = [r["source_id"] for r in sel]
+    rec_ids = [r["source_id"] for r in recs]
+    dup_src = len(rec_ids) - len(set(rec_ids))
+    dup_vid = len(recs) - len({r["video_id"] for r in recs})
+    sha_mismatch = sum(
+        1 for r in recs
+        if r.get("staging_sha256") and r.get("production_sha256")
+        and r["staging_sha256"] != r["production_sha256"]
+        and not str(r.get("production_differs_reason") or "").strip())
+    missing_new = sum(1 for r in recs if not r.get("legacy_exempt")
+                      for f in REQUIRED_NEW if r.get(f) in (None, ""))
+    guessed = sum(1 for r in recs if r.get("legacy_exempt")
+                  for f in LEGACY_MUST_BE_ABSENT if r.get(f))
+    counts = {s: sum(1 for r in recs if r.get("duration_status") == s)
+              for s in DURATION_STATES}
+    # 격자 추정으로 길이를 만든 행이 있는지 — 있어서는 안 된다
+    grid_est = sum(1 for r in recs
+                   if r.get("duration_status") not in ("recorded", "measured")
+                   and r.get("duration_sec") is not None)
+
+    checks = {"schema_validate_ok": schema_ok,
+              "schema_error": schema_err,
+              "projection_matches_selection": sorted(rec_ids) == sorted(sel_ids),
+              "source_id_duplicates": dup_src,
+              "video_id_duplicates": dup_vid,
+              "sha_mismatch": sha_mismatch,
+              "new_required_provenance_missing": missing_new,
+              "legacy_guessed_fields": guessed,
+              "duration_status_counts": counts,
+              "duration_estimated_from_grid": grid_est}
+    ok = (schema_ok and checks["projection_matches_selection"]
+          and dup_src == 0 and dup_vid == 0 and sha_mismatch == 0
+          and missing_new == 0 and guessed == 0 and grid_est == 0)
+    return {"probe": "video_registry_dry_run",
+            "n_selected": len(sel), "n_projected": len(recs),
+            "n_legacy_exempt": sum(1 for r in recs if r.get("legacy_exempt")),
+            "checks": checks, "contracts_ok": ok,
+            "sot_transition": "HOLD",
+            "decision": "사용자_승인_사항",
+            "hold_reasons": [
+                ("전환에 필요한 provenance 축이 다음 실험의 자료 출처에 따라 달라진다 "
+                 "— 출처 확정 전에 옮기면 곧 다시 연다"),
+                ("계약 통과는 필요조건이다. 전환 자체는 사용자 승인 사건이다"),
+            ] + ([] if ok else ["계약 미통과 항목이 있다"]),
+            "adapter_mode": "read_only",
+            "note": ("registry 필드를 지표·적격성·채택 판단에 쓰지 않는다. 신원과 "
+                     "바이트 사실만 담는다")}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true",
                     help="기존 manifest 투영 후 스키마 검증")
+    ap.add_argument("--dry-run", action="store_true",
+                    help="SoT 전환 전 일관성 검사 (전환은 하지 않는다)")
     ap.add_argument("--emit", help="투영 결과를 JSONL로 쓴다 (참고용, 아직 SoT 아님)")
     a = ap.parse_args()
+    if a.dry_run:
+        r = dry_run()
+        print(json.dumps(r, ensure_ascii=False, indent=2))
+        return 0
     recs = project_from_selection()
     r = validate(recs)
     print(f"projected {r['n']} / legacy_exempt {r['n_legacy_exempt']} / "
