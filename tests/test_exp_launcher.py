@@ -186,8 +186,12 @@ def test_full_approval_does_not_grant_test_open(repo, tmp_path):
                        root=repo)
     st = L.precheck(plan, "r1", root=repo)
     st["canary_validated"] = True
-    L.require_stage_approval(plan, "r1", st, stage="FULL",
-                             approve_full="r1", approve_test_open="r1")   # 통과
+    # 승인 두 건은 통과한다. 그 뒤 coverage 게이트에서만 막힌다 — 이 합성 계획은
+    # canary_coverage 선언도, 면제 목록 등재도 없다(2026-08-24 선언 필수화).
+    import canary_coverage
+    with pytest.raises(canary_coverage.CoverageError):
+        L.require_stage_approval(plan, "r1", st, stage="FULL",
+                                 approve_full="r1", approve_test_open="r1")
 
 
 # ---- 7. provenance 부재 --------------------------------------------------

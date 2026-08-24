@@ -1,0 +1,736 @@
+{
+  "probe": "p3_design_sensitivity",
+  "question": "정밀도 목표별로 필요한 video cluster 수 · queries/video · 총 GT 행 수",
+  "primary_channel": "rr_fus_alpha_0_5",
+  "key_secondary_channel": "rr_cap_alpha_0_0",
+  "channels": {
+    "rr_fus_alpha_0_5": {
+      "channel": "rr_fus_alpha_0_5",
+      "field": "rr_fus",
+      "variance_decomposition": {
+        "n": 1086,
+        "k": 194,
+        "sigma2_between": 0.0,
+        "sigma2_within": 0.142003,
+        "icc": 0.0,
+        "queries_per_cluster_observed": {
+          "min": 2,
+          "median": 5.0,
+          "max": 14
+        }
+      },
+      "design_table": [
+        {
+          "half_width_target": 0.04,
+          "queries_per_video": 3,
+          "video_clusters": 114,
+          "total_gt_rows": 342,
+          "achieved_half_width": 0.0399,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.04,
+          "queries_per_video": 4,
+          "video_clusters": 86,
+          "total_gt_rows": 344,
+          "achieved_half_width": 0.0398,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.04,
+          "queries_per_video": 5,
+          "video_clusters": 69,
+          "total_gt_rows": 345,
+          "achieved_half_width": 0.0398,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.04,
+          "queries_per_video": 6,
+          "video_clusters": 57,
+          "total_gt_rows": 342,
+          "achieved_half_width": 0.0399,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.04,
+          "queries_per_video": 9,
+          "video_clusters": 38,
+          "total_gt_rows": 342,
+          "achieved_half_width": 0.0399,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.05,
+          "queries_per_video": 3,
+          "video_clusters": 73,
+          "total_gt_rows": 219,
+          "achieved_half_width": 0.0499,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.05,
+          "queries_per_video": 4,
+          "video_clusters": 55,
+          "total_gt_rows": 220,
+          "achieved_half_width": 0.0498,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.05,
+          "queries_per_video": 5,
+          "video_clusters": 44,
+          "total_gt_rows": 220,
+          "achieved_half_width": 0.0498,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.05,
+          "queries_per_video": 6,
+          "video_clusters": 37,
+          "total_gt_rows": 222,
+          "achieved_half_width": 0.0496,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.05,
+          "queries_per_video": 9,
+          "video_clusters": 25,
+          "total_gt_rows": 225,
+          "achieved_half_width": 0.0492,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.06,
+          "queries_per_video": 3,
+          "video_clusters": 51,
+          "total_gt_rows": 153,
+          "achieved_half_width": 0.0597,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.06,
+          "queries_per_video": 4,
+          "video_clusters": 38,
+          "total_gt_rows": 152,
+          "achieved_half_width": 0.0599,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.06,
+          "queries_per_video": 5,
+          "video_clusters": 31,
+          "total_gt_rows": 155,
+          "achieved_half_width": 0.0593,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.06,
+          "queries_per_video": 6,
+          "video_clusters": 26,
+          "total_gt_rows": 156,
+          "achieved_half_width": 0.0591,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.06,
+          "queries_per_video": 9,
+          "video_clusters": 17,
+          "total_gt_rows": 153,
+          "achieved_half_width": 0.0597,
+          "cluster_warning": null
+        }
+      ],
+      "icc_scenarios": [
+        {
+          "assumed_icc": 0.0,
+          "total_gt_rows": {
+            "0.04": {
+              "3": 342,
+              "4": 344,
+              "5": 345,
+              "6": 342,
+              "9": 342
+            },
+            "0.05": {
+              "3": 219,
+              "4": 220,
+              "5": 220,
+              "6": 222,
+              "9": 225
+            },
+            "0.06": {
+              "3": 153,
+              "4": 152,
+              "5": 155,
+              "6": 156,
+              "9": 153
+            }
+          },
+          "video_clusters": {
+            "0.04": {
+              "3": 114,
+              "4": 86,
+              "5": 69,
+              "6": 57,
+              "9": 38
+            },
+            "0.05": {
+              "3": 73,
+              "4": 55,
+              "5": 44,
+              "6": 37,
+              "9": 25
+            },
+            "0.06": {
+              "3": 51,
+              "4": 38,
+              "5": 31,
+              "6": 26,
+              "9": 17
+            }
+          }
+        },
+        {
+          "assumed_icc": 0.03,
+          "total_gt_rows": {
+            "0.04": {
+              "3": 363,
+              "4": 372,
+              "5": 385,
+              "6": 396,
+              "9": 423
+            },
+            "0.05": {
+              "3": 234,
+              "4": 240,
+              "5": 245,
+              "6": 252,
+              "9": 279
+            },
+            "0.06": {
+              "3": 162,
+              "4": 168,
+              "5": 170,
+              "6": 180,
+              "9": 189
+            }
+          },
+          "video_clusters": {
+            "0.04": {
+              "3": 121,
+              "4": 93,
+              "5": 77,
+              "6": 66,
+              "9": 47
+            },
+            "0.05": {
+              "3": 78,
+              "4": 60,
+              "5": 49,
+              "6": 42,
+              "9": 31
+            },
+            "0.06": {
+              "3": 54,
+              "4": 42,
+              "5": 34,
+              "6": 30,
+              "9": 21
+            }
+          }
+        },
+        {
+          "assumed_icc": 0.1,
+          "total_gt_rows": {
+            "0.04": {
+              "3": 411,
+              "4": 444,
+              "5": 480,
+              "6": 516,
+              "9": 621
+            },
+            "0.05": {
+              "3": 264,
+              "4": 284,
+              "5": 310,
+              "6": 330,
+              "9": 396
+            },
+            "0.06": {
+              "3": 183,
+              "4": 200,
+              "5": 215,
+              "6": 228,
+              "9": 279
+            }
+          },
+          "video_clusters": {
+            "0.04": {
+              "3": 137,
+              "4": 111,
+              "5": 96,
+              "6": 86,
+              "9": 69
+            },
+            "0.05": {
+              "3": 88,
+              "4": 71,
+              "5": 62,
+              "6": 55,
+              "9": 44
+            },
+            "0.06": {
+              "3": 61,
+              "4": 50,
+              "5": 43,
+              "6": 38,
+              "9": 31
+            }
+          }
+        },
+        {
+          "assumed_icc": 0.25,
+          "total_gt_rows": {
+            "0.04": {
+              "3": 513,
+              "4": 600,
+              "5": 685,
+              "6": 768,
+              "9": 1026
+            },
+            "0.05": {
+              "3": 330,
+              "4": 384,
+              "5": 440,
+              "6": 492,
+              "9": 657
+            },
+            "0.06": {
+              "3": 228,
+              "4": 268,
+              "5": 305,
+              "6": 342,
+              "9": 459
+            }
+          },
+          "video_clusters": {
+            "0.04": {
+              "3": 171,
+              "4": 150,
+              "5": 137,
+              "6": 128,
+              "9": 114
+            },
+            "0.05": {
+              "3": 110,
+              "4": 96,
+              "5": 88,
+              "6": 82,
+              "9": 73
+            },
+            "0.06": {
+              "3": 76,
+              "4": 67,
+              "5": 61,
+              "6": 57,
+              "9": 51
+            }
+          }
+        }
+      ],
+      "icc_scenarios_note": "가정값 훑기이고 추정이 아니다. ICC가 크면 m이 작은 설계가 총 행 수에서 유리해지고 대신 영상이 더 필요하다 — 라벨 비용과 수집 비용의 교환이다",
+      "total_rows_invariant_in_m": true
+    },
+    "rr_cap_alpha_0_0": {
+      "channel": "rr_cap_alpha_0_0",
+      "field": "rr_cap",
+      "variance_decomposition": {
+        "n": 1086,
+        "k": 194,
+        "sigma2_between": 0.0,
+        "sigma2_within": 0.161843,
+        "icc": 0.0,
+        "queries_per_cluster_observed": {
+          "min": 2,
+          "median": 5.0,
+          "max": 14
+        }
+      },
+      "design_table": [
+        {
+          "half_width_target": 0.04,
+          "queries_per_video": 3,
+          "video_clusters": 130,
+          "total_gt_rows": 390,
+          "achieved_half_width": 0.0399,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.04,
+          "queries_per_video": 4,
+          "video_clusters": 98,
+          "total_gt_rows": 392,
+          "achieved_half_width": 0.0398,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.04,
+          "queries_per_video": 5,
+          "video_clusters": 78,
+          "total_gt_rows": 390,
+          "achieved_half_width": 0.0399,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.04,
+          "queries_per_video": 6,
+          "video_clusters": 65,
+          "total_gt_rows": 390,
+          "achieved_half_width": 0.0399,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.04,
+          "queries_per_video": 9,
+          "video_clusters": 44,
+          "total_gt_rows": 396,
+          "achieved_half_width": 0.0396,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.05,
+          "queries_per_video": 3,
+          "video_clusters": 83,
+          "total_gt_rows": 249,
+          "achieved_half_width": 0.05,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.05,
+          "queries_per_video": 4,
+          "video_clusters": 63,
+          "total_gt_rows": 252,
+          "achieved_half_width": 0.0497,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.05,
+          "queries_per_video": 5,
+          "video_clusters": 50,
+          "total_gt_rows": 250,
+          "achieved_half_width": 0.0499,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.05,
+          "queries_per_video": 6,
+          "video_clusters": 42,
+          "total_gt_rows": 252,
+          "achieved_half_width": 0.0497,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.05,
+          "queries_per_video": 9,
+          "video_clusters": 28,
+          "total_gt_rows": 252,
+          "achieved_half_width": 0.0497,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.06,
+          "queries_per_video": 3,
+          "video_clusters": 58,
+          "total_gt_rows": 174,
+          "achieved_half_width": 0.0598,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.06,
+          "queries_per_video": 4,
+          "video_clusters": 44,
+          "total_gt_rows": 176,
+          "achieved_half_width": 0.0594,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.06,
+          "queries_per_video": 5,
+          "video_clusters": 35,
+          "total_gt_rows": 175,
+          "achieved_half_width": 0.0596,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.06,
+          "queries_per_video": 6,
+          "video_clusters": 29,
+          "total_gt_rows": 174,
+          "achieved_half_width": 0.0598,
+          "cluster_warning": null
+        },
+        {
+          "half_width_target": 0.06,
+          "queries_per_video": 9,
+          "video_clusters": 20,
+          "total_gt_rows": 180,
+          "achieved_half_width": 0.0588,
+          "cluster_warning": null
+        }
+      ],
+      "icc_scenarios": [
+        {
+          "assumed_icc": 0.0,
+          "total_gt_rows": {
+            "0.04": {
+              "3": 390,
+              "4": 392,
+              "5": 390,
+              "6": 390,
+              "9": 396
+            },
+            "0.05": {
+              "3": 249,
+              "4": 252,
+              "5": 250,
+              "6": 252,
+              "9": 252
+            },
+            "0.06": {
+              "3": 174,
+              "4": 176,
+              "5": 175,
+              "6": 174,
+              "9": 180
+            }
+          },
+          "video_clusters": {
+            "0.04": {
+              "3": 130,
+              "4": 98,
+              "5": 78,
+              "6": 65,
+              "9": 44
+            },
+            "0.05": {
+              "3": 83,
+              "4": 63,
+              "5": 50,
+              "6": 42,
+              "9": 28
+            },
+            "0.06": {
+              "3": 58,
+              "4": 44,
+              "5": 35,
+              "6": 29,
+              "9": 20
+            }
+          }
+        },
+        {
+          "assumed_icc": 0.03,
+          "total_gt_rows": {
+            "0.04": {
+              "3": 414,
+              "4": 424,
+              "5": 440,
+              "6": 450,
+              "9": 486
+            },
+            "0.05": {
+              "3": 264,
+              "4": 272,
+              "5": 280,
+              "6": 288,
+              "9": 315
+            },
+            "0.06": {
+              "3": 186,
+              "4": 192,
+              "5": 195,
+              "6": 204,
+              "9": 216
+            }
+          },
+          "video_clusters": {
+            "0.04": {
+              "3": 138,
+              "4": 106,
+              "5": 88,
+              "6": 75,
+              "9": 54
+            },
+            "0.05": {
+              "3": 88,
+              "4": 68,
+              "5": 56,
+              "6": 48,
+              "9": 35
+            },
+            "0.06": {
+              "3": 62,
+              "4": 48,
+              "5": 39,
+              "6": 34,
+              "9": 24
+            }
+          }
+        },
+        {
+          "assumed_icc": 0.1,
+          "total_gt_rows": {
+            "0.04": {
+              "3": 468,
+              "4": 508,
+              "5": 545,
+              "6": 588,
+              "9": 702
+            },
+            "0.05": {
+              "3": 300,
+              "4": 324,
+              "5": 350,
+              "6": 378,
+              "9": 450
+            },
+            "0.06": {
+              "3": 210,
+              "4": 228,
+              "5": 245,
+              "6": 264,
+              "9": 315
+            }
+          },
+          "video_clusters": {
+            "0.04": {
+              "3": 156,
+              "4": 127,
+              "5": 109,
+              "6": 98,
+              "9": 78
+            },
+            "0.05": {
+              "3": 100,
+              "4": 81,
+              "5": 70,
+              "6": 63,
+              "9": 50
+            },
+            "0.06": {
+              "3": 70,
+              "4": 57,
+              "5": 49,
+              "6": 44,
+              "9": 35
+            }
+          }
+        },
+        {
+          "assumed_icc": 0.25,
+          "total_gt_rows": {
+            "0.04": {
+              "3": 585,
+              "4": 680,
+              "5": 780,
+              "6": 876,
+              "9": 1170
+            },
+            "0.05": {
+              "3": 375,
+              "4": 436,
+              "5": 500,
+              "6": 564,
+              "9": 747
+            },
+            "0.06": {
+              "3": 261,
+              "4": 304,
+              "5": 350,
+              "6": 390,
+              "9": 522
+            }
+          },
+          "video_clusters": {
+            "0.04": {
+              "3": 195,
+              "4": 170,
+              "5": 156,
+              "6": 146,
+              "9": 130
+            },
+            "0.05": {
+              "3": 125,
+              "4": 109,
+              "5": 100,
+              "6": 94,
+              "9": 83
+            },
+            "0.06": {
+              "3": 87,
+              "4": 76,
+              "5": 70,
+              "6": 65,
+              "9": 58
+            }
+          }
+        }
+      ],
+      "icc_scenarios_note": "가정값 훑기이고 추정이 아니다. ICC가 크면 m이 작은 설계가 총 행 수에서 유리해지고 대신 영상이 더 필요하다 — 라벨 비용과 수집 비용의 교환이다",
+      "total_rows_invariant_in_m": true
+    }
+  },
+  "targets": [
+    0.04,
+    0.05,
+    0.06
+  ],
+  "m_grid": [
+    3,
+    4,
+    5,
+    6,
+    9
+  ],
+  "p2_half_width_target": 0.04,
+  "p2_target_auto_inherited": false,
+  "p2_target_note": "0.04는 P2의 규칙이다. P3에 자동 승계하지 않고 비교 후보로만 넣는다. 비용을 보고 목표를 낮추는 것이 아니라, 각 목표가 어떤 결론을 허용하는지와 라벨 부담을 함께 보고 사전 결정한다",
+  "min_clusters_for_inference": 16,
+  "reused_conventions": {
+    "bootstrap_B": {
+      "value": 2000,
+      "source": "docs/preregistration/부호역전_확증_보충2_P2설계_2026-08-20.md §2 · AI Hub 2×2 산출물 bootstrap_B"
+    },
+    "cluster_unit": {
+      "value": "video",
+      "source": "보충2 §2 (paired video-cluster)"
+    },
+    "estimator": {
+      "value": "paired video-cluster bootstrap",
+      "source": "보충2 §2"
+    }
+  },
+  "bootstrap_seed": "prereg_freeze_시_결정",
+  "bootstrap_seed_note": "결과와 무관하게 사전등록 동결 시점에 결정론적으로 고정하고 기록한다. 지금 임의의 숫자를 발명하지 않는다",
+  "noninferiority_margin_delta": "P3-C 미선택 — defer",
+  "historical_source": "docs/probes/_scratch/aihub_caption_2x2_full_2026-08-17.json",
+  "sample_reuse_note": "이 표본은 모델 확증에 이미 썼다. 여기서는 분산 구조 진단으로만 쓰고, P3의 증거로 세지 않는다",
+  "outcome_access": {
+    "p3_data_generated": false,
+    "p3_outcome_opened": false,
+    "p2_outcome_opened": false
+  },
+  "auto_selection": false,
+  "decision": "사용자_승인_사항",
+  "limitations": [
+    "AI Hub 후보 풀은 영상당 12구간이고 P3는 장편(영상당 약 150~400구간)이다 — RR 분포의 스케일이 달라 절대 half-width·분산 성분을 P3로 그대로 옮길 수 없다",
+    "AI Hub 2×2 arm은 bf16이고 P3는 양 arm 4bit(배포 경로 정밀도)다 — 생성 정밀도가 다르다",
+    "AI Hub 1,086질의는 모델 확증에 이미 쓴 재사용 표본이다 — fresh evidence가 아니고 여기서는 분산 구조 진단에만 쓴다",
+    "도메인이 다르다(AI Hub 드라마·여행·요리 vs 배포 다큐·리뷰 계열). 질의 유형 라벨도 AI Hub에는 없다",
+    "정규근사이고 balanced 설계를 가정한다 — paired cluster bootstrap의 percentile CI와 정확히 같지 않다",
+    "ICC 훑기는 가정값이고 추정이 아니다. 관측 ICC가 0이어도 장편에서 0이라는 뜻은 아니다",
+    "이 표는 P3의 실제 half-width를 예측하지 않는다. 정밀도 목표별 라벨 부담의 크기를 가늠하는 계획 보조 자료다",
+    "질의 유형별 이질 분산·영상×유형 상호작용·후보 풀 크기 의존성은 이 일원 모형에 들어 있지 않다"
+  ]
+}

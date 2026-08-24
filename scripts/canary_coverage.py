@@ -181,6 +181,40 @@ def require_coverage(full_ids: list, canary_ids: list, inv: dict,
 
 COVERAGE_KEY = "canary_coverage"
 CANARY_ID_KEY = "video_ids"
+# 이 스키마 버전부터 선언이 **필수**다. 그 아래는 명시적 면제 목록에 있어야 한다 —
+# 선언을 빼는 것만으로 게이트를 우회할 수 없게 하는 장치다.
+COVERAGE_REQUIRED_FROM_SCHEMA = 2
+SCHEMA_KEY = "plan_schema_version"
+EXEMPT_PATH = ROOT / "planning" / "canary_coverage_exempt.json"
+
+
+def _exempt_entry(plan: dict, exempt_path) -> dict:
+    """요구 도입 이전 계획의 명시적 면제. 없으면 차단한다."""
+    p = Path(exempt_path) if exempt_path is not None else EXEMPT_PATH
+    if not p.is_file():
+        raise CoverageError(
+            f"{COVERAGE_KEY} 선언이 없고 면제 목록 파일도 없다: {p} — 선언 누락을 "
+            f"통과로 처리하지 않는다")
+    doc = json.loads(p.read_text(encoding="utf-8"))
+    name = plan.get("name")
+    hits = [e for e in doc.get("legacy_exempt", [])
+            if e.get("plan_name") == name]
+    if not hits:
+        raise CoverageError(
+            f"계획 {name!r}에 {COVERAGE_KEY} 선언이 없고 면제 목록에도 없다 — "
+            f"새 계획은 {SCHEMA_KEY} {COVERAGE_REQUIRED_FROM_SCHEMA} 이상 + "
+            f"{COVERAGE_KEY} 선언으로 간다")
+    e = hits[0]
+    import exp_launcher                                    # 순환 없음(함수 안)
+    want = e.get("plan_hash")
+    got = exp_launcher.plan_hash(plan)
+    if want != got:
+        raise CoverageError(
+            f"계획 {name!r}의 plan_hash가 면제 기록과 다르다 — 면제는 그 시점의 "
+            f"계획에만 붙는다 (기록 {str(want)[:12]}… 실제 {got[:12]}…)")
+    if not str(e.get("reason") or "").strip():
+        raise CoverageError(f"계획 {name!r}의 면제에 사유가 없다")
+    return e
 
 
 def _canary_ids(path: Path) -> list:
@@ -202,17 +236,33 @@ def _canary_ids(path: Path) -> list:
     return [str(v) for v in ids]
 
 
-def gate_for_full(plan: dict, run_dir, root, codec_of: dict = None) -> dict:
-    """FULL 승인 경로의 게이트. **선언한 계획에만** 적용한다.
+def gate_for_full(plan: dict, run_dir, root, codec_of: dict = None,
+                  exempt_path=None) -> dict:
+    """FULL 승인 경로의 게이트.
 
-    선언이 없으면 요구하지 않되 `required=False`를 남긴다 — 검사하지 않은 것이
-    통과로 읽히면 이 게이트를 만든 이유가 없어진다.
+    ```
+    plan_schema_version >= COVERAGE_REQUIRED_FROM_SCHEMA   선언 필수. 누락은 차단
+    그 이전 + 명시적 면제 목록                              legacy 면제 (통과 아님)
+    그 이전 + 면제 없음                                     차단
+    ```
+
+    선언 누락을 조용히 통과시키지 않는 것이 핵심이다 — 그러면 키를 빼는 것만으로
+    게이트를 우회할 수 있다.
     """
     decl = plan.get(COVERAGE_KEY)
     if not decl:
+        version = plan.get(SCHEMA_KEY, 1)
+        if version >= COVERAGE_REQUIRED_FROM_SCHEMA:
+            raise CoverageError(
+                f"{SCHEMA_KEY} {version} 계획에 {COVERAGE_KEY} 선언이 없다 — "
+                f"이 버전부터 선언은 필수다. 면제 목록으로도 열리지 않는다")
+        e = _exempt_entry(plan, exempt_path)
         return {"required": False, "coverage_kind": None,
-                "reason": f"계획에 {COVERAGE_KEY} 선언이 없다 — 요구하지 않았다. "
-                          f"통과로 읽지 마라"}
+                "legacy_exempt": True,
+                "exempt_reason": e["reason"],
+                "plan_schema_version": version,
+                "reason": (f"{COVERAGE_KEY} 요구 도입 이전 계획이고 면제 목록에 "
+                           f"있다 — 검사하지 않았다. 통과로 읽지 마라")}
     if run_dir is None:
         raise CoverageError(
             f"{COVERAGE_KEY}를 선언했는데 run_dir이 없다 — CANARY가 무엇을 밟았는지 "
@@ -237,7 +287,9 @@ def gate_for_full(plan: dict, run_dir, root, codec_of: dict = None) -> dict:
     inv = inventory(corpus, codec_of)
     combos = tuple(tuple(c) for c in (decl.get("required_combinations") or ()))
     r = require_coverage(full_ids, canary_ids, inv, combos)
-    return dict(r, required=True, read_keys=[CANARY_ID_KEY],
+    return dict(r, required=True, legacy_exempt=False,
+                read_keys=[CANARY_ID_KEY],
+                plan_schema_version=plan.get(SCHEMA_KEY, 1),
                 canary_result=str(result), sample=str(sample))
 
 

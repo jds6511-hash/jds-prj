@@ -57,18 +57,12 @@ def _plan(sample: Path, **kw):
     return {"name": "t", C.COVERAGE_KEY: decl}
 
 
-# ---- 선언이 없으면 요구하지 않는다 (기존 계획 소급 적용 금지) ----------------
+# ---- 선언 누락 처리는 test_canary_coverage_required.py에서 본다 --------------
 
-def test_no_declaration_is_not_required(tmp_path):
-    r = C.gate_for_full({"name": "t"}, run_dir=tmp_path, root=ROOT)
-    assert r["required"] is False
-    assert r["reason"]
-
-
-def test_no_declaration_does_not_claim_coverage(tmp_path):
-    r = C.gate_for_full({"name": "t"}, run_dir=tmp_path, root=ROOT)
-    assert r.get("ok") is not True
-    assert r["coverage_kind"] is None
+def test_unknown_plan_without_declaration_is_blocked(tmp_path):
+    """모르는 계획이 선언 없이 통과하지 않는다 (상세 갈래는 별 파일)."""
+    with pytest.raises(C.CoverageError):
+        C.gate_for_full({"name": "t"}, run_dir=tmp_path, root=ROOT)
 
 
 # ---- 선언이 있으면 fail-closed ---------------------------------------------

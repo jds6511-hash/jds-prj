@@ -1,0 +1,29 @@
+{
+  "note": "canary_coverage 선언 요구(2026-08-24 도입) 이전에 작성된 계획의 명시적 면제 목록. 이 파일에 없고 선언도 없는 계획은 FULL 승인에서 막힌다 — 선언 누락으로 게이트를 우회할 수 없다.",
+  "requirement_introduced": "2026-08-24",
+  "required_from_plan_schema_version": 2,
+  "how_to_add": "새 계획을 여기 넣지 마라. 새 계획은 plan_schema_version 2 이상 + canary_coverage 선언으로 간다. 이 목록은 요구 도입 이전 계획의 고정 기록이다.",
+  "legacy_exempt": [
+    {
+      "plan_name": "p2_index",
+      "plan_hash": "d0bb2330e371c4169348acee3372311c883451008d5d969492d3110c0ffa733f",
+      "reason": "P2 색인 계획. run p2idx_0821d가 이미 FULL 완주·validator PASS·RUN_COMPLETE 기록됨. 계획 파일을 고치면 plan_hash가 바뀌어 완료된 run의 정식 열람(REPORT)이 막힌다 — 소급 적용하지 않는다",
+      "completed_run": "p2idx_0821d"
+    },
+    {
+      "plan_name": "aihub_alpha_curve",
+      "plan_hash": "a42f1366add0195937fdae209e486234d89d844aa2baf4e9c678910a1b581a78",
+      "reason": "요구 도입 이전 계획. 실행 완료됨"
+    },
+    {
+      "plan_name": "dev_precision_3arm",
+      "plan_hash": "108221aee29bd36f2139a61294b04c643e8eb39d4cbd6922e1ca4b5077c5c6a2",
+      "reason": "요구 도입 이전 계획. 실행 완료됨"
+    },
+    {
+      "plan_name": "m8_dev_pilot",
+      "plan_hash": "81d36986a5b9ed798bd451354a9544ba1272e6722676197d535f41eeefecf3f7",
+      "reason": "요구 도입 이전 계획. 실행 완료됨"
+    }
+  ]
+}
