@@ -380,3 +380,14 @@ def test_export_sheets_copies_without_touching_the_source(tmp_path):
     assert got["copied"] == 6
     after = {p.name: p.read_bytes() for p in Path(e["sheets_dir"]).iterdir()}
     assert before == after
+
+
+def test_the_readme_does_not_claim_the_grid_bound_is_the_duration(tmp_path):
+    """(마지막 idx+1)x5초는 격자 상한이지 실제 길이가 아니다 — 혼동을 막는다."""
+    e = _env(tmp_path)
+    out = tmp_path / "handoff"
+    H.prepare(out, **e)
+    txt = (out / H.README_NAME).read_text(encoding="utf-8")
+    assert "격자 상한이고 실제 영상 길이가 아니다" in txt
+    assert "마지막 구간은 5초보다 짧을 수 있다" in txt
+    assert "끝 경계를 확정하는 데 쓰지 마라" in txt
