@@ -37,7 +37,18 @@ REQUIRED_EVIDENCE = ("basis", "third_party_viewing_right",
                      "retention_redistribution_limit",
                      "deletion_required_after_work",
                      "identifiable_person_constraint",
+                     "embedded_third_party_content",
                      "attribution_requirement")
+
+# 웹 근거는 페이지가 바뀐다 — "지금 그렇게 써 있었다"로는 재현이 안 된다.
+REQUIRED_PROVENANCE = ("source_url", "license_url", "license_type",
+                       "accessed_at")
+OPTIONAL_PROVENANCE = ("license_version", "evidence_note",
+                       "evidence_snapshot_ref")
+
+# 이 값이면 embedded 제3자 저작물이 없다고 기록된 것으로 본다. 그 외 문자열은
+# "무언가 들어 있다"는 기술로 읽고 yes로 올리지 않는다.
+NO_EMBEDDED = ("없음", "none", "해당 없음")
 
 
 class RightsError(RuntimeError):
@@ -71,7 +82,14 @@ def _entry(rec: dict, ev: dict) -> dict:
            "basis": ev.get("basis", "없음")}
     for f in REQUIRED_EVIDENCE[1:]:
         out[f] = ev.get(f, "미기록")
+    for f in REQUIRED_PROVENANCE + OPTIONAL_PROVENANCE:
+        out[f] = ev.get(f, "미기록")
     out["allowed_access_modes"] = []
+    # **최상위 상태 하나로 열람과 전달을 합치지 않는다.** 최종 gate는 mode별이다.
+    out["rights_status"] = {
+        m: (ev.get(k) if ev.get(k) in ("yes", "no") else "unclear")
+        for m, k in (("viewing", "third_party_viewing_right"),
+                     ("delivery", "third_party_delivery_right"))}
 
     state = ev.get("external_annotation_allowed", "unclear")
     if state not in STATES:
@@ -92,15 +110,28 @@ def _entry(rec: dict, ev: dict) -> dict:
     if deliver == "no" and view == "yes":
         # VDI·원격 열람 경로만 남는다 — 전체를 no로 닫지 않는다
         out["allowed_access_modes"] = ["viewing"]
+        out["delivery_prohibited_note"] = ("사본 전달은 금지다 — 원격 열람 경로만 "
+                                           "허용된다. 파일을 보내지 않는다")
     elif view == "yes" and deliver == "yes":
         out["allowed_access_modes"] = list(ACCESS_MODES)
 
-    missing = [f for f in REQUIRED_EVIDENCE if f not in ev]
+    missing = [f for f in REQUIRED_EVIDENCE + REQUIRED_PROVENANCE
+               if f not in ev]
     if state == "yes" and missing:
         out["external_annotation_allowed"] = "unclear"
         out["allowed_access_modes"] = []
         out["downgrade_reason"] = (f"근거 항목 미기록: {missing} — 없는 값을 "
                                   f"추정해 yes로 올리지 않는다")
+        return out
+
+    # 직접 제작이라도 영상 안의 제3자 저작물은 별개 권리다.
+    embedded = str(ev.get("embedded_third_party_content", "")).strip()
+    if state == "yes" and embedded.lower() not in NO_EMBEDDED:
+        out["external_annotation_allowed"] = "unclear"
+        out["allowed_access_modes"] = []
+        out["downgrade_reason"] = (f"embedded 제3자 저작물이 기록됐다: "
+                                  f"{embedded!r} — 그 부분의 이용 권한을 따로 "
+                                  f"확인하기 전에는 yes로 올리지 않는다")
         return out
 
     if state == "yes" and not out["allowed_access_modes"]:
@@ -157,10 +188,12 @@ def pilot_gate(rows: list, pilot_ids: list, mode: str = "delivery",
             blocking.append(i)
             why[i] = "; ".join(reasons)
     return {"pilot_ids": list(pilot_ids), "n_pilot": len(pilot_ids),
-            "mode": mode, "require_pilot_only": require_pilot_only,
-            "allowed": not blocking, "blocking": blocking,
-            "blocking_reason": why,
-            "rule": "하나라도 허용되지 않으면 파일럿 반출을 시작하지 않는다"}
+            "mode": mode, "pilot_access_mode": mode,
+            "require_pilot_only": require_pilot_only,
+            "allowed": not blocking, "pilot_gate_pass": not blocking,
+            "blocking": blocking, "blocking_reason": why,
+            "rule": ("선택한 access mode에서 하나라도 허용되지 않으면 파일럿을 "
+                     "시작하지 않는다. 최상위 상태 하나로 판정하지 않는다")}
 
 
 def report(records=None, evidence=None) -> dict:

@@ -34,7 +34,12 @@ FULL_YES = {"external_annotation_allowed": "yes",
             "retention_redistribution_limit": "사본 30일 후 삭제",
             "deletion_required_after_work": "yes",
             "identifiable_person_constraint": "없음",
-            "attribution_requirement": "해당 없음"}
+            "embedded_third_party_content": "없음",
+            "attribution_requirement": "해당 없음",
+            "source_url": "https://example.test/v",
+            "license_url": "https://example.test/terms",
+            "license_type": "직접 보유",
+            "accessed_at": "2026-08-24"}
 
 
 # ---- 기본값은 unclear ------------------------------------------------------
@@ -68,7 +73,8 @@ def test_full_evidence_allows_yes():
 @pytest.mark.parametrize("missing", [
     "basis", "third_party_viewing_right", "third_party_delivery_right",
     "retention_redistribution_limit", "deletion_required_after_work",
-    "identifiable_person_constraint", "attribution_requirement"])
+    "identifiable_person_constraint", "attribution_requirement",
+    "embedded_third_party_content"])
 def test_incomplete_evidence_downgrades_to_unclear(missing):
     ev = dict(FULL_YES)
     del ev[missing]
@@ -193,14 +199,11 @@ def test_module_has_no_registry_writer():
 
 # ---- 열람권과 사본 전달권을 구분한다 --------------------------------------
 
-VIEW_ONLY = {"external_annotation_allowed": "yes",
-             "basis": "제공기관 약관 (원격 열람만 허용)",
-             "third_party_viewing_right": "yes",
-             "third_party_delivery_right": "no",
-             "retention_redistribution_limit": "사본 생성 금지",
-             "deletion_required_after_work": "해당 없음",
-             "identifiable_person_constraint": "없음",
-             "attribution_requirement": "출처 표시"}
+VIEW_ONLY = dict(FULL_YES, basis="제공기관 약관 (원격 열람만 허용)",
+                 third_party_delivery_right="no",
+                 retention_redistribution_limit="사본 생성 금지",
+                 deletion_required_after_work="해당 없음",
+                 attribution_requirement="출처 표시")
 
 
 def test_required_evidence_covers_viewing_and_attribution():
@@ -287,3 +290,98 @@ def test_report_counts_pilot_cohort():
                  evidence={"p1": dict(PILOT_YES)})
     assert r["pilot_only_cleared"] == ["p1"]
     assert r["pilot_cohort_target"] == 10
+
+
+# ---- mode-specific 판정: 최상위 yes 하나로 합치지 않는다 -------------------
+
+PROV = {"source_url": "https://example.test/v", "license_url":
+        "https://example.test/terms", "license_type": "공공누리 제1유형",
+        "accessed_at": "2026-08-24"}
+FULL2 = dict(FULL_YES, embedded_third_party_content="없음", **PROV)
+
+
+def test_rights_status_is_recorded_per_mode():
+    rows = R.audit([_rec("a")], evidence={"a": dict(FULL2)})
+    assert rows[0]["rights_status"] == {"viewing": "yes", "delivery": "yes"}
+
+
+def test_view_only_rights_status_keeps_delivery_no():
+    ev = dict(FULL2, third_party_delivery_right="no")
+    e = R.audit([_rec("a")], evidence={"a": ev})[0]
+    assert e["rights_status"] == {"viewing": "yes", "delivery": "no"}
+    assert e["allowed_access_modes"] == ["viewing"]
+    assert e["delivery_prohibited_note"]
+
+
+def test_unrecorded_mode_is_unclear_not_no():
+    ev = {k: v for k, v in FULL2.items()
+          if k != "third_party_delivery_right"}
+    e = R.audit([_rec("a")], evidence={"a": ev})[0]
+    assert e["rights_status"]["delivery"] == "unclear"
+    assert e["external_annotation_allowed"] == "unclear"
+
+
+def test_gate_records_selected_mode_and_pass():
+    rows = R.audit([_rec("a")], evidence={"a": dict(FULL2)})
+    g = R.pilot_gate(rows, ["a"], mode="viewing")
+    assert g["pilot_access_mode"] == "viewing"
+    assert g["pilot_gate_pass"] is True
+
+
+def test_gate_pass_is_false_for_mode_not_allowed():
+    ev = dict(FULL2, third_party_delivery_right="no")
+    rows = R.audit([_rec("a")], evidence={"a": ev})
+    assert R.pilot_gate(rows, ["a"], mode="delivery")["pilot_gate_pass"] is False
+    assert R.pilot_gate(rows, ["a"], mode="viewing")["pilot_gate_pass"] is True
+
+
+# ---- 직접 제작도 자동 yes가 아니다 ----------------------------------------
+
+def test_embedded_third_party_content_is_required_evidence():
+    assert "embedded_third_party_content" in R.REQUIRED_EVIDENCE
+
+
+def test_self_produced_with_embedded_third_party_content_is_not_yes():
+    """직접 찍어도 제3자 음악·방송화면·작품이 들어가면 권리가 갈린다."""
+    ev = dict(FULL2, basis="직접 촬영",
+              embedded_third_party_content="배경음악 상용 트랙")
+    e = R.audit([_rec("a")], evidence={"a": ev})[0]
+    assert e["external_annotation_allowed"] == "unclear"
+    assert "embedded" in e["downgrade_reason"]
+
+
+def test_self_produced_needs_person_constraint_recorded():
+    ev = {k: v for k, v in FULL2.items()
+          if k != "identifiable_person_constraint"}
+    ev["basis"] = "직접 촬영"
+    e = R.audit([_rec("a")], evidence={"a": ev})[0]
+    assert e["external_annotation_allowed"] == "unclear"
+
+
+def test_basis_alone_never_grants_yes():
+    e = R.audit([_rec("a")],
+                evidence={"a": {"external_annotation_allowed": "yes",
+                                "basis": "직접 제작"}})[0]
+    assert e["external_annotation_allowed"] == "unclear"
+
+
+# ---- 근거 재현성 (URL·라이선스·접근일) ------------------------------------
+
+def test_provenance_fields_are_required_for_yes():
+    for f in ("source_url", "license_url", "license_type", "accessed_at"):
+        assert f in R.REQUIRED_PROVENANCE, f
+
+
+@pytest.mark.parametrize("missing", ["source_url", "license_url",
+                                     "license_type", "accessed_at"])
+def test_missing_provenance_blocks_yes(missing):
+    ev = {k: v for k, v in FULL2.items() if k != missing}
+    e = R.audit([_rec("a")], evidence={"a": ev})[0]
+    assert e["external_annotation_allowed"] == "unclear"
+    assert missing in e["downgrade_reason"]
+
+
+def test_snapshot_reference_is_optional_but_reported():
+    e = R.audit([_rec("a")], evidence={"a": dict(FULL2)})[0]
+    assert e["external_annotation_allowed"] == "yes"
+    assert e["evidence_snapshot_ref"] == "미기록"
