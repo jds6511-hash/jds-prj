@@ -535,3 +535,46 @@ def test_search_result_timestamps_are_within_video(tmp_path):
     r = body["results"][0]
     assert 0 <= r["start"] < r["end"] <= body["duration_sec"]
     assert r["seek_to"] == r["start"]
+
+
+# ---- FINALIZATION-F1: UX 계약 -------------------------------------------
+
+def test_search_with_zero_results_returns_valid_schema(tmp_path):
+    """결과가 0건이어도 스키마가 깨지지 않는다."""
+    client, _ = make_client(tmp_path, search_fn=lambda q, v, a, c: [],
+                            load_index=lambda cfg, vid: _stub_index(4))
+    body = client.post("/api/search",
+                       json={"video_id": "v1", "query": "질의"}).json()
+    assert body["results"] == [] and body["top_k"] >= 1
+    assert body["video_id"] == "v1" and body["duration_sec"] > 0
+
+
+def test_last_segment_seek_stays_within_duration(tmp_path):
+    """마지막 구간에서도 seek_to가 영상 길이를 넘지 않는다."""
+    client, _ = make_client(tmp_path,
+                            search_fn=lambda q, v, a, c: [Result(3, 0.9, 15, 20)],
+                            load_index=lambda cfg, vid: _stub_index(4))
+    body = client.post("/api/search",
+                       json={"video_id": "v1", "query": "질의"}).json()
+    r = body["results"][0]
+    assert r["seek_to"] == 15 and r["end"] == body["duration_sec"]
+    assert 0 <= r["seek_to"] < body["duration_sec"]
+
+
+def test_top_k_must_be_an_integer(tmp_path):
+    client, _ = make_client(tmp_path,
+                            search_fn=lambda q, v, a, c: [Result(0, 0.5, 0, 5)],
+                            load_index=lambda cfg, vid: _stub_index(4))
+    r = client.post("/api/search", json={"video_id": "v1", "query": "q",
+                                         "top_k": "셋"})
+    assert r.status_code == 400
+
+
+def test_frontend_wraps_long_evidence_and_has_no_abstention_wording():
+    """긴 근거가 카드를 넘치지 않고, 사용자 대면에 abstention 용어를 쓰지 않는다."""
+    html = (Path(__file__).resolve().parents[1] / "src" / "webui"
+            / "index.html").read_text(encoding="utf-8")
+    assert "overflow-wrap: anywhere" in html
+    assert ".hit .body { grid-column: 2; min-width: 0; }" in html
+    assert "abstention" not in html.lower()
+    assert "표시할 구간이 없습니다" in html          # 결과 0건 안내

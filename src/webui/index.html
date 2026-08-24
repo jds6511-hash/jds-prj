@@ -138,13 +138,15 @@ canvas { flex: 1; width: 100%; height: 68px; display: block; cursor: crosshair; 
              font-size: 17px; font-weight: 600; }
 .hit .score { font-family: var(--mono); font-variant-numeric: tabular-nums;
               font-size: 12px; color: var(--muted); }
-.hit .body { grid-column: 2; }
+.hit .body { grid-column: 2; min-width: 0; }
 .hit .rank { font-family: var(--mono); font-size: 12px; color: var(--muted); }
-.line { display: flex; gap: 8px; align-items: baseline; margin-top: 2px; }
+.line { display: flex; gap: 8px; align-items: baseline; margin-top: 2px;
+        min-width: 0; }
 .line .who { flex: none; width: 30px; font-size: 11px; font-weight: 600; letter-spacing: .04em; }
 .line.speech .who { color: var(--speech); }
 .line.scene  .who { color: var(--scene); }
-.line p { font-size: 14px; }
+.line p { font-size: 14px; min-width: 0; overflow-wrap: anywhere;
+           word-break: break-word; }
 .line p.none { color: var(--muted); font-style: italic; }
 
 .notice {
@@ -164,8 +166,9 @@ canvas { flex: 1; width: 100%; height: 68px; display: block; cursor: crosshair; 
 .seg.on { box-shadow: inset 3px 0 0 var(--ink); }
 .seg .t { font-family: var(--mono); font-variant-numeric: tabular-nums;
           font-size: 12px; color: var(--muted); margin-right: 8px; }
-.seg .sub { font-size: 13.5px; }
-.seg .cap { font-size: 13px; color: var(--muted); margin-top: 1px; }
+.seg .sub { font-size: 13.5px; overflow-wrap: anywhere; word-break: break-word; }
+.seg .cap { font-size: 13px; color: var(--muted); margin-top: 1px;
+            overflow-wrap: anywhere; word-break: break-word; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 @media (max-width: 900px) { .wrap { grid-template-columns: 1fr; } }
@@ -397,6 +400,12 @@ function render(query, body) {
     n.className = "notice";
     n.textContent = "두 채널 모두 일치도가 낮습니다. 이 영상에 해당 장면이 없을 수 있습니다.";
     box.appendChild(n);
+  }
+  if (!body.results.length) {
+    const e = document.createElement("p");
+    e.className = "empty";
+    e.textContent = "표시할 구간이 없습니다. 인덱싱이 끝났는지 확인해 주세요.";
+    box.appendChild(e);
   }
   body.results.forEach((c, i) => {
     const b = document.createElement("button");
