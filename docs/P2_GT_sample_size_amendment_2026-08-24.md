@@ -285,3 +285,53 @@ p2_evaluate       n_queries_required()
 
 `fixed_n` 또는 `no_outcome_based_top_up` 플래그가 참이 아니면 로더가 거부한다 —
 결과를 본 뒤 규모를 늘리는 설계를 코드가 받지 않는다.
+
+## 12. FINAL GT 동결 시 이어야 할 provenance chain
+
+GT 175/175 완성 후 동결할 때 아래를 **한 산출물에 묶는다.** 지금 실행하지 않는다 —
+동결 시점에 할 일의 계약이다.
+
+```
+amendment          docs/P2_GT_sample_size_amendment_2026-08-24.md
+활성 설계           docs/P2_활성설계_2026-08-24.json
+keep_mask_sha256   f689a023215636022ab16e74a5eb55adf921962579af7293d88c4107376ff19b
+채운 작업 CSV       label_kit/p2/p2_label_intake.csv        175행 sha256
+build 산출물        label_kit/p2/p2_queries_staging.jsonl   sha256
+원본 archive        label_kit/p2/p2_label_intake_315_archive.csv  sha256
+drop audit         label_kit/p2/p2_dropped_audit.csv       sha256
+PRE-GT freeze      docs/probes/_scratch/p2_gt_freeze.json  (참조만)
+규모 확인           175/175 · build PASS
+실행 상태           retrieval·evaluation 미실행
+```
+
+### 12-1. **하지 말아야 하는 검사**
+
+> PRE-GT freeze가 찍은 **빈 315행 CSV의 sha256과 현재 175행 CSV가 같은지 검사하면
+> 안 된다.** 그 둘은 같을 수 없고, 같아야 한다고 검사하는 순간 동결이 실패한다.
+
+PRE-GT freeze는 "작성 시작 전 상태가 이랬다"는 provenance이고 "계속 같아야 하는 해시"가
+아니다. 315와 175 사이를 잇는 것은 **amendment + 동결 keep-mask**다.
+
+```
+빈 315 CSV  ──(PRE-GT freeze)──▶ 작성 시작 전 상태 기록
+    │
+    └──(amendment 2026-08-24 + keep_mask f689a023…)──▶ 175 작업 CSV ──▶ 채운 175 ──▶ staging
+```
+
+동결 산출물은 이 사슬을 그대로 적고, 각 단계의 해시를 **각자의 시점 값으로** 남긴다.
+
+## 13. 이월 — labeler의 stale-design write 방지
+
+2026-08-24 적용 때 라벨러가 315행을 메모리에 들고 살아 있었다. 파일만 175로 바꾸면
+다음 저장에서 되덮인다. 이번에는 중지 → 적용 → 재시작으로 처리했다.
+
+**이월 개선안**(지금 진행 중인 라벨링을 멈춰서 넣지 않는다):
+
+```
+시작 시   활성 설계 sha256 + intake sha256을 기억한다
+저장 직전 현재 활성 설계 sha256을 다시 읽어 다르면 저장을 거부한다
+효과     설계 전환 뒤 stale writer가 사람 개입 없이도 파일을 덮지 못한다
+```
+
+기존 인프라 통합 대기 항목(canary_coverage 게이트 → marker/status → registry SoT)과
+같은 줄에 둔다.
