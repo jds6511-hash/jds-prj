@@ -45,7 +45,9 @@ sys.path.insert(0, str(ROOT / "src"))
 CSV_PATH = ROOT / "label_kit" / "p2" / "p2_label_intake.csv"
 SHEETS = ROOT / "label_kit" / "p2" / "contact_sheets"
 VIDEOS = ROOT / "data" / "videos"
-READS = ("intake_csv", "selection_manifest", "contact_sheets", "source_video")
+READS = ("intake_csv", "selection_manifest", "contact_sheets", "source_video",
+         "ai_proposals")
+WRITES = ("intake_csv", "adjudication_audit")
 COLUMNS = ("query_id", "video_id", "query_type", "text", "gt_start", "gt_end",
            "note")
 FROZEN = ("query_id", "video_id", "query_type")
@@ -56,6 +58,16 @@ COLS, PER_SHEET, SEG_LEN = 6, 60, 5
 
 class LabelerError(RuntimeError):
     pass
+
+
+def _ai():
+    import p2_ai_draft
+    return p2_ai_draft
+
+
+def _adj():
+    import p2_adjudication
+    return p2_adjudication
 
 
 def n_pages(n_segments: int) -> int:
@@ -116,12 +128,43 @@ class App:
     """CSV를 그대로 source of truth로 쓰는 편집기. 새 스키마를 만들지 않는다."""
 
     def __init__(self, csv_path=CSV_PATH, sheets=SHEETS, videos=VIDEOS,
-                 bounds=None):
+                 bounds=None, proposals=None, audit_path=None):
         self.csv_path = Path(csv_path)
         self.sheets = Path(sheets)
         self.videos = Path(videos)
         self.bounds = dict(bounds or {})
         self.rows = self._read()
+        self.proposals = self._load_proposals(proposals)
+        self.audit_path = Path(audit_path) if audit_path is not None             else _adj().AUDIT
+        if self.audit_path == _adj().AUDIT and self.csv_path != Path(CSV_PATH):
+            # 실측 사고: 픽스처 CSV로 만든 App이 본 audit에 픽스처 query_id를 썼다.
+            # 작업 CSV가 본 intake가 아니면 본 audit에 쓰지 못하게 막는다.
+            raise LabelerError("작업 CSV가 본 intake가 아닌데 본 audit에 쓰려 한다 "
+                               "— audit_path를 분리해라")
+
+    def _load_proposals(self, given) -> dict:
+        """AI 초안을 읽어 둔다. **행에 채워 넣지 않는다** — 별도로 보여 주기만 한다."""
+        rows = given if given is not None else _ai().load_drafts()
+        known = {r["query_id"] for r in self.rows}
+        out = {}
+        for r in rows:
+            qid = r.get("query_id")
+            if qid not in known:
+                raise LabelerError(f"{qid}: 초안이 활성 설계에 없는 행을 가리킨다")
+            out[qid] = {"draft_text": str(r.get("draft_text") or ""),
+                        "draft_gt_start": _fmt(_num(r.get("draft_gt_start"),
+                                                    "draft_gt_start")),
+                        "draft_gt_end": _fmt(_num(r.get("draft_gt_end"),
+                                                  "draft_gt_end")),
+                        "ai_model": str(r.get("ai_model") or ""),
+                        "rationale": str(r.get("rationale") or "")}
+        return out
+
+    def _allocation(self) -> list:
+        return [{k: r[k] for k in FROZEN} for r in self.rows]
+
+    def proposal_of(self, qid: str) -> dict:
+        return self.proposals.get(qid)
 
     def _read(self) -> list:
         if not self.csv_path.is_file():
@@ -177,8 +220,37 @@ class App:
         return row
 
     def save(self, edit: dict) -> dict:
-        """완성 저장. 세 칸이 다 있어야 한다."""
-        return self._apply(edit, complete=True)
+        """완성 저장. 세 칸이 다 있어야 하고, 초안이 있으면 행동을 명시해야 한다."""
+        adj = _adj()
+        qid = str(edit.get("query_id", ""))
+        prop = self.proposals.get(qid)
+        action = (edit.get("action") or "").strip() or None
+        if prop is None:
+            if action not in (None, "not_applicable"):
+                raise LabelerError(f"{qid}: 초안이 없는 행에 draft_action "
+                                   f"{action!r}을 붙일 수 없다")
+            action = "not_applicable"
+            origin = "human_only"
+        else:
+            if action not in ("accepted", "edited", "rejected_manual"):
+                raise LabelerError(
+                    "AI 초안이 있는 행은 accepted·edited·rejected_manual 중 하나를 "
+                    "명시해야 저장된다 — 초안을 보여 준 것만으로 완료되지 않는다")
+            origin = "ai_first_human_adjudicated"
+            if action == "accepted":
+                same = (str(edit.get("text", "")).strip() == prop["draft_text"]
+                        and _fmt(_num(edit.get("gt_start"), "gt_start"))
+                        == prop["draft_gt_start"]
+                        and _fmt(_num(edit.get("gt_end"), "gt_end"))
+                        == prop["draft_gt_end"])
+                if not same:
+                    raise LabelerError(
+                        "accepted는 초안을 그대로 확정했다는 뜻이다 — 값이 다르면 "
+                        "edited로 기록해라")
+        row = self._apply(edit, complete=True)
+        adj.record(qid, origin, action, self.audit_path,
+                   allocation=self._allocation())
+        return row
 
     def draft(self, edit: dict) -> dict:
         """작성 중 임시 저장. **완료로 세지 않는다.**"""
@@ -210,7 +282,10 @@ class App:
                 "n_segments": n_segments,
                 "pages": {v: n_pages(n) for v, n in n_segments.items()},
                 "bounds": self.bounds, "seg_len": SEG_LEN, "cols": COLS,
-                "per_sheet": PER_SHEET}
+                "per_sheet": PER_SHEET,
+                # 초안은 행 값에 섞지 않는다 — 사람이 행동을 고르기 전까지 별개다
+                "proposals": self.proposals,
+                "actions": list(_adj().DRAFT_ACTION)}
 
 
 def load_reference():
@@ -238,6 +313,7 @@ border:1px solid #2a3a4a;border-radius:5px;padding:6px}
 textarea{width:100%;min-height:54px}input[type=number]{width:110px}
 button{cursor:pointer}button.p{background:#7fb3ff;color:#0d1116;font-weight:600}
 .hint{color:#93a7bc;font-size:12px}.warn{color:#ffd166;font-size:12px}
+.prop{border:1px solid #3a4a5a;border-radius:6px;padding:8px;margin:6px 0}
 kbd{background:#2a3a4a;border-radius:4px;padding:1px 5px;font-size:12px}
 #list{max-height:190px;overflow:auto;display:flex;flex-wrap:wrap;gap:4px}
 #list button{padding:3px 7px;font-size:12px}
@@ -263,6 +339,19 @@ kbd{background:#2a3a4a;border-radius:4px;padding:1px 5px;font-size:12px}
    <input id=e type=number step=0.1 min=0>
    <button id=go>구간 재생 <kbd>P</kbd></button>
   </div>
+  <div id=prop class=prop hidden>
+   <div class=row><b>AI 초안</b><span class=hint id=pmodel></span></div>
+   <div class=hint id=ptext></div>
+   <div class=hint id=pspan></div>
+   <div class=row>
+    <button id=pacc>초안 그대로 확정</button>
+    <button id=pedit>초안 불러와 수정</button>
+    <button id=prej>초안 거부 · 직접 작성</button>
+    <span class=warn id=pact></span>
+   </div>
+   <div class=warn>초안은 정답이 아니다. 원본 영상에서 확인한 뒤 행동을 고른다 —
+    고르지 않으면 저장되지 않는다.</div>
+  </div>
   <textarea id=t placeholder="사람이 실제로 검색할 한 문장 (자동 생성 없음)"></textarea>
   <div class=row><input id=n placeholder="메모(선택)" style="flex:1">
    <button id=save class=p>저장하고 다음 <kbd>Ctrl+S</kbd></button></div>
@@ -272,7 +361,7 @@ kbd{background:#2a3a4a;border-radius:4px;padding:1px 5px;font-size:12px}
    <kbd>,</kbd>/<kbd>.</kbd> ±0.1s · <kbd>←</kbd>/<kbd>→</kbd> ±5s ·
    <kbd>Space</kbd> 재생 · <kbd>Alt+←/→</kbd> 이전·다음 질의</div>
  </div>
- <div class=pane><div class=row><b>이 영상의 9건</b>
+ <div class=pane><div class=row><b id=vcount>이 영상</b>
   <span class=hint>순서는 동결돼 있다</span></div><div id=list></div></div>
 </div>
 <div class="pane sheet">
@@ -282,11 +371,11 @@ kbd{background:#2a3a4a;border-radius:4px;padding:1px 5px;font-size:12px}
 </div>
 </main>
 <script>
-let S=null,i=0,page=1;
+let S=null,i=0,page=1,act=null;
 const $=q=>document.querySelector(q),v=$('#v');
 const row=()=>S.rows[i];
 async function load(){S=await (await fetch('/api/state')).json();i=S.resume;go();}
-function go(){const r=row();
+function go(){const r=row();act=null;
  $('#qid').textContent=r.query_id;$('#type').textContent=r.query_type;
  $('#vid').textContent=r.video_id+' · '+S.n_segments[r.video_id]+'구간';
  $('#prog').textContent=S.progress.done+' / '+S.progress.total;
@@ -294,8 +383,21 @@ function go(){const r=row();
  $('#n').value=r.note||'';
  if(!v.dataset.vid||v.dataset.vid!==r.video_id){
   v.src='/video/'+encodeURIComponent(r.video_id);v.dataset.vid=r.video_id;}
- page=1;sheet();list();}
+ proposal();page=1;sheet();list();}
+function proposal(){const r=row(),p=S.proposals[r.query_id],el=$('#prop');
+ if(!p){el.hidden=true;return;}
+ el.hidden=false;$('#pmodel').textContent=p.ai_model;
+ $('#ptext').textContent='질의 초안: '+p.draft_text;
+ $('#pspan').textContent='구간 초안: '+p.draft_gt_start+'s ~ '+p.draft_gt_end+'s'
+  +(p.rationale?' · '+p.rationale:'');
+ $('#pact').textContent='행동 미선택';}
+function setAct(a){act=a;$('#pact').textContent='행동: '+a;}
+function fillFromProposal(){const p=S.proposals[row().query_id];
+ $('#t').value=p.draft_text;$('#s').value=p.draft_gt_start;
+ $('#e').value=p.draft_gt_end;}
 function list(){const r=row(),el=$('#list');el.innerHTML='';
+ $('#vcount').textContent='이 영상의 '+
+  S.rows.filter(x=>x.video_id===r.video_id).length+'건';
  S.rows.forEach((x,k)=>{if(x.video_id!==r.video_id)return;
   const b=document.createElement('button');
   b.textContent=x.query_id.split('_').pop()+' '+x.query_type;
@@ -323,9 +425,14 @@ async function post(url,body){const r=await fetch(url,{method:'POST',
  headers:{'content-type':'application/json'},body:JSON.stringify(body)});
  return r.json();}
 const payload=()=>({query_id:row().query_id,text:$('#t').value,
- gt_start:$('#s').value,gt_end:$('#e').value,note:$('#n').value});
+ gt_start:$('#s').value,gt_end:$('#e').value,note:$('#n').value,
+ action:act||''});
 async function draft(){const r=await post('/api/draft',payload());
  if(!r.error){S.rows[i]=r.row;S.progress=r.progress;}}
+$('#pacc').onclick=()=>{fillFromProposal();setAct('accepted');$('#save').click();};
+$('#pedit').onclick=()=>{fillFromProposal();setAct('edited');};
+$('#prej').onclick=()=>{$('#t').value='';$('#s').value='';$('#e').value='';
+ setAct('rejected_manual');};
 $('#save').onclick=async()=>{const r=await post('/api/save',payload());
  if(r.error){alert(r.error);return;}
  S.rows[i]=r.row;S.progress=r.progress;

@@ -77,17 +77,22 @@ def test_forbidden_modules_are_not_imported(mod):
 
 
 def test_it_reads_only_the_declared_sources():
-    """읽는 곳은 CSV · 선정표본 · 시트 · 원본 영상뿐이다."""
+    """읽는 곳은 CSV · 선정표본 · 시트 · 원본 영상 · AI 초안뿐이다."""
     assert set(L.READS) == {"intake_csv", "selection_manifest",
-                            "contact_sheets", "source_video"}
+                            "contact_sheets", "source_video", "ai_proposals"}
     for p in (L.CSV_PATH, L.SHEETS, L.VIDEOS):
         assert "work_p2" not in str(p)
+
+
+def test_it_writes_only_the_intake_and_the_audit():
+    assert set(L.WRITES) == {"intake_csv", "adjudication_audit"}
 
 
 def test_runtime_needs_no_forbidden_file(tmp_path):
     """fixture에 캡션·색인이 아예 없어도 동작한다 — 필요하지 않다는 증거다."""
     app = L.App(csv_path=_csv(tmp_path), sheets=tmp_path / "sheets",
-                videos=tmp_path / "videos", bounds={"v0": 100.0, "v1": 100.0})
+                videos=tmp_path / "videos", bounds={"v0": 100.0, "v1": 100.0},
+                audit_path=tmp_path / "audit.csv")
     assert len(app.rows) == 6
     assert app.progress()["done"] == 0
 
@@ -97,7 +102,8 @@ def test_runtime_needs_no_forbidden_file(tmp_path):
 @pytest.mark.parametrize("field", ["query_id", "video_id", "query_type"])
 def test_frozen_identity_cannot_be_edited(tmp_path, field):
     app = L.App(csv_path=_csv(tmp_path), sheets=tmp_path / "s",
-                videos=tmp_path / "v", bounds={"v0": 100.0, "v1": 100.0})
+                videos=tmp_path / "v", bounds={"v0": 100.0, "v1": 100.0},
+                audit_path=tmp_path / "audit.csv")
     qid = app.rows[0]["query_id"]
     with pytest.raises(L.LabelerError, match=field):
         app.save({"query_id": qid, field: "바꿔치기", "text": "x",
@@ -106,7 +112,8 @@ def test_frozen_identity_cannot_be_edited(tmp_path, field):
 
 def test_unknown_query_id_is_refused(tmp_path):
     app = L.App(csv_path=_csv(tmp_path), sheets=tmp_path / "s",
-                videos=tmp_path / "v", bounds={"v0": 100.0, "v1": 100.0})
+                videos=tmp_path / "v", bounds={"v0": 100.0, "v1": 100.0},
+                audit_path=tmp_path / "audit.csv")
     with pytest.raises(L.LabelerError, match="배정에 없다"):
         app.save({"query_id": "p2_x_q99", "text": "x", "gt_start": 1,
                   "gt_end": 2})
@@ -115,7 +122,8 @@ def test_unknown_query_id_is_refused(tmp_path):
 def test_only_the_human_columns_are_written(tmp_path):
     p = _csv(tmp_path)
     app = L.App(csv_path=p, sheets=tmp_path / "s", videos=tmp_path / "v",
-                bounds={"v0": 100.0, "v1": 100.0})
+                bounds={"v0": 100.0, "v1": 100.0},
+                audit_path=tmp_path / "audit.csv")
     before = [dict(r) for r in app.rows]
     app.save({"query_id": before[2]["query_id"], "text": "질의",
               "gt_start": 12.5, "gt_end": 18.0, "note": "메모"})
@@ -132,7 +140,8 @@ def test_only_the_human_columns_are_written(tmp_path):
 
 def test_reversed_span_is_refused(tmp_path):
     app = L.App(csv_path=_csv(tmp_path), sheets=tmp_path / "s",
-                videos=tmp_path / "v", bounds={"v0": 100.0, "v1": 100.0})
+                videos=tmp_path / "v", bounds={"v0": 100.0, "v1": 100.0},
+                audit_path=tmp_path / "audit.csv")
     with pytest.raises(L.LabelerError, match="gt_start < gt_end"):
         app.save({"query_id": app.rows[0]["query_id"], "text": "x",
                   "gt_start": 20, "gt_end": 20})
@@ -140,7 +149,8 @@ def test_reversed_span_is_refused(tmp_path):
 
 def test_span_past_the_video_is_refused(tmp_path):
     app = L.App(csv_path=_csv(tmp_path), sheets=tmp_path / "s",
-                videos=tmp_path / "v", bounds={"v0": 30.0, "v1": 100.0})
+                videos=tmp_path / "v", bounds={"v0": 30.0, "v1": 100.0},
+                audit_path=tmp_path / "audit.csv")
     with pytest.raises(L.LabelerError, match="영상 길이"):
         app.save({"query_id": app.rows[0]["query_id"], "text": "x",
                   "gt_start": 10, "gt_end": 40})
@@ -148,7 +158,8 @@ def test_span_past_the_video_is_refused(tmp_path):
 
 def test_empty_text_is_refused_on_save(tmp_path):
     app = L.App(csv_path=_csv(tmp_path), sheets=tmp_path / "s",
-                videos=tmp_path / "v", bounds={"v0": 100.0, "v1": 100.0})
+                videos=tmp_path / "v", bounds={"v0": 100.0, "v1": 100.0},
+                audit_path=tmp_path / "audit.csv")
     with pytest.raises(L.LabelerError, match="text"):
         app.save({"query_id": app.rows[0]["query_id"], "text": "  ",
                   "gt_start": 1, "gt_end": 2})
@@ -158,11 +169,13 @@ def test_draft_keeps_partial_work_without_pretending_it_is_done(tmp_path):
     """작성 중 이탈해도 잃지 않는다 — 단 완료로 세지 않는다."""
     p = _csv(tmp_path)
     app = L.App(csv_path=p, sheets=tmp_path / "s", videos=tmp_path / "v",
-                bounds={"v0": 100.0, "v1": 100.0})
+                bounds={"v0": 100.0, "v1": 100.0},
+                audit_path=tmp_path / "audit.csv")
     app.draft({"query_id": app.rows[0]["query_id"], "text": "쓰다 만 질의",
                "gt_start": 5})
     reopened = L.App(csv_path=p, sheets=tmp_path / "s", videos=tmp_path / "v",
-                     bounds={"v0": 100.0, "v1": 100.0})
+                     bounds={"v0": 100.0, "v1": 100.0},
+                audit_path=tmp_path / "audit.csv")
     assert reopened.rows[0]["text"] == "쓰다 만 질의"
     assert reopened.rows[0]["gt_start"] == "5"
     assert reopened.progress()["done"] == 0
@@ -172,7 +185,8 @@ def test_draft_keeps_partial_work_without_pretending_it_is_done(tmp_path):
 
 def test_progress_counts_only_complete_rows(tmp_path):
     app = L.App(csv_path=_csv(tmp_path, filled=2), sheets=tmp_path / "s",
-                videos=tmp_path / "v", bounds={"v0": 100.0, "v1": 100.0})
+                videos=tmp_path / "v", bounds={"v0": 100.0, "v1": 100.0},
+                audit_path=tmp_path / "audit.csv")
     pr = app.progress()
     assert pr["done"] == 2 and pr["total"] == 6
     assert pr["by_video"]["v0"] == 2
@@ -180,13 +194,15 @@ def test_progress_counts_only_complete_rows(tmp_path):
 
 def test_resume_returns_the_first_incomplete_row(tmp_path):
     app = L.App(csv_path=_csv(tmp_path, filled=2), sheets=tmp_path / "s",
-                videos=tmp_path / "v", bounds={"v0": 100.0, "v1": 100.0})
+                videos=tmp_path / "v", bounds={"v0": 100.0, "v1": 100.0},
+                audit_path=tmp_path / "audit.csv")
     assert app.resume_index() == 2
 
 
 def test_resume_is_zero_when_nothing_is_written(tmp_path):
     app = L.App(csv_path=_csv(tmp_path), sheets=tmp_path / "s",
-                videos=tmp_path / "v", bounds={"v0": 100.0, "v1": 100.0})
+                videos=tmp_path / "v", bounds={"v0": 100.0, "v1": 100.0},
+                audit_path=tmp_path / "audit.csv")
     assert app.resume_index() == 0
 
 
@@ -195,7 +211,8 @@ def test_frozen_row_order_is_preserved(tmp_path):
     order = [r["query_id"] for r in csv.DictReader(
         p.read_text(encoding="utf-8-sig").splitlines())]
     app = L.App(csv_path=p, sheets=tmp_path / "s", videos=tmp_path / "v",
-                bounds={"v0": 100.0, "v1": 100.0})
+                bounds={"v0": 100.0, "v1": 100.0},
+                audit_path=tmp_path / "audit.csv")
     app.save({"query_id": order[-1], "text": "x", "gt_start": 1, "gt_end": 2})
     after = [r["query_id"] for r in csv.DictReader(
         p.read_text(encoding="utf-8-sig").splitlines())]
@@ -265,3 +282,132 @@ def test_range_header_is_parsed_for_seeking(header, size, want):
 def test_bad_range_falls_back_to_the_whole_file():
     assert L.parse_range("bytes=abc", 1000) is None
     assert L.parse_range(None, 1000) is None
+
+
+# --------------------------------------------------- AI 초안 심사
+
+def _prop(qid, text="철판에 반죽 붓는 장면", s=10, e=18):
+    return {"query_id": qid, "draft_text": text, "draft_gt_start": s,
+            "draft_gt_end": e, "ai_model": "some-vlm", "rationale": "12초 철판"}
+
+
+def _app(tmp_path, props=None, n=6, filled=0):
+    return L.App(csv_path=_csv(tmp_path, n=n, filled=filled),
+                 sheets=tmp_path / "s", videos=tmp_path / "v",
+                 bounds={"v0": 100.0, "v1": 100.0},
+                 proposals=props if props is not None else [],
+                 audit_path=tmp_path / "audit.csv")
+
+
+def test_a_proposal_is_never_copied_into_the_row(tmp_path):
+    """초안은 보여 주기만 한다 — 행 값에 섞이지 않는다."""
+    app = _app(tmp_path, [_prop("p2_v0_q01")])
+    st = app.state({"v0": 20, "v1": 20})
+    assert st["proposals"]["p2_v0_q01"]["draft_text"] == "철판에 반죽 붓는 장면"
+    row = next(r for r in st["rows"] if r["query_id"] == "p2_v0_q01")
+    assert row["text"] == "" and row["gt_start"] == ""
+    assert row["done"] is False
+    assert app.progress()["done"] == 0
+
+
+def test_saving_a_row_with_a_proposal_needs_an_explicit_action(tmp_path):
+    app = _app(tmp_path, [_prop("p2_v0_q01")])
+    with pytest.raises(L.LabelerError, match="명시해야 저장된다"):
+        app.save({"query_id": "p2_v0_q01", "text": "질의", "gt_start": 1,
+                  "gt_end": 2})
+
+
+@pytest.mark.parametrize("action", ["auto", "copied", "not_applicable"])
+def test_an_invalid_action_on_a_proposal_row_is_refused(tmp_path, action):
+    app = _app(tmp_path, [_prop("p2_v0_q01")])
+    with pytest.raises(L.LabelerError, match="명시해야 저장된다"):
+        app.save({"query_id": "p2_v0_q01", "text": "질의", "gt_start": 1,
+                  "gt_end": 2, "action": action})
+
+
+def test_accepted_must_match_the_proposal_exactly(tmp_path):
+    app = _app(tmp_path, [_prop("p2_v0_q01")])
+    with pytest.raises(L.LabelerError, match="edited로 기록"):
+        app.save({"query_id": "p2_v0_q01", "text": "다른 질의", "gt_start": 10,
+                  "gt_end": 18, "action": "accepted"})
+
+
+def test_accepted_records_the_hybrid_origin(tmp_path):
+    import p2_adjudication as ADJ
+    app = _app(tmp_path, [_prop("p2_v0_q01")])
+    app.save({"query_id": "p2_v0_q01", "text": "철판에 반죽 붓는 장면",
+              "gt_start": 10, "gt_end": 18, "action": "accepted"})
+    rows = ADJ.load(tmp_path / "audit.csv")
+    assert rows[0]["label_origin"] == "ai_first_human_adjudicated"
+    assert rows[0]["draft_action"] == "accepted"
+
+
+@pytest.mark.parametrize("action", ["edited", "rejected_manual"])
+def test_edited_and_rejected_are_recorded(tmp_path, action):
+    import p2_adjudication as ADJ
+    app = _app(tmp_path, [_prop("p2_v0_q01")])
+    app.save({"query_id": "p2_v0_q01", "text": "사람이 고친 질의", "gt_start": 12,
+              "gt_end": 19, "action": action})
+    rows = ADJ.load(tmp_path / "audit.csv")
+    assert rows[0]["draft_action"] == action
+    assert app.progress()["done"] == 1
+
+
+def test_a_row_without_a_proposal_is_recorded_human_only(tmp_path):
+    import p2_adjudication as ADJ
+    app = _app(tmp_path, [])
+    app.save({"query_id": "p2_v0_q01", "text": "질의", "gt_start": 1,
+              "gt_end": 2})
+    rows = ADJ.load(tmp_path / "audit.csv")
+    assert rows[0]["label_origin"] == "human_only"
+    assert rows[0]["draft_action"] == "not_applicable"
+
+
+def test_a_draft_action_on_a_row_without_a_proposal_is_refused(tmp_path):
+    app = _app(tmp_path, [])
+    with pytest.raises(L.LabelerError, match="붙일 수 없다"):
+        app.save({"query_id": "p2_v0_q01", "text": "질의", "gt_start": 1,
+                  "gt_end": 2, "action": "accepted"})
+
+
+def test_autosave_records_no_audit_and_needs_no_action(tmp_path):
+    import p2_adjudication as ADJ
+    app = _app(tmp_path, [_prop("p2_v0_q01")])
+    app.draft({"query_id": "p2_v0_q01", "text": "쓰다 만"})
+    assert ADJ.load(tmp_path / "audit.csv") == []
+    assert app.progress()["done"] == 0
+
+
+def test_a_proposal_for_an_unknown_row_is_refused(tmp_path):
+    with pytest.raises(L.LabelerError, match="활성 설계에 없는"):
+        _app(tmp_path, [_prop("p2_zz_q99")])
+
+
+def test_frozen_fields_still_cannot_be_edited_through_an_action(tmp_path):
+    app = _app(tmp_path, [_prop("p2_v0_q01")])
+    with pytest.raises(L.LabelerError, match="query_type"):
+        app.save({"query_id": "p2_v0_q01", "query_type": "자막형",
+                  "text": "질의", "gt_start": 1, "gt_end": 2,
+                  "action": "edited"})
+
+
+def test_the_audit_never_receives_the_label_text(tmp_path):
+    app = _app(tmp_path, [_prop("p2_v0_q01")])
+    app.save({"query_id": "p2_v0_q01", "text": "비밀 질의", "gt_start": 1,
+              "gt_end": 2, "action": "edited"})
+    body = (tmp_path / "audit.csv").read_text(encoding="utf-8")
+    assert "비밀 질의" not in body
+
+
+def test_the_ui_never_auto_saves_a_shown_proposal():
+    """초안을 표시하는 코드 경로에 저장 호출이 없다."""
+    assert "function proposal()" in UI_TEXT
+    body = UI_TEXT.split("function proposal()")[1].split("function setAct")[0]
+    assert "/api/save" not in body and "post(" not in body
+
+
+def test_a_fixture_csv_cannot_write_the_production_audit(tmp_path):
+    """실측 사고 방지 — 픽스처 CSV로 만든 App이 본 audit을 오염시켰다."""
+    with pytest.raises(L.LabelerError, match="본 audit에 쓰려 한다"):
+        L.App(csv_path=_csv(tmp_path), sheets=tmp_path / "s",
+              videos=tmp_path / "v", bounds={"v0": 100.0, "v1": 100.0})
