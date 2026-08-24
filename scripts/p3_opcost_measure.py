@@ -375,8 +375,10 @@ def summary(doc: dict) -> dict:
             "out_chars_mean": per[arm]["out_chars_mean"],
             "out_tokens_mean": per[arm]["out_tokens_mean"],
             # frame당 시간이 짧은 것이 **연산 효율** 때문인지 **출력이 짧은** 때문인지
-            # 가른다. 배포 비용의 지표는 frame당 시간이지만, 기전을 오독하면 안 된다
-            "tokens_per_sec": (
+            # 가른다. 배포 비용의 지표는 frame당 시간이지만, 기전을 오독하면 안 된다.
+            # 분모가 전체 caption wall-clock(전처리·prefill·고정 오버헤드 포함)이므로
+            # decoder token-generation speed가 아니다 — 이름에 범위를 박는다
+            "end_to_end_output_tokens_per_sec": (
                 round(per[arm]["out_tokens_mean"] /
                       per[arm]["sec_per_frame_median_of_blocks"], 3)
                 if per[arm]["out_tokens_mean"] and
@@ -408,9 +410,11 @@ def summary(doc: dict) -> dict:
             "out_tokens_candidate_over_base": (
                 round(cd["out_tokens_mean"] / b["out_tokens_mean"], 4)
                 if b["out_tokens_mean"] else None),
-            "tokens_per_sec_candidate_over_base": (
-                round(cd["tokens_per_sec"] / b["tokens_per_sec"], 4)
-                if b["tokens_per_sec"] and cd["tokens_per_sec"] else None),
+            "end_to_end_output_tokens_per_sec_candidate_over_base": (
+                round(cd["end_to_end_output_tokens_per_sec"] /
+                      b["end_to_end_output_tokens_per_sec"], 4)
+                if b["end_to_end_output_tokens_per_sec"] and
+                cd["end_to_end_output_tokens_per_sec"] else None),
         }
     return {
         "protocol": PROTOCOL, "stage": doc["stage"],
@@ -420,7 +424,17 @@ def summary(doc: dict) -> dict:
                               "measurement다. 통계적 모집단 추정이 아니다"),
         "wording_rule": ("wall-clock이 짧은 것과 운영비가 낮은 것은 다르다 — 전력·"
                          "실제 비용은 측정하지 않았다. '계산적으로 더 효율적'이라고 "
-                         "쓰지 않는다 — 출력 길이 차이가 섞여 있다"),
+                         "쓰지 않는다 — 출력 길이 차이가 섞여 있다. 더 짧은 출력이 "
+                         "frame-level wall-clock 감소와 함께 관측됐고 그 차이에 "
+                         "실질적으로 기여한 것으로 일관된다고까지만 쓴다 — generation "
+                         "kernel 속도를 분리 측정하지 않았으므로 '대부분 출력 길이 "
+                         "때문'이라는 인과 배분은 쓰지 않는다"),
+        "token_rate_scope_note": ("end_to_end_output_tokens_per_sec는 출력 토큰 수를 "
+                                  "전체 caption wall-clock으로 나눈 값이다. 이미지 "
+                                  "전처리·prefill·고정 오버헤드가 분모에 들어가므로 "
+                                  "decoder token-generation speed가 아니다. '토큰당 "
+                                  "처리속도'가 아니라 '전체 caption wall-clock 대비 "
+                                  "출력 토큰 rate'로 쓴다"),
         "headroom_note": ("allocated peak은 allocator 예약분과 CUDA 컨텍스트를 빼고 "
                           "센다. fit 판단은 reserved peak과 생성 중 최소 free VRAM으로 "
                           "한다"),

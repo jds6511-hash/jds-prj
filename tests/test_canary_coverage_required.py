@@ -153,12 +153,13 @@ def test_legacy_declaring_coverage_still_runs_gate(tmp_path, world):
 
 # ---- 실제 allowlist -------------------------------------------------------
 
-def test_real_allowlist_covers_existing_plans():
+def test_real_allowlist_covers_existing_plans(tmp_path, monkeypatch):
     """지금 저장소에 있는 계획 4건이 전부 면제 목록과 해시까지 일치한다."""
     ex = json.loads(C.EXEMPT_PATH.read_text(encoding="utf-8"))
     by_name = {e["plan_name"]: e for e in ex["legacy_exempt"]}
-    import os
-    os.environ.setdefault("EXP_LOG_DIR", str(ROOT / "logs"))
+    # repo 밖으로 잡는다 — load_plan은 repo 안 로그 경로를 거부한다(2026-08-17 사고).
+    # setdefault로 두면 앞선 테스트가 심은 값에 따라 결과가 갈린다.
+    monkeypatch.setenv("EXP_LOG_DIR", str(tmp_path / "logs"))
     for rel in ("docs/planning/p2_index_plan.json",
                 "planning/exp_plans/alpha_curve.json",
                 "planning/exp_plans/dev_precision_3arm.json",

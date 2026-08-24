@@ -237,13 +237,22 @@ def test_summary_ratio_is_candidate_over_base():
     assert r["vram_peak_reserved_delta_gb"] == 0.7
 
 
-def test_summary_separates_tokens_per_sec_from_frame_time():
+def test_summary_separates_token_rate_from_frame_time():
     """frame당 빠른 것이 연산 효율인지 짧은 출력인지 가른다."""
     s = M.summary(_doc())
     b, c = s["arms"]["3b"], s["arms"]["4b"]
-    assert b["tokens_per_sec"] == round(85.0 / 7.5, 3)
-    assert c["tokens_per_sec"] == round(58.0 / 5.75, 3)
-    assert s["ratio"]["tokens_per_sec_candidate_over_base"] is not None
+    assert b["end_to_end_output_tokens_per_sec"] == round(85.0 / 7.5, 3)
+    assert c["end_to_end_output_tokens_per_sec"] == round(58.0 / 5.75, 3)
+    assert s["ratio"][
+        "end_to_end_output_tokens_per_sec_candidate_over_base"] is not None
+
+
+def test_token_rate_field_names_its_scope():
+    """분모가 전체 wall-clock임을 이름과 주석에 박는다 — decoder 속도가 아니다."""
+    s = M.summary(_doc())
+    assert "tokens_per_sec" not in s["arms"]["3b"]
+    note = s["token_rate_scope_note"]
+    assert "wall-clock" in note and "decoder" in note
 
 
 def test_summary_declares_free_vram_scope():

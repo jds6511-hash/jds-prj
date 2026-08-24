@@ -28,7 +28,7 @@
         null,
         null
       ],
-      "vram_min_free_gb_per_block": [
+      "minimum_generation_free_vram_gb_per_block": [
         null,
         null
       ],
@@ -58,6 +58,7 @@
       "oom": false,
       "out_chars_mean": 133.6,
       "out_tokens_mean": 92.2,
+      "end_to_end_output_tokens_per_sec": 11.438,
       "model_storage_gb": 7.0,
       "block_drift_sec_per_frame": 0.263
     },
@@ -81,7 +82,7 @@
         null,
         null
       ],
-      "vram_min_free_gb_per_block": [
+      "minimum_generation_free_vram_gb_per_block": [
         null,
         null
       ],
@@ -111,6 +112,7 @@
       "oom": false,
       "out_chars_mean": 82.9,
       "out_tokens_mean": 59.7,
+      "end_to_end_output_tokens_per_sec": 9.993,
       "model_storage_gb": 8.28,
       "block_drift_sec_per_frame": 0.006
     }
@@ -118,10 +120,16 @@
   "ratio": {
     "sec_per_frame_candidate_over_base": 0.7411,
     "vram_peak_reserved_delta_gb": null,
-    "out_tokens_candidate_over_base": 0.6475
+    "out_tokens_candidate_over_base": 0.6475,
+    "end_to_end_output_tokens_per_sec_candidate_over_base": 0.8737
   },
   "caption_text_stored": false,
   "measurement_grade": "deployment operational feasibility의 descriptive measurement다. 통계적 모집단 추정이 아니다",
-  "wording_rule": "wall-clock이 짧은 것과 운영비가 낮은 것은 다르다 — 전력·실제 비용은 측정하지 않았다",
-  "headroom_note": "allocated peak은 allocator 예약분과 CUDA 컨텍스트를 빼고 센다. fit 판단은 reserved peak과 실행 중 최소 free VRAM으로 한다"
+  "wording_rule": "wall-clock이 짧은 것과 운영비가 낮은 것은 다르다 — 전력·실제 비용은 측정하지 않았다. '계산적으로 더 효율적'이라고 쓰지 않는다 — 출력 길이 차이가 섞여 있다. 더 짧은 출력이 frame-level wall-clock 감소와 함께 관측됐고 그 차이에 실질적으로 기여한 것으로 일관된다고까지만 쓴다 — generation kernel 속도를 분리 측정하지 않았으므로 '대부분 출력 길이 때문'이라는 인과 배분은 쓰지 않는다",
+  "token_rate_scope_note": "end_to_end_output_tokens_per_sec는 출력 토큰 수를 전체 caption wall-clock으로 나눈 값이다. 이미지 전처리·prefill·고정 오버헤드가 분모에 들어가므로 decoder token-generation speed가 아니다. '토큰당 처리속도'가 아니라 '전체 caption wall-clock 대비 출력 토큰 rate'로 쓴다",
+  "headroom_note": "allocated peak은 allocator 예약분과 CUDA 컨텍스트를 빼고 센다. fit 판단은 reserved peak과 생성 중 최소 free VRAM으로 한다",
+  "free_vram_sampling_scope": "generation_loop_only",
+  "free_vram_scope_note": "model load 구간·CUDA workspace 생성 순간은 샘플링하지 않았다. 로드 자체는 arm별 3회×2블록 전부 성공했고 OOM 0이므로 load feasibility는 관측됐으나 그 구간의 free VRAM 수치는 없다",
+  "order_effect_rule": "블록 2개로 'order effect 없음'을 통계적으로 주장하지 않는다. 드리프트 크기만 기술한다",
+  "summary_regenerated_note": "필드명 변경(tokens_per_sec -> end_to_end_output_tokens_per_sec)에 따라 원본 측정 문서에서 재생성했다. 측정치는 바뀌지 않았다."
 }
