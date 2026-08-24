@@ -148,6 +148,134 @@ def test_icc_scenarios_are_labelled_as_assumptions():
 
 # ---- P3 자료를 만들지도 열지도 않는다 ---------------------------------------
 
+# ---- CI 부호 판정의 산식 ---------------------------------------------------
+
+def test_min_confirmable_effect_equals_half_width():
+    """CI로 0 배제를 보장하려면 |Δ|가 half-width를 넘어야 한다."""
+    assert D.min_confirmable_effect(0.04) == 0.04
+    assert D.min_confirmable_effect(0.06) == 0.06
+
+
+def test_effect_smaller_than_half_width_is_not_confirmable():
+    assert D.confirmable(0.0191, half_width=0.04) is False
+    assert D.confirmable(0.0764, half_width=0.04) is True
+
+
+def test_rows_for_effect_grows_as_effect_shrinks():
+    big = D.rows_for_effect(0.08, 0.0, 0.142003, m=5)["total_gt_rows"]
+    small = D.rows_for_effect(0.019, 0.0, 0.142003, m=5)["total_gt_rows"]
+    assert small > big * 5
+
+
+def test_rows_for_effect_matches_required_k():
+    r = D.rows_for_effect(0.05, 0.0, 0.16, m=4)
+    assert r["video_clusters"] == D.required_k(0.05, 4, 0.0, 0.16)
+
+
+def test_report_illustrations_are_endpoint_separated():
+    r = D.report()
+    ill = r["historical_effect_illustrations"]
+    assert set(ill) == {"rr_fus_alpha_0_5", "rr_cap_alpha_0_0"}
+    fus = {e["sample"]: e for e in ill["rr_fus_alpha_0_5"]}
+    cap = {e["sample"]: e for e in ill["rr_cap_alpha_0_0"]}
+    assert fus["aihub"]["delta"] == 0.0191
+    assert cap["aihub"]["delta"] == 0.0310
+    assert fus["dev"]["delta"] == -0.0764
+    assert cap["dev"]["delta"] == -0.0903
+    for e in ill["rr_fus_alpha_0_5"] + ill["rr_cap_alpha_0_0"]:
+        assert e["source"]
+
+
+def test_report_does_not_claim_small_positive_is_confirmable_at_004():
+    r = D.report()
+    rows = [x for x in r["confirmability"]
+            if x["half_width_target"] == 0.04
+            and x["channel"] == "rr_fus_alpha_0_5"]
+    small = [x for x in rows if abs(x["delta"]) < 0.04]
+    assert small and all(x["confirmable"] is False for x in small)
+
+
+def test_confirmability_reports_rows_needed_for_each_effect():
+    r = D.report()
+    e = [x for x in r["confirmability"]
+         if x["channel"] == "rr_fus_alpha_0_5" and x["delta"] == 0.0191][0]
+    assert e["total_gt_rows_to_confirm"] > 1000
+
+
+# ---- 표본 규모 driver: PRIMARY 주도 vs 양쪽 동일 정밀도 ----------------------
+
+def test_sample_size_options_has_two_variants():
+    r = D.report()
+    opts = r["sample_size_options"]
+    assert set(opts) == {"A_primary_driven", "B_primary_and_secondary"}
+    assert r["sample_size_driver"] == "사용자_결정_사항"
+
+
+def test_option_a_is_sized_by_primary_only():
+    r = D.report()
+    a = [x for x in r["sample_size_options"]["A_primary_driven"]
+         if x["half_width_target"] == 0.04 and x["queries_per_video"] == 5][0]
+    prim = [x for x in
+            r["channels"][D.PRIMARY_CHANNEL]["design_table"]
+            if x["half_width_target"] == 0.04 and x["queries_per_video"] == 5][0]
+    assert a["video_clusters"] == prim["video_clusters"]
+    assert a["secondary_achieved_half_width"] > 0.04
+
+
+def test_option_b_is_never_smaller_than_option_a():
+    r = D.report()
+    a = {(x["half_width_target"], x["queries_per_video"]): x
+         for x in r["sample_size_options"]["A_primary_driven"]}
+    b = {(x["half_width_target"], x["queries_per_video"]): x
+         for x in r["sample_size_options"]["B_primary_and_secondary"]}
+    assert set(a) == set(b)
+    for key in a:
+        assert b[key]["total_gt_rows"] >= a[key]["total_gt_rows"]
+
+
+def test_secondary_is_not_co_primary_in_report():
+    r = D.report()
+    assert r["secondary_is_co_primary"] is False
+    assert r["secondary_precision_rule_approved"] is False
+
+
+# ---- ICC robustness -------------------------------------------------------
+
+def test_icc_robustness_shows_degradation_of_icc0_designs():
+    r = D.report()
+    rob = r["channels"][D.PRIMARY_CHANNEL]["icc_robustness"]
+    row = [x for x in rob if x["assumed_icc"] == 0.10
+           and x["half_width_target"] == 0.05]
+    by_m = {x["queries_per_video"]: x for x in row}
+    # ICC=0으로 잡은 설계를 ICC>0 세계에 놓으면 정밀도가 나빠지고,
+    # m이 큰(영상 수가 적은) 설계가 더 크게 나빠진다
+    assert by_m[9]["achieved_half_width_if_icc_true"] > \
+        by_m[3]["achieved_half_width_if_icc_true"]
+    assert by_m[9]["achieved_half_width_if_icc_true"] > 0.05
+
+
+def test_icc_robustness_reports_required_rows_under_assumed_icc():
+    r = D.report()
+    rob = r["channels"][D.PRIMARY_CHANNEL]["icc_robustness"]
+    for x in rob:
+        assert x["total_gt_rows_under_assumed_icc"] >= x["total_gt_rows_icc0"]
+
+
+def test_icc_robustness_is_labelled_diagnostic_not_prediction():
+    r = D.report()
+    assert r["icc_robustness_note"]
+    assert "예측" in r["icc_robustness_note"]
+    assert r["icc_zero_assumed_as_truth"] is False
+
+
+# ---- 채택 기준 항목 --------------------------------------------------------
+
+def test_report_lists_adoption_criterion_as_user_decision():
+    r = D.report()
+    assert r["minimum_deployment_relevant_gain"] == "사용자_결정_사항"
+    assert r["adoption_utility_note"]
+
+
 def test_module_reads_only_historical_artifact():
     src = (ROOT / "scripts" / "p3_design_sensitivity.py").read_text(
         encoding="utf-8")

@@ -63,6 +63,28 @@ LIMITATIONS = (
 )
 
 
+# 과거 효과 크기 — **endpoint별로 분리해서 적는다.** 캡션 단독 값과 융합 값을 섞으면
+# "이 정밀도로 저 효과를 잡는다"는 계산이 틀린다.
+HISTORICAL_EFFECTS = {
+    "rr_fus_alpha_0_5": (
+        {"sample": "aihub", "n_queries": 1086, "delta": 0.0191,
+         "ci": "cluster에서 0 배제 · query CI는 0 포함",
+         "source": "docs/재분석_2x2_2026-08-18.md §3 (융합 α=0.5, 4B/P0)"},
+        {"sample": "dev", "n_queries": 96, "delta": -0.0764,
+         "ci": "산술 차이 · CI 미사전등록",
+         "source": "docs/작업현황_2026-08-18.md §5-10 (고정 α=0.5 Δ_deploy)"},
+    ),
+    "rr_cap_alpha_0_0": (
+        {"sample": "aihub", "n_queries": 1086, "delta": 0.0310,
+         "ci": "[+0.0080, +0.0536] — 0 배제",
+         "source": "docs/재분석_2x2_2026-08-18.md §3 (캡션 단독, 4B/P0)"},
+        {"sample": "dev", "n_queries": 96, "delta": -0.0903,
+         "ci": "[−0.2112, −0.0276] — cluster 3, 진단용만",
+         "source": "docs/재분석_부호역전_2026-08-18.md §1"},
+    ),
+}
+
+
 class DesignError(Exception):
     pass
 
@@ -124,6 +146,125 @@ def design_table(sigma2_between: float, sigma2_within: float,
     return rows
 
 
+def min_confirmable_effect(half_width: float) -> float:
+    """CI로 0을 배제하려면 |Δ|가 half-width를 넘어야 한다.
+
+    `Δ ± hw`가 0을 건너지 않는 조건이 `|Δ| > hw`다. 그래서 목표 half-width는 곧
+    **확증할 수 있는 최소 효과 크기**다 — "hw 0.04면 +0.031도 판정된다"는 틀렸다.
+    """
+    if not half_width > 0:
+        raise DesignError(f"half-width가 양수가 아니다: {half_width}")
+    return half_width
+
+
+def confirmable(delta: float, half_width: float) -> bool:
+    return abs(delta) > min_confirmable_effect(half_width)
+
+
+def rows_for_effect(effect: float, sigma2_between: float,
+                    sigma2_within: float, m: int) -> dict:
+    """이 크기의 효과를 CI로 확증하려면 몇 행이 필요한가."""
+    if not effect:
+        raise DesignError("효과 크기가 0이면 필요한 규모가 정의되지 않는다")
+    hw = abs(float(effect))
+    k = required_k(hw, m, sigma2_between, sigma2_within)
+    return {"effect": effect, "required_half_width_below": hw,
+            "queries_per_video": m, "video_clusters": k,
+            "total_gt_rows": k * m}
+
+
+def confirmability(channels: dict, targets=TARGETS, m: int = 5) -> list:
+    """목표 half-width별로 **과거 효과 크기를 확증할 수 있는지**와, 확증에 필요한 규모."""
+    out = []
+    for name, ch in channels.items():
+        v = ch["variance_decomposition"]
+        for eff in HISTORICAL_EFFECTS[name]:
+            need = rows_for_effect(eff["delta"], v["sigma2_between"],
+                                   v["sigma2_within"], m)
+            for hw in targets:
+                out.append({
+                    "channel": name, "sample": eff["sample"],
+                    "delta": eff["delta"], "half_width_target": hw,
+                    "confirmable": confirmable(eff["delta"], hw),
+                    "min_confirmable_effect_at_target": hw,
+                    "queries_per_video": m,
+                    "total_gt_rows_to_confirm": need["total_gt_rows"],
+                    "video_clusters_to_confirm": need["video_clusters"],
+                    "source": eff["source"]})
+    return out
+
+
+def sample_size_options(primary: dict, secondary: dict, targets=TARGETS,
+                        grid=M_GRID) -> dict:
+    """표본 규모를 무엇이 정하는가 — **두 안을 나란히 낸다.**
+
+    ```
+    A  PRIMARY(α=0.5) 정밀도로 N을 정하고, secondary의 달성 half-width를 함께 보고
+    B  PRIMARY와 secondary가 **같은** 임계를 만족하도록 N을 키운다
+    ```
+
+    α=0.0은 mandatory key secondary이고 **co-primary가 아니다.** 따라서 B를 기본으로
+    쓰는 규칙은 현재 승인되지 않았다 — 선택은 사용자 결정이다.
+    """
+    pv, sv = primary["variance_decomposition"], secondary["variance_decomposition"]
+    a, b = [], []
+    for hw in targets:
+        for m in sorted(grid):
+            kp = required_k(hw, m, pv["sigma2_between"], pv["sigma2_within"])
+            ks = required_k(hw, m, sv["sigma2_between"], sv["sigma2_within"])
+            a.append({
+                "half_width_target": hw, "queries_per_video": m,
+                "video_clusters": kp, "total_gt_rows": kp * m,
+                "primary_achieved_half_width": round(S.projected_half_width(
+                    pv["sigma2_between"], pv["sigma2_within"], kp, m), 4),
+                "secondary_achieved_half_width": round(S.projected_half_width(
+                    sv["sigma2_between"], sv["sigma2_within"], kp, m), 4)})
+            kb = max(kp, ks)
+            b.append({
+                "half_width_target": hw, "queries_per_video": m,
+                "video_clusters": kb, "total_gt_rows": kb * m,
+                "primary_achieved_half_width": round(S.projected_half_width(
+                    pv["sigma2_between"], pv["sigma2_within"], kb, m), 4),
+                "secondary_achieved_half_width": round(S.projected_half_width(
+                    sv["sigma2_between"], sv["sigma2_within"], kb, m), 4),
+                "extra_rows_vs_A": (kb - kp) * m})
+    return {"A_primary_driven": a, "B_primary_and_secondary": b}
+
+
+def icc_robustness(sigma2_between: float, sigma2_within: float,
+                   targets=TARGETS, grid=M_GRID, scenarios=ICC_GRID) -> list:
+    """ICC=0을 진실로 가정하지 않는다 — 가정이 틀렸을 때 설계가 얼마나 무너지는가.
+
+    두 가지를 같이 낸다.
+
+    ```
+    1  가정 ICC에서 목표를 맞추려면 필요한 k · 총 행 수
+    2  **ICC=0으로 잡은 설계**를 그 세계에 놓았을 때 실제 half-width
+    ```
+
+    2번이 요점이다. m이 크고 영상 수가 적은 설계(예: m=9)는 cluster 의존성이 조금만
+    생겨도 크게 나빠진다 — 총 행 수가 같아도 그렇다. **예측이 아니라 설계 강건성
+    진단이다.**
+    """
+    total = sigma2_between + sigma2_within
+    out = []
+    for icc in scenarios:
+        s2b, s2w = total * icc, total * (1.0 - icc)
+        for hw in targets:
+            for m in sorted(grid):
+                k0 = required_k(hw, m, sigma2_between, sigma2_within)
+                k1 = required_k(hw, m, s2b, s2w)
+                out.append({
+                    "assumed_icc": icc, "half_width_target": hw,
+                    "queries_per_video": m,
+                    "video_clusters_icc0": k0, "total_gt_rows_icc0": k0 * m,
+                    "video_clusters_under_assumed_icc": k1,
+                    "total_gt_rows_under_assumed_icc": k1 * m,
+                    "achieved_half_width_if_icc_true": round(
+                        S.projected_half_width(s2b, s2w, k0, m), 4)})
+    return out
+
+
 def icc_table(total_variance: float, targets=TARGETS, grid=M_GRID,
               scenarios=ICC_GRID) -> list:
     """ICC를 가정값으로 훑는다 — m 선택의 이득이 ICC에 얼마나 의존하는지 보인다."""
@@ -160,7 +301,12 @@ def channel_report(name: str, field: str, source=AIHUB) -> dict:
         "icc_scenarios_note": ("가정값 훑기이고 추정이 아니다. ICC가 크면 m이 작은 "
                                "설계가 총 행 수에서 유리해지고 대신 영상이 더 "
                                "필요하다 — 라벨 비용과 수집 비용의 교환이다"),
-        "total_rows_invariant_in_m": dec["icc"] == 0.0,
+        "icc_robustness": icc_robustness(dec["sigma2_between"],
+                                         dec["sigma2_within"]),
+        "total_rows_invariant_in_m_at_observed_icc": dec["icc"] == 0.0,
+        "total_rows_invariant_note": ("관측 ICC에서만 성립한다. ICC가 0이 아니면 "
+                                      "m이 작은 설계가 총 행 수에서 유리하다 — "
+                                      "icc_robustness를 함께 보라"),
     }
 
 
@@ -173,9 +319,46 @@ def report(source=AIHUB) -> dict:
                      "총 GT 행 수"),
         "primary_channel": PRIMARY_CHANNEL,
         "key_secondary_channel": SECONDARY_CHANNEL,
+        "secondary_is_co_primary": False,
+        "secondary_precision_rule_approved": False,
+        "secondary_role_note": ("α=0.0은 mandatory key secondary다 — 반드시 계산·"
+                                "보고하지만 co-primary가 아니고, PRIMARY 실패를 "
+                                "구제하지도 않는다. 그래서 secondary가 자동으로 "
+                                "표본 규모를 지배하지 않는다"),
         "channels": chans,
         "targets": list(TARGETS),
         "m_grid": list(M_GRID),
+        "historical_effect_illustrations": {
+            k: [dict(e) for e in v] for k, v in HISTORICAL_EFFECTS.items()},
+        "historical_effect_note": ("endpoint별로 분리했다. 융합 α=0.5 값과 캡션 단독 "
+                                   "α=0.0 값을 섞어서 '이 정밀도로 저 효과를 잡는다'고 "
+                                   "계산하면 틀린다"),
+        "confirmability": confirmability(chans),
+        "confirmability_note": ("CI로 0을 배제하려면 |Δ| > half-width여야 한다. "
+                                "목표 half-width는 곧 확증 가능한 최소 효과 크기다 — "
+                                "hw 0.04로 +0.019·+0.031을 확증할 수 없다"),
+        "sample_size_options": sample_size_options(chans[PRIMARY_CHANNEL],
+                                                   chans[SECONDARY_CHANNEL]),
+        "sample_size_driver": "사용자_결정_사항",
+        "sample_size_driver_note": ("A는 PRIMARY 정밀도로 N을 정하고 secondary의 달성 "
+                                    "half-width를 함께 보고한다. B는 secondary도 같은 "
+                                    "임계를 만족하도록 N을 키운다. **B를 기본으로 쓰는 "
+                                    "규칙은 승인되지 않았다** — 어느 쪽인지가 사용자 "
+                                    "결정이다"),
+        "icc_zero_assumed_as_truth": False,
+        "icc_robustness_note": ("관측 ICC=0을 P3의 진실로 가정하지 않는다. 비영 ICC "
+                                "시나리오는 **설계 강건성 진단이고 P3 예측이 아니다.** "
+                                "m이 크고 영상 수가 적은 설계는 cluster 의존성이 조금만 "
+                                "생겨도 정밀도가 크게 나빠진다"),
+        "minimum_deployment_relevant_gain": "사용자_결정_사항",
+        "adoption_utility_note": ("half-width를 고르기 전에 답해야 하는 질문이 있다 — "
+                                  "'어느 정도의 deployment gain이면 4B의 추가 운영 "
+                                  "비용을 감수하고 교체할 가치가 있는가'. 예를 들어 "
+                                  "+0.019급을 CI로 확증하려면 confirmability 표의 규모가 "
+                                  "필요한데, 그 라벨 비용이 교체 가치와 맞는지는 통계가 "
+                                  "아니라 운영 판단이다. **결과를 본 뒤 정하면 안 되고 "
+                                  "추론 전에 정한다.** δ 형식일 필요는 없으나 채택 결정 "
+                                  "문서에는 있어야 한다"),
         "p2_half_width_target": P2_HALF_WIDTH_TARGET,
         "p2_target_auto_inherited": False,
         "p2_target_note": ("0.04는 P2의 규칙이다. P3에 자동 승계하지 않고 비교 후보로만 "
