@@ -87,9 +87,19 @@ python src/m3_generate.py   --config config.yaml --video-id myvideo   # 자막+�
 python src/m4_index.py      --config config.yaml --video-id myvideo   # 임베딩
 python src/m5_search.py     --config config.yaml --video-id myvideo --query "찾고 싶은 장면"
 
-# 5) 웹 UI
+# 5) 데모 — preflight 후 웹 UI (권장 진입점)
+python scripts/demo.py --list                          # 인덱스 완성 영상 목록
+python scripts/demo.py --video-id myvideo --check-only  # 배포 구성·인덱스 정합 11항목만 확인
+python scripts/demo.py --video-id myvideo               # preflight 통과 시 웹 UI 시작
+
+# (웹 UI 직접 실행도 가능하다 — preflight는 붙지 않는다)
 python src/m7_webui.py --alpha 0.5 --port 7860
 ```
+
+`scripts/demo.py`는 검색을 재구현하지 않는다 — `m5_search.search`와 `m7_webui.create_app`을
+그대로 쓰고 앞에 **fail-closed preflight**만 붙인다. 배포 구성(`Qwen2.5-VL-3B`·4bit·
+`KURE-v1`·α=0.5)과 다른 조합, 낡은 임베딩(`text_hash` 불일치), test split 영상은
+**시작 자체를 거부한다.**
 
 모델은 최초 실행 시 HuggingFace에서 자동 다운로드된다(수동 준비 불필요).
 

@@ -402,15 +402,15 @@ function render(query, body) {
     const b = document.createElement("button");
     b.className = "hit"; b.type = "button";
     b.innerHTML =
-      `<span class="time">${fmt(c.start)}</span>` +
-      `<span class="rank">${i + 1}위 · <span class="score">${c.score.toFixed(3)}</span></span>` +
+      `<span class="time">${fmt(c.start)}~${fmt(c.end)}</span>` +
+      `<span class="rank">${c.rank ?? i + 1}위 · <span class="score">${c.score.toFixed(3)}</span></span>` +
       `<div class="body">` +
         `<div class="line speech"><span class="who">발화</span>` +
           `<p class="${c.subtitle ? "" : "none"}">${esc(c.subtitle) || "없음"}</p></div>` +
         `<div class="line scene"><span class="who">화면</span>` +
           `<p class="${c.caption ? "" : "none"}">${esc(c.caption) || "없음"}</p></div>` +
       `</div>`;
-    b.onclick = () => seek(c.start);
+    b.onclick = () => seek(c.seek_to ?? c.start);
     box.appendChild(b);
   });
 

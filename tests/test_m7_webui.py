@@ -187,8 +187,9 @@ def test_search_returns_top3_cards(tmp_path):
     r = client.post("/api/search", json={"video_id": "v1", "query": "질의"})
     assert r.status_code == 200
     res = r.json()["results"]
-    assert len(res) == 3                                  # Top-3 고정
-    assert res[0] == {"idx": 2, "start": 10, "end": 15, "score": 0.9,
+    assert len(res) == 3                                  # 기본 Top-3
+    assert res[0] == {"rank": 1, "idx": 2, "start": 10, "end": 15,
+                      "seek_to": 10, "score": 0.9,
                       "subtitle": "자막2", "caption": "설명2"}
 
 
@@ -480,3 +481,57 @@ def test_search_response_uses_display_clean(tmp_path):
     body = r.json()
     assert body["results"][0]["subtitle"] == "설탕"
     assert body["results"][0]["caption"] == "포 상자"
+
+
+# ---- FINALIZATION: 결과 스키마 보완 --------------------------------------
+
+def test_search_result_carries_rank_and_echo(tmp_path):
+    """보고서·발표에 넣을 수 있게 rank·video_id·query·alpha를 응답에 담는다."""
+    ranked = [Result(2, 0.9, 10, 15), Result(0, 0.8, 0, 5), Result(1, 0.7, 5, 10)]
+    client, _ = make_client(tmp_path,
+                            search_fn=lambda q, v, a, c: ranked,
+                            load_index=lambda cfg, vid: _stub_index(4))
+    body = client.post("/api/search",
+                       json={"video_id": "v1", "query": "질의"}).json()
+    assert body["video_id"] == "v1" and body["query"] == "질의"
+    assert body["alpha"] == 0.5
+    assert [r["rank"] for r in body["results"]] == [1, 2, 3]
+
+
+def test_search_top_k_is_requestable_and_bounded(tmp_path):
+    ranked = [Result(i, 1.0 - i / 10, i * 5, i * 5 + 5) for i in range(4)]
+    client, _ = make_client(tmp_path,
+                            search_fn=lambda q, v, a, c: ranked,
+                            load_index=lambda cfg, vid: _stub_index(4))
+
+    def n(k):
+        return len(client.post("/api/search",
+                               json={"video_id": "v1", "query": "질의",
+                                     "top_k": k}).json()["results"])
+    assert n(1) == 1 and n(4) == 4
+    assert n(999) == 4                    # 구간 수를 넘지 않는다
+    assert client.post("/api/search", json={"video_id": "v1", "query": "q",
+                                            "top_k": 0}).status_code == 400
+
+
+def test_search_default_top_k_stays_three(tmp_path):
+    """기존 동작 불변 — 지정하지 않으면 Top-3."""
+    ranked = [Result(i, 1.0 - i / 10, i * 5, i * 5 + 5) for i in range(4)]
+    client, _ = make_client(tmp_path,
+                            search_fn=lambda q, v, a, c: ranked,
+                            load_index=lambda cfg, vid: _stub_index(4))
+    body = client.post("/api/search",
+                       json={"video_id": "v1", "query": "질의"}).json()
+    assert len(body["results"]) == 3
+
+
+def test_search_result_timestamps_are_within_video(tmp_path):
+    ranked = [Result(2, 0.9, 10, 15)]
+    client, _ = make_client(tmp_path,
+                            search_fn=lambda q, v, a, c: ranked,
+                            load_index=lambda cfg, vid: _stub_index(4))
+    body = client.post("/api/search",
+                       json={"video_id": "v1", "query": "질의"}).json()
+    r = body["results"][0]
+    assert 0 <= r["start"] < r["end"] <= body["duration_sec"]
+    assert r["seek_to"] == r["start"]

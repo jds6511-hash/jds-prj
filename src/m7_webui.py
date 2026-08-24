@@ -11,6 +11,8 @@ import common
 from m5_search import VideoIndex, search, search_with_stats
 
 PIPELINE = ("m1_preprocess.py", "m2_keyframe.py", "m3_generate.py", "m4_index.py")
+DEFAULT_TOP_K = 3           # 기존 동작 불변. 요청으로만 늘린다
+
 STAGE = {"m1_preprocess.py": "m1", "m2_keyframe.py": "m2",
          "m3_generate.py": "m3", "m4_index.py": "m4"}
 
@@ -226,6 +228,15 @@ def create_app(cfg: dict, config_path: str, alpha: float,
             except (FileNotFoundError, ValueError) as e:   # 산출물 미존재/불일치 → 안내
                 raise HTTPException(404, str(e))
         video = index_cache[video_id]
+        n_seg = len(video.segments)
+        # top_k는 표시 계층 파라미터다 — 랭킹·점수·평가에 영향이 없다.
+        try:
+            top_k = int(body.get("top_k", DEFAULT_TOP_K))
+        except (TypeError, ValueError):
+            raise HTTPException(400, "top_k가 정수가 아니에요")
+        if top_k < 1:
+            raise HTTPException(400, "top_k는 1 이상이어야 해요")
+        top_k = min(top_k, n_seg)
         # stats 우선: search_stats_fn이 지정됐거나 search_fn이 기본값(search)이면
         # search_with_stats로 raw 코사인 통계를 얻는다. search_fn만 스텁 주입된
         # 경우(기존 M6/M7 테스트 패턴)는 stats 없이 결과만 사용 — 하위호환.
@@ -237,12 +248,20 @@ def create_app(cfg: dict, config_path: str, alpha: float,
             results, stats = stats_fn(query, video, alpha, cfg)
         else:
             results = search_fn(query, video, alpha, cfg)
-        top = results[:3]
-        response = {"results": [
-            {"idx": r.idx, "start": int(r.start), "end": int(r.end),
-             "score": round(r.score, 3),
-             "subtitle": display_clean(video.segments[r.idx]["subtitle"]),
-             "caption": display_clean(video.segments[r.idx]["caption"])} for r in top]}
+        top = results[:top_k]
+        # 응답에 rank·seek_to·질의 echo를 담는다 — 결과를 파일로 남기거나 보고서에
+        # 옮길 때 배열 순서에 의존하지 않게 한다 [FINALIZATION-P1].
+        response = {
+            "video_id": video_id, "query": query, "alpha": alpha,
+            "top_k": top_k, "n_segments": n_seg,
+            "duration_sec": int(video.segments[-1]["end"]) if n_seg else 0,
+            "results": [
+                {"rank": i + 1, "idx": r.idx,
+                 "start": int(r.start), "end": int(r.end),
+                 "seek_to": int(r.start), "score": round(r.score, 3),
+                 "subtitle": display_clean(video.segments[r.idx]["subtitle"]),
+                 "caption": display_clean(video.segments[r.idx]["caption"])}
+                for i, r in enumerate(top)]}
         if stats is not None:
             response["raw"] = stats
             # 8-2 abstention: 랭킹·기존 필드 불변, 표시 계층용 추가 필드만 부기.
