@@ -1,0 +1,54 @@
+{
+  "probe": "p3_opcost_interpretation_rules",
+  "protocol": "p3_opcost_v1",
+  "purpose": "운영비 측정 결과를 어떻게 읽을지 결과 전에 고정한다. 결정 0(최소 deployment-relevant gain)의 방향을 측정치에 맞춰 사후에 만들지 않기 위한 장치다.",
+  "provenance": {
+    "stated_by": "user",
+    "stated_in": "승인 메시지 (p3_opcost_v1 GPU 측정 GO와 같은 메시지)",
+    "stated_before_frame_freeze": true,
+    "stated_before_canary": true,
+    "stated_before_full": true,
+    "persisted_to_file_at": "2026-08-24T22:10 경",
+    "persisted_after_canary": true,
+    "claim_grade": "CANARY-informed, FULL-precommitted (보수적 등급). 대화 순서로는 CANARY 이전에 규칙이 서술됐으나, **파일로 남긴 시점은 CANARY 이후**다. 그래서 '모든 GPU 결과 이전에 사전등록'이라고 주장하지 않는다.",
+    "timeline_evidence": {
+      "protocol_committed": "08cad90 @ 2026-08-24 21:57:02 (+0900) — GPU run 이전",
+      "frames_frozen_at": "2026-08-24T22:02:07",
+      "canary_measured_at": "2026-08-24T22:07:53",
+      "full_measured_at": "이 파일 작성 시점에 진행 중"
+    },
+    "invariant": "FULL 40장 결과에 맞춰 이 규칙을 다시 고치지 않는다. 고치면 그 사실과 이유를 별도 항목으로 남긴다."
+  },
+  "rules": [
+    {
+      "condition": "4B가 6GB에서 안정적으로 fit + throughput이 3B와 비슷하거나 빠름",
+      "reading": "추가 운영 페널티가 작다는 방향. 작은 retrieval gain도 deployment-relevant할 가능성 증가",
+      "consequence_for_decision_0": "최소 가치 효과를 작게 잡을 근거가 된다 → 필요한 precision이 높아지고 P3-A가 대형 annotation 문제라는 사실을 정면으로 받아들여야 한다"
+    },
+    {
+      "condition": "fit은 하지만 VRAM headroom이 매우 작거나 throughput이 명확히 느림",
+      "reading": "작은 +0.02급 gain의 채택 가치가 낮아질 수 있음",
+      "consequence_for_decision_0": "최소 가치 효과를 더 높게 설정할 정당한 운영 근거가 생긴다"
+    },
+    {
+      "condition": "OOM / offload 필수 / 실사용 불안정",
+      "reading": "retrieval gain과 무관하게 현재 deployment candidate로는 operational blocker",
+      "consequence_for_decision_0": "P3-A의 효용 자체를 다시 묻게 된다 — 교체 경로가 막히면 효과 크기 논의가 무의미하다"
+    },
+    {
+      "condition": "결과가 혼합적",
+      "reading": "decision 0을 성급히 숫자로 정하지 않는다",
+      "consequence_for_decision_0": "operational trade-off로 사용자 결정에 올린다"
+    }
+  ],
+  "direction_invariant": "운영비 실측 → 최소 가치 효과 → 필요한 precision → k×m. 역방향(라벨 부담을 보고 최소 가치 효과를 키우기)은 금지다.",
+  "wording_rules": [
+    "'caption-generation wall-clock이 짧았다'와 '운영비가 낮다'를 구분한다. 전력·실제 비용은 측정하지 않았다",
+    "모든 항목을 모은 뒤에는 '추가 operational penalty가 관측되지 않았다' 또는 'trade-off는 VRAM +X, throughput −Y' 형태로 정리한다",
+    "40장은 통계적 모집단 추정이 아니다 — deployment operational feasibility의 descriptive measurement다",
+    "peak VRAM을 '3.0GB < 6GB'로 끝내지 않는다. 실행 중 남는 headroom을 본다"
+  ],
+  "not_measured": [
+    "retrieval 성능", "캡션 품질", "MRR·RR·순위", "전력 소비", "장기 안정성(수천 구간 연속)"
+  ]
+}

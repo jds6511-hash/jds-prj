@@ -1,0 +1,75 @@
+{
+  "probe": "p3_opcost_reporting_rules",
+  "protocol": "p3_opcost_v1",
+  "purpose": "1차·2차 FULL의 역할, headroom 관찰 범위, 결과 문구를 **2차 결과를 보기 전에** 고정한다.",
+  "frozen_at": "2026-08-24 (2차 FULL 실행 중, 결과 파일 생성 전)",
+  "provenance": {
+    "stated_by": "user",
+    "stated_before_second_full_result": true,
+    "note": "1차 FULL 결과는 이미 봤다. 2차 결과는 이 파일 작성 시점에 존재하지 않는다."
+  },
+
+  "run_roles": {
+    "full_prelim_no_reserved": {
+      "file": "docs/probes/_scratch/p3_opcost_full_prelim_no_reserved.json",
+      "role": "timing profile의 **authoritative measurement**",
+      "reason": "정상적으로 얻은 throughput 자료다. VRAM metric이 빠졌다는 이유로 무효화하지 않는다",
+      "instrumentation": "프레임 루프에 free-VRAM 샘플링이 없다 — timing에 계측 부하가 섞이지 않았다"
+    },
+    "full_second": {
+      "file": "docs/probes/_scratch/p3_opcost_full.json",
+      "role": "VRAM/headroom 보강 measurement + timing **replication / sensitivity**",
+      "reason": "프레임마다 mem_get_info를 부르므로 아주 작더라도 timing에 영향을 줄 가능성이 있다",
+      "interpretation": {
+        "timing이 1차와 거의 같으면": "재현됐다고 기록한다",
+        "timing이 다르면": "계측 overhead 또는 시스템 상태 가능성을 기록한다. 1차 값을 대체하지 않는다"
+      }
+    },
+    "invariant": "2차 timing으로 1차 timing을 갈아치우지 않는다. 두 실행을 각자의 역할로 병기한다."
+  },
+
+  "headroom_observation_scope": {
+    "sampled": "generation loop only — 프레임 생성 직후마다 torch.cuda.mem_get_info의 free를 읽는다",
+    "not_sampled": "model load 구간 · CUDA workspace 생성 순간",
+    "field_naming_rule": "따라서 '최소 headroom'이라고 부르지 않고 **minimum_generation_free_vram_gb**로 범위를 제한해 부른다",
+    "load_feasibility_evidence": "로드 자체는 arm별 3회 × 블록 2회 전부 성공했고 OOM 0이다 — load feasibility는 관측됐다. 다만 load 구간의 free VRAM **수치**는 재지 않았다",
+    "reported_separately": [
+      "free_before_first_load (vram_free_at_start_gb)",
+      "peak allocated (블록별)",
+      "peak reserved (블록별, 2차부터)",
+      "minimum_generation_free_vram (블록별, 2차부터)",
+      "OOM / failure count"
+    ]
+  },
+
+  "mechanistic_note": {
+    "observation": "4B의 frame당 wall-clock이 짧은 이유는 상당 부분 **출력이 짧기 때문**이다",
+    "numbers_from_first_full": {
+      "3b": {"tokens_mean": 92.2, "sec_per_frame_median": 8.061},
+      "4b": {"tokens_mean": 59.7, "sec_per_frame_median": 5.974}
+    },
+    "per_token_throughput": "토큰당 처리속도만 보면 4B가 특별히 빠르다고 단정할 수 없다 — 보고표의 tokens_per_sec를 함께 낸다",
+    "why_frame_time_is_still_the_right_metric": "배포 비용은 한 segment를 끝내는 wall-clock이 결정한다. frame당 시간이 올바른 operational metric이다",
+    "boundary": "짧은 캡션이 retrieval에 좋은지 나쁜지는 **opcost에서 판단하지 않는다.** 그것은 P3-A effectiveness가 답할 질문이고, 그래서 캡션 문자열을 보지 않는다"
+  },
+
+  "wording_rules": [
+    "쓰지 않는다: '4B가 계산적으로 더 효율적이다'",
+    "쓴다: '동일 prompt/config에서 4B가 더 짧은 출력을 생성했고, 그 결과 end-to-end caption wall-clock이 더 짧게 관측됐다'",
+    "'wall-clock이 짧다'와 '운영비가 낮다'를 구분한다 — 전력·실제 비용은 측정하지 않았다",
+    "블록 2개로 'order effect 없음'을 통계적으로 주장하지 않는다. '드리프트가 결론을 뒤집는 크기로 관측되지는 않았다'까지만 쓴다",
+    "40장은 통계적 모집단 추정이 아니라 deployment operational feasibility의 descriptive measurement다"
+  ],
+
+  "profile_closes_after_second_run": {
+    "closed": true,
+    "reason": "결과를 보고 새 지표(온도·전력·클럭 등)를 계속 추가하면 끝이 없다",
+    "sufficient_for_decision_0": [
+      "6GB에서 실제 fit하는가",
+      "headroom은 어느 정도인가",
+      "OOM이 있는가",
+      "end-to-end throughput penalty가 있는가"
+    ],
+    "next_step": "2차 결과로 4분기 operational interpretation을 확정하고 바로 decision 0으로 넘어간다"
+  }
+}

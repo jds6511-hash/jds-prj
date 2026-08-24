@@ -1,0 +1,127 @@
+{
+  "protocol": "p3_opcost_v1",
+  "stage": "full",
+  "block_order": [
+    "3b",
+    "4b",
+    "3b",
+    "4b"
+  ],
+  "arms": {
+    "3b": {
+      "model_id": "Qwen/Qwen2.5-VL-3B-Instruct",
+      "model_revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+      "quantized_effective": true,
+      "quantization_mismatch": false,
+      "dtype_effective": "torch.bfloat16",
+      "sec_per_frame_median_per_block": [
+        7.929,
+        8.192
+      ],
+      "sec_per_frame_median": 8.060500000000001,
+      "frames_per_sec": 0.1241,
+      "vram_peak_allocated_gb_per_block": [
+        2.44,
+        2.439
+      ],
+      "vram_peak_reserved_gb_per_block": [
+        null,
+        null
+      ],
+      "vram_min_free_gb_per_block": [
+        null,
+        null
+      ],
+      "vram_total_gb": 6.0,
+      "vram_free_at_start_gb": 5.01,
+      "load_sec_per_block": [
+        [
+          27.738,
+          11.4,
+          11.221
+        ],
+        [
+          19.286,
+          11.869,
+          11.917
+        ]
+      ],
+      "n_frames_attempted": [
+        null,
+        null
+      ],
+      "n_frames_timed": [
+        39,
+        39
+      ],
+      "n_failures": 0,
+      "oom": false,
+      "out_chars_mean": 133.6,
+      "out_tokens_mean": 92.2,
+      "model_storage_gb": 7.0,
+      "block_drift_sec_per_frame": 0.263
+    },
+    "4b": {
+      "model_id": "Qwen/Qwen3-VL-4B-Instruct",
+      "model_revision": "ebb281ec70b05090aa6165b016eac8ec08e71b17",
+      "quantized_effective": true,
+      "quantization_mismatch": false,
+      "dtype_effective": "torch.bfloat16",
+      "sec_per_frame_median_per_block": [
+        5.971,
+        5.977
+      ],
+      "sec_per_frame_median": 5.974,
+      "frames_per_sec": 0.1674,
+      "vram_peak_allocated_gb_per_block": [
+        3.043,
+        3.043
+      ],
+      "vram_peak_reserved_gb_per_block": [
+        null,
+        null
+      ],
+      "vram_min_free_gb_per_block": [
+        null,
+        null
+      ],
+      "vram_total_gb": 6.0,
+      "vram_free_at_start_gb": 4.96,
+      "load_sec_per_block": [
+        [
+          21.143,
+          11.874,
+          12.183
+        ],
+        [
+          20.516,
+          12.807,
+          12.723
+        ]
+      ],
+      "n_frames_attempted": [
+        null,
+        null
+      ],
+      "n_frames_timed": [
+        39,
+        39
+      ],
+      "n_failures": 0,
+      "oom": false,
+      "out_chars_mean": 82.9,
+      "out_tokens_mean": 59.7,
+      "model_storage_gb": 8.28,
+      "block_drift_sec_per_frame": 0.006
+    }
+  },
+  "ratio": {
+    "sec_per_frame_candidate_over_base": 0.7411,
+    "vram_peak_reserved_delta_gb": null,
+    "out_tokens_candidate_over_base": 0.6475
+  },
+  "caption_text_stored": false,
+  "measurement_grade": "deployment operational feasibility의 descriptive measurement다. 통계적 모집단 추정이 아니다",
+  "wording_rule": "wall-clock이 짧은 것과 운영비가 낮은 것은 다르다 — 전력·실제 비용은 측정하지 않았다",
+  "headroom_note": "allocated peak은 allocator 예약분과 CUDA 컨텍스트를 빼고 센다. fit 판단은 reserved peak과 실행 중 최소 free VRAM으로 한다"
+}
