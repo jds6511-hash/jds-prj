@@ -29,10 +29,12 @@ def _rec(sid, legacy=False):
 
 FULL_YES = {"external_annotation_allowed": "yes",
             "basis": "직접 제작",
+            "third_party_viewing_right": "yes",
             "third_party_delivery_right": "yes",
             "retention_redistribution_limit": "사본 30일 후 삭제",
             "deletion_required_after_work": "yes",
-            "identifiable_person_constraint": "없음"}
+            "identifiable_person_constraint": "없음",
+            "attribution_requirement": "해당 없음"}
 
 
 # ---- 기본값은 unclear ------------------------------------------------------
@@ -64,8 +66,9 @@ def test_full_evidence_allows_yes():
 
 
 @pytest.mark.parametrize("missing", [
-    "basis", "third_party_delivery_right", "retention_redistribution_limit",
-    "deletion_required_after_work", "identifiable_person_constraint"])
+    "basis", "third_party_viewing_right", "third_party_delivery_right",
+    "retention_redistribution_limit", "deletion_required_after_work",
+    "identifiable_person_constraint", "attribution_requirement"])
 def test_incomplete_evidence_downgrades_to_unclear(missing):
     ev = dict(FULL_YES)
     del ev[missing]
@@ -74,10 +77,20 @@ def test_incomplete_evidence_downgrades_to_unclear(missing):
     assert missing in rows[0]["downgrade_reason"]
 
 
-def test_no_third_party_right_cannot_be_yes():
-    ev = dict(FULL_YES, third_party_delivery_right="no")
+def test_no_access_right_at_all_is_no():
+    """열람도 사본 전달도 안 되면 어떤 경로로도 외부 annotation이 불가능하다."""
+    ev = dict(FULL_YES, third_party_viewing_right="no",
+              third_party_delivery_right="no")
     rows = R.audit([_rec("a")], evidence={"a": ev})
     assert rows[0]["external_annotation_allowed"] == "no"
+
+
+def test_delivery_denied_but_viewing_allowed_stays_yes():
+    """사본 전달만 막힌 경우는 VDI 경로가 남아 있다 — 전체를 no로 닫지 않는다."""
+    ev = dict(FULL_YES, third_party_delivery_right="no")
+    rows = R.audit([_rec("a")], evidence={"a": ev})
+    assert rows[0]["external_annotation_allowed"] == "yes"
+    assert rows[0]["allowed_access_modes"] == ["viewing"]
 
 
 def test_explicit_no_is_preserved():
@@ -176,3 +189,101 @@ def test_module_has_no_registry_writer():
     src = (ROOT / "scripts" / "p3_rights_audit.py").read_text(encoding="utf-8")
     assert "videos.jsonl" not in src
     assert "write_text" not in src.split("def main")[0]
+
+
+# ---- 열람권과 사본 전달권을 구분한다 --------------------------------------
+
+VIEW_ONLY = {"external_annotation_allowed": "yes",
+             "basis": "제공기관 약관 (원격 열람만 허용)",
+             "third_party_viewing_right": "yes",
+             "third_party_delivery_right": "no",
+             "retention_redistribution_limit": "사본 생성 금지",
+             "deletion_required_after_work": "해당 없음",
+             "identifiable_person_constraint": "없음",
+             "attribution_requirement": "출처 표시"}
+
+
+def test_required_evidence_covers_viewing_and_attribution():
+    for f in ("third_party_viewing_right", "third_party_delivery_right",
+              "attribution_requirement"):
+        assert f in R.REQUIRED_EVIDENCE, f
+
+
+def test_view_only_source_is_viewable_but_not_deliverable():
+    rows = R.audit([_rec("a")], evidence={"a": dict(VIEW_ONLY)})
+    e = rows[0]
+    assert R.transferable(e, mode="viewing") is True
+    assert R.transferable(e, mode="delivery") is False
+    assert e["external_annotation_allowed"] == "yes"
+
+
+def test_full_yes_allows_both_modes():
+    rows = R.audit([_rec("a")], evidence={"a": dict(FULL_YES)})
+    assert R.transferable(rows[0], mode="viewing") is True
+    assert R.transferable(rows[0], mode="delivery") is True
+
+
+def test_no_viewing_right_cannot_be_yes():
+    ev = dict(FULL_YES, third_party_viewing_right="no")
+    rows = R.audit([_rec("a")], evidence={"a": ev})
+    assert rows[0]["external_annotation_allowed"] == "no"
+
+
+def test_unknown_access_mode_is_an_error():
+    rows = R.audit([_rec("a")], evidence={"a": dict(FULL_YES)})
+    with pytest.raises(R.RightsError):
+        R.transferable(rows[0], mode="download_forever")
+
+
+def test_pilot_gate_mode_is_recorded():
+    rows = R.audit([_rec("a")], evidence={"a": dict(VIEW_ONLY)})
+    g = R.pilot_gate(rows, ["a"], mode="delivery")
+    assert g["allowed"] is False and g["mode"] == "delivery"
+    assert R.pilot_gate(rows, ["a"], mode="viewing")["allowed"] is True
+
+
+# ---- pilot-only 코호트 ----------------------------------------------------
+
+PILOT_YES = dict(FULL_YES, pilot_only=True, eligible_for_p3_main=False)
+
+
+def test_pilot_only_flags_are_carried():
+    rows = R.audit([_rec("p1")], evidence={"p1": dict(PILOT_YES)})
+    assert rows[0]["pilot_only"] is True
+    assert rows[0]["eligible_for_p3_main"] is False
+
+
+def test_pilot_flags_default_false_and_none():
+    rows = R.audit([_rec("a")], evidence={})
+    assert rows[0]["pilot_only"] is False
+    assert rows[0]["eligible_for_p3_main"] is None
+
+
+def test_pilot_only_video_cannot_be_main_eligible():
+    ev = dict(PILOT_YES, eligible_for_p3_main=True)
+    with pytest.raises(R.RightsError):
+        R.audit([_rec("p1")], evidence={"p1": ev})
+
+
+def test_pilot_cohort_gate_requires_pilot_only_videos():
+    """본 표본 후보를 파일럿에 끌어오면 이후 라벨이 오염된다."""
+    rows = R.audit([_rec("a")], evidence={"a": dict(FULL_YES)})
+    g = R.pilot_gate(rows, ["a"], mode="delivery", require_pilot_only=True)
+    assert g["allowed"] is False
+    assert "pilot_only" in g["blocking_reason"]["a"]
+
+
+def test_pilot_cohort_gate_passes_with_ten_cleared_pilot_videos():
+    ids = [f"p{i}" for i in range(10)]
+    recs = [_rec(i) for i in ids]
+    ev = {i: dict(PILOT_YES) for i in ids}
+    g = R.pilot_gate(R.audit(recs, ev), ids, mode="delivery",
+                     require_pilot_only=True)
+    assert g["allowed"] is True and g["n_pilot"] == 10
+
+
+def test_report_counts_pilot_cohort():
+    r = R.report(records=[_rec("a"), _rec("p1")],
+                 evidence={"p1": dict(PILOT_YES)})
+    assert r["pilot_only_cleared"] == ["p1"]
+    assert r["pilot_cohort_target"] == 10
