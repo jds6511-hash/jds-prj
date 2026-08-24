@@ -321,9 +321,28 @@ AI Hub를 2,328로 늘리니   +0.0310 → +0.0112
 **비용을 줄이려고 통계 규칙을 완화하지 않는다.** half-width 임계를 낮추거나, 판정_불가를
 "차이 없음"으로 바꾸거나, 표본을 결과 보고 늘리는 것은 전부 금지다.
 
-### 9-1. 라벨 경로 제안 (outcome-blind) — 실행 전 확정 대상
+### 9-1. 라벨 경로 — **경로 C(외부 human annotator) 동결 (2026-08-24)**
 
-**scene-only AI 생성을 일반 P3-A 라벨 경로로 쓰지 않는다.** 확정해야 하는 네 가지.
+**1,500행이면 전량 사람 라벨링을 프로젝트 내부에서 수행하는 경로(A)는 제외한다.** P2가
+175행 설계에서 20건에 멈춘 것이 그 근거다 — 규모가 한 자릿수 배 다르다.
+
+**동결된 경로 C의 조건**
+
+```
+annotator에게 주는 것    frozen query/GT protocol · 원본 video/audio
+숨기는 것               3B/4B identity · 모델 캡션 · 파이프라인 STT ·
+                       retrieval 결과 · 기존 arm 결과
+label_origin           기록한다. PRIMARY의 selection·weighting에는 쓰지 않는다
+GT 성립 조건            사람 최종 확정 없이 GT로 세지 않는다
+유형 쿼터               표집 전 동결
+```
+
+**AI-assisted를 섞으려면 별도 amendment가 필요하다.** 전 유형을 **동일 원칙으로 처리할 수
+있는 audio-capable draft route**를 먼저 만들어야 하고, 현재처럼 **장면형만 AI화하는 방식은
+P3-A에 쓰지 않는다** — 유형별로 GT 생성 절차가 달라지면 유형 간 비교가 절차 차이와
+교란된다.
+
+아래 세 경로 비교는 이 결정의 근거로 남겨둔다.
 
 | 항목 | 경로 A: 전량 사람 | 경로 B: AI 초안 + 사람 확정 | 경로 C: 외부 annotator |
 |---|---|---|---|
@@ -347,11 +366,84 @@ label_origin·draft_action을 기록하되 PRIMARY의 selection·exclusion·weig
 행동 명시 없으면 저장 거부) · `label_guard` allowlist.
 
 **expected GT row count는 §10의 정밀도 선택에서 파생된다.** 지금 행 수를 먼저 고르고
-정밀도를 맞추는 순서가 아니다.
+정밀도를 맞추는 순서가 아니다. 그 파생 결과가 §11의 **1,500행**이다.
 
 ### 9-2. 라벨 경로가 정해지기 전에는 표본 수집도 하지 않는다
 
 전 유형을 편향 없이 다룰 수 있는 GT 경로와 최종 N이 고정된 뒤에 수집을 시작한다.
+
+### 9-3. 외부 annotator 경로 명세 — **현재 GO 범위 (실행 전 확보 대상)**
+
+경로 C가 동결됐고 규모는 1,500행이다(§11). 지금 해야 하는 일은 **이 경로가 실제로 존재하는지
+확인하는 것**이고, 아래 5개가 전부 고정된 뒤에 표본 수집을 시작한다. 이 절 자체는 계약·수집·
+라벨 생성을 실행하지 않는다.
+
+**(1) blind input bundle — annotator가 받는 것과 못 받는 것**
+
+```
+받는다        영상 파일(또는 시청 링크) · 원본 오디오 · 질의 유형 정의서 ·
+             GT 작성 규약(gt_start/gt_end 판정 기준) · 유형 쿼터
+받지 않는다    3B/4B arm 정체성 · 모델 캡션 · 파이프라인 STT 텍스트 ·
+             retrieval 결과·순위·점수 · 기존 arm 결과 · segments.json ·
+             dev/AI Hub/P2의 기존 라벨
+```
+
+강제 방식은 관행이 아니라 도구다. **bundle builder는 `segments.json`을 직접 읽지 않고
+`label_guard` allowlist를 거친다** — 같은 파일에 `caption`·`subtitle`이 들어 있고 기확보
+영상에는 그것이 이미 존재하기 때문이다(CLAUDE.md 규칙 3과 동일한 이유). 검색·평가 모듈은
+import조차 하지 않는다. 산출 bundle은 **금지 키 전수 스캔을 통과해야** 반출 가능하다.
+
+미결정 1건: 신규 300편은 **인덱싱 전에 라벨링할 수 있다** — 그러면 `segments.json`이 아직
+없으므로 누출 경로 자체가 없다. 이 순서(라벨 먼저 → 2-arm 인덱싱 나중)를 기본으로 하고,
+불가피하게 인덱싱이 선행되면 allowlist 경유를 강제한다.
+
+**(2) annotation contract — 무엇을 사서 무엇을 받는가**
+
+```
+작업 단위     영상 1편당 질의 5건 + 각 질의의 gt_start·gt_end (총 300편 · 1,500행)
+유형 쿼터     표집 전 동결 (장면형·자막형·복합형 비율). annotator가 유형을 고르지 않는다
+제출 스키마   질의문 · 유형 · gt_start · gt_end · 확신도 · 작성 근거 메모
+              (gt_seg_idx는 우리가 `common.derive_gt_seg_idx`로 파생한다 — 외부에서 만들지 않는다)
+검수 통과 조건  스키마 검증 + QC 표본 감사 통과. 사람 최종 확정 없이 GT로 세지 않는다
+반출 승인     영상·음성을 외부에 넘기는 범위와 저작권·초상권 경계를 먼저 확인한다 (미해결)
+```
+
+**(3) QC 규약**
+
+```
+중복 라벨      전체의 일정 비율을 2인 독립 작성 → 일치도 산출 (비율은 계약 전 동결)
+불일치 재판정   제3자 또는 내부 판정. 판정 이력을 audit으로 남긴다
+표본 감사      프레임 실물 검증으로만 한다 — 캡션·STT·검색 결과를 근거로 쓰지 않는다
+탈락 기준      규약 위반·시각 경계 부정확·유형 오분류. 탈락분은 재작업하되 재작업 사실을 기록
+금지           QC 과정에서 arm 결과나 retrieval 순위를 보고 라벨을 고르는 일
+```
+
+QC 지표(일치도·탈락률)는 **품질 보고용이고 PRIMARY의 selection·exclusion·weighting에
+쓰지 않는다.** `label_origin`·`draft_action`과 같은 취급이다.
+
+**(4) 1,500행 처리 가능성 — 지금 모르는 값**
+
+행당 소요 시간의 신뢰할 만한 실측이 **없다.** P2는 175행 설계에서 20건에 멈췄고, 그
+작업은 도구·규약이 확정되는 중에 이뤄져 정상 속도의 대표값이 아니다. 따라서:
+
+> **유료 소규모 파일럿을 먼저 한다.** GPU 배치와 같은 규율이다 — PLAN → CANARY → FULL.
+> 파일럿에서 행당 소요·일치도·탈락률을 실측하고, 그 값으로 본 계약의 인원·일정·비용을
+> 정한다. 파일럿 결과가 1,500행을 감당 못 한다고 말하면 **그때는 N을 줄이는 것이 아니라
+> P3-A 자체의 실행 가능성을 다시 묻는다** — 라벨 부담을 보고 최소 가치 효과나 정밀도
+> 목표를 낮추는 것은 금지된 역방향 결정이다(§11).
+
+파일럿 자체도 표본 수집 전에는 시작하지 않는다. 파일럿에 쓸 영상은 **본 표본에 포함되지
+않는 별도 영상**이어야 한다(파일럿에서 본 영상은 이후 라벨이 오염된다).
+
+**(5) 표본 수집 전에 동결해야 하는 것**
+
+```
+질의 유형 정의서 · 유형 쿼터 · GT 판정 규약 · 제출 스키마 · QC 비율·판정 절차 ·
+bundle 금지 키 목록 · 파일럿 규모 · 반출 승인 범위
+```
+
+이것들이 고정되고 파일럿 실측이 나온 뒤에 **acquisition + annotation + 2-arm indexing +
+retrieval/evaluation을 한 번에 승인**받는다.
 
 ---
 
@@ -513,18 +605,51 @@ seed        사전등록 동결 시 결정론적 고정
 δ           P3-C 미선택 — defer
 ```
 
-**남은 사용자 결정 (실행 전)**
+**사용자 결정 — 동결 (2026-08-24, outcome 열람 전)**
 
 ```
-0  **최소 deployment-relevant gain / 채택 효용 기준**  ← A보다 먼저다 (§11-1)
-A  half-width / precision rule       0.04 / 0.05 / 0.06 중 (§10-2 결론 표를 보고)
-B  표본 규모 driver + k × m           §10-3의 A안(PRIMARY 주도) / B안(양쪽 동일) 중 하나
-                                     + m 선택은 §10-4 ICC 강건성을 함께 본다
-C  라벨 경로                          §9-1 경로 A / B(+amendment) / C
-D  P3-A 실행 GO/HOLD
+0  최소 deployment-relevant gain     **MRR +0.02 초과**
+A  PRIMARY half-width target        **≈ 0.02**
+B  표본 규모 driver                   **A안 = PRIMARY-driven** (B안 미채택)
+B  k × m                            **300 영상 × 5 질의 = 1,500 GT 행**
+C  라벨 경로                          **외부 human annotator 기본**
+D  P3-A 실행                         **HOLD** — blocker는 통계가 아니라 annotation logistics
 ```
 
-이 값들을 이 문서에서 발명하지 않았다.
+기계 판독 산출물: `docs/P3_설계민감도_2026-08-24.json` → `frozen_decision`
+(`scripts/p3_design_sensitivity.py`, 테스트 49건). 이 값들을 이 문서에서 발명하지 않았다.
+
+**`+0.02`는 데이터가 알려준 상수가 아니다 — deployment policy threshold다.** 결과를 보기
+전에 정한 운영 판단값이다. 근거는 §11-2의 실측이다: 4B가 실제 6GB/4bit 배포 환경에서
+OOM 없이 들어가고 caption wall-clock이 더 짧았으므로, `+0.04~0.06`을 최소 가치 효과로
+요구할 근거가 약해졌다. 추가 비용은 VRAM reserved +0.431GB · 저장 +1.28GB와 일회성
+재생성·검증 절차 수준이고, 이 조건에서 **MRR +0.02급 개선은 실제 교체를 검토할 만한
+크기**다. 반대로 라벨링이 힘들다는 이유로 임계를 +0.05·+0.06으로 올리면 **금지된 역방향
+결정**이 된다.
+
+**300×5를 고른 이유와, 이 설계가 주장하지 않는 것**
+
+```
+수학적 최소   hw 0.02 · m 5 · σ²_w 0.142 · ICC=0 근사 → 273편 · 1,365행
+동결값        300편 · 1,500행 (경계보다 약간 위)
+투사 half-width   PRIMARY 0.0191  (정책 임계 0.02보다 조금 아래)
+                 SECONDARY 0.0204 (강제로 맞추지 않는다 — 아래 참조)
+```
+
+> **"1,500행이면 반드시 +0.02를 검출한다"가 아니다.** historical variance + ICC=0
+> approximation에 기반하면 300×5 설계가 약 **0.019급 half-width를 목표로 한다**는 뜻이고,
+> 실제 P3 cluster structure에서는 **더 넓어질 수 있다.** 그리고 **결과를 본 뒤
+> top-up하지 않는다** — 달성 half-width가 목표보다 넓으면 그 사실을 그대로 보고한다.
+
+**m=5 유지 근거.** m=9는 영상 수·GPU 비용이 줄지만 ICC가 조금만 생겨도 취약해진다
+(§10-4). m=3은 cluster robustness가 좋아지지만 영상이 약 500편으로 뛰어 수집·인덱싱
+부담이 과도하다. 5가 절충점이다.
+
+**secondary 때문에 1,500을 늘리지 않는다.** α=0.0은 mandatory key secondary이고
+co-primary가 아니므로 **B안을 선택하지 않았다.** 300×5에서 caption-only secondary도
+반드시 계산·보고하되, PRIMARY와 동일한 half-width를 강제로 만족시키려고 N을 키우지
+않는다(달성 0.0204). `sample_size_driver = PRIMARY`로 동결한다. **PRIMARY가 실패했는데
+caption-only가 좋다고 adoption을 rescue할 수 없다는 규칙은 그대로다.**
 
 ### 11-1. half-width보다 먼저 답할 질문
 
@@ -659,11 +784,16 @@ P3-S를 쓰면          estimand가 장면형 한정. 양수 결과는 일반화
 ## 16. 실행 상태
 
 ```
-지금 GO   P3-A DRAFT finalization · outcome-blind sensitivity 산출 ·
-          labeling-route 제안 · 인프라 보강 · 로컬 테스트/커밋
+지금 GO   **외부 annotator 경로 구체화까지** — annotation contract·QC 규약 ·
+          blind input bundle 명세 · 작업 방식 · 1,500행 처리 가능성 검토
+          (+ 설계 문서·산출물 갱신 · 로컬 테스트/커밋)
 지금 HOLD  신규 P3 표본 수집 · GT 생성 · 모델 추론 · retrieval/evaluation ·
           P3-D·P3-S 실제 실행 · test/M9 · deployment 변경 · 4B 채택
 ```
+
+**blocker는 통계 설계가 아니다 — annotation logistics다.** 결정 0/A/B/C는 동결됐고
+(§11), 남은 것은 1,500행을 실제로 처리할 경로가 존재하는지다. 경로가 확보되면 그때
+**acquisition + annotation + 2-arm indexing + retrieval/evaluation을 한 번에 승인**받는다.
 
 ```
 P3-A / P3-B / P3-C / P3-D / P3-S   전부 미실행
@@ -672,4 +802,5 @@ P3 표본 수집 · GT 생성 · 모델 추론   미실행
 deployment 변경                     없음
 ```
 
-**다음 단계는 §11의 남은 결정 4건이다. 승인 전 P3를 실행하지 않는다.**
+**다음 단계는 §9-3의 외부 annotator 경로 구체화다. 그 경로가 확보되기 전에는 표본 수집도
+시작하지 않는다.**

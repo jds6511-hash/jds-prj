@@ -29,7 +29,8 @@
     "generation_free_vram_gb": {"3b": [2.338, 2.42], "4b": [1.906, 1.906]},
     "model_storage_delta_gb": 1.28,
     "end_to_end_output_tokens_per_sec": {"3b": 11.05, "4b": 10.127, "ratio": 0.9165},
-    "reading": "추가 operational penalty가 관측되지 않았다 — trade-off는 VRAM reserved +0.431GB · 생성 중 headroom 약 0.45GB 감소 · 저장 +1.28GB이고, throughput 페널티는 없다(오히려 wall-clock이 짧다)"
+    "reading": "**deployment blocker는 관측되지 않았고, resource-footprint penalty는 관측됐다.** throughput penalty·OOM은 없지만(오히려 wall-clock이 짧다) VRAM reserved +0.431GB · 생성 중 headroom 약 0.45GB 감소 · 저장 +1.28GB라는 비용은 분명히 있다",
+    "reading_wording_correction": "'추가 operational penalty가 관측되지 않았다'는 부정확하다 — footprint 비용을 지운다. blocker 없음과 penalty 없음을 구분한다 (사용자 지적, 2026-08-24)"
   },
 
   "consequence_for_decision_0": {

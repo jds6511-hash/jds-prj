@@ -37,8 +37,13 @@ CHANNELS = {"rr_fus_alpha_0_5": "rr_fus", "rr_cap_alpha_0_0": "rr_cap"}
 PRIMARY_CHANNEL = "rr_fus_alpha_0_5"
 SECONDARY_CHANNEL = "rr_cap_alpha_0_0"
 
-TARGETS = (0.04, 0.05, 0.06)
+# 0.02는 사용자가 동결한 배포 정책 임계다(2026-08-24). 나머지는 비교 후보로 남긴다.
+TARGETS = (0.02, 0.04, 0.05, 0.06)
 M_GRID = (3, 4, 5, 6, 9)
+
+# 사용자 결정 · 결과 열람 전 동결(2026-08-24). 숫자를 여기 한 곳에만 둔다.
+FROZEN = {"gain": 0.02, "clusters": 300, "m": 5, "driver": "PRIMARY",
+          "route": "external_human_annotator"}
 ICC_GRID = (0.0, 0.03, 0.10, 0.25)
 # cluster가 이보다 적으면 bootstrap을 추론으로 쓰지 않는다(보충2 §4-2 계열 규칙)
 MIN_CLUSTERS_FOR_INFERENCE = 16
@@ -310,6 +315,90 @@ def channel_report(name: str, field: str, source=AIHUB) -> dict:
     }
 
 
+def frozen_decision(primary: dict, secondary: dict) -> dict:
+    """사용자가 결과 열람 전에 동결한 결정 — 최소 가치 효과·정밀도·driver·규모·라벨 경로.
+
+    `+0.02`는 **데이터가 알려준 상수가 아니라 배포 정책 임계**다. 4B가 실제 6GB/4bit
+    배포 환경에서 OOM 없이 들어가고 caption wall-clock이 더 짧았으므로 `+0.04~0.06`을
+    최소 가치 효과로 요구할 근거가 약해졌다는 운영 판단에서 나왔다. 라벨 부담을 보고
+    임계를 올리는 것은 금지된 역방향 결정이다.
+    """
+    pv = primary["variance_decomposition"]
+    sv = secondary["variance_decomposition"]
+    hw, k, m = FROZEN["gain"], FROZEN["clusters"], FROZEN["m"]
+    k_min = required_k(hw, m, pv["sigma2_between"], pv["sigma2_within"])
+    return {
+        "decided_at": "2026-08-24",
+        "decided_by": "user",
+        "decided_before_outcome_access": True,
+
+        "minimum_deployment_relevant_gain": hw,
+        "gain_kind": "deployment_policy_threshold",
+        "gain_is_measured_constant": False,
+        "gain_rationale": ("실제 6GB/4bit 배포 환경에서 4B가 OOM 없이 들어가고 caption "
+                           "wall-clock이 더 짧았다. 추가 비용은 VRAM reserved "
+                           "+0.431GB · 저장 +1.28GB와 일회성 재생성·검증 절차 수준이다. "
+                           "이 조건에서 MRR +0.02급 개선은 교체를 검토할 만한 크기라고 "
+                           "본다. 라벨링이 힘들다는 이유로 임계를 +0.05·+0.06으로 "
+                           "올리면 금지된 역방향 결정이 된다"),
+
+        "primary_half_width_target": hw,
+        "video_clusters": k,
+        "queries_per_video": m,
+        "total_gt_rows": k * m,
+        "sample_size_driver": FROZEN["driver"],
+
+        "math_minimum_video_clusters": k_min,
+        "math_minimum_total_gt_rows": k_min * m,
+        "primary_projected_half_width": round(S.projected_half_width(
+            pv["sigma2_between"], pv["sigma2_within"], k, m), 4),
+        "secondary_projected_half_width": round(S.projected_half_width(
+            sv["sigma2_between"], sv["sigma2_within"], k, m), 4),
+        "precision_claim_rule": ("'1,500행이면 +0.02를 반드시 검출한다'가 아니다. "
+                                 "historical variance + ICC=0 근사에 기반하면 300×5 "
+                                 "설계가 약 0.019급 half-width를 **목표로 한다**는 "
+                                 "뜻이고, 실제 P3 cluster 구조에서는 더 넓어질 수 "
+                                 "있다. 검출 보장이 아니다"),
+        "topup_after_results_allowed": False,
+        "topup_rule": ("결과를 본 뒤 표본을 늘리지 않는다. 달성 half-width가 목표보다 "
+                       "넓게 나오면 그 사실을 그대로 보고한다"),
+
+        "secondary_forced_to_same_half_width": False,
+        "secondary_reported_always": True,
+        "secondary_role_rule": ("α=0.0은 mandatory key secondary다 — 300×5에서 반드시 "
+                                "계산·보고하지만 PRIMARY와 같은 half-width를 맞추려고 "
+                                "N을 키우지 않는다(B안 미채택). PRIMARY가 실패했는데 "
+                                "caption-only가 좋다고 adoption을 rescue하지 못한다"),
+
+        "m_rationale": ("m=9로 가면 영상 수·GPU 비용은 줄지만 ICC가 조금만 생겨도 "
+                        "취약해진다. m=3은 cluster robustness가 좋아지지만 영상이 약 "
+                        "500편으로 뛰어 수집·인덱싱 부담이 과도하다. m=5가 절충점이다"),
+
+        "labeling_route": FROZEN["route"],
+        "labeling_rules": [
+            "annotator에게 frozen query/GT protocol과 원본 video/audio만 준다",
+            "3B/4B identity · 모델 캡션 · 파이프라인 STT · retrieval 결과 · 기존 arm "
+            "결과를 숨긴다",
+            "label_origin은 기록하되 PRIMARY의 selection·weighting에 쓰지 않는다",
+            "사람 최종 확정 없이 GT로 세지 않는다",
+            "유형 쿼터는 표집 전 동결한다",
+        ],
+        "scene_only_ai_route_used_for_p3a": False,
+        "ai_assist_rule": ("AI 초안을 쓰려면 **전 유형을 동일 원칙으로 처리하는 "
+                           "audio-capable draft route**를 별도 amendment로 만들어야 "
+                           "한다. 장면형만 AI화하는 현재 방식은 P3-A에 쓰지 않는다"),
+
+        "p3a_execution": "HOLD",
+        "blocking_item": "annotation_logistics",
+        "blocking_note": ("통계 설계가 덜 끝나서가 아니다. 1,500행을 실제로 처리할 "
+                          "외부 annotator 경로(계약·QC·blind input bundle·작업 방식·"
+                          "처리 가능성)가 확보되기 전에는 표본 수집도 시작하지 않는다"),
+        "go_scope_now": "외부 annotator 경로 구체화까지",
+        "next_go_bundle": ("경로 확보 후 acquisition + annotation + 2-arm indexing + "
+                           "retrieval/evaluation을 한 번에 승인"),
+    }
+
+
 def report(source=AIHUB) -> dict:
     chans = {name: channel_report(name, field, source)
              for name, field in CHANNELS.items()}
@@ -339,18 +428,19 @@ def report(source=AIHUB) -> dict:
                                 "hw 0.04로 +0.019·+0.031을 확증할 수 없다"),
         "sample_size_options": sample_size_options(chans[PRIMARY_CHANNEL],
                                                    chans[SECONDARY_CHANNEL]),
-        "sample_size_driver": "사용자_결정_사항",
-        "sample_size_driver_note": ("A는 PRIMARY 정밀도로 N을 정하고 secondary의 달성 "
-                                    "half-width를 함께 보고한다. B는 secondary도 같은 "
-                                    "임계를 만족하도록 N을 키운다. **B를 기본으로 쓰는 "
-                                    "규칙은 승인되지 않았다** — 어느 쪽인지가 사용자 "
-                                    "결정이다"),
+        "frozen_decision": frozen_decision(chans[PRIMARY_CHANNEL],
+                                           chans[SECONDARY_CHANNEL]),
+        "sample_size_driver": FROZEN["driver"],
+        "sample_size_driver_note": ("A안(PRIMARY 주도) 동결 — PRIMARY 정밀도로 N을 "
+                                    "정하고 secondary의 달성 half-width를 함께 보고한다. "
+                                    "B안(양쪽 동일 임계)은 채택하지 않았다 — α=0.0은 "
+                                    "co-primary가 아니므로 N을 키우지 않는다"),
         "icc_zero_assumed_as_truth": False,
         "icc_robustness_note": ("관측 ICC=0을 P3의 진실로 가정하지 않는다. 비영 ICC "
                                 "시나리오는 **설계 강건성 진단이고 P3 예측이 아니다.** "
                                 "m이 크고 영상 수가 적은 설계는 cluster 의존성이 조금만 "
                                 "생겨도 정밀도가 크게 나빠진다"),
-        "minimum_deployment_relevant_gain": "사용자_결정_사항",
+        "minimum_deployment_relevant_gain": FROZEN["gain"],
         "adoption_utility_note": ("half-width를 고르기 전에 답해야 하는 질문이 있다 — "
                                   "'어느 정도의 deployment gain이면 4B의 추가 운영 "
                                   "비용을 감수하고 교체할 가치가 있는가'. 예를 들어 "

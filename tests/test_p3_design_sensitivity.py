@@ -208,7 +208,8 @@ def test_sample_size_options_has_two_variants():
     r = D.report()
     opts = r["sample_size_options"]
     assert set(opts) == {"A_primary_driven", "B_primary_and_secondary"}
-    assert r["sample_size_driver"] == "사용자_결정_사항"
+    # A안 동결 후에도 두 안을 나란히 남긴다 — 무엇을 고르지 않았는지가 기록이다
+    assert r["sample_size_driver"] == "PRIMARY"
 
 
 def test_option_a_is_sized_by_primary_only():
@@ -270,9 +271,9 @@ def test_icc_robustness_is_labelled_diagnostic_not_prediction():
 
 # ---- 채택 기준 항목 --------------------------------------------------------
 
-def test_report_lists_adoption_criterion_as_user_decision():
+def test_report_carries_the_frozen_adoption_criterion():
     r = D.report()
-    assert r["minimum_deployment_relevant_gain"] == "사용자_결정_사항"
+    assert r["minimum_deployment_relevant_gain"] == 0.02
     assert r["adoption_utility_note"]
 
 
@@ -305,3 +306,83 @@ def test_artifact_matches_module_output():
     now = D.report()
     assert saved["channels"]["rr_fus_alpha_0_5"]["design_table"] == \
         now["channels"]["rr_fus_alpha_0_5"]["design_table"]
+
+
+# ---- 동결된 결정 (사용자 결정, 결과 열람 전) --------------------------------
+
+def test_targets_include_frozen_policy_threshold():
+    """정책 임계 0.02가 설계표에 들어간다."""
+    assert 0.02 in D.TARGETS
+
+
+def test_required_k_matches_frozen_design_math():
+    """ICC=0 근사·PRIMARY σ²_w로 hw 0.02·m 5의 수학적 최소는 273편이다."""
+    assert D.required_k(0.02, 5, 0.0, 0.142003) == 273
+
+
+def test_frozen_decision_records_the_design():
+    r = D.report()
+    f = r["frozen_decision"]
+    assert f["video_clusters"] == 300
+    assert f["queries_per_video"] == 5
+    assert f["total_gt_rows"] == 1500
+    assert f["sample_size_driver"] == "PRIMARY"
+    assert f["minimum_deployment_relevant_gain"] == 0.02
+    assert f["primary_half_width_target"] == 0.02
+
+
+def test_frozen_min_gain_is_a_policy_threshold_not_a_measured_constant():
+    """+0.02는 데이터가 알려준 상수가 아니라 배포 정책 임계다."""
+    f = D.report()["frozen_decision"]
+    assert f["gain_kind"] == "deployment_policy_threshold"
+    assert f["gain_is_measured_constant"] is False
+    assert f["decided_before_outcome_access"] is True
+
+
+def test_frozen_design_targets_a_half_width_below_the_threshold():
+    """300×5는 diagnostic 근사에서 0.019급을 목표로 한다 — 검출 보장이 아니다."""
+    f = D.report()["frozen_decision"]
+    assert f["primary_projected_half_width"] < 0.02
+    assert round(f["primary_projected_half_width"], 4) == 0.0191
+    assert f["math_minimum_video_clusters"] == 273
+    assert f["math_minimum_total_gt_rows"] == 1365
+    assert "보장" in f["precision_claim_rule"]
+
+
+def test_frozen_design_does_not_force_secondary_precision():
+    """α=0.0은 mandatory key secondary — 같은 정밀도를 맞추려고 N을 키우지 않는다."""
+    f = D.report()["frozen_decision"]
+    assert f["secondary_forced_to_same_half_width"] is False
+    assert f["secondary_projected_half_width"] > f[
+        "primary_projected_half_width"]
+    assert f["secondary_reported_always"] is True
+    assert "rescue" in f["secondary_role_rule"]
+
+
+def test_frozen_design_forbids_outcome_driven_topup():
+    f = D.report()["frozen_decision"]
+    assert f["topup_after_results_allowed"] is False
+
+
+def test_frozen_design_records_m_rationale():
+    f = D.report()["frozen_decision"]
+    assert "9" in f["m_rationale"] and "3" in f["m_rationale"]
+    assert "ICC" in f["m_rationale"]
+
+
+def test_frozen_labeling_route_is_external_annotator():
+    f = D.report()["frozen_decision"]
+    assert f["labeling_route"] == "external_human_annotator"
+    assert f["scene_only_ai_route_used_for_p3a"] is False
+
+
+def test_execution_remains_hold_with_annotation_blocker():
+    f = D.report()["frozen_decision"]
+    assert f["p3a_execution"] == "HOLD"
+    assert f["blocking_item"] == "annotation_logistics"
+
+
+def test_report_replaces_user_decision_placeholders():
+    r = D.report()
+    assert r["sample_size_driver"] == "PRIMARY"
+    assert r["minimum_deployment_relevant_gain"] == 0.02
