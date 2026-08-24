@@ -143,3 +143,55 @@ def test_module_does_not_import_llm_or_evaluation():
             mods.add(node.module.split(".")[0])
     assert not ({"llm", "m8_report", "m9_report_eval", "torch",
                  "transformers"} & mods)
+
+
+# ---- 사전 생성 artifact 정합 (발표 fallback) -------------------------------
+
+def test_segment_count_mismatch_is_refused(tmp_path):
+    """리포트 생성 후 인덱스가 바뀌면 인용 번호의 의미가 달라진다."""
+    r = _report()
+    r["provenance"] = {"n_segments": 99}
+    rp, sp = _write(tmp_path, report=r)
+    with pytest.raises(A.TraceError) as e:
+        A.build(rp, sp)
+    assert "n_segments" in str(e.value)
+
+
+def test_matching_segment_count_passes(tmp_path):
+    r = _report()
+    r["provenance"] = {"n_segments": 6}
+    rp, sp = _write(tmp_path, report=r)
+    assert A.build(rp, sp)["index_consistency"]["n_segments_checked"] is True
+
+
+def test_provenance_without_counts_is_reported_not_fatal(tmp_path):
+    rp, sp = _write(tmp_path)
+    doc = A.build(rp, sp)
+    assert doc["index_consistency"]["n_segments_checked"] is False
+    assert doc["index_consistency"]["note"]
+
+
+def test_check_precomputed_reports_instead_of_raising(tmp_path):
+    rp, sp = _write(tmp_path, report=_report(cites=((99,),)))
+    st = A.check_precomputed(rp, sp)
+    assert st["ok"] is False and "99" in st["reason"]
+
+
+def test_check_precomputed_ok_path(tmp_path):
+    rp, sp = _write(tmp_path)
+    st = A.check_precomputed(rp, sp)
+    assert st["ok"] is True and st["n_sentences"] == 2
+    assert st["reason"] is None
+
+
+def test_check_precomputed_missing_file(tmp_path):
+    st = A.check_precomputed(tmp_path / "no.json", tmp_path / "no2.json")
+    assert st["ok"] is False and "없다" in st["reason"]
+
+
+def test_run_kind_is_labeled_as_demo_not_research(tmp_path):
+    """M8 research evaluation과 이름을 분리한다."""
+    rp, sp = _write(tmp_path)
+    doc = A.build(rp, sp)
+    assert doc["run_kind"] == "aar_demo_render"
+    assert doc["m8_research_evaluation"] is False

@@ -58,6 +58,22 @@ def build(report_path, segments_path, video_id: str | None = None) -> dict:
     segs = {s["idx"]: s for s in doc["segments"]}
     n = len(doc["segments"])
 
+    # 리포트 생성 후 인덱스가 바뀌면 [seg#N]이 다른 구간을 가리킨다 — 사전 생성
+    # artifact를 발표에서 쓰려면 이 대조가 필요하다.
+    prov = rep.get("provenance") or {}
+    prov_n = prov.get("n_segments")
+    if prov_n is not None and int(prov_n) != n:
+        raise TraceError(
+            f"n_segments 불일치: 리포트 생성 시 {prov_n} · 현재 인덱스 {n} — "
+            f"인용 번호가 같은 구간을 가리키지 않는다")
+    consistency = {
+        "n_segments_checked": prov_n is not None,
+        "n_segments_report": prov_n, "n_segments_index": n,
+        "note": ("리포트 provenance에 n_segments가 없어 대조하지 못했다 — "
+                 "인용 범위 검사만 통과했다" if prov_n is None else
+                 "리포트 생성 시점과 현재 인덱스의 구간 수가 같다"),
+    }
+
     out, cited = [], set()
     for s in rep["sentences"]:
         cites = list(s.get("cites") or [])
@@ -85,6 +101,11 @@ def build(report_path, segments_path, video_id: str | None = None) -> dict:
 
     return {
         "probe": "aar_view",
+        # M8 research evaluation(taxonomy·human review·PRIMARY 재계산)과 이름을
+        # 갈라 둔다. 이것은 기존 파이프라인 산출물을 **렌더링**할 뿐이다.
+        "run_kind": "aar_demo_render",
+        "m8_research_evaluation": False,
+        "index_consistency": consistency,
         "video_id": rep.get("video_id"),
         "report_model": rep.get("model"),
         "report_schema_version": ver,
@@ -102,6 +123,23 @@ def build(report_path, segments_path, video_id: str | None = None) -> dict:
         "boundary_note": ("이 렌더러는 report.json을 읽기만 한다. LLM 호출·재생성· "
                           "M9 평가·test 접촉이 없다"),
     }
+
+
+def check_precomputed(report_path, segments_path,
+                      video_id: str | None = None) -> dict:
+    """발표 fallback 점검 — 예외를 던지지 않고 사용 가능 여부만 보고한다.
+
+    시연 직전에 "미리 만들어 둔 AAR가 지금 이 인덱스로 렌더되는가"를 확인하는 용도다.
+    """
+    try:
+        doc = build(report_path, segments_path, video_id=video_id)
+    except TraceError as e:
+        return {"ok": False, "reason": str(e), "report": str(report_path)}
+    return {"ok": True, "reason": None, "report": str(report_path),
+            "video_id": doc["video_id"], "n_sentences": doc["n_sentences"],
+            "cited_segments": doc["cited_segments"],
+            "n_segments": doc["n_segments"],
+            "index_consistency": doc["index_consistency"]}
 
 
 def to_markdown(doc: dict) -> str:

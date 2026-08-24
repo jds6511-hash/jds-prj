@@ -8,7 +8,8 @@
 |---|---|---|
 | `END_TO_END_AUDIT_2026-08-25.md` | 단계별 entrypoint·산출물·실패조건·상태·gap | 조사 |
 | `SYSTEM_ARCHITECTURE_2026-08-25.md` | mermaid 파이프라인 + 단계별 확정값 | 발표·보고서 |
-| `DEMO_SCENARIOS_2026-08-25.md` | 시연 순서·질의 3종·abstention·체크리스트 | 발표 |
+| `DEMO_SCENARIOS_2026-08-25.md` | 시연 순서·질의 3종·low-relevance 예시·체크리스트 | 발표 |
+| `DEMO_REHEARSAL_2026-08-25.md` | 8분 리허설 체크리스트 · fallback 3단 · AAR 확보 절차 | 발표 |
 | `SUCCESS_FAILURE_GALLERY_2026-08-25.md` | dev 9건 실제 실행 출력 (Top-5 표) | descriptive |
 | `DEMO_GALLERY_2026-08-25.json` | 위의 원자료 | descriptive |
 | `MODEL_SELECTION_CASE_STUDY_2026-08-25.md` | 3B/4B 1-page | 발표·보고서 |
@@ -25,8 +26,8 @@
 
 | 파일 | 역할 | 테스트 |
 |---|---|---|
-| `scripts/demo.py` | 데모 단일 진입점 + preflight fail-closed | `tests/test_demo_preflight.py` (23) |
-| `scripts/aar_view.py` | report.json → 주장·시각·근거 추적 렌더 | `tests/test_aar_view.py` (13) |
+| `scripts/demo.py` | 데모 단일 진입점 + preflight fail-closed + AAR fallback 상태 | `tests/test_demo_preflight.py` (26) |
+| `scripts/aar_view.py` | report.json → 주장·시각·근거 추적 렌더 + 사전 생성물 점검 | `tests/test_aar_view.py` (20) |
 | `scripts/demo_gallery.py` | dev 전용 descriptive gallery 생성 | `tests/test_demo_gallery.py` (10) |
 | `src/m7_webui.py` (수정) | 응답에 `rank`·`seek_to`·`video_id`·`query`·`top_k` 추가 | `tests/test_m7_webui.py` |
 | `src/webui/index.html` (수정) | 서버 제공 rank·seek_to 사용, 구간 종료시각 표시 | 같음 |
@@ -73,7 +74,7 @@ test 39 원본 판정 과정             DESIGN_SPEC 8-6 기록으로 대체
 ```
 python -m pytest tests/ -q                                    전체 통과
 python scripts/demo.py --list                                 인덱스 목록
-python scripts/demo.py --video-id <dev> --check-only          preflight 11항목 PASS
+python scripts/demo.py --video-id <dev> --check-only          preflight 11항목 + AAR 상태
 README의 모든 명령이 실제로 존재하는지 확인 (smoke)
 finalization 문서에 test/P2/P3 outcome이 새로 들어가지 않았는지 확인
 ```

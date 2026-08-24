@@ -49,7 +49,8 @@ GPU(RTX 4090 24GB)에서 `llm_4bit: false`로 올린다는 것이 현재 규약�
 ```
 results[]   idx · start · end · score(소수 3자리) · subtitle · caption
 raw         채널별 raw 코사인 통계 (raw_sub_max · raw_cap_max · per-seg 점수)
-low_relevance  abstention τ=0.55 미달 경고 (max(sub,cap) 기준). 결과를 숨기지 않는다
+low_relevance  τ=0.55 미달 경고 (max(sub,cap) 기준). **배너만이고 랭킹 불변** —
+               결과를 숨기거나 "결과 없음"을 반환하지 않는다 (거부 규칙 아님)
 ```
 
 프런트(`src/webui/index.html`):

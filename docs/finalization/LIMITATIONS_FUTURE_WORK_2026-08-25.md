@@ -66,7 +66,9 @@ CI[−0.0267, +0.0174]**로 큰 방향성 환경 페널티는 재현되지 않�
      통합하려면 read-only diagnostic/warning부터 검토하고 별도 승인을 받는다
 
 6  M8/M9 확장
-   — M8 exploratory 6분류 미완(HOLD) · M9는 test-opening 승인 사건
+   — **M8 research evaluation**(6분류 taxonomy·human review) 미완(HOLD).
+     AAR demo generation(기능 확인용 실행)과는 다른 사건이다
+   — M9는 test-opening 승인 사건
 
 7  회의록 생성 (Phase 4)
    — 설계만 있음 (docs/planning/phase4_회의록_설계.md)

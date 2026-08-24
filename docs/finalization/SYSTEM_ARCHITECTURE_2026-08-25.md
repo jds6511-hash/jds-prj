@@ -40,7 +40,7 @@ flowchart TD
 | 임베딩 | `src/m4_index.py` | `emb_sub.npy` · `emb_cap.npy` · `meta.json` | `nlpai-lab/KURE-v1` · 1024차원 |
 | 검색 | `src/m5_search.py` | (메모리) | 코사인 → **z-score** → α 가중합 · `static_threshold: 0` |
 | 융합 α | CLI 주입 | — | **0.5** (`results/alpha_search_dev.json`의 `alpha_star`) |
-| 경고 | `src/m5_search.py` + UI | — | `abstention_tau: 0.55`, `max(sub, cap)` 기준 |
+| 경고 | UI 표시 계층 | — | `abstention_tau: 0.55` · `max(sub, cap)` 기준 · **배너만, 랭킹 불변** |
 | UI | `src/m7_webui.py` · `src/webui/index.html` | `results/search_log.jsonl` | FastAPI · Range 재생 |
 | AAR | `src/m8_report.py` | `work/{id}/report.json` | `Qwen/Qwen2.5-7B-Instruct` · map-reduce · `[seg#N]` 강제 |
 | 추적 | `scripts/aar_view.py` | md/json | LLM 미사용 |

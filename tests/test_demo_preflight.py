@@ -240,3 +240,45 @@ def test_module_does_not_import_evaluation_or_research_paths():
             mods.add(node.module.split(".")[0])
     assert not ({"m6_evaluate", "m9_report_eval", "p2_retrieve", "p2_evaluate",
                  "p3_design_sensitivity"} & mods)
+
+
+# ---- AAR 발표 fallback 준비 상태 ------------------------------------------
+
+def _report(tmp_path, video_id="v", n=4, cites=(0, 1)):
+    w = Path(tmp_path) / "work" / video_id
+    (w / "report.json").write_text(json.dumps(
+        {"video_id": video_id, "schema_version": 2,
+         "model": "Qwen/Qwen2.5-7B-Instruct",
+         "provenance": {"n_segments": n},
+         "sentences": [{"sent_id": 0, "text": "사건", "cites": list(cites)}]},
+        ensure_ascii=False), encoding="utf-8")
+
+
+def test_aar_absent_is_reported_not_fatal(tmp_path):
+    cfg = _cfg(tmp_path)
+    _index(cfg, "v")
+    r = D.preflight(cfg, "v", alpha=0.5)
+    assert r["ok"] is True
+    assert r["aar"]["available"] is False
+    assert "report.json" in r["aar"]["reason"]
+
+
+def test_aar_precomputed_is_detected(tmp_path):
+    cfg = _cfg(tmp_path)
+    _index(cfg, "v", n=4)
+    _report(tmp_path, n=4)
+    r = D.preflight(cfg, "v", alpha=0.5)
+    assert r["aar"]["available"] is True
+    assert r["aar"]["n_sentences"] == 1
+
+
+def test_stale_aar_is_flagged_but_does_not_block_search(tmp_path):
+    """리포트가 낡았어도 검색 데모는 계속된다 — AAR만 fallback 불가로 표시."""
+    cfg = _cfg(tmp_path)
+    _index(cfg, "v", n=4)
+    _report(tmp_path, n=99)
+    r = D.preflight(cfg, "v", alpha=0.5)
+    assert r["ok"] is True
+    assert r["aar"]["available"] is False
+    assert "n_segments" in r["aar"]["reason"]
+    assert any("AAR" in w for w in r["warnings"])

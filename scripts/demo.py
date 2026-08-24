@@ -48,6 +48,24 @@ def _device() -> str:
         return "cpu"
 
 
+def _aar_status(wdir: Path) -> dict:
+    """AAR 사전 생성물(report.json) 사용 가능 여부. 검색 데모를 막지 않는다.
+
+    M8은 로컬 6GB에서 돌지 않으므로 발표에서는 **서버에서 미리 만든 report.json을
+    렌더**하는 경로를 쓴다. 여기서는 그 파일이 지금 인덱스와 맞는지만 본다.
+    """
+    report = wdir / "report.json"
+    if not report.is_file():
+        return {"available": False,
+                "reason": f"{report.name}이 없다 — 서버에서 M8을 돌려 받아와야 한다",
+                "path": str(report)}
+    from aar_view import check_precomputed
+    st = check_precomputed(report, wdir / "segments.json")
+    return {"available": st["ok"], "reason": st["reason"], "path": str(report),
+            "n_sentences": st.get("n_sentences"),
+            "cited_segments": st.get("cited_segments")}
+
+
 def available_videos(cfg: dict) -> list:
     """인덱스가 완성된 영상만. 부분 산출물은 후보에 넣지 않는다."""
     work = Path(cfg["paths"]["work"])
@@ -133,6 +151,12 @@ def preflight(cfg: dict, video_id: str, alpha: float) -> dict:
     if dev == "cpu":
         warnings.append("CUDA를 찾지 못했다 — 검색은 CPU로도 되지만 인덱싱은 매우 느리다")
 
+    # 발표 fallback: 미리 만들어 둔 report.json이 지금 이 인덱스로 렌더되는가.
+    # 없거나 낡아도 **검색 데모는 막지 않는다** — AAR만 못 보여줄 뿐이다.
+    aar = _aar_status(wdir)
+    if not aar["available"]:
+        warnings.append(f"AAR 사전 생성물을 쓸 수 없다 — {aar['reason']}")
+
     return {
         "ok": True, "video_id": video_id, "alpha": float(alpha),
         "caption_model": cfg["caption_model"], "vlm_4bit": cfg["vlm_4bit"],
@@ -144,7 +168,7 @@ def preflight(cfg: dict, video_id: str, alpha: float) -> dict:
         "embedding_dim": int(embs["emb_sub"].shape[1]),
         "playback_available": playback,
         "video_path": str(mp4) if playback else None,
-        "device": dev, "work_dir": str(wdir),
+        "device": dev, "work_dir": str(wdir), "aar": aar,
         "checks_passed": checks, "warnings": warnings,
         "phase": "FINALIZATION",
         "note": ("배포 구성 데모다. 연구 비교 실험이 아니고 평가 결과를 만들지 "
@@ -159,6 +183,10 @@ def _print(r: dict) -> None:
               "embedding_dim", "device", "playback_available"):
         print(f"  {k:20s} {r[k]}")
     print(f"  text_hash            {r['text_hash'][:16]}…")
+    a = r["aar"]
+    print(f"  AAR 사전 생성물        "
+          + (f"사용 가능 (문장 {a['n_sentences']} · 인용 구간 "
+             f"{a['cited_segments']})" if a["available"] else "없음/사용 불가"))
     for w in r["warnings"]:
         print(f"  [경고] {w}")
 

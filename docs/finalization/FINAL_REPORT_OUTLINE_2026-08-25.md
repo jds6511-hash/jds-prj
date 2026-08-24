@@ -23,7 +23,7 @@
 
 ```
 M1~M7 파이프라인 · 단계별 확정값 표 · 진입점
-웹 UI: 순위·점수·발화/화면 근거·timestamp 재생·abstention 경고
+웹 UI: 순위·점수·발화/화면 근거·timestamp 재생·low-relevance 경고(배너만, 랭킹 불변)
 출처     SYSTEM_ARCHITECTURE · END_TO_END_AUDIT §3
 ```
 

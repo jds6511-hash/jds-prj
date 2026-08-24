@@ -12,7 +12,7 @@
 | 3 | 실패 예시 1장 | 같은 구간의 자막에는 질의 단어가 없고 캡션에는 있다 | README `pb_q10` (공표된 test 결과) |
 | 4 | 접근 | 두 채널 + z-score 융합, 학습 없음 | SYSTEM_ARCHITECTURE |
 | 5 | 파이프라인 | M1→M7 한 장 (mermaid) | SYSTEM_ARCHITECTURE |
-| 6 | **라이브 시연** | preflight → 장면형 → 자막형 → 복합형 → 무관 질의 | DEMO_SCENARIOS |
+| 6 | **라이브 시연** | preflight → 장면형 → 자막형 → 복합형 → low-relevance 예시 | DEMO_SCENARIOS |
 | 7 | 결과 | MRR 0.649 → **0.829** [+0.058, +0.310] | results/eval_test.json |
 | 8 | 유형별 | 장면형 0.174 → **0.718** / 자막형 0.958 → 0.880 (트레이드오프) | 같음 |
 | 9 | 연구 규율 | dev/test 분리 · 튜닝 접촉 0회 · 확정 절차 7회 전건 기록 | DESIGN_SPEC 8-6 |
@@ -29,7 +29,14 @@
 1순위   라이브 검색 (scripts/demo.py)
 2순위   --check-only 출력 + SUCCESS_FAILURE_GALLERY의 실제 표 (실행 출력 그대로)
 3순위   README의 pb_q10 대조표 (공표된 test 결과)
-녹화물은 만들지 않는다 (2026-08-09 결정)
+
+AAR 1순위   사전 렌더된 AAR_<dev>.md (서버에서 미리 생성)
+AAR 2순위   aar_view --out-md 현장 재실행 (GPU 불필요)
+AAR 3순위   AAR_TRACEABILITY 구조 설명
+
+라이브 M8 생성은 되면 보여주고 실패하면 즉시 사전 생성물로 넘어간다 —
+서버·20GB GPU를 발표 성패의 조건으로 두지 않는다.
+녹화물은 만들지 않는다 (2026-08-09 결정). 절차는 DEMO_REHEARSAL 참조
 ```
 
 시연 직전 체크: `python scripts/demo.py --video-id <dev> --check-only` 11항목 PASS ·

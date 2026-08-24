@@ -49,7 +49,34 @@ aar_view              GPU·LLM 불필요. 이미 있는 report.json만 읽는다
 M9                   split=="test" 하드코딩 — **실행 자체가 test 접촉**. 절대 HOLD
 ```
 
-## M8 연구 경계 (이번 작업에서 하지 않은 것)
+## 두 종류의 M8 실행을 이름으로 가른다
+
+발표 문서만 보면 "M8 HOLD라면서 M8을 돌렸다"로 읽힐 수 있다. 그래서 이름을 나눈다.
+
+| 이름 | 무엇인가 | 상태 |
+|---|---|---|
+| **AAR demo generation** (`aar_demo_render` / functional run) | 기존 M8 파이프라인을 **dev/demo 영상에 기능 확인용으로** 1회 실행해 `report.json`을 얻고, `aar_view`로 렌더한다 | **finalization 범위 — 가능** |
+| **M8 research evaluation** | 53건 temporal/error 연구 재평가 · 6분류 taxonomy 확정 · 신규 human review · PRIMARY 재계산 | **HOLD** |
+
+```
+AAR demo generation using existing M8 pipeline = finalization functional run
+M8 research evaluation / taxonomy / human review = HOLD
+```
+
+`aar_view` 산출물에 `run_kind: "aar_demo_render"` · `m8_research_evaluation: false`를
+박아 두었다 — 파일만 봐도 어느 쪽인지 구분된다.
+
+demo generation이 지켜야 하는 것:
+
+```
+대상       dev/demo 영상만 (test 영상 금지)
+목적       기능 확인 · 발표 fallback artifact 확보
+산출       report.json → aar_view 렌더
+금지       그 결과를 연구 결론·M8 PRIMARY·6분류 라벨로 쓰는 것
+           M9 평가 · test 접촉
+```
+
+## M8 research evaluation 경계 (이번 작업에서 하지 않은 것)
 
 M8 exploratory human classification은 HOLD다. 따라서:
 
