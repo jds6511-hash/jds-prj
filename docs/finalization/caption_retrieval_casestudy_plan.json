@@ -1,0 +1,256 @@
+{
+  "schema_version": 1,
+  "plan_id": "caption_retrieval_casestudy_2026-08-25",
+  "frozen_at": "2026-08-25",
+  "purpose": "3B/4B 캡션이 같은 장면을 어떻게 다르게 서술하고, 그 차이가 검색 순위에 어떤 경로로 전달되는지를 사람이 읽을 수 있게 보이는 qualitative case study.",
+  "study_type": "qualitative / illustrative / one-video case study",
+  "declarations": {
+    "formal_inference": false,
+    "significance_testing": false,
+    "mrr_estimation": false,
+    "model_adoption_decision": false,
+    "deployment_change": false,
+    "alpha_retuning": false,
+    "alpha_sweep": false,
+    "post_hoc_sample_or_query_replacement": false,
+    "scene_or_query_replacement_after_outcome_access": false,
+    "incumbent_status_unchanged": "3B retained · 4B candidate/not adopted · superiority unresolved"
+  },
+  "not_used": [
+    "test39",
+    "test39_확장33",
+    "P2",
+    "P3",
+    "M9",
+    "E2E 전용 영상",
+    "dev 3편"
+  ],
+  "video": {
+    "video_id": "pland_costco_hosting",
+    "n_segments": 395,
+    "last_end_sec": 1971.6333333333334,
+    "seg_len_sec": 5,
+    "frames_on_disk": 395,
+    "text_hash_3b_index": "08fda96d064c22214221aef5e85b37097a8270f9c7c43399567876e0a7b369ba",
+    "provenance": "legacy_exempt — 출처 URL·ID 없이 인덱싱된 기존 영상. 사후에 붙이면 추측이 되므로 붙이지 않는다",
+    "boundary_check": {
+      "queries_referencing_video": 0,
+      "in_e2e_manifest": false,
+      "in_dev_split": false,
+      "in_test_split": false,
+      "in_p2_sample": false
+    }
+  },
+  "scene_selection_rule": {
+    "rule": "영상을 segment 인덱스 기준 5등분하고, 각 구간의 시작 idx부터 순서대로 첫 적격 segment 1개를 고른다.",
+    "quintile_size": 79,
+    "quintile_start_idx": [
+      0,
+      79,
+      158,
+      237,
+      316
+    ],
+    "eligibility_judged_from": "원본 대표 프레임만. 캡션·자막·검색 결과를 보지 않았다.",
+    "exclusion_criteria": [
+      "black frame",
+      "transition/fade",
+      "severe blur",
+      "decoding failure",
+      "거의 동일한 정지화면",
+      "화면 내용 식별 불가"
+    ],
+    "advancement_used": false,
+    "advancement_note": "5개 구간 모두 시작 idx의 첫 후보가 적격이라 다음 segment로 이동하지 않았다."
+  },
+  "n_scenes": 5,
+  "queries_per_scene": 3,
+  "n_queries_total": 15,
+  "query_construction_rule": {
+    "source": "원본 대표 프레임만 보고 작성. 3B/4B 캡션과 검색 결과를 열람하기 전에 작성·동결했다.",
+    "types": {
+      "Q1": "object/scene 중심",
+      "Q2": "action 중심",
+      "Q3": "relation/context 중심"
+    },
+    "vocabulary_rule": "모델 캡션 어휘를 베끼지 않는다. 캡션을 읽지 않았으므로 베낄 수도 없다."
+  },
+  "retrieval": {
+    "primary": {
+      "view": "caption-only",
+      "alpha": 0.0,
+      "reason": "자막 채널을 제거해 캡션 차이가 순위에 미친 영향을 직접 본다"
+    },
+    "secondary": {
+      "view": "deployment fusion",
+      "alpha": 0.5,
+      "optional": true,
+      "reason": "실제 시스템에서 자막까지 섞이면 어떻게 보이는지 참고용",
+      "not_a_verdict": "secondary가 primary 해석을 뒤집는 공식 판정이 아니다"
+    },
+    "alpha_sweep": false,
+    "candidate_pool": "해당 영상의 395 segment 전체",
+    "top_k_recorded": 3
+  },
+  "what_counts_as_observation": {
+    "allowed": [
+      "target rank / score",
+      "top1 segment id · timestamp · caption",
+      "target caption",
+      "illustrative top-1 hit count (15질의 기준, 성능 추정이 아님)",
+      "caption 표현 차이의 정성적 서술"
+    ],
+    "forbidden_phrasing": [
+      "accuracy = xx%",
+      "MRR superiority",
+      "statistical significance",
+      "confidence interval",
+      "model winner",
+      "adoption evidence",
+      "proven causal mechanism",
+      "모델이 더 잘 이해했다"
+    ],
+    "required_phrasing": [
+      "likely contributor",
+      "plausible lexical/semantic match",
+      "omission may have contributed",
+      "caption emphasis may have shifted ranking"
+    ]
+  },
+  "contamination_policy": "4B 생성물에서 instruction echo·mixed-script·truncation이 나와도 detector rule·recaption rule을 바꾸지 않고, scene/query를 교체하지 않고, 정성 관측으로만 기록한다.",
+  "scenes": [
+    {
+      "scene_id": "scene01",
+      "segment_idx": 0,
+      "start": 0.0,
+      "end": 5.0,
+      "quintile": 1,
+      "selection_reason": "1/5 구간 시작 idx의 첫 후보. 프라이팬·기름·튀김이 식별 가능해 적격. 화면 중앙에 채널 로고 오버레이가 있으나 제외 사유에 해당하지 않는다(내용 식별 가능).",
+      "frame_description_from_original": "노란 프라이팬에 기름이 차 있고 가운데에 튀겨지는 새우 한 점. 오른쪽 위에 식힘망과 손.",
+      "queries": [
+        {
+          "query_id": "cs_s01_q1",
+          "type": "Q1_object",
+          "text": "기름이 가득한 프라이팬 안의 새우 튀김"
+        },
+        {
+          "query_id": "cs_s01_q2",
+          "type": "Q2_action",
+          "text": "새우를 기름에 넣어 튀기는 장면"
+        },
+        {
+          "query_id": "cs_s01_q3",
+          "type": "Q3_relation",
+          "text": "주방에서 튀김 요리를 하는 장면"
+        }
+      ]
+    },
+    {
+      "scene_id": "scene02",
+      "segment_idx": 79,
+      "start": 395.0,
+      "end": 400.0,
+      "quintile": 2,
+      "selection_reason": "2/5 구간 시작 idx의 첫 후보. 매장 내부·배너·진열장이 식별 가능해 적격.",
+      "frame_description_from_original": "창고형 매장을 위에서 내려다본 화면. 파란 대형 배너, 유리문 냉장 진열장, 적재된 상자와 팔레트, 천장 조명.",
+      "queries": [
+        {
+          "query_id": "cs_s02_q1",
+          "type": "Q1_object",
+          "text": "대형 마트 안에 걸린 파란 광고 배너"
+        },
+        {
+          "query_id": "cs_s02_q2",
+          "type": "Q2_action",
+          "text": "매장 안에서 사람이 지나가는 장면"
+        },
+        {
+          "query_id": "cs_s02_q3",
+          "type": "Q3_relation",
+          "text": "냉장 진열장과 쌓인 상자가 있는 창고형 매장 내부"
+        }
+      ]
+    },
+    {
+      "scene_id": "scene03",
+      "segment_idx": 158,
+      "start": 790.0,
+      "end": 795.0,
+      "quintile": 3,
+      "selection_reason": "3/5 구간 시작 idx의 첫 후보. 인물·칼·도마·재료가 식별 가능해 적격.",
+      "frame_description_from_original": "주방에서 흰 티셔츠를 입은 사람이 나무 도마 위 흰색 원형 재료를 식칼로 썰고 있다. 오른쪽에 유리볼과 그릇 건조대.",
+      "queries": [
+        {
+          "query_id": "cs_s03_q1",
+          "type": "Q1_object",
+          "text": "나무 도마 위에 놓인 흰색 재료와 식칼"
+        },
+        {
+          "query_id": "cs_s03_q2",
+          "type": "Q2_action",
+          "text": "칼로 재료를 썰고 있는 손"
+        },
+        {
+          "query_id": "cs_s03_q3",
+          "type": "Q3_relation",
+          "text": "주방 조리대에서 재료를 손질하는 사람"
+        }
+      ]
+    },
+    {
+      "scene_id": "scene04",
+      "segment_idx": 237,
+      "start": 1185.0,
+      "end": 1190.0,
+      "quintile": 4,
+      "selection_reason": "4/5 구간 시작 idx의 첫 후보. 냄비·뚜껑·요리가 식별 가능해 적격. 화면에 자막이 새겨져 있으나 제외 사유가 아니다.",
+      "frame_description_from_original": "노란색 무쇠 냄비 뚜껑을 장갑 낀 손이 들어 올리고 있고, 안에 갈색 소스가 끼얹어진 고기와 다진 파가 보인다. 오른쪽에 사용한 팬.",
+      "queries": [
+        {
+          "query_id": "cs_s04_q1",
+          "type": "Q1_object",
+          "text": "노란색 뚜껑이 있는 무쇠 냄비"
+        },
+        {
+          "query_id": "cs_s04_q2",
+          "type": "Q2_action",
+          "text": "냄비 뚜껑을 손으로 들어 올리는 장면"
+        },
+        {
+          "query_id": "cs_s04_q3",
+          "type": "Q3_relation",
+          "text": "완성된 조림 요리를 냄비에서 확인하는 장면"
+        }
+      ]
+    },
+    {
+      "scene_id": "scene05",
+      "segment_idx": 316,
+      "start": 1580.0,
+      "end": 1585.0,
+      "quintile": 5,
+      "selection_reason": "5/5 구간 시작 idx의 첫 후보. 재봉틀·원단·손이 식별 가능해 적격.",
+      "frame_description_from_original": "재봉틀이 놓인 작업대 앞에서 손이 남색 바탕에 물방울 무늬가 있는 천을 잡고 있다. 왼쪽에 가위, 오른쪽에 나무 자.",
+      "queries": [
+        {
+          "query_id": "cs_s05_q1",
+          "type": "Q1_object",
+          "text": "물방울 무늬가 있는 남색 천"
+        },
+        {
+          "query_id": "cs_s05_q2",
+          "type": "Q2_action",
+          "text": "재봉틀 앞에서 천을 손으로 잡고 있는 장면"
+        },
+        {
+          "query_id": "cs_s05_q3",
+          "type": "Q3_relation",
+          "text": "작업대 위에 재봉틀과 가위가 놓인 작업 공간"
+        }
+      ]
+    }
+  ],
+  "frozen_queries_sha256": "752e8fe3de1e3f06995b099a62c4fde451deb82a4e44fbdf1b68ac3481792747",
+  "frozen_scenes_sha256": "d41fe13c46e61efe7d7c2617255d5c5ba396b3b8ba9459b41984db5cc69d13d9",
+  "n_queries_check": 15
+}
