@@ -246,6 +246,138 @@
     },
     "complete": true
    }
+  },
+  {
+   "e2e_id": "e2e_cooking_1",
+   "phase": 3,
+   "identity": {
+    "e2e_id": "e2e_cooking_1",
+    "source_url": "https://www.youtube.com/watch?v=GP3C_IHW5-I",
+    "youtube_video_id": "GP3C_IHW5-I",
+    "local_file": "data\\videos\\e2e_cooking_1.mp4",
+    "local_file_sha256": "ebcd5cd891730545c505f2fd6f36239cc7e6d3d5c56646a9a2f8a44fff0e42a8",
+    "observed_duration_sec": 1289.474,
+    "segment_count": 258,
+    "stt_model": "large-v3",
+    "stt_language": "ko",
+    "vlm_model": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "vlm_max_new_tokens": 128,
+    "vlm_rep_penalty": 1.1,
+    "prompt_sha256": "b7c2598ade97784d74967fc7859e2c32c4cf3c506351c386278ea5673590123b",
+    "effective_quantized": true,
+    "embed_model": "nlpai-lab/KURE-v1",
+    "embedding_dim": 1024,
+    "embedding_rows": 258,
+    "alpha": 0.5,
+    "seg_len_sec": 5,
+    "static_threshold": 0,
+    "run_started_at": "2026-08-25T23:42:03+09:00",
+    "run_completed_at": "2026-08-26T00:25:33+09:00",
+    "stage_status": {
+     "m1": true,
+     "m2": true,
+     "m3": true,
+     "m4": true
+    },
+    "e2e_only": true,
+    "research_metrics_generated": false
+   },
+   "functional": {
+    "stages": {
+     "ingest": true,
+     "stt": true,
+     "caption": true,
+     "embedding": true,
+     "index": true,
+     "search": true,
+     "playback": true
+    },
+    "verdict": "PASS",
+    "evidence": {
+     "segment_bounds_ok": true,
+     "segments": 258,
+     "last_end": 1289.4166666666667,
+     "duration_sec": 1289.474,
+     "caption_rows": 258,
+     "subtitle_rows": 162,
+     "frames": 258,
+     "embedding_shape": [
+      258,
+      1024
+     ],
+     "embedding_nan": 0,
+     "text_hash_match": true,
+     "text_hash": "8440e41a1d937847",
+     "corrupted_captions": 1,
+     "subtitle_credit_hits": 0,
+     "prompt_echo_like": [],
+     "provenance": {
+      "provenance_status": "recorded",
+      "source_id": "GP3C_IHW5-I",
+      "sha256_verified_at_m1": true
+     },
+     "seek_ok": true,
+     "playback": {
+      "status": 206,
+      "content_range": "bytes 0-1023/521203495",
+      "len": 1024
+     },
+     "wrong_id_status": 404
+    }
+   },
+   "stage_elapsed_sec": {
+    "m1": 2,
+    "m2": 111,
+    "m3": 2474,
+    "m4": 23,
+    "total": 2610
+   },
+   "semantic": [
+    {
+     "query_id": "e2e_cooking_1_q1",
+     "query": "깻잎 소스를 만드는 장면",
+     "assertion_level": 2,
+     "status": "OBSERVED",
+     "top1_idx": 33,
+     "top1_start": 165,
+     "top1_subtitle": "탕수육, 올리브오일, 이상이 재료입니다. 네, 그럼 소스를 만들어보겠습니다. 먼저 이 안에 들어있는 깻잎, 이것은 조금 커트하십시오."
+    },
+    {
+     "query_id": "e2e_cooking_1_q2",
+     "query": "요리 방법을 설명하면서 직접 조리하는 부분",
+     "assertion_level": 2,
+     "status": "OBSERVED",
+     "top1_idx": 64,
+     "top1_start": 320,
+     "top1_subtitle": "그럼 이번 요리 설명을 하겠습니다."
+    }
+   ],
+   "observations": [
+    "자막 162/258 — 요리 시연 영상이라 무발화 조리 구간이 있다.",
+    "오염 판정 1건(seg179, 14:55): 캡션 전체가 일본어로 출력됐다. 이 영상은 오사카 한국문화원 제작이라 화면에 일본어가 있을 수 있는데, 캡션 자체가 언어를 이탈한 것이라 genuine corruption으로 본다. 검출기·재캡셔닝 규칙을 바꾸지 않고 관측만 기록한다.",
+    "지시문 echo 유사 0건 · 자막 크레딧 환각 0건.",
+    "q1 '깻잎 소스를 만드는 장면' 1위 seg33(2:45)의 자막이 '먼저 이 안에 들어있는 깻잎, 이것은 조금 커트하십시오'다. assertion_level 2라 OBSERVED로 기록하고 정답률을 계산하지 않는다.",
+    "운영 결함 1건 — 오래 떠 있던 m7_webui 인스턴스가 F1 UX 수정(5bc9e7b) 이전 코드였고 응답에 seek_to가 없었다. 검증이 그것을 잡아냈다. 현재 코드로 재시작해 통과했다. 데모 전에 서버를 재시작해야 한다는 운영 항목이다."
+   ],
+   "research_metrics_generated": false,
+   "test_split_used": false,
+   "e2e_only": true,
+   "resume": {
+    "done": [
+     "m1",
+     "m2",
+     "m3",
+     "m4"
+    ],
+    "resume_from": null,
+    "stages": {
+     "m1": true,
+     "m2": true,
+     "m3": true,
+     "m4": true
+    },
+    "complete": true
+   }
   }
  ]
 }

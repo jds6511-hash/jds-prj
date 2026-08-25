@@ -1,0 +1,273 @@
+{
+ "video_id": "e2e_cooking_1",
+ "research_metrics_generated": false,
+ "e2e_only": true,
+ "structural": {
+  "n_segments": 258,
+  "captions_filled": 258,
+  "subtitles_filled": 162,
+  "frames_on_disk": 258,
+  "corrupted_captions": 1,
+  "subtitle_credit_hits": 0,
+  "prompt_echo_like": [],
+  "segment_bounds": {
+   "ok": true,
+   "reason": null,
+   "n_segments": 258
+  },
+  "last_end": 1289.4166666666667,
+  "duration_sec": 1289.474,
+  "text_hash": "8440e41a1d937847",
+  "text_hash_match": true,
+  "embeddings": {
+   "emb_sub": {
+    "shape": [
+     258,
+     1024
+    ],
+    "nan": 0,
+    "check": {
+     "ok": true,
+     "reason": null
+    }
+   },
+   "emb_cap": {
+    "shape": [
+     258,
+     1024
+    ],
+    "nan": 0,
+    "check": {
+     "ok": true,
+     "reason": null
+    }
+   }
+  },
+  "provenance": {
+   "provenance_status": "recorded",
+   "source_id": "GP3C_IHW5-I",
+   "sha256_verified_at_m1": true
+  },
+  "resume": {
+   "done": [
+    "m1",
+    "m2",
+    "m3",
+    "m4"
+   ],
+   "resume_from": null,
+   "stages": {
+    "m1": true,
+    "m2": true,
+    "m3": true,
+    "m4": true
+   },
+   "complete": true
+  }
+ },
+ "run_identity": {
+  "e2e_id": "e2e_cooking_1",
+  "source_url": "https://www.youtube.com/watch?v=GP3C_IHW5-I",
+  "youtube_video_id": "GP3C_IHW5-I",
+  "local_file": "data\\videos\\e2e_cooking_1.mp4",
+  "local_file_sha256": "ebcd5cd891730545c505f2fd6f36239cc7e6d3d5c56646a9a2f8a44fff0e42a8",
+  "observed_duration_sec": 1289.474,
+  "segment_count": 258,
+  "stt_model": "large-v3",
+  "stt_language": "ko",
+  "vlm_model": "Qwen/Qwen2.5-VL-3B-Instruct",
+  "vlm_max_new_tokens": 128,
+  "vlm_rep_penalty": 1.1,
+  "prompt_sha256": "b7c2598ade97784d74967fc7859e2c32c4cf3c506351c386278ea5673590123b",
+  "effective_quantized": true,
+  "embed_model": "nlpai-lab/KURE-v1",
+  "embedding_dim": null,
+  "embedding_rows": null,
+  "alpha": 0.5,
+  "seg_len_sec": 5,
+  "static_threshold": 0,
+  "run_started_at": null,
+  "run_completed_at": null,
+  "stage_status": {},
+  "e2e_only": true,
+  "research_metrics_generated": false
+ },
+ "api": {
+  "search_results": [
+   {
+    "q": {
+     "query_id": "e2e_cooking_1_q1",
+     "e2e_id": "e2e_cooking_1",
+     "query_type": "복합형",
+     "query": "깻잎 소스를 만드는 장면",
+     "source_of_query": "영상 제목 'K-RECIPE [제1회] 깻잎소스'",
+     "known_anchor_start": null,
+     "known_anchor_end": null,
+     "assertion_level": 2
+    },
+    "http": 200,
+    "check": {
+     "ok": true,
+     "reason": null,
+     "n_results": 5
+    },
+    "observation": {
+     "query": "깻잎 소스를 만드는 장면",
+     "level": 2,
+     "status": "OBSERVED",
+     "anchor": null,
+     "anchor_in_topk": null,
+     "anchor_rank": null,
+     "n_results": 5,
+     "is_research_metric": false,
+     "note": "정확한 timestamp GT가 없다 — 결과가 나왔는지와 사람이 확인 가능한지까지만 본다"
+    },
+    "rows": [
+     {
+      "rank": 1,
+      "idx": 33,
+      "start": 165,
+      "end": 170,
+      "seek_to": 165,
+      "score": 3.625,
+      "subtitle": "탕수육, 올리브오일, 이상이 재료입니다. 네, 그럼 소스를 만들어보겠습니다. 먼저 이 안에 들어있는 깻잎, 이것은 조금 커트하십시오.",
+      "caption": "주방에서 요리가 진행되고 있는 모습이다. 테이블 위에는 검은색 식탁, 검은색 절단대, 그리고 여러 가지 재료들이 놓여 있다. 절단대 위에는 얇게 썬 양파와 양파 조각, 그리고 작은 그릇에 담긴 양파 주스가 보인다. 또한, 검은색 절단대 위에는 검은색 그릇에 담긴 음식이 있으며, 이 음식을 집중시켜 보는 손이 보인다"
+     },
+     {
+      "rank": 2,
+      "idx": 101,
+      "start": 505,
+      "end": 510,
+      "seek_to": 505,
+      "score": 2.481,
+      "subtitle": "다음은 시라스입니다. 시라스를 가볍게 구워줍니다. 시라스에 어울리는 소스입니다.",
+      "caption": "한 남성이 요리하는 모습을 보여주고 있습니다. 그는 백인 셰프복을 입고 있으며, 앞에는 요리 도구와 조리대가 놓여 있습니다. 화면 하단에는 한국어 자막이 나타나며, '블랙페퍼 소스'라는 텍스트가 보입니다. 배경은 주방으로, 다양한 조리 도구들이 정돈되어 있는 것을 볼 수 있습니다."
+     },
+     {
+      "rank": 3,
+      "idx": 157,
+      "start": 785,
+      "end": 790,
+      "seek_to": 785,
+      "score": 2.157,
+      "subtitle": "마요네즈 소스",
+      "caption": "화면에는 금색 숟가락이 있는 금속 그릇이 보입니다. 그릇 안에는 녹색의 재료들이 가득 차 있으며, 숟가락은 재료를 집어들고 있습니다. 배경은 어두워서 구체적인 사항은 확인할 수 없습니다. 화면 하단에는 한국어 자막이 나타나 있습니다."
+     },
+     {
+      "rank": 4,
+      "idx": 82,
+      "start": 410,
+      "end": 415,
+      "seek_to": 410,
+      "score": 2.142,
+      "subtitle": "다음은 애호박 소스에 조금 넣을 애호박을 사용한",
+      "caption": "한 남성이 요리하는 모습을 보여주고 있습니다. 그는 백인 요리복을 입고 있으며, 앞에는 빈 그릇이 놓여 있습니다. 주방은 현대적인 디자인으로, 다양한 조리 도구와 기구들이 배치되어 있습니다. 화면 하단에는 한국어 자막이 나타나며, 그 위에는 일본어 자막이 있습니다."
+     },
+     {
+      "rank": 5,
+      "idx": 107,
+      "start": 535,
+      "end": 540,
+      "seek_to": 535,
+      "score": 2.045,
+      "subtitle": "마요네즈바타 소스를 뿌려줍니다.",
+      "caption": "화면은 빨간색 계열의 식탁 위에서 촬영된 것으로 보인다. 식탁 위에는 밥그릇이 있고, 그 안에는 백색 반점이 있는 노란색 요리가 담겨 있다. 요리는 금색 날카롭게 가늘게 찢어서 바닥에 놓여 있으며, 그 위로 흰색 천으로 덮여 있다. 조명은 익스텐디드 조명으로, 식탁 위의 모든 부분을 부드럽게 비추고 있으며"
+     }
+    ]
+   },
+   {
+    "q": {
+     "query_id": "e2e_cooking_1_q2",
+     "e2e_id": "e2e_cooking_1",
+     "query_type": "복합형",
+     "query": "요리 방법을 설명하면서 직접 조리하는 부분",
+     "source_of_query": "요리 시연 영상이라는 형식",
+     "known_anchor_start": null,
+     "known_anchor_end": null,
+     "assertion_level": 2
+    },
+    "http": 200,
+    "check": {
+     "ok": true,
+     "reason": null,
+     "n_results": 5
+    },
+    "observation": {
+     "query": "요리 방법을 설명하면서 직접 조리하는 부분",
+     "level": 2,
+     "status": "OBSERVED",
+     "anchor": null,
+     "anchor_in_topk": null,
+     "anchor_rank": null,
+     "n_results": 5,
+     "is_research_metric": false,
+     "note": "정확한 timestamp GT가 없다 — 결과가 나왔는지와 사람이 확인 가능한지까지만 본다"
+    },
+    "rows": [
+     {
+      "rank": 1,
+      "idx": 64,
+      "start": 320,
+      "end": 325,
+      "seek_to": 320,
+      "score": 2.633,
+      "subtitle": "그럼 이번 요리 설명을 하겠습니다.",
+      "caption": "한 남성이 요리하는 모습을 보여주고 있습니다. 그는 흰색 요리복을 입고 있으며, 앞에는 다양한 요리 도구와 재료들이 놓여 있습니다. 배경은 주방으로, 조명이 밝게 비추고 있습니다. 화면 하단에는 한국어 자막이 나타나 있습니다."
+     },
+     {
+      "rank": 2,
+      "idx": 5,
+      "start": 25,
+      "end": 30,
+      "seek_to": 25,
+      "score": 2.62,
+      "subtitle": "이런 소통 속에서 요리에 대해 설명을 드리겠습니다.",
+      "caption": "주방에서 요리하는 남성이 서 있으며, 주변에는 요리 도구들이 놓여 있습니다."
+     },
+     {
+      "rank": 3,
+      "idx": 26,
+      "start": 130,
+      "end": 135,
+      "seek_to": 130,
+      "score": 2.081,
+      "subtitle": "。",
+      "caption": "화면에는 검은색 배경 위에 백색으로 된 메뉴판이 보입니다. 메뉴판에는 'A'와 'B' 두 부분이 나누어져 있으며 각각의 재료 목록과 양이 적혀 있습니다. 'A' 부분에서는 '10g' 단위로 여러 가지 재료가 나열되어 있고, 'B' 부분에서는 '350g', '25g', '100g', '15g', '10g' 등의 양이 나열되어 있습니다. 또한, 'A' 부분에는 '"
+     },
+     {
+      "rank": 4,
+      "idx": 6,
+      "start": 30,
+      "end": 35,
+      "seek_to": 30,
+      "score": 2.068,
+      "subtitle": "이런 소통 속에서 요리에 대해 설명을 드리겠습니다. 감사합니다.",
+      "caption": "화면에는 한 남성이 요리복을 입고 서 있는 모습이 보입니다. 그는 앞을 바라보며, 주변에는 다양한 요리 도구와 기계들이 배치되어 있습니다. 배경은 어두운 톤으로 조명이 잘 비추어져 있어, 실내 요리 공간임을 알 수 있습니다."
+     },
+     {
+      "rank": 5,
+      "idx": 245,
+      "start": 1225,
+      "end": 1230,
+      "seek_to": 1225,
+      "score": 1.986,
+      "subtitle": "。",
+      "caption": "화면에는 일본식 요리인 'Genji'의 조각나는 소스가 담긴 접시가 보입니다. 접시 위에는 밝은 색의 소스가 풍부하게 얹혀져 있으며, 배경은 갈색으로 가득 차 있습니다. 오른쪽에는 일본어로 된 요리 설명이 쓰여 있으며, 그 아래에는 재료 목록과 조리 방법이 나열되어 있습니다. 요리의 재료와 단계들은 정확히 설명되어 있으며, 요리하는 과정에서 사용되는 재료와"
+     }
+    ]
+   }
+  ],
+  "playback": {
+   "status": 206,
+   "content_range": "bytes 0-1023/521203495",
+   "len": 1024
+  },
+  "wrong_id_status": 404,
+  "stages": {
+   "search": true,
+   "seek": true,
+   "playback": true,
+   "wrong_id_404": true
+  }
+ }
+}

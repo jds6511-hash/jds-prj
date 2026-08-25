@@ -176,6 +176,14 @@
       "e2e_only": true,
       "eligible_for_research_evaluation": false,
       "note": "external E2E functional test 전용 (FINALIZATION-F2). 연구 표본이 아니다."
+    },
+    "e2e_cooking_1": {
+      "source_url": "https://www.youtube.com/watch?v=GP3C_IHW5-I",
+      "source_id": "GP3C_IHW5-I",
+      "file_sha256": "ebcd5cd891730545c505f2fd6f36239cc7e6d3d5c56646a9a2f8a44fff0e42a8",
+      "e2e_only": true,
+      "eligible_for_research_evaluation": false,
+      "note": "external E2E functional test 전용 (FINALIZATION-F2). 연구 표본이 아니다."
     }
   },
   "legacy_exempt": {

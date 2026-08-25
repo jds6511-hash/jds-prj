@@ -82,17 +82,18 @@
       "duration_sec": 1289,
       "availability": "public",
       "probed_at": "2026-08-25",
-      "local_file": null,
-      "local_file_sha256": null,
-      "audio_present": null,
-      "status": "manifest_only",
+      "local_file": "data/videos/e2e_cooking_1.mp4",
+      "local_file_sha256": "ebcd5cd891730545c505f2fd6f36239cc7e6d3d5c56646a9a2f8a44fff0e42a8",
+      "audio_present": true,
+      "status": "functional_pass",
       "note": "제목이 일본어 병기다 — 한국어 발화 비중은 STT functional run에서 관찰만 하고 성능 지표로 만들지 않는다",
       "e2e_only": true,
       "eligible_for_research_evaluation": false,
       "eligible_for_p2": false,
       "eligible_for_p3": false,
       "eligible_for_test": false,
-      "eligible_for_public_demo": false
+      "eligible_for_public_demo": false,
+      "observed_duration_sec": 1289.474
     },
     {
       "e2e_id": "e2e_interview",

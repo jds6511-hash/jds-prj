@@ -1,0 +1,54 @@
++ V=e2e_cooking_1
++ RUN=runs/e2e_external/e2e_external_core_2026-08-25/e2e_cooking_1
++ mkdir -p runs/e2e_external/e2e_external_core_2026-08-25/e2e_cooking_1
++ for S in m1_preprocess m2_keyframe m3_generate m4_index
++ N=m1
+++ date -Iseconds
++ echo $'=== M1 \354\213\234\354\236\221 (2026-08-25T23:42:03+09:00) ==='
+=== M1 시작 (2026-08-25T23:42:03+09:00) ===
++ python src/m1_preprocess.py --config config.yaml --video-id e2e_cooking_1
+M1 완료: 258개 세그먼트, duration=1289.4s → work\e2e_cooking_1\segments.json
+++ date -Iseconds
++ echo 'm1_DONE 2026-08-25T23:42:05+09:00'
++ for S in m1_preprocess m2_keyframe m3_generate m4_index
++ N=m2
+++ date -Iseconds
++ echo $'=== M2 \354\213\234\354\236\221 (2026-08-25T23:42:05+09:00) ==='
+=== M2 시작 (2026-08-25T23:42:05+09:00) ===
++ python src/m2_keyframe.py --config config.yaml --video-id e2e_cooking_1
+M2 완료: is_static 비율 0.0% (0/258)
+++ date -Iseconds
++ echo 'm2_DONE 2026-08-25T23:43:56+09:00'
++ for S in m1_preprocess m2_keyframe m3_generate m4_index
++ N=m3
+++ date -Iseconds
++ echo $'=== M3 \354\213\234\354\236\221 (2026-08-25T23:43:56+09:00) ==='
+=== M3 시작 (2026-08-25T23:43:56+09:00) ===
++ python src/m3_generate.py --config config.yaml --video-id e2e_cooking_1
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+W0825 23:45:38.497000 94616 torch\utils\flop_counter.py:29] triton not found; flop counting will not work for triton kernels
+faster-whisper large-v3 (cuda/float16) 전사 중...
+자막 커버리지: 162/258 (62.8%)
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files: 100%|██████████| 2/2 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/824 [00:00<?, ?it/s]Loading weights:   0%|          | 1/824 [00:00<11:47,  1.16it/s]C:\Users\UserK\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\bitsandbytes\backends\cuda\ops.py:213: FutureWarning: _check_is_size will be removed in a future PyTorch release along with guard_size_oblivious.     Use _check(i >= 0) instead.
+  torch._check_is_size(blocksize)
+Loading weights:   0%|          | 3/824 [00:00<03:38,  3.76it/s]Loading weights:   1%|          | 5/824 [00:01<02:14,  6.08it/s]Loading weights:   2%|▏         | 15/824 [00:01<00:35, 23.08it/s]Loading weights:   2%|▏         | 20/824 [00:01<00:30, 26.30it/s]Loading weights:   3%|▎         | 27/824 [00:01<00:22, 34.69it/s]Loading weights:   4%|▍         | 32/824 [00:01<00:22, 34.75it/s]Loading weights:   5%|▍         | 39/824 [00:01<00:18, 42.62it/s]Loading weights:   5%|▌         | 45/824 [00:01<00:19, 40.73it/s]Loading weights:   6%|▋         | 52/824 [00:02<00:17, 43.61it/s]Loading weights:   7%|▋         | 60/824 [00:02<00:15, 50.82it/s]Loading weights:   8%|▊         | 66/824 [00:02<00:18, 40.78it/s]Loading weights:   9%|▉         | 76/824 [00:02<00:16, 46.10it/s]Loading weights:  10%|█         | 83/824 [00:02<00:14, 49.97it/s]Loading weights:  11%|█         | 89/824 [00:02<00:17, 41.03it/s]Loading weights:  12%|█▏        | 99/824 [00:02<00:14, 51.78it/s]Loading weights:  13%|█▎        | 105/824 [00:03<00:15, 46.89it/s]Loading weights:  14%|█▎        | 112/824 [00:03<00:15, 46.01it/s]Loading weights:  15%|█▍        | 123/824 [00:03<00:13, 53.18it/s]Loading weights:  16%|█▌        | 129/824 [00:03<00:14, 49.22it/s]Loading weights:  17%|█▋        | 136/824 [00:03<00:13, 49.18it/s]Loading weights:  18%|█▊        | 147/824 [00:03<00:12, 56.14it/s]Loading weights:  19%|█▊        | 153/824 [00:04<00:12, 53.13it/s]Loading weights:  19%|█▉        | 160/824 [00:04<00:13, 51.01it/s]Loading weights:  21%|██        | 171/824 [00:04<00:11, 57.65it/s]Loading weights:  21%|██▏       | 177/824 [00:04<00:12, 53.03it/s]Loading weights:  22%|██▏       | 184/824 [00:04<00:12, 52.96it/s]Loading weights:  23%|██▎       | 193/824 [00:04<00:10, 60.84it/s]Loading weights:  24%|██▍       | 200/824 [00:04<00:12, 51.54it/s]Loading weights:  25%|██▌       | 208/824 [00:05<00:11, 51.40it/s]Loading weights:  27%|██▋       | 219/824 [00:05<00:10, 56.78it/s]Loading weights:  27%|██▋       | 225/824 [00:05<00:11, 53.81it/s]Loading weights:  28%|██▊       | 232/824 [00:05<00:11, 51.73it/s]Loading weights:  29%|██▉       | 243/824 [00:05<00:09, 58.86it/s]Loading weights:  30%|███       | 249/824 [00:05<00:10, 53.98it/s]Loading weights:  31%|███       | 256/824 [00:05<00:10, 52.45it/s]Loading weights:  32%|███▏      | 267/824 [00:06<00:09, 59.87it/s]Loading weights:  33%|███▎      | 274/824 [00:06<00:09, 57.88it/s]Loading weights:  34%|███▍      | 280/824 [00:06<00:10, 53.29it/s]Loading weights:  35%|███▌      | 291/824 [00:06<00:09, 58.96it/s]Loading weights:  36%|███▌      | 297/824 [00:06<00:09, 54.84it/s]Loading weights:  37%|███▋      | 304/824 [00:06<00:09, 54.64it/s]Loading weights:  38%|███▊      | 311/824 [00:06<00:08, 57.96it/s]Loading weights:  38%|███▊      | 317/824 [00:07<00:10, 48.13it/s]Loading weights:  40%|███▉      | 327/824 [00:07<00:08, 59.89it/s]Loading weights:  41%|████      | 334/824 [00:07<00:08, 56.43it/s]Loading weights:  41%|████▏     | 341/824 [00:07<00:10, 47.72it/s]Loading weights:  43%|████▎     | 352/824 [00:07<00:08, 55.99it/s]Loading weights:  44%|████▍     | 363/824 [00:07<00:07, 59.58it/s]Loading weights:  45%|████▍     | 370/824 [00:07<00:08, 56.68it/s]Loading weights:  46%|████▌     | 376/824 [00:08<00:08, 51.85it/s]Loading weights:  47%|████▋     | 387/824 [00:08<00:07, 58.66it/s]Loading weights:  48%|████▊     | 393/824 [00:08<00:07, 53.90it/s]Loading weights:  49%|████▊     | 400/824 [00:08<00:08, 52.23it/s]Loading weights:  50%|████▉     | 411/824 [00:08<00:07, 58.76it/s]Loading weights:  51%|█████     | 417/824 [00:08<00:07, 55.14it/s]Loading weights:  51%|█████▏    | 424/824 [00:08<00:07, 54.38it/s]Loading weights:  53%|█████▎    | 433/824 [00:09<00:06, 62.48it/s]Loading weights:  55%|█████▌    | 454/824 [00:09<00:03, 96.30it/s]Loading weights:  58%|█████▊    | 474/824 [00:09<00:02, 122.38it/s]Loading weights:  60%|█████▉    | 492/824 [00:09<00:02, 137.60it/s]Loading weights:  62%|██████▏   | 512/824 [00:09<00:02, 152.40it/s]Loading weights:  65%|██████▍   | 534/824 [00:09<00:01, 163.36it/s]Loading weights:  67%|██████▋   | 556/824 [00:09<00:01, 177.75it/s]Loading weights:  70%|██████▉   | 575/824 [00:09<00:01, 180.64it/s]Loading weights:  72%|███████▏  | 594/824 [00:09<00:01, 179.87it/s]Loading weights:  75%|███████▍  | 616/824 [00:10<00:01, 187.47it/s]Loading weights:  77%|███████▋  | 636/824 [00:10<00:01, 184.69it/s]Loading weights:  80%|███████▉  | 656/824 [00:10<00:00, 188.49it/s]Loading weights:  82%|████████▏ | 678/824 [00:10<00:00, 196.48it/s]Loading weights:  85%|████████▍ | 698/824 [00:10<00:00, 196.54it/s]Loading weights:  87%|████████▋ | 718/824 [00:10<00:00, 185.56it/s]Loading weights:  90%|████████▉ | 740/824 [00:10<00:00, 190.01it/s]Loading weights:  92%|█████████▏| 762/824 [00:10<00:00, 190.76it/s]Loading weights:  95%|█████████▌| 784/824 [00:10<00:00, 197.94it/s]Loading weights:  98%|█████████▊| 804/824 [00:10<00:00, 187.79it/s]Loading weights: 100%|█████████▉| 823/824 [00:11<00:00, 156.82it/s]Loading weights: 100%|██████████| 824/824 [00:11<00:00, 73.80it/s] 
+C:\Users\UserK\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\bitsandbytes\backends\cuda\ops.py:468: FutureWarning: _check_is_size will be removed in a future PyTorch release along with guard_size_oblivious.     Use _check(i >= 0) instead.
+  torch._check_is_size(blocksize)
+M3 완료: caption 빈 문자열 0건
+++ date -Iseconds
++ echo 'm3_DONE 2026-08-26T00:25:10+09:00'
++ for S in m1_preprocess m2_keyframe m3_generate m4_index
++ N=m4
+++ date -Iseconds
++ echo $'=== M4 \354\213\234\354\236\221 (2026-08-26T00:25:10+09:00) ==='
+=== M4 시작 (2026-08-26T00:25:10+09:00) ===
++ python src/m4_index.py --config config.yaml --video-id e2e_cooking_1
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/391 [00:00<?, ?it/s]Loading weights: 100%|██████████| 391/391 [00:00<00:00, 4921.06it/s]
+M4 완료: (258, 1024) x2 저장
+++ date -Iseconds
++ echo 'm4_DONE 2026-08-26T00:25:33+09:00'
+++ date -Iseconds
++ echo $'=== e2e_cooking_1 \354\231\204\353\243\214 (2026-08-26T00:25:33+09:00) ==='
+=== e2e_cooking_1 완료 (2026-08-26T00:25:33+09:00) ===
