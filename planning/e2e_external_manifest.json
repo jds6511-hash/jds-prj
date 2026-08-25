@@ -57,16 +57,17 @@
       "duration_sec": 624,
       "availability": "public",
       "probed_at": "2026-08-25",
-      "local_file": null,
-      "local_file_sha256": null,
-      "audio_present": null,
-      "status": "manifest_only",
+      "local_file": "data/videos/e2e_speech_medium.mp4",
+      "local_file_sha256": "90ef0a3dc68aab8b40f2b28b4ed1827fb2d89012aa7ed091b9e91d003c6de821",
+      "audio_present": true,
+      "status": "functional_pass",
       "e2e_only": true,
       "eligible_for_research_evaluation": false,
       "eligible_for_p2": false,
       "eligible_for_p3": false,
       "eligible_for_test": false,
-      "eligible_for_public_demo": false
+      "eligible_for_public_demo": false,
+      "observed_duration_sec": 623.595
     },
     {
       "e2e_id": "e2e_cooking_1",

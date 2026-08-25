@@ -1,8 +1,11 @@
 {
-  "schema_version": 1,
-  "suite_id": "e2e_external_core_2026-08-25",
-  "e2e_id": "e2e_scene_fast",
-  "identity": {
+ "schema_version": 2,
+ "suite_id": "e2e_external_core_2026-08-25",
+ "note": "external E2E functional test 결과. 연구 지표가 아니다.",
+ "runs": [
+  {
+   "e2e_id": "e2e_scene_fast",
+   "identity": {
     "e2e_id": "e2e_scene_fast",
     "source_url": "https://www.youtube.com/watch?v=vmL0mSzCTBg",
     "youtube_video_id": "vmL0mSzCTBg",
@@ -26,101 +29,223 @@
     "run_started_at": "2026-08-25T13:17:13+09:00",
     "run_completed_at": "2026-08-25T13:26:11+09:00",
     "stage_status": {
-      "m1": true,
-      "m2": true,
-      "m3": true,
-      "m4": true
+     "m1": true,
+     "m2": true,
+     "m3": true,
+     "m4": true
     },
     "e2e_only": true,
     "research_metrics_generated": false
-  },
-  "functional": {
+   },
+   "functional": {
     "stages": {
-      "ingest": true,
-      "stt": true,
-      "caption": true,
-      "embedding": true,
-      "index": true,
-      "search": true,
-      "playback": true
+     "ingest": true,
+     "stt": true,
+     "caption": true,
+     "embedding": true,
+     "index": true,
+     "search": true,
+     "playback": true
     },
     "verdict": "PASS",
     "evidence": {
-      "segment_bounds_ok": true,
-      "segments": 58,
-      "last_end": 287.8876,
-      "caption_rows": 58,
-      "subtitle_rows": 47,
-      "frames": 58,
-      "embedding_shape": [
-        58,
-        1024
-      ],
-      "nan": false,
-      "text_hash_ok": true,
-      "playback_range_status": 206,
-      "playback_wrong_id_status": 404,
-      "seek_equals_start": true,
-      "provenance_status": "recorded",
-      "sha256_verified_at_m1": true
+     "segment_bounds_ok": true,
+     "segments": 58,
+     "last_end": 287.8876,
+     "caption_rows": 58,
+     "subtitle_rows": 47,
+     "frames": 58,
+     "embedding_shape": [
+      58,
+      1024
+     ],
+     "nan": false,
+     "text_hash_ok": true,
+     "playback_range_status": 206,
+     "playback_wrong_id_status": 404,
+     "seek_equals_start": true,
+     "provenance_status": "recorded",
+     "sha256_verified_at_m1": true
     }
-  },
-  "stage_elapsed_sec": {
+   },
+   "stage_elapsed_sec": {
     "m1_m2": 28,
     "m3": 489,
     "m4": 21,
     "total": 538
-  },
-  "semantic": [
+   },
+   "semantic": [
     {
-      "query_id": "e2e_scene_fast_q1",
-      "query": "지역의 음식이 화면에 보이는 장면",
-      "level": 2,
-      "status": "OBSERVED",
-      "top1_start": 95,
-      "elapsed_sec": 15.372
+     "query_id": "e2e_scene_fast_q1",
+     "query": "지역의 음식이 화면에 보이는 장면",
+     "level": 2,
+     "status": "OBSERVED",
+     "top1_start": 95,
+     "elapsed_sec": 15.372
     },
     {
-      "query_id": "e2e_scene_fast_q2",
-      "query": "바다나 해안 풍경이 나오는 장면",
-      "level": 2,
-      "status": "OBSERVED",
-      "top1_start": 60,
-      "elapsed_sec": 0.016
+     "query_id": "e2e_scene_fast_q2",
+     "query": "바다나 해안 풍경이 나오는 장면",
+     "level": 2,
+     "status": "OBSERVED",
+     "top1_start": 60,
+     "elapsed_sec": 0.016
     },
     {
-      "query_id": "e2e_scene_fast_q3",
-      "query": "여행 일정이나 항공편에 대해 설명하는 부분",
-      "level": 2,
-      "status": "OBSERVED",
-      "top1_start": 255,
-      "elapsed_sec": 0.007
+     "query_id": "e2e_scene_fast_q3",
+     "query": "여행 일정이나 항공편에 대해 설명하는 부분",
+     "level": 2,
+     "status": "OBSERVED",
+     "top1_start": 255,
+     "elapsed_sec": 0.007
     }
-  ],
-  "observations": [
+   ],
+   "observations": [
     {
-      "kind": "m1_provenance_gate",
-      "detail": "첫 실행이 M1에서 fail-closed로 멈췄다 — 레지스트리 미등록. 등록 후 통과",
-      "action": "정상 동작. 조치 완료"
+     "kind": "m1_provenance_gate",
+     "detail": "첫 실행이 M1에서 fail-closed로 멈췄다 — 레지스트리 미등록. 등록 후 통과",
+     "action": "정상 동작. 조치 완료"
     },
     {
-      "kind": "caption_prompt_echo",
-      "segment": 51,
-      "detail": "캡션이 지시문을 되받아 적었다(\"네, 알겠습니다. 주문하신 내용을…\"). is_corrupted_caption 판정에 걸리지 않았다",
-      "action": "보고만 한다 — 오염 판정 규칙 변경은 frozen methodology 사건이라 승인 없이 손대지 않는다"
+     "kind": "caption_prompt_echo",
+     "segment": 51,
+     "detail": "캡션이 지시문을 되받아 적었다(\"네, 알겠습니다. 주문하신 내용을…\"). is_corrupted_caption 판정에 걸리지 않았다",
+     "action": "보고만 한다 — 오염 판정 규칙 변경은 frozen methodology 사건이라 승인 없이 손대지 않는다"
     }
-  ],
-  "research_metrics_generated": false,
-  "test_split_used": false,
-  "e2e_only": true,
-  "resume": {
+   ],
+   "research_metrics_generated": false,
+   "test_split_used": false,
+   "e2e_only": true,
+   "resume": {
     "done": [
-      "m1",
-      "m2",
-      "m3",
-      "m4"
+     "m1",
+     "m2",
+     "m3",
+     "m4"
     ],
     "resume_from": null,
     "complete": true
+   },
+   "phase": 1
+  },
+  {
+   "e2e_id": "e2e_speech_medium",
+   "phase": 2,
+   "identity": {
+    "e2e_id": "e2e_speech_medium",
+    "source_url": "https://www.youtube.com/watch?v=nmnWrLUTyE8",
+    "youtube_video_id": "nmnWrLUTyE8",
+    "local_file": "data\\videos\\e2e_speech_medium.mp4",
+    "local_file_sha256": "90ef0a3dc68aab8b40f2b28b4ed1827fb2d89012aa7ed091b9e91d003c6de821",
+    "observed_duration_sec": 623.595,
+    "segment_count": 125,
+    "stt_model": "large-v3",
+    "stt_language": "ko",
+    "vlm_model": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "vlm_max_new_tokens": 128,
+    "vlm_rep_penalty": 1.1,
+    "prompt_sha256": "b7c2598ade97784d74967fc7859e2c32c4cf3c506351c386278ea5673590123b",
+    "effective_quantized": true,
+    "embed_model": "nlpai-lab/KURE-v1",
+    "embedding_dim": 1024,
+    "embedding_rows": 125,
+    "alpha": 0.5,
+    "seg_len_sec": 5,
+    "static_threshold": 0,
+    "run_started_at": "2026-08-25T15:18:08+09:00",
+    "run_completed_at": "2026-08-25T15:51:29+09:00",
+    "stage_status": {
+     "m1": true,
+     "m2": true,
+     "m3": true,
+     "m4": true
+    },
+    "e2e_only": true,
+    "research_metrics_generated": false
+   },
+   "functional": {
+    "stages": {
+     "ingest": true,
+     "stt": true,
+     "caption": true,
+     "embedding": true,
+     "index": true,
+     "search": true,
+     "playback": true
+    },
+    "verdict": "PASS",
+    "evidence": {
+     "segment_bounds_ok": true,
+     "segments": 125,
+     "last_end": 623.5333333333333,
+     "caption_rows": 125,
+     "subtitle_rows": 92,
+     "frames": 125,
+     "embedding_shape": [
+      125,
+      1024
+     ],
+     "embedding_nan": 0,
+     "text_hash_match": true,
+     "corrupted_captions": 0,
+     "subtitle_credit_hits": 0,
+     "prompt_echo_like": [],
+     "provenance": {
+      "provenance_status": "recorded",
+      "source_id": "nmnWrLUTyE8",
+      "sha256_verified_at_m1": true
+     },
+     "playback": {
+      "status": 206,
+      "content_range": "bytes 0-1023/180850731",
+      "len": 1024
+     },
+     "wrong_id_status": 404
+    }
+   },
+   "stage_elapsed_sec": {
+    "m1": 1,
+    "m2": 45,
+    "m3": 1932,
+    "m4": 23,
+    "total": 2001
+   },
+   "semantic": [
+    {
+     "query_id": "e2e_speech_medium_q1",
+     "query": "조선 전기 미술의 특징을 설명하는 부분",
+     "assertion_level": 2,
+     "status": "OBSERVED",
+     "top1_idx": 46,
+     "top1_start": 230,
+     "top1_subtitle": "우리 조선 전기의 도자기에는 아주 고귀한 품격이 있어요. 고상하다고 얘기할 수 있는 품격이 있어요."
+    }
+   ],
+   "observations": [
+    "STT 무발화 구간 33개(125 중 92개만 자막) — 강연 영상이라 슬라이드 전환·정적 구간이 있다.",
+    "캡션 오염 판정 0건 · 자막 크레딧 환각 0건 · 지시문 echo 유사 0건 (PHASE 1의 seg 51 유형 재발 없음).",
+    "캡션 1건에 한국어 파손이 보인다(idx 46 '오른쪽은된 그릇입니다'). 오염 판정 기준에는 걸리지 않는다 — 규칙을 바꾸지 않고 관측만 기록한다.",
+    "128토큰 상한에서 잘린 캡션이 있다(화면 텍스트를 인용하다 끊김). PHASE 1과 같은 유형."
+   ],
+   "research_metrics_generated": false,
+   "test_split_used": false,
+   "e2e_only": true,
+   "resume": {
+    "done": [
+     "m1",
+     "m2",
+     "m3",
+     "m4"
+    ],
+    "resume_from": null,
+    "stages": {
+     "m1": true,
+     "m2": true,
+     "m3": true,
+     "m4": true
+    },
+    "complete": true
+   }
   }
+ ]
 }

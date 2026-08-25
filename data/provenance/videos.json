@@ -168,6 +168,14 @@
       "e2e_only": true,
       "eligible_for_research_evaluation": false,
       "note": "external E2E functional test 전용 (FINALIZATION-F2). 연구 표본이 아니다."
+    },
+    "e2e_speech_medium": {
+      "source_url": "https://www.youtube.com/watch?v=nmnWrLUTyE8",
+      "source_id": "nmnWrLUTyE8",
+      "file_sha256": "90ef0a3dc68aab8b40f2b28b4ed1827fb2d89012aa7ed091b9e91d003c6de821",
+      "e2e_only": true,
+      "eligible_for_research_evaluation": false,
+      "note": "external E2E functional test 전용 (FINALIZATION-F2). 연구 표본이 아니다."
     }
   },
   "legacy_exempt": {
