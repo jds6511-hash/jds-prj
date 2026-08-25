@@ -73,10 +73,12 @@ def api(base: str, video_id: str, dur: float, n_seg: int, queries: list) -> dict
         st, body = post("/api/search", {"video_id": video_id, "query": q["query"],
                                         "top_k": 5})
         rows = body["results"]
+        # semantic_observation은 anchor를 (start, end) 쌍으로 받는다. LEVEL 2는 None.
+        a_start = q.get("known_anchor_start")
+        anchor = None if a_start is None else (a_start, q.get("known_anchor_end", a_start))
         out.append({"q": q, "http": st,
                     "check": E.check_results(rows, dur, n_seg),
-                    "observation": E.semantic_observation(
-                        q["query"], q.get("known_anchor_start"), rows),
+                    "observation": E.semantic_observation(q["query"], anchor, rows),
                     "rows": rows})
     stages["search"] = all(o["check"]["ok"] for o in out)
     stages["seek"] = all(r["seek_to"] == r["start"] and 0 <= r["seek_to"] <= dur

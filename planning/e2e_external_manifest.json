@@ -108,16 +108,17 @@
       "duration_sec": 4116,
       "availability": "public",
       "probed_at": "2026-08-25",
-      "local_file": null,
-      "local_file_sha256": null,
-      "audio_present": null,
-      "status": "manifest_only",
+      "local_file": "data/videos/e2e_interview.mp4",
+      "local_file_sha256": "17d7892965f3b617f349fef8afb5852067d8994dd1162845b481538da15c7f1c",
+      "audio_present": true,
+      "status": "functional_pass",
       "e2e_only": true,
       "eligible_for_research_evaluation": false,
       "eligible_for_p2": false,
       "eligible_for_p3": false,
       "eligible_for_test": false,
-      "eligible_for_public_demo": false
+      "eligible_for_public_demo": false,
+      "observed_duration_sec": 4115.992
     }
   ],
   "excluded": [

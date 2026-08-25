@@ -378,6 +378,156 @@
     },
     "complete": true
    }
+  },
+  {
+   "e2e_id": "e2e_interview",
+   "phase": 4,
+   "role_status": "OPTIONAL_LONGFORM_STRESS",
+   "identity": {
+    "e2e_id": "e2e_interview",
+    "source_url": "https://www.youtube.com/watch?v=2ruw-smwuJE",
+    "youtube_video_id": "2ruw-smwuJE",
+    "local_file": "data\\videos\\e2e_interview.mp4",
+    "local_file_sha256": "17d7892965f3b617f349fef8afb5852067d8994dd1162845b481538da15c7f1c",
+    "observed_duration_sec": 4115.992,
+    "segment_count": 824,
+    "stt_model": "large-v3",
+    "stt_language": "ko",
+    "vlm_model": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "vlm_max_new_tokens": 128,
+    "vlm_rep_penalty": 1.1,
+    "prompt_sha256": "b7c2598ade97784d74967fc7859e2c32c4cf3c506351c386278ea5673590123b",
+    "effective_quantized": true,
+    "embed_model": "nlpai-lab/KURE-v1",
+    "embedding_dim": 1024,
+    "embedding_rows": 824,
+    "alpha": 0.5,
+    "seg_len_sec": 5,
+    "static_threshold": 0,
+    "run_started_at": "2026-08-26T00:35:06+09:00",
+    "run_completed_at": "2026-08-26T02:56:14+09:00",
+    "stage_status": {
+     "m1": true,
+     "m2": true,
+     "m3": true,
+     "m4": true
+    },
+    "e2e_only": true,
+    "research_metrics_generated": false
+   },
+   "functional": {
+    "stages": {
+     "ingest": true,
+     "stt": true,
+     "caption": true,
+     "embedding": true,
+     "index": true,
+     "search": true,
+     "playback": true
+    },
+    "verdict": "PASS",
+    "evidence": {
+     "segment_bounds_ok": true,
+     "segments": 824,
+     "last_end": 4115.91966446201,
+     "duration_sec": 4115.992,
+     "caption_rows": 824,
+     "subtitle_rows": 659,
+     "frames": 824,
+     "embedding_shape": [
+      824,
+      1024
+     ],
+     "embedding_nan": 0,
+     "text_hash_match": true,
+     "text_hash": "f744c2ee35553ba1",
+     "corrupted_captions": 0,
+     "subtitle_credit_hits": 0,
+     "prompt_echo_like": [],
+     "provenance": {
+      "provenance_status": "recorded",
+      "source_id": "2ruw-smwuJE",
+      "sha256_verified_at_m1": true
+     },
+     "seek_ok": true,
+     "playback": {
+      "status": 206,
+      "content_range": "bytes 0-1023/1857702104",
+      "len": 1024
+     },
+     "wrong_id_status": 404
+    }
+   },
+   "stage_elapsed_sec": {
+    "m1": 4,
+    "m2": 602,
+    "m3": 7830,
+    "m4": 32,
+    "total": 8468
+   },
+   "scale_note": "824구간 — 지금까지 최대(PHASE 3의 3.2배). M3 7830s = 구간당 9.5s.",
+   "semantic": [
+    {
+     "query_id": "e2e_interview_q1",
+     "query": "지금 하고 있는 일을 천직이라고 생각하는지 이야기하는 부분",
+     "assertion_level": 1,
+     "anchor_start": 1465,
+     "status": "REVIEW",
+     "anchor_in_topk": false,
+     "top1_idx": 453,
+     "top1_start": 2265,
+     "top1_subtitle": "안드레아스 씨는 지금의 일을 천직으로 생각하는지 아닌지 한 단어는 왜 아닌다라고 하면 왜인지 궁금합니다. 아, 뷰? 아, 천직이라고요? 단호하게 딱 말씀하시네요."
+    },
+    {
+     "query_id": "e2e_interview_q2",
+     "query": "양조와 가업을 이어가게 된 과정을 설명하는 부분",
+     "assertion_level": 1,
+     "anchor_start": 1563,
+     "status": "REVIEW",
+     "anchor_in_topk": false,
+     "top1_idx": 420,
+     "top1_start": 2100,
+     "top1_subtitle": "그리고 이 기술은 제가 집에서 생산한 브루어리에 도움이 되었고 여기에서 브루어리를 연결시켰습니다."
+    }
+   ],
+   "observations": [
+    "level 1 anchor 2건이 모두 REVIEW다. 이 스위트에서 level 1이 실행된 첫 사례다.",
+    "진단 — anchor 시각의 실제 자막이 질의 주제와 다르다. 1465s(24:25)는 '뷔 만드는 과정', 1563s(26:03)은 '쌀이 생긴 라면' 내용이다. 외부 전사(careernote.co.kr)의 시각이 이 영상 타임라인과 어긋나는 것으로 보인다(다른 편집본 가능성).",
+    "검색 1위는 질의와 직접 대응하는 자막을 가진 구간이었다 — q1 seg453(37:45) '안드레아스 씨는 지금의 일을 천직으로 생각하는지', q2 seg420(35:00) '제가 집에서 생산한 브루어리에 도움이 되었고'. 이것을 정확도·성능 근거로 쓰지 않는다.",
+    "anchor를 결과에 맞춰 수정하지 않았다. 결과를 보고 라벨을 바꾸는 것이므로 REVIEW로 남긴다. 이 REVIEW는 functional FAIL이 아니다.",
+    "오염 판정 0건 · 자막 크레딧 0건 · 지시문 echo 유사 0건 — 824구간에서 전부 0이다.",
+    "규모 관련 실패 없음 — 구간 수 증가에 따른 색인·검색·seek·resume 결함이 관측되지 않았다.",
+    "검증기 결함 1건 — level 1 anchor 경로가 처음 실행되면서 semantic_observation에 (start,end) 쌍 대신 시작값만 넘기던 버그가 드러났다. 고치고 재실행했다."
+   ],
+   "research_metrics_generated": false,
+   "test_split_used": false,
+   "e2e_only": true,
+   "resume": {
+    "done": [
+     "m1",
+     "m2",
+     "m3",
+     "m4"
+    ],
+    "resume_from": null,
+    "stages": {
+     "m1": true,
+     "m2": true,
+     "m3": true,
+     "m4": true
+    },
+    "complete": true
+   }
   }
- ]
+ ],
+ "suite_status": {
+  "core_videos_planned": 4,
+  "core_videos_run": 4,
+  "excluded": [
+   "e2e_kfood (authentication required, 우회 안 함)"
+  ],
+  "functional_e2e": "COMPLETE",
+  "note": "PHASE 1~4 전부 functional PASS. PHASE 4는 OPTIONAL_LONGFORM_STRESS였고 실행했다.",
+  "research_metrics_generated": false
+ }
 }

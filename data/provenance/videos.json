@@ -184,6 +184,14 @@
       "e2e_only": true,
       "eligible_for_research_evaluation": false,
       "note": "external E2E functional test 전용 (FINALIZATION-F2). 연구 표본이 아니다."
+    },
+    "e2e_interview": {
+      "source_url": "https://www.youtube.com/watch?v=2ruw-smwuJE",
+      "source_id": "2ruw-smwuJE",
+      "file_sha256": "17d7892965f3b617f349fef8afb5852067d8994dd1162845b481538da15c7f1c",
+      "e2e_only": true,
+      "eligible_for_research_evaluation": false,
+      "note": "external E2E functional test 전용 (FINALIZATION-F2, OPTIONAL_LONGFORM_STRESS). 연구 표본이 아니다."
     }
   },
   "legacy_exempt": {

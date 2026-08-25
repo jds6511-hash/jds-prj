@@ -1,0 +1,281 @@
+{
+ "video_id": "e2e_interview",
+ "research_metrics_generated": false,
+ "e2e_only": true,
+ "structural": {
+  "n_segments": 824,
+  "captions_filled": 824,
+  "subtitles_filled": 659,
+  "frames_on_disk": 824,
+  "corrupted_captions": 0,
+  "subtitle_credit_hits": 0,
+  "prompt_echo_like": [],
+  "segment_bounds": {
+   "ok": true,
+   "reason": null,
+   "n_segments": 824
+  },
+  "last_end": 4115.91966446201,
+  "duration_sec": 4115.992,
+  "text_hash": "f744c2ee35553ba1",
+  "text_hash_match": true,
+  "embeddings": {
+   "emb_sub": {
+    "shape": [
+     824,
+     1024
+    ],
+    "nan": 0,
+    "check": {
+     "ok": true,
+     "reason": null
+    }
+   },
+   "emb_cap": {
+    "shape": [
+     824,
+     1024
+    ],
+    "nan": 0,
+    "check": {
+     "ok": true,
+     "reason": null
+    }
+   }
+  },
+  "provenance": {
+   "provenance_status": "recorded",
+   "source_id": "2ruw-smwuJE",
+   "sha256_verified_at_m1": true
+  },
+  "resume": {
+   "done": [
+    "m1",
+    "m2",
+    "m3",
+    "m4"
+   ],
+   "resume_from": null,
+   "stages": {
+    "m1": true,
+    "m2": true,
+    "m3": true,
+    "m4": true
+   },
+   "complete": true
+  }
+ },
+ "run_identity": {
+  "e2e_id": "e2e_interview",
+  "source_url": "https://www.youtube.com/watch?v=2ruw-smwuJE",
+  "youtube_video_id": "2ruw-smwuJE",
+  "local_file": "data\\videos\\e2e_interview.mp4",
+  "local_file_sha256": "17d7892965f3b617f349fef8afb5852067d8994dd1162845b481538da15c7f1c",
+  "observed_duration_sec": 4115.992,
+  "segment_count": 824,
+  "stt_model": "large-v3",
+  "stt_language": "ko",
+  "vlm_model": "Qwen/Qwen2.5-VL-3B-Instruct",
+  "vlm_max_new_tokens": 128,
+  "vlm_rep_penalty": 1.1,
+  "prompt_sha256": "b7c2598ade97784d74967fc7859e2c32c4cf3c506351c386278ea5673590123b",
+  "effective_quantized": true,
+  "embed_model": "nlpai-lab/KURE-v1",
+  "embedding_dim": null,
+  "embedding_rows": null,
+  "alpha": 0.5,
+  "seg_len_sec": 5,
+  "static_threshold": 0,
+  "run_started_at": null,
+  "run_completed_at": null,
+  "stage_status": {},
+  "e2e_only": true,
+  "research_metrics_generated": false
+ },
+ "api": {
+  "search_results": [
+   {
+    "q": {
+     "query_id": "e2e_interview_q1",
+     "e2e_id": "e2e_interview",
+     "query_type": "자막형",
+     "query": "지금 하고 있는 일을 천직이라고 생각하는지 이야기하는 부분",
+     "source_of_query": "외부 공개 인터뷰 전문(careernote.co.kr)에 24:25로 시각이 기재돼 있다. 검색 결과를 보고 고르지 않았다",
+     "known_anchor_start": 1465,
+     "known_anchor_end": 1465,
+     "assertion_level": 1
+    },
+    "http": 200,
+    "check": {
+     "ok": true,
+     "reason": null,
+     "n_results": 5
+    },
+    "observation": {
+     "query": "지금 하고 있는 일을 천직이라고 생각하는지 이야기하는 부분",
+     "level": 1,
+     "status": "REVIEW",
+     "anchor": [
+      1465,
+      1465
+     ],
+     "window_sec": 15,
+     "anchor_in_topk": false,
+     "anchor_rank": null,
+     "n_results": 5,
+     "is_research_metric": false,
+     "note": "외부 공개 전사에서 얻은 시각 anchor다. 검색 결과를 보고 고르지 않았다. 관찰이고 정확도가 아니다"
+    },
+    "rows": [
+     {
+      "rank": 1,
+      "idx": 453,
+      "start": 2265,
+      "end": 2270,
+      "seek_to": 2265,
+      "score": 3.15,
+      "subtitle": "안드레아스 씨는 지금의 일을 천직으로 생각하는지 아닌지 한 단어는 왜 아닌다라고 하면 왜인지 궁금합니다. 아, 뷰? 아, 천직이라고요? 단호하게 딱 말씀하시네요.",
+      "caption": "두 남성이 카페 같은 실내 환경에서 대화를 나누고 있습니다. 한 남성은 턱시드를 입고 있으며, 다른 남성은 파란색 앞치마를 착용하고 있습니다. 배경에는 식당의 테이블과 의자들이 보이며, 벽에는 메뉴판과 꽃병이 걸려 있습니다. 조명은 따뜻한 분위기를 연출하고 있습니다. 대화 중인 두 사람 사이에는 진지한 표정으로 서로를 바라보는 모습이 보입니다."
+     },
+     {
+      "rank": 2,
+      "idx": 628,
+      "start": 3140,
+      "end": 3145,
+      "seek_to": 3140,
+      "score": 2.987,
+      "subtitle": "과정이라고 합니다. 그리고 전문가들도 양성하려고 한다고 하니까요. 장기적으로는. 여러분 조금 기다려주시면 또 기회가 있지 않을까 이런 생각이 듭니다.",
+      "caption": "화면에는 두 사람이 테이블에 앉아 대화를 나누고 있습니다. 왼쪽의 사람은 줄무늬 스웨터를 입고 있으며, 오른쪽의 사람은 파란색 앞치마를 입고 있습니다. 배경은 식당으로, 바닥에는 나무 의자와 테이블들이 있고, 벽에는 브러쉬가 걸려 있습니다. 화면 오른쪽 상단에는 '천재인터뷰'라는 글자가 보입니다."
+     },
+     {
+      "rank": 3,
+      "idx": 668,
+      "start": 3340,
+      "end": 3345,
+      "seek_to": 3340,
+      "score": 2.818,
+      "subtitle": "저는 한국어 수업을 들으며 학생이었습니다",
+      "caption": "2016년에 한국에서 반 년 동안 머물렀기 때문에, 이미 한국 생활에 꽤나 적응을 했습니다."
+     },
+     {
+      "rank": 4,
+      "idx": 456,
+      "start": 2280,
+      "end": 2285,
+      "seek_to": 2280,
+      "score": 2.507,
+      "subtitle": "아, 천직이라고요? 단호하게 딱 말씀하시네요.",
+      "caption": "두 남성이 식당 같은 실내 환경에서 대화를 나누고 있습니다. 한 남성은 줄무늬 스웨터를 입고 있으며, 다른 남성은 파란색 앞치마를 착용하고 있습니다. 두 사람 모두 테이블에 앉아 있으며, 주변에는 식당의 가구와 장식품들이 보입니다. 배경에는 레스토랑의 내부 구조와 조명이 보이며, 대화 중인 두 사람 사이에는 한국어 자막이 나타나 있습니다."
+     },
+     {
+      "rank": 5,
+      "idx": 669,
+      "start": 3345,
+      "end": 3350,
+      "seek_to": 3345,
+      "score": 2.488,
+      "subtitle": "",
+      "caption": "2016년에 한국에서 반 년 동안 머물렀기 때문에, 이미 한국 생활에 꽤나 적응을 했습니다."
+     }
+    ]
+   },
+   {
+    "q": {
+     "query_id": "e2e_interview_q2",
+     "e2e_id": "e2e_interview",
+     "query_type": "자막형",
+     "query": "양조와 가업을 이어가게 된 과정을 설명하는 부분",
+     "source_of_query": "같은 외부 전사에 26:03으로 기재",
+     "known_anchor_start": 1563,
+     "known_anchor_end": 1563,
+     "assertion_level": 1
+    },
+    "http": 200,
+    "check": {
+     "ok": true,
+     "reason": null,
+     "n_results": 5
+    },
+    "observation": {
+     "query": "양조와 가업을 이어가게 된 과정을 설명하는 부분",
+     "level": 1,
+     "status": "REVIEW",
+     "anchor": [
+      1563,
+      1563
+     ],
+     "window_sec": 15,
+     "anchor_in_topk": false,
+     "anchor_rank": null,
+     "n_results": 5,
+     "is_research_metric": false,
+     "note": "외부 공개 전사에서 얻은 시각 anchor다. 검색 결과를 보고 고르지 않았다. 관찰이고 정확도가 아니다"
+    },
+    "rows": [
+     {
+      "rank": 1,
+      "idx": 420,
+      "start": 2100,
+      "end": 2105,
+      "seek_to": 2100,
+      "score": 4.492,
+      "subtitle": "그리고 이 기술은 제가 집에서 생산한 브루어리에 도움이 되었고 여기에서 브루어리를 연결시켰습니다.",
+      "caption": "화면에는 두 사람이 테이블에 앉아 대화를 나누는 모습이 보입니다. 왼쪽의 남자는 줄무늬 스웨터를 입고 있으며, 오른쪽의 남자는 파란색 앞치마를 매고 있습니다. 배경은 카페나 레스토랑으로 추정되며, 테이블 위에는 식물과 서류가 놓여 있습니다. 화면 하단에는 한국어 자막이 나타나 있으며, 이 자막은 '이 경험은 제가 소형 양조기를 만들"
+     },
+     {
+      "rank": 2,
+      "idx": 70,
+      "start": 350,
+      "end": 355,
+      "seek_to": 350,
+      "score": 3.87,
+      "subtitle": "",
+      "caption": "화면에는 오래된 톱브로이 양조장이 보입니다. 이 장소는 100여년간 잘 보존되어 있으며, 털이 희미하게 변색하고 있는 벽돌 벽과 철제 구조물들이 보입니다. 양조장 안에는 큰 빨간색 타르가 있고, 그 위에는 작은 금속 구조물이 있습니다. 화면 하단에는 한국어 자막이 나타나 있으며, \"100여년간 잘 보존되어 있는 톱브"
+     },
+     {
+      "rank": 3,
+      "idx": 246,
+      "start": 1230,
+      "end": 1235,
+      "seek_to": 1230,
+      "score": 3.718,
+      "subtitle": "",
+      "caption": "안드레아스는 밤새도록 작업하는 양조실에서 일하고 있습니다. 그는 철제 용기에 손을 대며, 주변에는 여러 개의 큰 탱크가 놓여 있습니다. 배경은 깨끗한 벽과 조명으로 가득 차 있으며, 안드레아스의 허리까지 오르는 긴 바닥이 보입니다."
+     },
+     {
+      "rank": 4,
+      "idx": 71,
+      "start": 355,
+      "end": 360,
+      "seek_to": 355,
+      "score": 3.438,
+      "subtitle": "",
+      "caption": "화면에는 오래된 토브로이 밀도르프 양조장이 보입니다. 이 장소는 100여년간 잘 보존되어 있으며, 털이 빗발치고 벽돌 벽이 틈새로 희미하게 보이는 바닥이 있습니다. 토브로이 백은 금속으로 만들어져 있고, 옆에는 펌프와 같은 기계 부품들이 보입니다."
+     },
+     {
+      "rank": 5,
+      "idx": 72,
+      "start": 360,
+      "end": 365,
+      "seek_to": 360,
+      "score": 3.346,
+      "subtitle": "",
+      "caption": "100여년간 잘 보존되어 있는 톱브로이 월도르프 양조장 4. 화면에는 오래된 벽돌 벽과 낡은 철제 구조가 보이며, 바닥에는 흙으로 된 바닥이 보입니다. 화면 하단에는 한국어 자막이 나타나 있습니다."
+     }
+    ]
+   }
+  ],
+  "playback": {
+   "status": 206,
+   "content_range": "bytes 0-1023/1857702104",
+   "len": 1024
+  },
+  "wrong_id_status": 404,
+  "stages": {
+   "search": true,
+   "seek": true,
+   "playback": true,
+   "wrong_id_404": true
+  }
+ }
+}
