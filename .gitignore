@@ -73,3 +73,6 @@ SERVER_LOCAL.md
 
 # P2 표집틀 검증 staging (승인 ① 작업 — 승격은 승인 ②)
 artifacts/
+
+# 튜터 회의 슬라이드·렌더 (AI Hub 프레임 embed — 재배포 권한 미확인, 얼굴 식별 가능)
+docs/tutor/_local/
