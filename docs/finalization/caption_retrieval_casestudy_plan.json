@@ -252,5 +252,38 @@
   ],
   "frozen_queries_sha256": "752e8fe3de1e3f06995b099a62c4fde451deb82a4e44fbdf1b68ac3481792747",
   "frozen_scenes_sha256": "d41fe13c46e61efe7d7c2617255d5c5ba396b3b8ba9459b41984db5cc69d13d9",
-  "n_queries_check": 15
+  "n_queries_check": 15,
+  "amendments": [
+    {
+      "amendment_id": "A1_contemporaneous_pair",
+      "date": "2026-08-25",
+      "outcome_blind": true,
+      "outcome_access_before_amendment": {
+        "captions_read": false,
+        "retrieval_read": false
+      },
+      "doc": "docs/finalization/CAPTION_RETRIEVAL_CASESTUDY_AMENDMENT_2026-08-25.md",
+      "decision": "기존 2026-07 저장 3B 캡션을 직접 대조에 쓰지 않고, 오늘 4B와 동일 환경에서 3B도 새로 생성한다. 대조는 fresh 3B q4 vs fresh 4B q4.",
+      "reason": "기존 3B 캡션은 caption provenance 기능(17516fb) 이전 산출물이라 생성 시점·기계·라이브러리가 불명확하다. 동시점 대조군 조건(CLAUDE.md 후보 검증 규약 4)을 만족시킨다.",
+      "unchanged": [
+        "scene_selection_rule",
+        "scenes",
+        "queries",
+        "frozen_queries_sha256",
+        "frozen_scenes_sha256",
+        "retrieval.primary",
+        "retrieval.secondary",
+        "what_counts_as_observation",
+        "contamination_policy"
+      ],
+      "historical_3b_artifact": "덮어쓰지 않음 · 삭제하지 않음 · paired 비교에 미사용 · 보존",
+      "quantization": "3B q4 vs 4B q4. 과거 AI Hub 2x2의 4B bf16 결과와 직접 수치 비교하지 않는다.",
+      "namespace": {
+        "run_dir": "runs/casestudy_caption_retrieval/cs_20260825",
+        "arm_3b": "3b_fresh",
+        "arm_4b": "4b_fresh"
+      }
+    }
+  ],
+  "comparison": "fresh_3b_q4_vs_fresh_4b_q4"
 }
