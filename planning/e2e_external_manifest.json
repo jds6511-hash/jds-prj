@@ -31,16 +31,17 @@
       "duration_sec": 288,
       "availability": "public",
       "probed_at": "2026-08-25",
-      "local_file": null,
-      "local_file_sha256": null,
-      "audio_present": null,
-      "status": "manifest_only",
+      "local_file": "data/videos/e2e_scene_fast.mp4",
+      "local_file_sha256": "51f8e57f9ca78ae04491f9720a363ef478f54747afb92e08b8851fd3ede62ab1",
+      "audio_present": true,
+      "status": "functional_pass",
       "e2e_only": true,
       "eligible_for_research_evaluation": false,
       "eligible_for_p2": false,
       "eligible_for_p3": false,
       "eligible_for_test": false,
-      "eligible_for_public_demo": false
+      "eligible_for_public_demo": false,
+      "observed_duration_sec": 287.951
     },
     {
       "e2e_id": "e2e_speech_medium",
@@ -128,15 +129,31 @@
     }
   ],
   "optional_candidates": [
-    {"e2e_id": "e2e_cooking_3", "source_video_id": "BZD7OS1nYLs",
-     "duration_sec": 913, "availability": "public"},
-    {"e2e_id": "e2e_action_talk", "source_video_id": "slMR8ARLl30",
-     "duration_sec": 1167, "availability": "public"},
-    {"e2e_id": "e2e_talk", "source_video_id": "EiqboyTATGY",
-     "duration_sec": 1549, "availability": "public"}
+    {
+      "e2e_id": "e2e_cooking_3",
+      "source_video_id": "BZD7OS1nYLs",
+      "duration_sec": 913,
+      "availability": "public"
+    },
+    {
+      "e2e_id": "e2e_action_talk",
+      "source_video_id": "slMR8ARLl30",
+      "duration_sec": 1167,
+      "availability": "public"
+    },
+    {
+      "e2e_id": "e2e_talk",
+      "source_video_id": "EiqboyTATGY",
+      "duration_sec": 1549,
+      "availability": "public"
+    }
   ],
   "optional_rule": "CORE 4개가 통과하기 전에 optional을 처리하지 않는다.",
-  "phase_order": ["e2e_scene_fast", "e2e_speech_medium", "e2e_cooking_1",
-                  "e2e_interview"],
+  "phase_order": [
+    "e2e_scene_fast",
+    "e2e_speech_medium",
+    "e2e_cooking_1",
+    "e2e_interview"
+  ],
   "phase_order_reason": "68분 영상을 첫 디버깅 대상으로 쓰지 않는다 — 앞의 셋에서 구조적 버그를 먼저 잡는다."
 }

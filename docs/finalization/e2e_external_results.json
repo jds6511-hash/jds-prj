@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "suite_id": "e2e_external_core_2026-08-25",
+  "e2e_id": "e2e_scene_fast",
+  "identity": {
+    "e2e_id": "e2e_scene_fast",
+    "source_url": "https://www.youtube.com/watch?v=vmL0mSzCTBg",
+    "youtube_video_id": "vmL0mSzCTBg",
+    "local_file": "data\\videos\\e2e_scene_fast.mp4",
+    "local_file_sha256": "51f8e57f9ca78ae04491f9720a363ef478f54747afb92e08b8851fd3ede62ab1",
+    "observed_duration_sec": 287.951,
+    "segment_count": 58,
+    "stt_model": "large-v3",
+    "stt_language": "ko",
+    "vlm_model": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "vlm_max_new_tokens": 128,
+    "vlm_rep_penalty": 1.1,
+    "prompt_sha256": "b7c2598ade97784d74967fc7859e2c32c4cf3c506351c386278ea5673590123b",
+    "effective_quantized": true,
+    "embed_model": "nlpai-lab/KURE-v1",
+    "embedding_dim": 1024,
+    "embedding_rows": 58,
+    "alpha": 0.5,
+    "seg_len_sec": 5,
+    "static_threshold": 0,
+    "run_started_at": "2026-08-25T13:17:13+09:00",
+    "run_completed_at": "2026-08-25T13:26:11+09:00",
+    "stage_status": {
+      "m1": true,
+      "m2": true,
+      "m3": true,
+      "m4": true
+    },
+    "e2e_only": true,
+    "research_metrics_generated": false
+  },
+  "functional": {
+    "stages": {
+      "ingest": true,
+      "stt": true,
+      "caption": true,
+      "embedding": true,
+      "index": true,
+      "search": true,
+      "playback": true
+    },
+    "verdict": "PASS",
+    "evidence": {
+      "segment_bounds_ok": true,
+      "segments": 58,
+      "last_end": 287.8876,
+      "caption_rows": 58,
+      "subtitle_rows": 47,
+      "frames": 58,
+      "embedding_shape": [
+        58,
+        1024
+      ],
+      "nan": false,
+      "text_hash_ok": true,
+      "playback_range_status": 206,
+      "playback_wrong_id_status": 404,
+      "seek_equals_start": true,
+      "provenance_status": "recorded",
+      "sha256_verified_at_m1": true
+    }
+  },
+  "stage_elapsed_sec": {
+    "m1_m2": 28,
+    "m3": 489,
+    "m4": 21,
+    "total": 538
+  },
+  "semantic": [
+    {
+      "query_id": "e2e_scene_fast_q1",
+      "query": "지역의 음식이 화면에 보이는 장면",
+      "level": 2,
+      "status": "OBSERVED",
+      "top1_start": 95,
+      "elapsed_sec": 15.372
+    },
+    {
+      "query_id": "e2e_scene_fast_q2",
+      "query": "바다나 해안 풍경이 나오는 장면",
+      "level": 2,
+      "status": "OBSERVED",
+      "top1_start": 60,
+      "elapsed_sec": 0.016
+    },
+    {
+      "query_id": "e2e_scene_fast_q3",
+      "query": "여행 일정이나 항공편에 대해 설명하는 부분",
+      "level": 2,
+      "status": "OBSERVED",
+      "top1_start": 255,
+      "elapsed_sec": 0.007
+    }
+  ],
+  "observations": [
+    {
+      "kind": "m1_provenance_gate",
+      "detail": "첫 실행이 M1에서 fail-closed로 멈췄다 — 레지스트리 미등록. 등록 후 통과",
+      "action": "정상 동작. 조치 완료"
+    },
+    {
+      "kind": "caption_prompt_echo",
+      "segment": 51,
+      "detail": "캡션이 지시문을 되받아 적었다(\"네, 알겠습니다. 주문하신 내용을…\"). is_corrupted_caption 판정에 걸리지 않았다",
+      "action": "보고만 한다 — 오염 판정 규칙 변경은 frozen methodology 사건이라 승인 없이 손대지 않는다"
+    }
+  ],
+  "research_metrics_generated": false,
+  "test_split_used": false,
+  "e2e_only": true,
+  "resume": {
+    "done": [
+      "m1",
+      "m2",
+      "m3",
+      "m4"
+    ],
+    "resume_from": null,
+    "complete": true
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-08-25",
+  "frozen_before_any_retrieval": true,
+  "rule": "질의는 retrieval 출력을 보고 만들지 않는다. 영상 제목·공개 설명·외부 전사 등 retrieval-independent 근거에서만 만든다.",
+  "claim_grade": "semantic smoke는 descriptive observation이다. 정답률·정확도를 계산하지 않는다.",
+  "statuses": ["MATCHED", "OBSERVED", "REVIEW"],
+  "queries": [
+    {
+      "query_id": "e2e_scene_fast_q1",
+      "e2e_id": "e2e_scene_fast",
+      "query_type": "장면형",
+      "query": "지역의 음식이 화면에 보이는 장면",
+      "source_of_query": "영상 제목 '[문화PD] 잠시 후 이륙합니다, 강원·경상 특가 운항!'과 문화포털 소개(지역·음식·장소 소개)",
+      "known_anchor_start": null,
+      "known_anchor_end": null,
+      "assertion_level": 2
+    },
+    {
+      "query_id": "e2e_scene_fast_q2",
+      "e2e_id": "e2e_scene_fast",
+      "query_type": "장면형",
+      "query": "바다나 해안 풍경이 나오는 장면",
+      "source_of_query": "강원·경상 지역 소개라는 영상 주제. 구체 객체가 소스에서 확인되지 않아 세부를 만들지 않았다",
+      "known_anchor_start": null,
+      "known_anchor_end": null,
+      "assertion_level": 2
+    },
+    {
+      "query_id": "e2e_scene_fast_q3",
+      "e2e_id": "e2e_scene_fast",
+      "query_type": "자막형",
+      "query": "여행 일정이나 항공편에 대해 설명하는 부분",
+      "source_of_query": "제목의 '특가 운항' — 항공 관련 안내 영상이라는 점",
+      "known_anchor_start": null,
+      "known_anchor_end": null,
+      "assertion_level": 2
+    },
+    {
+      "query_id": "e2e_interview_q1",
+      "e2e_id": "e2e_interview",
+      "query_type": "자막형",
+      "query": "지금 하고 있는 일을 천직이라고 생각하는지 이야기하는 부분",
+      "source_of_query": "외부 공개 인터뷰 전문(careernote.co.kr)에 24:25로 시각이 기재돼 있다. 검색 결과를 보고 고르지 않았다",
+      "known_anchor_start": 1465,
+      "known_anchor_end": 1465,
+      "assertion_level": 1
+    },
+    {
+      "query_id": "e2e_interview_q2",
+      "e2e_id": "e2e_interview",
+      "query_type": "자막형",
+      "query": "양조와 가업을 이어가게 된 과정을 설명하는 부분",
+      "source_of_query": "같은 외부 전사에 26:03으로 기재",
+      "known_anchor_start": 1563,
+      "known_anchor_end": 1563,
+      "assertion_level": 1
+    },
+    {
+      "query_id": "e2e_speech_medium_q1",
+      "e2e_id": "e2e_speech_medium",
+      "query_type": "자막형",
+      "query": "조선 전기 미술의 특징을 설명하는 부분",
+      "source_of_query": "영상 제목의 '#조선전기미술' 해시태그",
+      "known_anchor_start": null,
+      "known_anchor_end": null,
+      "assertion_level": 2
+    },
+    {
+      "query_id": "e2e_cooking_1_q1",
+      "e2e_id": "e2e_cooking_1",
+      "query_type": "복합형",
+      "query": "깻잎 소스를 만드는 장면",
+      "source_of_query": "영상 제목 'K-RECIPE [제1회] 깻잎소스'",
+      "known_anchor_start": null,
+      "known_anchor_end": null,
+      "assertion_level": 2
+    },
+    {
+      "query_id": "e2e_cooking_1_q2",
+      "e2e_id": "e2e_cooking_1",
+      "query_type": "복합형",
+      "query": "요리 방법을 설명하면서 직접 조리하는 부분",
+      "source_of_query": "요리 시연 영상이라는 형식",
+      "known_anchor_start": null,
+      "known_anchor_end": null,
+      "assertion_level": 2
+    }
+  ]
+}

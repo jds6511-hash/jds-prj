@@ -361,3 +361,88 @@ def test_ci_tests_need_no_network():
             elif isinstance(node, ast.ImportFrom) and node.module:
                 mods.add(node.module.split(".")[0])
         assert not (net & mods), (path.name, net & mods)
+
+
+# ---- run identity / resume -------------------------------------------------
+
+CFG = {"stt_model": "large-v3", "stt_language": "ko",
+       "caption_model": "Qwen/Qwen2.5-VL-3B-Instruct", "vlm_4bit": True,
+       "vlm_max_new_tokens": 128, "vlm_rep_penalty": 1.1,
+       "caption_prompt": "P0 프롬프트", "embed_model": "nlpai-lab/KURE-v1",
+       "seg_len_sec": 5, "static_threshold": 0}
+
+
+def test_run_identity_pins_file_and_deployment():
+    r = E.run_identity(_video(), CFG, {"path": "a.mp4", "sha256": "a" * 64},
+                       segments_n=58, emb_shape=(58, 1024),
+                       started_at="t0", completed_at="t1",
+                       stages={"m1": True})
+    for k in ("source_url", "youtube_video_id", "local_file_sha256",
+              "observed_duration_sec", "segment_count", "stt_model",
+              "vlm_model", "prompt_sha256", "effective_quantized",
+              "embed_model", "embedding_dim", "alpha", "run_started_at",
+              "run_completed_at", "stage_status"):
+        assert k in r, k
+    assert r["alpha"] == 0.5 and r["embedding_dim"] == 1024
+    assert len(r["prompt_sha256"]) == 64
+    assert r["e2e_only"] is True and r["research_metrics_generated"] is False
+
+
+def test_semantic_status_is_matched_not_pass():
+    obs = E.semantic_observation("q", (100, 110),
+                                 [{"rank": 1, "start": 100, "end": 105}])
+    assert obs["status"] == "MATCHED"
+    assert "PASS" not in E.SEMANTIC_STATUSES
+
+
+def test_stage_state_reports_nothing_done_on_empty_dir(tmp_path):
+    st = E.stage_state(tmp_path, CFG)
+    assert st["done"] == [] and st["resume_from"] == "m1"
+    assert st["complete"] is False
+
+
+def test_stage_state_resumes_from_the_first_incomplete(tmp_path):
+    import numpy as np
+    (tmp_path / "frames").mkdir()
+    (tmp_path / "audio.wav").write_bytes(b"x")
+    doc = {"n_segments": 2, "segments": [
+        {"idx": i, "start": i * 5, "end": i * 5 + 5, "subtitle": f"s{i}",
+         "caption": "" if i else "c0", "motion_score": 0.1} for i in range(2)]}
+    (tmp_path / "segments.json").write_text(json.dumps(doc, ensure_ascii=False),
+                                            encoding="utf-8")
+    np.save(tmp_path / "emb_sub.npy", np.zeros((2, 4), dtype="float32"))
+    np.save(tmp_path / "emb_cap.npy", np.zeros((2, 4), dtype="float32"))
+    (tmp_path / "meta.json").write_text(json.dumps({"text_hash": "0" * 64}),
+                                        encoding="utf-8")
+    st = E.stage_state(tmp_path, CFG)
+    assert "m1" in st["done"] and "m2" in st["done"]
+    assert st["resume_from"] == "m3"        # 캡션이 비어 있다
+    assert st["stages"]["m4"] is False      # 정합도 깨져 있다
+
+
+def test_provenance_guard_blocks_research_source_id(monkeypatch):
+    monkeypatch.setattr(E, "research_source_ids",
+                        lambda: frozenset({"AAAAAAAAAAA"}))
+    with pytest.raises(E.E2EError) as e:
+        E.validate(_manifest())
+    assert "provenance" in str(e.value)
+
+
+def test_provenance_guard_blocks_matching_file_hash(monkeypatch):
+    monkeypatch.setattr(E, "research_file_hashes", lambda: frozenset({"b" * 64}))
+    with pytest.raises(E.E2EError) as e:
+        E.validate(_manifest([_video(local_file_sha256="b" * 64)]))
+    assert "해시" in str(e.value)
+
+
+def test_real_manifest_sources_are_not_research_sources():
+    m = json.loads((ROOT / "planning" /
+                    "e2e_external_manifest.json").read_text(encoding="utf-8"))
+    ids = {v["source_video_id"] for v in m["videos"]}
+    assert not (ids & E.research_source_ids())
+
+
+def test_observed_duration_is_an_allowed_field():
+    """취득 후 실측 길이를 기록할 자리가 있어야 한다."""
+    assert "observed_duration_sec" in E.VIDEO_KEYS
+    E.validate(_manifest([_video(observed_duration_sec=287.951)]))

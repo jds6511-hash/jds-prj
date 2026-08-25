@@ -44,8 +44,8 @@ EMBED_DIM = 1024
 VIDEO_KEYS = {
     "e2e_id", "phase", "class", "role", "role_correction", "source_url",
     "source_video_id", "title", "uploader", "upload_date", "duration_sec",
-    "availability", "probed_at", "local_file", "local_file_sha256",
-    "audio_present", "status", "note", "e2e_only",
+    "availability", "probed_at", "observed_duration_sec", "local_file",
+    "local_file_sha256", "audio_present", "status", "note", "e2e_only",
     "eligible_for_research_evaluation", "eligible_for_p2", "eligible_for_p3",
     "eligible_for_test", "eligible_for_public_demo",
 }
@@ -67,9 +67,33 @@ RESEARCH_VIDEO_IDS = frozenset({
     "gwaktube_soviet_apartment", "kheritage_grave_excavation",  # dev
 })
 
+def research_source_ids() -> frozenset:
+    """연구 표본의 **출처 ID**. 파일명은 바꿀 수 있으므로 provenance로 막는다.
+
+    레지스트리 read-only 투영에서 읽는다(SoT 전환은 계속 HOLD). 투영이 불가능한
+    환경에서는 비어 있는 집합을 돌려주고, 파일명 검사가 추가 방어선으로 남는다.
+    """
+    try:
+        import video_registry as V
+        return frozenset(r["source_id"] for r in V.project_from_selection())
+    except Exception:
+        return frozenset()
+
+
+def research_file_hashes(cfg_paths_data=None) -> frozenset:
+    """연구 영상 파일의 sha256. 같은 파일을 이름만 바꿔 들여오는 경로를 막는다."""
+    try:
+        import video_registry as V
+        return frozenset(h for h in
+                         (r.get("production_sha256") for r in
+                          V.project_from_selection()) if h)
+    except Exception:
+        return frozenset()
+
+
 FUNCTIONAL_STAGES = ("ingest", "stt", "caption", "embedding", "index",
                      "search", "playback")
-SEMANTIC_STATUSES = ("PASS", "OBSERVED", "REVIEW")
+SEMANTIC_STATUSES = ("MATCHED", "OBSERVED", "REVIEW")
 
 
 class E2EError(RuntimeError):
@@ -103,6 +127,8 @@ def validate(m: dict) -> dict:
             raise E2EError(f"deployment_identity의 {k}={want.get(k)!r}가 배포 "
                            f"구성 {v!r}과 다르다 — E2E는 배포 구성으로만 돈다")
 
+    research_ids = research_source_ids()
+    research_hashes = research_file_hashes()
     seen_id, seen_url = set(), set()
     for v in m.get("videos") or []:
         unknown = sorted(set(v) - VIDEO_KEYS)
@@ -120,6 +146,14 @@ def validate(m: dict) -> dict:
         if vid in RESEARCH_VIDEO_IDS:
             raise E2EError(f"{vid}: 연구 split(dev·test) 영상 이름이다 — "
                            f"E2E로 끌어오지 않는다")
+        # 이름이 아니라 출처로 막는다 — 파일명은 바꿀 수 있다
+        if v["source_video_id"] in research_ids:
+            raise E2EError(f"{vid}: source_video_id {v['source_video_id']}가 "
+                           f"연구 표본의 출처다 — provenance 기준 격리 위반")
+        sha = v.get("local_file_sha256")
+        if sha and sha in research_hashes:
+            raise E2EError(f"{vid}: 파일 해시가 연구 영상과 같다 — 이름만 바꾼 "
+                           f"연구 영상이다 (provenance 기준 격리 위반)")
         if v["e2e_only"] is not True:
             raise E2EError(f"{vid}: e2e_only는 true여야 한다")
         for f in MUST_BE_FALSE:
@@ -258,7 +292,8 @@ def semantic_observation(query: str, anchor, results: list,
     lo, hi = float(anchor[0]) - window_sec, float(anchor[1]) + window_sec
     hit = next((r for r in results if r["start"] < hi and r["end"] > lo), None)
     return {"query": query, "level": 1,
-            "status": "PASS" if hit else "REVIEW",
+            # functional PASS와 헷갈리지 않게 MATCHED로 부른다
+            "status": "MATCHED" if hit else "REVIEW",
             "anchor": [anchor[0], anchor[1]], "window_sec": window_sec,
             "anchor_in_topk": hit is not None,
             "anchor_rank": hit["rank"] if hit else None,
@@ -266,6 +301,88 @@ def semantic_observation(query: str, anchor, results: list,
             "is_research_metric": False,
             "note": ("외부 공개 전사에서 얻은 시각 anchor다. 검색 결과를 보고 "
                      "고르지 않았다. 관찰이고 정확도가 아니다")}
+
+
+# ---- run identity / resume --------------------------------------------------
+
+def run_identity(v: dict, cfg: dict, local: dict, segments_n=None,
+                 emb_shape=None, started_at=None, completed_at=None,
+                 stages=None) -> dict:
+    """결과 artifact에 고정할 identity. "어떤 파일·어떤 배포에서 나왔나"에 답한다."""
+    import hashlib as _h
+    prompt = cfg.get("caption_prompt") or ""
+    return {
+        "e2e_id": v["e2e_id"],
+        "source_url": v["source_url"],
+        "youtube_video_id": v["source_video_id"],
+        "local_file": local.get("path"),
+        "local_file_sha256": local.get("sha256"),
+        "observed_duration_sec": v.get("observed_duration_sec",
+                                       v["duration_sec"]),
+        "segment_count": segments_n,
+        "stt_model": cfg.get("stt_model"),
+        "stt_language": cfg.get("stt_language"),
+        "vlm_model": cfg.get("caption_model"),
+        "vlm_max_new_tokens": cfg.get("vlm_max_new_tokens"),
+        "vlm_rep_penalty": cfg.get("vlm_rep_penalty"),
+        "prompt_sha256": _h.sha256(prompt.encode("utf-8")).hexdigest(),
+        "effective_quantized": cfg.get("vlm_4bit"),
+        "embed_model": cfg.get("embed_model"),
+        "embedding_dim": (emb_shape[1] if emb_shape else None),
+        "embedding_rows": (emb_shape[0] if emb_shape else None),
+        "alpha": DEPLOYMENT_IDENTITY["alpha"],
+        "seg_len_sec": cfg.get("seg_len_sec"),
+        "static_threshold": cfg.get("static_threshold"),
+        "run_started_at": started_at,
+        "run_completed_at": completed_at,
+        "stage_status": stages or {},
+        "e2e_only": True,
+        "research_metrics_generated": False,
+    }
+
+
+STAGE_ARTIFACTS = {
+    "m1": ("segments.json", "audio.wav"),
+    "m2": ("frames",),
+    "m3": ("segments.json",),
+    "m4": ("emb_sub.npy", "emb_cap.npy", "meta.json"),
+}
+
+
+def stage_state(work_dir, cfg: dict) -> dict:
+    """어느 단계까지 끝나 있는지 — 산출물 존재와 text_hash 정합으로 판정한다.
+
+    "프로세스가 사라졌는가"가 아니라 **완료 산출물**로 본다(2026-08-17 사고 규약).
+    68분 영상에서 M3가 실패했다고 M1부터 다시 돌리지 않기 위한 것이다.
+    """
+    import common
+    w = Path(work_dir)
+    st = {}
+    for stage, files in STAGE_ARTIFACTS.items():
+        st[stage] = all((w / f).exists() for f in files)
+    if st.get("m3"):
+        try:
+            doc = common.load_segments(w / "segments.json",
+                                      require=["subtitle", "caption"],
+                                      seg_len=cfg["seg_len_sec"])
+            st["m3"] = all(s.get("caption") for s in doc["segments"])
+        except Exception:
+            st["m3"] = False
+    if st.get("m4") and st.get("m3"):
+        try:
+            doc = common.load_segments(w / "segments.json",
+                                      require=["subtitle", "caption"],
+                                      seg_len=cfg["seg_len_sec"])
+            meta = json.loads((w / "meta.json").read_text(encoding="utf-8"))
+            st["m4"] = meta.get("text_hash") == common.index_text_hash(doc)
+        except Exception:
+            st["m4"] = False
+    else:
+        st["m4"] = False
+    done = [s for s in ("m1", "m2", "m3", "m4") if st.get(s)]
+    todo = [s for s in ("m1", "m2", "m3", "m4") if not st.get(s)]
+    return {"done": done, "resume_from": todo[0] if todo else None,
+            "stages": st, "complete": not todo}
 
 
 # ---- CLI --------------------------------------------------------------------

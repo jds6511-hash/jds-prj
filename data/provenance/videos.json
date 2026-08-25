@@ -160,6 +160,14 @@
       "source_url": "https://www.youtube.com/watch?v=o-KjIc9MqfY",
       "source_id": "o-KjIc9MqfY",
       "file_sha256": "415f7ae1f3f9daeffd502e0a4f4c89babd949b8ef32ab1d7b644ee45b843e1d8"
+    },
+    "e2e_scene_fast": {
+      "source_url": "https://www.youtube.com/watch?v=vmL0mSzCTBg",
+      "source_id": "vmL0mSzCTBg",
+      "file_sha256": "51f8e57f9ca78ae04491f9720a363ef478f54747afb92e08b8851fd3ede62ab1",
+      "e2e_only": true,
+      "eligible_for_research_evaluation": false,
+      "note": "external E2E functional test 전용 (FINALIZATION-F2). 연구 표본이 아니다."
     }
   },
   "legacy_exempt": {
