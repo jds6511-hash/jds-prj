@@ -1,0 +1,101 @@
+{
+ "audit_id": "STEP5.5_comparability_2026-08-25",
+ "purpose": "두 arm 실행 사이 repository HEAD가 달랐다 - 생성 경로에 차이가 있었는지 확인. outcome 미열람 상태에서 수행.",
+ "outcome_access_before_audit": {
+  "captions_read": false,
+  "retrieval_read": false
+ },
+ "arm_run_commits": {
+  "3b": "931b8accfcbde6c4a6fa082a124b8d233842fa75",
+  "4b": "105857e6b98cda7291c59a7a8c2ad769a849e529"
+ },
+ "files_changed_between_commits": [
+  {
+   "status": "M",
+   "path": "docs/finalization/LIMITATIONS_FUTURE_WORK_2026-08-25.md"
+  },
+  {
+   "status": "A",
+   "path": "docs/probes/caption_foreign_char_scan.py"
+  }
+ ],
+ "changed_files_generation_relevant": false,
+ "changed_files_note": "문서 1건 + 신규 프로브 스크립트 1건. m3_generate는 common만, m4_index는 common·provenance·numpy만 import한다 - 그 프로브를 import하는 경로가 없다.",
+ "generation_path_tracked_files": {
+  "src/m3_generate.py": {
+   "tracked": true,
+   "blob_at_3b_commit": "462c77bd54ebb336f085e1f2399f8e394bdf8ce5",
+   "blob_at_4b_commit": "462c77bd54ebb336f085e1f2399f8e394bdf8ce5",
+   "identical_between_commits": true,
+   "sha256_now": "497ef14fb642263e683e29f665363d793b6b7b9f78a4356bc6378610cab4d6a3"
+  },
+  "src/m4_index.py": {
+   "tracked": true,
+   "blob_at_3b_commit": "ada2e121435102a45e93a31d23efbb4d6f061df1",
+   "blob_at_4b_commit": "ada2e121435102a45e93a31d23efbb4d6f061df1",
+   "identical_between_commits": true,
+   "sha256_now": "c1aeff2d0f2f87ecd9d82f4d220578418e00258d942f209871edfc4bb34c7885"
+  },
+  "src/common.py": {
+   "tracked": true,
+   "blob_at_3b_commit": "f8787c177a720dc87b74ef978ad04ed7d6766d8a",
+   "blob_at_4b_commit": "f8787c177a720dc87b74ef978ad04ed7d6766d8a",
+   "identical_between_commits": true,
+   "sha256_now": "bf7a56c52680cd2ca8a13dbdfb451d3143d625e638389cb2f411462b5075a5aa"
+  },
+  "src/provenance.py": {
+   "tracked": true,
+   "blob_at_3b_commit": "16e54035c6e7164154e1c7bcf7b1bc5bde89c6f1",
+   "blob_at_4b_commit": "16e54035c6e7164154e1c7bcf7b1bc5bde89c6f1",
+   "identical_between_commits": true,
+   "sha256_now": "770b9f814a570c6f2243c381c5a0689a7ab7baa8ce45923409eca72f5becd80e"
+  },
+  "config.yaml": {
+   "tracked": true,
+   "blob_at_3b_commit": "850c2e496d322d341a844633d2504364f9dc3a5c",
+   "blob_at_4b_commit": "850c2e496d322d341a844633d2504364f9dc3a5c",
+   "identical_between_commits": true,
+   "sha256_now": "72475952bbf56581cbc3a90944804ad2990ed2f9ef35e5103731d7670a47af2f"
+  },
+  "scripts/casestudy_make_config.py": {
+   "tracked": true,
+   "blob_at_3b_commit": "d78433096afa3fe812023b1715dd16a5e4f1624c",
+   "blob_at_4b_commit": "d78433096afa3fe812023b1715dd16a5e4f1624c",
+   "identical_between_commits": true,
+   "sha256_now": "41cdf4e31189f477d1b6e487e9d0b5f058db17bd6a3415b5bc459f8717add104"
+  },
+  "runs/casestudy_caption_retrieval/cs_20260825/run_arm.sh": {
+   "tracked": true,
+   "blob_at_3b_commit": "f1a210a17db1f3baa07c4b4b9de3a18d30d74023",
+   "blob_at_4b_commit": "f1a210a17db1f3baa07c4b4b9de3a18d30d74023",
+   "identical_between_commits": true,
+   "sha256_now": "2e616765bfadfb1bf45582ed432649bfadcbd2131388f3976e9c1f97f8764d55"
+  }
+ },
+ "arm_config_reproducibility": {
+  "config_3b.yaml": {
+   "gitignored_by_design": true,
+   "ignore_rule": ".gitignore:3 config_*.yaml (변형 실험 config를 git에 넣지 않는 기존 규칙)",
+   "sha256_as_used": "2a2a1afdf7e8cc75ae2444ae99059b670581a925656070c4593ed100b9697147",
+   "sha256_regenerated": "2a2a1afdf7e8cc75ae2444ae99059b670581a925656070c4593ed100b9697147",
+   "byte_identical_on_regeneration": true,
+   "generator": "scripts/casestudy_make_config.py (tracked, config.yaml에서 재생성)"
+  },
+  "config_4b.yaml": {
+   "gitignored_by_design": true,
+   "ignore_rule": ".gitignore:3 config_*.yaml (변형 실험 config를 git에 넣지 않는 기존 규칙)",
+   "sha256_as_used": "7c3ef3d6db7f9d6f38f3236ab09ce68092a8e33769f9af8ba8a6b6840ce054bf",
+   "sha256_regenerated": "7c3ef3d6db7f9d6f38f3236ab09ce68092a8e33769f9af8ba8a6b6840ce054bf",
+   "byte_identical_on_regeneration": true,
+   "generator": "scripts/casestudy_make_config.py (tracked, config.yaml에서 재생성)"
+  }
+ },
+ "verdict": "PASS - 생성 경로 차이 없음. STEP 6 진행 가능",
+ "git_dirty_at_run": {
+  "3b": true,
+  "4b": true
+ },
+ "git_dirty_limitation": "두 실행 모두 dirty working tree에서 수행됐다. 실행 시점 uncommitted 상태의 동일성을 입증할 artifact가 없다 - 동일했다고 추정하거나 주장하지 않는다. 현재 작업 트리에 수정된 tracked 파일은 0건이고 untracked run 산출물(마커·로그)만 있다.",
+ "wording_for_results": "repository HEADs differed, but no differences were found in the generation code/config path. Both runs used dirty working trees; exact equality of the uncommitted state was not established.",
+ "qc_flag_count_not_interpreted": "현행 오염 규칙 판정 3B 4/395 · 4B 1/395는 기계적 flag count다. 품질 지표나 모델 비교 결과로 쓰지 않는다. 검출기가 외국어 인용과 실제 오염을 구분하지 못한다는 것이 이미 측정돼 있다(LIMITATIONS 11)."
+}
