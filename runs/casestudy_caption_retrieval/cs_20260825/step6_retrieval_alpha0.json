@@ -1,0 +1,1124 @@
+{
+ "step": "STEP6_retrieval_numbers_only",
+ "note": "해석 없음. 캡션 텍스트·프레임은 STEP 7에서 연다.",
+ "first_outcome_access_after_plan_freeze": true,
+ "outcome_access_at": "2026-08-25T23:32:44+0900",
+ "git_head_at_outcome_access": "84ff24593924859a4e4f41fc0209923676771753",
+ "plan_commit": "31b5b02",
+ "amendment_commit": "931b8ac",
+ "comparability_audit_commit": "84ff245",
+ "video_id": "pland_costco_hosting",
+ "n_segments": 395,
+ "view": "caption-only",
+ "alpha": 0.0,
+ "alpha_sweep": false,
+ "frozen_queries_sha256": "752e8fe3de1e3f06995b099a62c4fde451deb82a4e44fbdf1b68ac3481792747",
+ "frozen_scenes_sha256": "d41fe13c46e61efe7d7c2617255d5c5ba396b3b8ba9459b41984db5cc69d13d9",
+ "arm_models": {
+  "3b": "Qwen/Qwen2.5-VL-3B-Instruct",
+  "4b": "Qwen/Qwen3-VL-4B-Instruct"
+ },
+ "illustrative_top1_hit_count": {
+  "3b": 2,
+  "4b": 2
+ },
+ "illustrative_top1_hit_count_caveat": "한 영상의 5개 장면, 15개 illustrative query에서 나온 one-video qualitative case-study count다. 일반적인 모델 정확도·superiority estimate·benchmark·유의성 결과가 아니다.",
+ "n_queries": 15,
+ "results": [
+  {
+   "query_id": "cs_s01_q1",
+   "query_type": "Q1_object",
+   "query": "기름이 가득한 프라이팬 안의 새우 튀김",
+   "scene_id": "scene01",
+   "target_segment": 0,
+   "target_start": 0.0,
+   "target_end": 5.0,
+   "arms": {
+    "3b": {
+     "target_rank": 30,
+     "target_score": 1.506733,
+     "top1_segment": 188,
+     "top1_score": 3.582902,
+     "top1_start": 940,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 188,
+       "start": 940,
+       "end": 945,
+       "score": 3.582902
+      },
+      {
+       "rank": 2,
+       "idx": 190,
+       "start": 950,
+       "end": 955,
+       "score": 3.057126
+      },
+      {
+       "rank": 3,
+       "idx": 191,
+       "start": 955,
+       "end": 960,
+       "score": 3.007531
+      }
+     ],
+     "n_ranked": 395
+    },
+    "4b": {
+     "target_rank": 3,
+     "target_score": 2.82031,
+     "top1_segment": 188,
+     "top1_score": 3.418606,
+     "top1_start": 940,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 188,
+       "start": 940,
+       "end": 945,
+       "score": 3.418606
+      },
+      {
+       "rank": 2,
+       "idx": 191,
+       "start": 955,
+       "end": 960,
+       "score": 3.129305
+      },
+      {
+       "rank": 3,
+       "idx": 0,
+       "start": 0,
+       "end": 5,
+       "score": 2.82031
+      }
+     ],
+     "n_ranked": 395
+    }
+   }
+  },
+  {
+   "query_id": "cs_s01_q2",
+   "query_type": "Q2_action",
+   "query": "새우를 기름에 넣어 튀기는 장면",
+   "scene_id": "scene01",
+   "target_segment": 0,
+   "target_start": 0.0,
+   "target_end": 5.0,
+   "arms": {
+    "3b": {
+     "target_rank": 31,
+     "target_score": 1.508141,
+     "top1_segment": 188,
+     "top1_score": 3.792699,
+     "top1_start": 940,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 188,
+       "start": 940,
+       "end": 945,
+       "score": 3.792699
+      },
+      {
+       "rank": 2,
+       "idx": 190,
+       "start": 950,
+       "end": 955,
+       "score": 3.56538
+      },
+      {
+       "rank": 3,
+       "idx": 214,
+       "start": 1070,
+       "end": 1075,
+       "score": 2.583538
+      }
+     ],
+     "n_ranked": 395
+    },
+    "4b": {
+     "target_rank": 1,
+     "target_score": 3.605224,
+     "top1_segment": 0,
+     "top1_score": 3.605224,
+     "top1_start": 0,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 0,
+       "start": 0,
+       "end": 5,
+       "score": 3.605224
+      },
+      {
+       "rank": 2,
+       "idx": 191,
+       "start": 955,
+       "end": 960,
+       "score": 3.047164
+      },
+      {
+       "rank": 3,
+       "idx": 192,
+       "start": 960,
+       "end": 965,
+       "score": 2.922202
+      }
+     ],
+     "n_ranked": 395
+    }
+   }
+  },
+  {
+   "query_id": "cs_s01_q3",
+   "query_type": "Q3_relation",
+   "query": "주방에서 튀김 요리를 하는 장면",
+   "scene_id": "scene01",
+   "target_segment": 0,
+   "target_start": 0.0,
+   "target_end": 5.0,
+   "arms": {
+    "3b": {
+     "target_rank": 31,
+     "target_score": 1.498128,
+     "top1_segment": 189,
+     "top1_score": 2.734123,
+     "top1_start": 945,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 189,
+       "start": 945,
+       "end": 950,
+       "score": 2.734123
+      },
+      {
+       "rank": 2,
+       "idx": 234,
+       "start": 1170,
+       "end": 1175,
+       "score": 2.333027
+      },
+      {
+       "rank": 3,
+       "idx": 195,
+       "start": 975,
+       "end": 980,
+       "score": 2.241693
+      }
+     ],
+     "n_ranked": 395
+    },
+    "4b": {
+     "target_rank": 25,
+     "target_score": 1.409762,
+     "top1_segment": 175,
+     "top1_score": 2.316534,
+     "top1_start": 875,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 175,
+       "start": 875,
+       "end": 880,
+       "score": 2.316534
+      },
+      {
+       "rank": 2,
+       "idx": 238,
+       "start": 1190,
+       "end": 1195,
+       "score": 2.25723
+      },
+      {
+       "rank": 3,
+       "idx": 170,
+       "start": 850,
+       "end": 855,
+       "score": 2.072052
+      }
+     ],
+     "n_ranked": 395
+    }
+   }
+  },
+  {
+   "query_id": "cs_s02_q1",
+   "query_type": "Q1_object",
+   "query": "대형 마트 안에 걸린 파란 광고 배너",
+   "scene_id": "scene02",
+   "target_segment": 79,
+   "target_start": 395.0,
+   "target_end": 400.0,
+   "arms": {
+    "3b": {
+     "target_rank": 1,
+     "target_score": 4.271389,
+     "top1_segment": 79,
+     "top1_score": 4.271389,
+     "top1_start": 395,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 79,
+       "start": 395,
+       "end": 400,
+       "score": 4.271389
+      },
+      {
+       "rank": 2,
+       "idx": 76,
+       "start": 380,
+       "end": 385,
+       "score": 3.750151
+      },
+      {
+       "rank": 3,
+       "idx": 91,
+       "start": 455,
+       "end": 460,
+       "score": 3.034873
+      }
+     ],
+     "n_ranked": 395
+    },
+    "4b": {
+     "target_rank": 15,
+     "target_score": 2.083229,
+     "top1_segment": 90,
+     "top1_score": 4.233072,
+     "top1_start": 450,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 90,
+       "start": 450,
+       "end": 455,
+       "score": 4.233072
+      },
+      {
+       "rank": 2,
+       "idx": 141,
+       "start": 705,
+       "end": 710,
+       "score": 3.746315
+      },
+      {
+       "rank": 3,
+       "idx": 77,
+       "start": 385,
+       "end": 390,
+       "score": 3.339176
+      }
+     ],
+     "n_ranked": 395
+    }
+   }
+  },
+  {
+   "query_id": "cs_s02_q2",
+   "query_type": "Q2_action",
+   "query": "매장 안에서 사람이 지나가는 장면",
+   "scene_id": "scene02",
+   "target_segment": 79,
+   "target_start": 395.0,
+   "target_end": 400.0,
+   "arms": {
+    "3b": {
+     "target_rank": 46,
+     "target_score": 1.240544,
+     "top1_segment": 76,
+     "top1_score": 3.894027,
+     "top1_start": 380,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 76,
+       "start": 380,
+       "end": 385,
+       "score": 3.894027
+      },
+      {
+       "rank": 2,
+       "idx": 82,
+       "start": 410,
+       "end": 415,
+       "score": 3.365655
+      },
+      {
+       "rank": 3,
+       "idx": 70,
+       "start": 350,
+       "end": 355,
+       "score": 3.091912
+      }
+     ],
+     "n_ranked": 395
+    },
+    "4b": {
+     "target_rank": 2,
+     "target_score": 3.860024,
+     "top1_segment": 77,
+     "top1_score": 4.58521,
+     "top1_start": 385,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 77,
+       "start": 385,
+       "end": 390,
+       "score": 4.58521
+      },
+      {
+       "rank": 2,
+       "idx": 79,
+       "start": 395,
+       "end": 400,
+       "score": 3.860024
+      },
+      {
+       "rank": 3,
+       "idx": 72,
+       "start": 360,
+       "end": 365,
+       "score": 3.635724
+      }
+     ],
+     "n_ranked": 395
+    }
+   }
+  },
+  {
+   "query_id": "cs_s02_q3",
+   "query_type": "Q3_relation",
+   "query": "냉장 진열장과 쌓인 상자가 있는 창고형 매장 내부",
+   "scene_id": "scene02",
+   "target_segment": 79,
+   "target_start": 395.0,
+   "target_end": 400.0,
+   "arms": {
+    "3b": {
+     "target_rank": 18,
+     "target_score": 1.932271,
+     "top1_segment": 80,
+     "top1_score": 3.760947,
+     "top1_start": 400,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 80,
+       "start": 400,
+       "end": 405,
+       "score": 3.760947
+      },
+      {
+       "rank": 2,
+       "idx": 82,
+       "start": 410,
+       "end": 415,
+       "score": 3.278542
+      },
+      {
+       "rank": 3,
+       "idx": 76,
+       "start": 380,
+       "end": 385,
+       "score": 3.120973
+      }
+     ],
+     "n_ranked": 395
+    },
+    "4b": {
+     "target_rank": 1,
+     "target_score": 4.243509,
+     "top1_segment": 79,
+     "top1_score": 4.243509,
+     "top1_start": 395,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 79,
+       "start": 395,
+       "end": 400,
+       "score": 4.243509
+      },
+      {
+       "rank": 2,
+       "idx": 86,
+       "start": 430,
+       "end": 435,
+       "score": 4.085412
+      },
+      {
+       "rank": 3,
+       "idx": 83,
+       "start": 415,
+       "end": 420,
+       "score": 3.011353
+      }
+     ],
+     "n_ranked": 395
+    }
+   }
+  },
+  {
+   "query_id": "cs_s03_q1",
+   "query_type": "Q1_object",
+   "query": "나무 도마 위에 놓인 흰색 재료와 식칼",
+   "scene_id": "scene03",
+   "target_segment": 158,
+   "target_start": 790.0,
+   "target_end": 795.0,
+   "arms": {
+    "3b": {
+     "target_rank": 59,
+     "target_score": 0.998465,
+     "top1_segment": 219,
+     "top1_score": 2.118293,
+     "top1_start": 1095,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 219,
+       "start": 1095,
+       "end": 1100,
+       "score": 2.118293
+      },
+      {
+       "rank": 2,
+       "idx": 383,
+       "start": 1915,
+       "end": 1920,
+       "score": 1.844546
+      },
+      {
+       "rank": 3,
+       "idx": 161,
+       "start": 805,
+       "end": 810,
+       "score": 1.810905
+      }
+     ],
+     "n_ranked": 395
+    },
+    "4b": {
+     "target_rank": 40,
+     "target_score": 1.239609,
+     "top1_segment": 382,
+     "top1_score": 2.154191,
+     "top1_start": 1910,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 382,
+       "start": 1910,
+       "end": 1915,
+       "score": 2.154191
+      },
+      {
+       "rank": 2,
+       "idx": 241,
+       "start": 1205,
+       "end": 1210,
+       "score": 2.062952
+      },
+      {
+       "rank": 3,
+       "idx": 109,
+       "start": 545,
+       "end": 550,
+       "score": 2.059621
+      }
+     ],
+     "n_ranked": 395
+    }
+   }
+  },
+  {
+   "query_id": "cs_s03_q2",
+   "query_type": "Q2_action",
+   "query": "칼로 재료를 썰고 있는 손",
+   "scene_id": "scene03",
+   "target_segment": 158,
+   "target_start": 790.0,
+   "target_end": 795.0,
+   "arms": {
+    "3b": {
+     "target_rank": 52,
+     "target_score": 1.054114,
+     "top1_segment": 287,
+     "top1_score": 2.745072,
+     "top1_start": 1435,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 287,
+       "start": 1435,
+       "end": 1440,
+       "score": 2.745072
+      },
+      {
+       "rank": 2,
+       "idx": 153,
+       "start": 765,
+       "end": 770,
+       "score": 2.390649
+      },
+      {
+       "rank": 3,
+       "idx": 4,
+       "start": 20,
+       "end": 25,
+       "score": 2.243328
+      }
+     ],
+     "n_ranked": 395
+    },
+    "4b": {
+     "target_rank": 20,
+     "target_score": 1.565363,
+     "top1_segment": 353,
+     "top1_score": 2.57777,
+     "top1_start": 1765,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 353,
+       "start": 1765,
+       "end": 1770,
+       "score": 2.57777
+      },
+      {
+       "rank": 2,
+       "idx": 217,
+       "start": 1085,
+       "end": 1090,
+       "score": 2.325577
+      },
+      {
+       "rank": 3,
+       "idx": 163,
+       "start": 815,
+       "end": 820,
+       "score": 2.285565
+      }
+     ],
+     "n_ranked": 395
+    }
+   }
+  },
+  {
+   "query_id": "cs_s03_q3",
+   "query_type": "Q3_relation",
+   "query": "주방 조리대에서 재료를 손질하는 사람",
+   "scene_id": "scene03",
+   "target_segment": 158,
+   "target_start": 790.0,
+   "target_end": 795.0,
+   "arms": {
+    "3b": {
+     "target_rank": 34,
+     "target_score": 1.260618,
+     "top1_segment": 21,
+     "top1_score": 1.955339,
+     "top1_start": 105,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 21,
+       "start": 105,
+       "end": 110,
+       "score": 1.955339
+      },
+      {
+       "rank": 2,
+       "idx": 3,
+       "start": 15,
+       "end": 20,
+       "score": 1.910607
+      },
+      {
+       "rank": 3,
+       "idx": 189,
+       "start": 945,
+       "end": 950,
+       "score": 1.826898
+      }
+     ],
+     "n_ranked": 395
+    },
+    "4b": {
+     "target_rank": 170,
+     "target_score": 0.336397,
+     "top1_segment": 175,
+     "top1_score": 1.873543,
+     "top1_start": 875,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 175,
+       "start": 875,
+       "end": 880,
+       "score": 1.873543
+      },
+      {
+       "rank": 2,
+       "idx": 164,
+       "start": 820,
+       "end": 825,
+       "score": 1.693498
+      },
+      {
+       "rank": 3,
+       "idx": 356,
+       "start": 1780,
+       "end": 1785,
+       "score": 1.68062
+      }
+     ],
+     "n_ranked": 395
+    }
+   }
+  },
+  {
+   "query_id": "cs_s04_q1",
+   "query_type": "Q1_object",
+   "query": "노란색 뚜껑이 있는 무쇠 냄비",
+   "scene_id": "scene04",
+   "target_segment": 237,
+   "target_start": 1185.0,
+   "target_end": 1190.0,
+   "arms": {
+    "3b": {
+     "target_rank": 1,
+     "target_score": 3.216405,
+     "top1_segment": 237,
+     "top1_score": 3.216405,
+     "top1_start": 1185,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 237,
+       "start": 1185,
+       "end": 1190,
+       "score": 3.216405
+      },
+      {
+       "rank": 2,
+       "idx": 244,
+       "start": 1220,
+       "end": 1225,
+       "score": 3.115638
+      },
+      {
+       "rank": 3,
+       "idx": 235,
+       "start": 1175,
+       "end": 1180,
+       "score": 2.990317
+      }
+     ],
+     "n_ranked": 395
+    },
+    "4b": {
+     "target_rank": 3,
+     "target_score": 2.834522,
+     "top1_segment": 193,
+     "top1_score": 3.159687,
+     "top1_start": 965,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 193,
+       "start": 965,
+       "end": 970,
+       "score": 3.159687
+      },
+      {
+       "rank": 2,
+       "idx": 199,
+       "start": 995,
+       "end": 1000,
+       "score": 2.844996
+      },
+      {
+       "rank": 3,
+       "idx": 237,
+       "start": 1185,
+       "end": 1190,
+       "score": 2.834522
+      }
+     ],
+     "n_ranked": 395
+    }
+   }
+  },
+  {
+   "query_id": "cs_s04_q2",
+   "query_type": "Q2_action",
+   "query": "냄비 뚜껑을 손으로 들어 올리는 장면",
+   "scene_id": "scene04",
+   "target_segment": 237,
+   "target_start": 1185.0,
+   "target_end": 1190.0,
+   "arms": {
+    "3b": {
+     "target_rank": 3,
+     "target_score": 2.416976,
+     "top1_segment": 28,
+     "top1_score": 3.010505,
+     "top1_start": 140,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 28,
+       "start": 140,
+       "end": 145,
+       "score": 3.010505
+      },
+      {
+       "rank": 2,
+       "idx": 248,
+       "start": 1240,
+       "end": 1245,
+       "score": 2.587981
+      },
+      {
+       "rank": 3,
+       "idx": 237,
+       "start": 1185,
+       "end": 1190,
+       "score": 2.416976
+      }
+     ],
+     "n_ranked": 395
+    },
+    "4b": {
+     "target_rank": 10,
+     "target_score": 1.842294,
+     "top1_segment": 115,
+     "top1_score": 3.169478,
+     "top1_start": 575,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 115,
+       "start": 575,
+       "end": 580,
+       "score": 3.169478
+      },
+      {
+       "rank": 2,
+       "idx": 10,
+       "start": 50,
+       "end": 55,
+       "score": 2.816237
+      },
+      {
+       "rank": 3,
+       "idx": 190,
+       "start": 950,
+       "end": 955,
+       "score": 2.699458
+      }
+     ],
+     "n_ranked": 395
+    }
+   }
+  },
+  {
+   "query_id": "cs_s04_q3",
+   "query_type": "Q3_relation",
+   "query": "완성된 조림 요리를 냄비에서 확인하는 장면",
+   "scene_id": "scene04",
+   "target_segment": 237,
+   "target_start": 1185.0,
+   "target_end": 1190.0,
+   "arms": {
+    "3b": {
+     "target_rank": 5,
+     "target_score": 2.18317,
+     "top1_segment": 235,
+     "top1_score": 2.842017,
+     "top1_start": 1175,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 235,
+       "start": 1175,
+       "end": 1180,
+       "score": 2.842017
+      },
+      {
+       "rank": 2,
+       "idx": 253,
+       "start": 1265,
+       "end": 1270,
+       "score": 2.346992
+      },
+      {
+       "rank": 3,
+       "idx": 248,
+       "start": 1240,
+       "end": 1245,
+       "score": 2.340748
+      }
+     ],
+     "n_ranked": 395
+    },
+    "4b": {
+     "target_rank": 3,
+     "target_score": 2.003693,
+     "top1_segment": 175,
+     "top1_score": 2.117538,
+     "top1_start": 875,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 175,
+       "start": 875,
+       "end": 880,
+       "score": 2.117538
+      },
+      {
+       "rank": 2,
+       "idx": 248,
+       "start": 1240,
+       "end": 1245,
+       "score": 2.012205
+      },
+      {
+       "rank": 3,
+       "idx": 237,
+       "start": 1185,
+       "end": 1190,
+       "score": 2.003693
+      }
+     ],
+     "n_ranked": 395
+    }
+   }
+  },
+  {
+   "query_id": "cs_s05_q1",
+   "query_type": "Q1_object",
+   "query": "물방울 무늬가 있는 남색 천",
+   "scene_id": "scene05",
+   "target_segment": 316,
+   "target_start": 1580.0,
+   "target_end": 1585.0,
+   "arms": {
+    "3b": {
+     "target_rank": 181,
+     "target_score": 0.072457,
+     "top1_segment": 372,
+     "top1_score": 3.195851,
+     "top1_start": 1860,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 372,
+       "start": 1860,
+       "end": 1865,
+       "score": 3.195851
+      },
+      {
+       "rank": 2,
+       "idx": 280,
+       "start": 1400,
+       "end": 1405,
+       "score": 3.065697
+      },
+      {
+       "rank": 3,
+       "idx": 202,
+       "start": 1010,
+       "end": 1015,
+       "score": 2.820837
+      }
+     ],
+     "n_ranked": 395
+    },
+    "4b": {
+     "target_rank": 22,
+     "target_score": 1.782331,
+     "top1_segment": 342,
+     "top1_score": 3.378092,
+     "top1_start": 1710,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 342,
+       "start": 1710,
+       "end": 1715,
+       "score": 3.378092
+      },
+      {
+       "rank": 2,
+       "idx": 322,
+       "start": 1610,
+       "end": 1615,
+       "score": 2.884939
+      },
+      {
+       "rank": 3,
+       "idx": 320,
+       "start": 1600,
+       "end": 1605,
+       "score": 2.884929
+      }
+     ],
+     "n_ranked": 395
+    }
+   }
+  },
+  {
+   "query_id": "cs_s05_q2",
+   "query_type": "Q2_action",
+   "query": "재봉틀 앞에서 천을 손으로 잡고 있는 장면",
+   "scene_id": "scene05",
+   "target_segment": 316,
+   "target_start": 1580.0,
+   "target_end": 1585.0,
+   "arms": {
+    "3b": {
+     "target_rank": 148,
+     "target_score": 0.277044,
+     "top1_segment": 280,
+     "top1_score": 2.777365,
+     "top1_start": 1400,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 280,
+       "start": 1400,
+       "end": 1405,
+       "score": 2.777365
+      },
+      {
+       "rank": 2,
+       "idx": 283,
+       "start": 1415,
+       "end": 1420,
+       "score": 2.675424
+      },
+      {
+       "rank": 3,
+       "idx": 229,
+       "start": 1145,
+       "end": 1150,
+       "score": 2.595204
+      }
+     ],
+     "n_ranked": 395
+    },
+    "4b": {
+     "target_rank": 9,
+     "target_score": 2.223875,
+     "top1_segment": 303,
+     "top1_score": 2.63911,
+     "top1_start": 1515,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 303,
+       "start": 1515,
+       "end": 1520,
+       "score": 2.63911
+      },
+      {
+       "rank": 2,
+       "idx": 92,
+       "start": 460,
+       "end": 465,
+       "score": 2.488531
+      },
+      {
+       "rank": 3,
+       "idx": 387,
+       "start": 1935,
+       "end": 1940,
+       "score": 2.355861
+      }
+     ],
+     "n_ranked": 395
+    }
+   }
+  },
+  {
+   "query_id": "cs_s05_q3",
+   "query_type": "Q3_relation",
+   "query": "작업대 위에 재봉틀과 가위가 놓인 작업 공간",
+   "scene_id": "scene05",
+   "target_segment": 316,
+   "target_start": 1580.0,
+   "target_end": 1585.0,
+   "arms": {
+    "3b": {
+     "target_rank": 175,
+     "target_score": 0.135973,
+     "top1_segment": 278,
+     "top1_score": 3.20793,
+     "top1_start": 1390,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 278,
+       "start": 1390,
+       "end": 1395,
+       "score": 3.20793
+      },
+      {
+       "rank": 2,
+       "idx": 219,
+       "start": 1095,
+       "end": 1100,
+       "score": 2.535922
+      },
+      {
+       "rank": 3,
+       "idx": 149,
+       "start": 745,
+       "end": 750,
+       "score": 2.318944
+      }
+     ],
+     "n_ranked": 395
+    },
+    "4b": {
+     "target_rank": 34,
+     "target_score": 1.385246,
+     "top1_segment": 311,
+     "top1_score": 2.387381,
+     "top1_start": 1555,
+     "top3": [
+      {
+       "rank": 1,
+       "idx": 311,
+       "start": 1555,
+       "end": 1560,
+       "score": 2.387381
+      },
+      {
+       "rank": 2,
+       "idx": 6,
+       "start": 30,
+       "end": 35,
+       "score": 2.376096
+      },
+      {
+       "rank": 3,
+       "idx": 315,
+       "start": 1575,
+       "end": 1580,
+       "score": 2.357899
+      }
+     ],
+     "n_ranked": 395
+    }
+   }
+  }
+ ]
+}
