@@ -1,0 +1,690 @@
+{
+  "audit_id": "CAPTION_TO_RETRIEVAL_INTEGRITY_2026-08-26",
+  "audit_type": "integrity_audit_only",
+  "no_recompute": true,
+  "frozen_artifacts_modified": 0,
+  "verdict": {
+    "integrity": "PASS_WITH_CAVEATS",
+    "case_study_conclusion": "SUPPORTED_WITH_CAVEATS",
+    "conclusion_text": "caption information selection propagates to retrieval ranking"
+  },
+  "checks": {
+    "frozen_queries_sha256_reproduced": true,
+    "frozen_scenes_sha256_reproduced": true,
+    "n_scenes": 5,
+    "n_queries": 15,
+    "candidate_pool": 395,
+    "query_text_matches_plan": true,
+    "target_segment_matches_plan": true,
+    "alpha": 0.0,
+    "alpha_sweep": false,
+    "n_ranked_all_pairs": 395,
+    "arm_config_diff": [
+      "caption_model",
+      "paths"
+    ],
+    "seg_idx_contiguous_0_394": true,
+    "caption_count_per_arm": 395,
+    "empty_captions": 0,
+    "index_text_hash_matches_captions": true,
+    "emb_shape": [
+      395,
+      1024
+    ],
+    "row_order_verified_via_emb_sub_bitwise_identity": true,
+    "emb_sub_identical_rows_across_arms": 395,
+    "caption_identical_rows_across_arms": 0,
+    "frame_manifest_sha256_identical_across_arms": true,
+    "frame_manifest_sha256": "2759ad9dd6ac86fd3fea1e5769bb8a7d945f526aef688a0d7c123223d570645a",
+    "prompt_sha256_identical_across_arms": true,
+    "prompt_sha256": "b7c2598ade97784d74967fc7859e2c32c4cf3c506351c386278ea5673590123b",
+    "discussion_frames_match_caption_input": 27,
+    "stale_artifact_found": false
+  },
+  "vlm_input": {
+    "unit": "5초 구간당 대표 프레임 1장",
+    "n_frames_per_segment": 1,
+    "selection_rule": "3fps 샘플의 인접 프레임 차분 L2 → 가우시안 평활(sigma=1.0) → argmax. motion_score < static_threshold면 중간 프레임 fallback",
+    "static_threshold": 0,
+    "is_static_true_count": 0,
+    "frame_timestamp_persisted": false,
+    "frame_timestamp_note": "M2가 선택 시각을 segments.json에 저장하지 않는다. rep_frame 경로·motion_score만 남는다",
+    "source": "src/m2_keyframe.py:110-128 · src/m3_generate.py:229-250"
+  },
+  "generation_comparability": {
+    "identical": [
+      "frame_manifest_sha256",
+      "prompt_sha256",
+      "config_vlm_4bit",
+      "config_vlm_max_new_tokens",
+      "config_vlm_max_pixels",
+      "config_vlm_rep_penalty",
+      "bnb_quant_type",
+      "bnb_compute_dtype",
+      "bnb_double_quant",
+      "attn_implementation",
+      "dtype",
+      "torch",
+      "transformers",
+      "cuda",
+      "gpu",
+      "python",
+      "entrypoint",
+      "effective_quantized",
+      "quantization_mismatch"
+    ],
+    "different": [
+      "caption_model",
+      "model_id",
+      "model_revision",
+      "git_head",
+      "generated_at"
+    ],
+    "decoding": "greedy (do_sample=False) · temperature/top_p 미사용 · repetition_penalty 1.1 · max_new_tokens 128 · seed 불필요",
+    "git_head_3b": "931b8accfcbde6c4a6fa082a124b8d233842fa75",
+    "git_head_4b": "105857e6b98cda7291c59a7a8c2ad769a849e529",
+    "git_dirty_both": true,
+    "generation_relevant_tracked_files_identical": true,
+    "generation_relevant_source": "docs/finalization/caption_retrieval_casestudy_comparability_audit.json"
+  },
+  "caption_length": {
+    "3b": {
+      "mean_chars": 128.5,
+      "median_chars": 129,
+      "max_chars": 237,
+      "min_chars": 13,
+      "no_terminal_punct": 57,
+      "no_terminal_punct_pct": 14.4
+    },
+    "4b": {
+      "mean_chars": 76.4,
+      "median_chars": 70,
+      "max_chars": 179,
+      "min_chars": 22,
+      "no_terminal_punct": 2,
+      "no_terminal_punct_pct": 0.5
+    },
+    "shared_max_new_tokens": 128,
+    "truncation_evidence": "3B 미종결 57건(14.4%)은 평균 171.7자로 종결본(121.2자)보다 길고, 최장 예(seg71, 226자)는 멀티바이트 문자가 중간에서 끊겼다 → 공유 토큰 상한 도달",
+    "interpretation": "observed captions were shorter under the 4B run and longer under the 3B run; 3B의 상단 꼬리는 공유 상한에 눌렸다",
+    "forbidden_claim": "4B intrinsically produces shorter captions — 근거 없음",
+    "postprocessing_applied": false,
+    "caption_raw_fields": 0,
+    "failed_or_empty_generations": 0
+  },
+  "query_visibility": {
+    "DIRECTLY_VISIBLE": 10,
+    "WEAKLY_VISIBLE": 4,
+    "CONTEXTUAL": 1,
+    "queries_changed": false,
+    "note": "해석 보조용 분류다. 기존 rank·hit를 바꾸지 않는다"
+  },
+  "top1_relation": {
+    "target_top1_pairs": 4,
+    "non_target_top1_pairs": 26,
+    "primary": {
+      "SAME_EVENT_NONADJACENT": 9,
+      "SEMANTICALLY_RELATED_DISTRACTOR": 8,
+      "SAME_ACTION_DIFFERENT_OBJECT": 5,
+      "SAME_EVENT_ADJACENT": 4,
+      "UNRELATED": 0
+    },
+    "secondary": {
+      "TEXT_LEAKAGE_CANDIDATE": 2,
+      "IN_SCENE_TEXT_SELECTION": 2
+    },
+    "adjacent_definition": "|Δseg| <= 3 이고 같은 연속 동작",
+    "headline": "UNRELATED 0건 — 비-target 1위 26건이 전부 같은 사건·같은 동작·의미 근접이다"
+  },
+  "text_handling": {
+    "stt_subtitle": "alpha=0에서 점수 가중치 0",
+    "editorial_overlay": "프롬프트 지시만 · 픽셀 제거 없음 · 캡션 채널로 유입 가능",
+    "in_scene_text": "의도상 허용 · 현행 P0 문구는 overlay와 구분하지 않음",
+    "scene01_seg188": "overlay leakage candidate (한/영 번역 병기 자막 축자 전사)",
+    "scene02_seg79": "in-scene text (벽면 부착 비닐 배너)",
+    "not_the_same_failure_mode": true,
+    "source": "docs/finalization/CAPTION_TEXT_HANDLING_AUDIT_2026-08-26.md"
+  },
+  "illustrative_top1_hit_count": {
+    "3b": 2,
+    "4b": 2
+  },
+  "metrics_unchanged": {
+    "top1_hit_3b": 2,
+    "top1_hit_4b": 2,
+    "n_queries": 15,
+    "note": "새 metric·Top-1 재정의·±1 인정 없음"
+  },
+  "rows": [
+    {
+      "query_id": "cs_s01_q1",
+      "scene_id": "scene01",
+      "query": "기름이 가득한 프라이팬 안의 새우 튀김",
+      "query_type": "Q1_object",
+      "target_segment": 0,
+      "target_time": "0:00",
+      "target_frame": "frames/seg_0000.jpg",
+      "target_frame_sha256": "c60877771caf840823c2edb209ddc316d471c424f667ee847be8d797d446e836",
+      "query_visibility": "WEAKLY_VISIBLE",
+      "query_visibility_reason": "팬·기름은 선명하나 새우가 채널 인트로 로고에 부분 가려짐",
+      "arms": {
+        "3b": {
+          "target_rank": 30,
+          "top1_segment": 188,
+          "top1_time": "15:40",
+          "delta_seg": 188,
+          "is_target_top1": false,
+          "top1_relation": "SAME_EVENT_NONADJACENT",
+          "top1_relation_secondary": "TEXT_LEAKAGE_CANDIDATE",
+          "top1_relation_note": "같은 새우 요리 15:40 시점 · 편집 자막 문구가 질의와 겹침"
+        },
+        "4b": {
+          "target_rank": 3,
+          "top1_segment": 188,
+          "top1_time": "15:40",
+          "delta_seg": 188,
+          "is_target_top1": false,
+          "top1_relation": "SAME_EVENT_NONADJACENT",
+          "top1_relation_secondary": null,
+          "top1_relation_note": "같은 새우 요리 15:40 시점"
+        }
+      }
+    },
+    {
+      "query_id": "cs_s01_q2",
+      "scene_id": "scene01",
+      "query": "새우를 기름에 넣어 튀기는 장면",
+      "query_type": "Q2_action",
+      "target_segment": 0,
+      "target_time": "0:00",
+      "target_frame": "frames/seg_0000.jpg",
+      "target_frame_sha256": "c60877771caf840823c2edb209ddc316d471c424f667ee847be8d797d446e836",
+      "query_visibility": "WEAKLY_VISIBLE",
+      "query_visibility_reason": "우상단 손이 다음 조각을 들고 있어 동작 추정은 되지만 \"넣는\" 순간은 단일 프레임에 없음",
+      "arms": {
+        "3b": {
+          "target_rank": 31,
+          "top1_segment": 188,
+          "top1_time": "15:40",
+          "delta_seg": 188,
+          "is_target_top1": false,
+          "top1_relation": "SAME_EVENT_NONADJACENT",
+          "top1_relation_secondary": "TEXT_LEAKAGE_CANDIDATE",
+          "top1_relation_note": "같은 요리 다른 시점 · 자막 \"기름에 튀기듯\"이 질의와 축자 겹침"
+        },
+        "4b": {
+          "target_rank": 1,
+          "top1_segment": 0,
+          "top1_time": "0:00",
+          "delta_seg": 0,
+          "is_target_top1": true,
+          "top1_relation": null,
+          "top1_relation_secondary": null,
+          "top1_relation_note": "target이 1위"
+        }
+      }
+    },
+    {
+      "query_id": "cs_s01_q3",
+      "scene_id": "scene01",
+      "query": "주방에서 튀김 요리를 하는 장면",
+      "query_type": "Q3_relation",
+      "target_segment": 0,
+      "target_time": "0:00",
+      "target_frame": "frames/seg_0000.jpg",
+      "target_frame_sha256": "c60877771caf840823c2edb209ddc316d471c424f667ee847be8d797d446e836",
+      "query_visibility": "CONTEXTUAL",
+      "query_visibility_reason": "근접 촬영이라 \"주방\"은 흰 타일·조리대에서 유추해야 함",
+      "arms": {
+        "3b": {
+          "target_rank": 31,
+          "top1_segment": 189,
+          "top1_time": "15:45",
+          "delta_seg": 189,
+          "is_target_top1": false,
+          "top1_relation": "SAME_EVENT_NONADJACENT",
+          "top1_relation_secondary": null,
+          "top1_relation_note": "같은 요리 직후 시점(seg189)"
+        },
+        "4b": {
+          "target_rank": 25,
+          "top1_segment": 175,
+          "top1_time": "14:35",
+          "delta_seg": 175,
+          "is_target_top1": false,
+          "top1_relation": "SEMANTICALLY_RELATED_DISTRACTOR",
+          "top1_relation_secondary": null,
+          "top1_relation_note": "다른 조리 단계(술 붓기·반찬 섞기)"
+        }
+      }
+    },
+    {
+      "query_id": "cs_s02_q1",
+      "scene_id": "scene02",
+      "query": "대형 마트 안에 걸린 파란 광고 배너",
+      "query_type": "Q1_object",
+      "target_segment": 79,
+      "target_time": "6:35",
+      "target_frame": "frames/seg_0079.jpg",
+      "target_frame_sha256": "8bbdda99413c7bf76052f5e6d915953046c73633b51cf1809bf8a315b35867ae",
+      "query_visibility": "DIRECTLY_VISIBLE",
+      "query_visibility_reason": "파란 COSTCO 배너가 화면 상단에 크게 보임",
+      "arms": {
+        "3b": {
+          "target_rank": 1,
+          "top1_segment": 79,
+          "top1_time": "6:35",
+          "delta_seg": 0,
+          "is_target_top1": true,
+          "top1_relation": null,
+          "top1_relation_secondary": null,
+          "top1_relation_note": "target이 1위"
+        },
+        "4b": {
+          "target_rank": 15,
+          "top1_segment": 90,
+          "top1_time": "7:30",
+          "delta_seg": 11,
+          "is_target_top1": false,
+          "top1_relation": "SEMANTICALLY_RELATED_DISTRACTOR",
+          "top1_relation_secondary": "IN_SCENE_TEXT_SELECTION",
+          "top1_relation_note": "다른 통로 진열대 · in-scene 로고 KIRKLAN 인용"
+        }
+      }
+    },
+    {
+      "query_id": "cs_s02_q2",
+      "scene_id": "scene02",
+      "query": "매장 안에서 사람이 지나가는 장면",
+      "query_type": "Q2_action",
+      "target_segment": 79,
+      "target_time": "6:35",
+      "target_frame": "frames/seg_0079.jpg",
+      "target_frame_sha256": "8bbdda99413c7bf76052f5e6d915953046c73633b51cf1809bf8a315b35867ae",
+      "query_visibility": "WEAKLY_VISIBLE",
+      "query_visibility_reason": "하단 가장자리에 인물 1~2명이 작게·일부 잘려 보이고 \"지나가는\" 동작은 단일 프레임에 없음",
+      "arms": {
+        "3b": {
+          "target_rank": 46,
+          "top1_segment": 76,
+          "top1_time": "6:20",
+          "delta_seg": -3,
+          "is_target_top1": false,
+          "top1_relation": "SAME_EVENT_ADJACENT",
+          "top1_relation_secondary": "IN_SCENE_TEXT_SELECTION",
+          "top1_relation_note": "같은 매장 이동 연속(Δ-3) · 상품 포장 문구 인용"
+        },
+        "4b": {
+          "target_rank": 2,
+          "top1_segment": 77,
+          "top1_time": "6:25",
+          "delta_seg": -2,
+          "is_target_top1": false,
+          "top1_relation": "SAME_EVENT_ADJACENT",
+          "top1_relation_secondary": null,
+          "top1_relation_note": "같은 매장 이동 연속(Δ-2) · 인물·행동 명시"
+        }
+      }
+    },
+    {
+      "query_id": "cs_s02_q3",
+      "scene_id": "scene02",
+      "query": "냉장 진열장과 쌓인 상자가 있는 창고형 매장 내부",
+      "query_type": "Q3_relation",
+      "target_segment": 79,
+      "target_time": "6:35",
+      "target_frame": "frames/seg_0079.jpg",
+      "target_frame_sha256": "8bbdda99413c7bf76052f5e6d915953046c73633b51cf1809bf8a315b35867ae",
+      "query_visibility": "DIRECTLY_VISIBLE",
+      "query_visibility_reason": "유리문 냉장 진열장과 적재 상자·팔레트가 모두 보임",
+      "arms": {
+        "3b": {
+          "target_rank": 18,
+          "top1_segment": 80,
+          "top1_time": "6:40",
+          "delta_seg": 1,
+          "is_target_top1": false,
+          "top1_relation": "SAME_EVENT_ADJACENT",
+          "top1_relation_secondary": null,
+          "top1_relation_note": "바로 다음 구간(Δ+1)"
+        },
+        "4b": {
+          "target_rank": 1,
+          "top1_segment": 79,
+          "top1_time": "6:35",
+          "delta_seg": 0,
+          "is_target_top1": true,
+          "top1_relation": null,
+          "top1_relation_secondary": null,
+          "top1_relation_note": "target이 1위"
+        }
+      }
+    },
+    {
+      "query_id": "cs_s03_q1",
+      "scene_id": "scene03",
+      "query": "나무 도마 위에 놓인 흰색 재료와 식칼",
+      "query_type": "Q1_object",
+      "target_segment": 158,
+      "target_time": "13:10",
+      "target_frame": "frames/seg_0158.jpg",
+      "target_frame_sha256": "d87373593df546a8ffd0a2eece876bc54e9f80fb001e9a1501b9f8649b056d01",
+      "query_visibility": "DIRECTLY_VISIBLE",
+      "query_visibility_reason": "나무 도마·흰 재료·식칼 모두 선명",
+      "arms": {
+        "3b": {
+          "target_rank": 59,
+          "top1_segment": 219,
+          "top1_time": "18:15",
+          "delta_seg": 61,
+          "is_target_top1": false,
+          "top1_relation": "SAME_ACTION_DIFFERENT_OBJECT",
+          "top1_relation_secondary": null,
+          "top1_relation_note": "같은 도마 위 다른 재료(양파·녹색 채소)"
+        },
+        "4b": {
+          "target_rank": 40,
+          "top1_segment": 382,
+          "top1_time": "31:50",
+          "delta_seg": 224,
+          "is_target_top1": false,
+          "top1_relation": "SEMANTICALLY_RELATED_DISTRACTOR",
+          "top1_relation_secondary": null,
+          "top1_relation_note": "완성 접시 이미지"
+        }
+      }
+    },
+    {
+      "query_id": "cs_s03_q2",
+      "scene_id": "scene03",
+      "query": "칼로 재료를 썰고 있는 손",
+      "query_type": "Q2_action",
+      "target_segment": 158,
+      "target_time": "13:10",
+      "target_frame": "frames/seg_0158.jpg",
+      "target_frame_sha256": "d87373593df546a8ffd0a2eece876bc54e9f80fb001e9a1501b9f8649b056d01",
+      "query_visibility": "DIRECTLY_VISIBLE",
+      "query_visibility_reason": "칼을 쥔 손과 절단 중인 재료가 보임",
+      "arms": {
+        "3b": {
+          "target_rank": 52,
+          "top1_segment": 287,
+          "top1_time": "23:55",
+          "delta_seg": 129,
+          "is_target_top1": false,
+          "top1_relation": "SAME_ACTION_DIFFERENT_OBJECT",
+          "top1_relation_secondary": null,
+          "top1_relation_note": "절단 동작이지만 대상이 직물(재봉 장면)"
+        },
+        "4b": {
+          "target_rank": 20,
+          "top1_segment": 353,
+          "top1_time": "29:25",
+          "delta_seg": 195,
+          "is_target_top1": false,
+          "top1_relation": "SAME_ACTION_DIFFERENT_OBJECT",
+          "top1_relation_secondary": null,
+          "top1_relation_note": "절단 동작 · 대상은 빨간 야채"
+        }
+      }
+    },
+    {
+      "query_id": "cs_s03_q3",
+      "scene_id": "scene03",
+      "query": "주방 조리대에서 재료를 손질하는 사람",
+      "query_type": "Q3_relation",
+      "target_segment": 158,
+      "target_time": "13:10",
+      "target_frame": "frames/seg_0158.jpg",
+      "target_frame_sha256": "d87373593df546a8ffd0a2eece876bc54e9f80fb001e9a1501b9f8649b056d01",
+      "query_visibility": "DIRECTLY_VISIBLE",
+      "query_visibility_reason": "인물·조리대·식기건조대 등 주방 요소가 함께 보임",
+      "arms": {
+        "3b": {
+          "target_rank": 34,
+          "top1_segment": 21,
+          "top1_time": "1:45",
+          "delta_seg": -137,
+          "is_target_top1": false,
+          "top1_relation": "SEMANTICALLY_RELATED_DISTRACTOR",
+          "top1_relation_secondary": null,
+          "top1_relation_note": "테이블에서 컵을 든 인물 — 조리 맥락은 약함"
+        },
+        "4b": {
+          "target_rank": 170,
+          "top1_segment": 175,
+          "top1_time": "14:35",
+          "delta_seg": 17,
+          "is_target_top1": false,
+          "top1_relation": "SEMANTICALLY_RELATED_DISTRACTOR",
+          "top1_relation_secondary": null,
+          "top1_relation_note": "실내 조리 장면이지만 손질 동작 아님"
+        }
+      }
+    },
+    {
+      "query_id": "cs_s04_q1",
+      "scene_id": "scene04",
+      "query": "노란색 뚜껑이 있는 무쇠 냄비",
+      "query_type": "Q1_object",
+      "target_segment": 237,
+      "target_time": "19:45",
+      "target_frame": "frames/seg_0237.jpg",
+      "target_frame_sha256": "1b3c650d5b7d9275e6b3beec9586e2be2d32b3b27354e57e8ad7f9568b6f51d5",
+      "query_visibility": "DIRECTLY_VISIBLE",
+      "query_visibility_reason": "노란 뚜껑과 냄비 본체가 선명",
+      "arms": {
+        "3b": {
+          "target_rank": 1,
+          "top1_segment": 237,
+          "top1_time": "19:45",
+          "delta_seg": 0,
+          "is_target_top1": true,
+          "top1_relation": null,
+          "top1_relation_secondary": null,
+          "top1_relation_note": "target이 1위"
+        },
+        "4b": {
+          "target_rank": 3,
+          "top1_segment": 193,
+          "top1_time": "16:05",
+          "delta_seg": -44,
+          "is_target_top1": false,
+          "top1_relation": "SEMANTICALLY_RELATED_DISTRACTOR",
+          "top1_relation_secondary": null,
+          "top1_relation_note": "노란색+냄비 요소는 공유하나 다른 그릇"
+        }
+      }
+    },
+    {
+      "query_id": "cs_s04_q2",
+      "scene_id": "scene04",
+      "query": "냄비 뚜껑을 손으로 들어 올리는 장면",
+      "query_type": "Q2_action",
+      "target_segment": 237,
+      "target_time": "19:45",
+      "target_frame": "frames/seg_0237.jpg",
+      "target_frame_sha256": "1b3c650d5b7d9275e6b3beec9586e2be2d32b3b27354e57e8ad7f9568b6f51d5",
+      "query_visibility": "DIRECTLY_VISIBLE",
+      "query_visibility_reason": "장갑 낀 손이 뚜껑을 든 상태가 보임",
+      "arms": {
+        "3b": {
+          "target_rank": 3,
+          "top1_segment": 28,
+          "top1_time": "2:20",
+          "delta_seg": -209,
+          "is_target_top1": false,
+          "top1_relation": "SAME_ACTION_DIFFERENT_OBJECT",
+          "top1_relation_secondary": null,
+          "top1_relation_note": "냄비를 들어 옮기는 동작 · 뚜껑 아님"
+        },
+        "4b": {
+          "target_rank": 10,
+          "top1_segment": 115,
+          "top1_time": "9:35",
+          "delta_seg": -122,
+          "is_target_top1": false,
+          "top1_relation": "SAME_ACTION_DIFFERENT_OBJECT",
+          "top1_relation_secondary": null,
+          "top1_relation_note": "뚜껑 들어올리는 동작 · 대상은 흰 플라스틱 용기"
+        }
+      }
+    },
+    {
+      "query_id": "cs_s04_q3",
+      "scene_id": "scene04",
+      "query": "완성된 조림 요리를 냄비에서 확인하는 장면",
+      "query_type": "Q3_relation",
+      "target_segment": 237,
+      "target_time": "19:45",
+      "target_frame": "frames/seg_0237.jpg",
+      "target_frame_sha256": "1b3c650d5b7d9275e6b3beec9586e2be2d32b3b27354e57e8ad7f9568b6f51d5",
+      "query_visibility": "WEAKLY_VISIBLE",
+      "query_visibility_reason": "조림 요리는 보이나 \"완성\"·\"확인\"은 해석이 필요",
+      "arms": {
+        "3b": {
+          "target_rank": 5,
+          "top1_segment": 235,
+          "top1_time": "19:35",
+          "delta_seg": -2,
+          "is_target_top1": false,
+          "top1_relation": "SAME_EVENT_ADJACENT",
+          "top1_relation_secondary": null,
+          "top1_relation_note": "같은 냄비 확인 장면 직전(Δ-2)"
+        },
+        "4b": {
+          "target_rank": 3,
+          "top1_segment": 175,
+          "top1_time": "14:35",
+          "delta_seg": -62,
+          "is_target_top1": false,
+          "top1_relation": "SEMANTICALLY_RELATED_DISTRACTOR",
+          "top1_relation_secondary": null,
+          "top1_relation_note": "다른 조리 단계"
+        }
+      }
+    },
+    {
+      "query_id": "cs_s05_q1",
+      "scene_id": "scene05",
+      "query": "물방울 무늬가 있는 남색 천",
+      "query_type": "Q1_object",
+      "target_segment": 316,
+      "target_time": "26:20",
+      "target_frame": "frames/seg_0316.jpg",
+      "target_frame_sha256": "dfde42309b02c5821b12893fb0c4a8113b63a274d0fb68914f737720c9ecade2",
+      "query_visibility": "DIRECTLY_VISIBLE",
+      "query_visibility_reason": "남색 물방울 무늬 천이 손에 들려 있음",
+      "arms": {
+        "3b": {
+          "target_rank": 181,
+          "top1_segment": 372,
+          "top1_time": "31:00",
+          "delta_seg": 56,
+          "is_target_top1": false,
+          "top1_relation": "SEMANTICALLY_RELATED_DISTRACTOR",
+          "top1_relation_secondary": null,
+          "top1_relation_note": "천은 공유하나 색·무늬가 다름(노란 체크)"
+        },
+        "4b": {
+          "target_rank": 22,
+          "top1_segment": 342,
+          "top1_time": "28:30",
+          "delta_seg": 26,
+          "is_target_top1": false,
+          "top1_relation": "SAME_EVENT_NONADJACENT",
+          "top1_relation_secondary": null,
+          "top1_relation_note": "같은 재봉 작업의 다른 시점 · 어두운 무늬 천"
+        }
+      }
+    },
+    {
+      "query_id": "cs_s05_q2",
+      "scene_id": "scene05",
+      "query": "재봉틀 앞에서 천을 손으로 잡고 있는 장면",
+      "query_type": "Q2_action",
+      "target_segment": 316,
+      "target_time": "26:20",
+      "target_frame": "frames/seg_0316.jpg",
+      "target_frame_sha256": "dfde42309b02c5821b12893fb0c4a8113b63a274d0fb68914f737720c9ecade2",
+      "query_visibility": "DIRECTLY_VISIBLE",
+      "query_visibility_reason": "재봉틀과 천을 잡은 손이 함께 보임",
+      "arms": {
+        "3b": {
+          "target_rank": 148,
+          "top1_segment": 280,
+          "top1_time": "23:20",
+          "delta_seg": -36,
+          "is_target_top1": false,
+          "top1_relation": "SAME_EVENT_NONADJACENT",
+          "top1_relation_secondary": null,
+          "top1_relation_note": "같은 재봉 작업 · 천 절단 시점"
+        },
+        "4b": {
+          "target_rank": 9,
+          "top1_segment": 303,
+          "top1_time": "25:15",
+          "delta_seg": -13,
+          "is_target_top1": false,
+          "top1_relation": "SAME_EVENT_NONADJACENT",
+          "top1_relation_secondary": null,
+          "top1_relation_note": "같은 점무늬 천을 든 다른 시점"
+        }
+      }
+    },
+    {
+      "query_id": "cs_s05_q3",
+      "scene_id": "scene05",
+      "query": "작업대 위에 재봉틀과 가위가 놓인 작업 공간",
+      "query_type": "Q3_relation",
+      "target_segment": 316,
+      "target_time": "26:20",
+      "target_frame": "frames/seg_0316.jpg",
+      "target_frame_sha256": "dfde42309b02c5821b12893fb0c4a8113b63a274d0fb68914f737720c9ecade2",
+      "query_visibility": "DIRECTLY_VISIBLE",
+      "query_visibility_reason": "작업대·재봉틀·좌하단 가위가 보임",
+      "arms": {
+        "3b": {
+          "target_rank": 175,
+          "top1_segment": 278,
+          "top1_time": "23:10",
+          "delta_seg": -38,
+          "is_target_top1": false,
+          "top1_relation": "SAME_EVENT_NONADJACENT",
+          "top1_relation_secondary": null,
+          "top1_relation_note": "같은 작업대 · 패치 지시 시점"
+        },
+        "4b": {
+          "target_rank": 34,
+          "top1_segment": 311,
+          "top1_time": "25:55",
+          "delta_seg": -5,
+          "is_target_top1": false,
+          "top1_relation": "SAME_EVENT_NONADJACENT",
+          "top1_relation_secondary": null,
+          "top1_relation_note": "같은 작업대 근접 시점(Δ-5)"
+        }
+      }
+    }
+  ],
+  "boundaries": {
+    "new_experiment": false,
+    "new_metric": false,
+    "recaption": false,
+    "reindex": false,
+    "prompt_changed": false,
+    "deployment_changed": false,
+    "test_or_m9_accessed": false,
+    "p2_p3_accessed": false,
+    "frozen_artifact_changed": false,
+    "new_embedding": false
+  },
+  "sources": [
+    "docs/finalization/caption_retrieval_casestudy_plan.json",
+    "runs/casestudy_caption_retrieval/cs_20260825/step6_retrieval_alpha0.json",
+    "runs/casestudy_caption_retrieval/cs_20260825/{3b,4b}_fresh/work/pland_costco_hosting/segments.json",
+    "runs/casestudy_caption_retrieval/cs_20260825/{3b,4b}_fresh/work/pland_costco_hosting/meta.json",
+    "docs/finalization/caption_retrieval_casestudy_comparability_audit.json",
+    "tests/test_casestudy_integrity.py"
+  ]
+}

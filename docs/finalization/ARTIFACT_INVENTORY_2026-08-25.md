@@ -40,6 +40,9 @@
 | `FINAL_REPORT_SOURCE_PACK_2026-08-26.md` | **F5** — 보고서 절별 재료 + conflict audit + 표·그림 후보 | 보고서 |
 | `CLAIM_EVIDENCE_MATRIX_2026-08-26.md` | **F5** — 주장 C01~C20 · 근거 · 허용/금지 표현 | 보고서 |
 | `final_report_facts_2026-08-26.json` | **F5** — 기계 판독 fact index (numeric fact마다 source_path) | 보고서 |
+| `CAPTION_TEXT_HANDLING_AUDIT_2026-08-26.md` | 편집 자막(overlay) ↔ 장면 속 실제 텍스트 처리 정의 감사. **판정: 프롬프트 지시만 · 픽셀 제거 없음 · P0 문구와 의도 MISMATCH** | 감사 |
+| `CAPTION_TO_RETRIEVAL_INTEGRITY_AUDIT_2026-08-26.md` | 프레임→질의→캡션→임베딩→인덱스→순위→비-target 1위 연결 정합성 감사. **판정: PASS_WITH_CAVEATS · 결론 SUPPORTED_WITH_CAVEATS** | 감사 |
+| `caption_to_retrieval_integrity_2026-08-26.json` | 위 감사의 기계 판독본 — 15질의 end-to-end 매핑 · 질의 가시성 · 비-target 1위 분류 | 감사 |
 
 ## 2. 신규 제품 코드
 
