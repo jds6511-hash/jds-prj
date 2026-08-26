@@ -8,6 +8,7 @@ from fastapi import FastAPI, HTTPException, UploadFile
 from fastapi.responses import FileResponse, HTMLResponse
 
 import common
+import eligibility
 from m5_search import VideoIndex, search, search_with_stats
 
 PIPELINE = ("m1_preprocess.py", "m2_keyframe.py", "m3_generate.py", "m4_index.py")
@@ -114,9 +115,13 @@ def _log_search(cfg: dict, video_id: str, query: str, alpha: float,
                  "alpha": alpha, **loggable,
                  # 당시 tau·배너 판정을 함께 기록 — tau 재캘리브레이션 후에도 "사용자가
                  # 실제로 본 경고"를 복원 가능하게 [리뷰 2026-07-11 Minor]
+                 # 판정식은 응답과 **같아야 한다**. sub 단독으로 적어 두면 사용자가 본
+                 # 배너와 다른 값이 남는다 — 2026-08-26 정합성 감사에서 적발했다
+                 # (8-2 개정 이후 채널은 max(sub, cap)다).
                  "abstention_tau": tau,
-                 "low_relevance": (bool(stats["raw_sub_max"] < tau)
-                                   if tau is not None else None),
+                 "low_relevance": (
+                     bool(max(stats["raw_sub_max"], stats["raw_cap_max"]) < tau)
+                     if tau is not None else None),
                  "top1_idx": top1.idx if top1 is not None else None,
                  "top1_score": top1.score if top1 is not None else None}
         with open(results_dir / "search_log.jsonl", "a", encoding="utf-8") as f:
@@ -128,12 +133,26 @@ def _log_search(cfg: dict, video_id: str, query: str, alpha: float,
 def create_app(cfg: dict, config_path: str, alpha: float,
                run_module=run_module_subprocess,
                search_fn=search, load_index=VideoIndex.load,
-               search_stats_fn=None) -> FastAPI:
+               search_stats_fn=None, enforce_demo_policy: bool = True) -> FastAPI:
+    """`enforce_demo_policy`는 **기본 True다(fail-closed)**.
+
+    진입점(`scripts/demo.py`)의 preflight는 시작 시 `--video-id` 하나만 본다. 그런데
+    이 API는 요청 본문의 `video_id`를 그대로 받으므로, 서버가 뜬 뒤에는 test split
+    영상도 조회·재생됐다(2026-08-26 설계 정합성 감사에서 발견). 자격 판정을 **요청
+    경로에서도** 한다 — 선언이 아니라 강제 지점이 있어야 한다.
+    """
     app = FastAPI()
     jobs = JobStore()
     index_cache: dict[str, VideoIndex] = {}
     videos_dir = Path(cfg["paths"]["data"]) / "videos"
     html_path = Path(__file__).parent / "webui" / "index.html"
+
+    def _guard(video_id: str) -> None:
+        if not enforce_demo_policy:
+            return
+        reason = eligibility.demo_block_reason(video_id)
+        if reason:
+            raise HTTPException(403, reason)
 
     def _pipeline(video_id: str) -> None:
         try:
@@ -154,6 +173,7 @@ def create_app(cfg: dict, config_path: str, alpha: float,
         if not (file.filename or "").lower().endswith(".mp4"):
             raise HTTPException(400, "mp4 파일만 업로드할 수 있어요")
         video_id = sanitize_video_id(Path(file.filename).stem)
+        _guard(video_id)
         if not jobs.try_start(video_id):
             raise HTTPException(409, "다른 영상 인덱싱 중이에요 — 잠시 후 다시 시도하세요")
         try:
@@ -198,6 +218,7 @@ def create_app(cfg: dict, config_path: str, alpha: float,
     @app.get("/api/segments/{video_id}")
     def segments(video_id: str):
         video_id = sanitize_video_id(video_id)
+        _guard(video_id)
         path = common.work_dir(cfg, video_id) / "segments.json"
         if not path.exists():
             raise HTTPException(404, f"{video_id}: 인덱스 없음")
@@ -214,6 +235,7 @@ def create_app(cfg: dict, config_path: str, alpha: float,
     @app.post("/api/search")
     def do_search(body: dict):
         video_id = sanitize_video_id(body.get("video_id", ""))
+        _guard(video_id)
         query = body.get("query", "")
         if not query.strip():
             raise HTTPException(400, "질의가 비어 있어요")
@@ -278,7 +300,9 @@ def create_app(cfg: dict, config_path: str, alpha: float,
 
     @app.get("/api/video/{video_id}")
     def video_file(video_id: str):
-        p = videos_dir / f"{sanitize_video_id(video_id)}.mp4"
+        video_id = sanitize_video_id(video_id)
+        _guard(video_id)
+        p = videos_dir / f"{video_id}.mp4"
         if not p.exists():
             raise HTTPException(404, "영상 파일 없음")
         return FileResponse(p, media_type="video/mp4")   # starlette Range 지원

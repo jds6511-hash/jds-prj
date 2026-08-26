@@ -16,6 +16,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 import common                                                       # noqa: E402
+import eligibility                                                  # noqa: E402
 
 # 현행 배포 구성 (CLAUDE.md 절대규칙 · DESIGN_SPEC 8-0). 여기 값을 바꾸는 것은
 # deployment 변경이고 별도 승인 사건이다.
@@ -31,31 +32,15 @@ DEPLOYMENT_ALPHA = 0.5
 
 REQUIRED_ARTIFACTS = ("segments.json", "emb_sub.npy", "emb_cap.npy", "meta.json")
 
-# test 39질의가 붙은 영상. 데모로 돌리지 않는다 — 공표된 결과 인용만 허용한다.
-TEST_SPLIT_VIDEOS = ("gemini_promo", "itsub_viral_gadgets",
-                     "panibottle_vietnam1", "yunnamnopo_tongyeong")
-
-E2E_MANIFEST = Path(__file__).resolve().parents[1] / "planning/e2e_external_manifest.json"
+# 자격 정책은 `src/eligibility.py`가 단일 출처다 — 진입점과 웹 API가 같은 함수를 쓴다.
+# 2026-08-26 감사: 이 preflight는 시작 시 --video-id 하나만 보므로, 요청 경로
+# (m7_webui의 /api/search·/api/segments·/api/video)에도 같은 판정이 걸려 있어야 한다.
+TEST_SPLIT_VIDEOS = eligibility.TEST_SPLIT_VIDEOS
 
 
 def demo_ineligible(video_id: str) -> bool:
-    """E2E 전용 영상인가 — manifest가 `eligible_for_public_demo: false`로 선언한다.
-
-    E2E 영상은 기능 검증용으로 편입한 외부 영상이고 공개 데모 대상이 아니다.
-    선언만 해두고 진입점이 막지 않으면 선언이 아무 일도 하지 않는다.
-    manifest가 없으면(배포본에 planning/이 없을 수 있다) 막지 않는다 — 실행을
-    깨뜨리지 않되, 있으면 그대로 강제한다.
-    """
-    if not E2E_MANIFEST.is_file():
-        return False
-    try:
-        m = json.loads(E2E_MANIFEST.read_text(encoding="utf-8"))
-    except (OSError, ValueError):
-        return False
-    for v in m.get("videos", []):
-        if v.get("e2e_id") == video_id:
-            return bool(v.get("e2e_only")) or v.get("eligible_for_public_demo") is False
-    return False
+    """E2E 전용 등 데모 부적격 여부. 판정은 eligibility 모듈이 한다."""
+    return not eligibility.demo_eligible(video_id)
 
 
 class PreflightError(RuntimeError):
@@ -102,16 +87,14 @@ def preflight(cfg: dict, video_id: str, alpha: float) -> dict:
     """시작 전 전수 확인. 통과하지 못하면 예외를 던지고 실행하지 않는다."""
     checks, warnings = 0, []
 
-    if video_id in TEST_SPLIT_VIDEOS:
-        raise PreflightError(
-            f"{video_id}는 test split 영상이다 — 데모로 실행하지 않는다. "
-            f"공표된 test 결과는 results/eval_test.json 인용으로만 쓴다")
+    block = eligibility.demo_block_reason(video_id)
+    if block:
+        raise PreflightError(block)
     checks += 1
 
-    if demo_ineligible(video_id):
-        raise PreflightError(
-            f"{video_id}는 external E2E 전용 영상이다(eligible_for_public_demo=false) "
-            f"— 기능 검증용으로 편입한 외부 영상이라 데모로 실행하지 않는다")
+    if not eligibility.manifest_available():
+        warnings.append(f"{eligibility.E2E_MANIFEST.name}이 없다 — E2E 전용 영상 "
+                        f"차단이 동작하지 않는다")
     checks += 1
 
     if abs(float(alpha) - DEPLOYMENT_ALPHA) > 1e-9:

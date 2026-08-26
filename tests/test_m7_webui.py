@@ -5,6 +5,7 @@ import warnings
 from pathlib import Path
 from types import SimpleNamespace
 
+import pytest
 from starlette.exceptions import StarletteDeprecationWarning
 
 # StarletteDeprecationWarning(UserWarning 하위)이 fastapi.testclient import 시점에
@@ -435,14 +436,25 @@ def test_current_returns_active_job(tmp_path):
     assert cur["video_id"] == vid
 
 
-def test_search_log_records_tau_and_low_relevance(tmp_path):
-    # tau 재캘리브레이션 후에도 "사용자가 실제로 본 배너"를 복원할 수 있도록
-    # 당시 tau와 판정을 로그에 기록 [리뷰 2026-07-11 Minor]
-    stats = {"raw_sub_max": 0.40, "raw_sub_mean": 0.3,
-             "raw_cap_max": 0.5, "raw_cap_mean": 0.3}
+@pytest.mark.parametrize("sub,cap,tau", [
+    (0.40, 0.50, 0.48),   # cap이 τ를 넘긴다 → 배너 없음. sub 단독 판정이면 어긋난다
+    (0.40, 0.30, 0.48),   # 둘 다 미달 → 배너
+    (0.60, 0.10, 0.48),   # sub가 넘긴다 → 배너 없음
+])
+def test_search_log_low_relevance_matches_the_banner_user_saw(tmp_path, sub, cap, tau):
+    """로그의 판정이 **응답의 판정과 같아야** 한다.
+
+    로그의 목적은 "tau 재캘리브레이션 후에도 사용자가 실제로 본 경고를 복원"하는
+    것이다[리뷰 2026-07-11 Minor]. 그런데 로그는 `raw_sub_max < tau`(8-2 개정 이전
+    규칙)로, 응답은 `max(sub, cap) < tau`로 판정하고 있었다 — 첫 파라미터 조합에서
+    로그는 True, 사용자는 배너를 보지 못했다. 2026-08-26 설계 정합성 감사에서 적발.
+    값을 하드코딩하지 않고 **두 판정의 일치**를 검사한다.
+    """
+    stats = {"raw_sub_max": sub, "raw_sub_mean": 0.3,
+             "raw_cap_max": cap, "raw_cap_mean": 0.3}
     ranked = [Result(0, 0.9, 0, 5)]
     cfg = make_cfg(tmp_path)
-    cfg["abstention_tau"] = 0.48
+    cfg["abstention_tau"] = tau
     client, _ = make_client(tmp_path, cfg=cfg,
                             search_stats_fn=lambda q, v, a, c: (ranked, stats),
                             load_index=lambda cfg, vid: _stub_index(1))
@@ -450,8 +462,9 @@ def test_search_log_records_tau_and_low_relevance(tmp_path):
     assert r.status_code == 200
     line = json.loads((Path(cfg["paths"]["results"]) / "search_log.jsonl")
                       .read_text(encoding="utf-8").strip().splitlines()[-1])
-    assert line["abstention_tau"] == 0.48
-    assert line["low_relevance"] is True
+    assert line["abstention_tau"] == tau
+    assert line["low_relevance"] == r.json()["low_relevance"]
+    assert line["low_relevance"] is (max(sub, cap) < tau)
 
 
 def test_display_clean_collapses_repetition_and_masks_cjk():
