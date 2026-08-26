@@ -75,9 +75,10 @@ def test_local_frames_are_preserved_for_deck_rebuild():
     assert len(jpgs) == 27, "프레임 %d장 (27장이어야 한다)" % len(jpgs)
     builder = ROOT / "docs/presentation/build_casestudy_deck.js"
     if builder.is_file():
+        import re
         src = builder.read_text(encoding="utf-8")
         assert "frames_for_discussion" in src
-        for name in ("seg0079_00395s.jpg", "seg0000_00000s.jpg",
-                     "seg0188_00940s.jpg", "seg0316_01580s.jpg"):
-            assert name in src, name
-            assert (d / name).is_file(), "덱이 참조하는 %s 가 없다" % name
+        refs = sorted(set(re.findall(r'"(seg\d+_\d+s\.jpg)"', src)))
+        assert refs, "덱이 참조하는 프레임을 하나도 못 찾았다 — 파서가 깨졌다"
+        missing = [n for n in refs if not (d / n).is_file()]
+        assert not missing, "덱이 참조하는 프레임이 없다: %s" % missing

@@ -1,12 +1,17 @@
-/* 캡션 → 검색 케이스 스터디 덱 — 2026-08-26
+/* 캡션 → 검색 케이스 스터디 덱 — 2026-08-26 (14장)
  *
- * 원본: docs/tutor/캡션검색_케이스스터디_1페이지.md (요약)
- *       docs/finalization/CAPTION_RETRIEVAL_CASESTUDY_RESULTS_2026-08-25.md (상세)
- *       docs/finalization/CAPTION_RETRIEVAL_CASESTUDY_TABLE.md (15질의 전체표)
- * 수치는 전부 위 동결 산출물에서 인용한다. 새로 계산하지 않는다.
+ * 구조: 튜터 질문 → 방법 → **장면 5개를 전부 같은 형식으로** → 전체표 → 숫자 → 경로 → 답
+ * 장면 카드 6요소 고정: ① 선택한 장면 ② 질문 3개 ③ 3B/4B target 순위
+ *                      ④ 다른 장면이 1위면 그 장면 ⑤ target vs top1 캡션 ⑥ 한 줄 해석
+ *
+ * 원본: docs/finalization/CAPTION_RETRIEVAL_CASESTUDY_TABLE.md   (15질의 순위 전건)
+ *       docs/finalization/CAPTION_RETRIEVAL_CASESTUDY_RESULTS_2026-08-25.md (캡션 원문)
+ *       docs/tutor/캡션검색_케이스스터디_1페이지.md
+ * 질의 문구·순위·캡션은 전부 동결 산출물에서 그대로 가져왔다. 새로 만들거나 계산하지 않았다.
  *
  * 출력이 docs/tutor/_local/ 인 이유: 원본 영상 프레임을 embed한다.
  * 프레임은 저장소 비포함 정책 대상이고 _local/ 과 *.pptx 는 .gitignore 대상이다.
+ * 프레임 자체도 미추적이다 — docs/finalization/HISTORY_REWRITE_2026-08-26.md
  *
  * 색 규약은 2026-08-25 튜터 덱과 같다 — TEAL=3B(현행) · AMBER=4B(후보).
  * 같은 튜터가 연속으로 보는 자료라 모델↔색 대응을 바꾸지 않는다.
@@ -35,10 +40,10 @@ p.title = "캡션 → 검색 케이스 스터디 (2026-08-26)";
 const W = 13.33, H = 7.5;
 const INK = "12343B";
 const PAPER = "F7F7F4";
+const BAND = "EFEFEA";
 const TEAL = "2C6E75";        // 3B (현행)
 const TEAL_BG = "E8F0F0";
 const AMBER = "B45309";       // 4B (후보)
-const AMBER_BG = "F6EDE2";
 const MUTED = "6B7280";
 const LINE = "DCDCD6";
 const WHITE = "FFFFFF";
@@ -50,10 +55,10 @@ let page = 0;
 function foot(s, dark) {
   const c = dark ? "8FA9AE" : MUTED;
   s.addText("캡션 → 검색 케이스 스터디 · 영상 1편 · 장면 5 · 질의 15 · 정성 사례 연구", {
-    x: 0.62, y: H - 0.44, w: 9, h: 0.3, fontSize: 9, color: c, fontFace: F, margin: 0,
+    x: 0.62, y: H - 0.42, w: 9, h: 0.3, fontSize: 9, color: c, fontFace: F, margin: 0,
   });
   s.addText(String(page), {
-    x: W - 1.1, y: H - 0.44, w: 0.5, h: 0.3, fontSize: 9, color: c,
+    x: W - 1.1, y: H - 0.42, w: 0.5, h: 0.3, fontSize: 9, color: c,
     fontFace: F, align: "right", margin: 0,
   });
 }
@@ -64,16 +69,16 @@ function slide(kicker, title) {
   s.background = { color: PAPER };
   if (kicker) {
     s.addText(kicker, {
-      x: 0.62, y: 0.4, w: 12, h: 0.28, fontSize: 11, bold: true,
+      x: 0.62, y: 0.38, w: 12, h: 0.28, fontSize: 11, bold: true,
       color: TEAL, charSpacing: 2, fontFace: F, margin: 0,
     });
   }
   s.addText(title, {
-    x: 0.6, y: 0.7, w: 12.1, h: 0.66, fontSize: 26, bold: true,
+    x: 0.6, y: 0.66, w: 12.15, h: 0.62, fontSize: 24, bold: true,
     color: INK, fontFace: F, margin: 0,
   });
   s.addShape(p.shapes.LINE, {
-    x: 0.62, y: 1.45, w: 12.1, h: 0, line: { color: LINE, width: 1 },
+    x: 0.62, y: 1.38, w: 12.1, h: 0, line: { color: LINE, width: 1 },
   });
   foot(s, false);
   return s;
@@ -87,402 +92,651 @@ function darkSlide() {
   return s;
 }
 
-/* 모델 카드 — 라벨 칩 + 옅은 배경. 가장자리 줄은 쓰지 않는다. */
-function armCard(s, arm, x, y, w, h, body, opts) {
-  const o = opts || {};
-  const is3b = arm === "3B";
-  const fill = is3b ? TEAL_BG : AMBER_BG;
-  const key = is3b ? TEAL : AMBER;
+function card(s, x, y, w, h, fill, line) {
   s.addShape(p.shapes.ROUNDED_RECTANGLE, {
-    x: x, y: y, w: w, h: h, fill: { color: fill }, rectRadius: 0.06,
-    line: { color: fill },
+    x: x, y: y, w: w, h: h, fill: { color: fill }, rectRadius: 0.05,
+    line: { color: line || fill },
   });
-  s.addShape(p.shapes.ROUNDED_RECTANGLE, {
-    x: x + 0.22, y: y + 0.2, w: 0.86, h: 0.3,
-    fill: { color: key }, rectRadius: 0.05, line: { color: key },
+}
+
+/* 캡션 카드 — 라벨 + 원문 + 한 줄 진단 */
+function capCard(s, x, y, w, h, label, labelColor, body, diag, diagColor) {
+  card(s, x, y, w, h, WHITE, LINE);
+  s.addText(label, {
+    x: x + 0.18, y: y + 0.08, w: w - 0.36, h: 0.26, fontSize: 10, bold: true,
+    color: labelColor, fontFace: F, margin: 0,
   });
-  s.addText(arm, {
-    x: x + 0.22, y: y + 0.2, w: 0.86, h: 0.3, fontSize: 12, bold: true,
-    color: WHITE, align: "center", valign: "middle", fontFace: F, margin: 0,
-  });
-  if (o.tag) {
-    s.addText(o.tag, {
-      x: x + 1.2, y: y + 0.2, w: w - 1.5, h: 0.3, fontSize: 11, bold: true,
-      color: key, valign: "middle", fontFace: F, margin: 0,
-    });
-  }
   s.addText(body, {
-    x: x + 0.22, y: y + 0.6, w: w - 0.44, h: h - 0.8,
-    fontSize: o.size || 12.5, color: INK, fontFace: F, lineSpacing: 19, margin: 0,
+    x: x + 0.18, y: y + 0.34, w: w - 0.36, h: h - 0.78, fontSize: 10.5, color: INK,
+    fontFace: F, lineSpacing: 15, valign: "top", margin: 0,
+  });
+  s.addText(diag, {
+    x: x + 0.18, y: y + h - 0.42, w: w - 0.36, h: 0.34, fontSize: 10, bold: true,
+    color: diagColor, fontFace: F, valign: "middle", margin: 0,
   });
 }
 
-/* 순위 배지 — 숫자를 크게, 단위를 작게. */
-function rank(s, x, y, w, value, arm, win) {
-  const key = arm === "3B" ? TEAL : AMBER;
-  s.addText(
-    [{ text: String(value), options: { fontSize: win ? 30 : 22, bold: true, color: win ? key : MUTED } },
-     { text: "위", options: { fontSize: 12, color: MUTED } }],
-    { x: x, y: y, w: w, h: 0.6, align: "center", valign: "middle", fontFace: MONO, margin: 0 }
-  );
+/* ============================================================ 장면 카드
+ * 5개 장면 전부 같은 틀. 튜터가 장면을 넘기며 바로 비교할 수 있게 한다.
+ */
+function sceneSlide(d) {
+  const s = slide("Scene " + d.n + " · seg " + d.seg + " · " + d.time, d.title);
+
+  /* ① 내가 선택한 장면 */
+  s.addImage({ path: frame(d.frame), x: 0.62, y: 1.55, w: 3.9, h: 2.19 });
+  s.addText("① 내가 선택한 장면", {
+    x: 0.62, y: 3.8, w: 3.9, h: 0.26, fontSize: 10, bold: true, color: TEAL,
+    fontFace: F, margin: 0,
+  });
+  s.addText(d.desc, {
+    x: 0.62, y: 4.04, w: 3.9, h: 0.5, fontSize: 10.5, color: INK,
+    fontFace: F, lineSpacing: 15, valign: "top", margin: 0,
+  });
+
+  /* ② 질문 3개 + ③ target 순위 */
+  s.addText("② 캡션·결과를 보기 전에 작성한 질문 3개", {
+    x: 4.8, y: 1.5, w: 5.6, h: 0.26, fontSize: 10, bold: true, color: TEAL,
+    fontFace: F, margin: 0,
+  });
+  s.addText("③ 내가 고른 장면의 순위", {
+    x: 10.45, y: 1.5, w: 2.3, h: 0.26, fontSize: 10, bold: true, color: TEAL,
+    align: "center", fontFace: F, margin: 0,
+  });
+  ["3B", "4B"].forEach((a, i) => {
+    s.addText(a, {
+      x: 10.45 + i * 1.16, y: 1.76, w: 1.14, h: 0.24, fontSize: 10.5, bold: true,
+      color: i === 0 ? TEAL : AMBER, align: "center", fontFace: F, margin: 0,
+    });
+  });
+  let y = 2.04;
+  d.queries.forEach((q, i) => {
+    const [text, r3, r4] = q;
+    if (i % 2 === 0) {
+      s.addShape(p.shapes.RECTANGLE, {
+        x: 4.8, y: y, w: 7.92, h: 0.58, fill: { color: BAND }, line: { color: BAND },
+      });
+    }
+    s.addText("Q" + (i + 1) + ".  " + text, {
+      x: 4.98, y: y, w: 5.35, h: 0.58, fontSize: 11, color: INK,
+      valign: "middle", fontFace: F, margin: 0,
+    });
+    [[r3, TEAL], [r4, AMBER]].forEach((cell, k) => {
+      const [rank, col] = cell;
+      const win = (k === 0 ? r3 < r4 : r4 < r3);
+      const cx = 10.45 + k * 1.16;
+      if (rank === 1) {
+        card(s, cx + 0.14, y + 0.09, 0.86, 0.4, col, col);
+        s.addText("1위", {
+          x: cx + 0.14, y: y + 0.09, w: 0.86, h: 0.4, fontSize: 12.5, bold: true,
+          color: WHITE, align: "center", valign: "middle", fontFace: F, margin: 0,
+        });
+      } else {
+        s.addText(
+          [{ text: String(rank), options: { fontSize: win ? 17 : 14, bold: win, color: win ? col : MUTED } },
+           { text: "위", options: { fontSize: 9.5, color: MUTED } }],
+          { x: cx, y: y, w: 1.14, h: 0.58, align: "center", valign: "middle",
+            fontFace: MONO, margin: 0 }
+        );
+      }
+    });
+    y += 0.58;
+  });
+  s.addText("굵은 값 = 그 질문에서 순위가 더 높았던 쪽 · 색칠 = 내가 고른 장면이 1위 (후보 395구간 중)", {
+    x: 4.98, y: 3.84, w: 7.7, h: 0.24, fontSize: 9.5, italic: true, color: MUTED,
+    fontFace: F, margin: 0,
+  });
+
+  /* ④⑤ 아래 띠 — 대표 사례 하나만 크게 */
+  s.addShape(p.shapes.RECTANGLE, {
+    x: 0.62, y: 4.6, w: 12.1, h: 1.74, fill: { color: BAND }, line: { color: BAND },
+  });
+  if (d.compare) {
+    s.addText(d.compare.head, {
+      x: 0.85, y: 4.7, w: 11.6, h: 0.28, fontSize: 10.5, bold: true, color: INK,
+      fontFace: F, margin: 0,
+    });
+    capCard(s, 0.85, 5.02, 5.75, 1.2, "3B 캡션 — " + d.compare.tag3, TEAL,
+            d.compare.cap3, d.compare.diag3, TEAL);
+    capCard(s, 6.82, 5.02, 5.68, 1.2, "4B 캡션 — " + d.compare.tag4, AMBER,
+            d.compare.cap4, d.compare.diag4, AMBER);
+  } else {
+    const m = d.miss;
+    const col = m.arm === "3B" ? TEAL : AMBER;
+    /* 오른쪽 카드가 top1 장면의 캡션이 아닌 경우(같은 장면의 다른 모델 캡션)에는
+     * bandHead로 문구를 바꾼다 — 머리글과 카드 내용이 어긋나면 안 된다. */
+    s.addText(m.bandHead ||
+      ("④ " + m.arm + "에서 내가 고른 장면이 " + m.rank + "위 — 대신 1위가 된 장면과 캡션을 비교한다"), {
+      x: 0.85, y: 4.7, w: 11.6, h: 0.28, fontSize: 10.5, bold: true, color: INK,
+      fontFace: F, margin: 0,
+    });
+    s.addImage({ path: frame(m.top1Frame), x: 0.85, y: 5.02, w: 1.96, h: 1.1 });
+    s.addText(m.top1Label, {
+      x: 0.85, y: 6.12, w: 2.2, h: 0.2, fontSize: 8.5, color: MUTED, fontFace: F, margin: 0,
+    });
+    capCard(s, 3.0, 5.02, 4.72, 1.2, "⑤ 내가 고른 장면의 " + m.arm + " 캡션", col,
+            m.targetCap, "✕  " + m.targetMiss, col);
+    capCard(s, 7.9, 5.02, 4.6, 1.2, m.top1CardLabel || "1위가 된 다른 장면의 캡션", MUTED,
+            m.top1Cap, "✓  " + m.top1Hit, INK);
+  }
+
+  /* ⑥ 한 줄 해석 */
+  s.addText("⑥  " + d.read, {
+    x: 0.62, y: 6.46, w: 12.1, h: 0.52, fontSize: 12, bold: true, color: INK,
+    fontFace: F, lineSpacing: 18, valign: "top", margin: 0,
+  });
+  return s;
 }
 
-/* ---------------------------------------------------------------- 1 */
+/* ---------------------------------------------------------------- 1 표지 */
 {
   const s = darkSlide();
   s.addText("케이스 스터디 · 2026-08-26", {
-    x: 0.9, y: 1.9, w: 11, h: 0.3, fontSize: 12, bold: true,
+    x: 0.9, y: 1.75, w: 11, h: 0.3, fontSize: 12, bold: true,
     color: "8FA9AE", charSpacing: 2, fontFace: F, margin: 0,
   });
-  s.addText("같은 화면을 두 모델이 다르게 설명하면\n검색 결과가 달라지는가", {
-    x: 0.88, y: 2.4, w: 11.4, h: 1.7, fontSize: 34, bold: true,
-    color: WHITE, fontFace: F, lineSpacing: 46, margin: 0,
+  s.addText("캡션 모델의 설명 차이가\n검색 결과에 어떻게 전달되는가", {
+    x: 0.88, y: 2.25, w: 11.4, h: 1.7, fontSize: 33, bold: true,
+    color: WHITE, fontFace: F, lineSpacing: 45, margin: 0,
   });
-  s.addText("달라진다. 다만 한 모델이 항상 유리하지는 않았다.", {
-    x: 0.9, y: 4.25, w: 11, h: 0.4, fontSize: 17, color: "C9D8DA", fontFace: F, margin: 0,
+  s.addText("Qwen2.5-VL-3B   vs   Qwen3-VL-4B", {
+    x: 0.9, y: 4.15, w: 11, h: 0.35, fontSize: 16, bold: true, color: "C9D8DA",
+    fontFace: MONO, margin: 0,
+  });
+  s.addText("5개 장면 × 장면당 질문 3개 = 15개 질의", {
+    x: 0.9, y: 4.55, w: 11, h: 0.35, fontSize: 15, color: "9FB8BC", fontFace: F, margin: 0,
   });
   s.addShape(p.shapes.LINE, {
-    x: 0.92, y: 4.95, w: 3.2, h: 0, line: { color: "3E5F68", width: 2 },
+    x: 0.92, y: 5.2, w: 3.2, h: 0, line: { color: "3E5F68", width: 2 },
   });
-  s.addText("영상 1편 · 장면 5개 · 질의 15개의 정성 사례 연구다.\n성능 추정 · 모델 우열 · 채택 근거가 아니다.", {
-    x: 0.9, y: 5.25, w: 9, h: 0.8, fontSize: 13, color: "8FA9AE",
+  s.addText("같은 장면을 두 모델이 다르게 설명할 때, 그 차이가 실제 검색 순위에도\n나타나는지 확인했다.", {
+    x: 0.9, y: 5.45, w: 10, h: 0.8, fontSize: 13.5, color: "8FA9AE",
     fontFace: F, lineSpacing: 22, margin: 0,
   });
 }
 
-/* ---------------------------------------------------------------- 2 */
+/* ---------------------------------------------------------------- 2 질문 */
 {
-  const s = slide("설계", "결과를 보기 전에 동결했다");
+  const s = slide("무엇을 확인했나", "튜터 피드백에서 시작한 질문");
+  const qs = [
+    ["①", "같은 장면을 3B와 4B가 어떻게 다르게 설명하는가?"],
+    ["②", "같은 질문을 넣었을 때 내가 선택한 장면이 검색되는가?"],
+    ["③", "다른 장면이 1위가 된다면, 그 장면의 캡션에는 무엇이 적혀 있었는가?"],
+  ];
+  let y = 1.8;
+  qs.forEach((q) => {
+    card(s, 0.62, y, 12.1, 1.2, WHITE, LINE);
+    s.addText(q[0], {
+      x: 0.95, y: y, w: 0.8, h: 1.2, fontSize: 28, bold: true, color: TEAL,
+      valign: "middle", fontFace: F, margin: 0,
+    });
+    s.addText(q[1], {
+      x: 1.9, y: y, w: 10.5, h: 1.2, fontSize: 17, bold: true, color: INK,
+      valign: "middle", fontFace: F, margin: 0,
+    });
+    y += 1.4;
+  });
+  card(s, 0.62, 6.1, 12.1, 0.78, TEAL_BG);
+  s.addText("목표는 “누가 이겼는가”보다, 캡션의 차이가 검색 결과로 전달되는 과정을 확인하는 것이다.", {
+    x: 0.95, y: 6.1, w: 11.5, h: 0.78, fontSize: 13.5, bold: true, color: INK,
+    valign: "middle", fontFace: F, margin: 0,
+  });
+}
+
+/* ---------------------------------------------------------------- 3 방법 */
+{
+  const s = slide("비교 방법", "결과를 보기 전에 장면과 질문을 먼저 고정했다");
+  s.addText([
+    { text: "영상 1편을 시간으로 5등분하고, 각 구간에서 장면 1개씩 총 5개를 골랐다.", options: { breakLine: true } },
+    { text: "장면을 고를 때는 대표 프레임만 봤다 — 캡션은 열지 않았다.", options: { breakLine: true } },
+    { text: "각 장면에 사물 · 행동 · 맥락을 묻는 질문을 3개씩 작성했다.", options: { breakLine: true } },
+    { text: "질문은 3B/4B 캡션과 검색 결과를 보기 전에 작성하고 동결했다.", options: { breakLine: true } },
+    { text: "같은 질문을 두 모델에 그대로 넣었고, 자막을 끄고 캡션만으로 검색했다.", options: {} },
+  ], {
+    x: 0.85, y: 1.7, w: 7.6, h: 2.35, fontSize: 13.5, color: INK, valign: "top",
+    fontFace: F, lineSpacing: 25, margin: 0,
+  });
+  const nums = [["영상", "1편"], ["후보 구간", "395"], ["장면", "5"], ["질문", "15"]];
+  let x = 8.75;
+  nums.forEach((n) => {
+    card(s, x, 1.7, 1.9, 1.02, WHITE, LINE);
+    s.addText(n[1], {
+      x: x, y: 1.79, w: 1.9, h: 0.58, fontSize: 23, bold: true, color: TEAL,
+      align: "center", fontFace: MONO, margin: 0,
+    });
+    s.addText(n[0], {
+      x: x, y: 2.37, w: 1.9, h: 0.26, fontSize: 10.5, color: MUTED,
+      align: "center", fontFace: F, margin: 0,
+    });
+    x += 2.03;
+  });
+  card(s, 8.75, 2.85, 3.93, 1.2, TEAL_BG);
+  s.addText("두 모델에 같게 준 것\n프레임 · 프롬프트 · 4bit · 후보 풀 395구간\n다른 것은 캡션 모델 하나뿐이다", {
+    x: 8.95, y: 2.95, w: 3.55, h: 1.0, fontSize: 10.5, color: INK,
+    fontFace: F, lineSpacing: 15, valign: "top", margin: 0,
+  });
+
+  s.addShape(p.shapes.RECTANGLE, {
+    x: 0.62, y: 4.35, w: 12.1, h: 1.9, fill: { color: BAND }, line: { color: BAND },
+  });
+  s.addText("각 질문에서 보는 것은 네 가지뿐이다", {
+    x: 0.9, y: 4.48, w: 11.5, h: 0.3, fontSize: 14, bold: true, color: INK, fontFace: F, margin: 0,
+  });
+  const four = [
+    ["①", "내가 고른 장면이 1위인가"],
+    ["②", "1위가 아니면 몇 위인가"],
+    ["③", "1위가 다른 장면이면 어떤 장면인가"],
+    ["④", "두 캡션이 무엇을 다르게 썼는가"],
+  ];
+  let fx = 0.9;
+  four.forEach((f) => {
+    card(s, fx, 4.86, 2.87, 1.18, WHITE, LINE);
+    s.addText(f[0], {
+      x: fx + 0.18, y: 4.95, w: 0.5, h: 0.33, fontSize: 16, bold: true, color: TEAL,
+      fontFace: F, margin: 0,
+    });
+    s.addText(f[1], {
+      x: fx + 0.18, y: 5.31, w: 2.5, h: 0.6, fontSize: 11.5, color: INK,
+      fontFace: F, lineSpacing: 16, valign: "top", margin: 0,
+    });
+    fx += 3.03;
+  });
+  s.addText("장면 5개를 모두 같은 형식으로 본다 — 좋은 사례만 고르지 않았다.", {
+    x: 0.85, y: 6.42, w: 11.8, h: 0.35, fontSize: 12.5, italic: true, color: MUTED,
+    fontFace: F, margin: 0,
+  });
+}
+
+/* ---------------------------------------------------------------- 4 Scene01 */
+sceneSlide({
+  n: "01", seg: 0, time: "0:00~0:05",
+  title: "정답 캡션에 필요한 말이 없으면 다른 장면이 올라온다",
+  frame: "seg0000_00000s.jpg",
+  desc: "프라이팬에 기름이 차 있고 가운데에 새우 한 점을 튀긴다",
+  queries: [
+    ["기름이 가득한 프라이팬 안의 새우 튀김", 30, 3],
+    ["새우를 기름에 넣어 튀기는 장면", 31, 1],
+    ["주방에서 튀김 요리를 하는 장면", 31, 25],
+  ],
+  miss: {
+    arm: "3B", rank: 31,
+    top1Frame: "seg0188_00940s.jpg", top1Label: "1위가 된 장면 — seg188 · 15:40",
+    targetCap: "“노란색 그릇에 담긴 노란색 소스가 보입니다. 그릇 위에는 작은 크림 요리가 놓여 있습니다.”",
+    targetMiss: "팬 · 기름 · 새우 · 튀기다 — 하나도 없다",
+    top1Cap: "“…녹색 편으로 가득 차 있는 두 개의 새우가 보입니다. … ‘이대로 기름에 튀기듯 구워주면 끝!’”",
+    top1Hit: "질의의 “새우” · “기름에 튀기”가 그대로 있다",
+  },
+  read: "정답 캡션에서 검색에 필요한 표현이 빠지고, 같은 요리의 다른 시점 캡션에는 그 표현이 직접 들어 있었다. 같은 질문에서 4B는 정답을 1위로 올렸다.",
+});
+
+/* ---------------------------------------------------------------- 5 Scene02 */
+sceneSlide({
+  n: "02", seg: 79, time: "6:35~6:40",
+  title: "같은 화면인데 어느 요소를 적었는지에 따라 1위가 뒤집힌다",
+  frame: "seg0079_00395s.jpg",
+  desc: "창고형 매장을 위에서 내려다본 화면. 파란 COSTCO 배너, 유리문 냉장 진열장, 적재된 상자",
+  queries: [
+    ["대형 마트 안에 걸린 파란 광고 배너", 1, 15],
+    ["매장 안에서 사람이 지나가는 장면", 46, 2],
+    ["냉장 진열장과 쌓인 상자가 있는 창고형 매장 내부", 18, 1],
+  ],
+  compare: {
+    head: "⑤ 같은 프레임 한 장을 두 모델이 이렇게 설명했다 — 배너를 묻는 Q1은 3B가 1위, 진열대를 묻는 Q3은 4B가 1위",
+    tag3: "배너 문구를 골랐다",
+    cap3: "“코스트코의 광고가 보입니다. 파란색 배경에 ‘COSTCO’와 함께 한국어로 된 메시지가 있습니다. 아래에는 ‘Join Now!’, 상단에는 트럭 이미지가 있습니다.”",
+    diag3: "Q1 배너 1위  ·  Q3 진열대 18위",
+    tag4: "냉장 진열대를 골랐다",
+    cap4: "“코스트코 내부의 냉장고 진열대와 주변 상품들이 보이는 장면이다.”",
+    diag4: "Q3 진열대 1위  ·  Q1 배너 15위",
+  },
+  read: "같은 화면이어도 무엇을 캡션에 남겼는지에 따라 같은 장면의 순위가 반대로 뒤집혔다.\n3B가 배너 글자를 옮겨 적은 것은 프롬프트가 금지한 동작이므로 품질 우위로 읽지 않는다.",
+});
+
+/* ---------------------------------------------------------------- 6 Scene03 */
+sceneSlide({
+  n: "03", seg: 158, time: "13:10~13:15",
+  title: "짧게 핵심만 쓰면 맥락을 묻는 질문에 불리할 수 있다",
+  frame: "seg0158_00790s.jpg",
+  desc: "주방에서 흰 티셔츠를 입은 사람이 나무 도마 위 흰색 재료를 식칼로 썬다",
+  queries: [
+    ["나무 도마 위에 놓인 흰색 재료와 식칼", 59, 40],
+    ["칼로 재료를 썰고 있는 손", 52, 20],
+    ["주방 조리대에서 재료를 손질하는 사람", 34, 170],
+  ],
+  miss: {
+    arm: "4B", rank: 170,
+    bandHead: "④ Q3에서 4B는 내가 고른 장면을 170위로 두고 seg175를 1위로 올렸다 — ⑤ 같은 장면을 두 모델이 어떻게 썼는지 비교한다",
+    top1Frame: "seg0175_00875s.jpg", top1Label: "Q3에서 4B의 1위 — seg175 · 14:35",
+    targetCap: "“여성이 흰색 셔츠를 입고 나무 식탁 위에서 큰 칼로 흰색 채소를 슬라이스하고 있다.”",
+    targetMiss: "칼·흰색·슬라이스는 있지만 주방 · 조리대 같은 배경어가 없다",
+    top1CardLabel: "같은 장면의 3B 캡션 — 같은 질문에서 34위",
+    top1Cap: "“…그녀는 흰색 티셔츠를 입고 있으며 … 배경에는 주방 가구와 다양한 도구들이 보인다.”",
+    top1Hit: "맥락 질문에서는 배경 표현을 쓴 쪽이 앞섰다",
+  },
+  read: "두 모델 모두 크게 밀린 장면이다 — 32분 요리 영상에 “칼로 썬다”는 장면이 여럿이라 정답이 그 안에서 밀린다.\n다만 Q3에서는 배경어를 쓴 3B가 34위, 짧게 쓴 4B가 170위로 방향이 반대였다.",
+});
+
+/* ---------------------------------------------------------------- 7 Scene04 */
+sceneSlide({
+  n: "04", seg: 237, time: "19:45~19:50",
+  title: "다른 장면 캡션이 질문 표현과 더 직접적으로 겹치면 그 장면이 올라온다",
+  frame: "seg0237_01185s.jpg",
+  desc: "장갑 낀 손이 노란 무쇠 냄비 뚜껑을 들어 올린다. 안에 소스 끼얹은 고기와 다진 파",
+  queries: [
+    ["노란색 뚜껑이 있는 무쇠 냄비", 1, 3],
+    ["냄비 뚜껑을 손으로 들어 올리는 장면", 3, 10],
+    ["완성된 조림 요리를 냄비에서 확인하는 장면", 5, 3],
+  ],
+  miss: {
+    arm: "4B", rank: 10,
+    top1Frame: "seg0115_00575s.jpg", top1Label: "Q2에서 4B의 1위 — seg115 · 9:35",
+    targetCap: "“노란색 도자기 주전자 위에 손으로 뚫린 채로 뚜껑을 들어 올리는 모습이다. 주전자의 안에는 녹색 야채와…”",
+    targetMiss: "“뚜껑을 들어 올리는”은 있지만 냄비를 “주전자”로 오인했다",
+    top1Cap: "“손이 흰색 플라스틱 용기의 뚜껑을 들어 올리는 모습이다.”",
+    top1Hit: "질의의 동작 표현과 거의 축자적으로 겹친다",
+  },
+  read: "검색기는 화면을 직접 비교하지 않고 캡션 임베딩을 비교한다 — 다른 장면의 문장이 질문과 더 직접적으로 맞으면 그 장면이 올라올 수 있다. 이 장면은 3B가 더 잘 맞았다(1 · 3 · 5위).",
+});
+
+/* ---------------------------------------------------------------- 8 Scene05 */
+sceneSlide({
+  n: "05", seg: 316, time: "26:20~26:25",
+  title: "화면에 없는 것을 적으면 그 오인이 검색까지 그대로 전달된다",
+  frame: "seg0316_01580s.jpg",
+  desc: "재봉틀이 놓인 작업대 앞에서 손이 남색 물방울 무늬 천을 잡고 있다. 왼쪽에 가위",
+  queries: [
+    ["물방울 무늬가 있는 남색 천", 181, 22],
+    ["재봉틀 앞에서 천을 손으로 잡고 있는 장면", 148, 9],
+    ["작업대 위에 재봉틀과 가위가 놓인 작업 공간", 175, 34],
+  ],
+  miss: {
+    arm: "3B", rank: 181,
+    bandHead: "④ Q1에서 3B는 내가 고른 장면을 181위로 두고 seg372를 1위로 올렸다 — ⑤ 같은 장면을 두 모델이 어떻게 썼는지 비교한다",
+    top1Frame: "seg0372_01860s.jpg", top1Label: "Q1에서 3B의 1위 — seg372 · 31:00",
+    targetCap: "“여성의 손이 검은색 패턴이 있는 티셔츠를 들어올리고 있습니다. 배경에는 수영장이 보이며, 테이블 위에는 커터가 놓여 있습니다.”",
+    targetMiss: "천을 “티셔츠”로, 작업대를 “수영장”으로 적었다",
+    top1CardLabel: "같은 장면의 4B 캡션 — 세 질문에서 22 · 9 · 34위",
+    top1Cap: "“손이 다크 브루 이브닝 패턴의 천을 들고 있으며, 배경에는 직조기와 커트 툴이 놓인 작업대가 보입니다.”",
+    top1Hit: "천 · 작업대를 쓴 쪽이 세 질문 모두 앞섰다",
+  },
+  read: "필요한 표현이 빠진 것에 더해 화면에 없는 내용이 캡션에 들어가면, 그 잘못된 표현도 임베딩에 함께 들어간다.\n세 질문 모두 148~181위로 밀렸고 두 모델 격차가 가장 큰 장면이다.",
+});
+
+/* ---------------------------------------------------------------- 9 전체표 */
+{
+  const s = slide("숨기지 않는다", "15개 질문 전체 결과");
   const rows = [
-    ["영상", "요리·일상 브이로그 1편 · 32분 52초", "5초씩 395구간"],
-    ["장면", "시간을 5등분해 각 구간의 첫 장면", "프레임만 보고 골랐다"],
-    ["질의", "장면당 3개 — 사물 · 행동 · 맥락", "총 15개"],
-    ["작성 시점", "캡션과 검색 결과를 열기 전", "동결 후 바꾸지 않았다"],
-    ["대조", "같은 프레임 · 같은 노트북 · 같은 프롬프트 · 같은 4bit", "모델만 3B ↔ 4B"],
-    ["검색", "캡션만 사용 (자막 채널 끔)", "후보 395구간 전체"],
+    ["01", "기름이 가득한 프라이팬 안의 새우 튀김", 30, 3, ""],
+    ["", "새우를 기름에 넣어 튀기는 장면", 31, 1, "4B"],
+    ["", "주방에서 튀김 요리를 하는 장면", 31, 25, ""],
+    ["02", "대형 마트 안에 걸린 파란 광고 배너", 1, 15, "3B"],
+    ["", "매장 안에서 사람이 지나가는 장면", 46, 2, ""],
+    ["", "냉장 진열장과 쌓인 상자가 있는 창고형 매장 내부", 18, 1, "4B"],
+    ["03", "나무 도마 위에 놓인 흰색 재료와 식칼", 59, 40, ""],
+    ["", "칼로 재료를 썰고 있는 손", 52, 20, ""],
+    ["", "주방 조리대에서 재료를 손질하는 사람", 34, 170, ""],
+    ["04", "노란색 뚜껑이 있는 무쇠 냄비", 1, 3, "3B"],
+    ["", "냄비 뚜껑을 손으로 들어 올리는 장면", 3, 10, ""],
+    ["", "완성된 조림 요리를 냄비에서 확인하는 장면", 5, 3, ""],
+    ["05", "물방울 무늬가 있는 남색 천", 181, 22, ""],
+    ["", "재봉틀 앞에서 천을 손으로 잡고 있는 장면", 148, 9, ""],
+    ["", "작업대 위에 재봉틀과 가위가 놓인 작업 공간", 175, 34, ""],
   ];
-  let y = 1.78;
-  rows.forEach((r, i) => {
-    if (i % 2 === 0) {
-      s.addShape(p.shapes.RECTANGLE, {
-        x: 0.62, y: y - 0.06, w: 12.1, h: 0.74, fill: { color: "EFEFEA" }, line: { color: "EFEFEA" },
-      });
-    }
-    s.addText(r[0], {
-      x: 0.85, y: y, w: 1.7, h: 0.6, fontSize: 13, bold: true, color: TEAL,
-      valign: "middle", fontFace: F, margin: 0,
-    });
-    s.addText(r[1], {
-      x: 2.7, y: y, w: 6.5, h: 0.6, fontSize: 13.5, color: INK,
-      valign: "middle", fontFace: F, margin: 0,
-    });
-    s.addText(r[2], {
-      x: 9.4, y: y, w: 3.2, h: 0.6, fontSize: 12, color: MUTED,
-      valign: "middle", fontFace: F, margin: 0,
-    });
-    y += 0.74;
-  });
-  s.addText("동결한 것은 장면·질의다. 결과가 재미없어도 바꾸지 않는다는 뜻이고, 실제로 바꾸지 않았다.", {
-    x: 0.85, y: 6.45, w: 11.6, h: 0.4, fontSize: 12.5, italic: true,
-    color: MUTED, fontFace: F, margin: 0,
-  });
-}
-
-/* ---------------------------------------------------------------- 3 */
-{
-  const s = slide("대표 사례 · scene02", "같은 프레임 한 장, 두 모델이 고른 것이 달랐다");
-  s.addImage({ path: frame("seg0079_00395s.jpg"), x: 0.62, y: 1.75, w: 5.7, h: 3.21 });
-  s.addText("6:35~6:40 · 창고형 매장을 위에서 내려다본 화면", {
-    x: 0.62, y: 5.02, w: 5.7, h: 0.3, fontSize: 10.5, color: MUTED, fontFace: F, margin: 0,
-  });
-  s.addText("파란 COSTCO 배너 · 유리문 냉장 진열장 · 적재된 상자와 팔레트", {
-    x: 0.62, y: 5.3, w: 5.7, h: 0.5, fontSize: 11.5, color: INK,
-    fontFace: F, lineSpacing: 17, margin: 0,
-  });
-  armCard(s, "3B", 6.65, 1.75, 6.05, 1.85,
-    "화면의 배너 문구를 중심으로 —\n“‘COSTCO’와 함께 한국어로 된 메시지”, “‘Join Now!’”, 트럭 이미지",
-    { tag: "배너 문구를 골랐다" });
-  armCard(s, "4B", 6.65, 3.78, 6.05, 1.55,
-    "냉장 진열대를 중심으로 —\n“코스트코 내부의 냉장고 진열대와 주변 상품들”",
-    { tag: "냉장 진열대를 골랐다" });
-  s.addText("어느 쪽도 화면을 잘못 본 것이 아니다.\n같은 화면에서 무엇을 남길지가 갈렸을 뿐이다.", {
-    x: 6.65, y: 5.5, w: 6.05, h: 0.7, fontSize: 13, bold: true, color: INK,
-    fontFace: F, lineSpacing: 21, margin: 0,
-  });
-}
-
-/* ---------------------------------------------------------------- 4 */
-{
-  const s = slide("대표 사례 · scene02", "그 선택이 1위를 뒤집는다");
-  const head = [
-    ["같은 장면을 겨냥한 검색어", 0.85, 6.2],
-    ["3B", 7.35, 1.5],
-    ["4B", 9.05, 1.5],
-    ["그 arm이 1위로 올린 장면", 10.6, 2.1],
-  ];
+  const head = [["장면", 0.75, 0.75, "left"], ["질문", 1.6, 6.05, "left"],
+                ["3B 순위", 7.75, 1.25, "center"], ["4B 순위", 9.05, 1.25, "center"],
+                ["더 높은 쪽", 10.35, 1.25, "center"], ["1위 적중", 11.6, 1.15, "center"]];
   head.forEach((h) => {
     s.addText(h[0], {
-      x: h[1], y: 1.78, w: h[2], h: 0.32, fontSize: 11, bold: true, color: MUTED,
-      align: h[0] === "3B" || h[0] === "4B" ? "center" : "left", fontFace: F, margin: 0,
+      x: h[1], y: 1.52, w: h[2], h: 0.26, fontSize: 10, bold: true, color: MUTED,
+      align: h[3], fontFace: F, margin: 0,
     });
   });
-  const qs = [
-    ["대형 마트 안에 걸린\n파란 광고 배너", 1, 15, "3B", "정답 장면", "seg 90 · 다른 매장"],
-    ["냉장 진열장과 쌓인 상자가 있는\n창고형 매장 내부", 18, 1, "4B", "seg 80 · 옆 구간", "정답 장면"],
+  let y = 1.84, band = false;
+  rows.forEach((r) => {
+    if (r[0]) band = !band;
+    if (band) {
+      s.addShape(p.shapes.RECTANGLE, {
+        x: 0.62, y: y, w: 12.1, h: 0.31, fill: { color: BAND }, line: { color: BAND },
+      });
+    }
+    if (r[0]) {
+      s.addText(r[0], {
+        x: 0.75, y: y, w: 0.75, h: 0.31, fontSize: 11, bold: true, color: TEAL,
+        valign: "middle", fontFace: MONO, margin: 0,
+      });
+    }
+    s.addText(r[1], {
+      x: 1.6, y: y, w: 6.05, h: 0.31, fontSize: 10.5, color: INK,
+      valign: "middle", fontFace: F, margin: 0,
+    });
+    const better = r[2] < r[3] ? "3B" : (r[3] < r[2] ? "4B" : "");
+    [[r[2], TEAL, "3B"], [r[3], AMBER, "4B"]].forEach((c, k) => {
+      const win = better === c[2];
+      s.addText(String(c[0]), {
+        x: 7.75 + k * 1.3, y: y, w: 1.25, h: 0.31, fontSize: win ? 12 : 10.5,
+        bold: win, color: win ? c[1] : MUTED, align: "center", valign: "middle",
+        fontFace: MONO, margin: 0,
+      });
+    });
+    s.addText(better, {
+      x: 10.35, y: y, w: 1.25, h: 0.31, fontSize: 10.5, bold: true,
+      color: better === "3B" ? TEAL : AMBER, align: "center", valign: "middle",
+      fontFace: F, margin: 0,
+    });
+    if (r[4]) {
+      card(s, 11.87, y + 0.04, 0.6, 0.23, r[4] === "3B" ? TEAL : AMBER);
+      s.addText(r[4], {
+        x: 11.87, y: y + 0.04, w: 0.6, h: 0.23, fontSize: 9, bold: true, color: WHITE,
+        align: "center", valign: "middle", fontFace: F, margin: 0,
+      });
+    } else {
+      s.addText("—", {
+        x: 11.6, y: y, w: 1.15, h: 0.31, fontSize: 10.5, color: "C3C3BD",
+        align: "center", valign: "middle", fontFace: F, margin: 0,
+      });
+    }
+    y += 0.31;
+  });
+  card(s, 0.62, 6.58, 12.1, 0.4, TEAL_BG);
+  s.addText("내가 고른 장면이 1위였던 질문 — 3B 2건 · 4B 2건 (15개 중). 좋은 사례만 고르지 않았다.", {
+    x: 0.9, y: 6.58, w: 11.6, h: 0.4, fontSize: 12, bold: true, color: INK,
+    valign: "middle", fontFace: F, margin: 0,
+  });
+}
+
+/* ---------------------------------------------------------------- 10 숫자 */
+{
+  const s = slide("숫자", "누가 더 잘 찾았나");
+  card(s, 0.62, 1.5, 12.1, 1.5, WHITE, LINE);
+  s.addText("① 내가 고른 장면이 1위였던 질문", {
+    x: 0.9, y: 1.66, w: 5.6, h: 0.3, fontSize: 14, bold: true, color: INK, fontFace: F, margin: 0,
+  });
+  s.addText("Top-1만 보면 두 모델의 차이가 없다", {
+    x: 0.9, y: 2.02, w: 5.6, h: 0.6, fontSize: 13, color: MUTED, fontFace: F, margin: 0,
+  });
+  [[TEAL, "3B", 6.6], [AMBER, "4B", 9.6]].forEach((a) => {
+    s.addText([{ text: "2", options: { fontSize: 38, bold: true, color: a[0] } },
+               { text: " / 15", options: { fontSize: 16, color: MUTED } }],
+      { x: a[2], y: 1.66, w: 2.6, h: 0.92, align: "center", valign: "middle",
+        fontFace: MONO, margin: 0 });
+    s.addText(a[1], { x: a[2], y: 2.52, w: 2.6, h: 0.26, fontSize: 11, bold: true,
+                      color: a[0], align: "center", fontFace: F, margin: 0 });
+  });
+  const rows = [
+    ["② 내가 고른 장면의 순위가 더 높았던 질문", "4 / 15", "11 / 15"],
+    ["③ 내가 고른 장면의 순위 중앙값", "31위", "10위"],
+    ["④ 평균 캡션 길이", "128.5자", "76.4자"],
   ];
-  let y = 2.25;
-  qs.forEach((q) => {
+  let y = 3.25;
+  rows.forEach((r) => {
     s.addShape(p.shapes.RECTANGLE, {
-      x: 0.62, y: y, w: 12.1, h: 1.42, fill: { color: WHITE }, line: { color: LINE },
+      x: 0.62, y: y, w: 12.1, h: 0.72, fill: { color: BAND }, line: { color: BAND },
     });
-    s.addText(q[0], {
-      x: 0.85, y: y + 0.1, w: 6.2, h: 1.22, fontSize: 14, color: INK,
-      valign: "middle", fontFace: F, lineSpacing: 21, margin: 0,
-    });
-    rank(s, 7.35, y + 0.4, 1.5, q[1], "3B", q[3] === "3B");
-    rank(s, 9.05, y + 0.4, 1.5, q[2], "4B", q[3] === "4B");
-    s.addText(
-      [{ text: "3B → " + q[4], options: { color: TEAL } },
-       { text: "\n4B → " + q[5], options: { color: AMBER } }],
-      { x: 10.6, y: y + 0.1, w: 2.1, h: 1.22, fontSize: 11, valign: "middle",
-        fontFace: F, lineSpacing: 17, margin: 0 }
-    );
-    y += 1.6;
+    s.addText(r[0], { x: 0.9, y: y, w: 5.6, h: 0.72, fontSize: 13, color: INK,
+                      valign: "middle", fontFace: F, margin: 0 });
+    s.addText(r[1], { x: 6.6, y: y, w: 2.6, h: 0.72, fontSize: 16, bold: true, color: TEAL,
+                      align: "center", valign: "middle", fontFace: MONO, margin: 0 });
+    s.addText(r[2], { x: 9.6, y: y, w: 2.6, h: 0.72, fontSize: 16, bold: true, color: AMBER,
+                      align: "center", valign: "middle", fontFace: MONO, margin: 0 });
+    y += 0.82;
   });
-  s.addText("배너를 묻는 질의는 3B가, 진열대를 묻는 질의는 4B가 정답을 1위로 올렸다.\n모델이 화면을 맞게 보느냐보다, 같은 화면에서 무엇을 캡션에 남겼는지가 순위에 직접 전달됐다.", {
-    x: 0.85, y: 5.62, w: 11.6, h: 0.8, fontSize: 13.5, bold: true, color: INK,
-    fontFace: F, lineSpacing: 22, margin: 0,
-  });
-  s.addText("부수 관측 — 3B가 배너 글자를 그대로 옮겨 적은 것은 프롬프트가 금지한 동작이다. 결과적으로 텍스트 질의에 유리했지만 품질 우위로 읽지 않는다.", {
-    x: 0.85, y: 6.5, w: 11.6, h: 0.4, fontSize: 11.5, italic: true, color: MUTED,
-    fontFace: F, margin: 0,
+  card(s, 0.62, 5.8, 12.1, 1.05, TEAL_BG);
+  s.addText("Top-1 적중은 두 모델이 같다. 따라서 이 사례만으로 모델 우열을 말할 수 없다.\n순위는 15개 중 11개에서 4B 쪽이 높았지만, 한 영상 15개 질문의 사례 분석이므로 일반 성능 추정치가 아니다.", {
+    x: 0.9, y: 5.92, w: 11.6, h: 0.82, fontSize: 12.5, bold: true, color: INK,
+    fontFace: F, lineSpacing: 20, valign: "top", margin: 0,
   });
 }
 
-/* ---------------------------------------------------------------- 5 */
+/* ---------------------------------------------------------------- 11 경로 */
 {
-  const s = slide("scene01", "정답이 아니라 다른 장면이 1위가 됐을 때");
-  s.addText("정답 장면 · 0:00~0:05", {
-    x: 0.62, y: 1.72, w: 5.9, h: 0.3, fontSize: 11, bold: true, color: INK, fontFace: F, margin: 0,
-  });
-  s.addImage({ path: frame("seg0000_00000s.jpg"), x: 0.62, y: 2.05, w: 5.9, h: 3.32 });
-  s.addText("3B가 이 장면에 쓴 캡션 — “노란색 그릇에 담긴 노란색 소스가 보입니다…”\n팬 · 기름 · 새우 · 튀기다 가 하나도 없다", {
-    x: 0.62, y: 5.45, w: 5.9, h: 0.75, fontSize: 11.5, color: TEAL,
-    fontFace: F, lineSpacing: 18, margin: 0,
-  });
-  s.addText("3B가 1위로 올린 장면 · 15:40", {
-    x: 6.82, y: 1.72, w: 5.9, h: 0.3, fontSize: 11, bold: true, color: INK, fontFace: F, margin: 0,
-  });
-  s.addImage({ path: frame("seg0188_00940s.jpg"), x: 6.82, y: 2.05, w: 5.9, h: 3.32 });
-  s.addText("“두 개의 새우가 보입니다 … ‘이대로 기름에 튀기듯 구워주면 끝!’”\n검색어의 “새우” · “기름에 튀기”와 직접 겹친다", {
-    x: 6.82, y: 5.45, w: 5.9, h: 0.75, fontSize: 11.5, color: MUTED,
-    fontFace: F, lineSpacing: 18, margin: 0,
-  });
-  s.addText("정답을 못 찾은 이유를 “검색 실패”로 끝내지 않고, 정답 캡션에서 무엇이 빠졌고 오답 1위 캡션에는 무엇이 있었는지까지 되짚을 수 있었다.", {
-    x: 0.62, y: 6.32, w: 12.1, h: 0.5, fontSize: 13, bold: true, color: INK,
-    fontFace: F, lineSpacing: 20, margin: 0,
-  });
-}
-
-/* ---------------------------------------------------------------- 6 */
-{
-  const s = slide("scene05", "화면에 없는 것을 적으면 정답이 밀려난다");
-  s.addImage({ path: frame("seg0316_01580s.jpg"), x: 0.62, y: 1.75, w: 5.7, h: 3.21 });
-  s.addText("26:20~26:25 · 재봉틀 작업대에서 손이 남색 물방울 무늬 천을 잡고 있다", {
-    x: 0.62, y: 5.05, w: 5.7, h: 0.5, fontSize: 10.5, color: MUTED,
-    fontFace: F, lineSpacing: 16, margin: 0,
-  });
-  armCard(s, "3B", 6.65, 1.75, 6.05, 1.6,
-    "“여성의 손이 검은색 패턴이 있는 티셔츠를 들어올리고 있습니다. 배경에는 수영장이 보이며…”",
-    { tag: "세 질의 모두 148~181위" });
-  armCard(s, "4B", 6.65, 3.5, 6.05, 1.6,
-    "“손이 다크 브루 이브닝 패턴의 천을 들고 있으며, 배경에는 직조기와 커트 툴이 놓인 작업대가 보입니다”",
-    { tag: "9 · 22 · 34위" });
-  s.addText("천을 “티셔츠”로, 작업대를 “수영장”으로 적으니 질의의 천 · 재봉틀 · 작업대와 겹치는 표현이 남지 않았다.", {
-    x: 0.62, y: 5.72, w: 12.1, h: 0.4, fontSize: 13.5, bold: true, color: INK,
-    fontFace: F, margin: 0,
-  });
-  s.addText("4B도 완벽하지 않다 — “다크 브루 이브닝 패턴”은 의미가 불명한 문구이고, 1위도 아니었다(유사한 재봉 장면이 영상에 여러 개 있다).", {
-    x: 0.62, y: 6.2, w: 12.1, h: 0.4, fontSize: 12, color: MUTED,
-    fontFace: F, margin: 0,
-  });
-}
-
-/* ---------------------------------------------------------------- 7 */
-{
-  const s = slide("정리", "타율 차이는 어디서 나는가");
+  const s = slide("정리", "검색 순위 차이가 생기는 경로");
   const items = [
-    ["정답 정보를 생략하거나 잘못 부르면", "그 이름을 가진 다른 장면이 1위가 된다", "s01 · s04 · s05"],
-    ["화면에 없는 것을 적으면", "정답과 겹치는 표현의 비중이 낮아진다", "s05 “수영장”"],
-    ["같은 프레임에서 다른 요소를 고르면", "질의가 무엇을 묻느냐에 따라 1위가 뒤집힌다", "s02"],
-    ["다른 장면 캡션이 질의 표현과 축자로 겹치면", "정답을 눌러 버린다", "s04 뚜껑 질의"],
-    ["짧아서 배경어가 없으면", "맥락을 묻는 질의에 불리하다", "s03 4B 170위"],
-    ["길다고 유리하지도 않다", "오인이 섞이면 더 나쁘다", "s05 3B 181위"],
+    ["①", "핵심 사물·행동 생략", "정답 장면에 있어도 캡션에 안 쓰면 찾기 어렵다", "Scene 01"],
+    ["②", "같은 장면에서 다른 요소 선택", "3B는 배너, 4B는 진열대 — 질문에 따라 1위가 뒤집힌다", "Scene 02"],
+    ["③", "배경·맥락 정보 부족", "짧은 캡션이 사물은 맞혀도 장소·배경 질문에서 밀린다", "Scene 03"],
+    ["④", "다른 장면의 더 직접적인 표현", "정답보다 다른 장면 캡션이 질문과 축자로 겹친다", "Scene 01 · 04"],
+    ["⑤", "잘못 본 내용이 캡션에 들어감", "없는 정보가 임베딩에 함께 들어가 정답을 밀어낸다", "Scene 05"],
   ];
-  let y = 1.75;
+  let y = 1.52;
   items.forEach((it) => {
-    s.addShape(p.shapes.RECTANGLE, {
-      x: 0.62, y: y, w: 12.1, h: 0.7, fill: { color: WHITE }, line: { color: LINE },
-    });
+    card(s, 0.62, y, 12.1, 0.85, WHITE, LINE);
     s.addText(it[0], {
-      x: 0.88, y: y, w: 4.9, h: 0.7, fontSize: 13, bold: true, color: INK,
+      x: 0.9, y: y, w: 0.55, h: 0.85, fontSize: 18, bold: true, color: TEAL,
       valign: "middle", fontFace: F, margin: 0,
     });
     s.addText(it[1], {
-      x: 5.9, y: y, w: 5.1, h: 0.7, fontSize: 12.5, color: MUTED,
+      x: 1.55, y: y, w: 4.15, h: 0.85, fontSize: 13, bold: true, color: INK,
       valign: "middle", fontFace: F, margin: 0,
     });
     s.addText(it[2], {
-      x: 11.1, y: y, w: 1.5, h: 0.7, fontSize: 10.5, color: TEAL,
-      align: "right", valign: "middle", fontFace: F, margin: 0,
-    });
-    y += 0.8;
-  });
-  s.addText("전부 “~했을 가능성이 있다” 수준이다. 인과를 확정하지 않는다.", {
-    x: 0.88, y: 6.62, w: 11.6, h: 0.35, fontSize: 12, italic: true, color: MUTED,
-    fontFace: F, margin: 0,
-  });
-}
-
-/* ---------------------------------------------------------------- 8 */
-{
-  const s = slide("숫자", "보여주되 과장하지 않는다");
-  s.addShape(p.shapes.RECTANGLE, {
-    x: 0.62, y: 1.75, w: 12.1, h: 1.5, fill: { color: WHITE }, line: { color: LINE },
-  });
-  s.addText("Top-1 적중", {
-    x: 0.9, y: 1.95, w: 3.4, h: 0.35, fontSize: 13, bold: true, color: INK, fontFace: F, margin: 0,
-  });
-  s.addText("먼저 볼 것 — 1위를 맞힌 횟수는 두 모델이 같다", {
-    x: 0.9, y: 2.35, w: 5.2, h: 0.6, fontSize: 12.5, color: MUTED,
-    fontFace: F, lineSpacing: 18, margin: 0,
-  });
-  s.addText([{ text: "2", options: { fontSize: 40, bold: true, color: TEAL } },
-             { text: " / 15", options: { fontSize: 16, color: MUTED } }],
-    { x: 6.4, y: 2.0, w: 2.6, h: 1.0, align: "center", valign: "middle", fontFace: MONO, margin: 0 });
-  s.addText("3B", { x: 6.4, y: 2.85, w: 2.6, h: 0.3, fontSize: 11, bold: true,
-                    color: TEAL, align: "center", fontFace: F, margin: 0 });
-  s.addText([{ text: "2", options: { fontSize: 40, bold: true, color: AMBER } },
-             { text: " / 15", options: { fontSize: 16, color: MUTED } }],
-    { x: 9.4, y: 2.0, w: 2.6, h: 1.0, align: "center", valign: "middle", fontFace: MONO, margin: 0 });
-  s.addText("4B", { x: 9.4, y: 2.85, w: 2.6, h: 0.3, fontSize: 11, bold: true,
-                    color: AMBER, align: "center", fontFace: F, margin: 0 });
-
-  const rows = [
-    ["정답 순위가 더 높았던 질의", "4 / 15", "11 / 15"],
-    ["정답 순위 중위수", "31위", "10위"],
-    ["평균 캡션 길이", "128.5자", "76.4자"],
-  ];
-  let y = 3.5;
-  rows.forEach((r) => {
-    s.addShape(p.shapes.RECTANGLE, {
-      x: 0.62, y: y, w: 12.1, h: 0.72, fill: { color: "EFEFEA" }, line: { color: "EFEFEA" },
-    });
-    s.addText(r[0], {
-      x: 0.9, y: y, w: 5.2, h: 0.72, fontSize: 13, color: INK,
+      x: 5.85, y: y, w: 5.35, h: 0.85, fontSize: 12, color: MUTED,
       valign: "middle", fontFace: F, margin: 0,
     });
-    s.addText(r[1], {
-      x: 6.4, y: y, w: 2.6, h: 0.72, fontSize: 16, bold: true, color: TEAL,
-      align: "center", valign: "middle", fontFace: MONO, margin: 0,
+    s.addText(it[3], {
+      x: 11.3, y: y, w: 1.25, h: 0.85, fontSize: 10.5, bold: true, color: TEAL,
+      align: "right", valign: "middle", fontFace: F, margin: 0,
     });
-    s.addText(r[2], {
-      x: 9.4, y: y, w: 2.6, h: 0.72, fontSize: 16, bold: true, color: AMBER,
-      align: "center", valign: "middle", fontFace: MONO, margin: 0,
-    });
-    y += 0.82;
+    y += 0.95;
   });
-  s.addText("Top-1만 보면 둘 다 2/15로 같다. 순위를 비교하면 15개 중 11개에서 4B 쪽이 더 높았고 중위수도 31위 대 10위였다.\n상위 1건만 세면 보이지 않는 차이가 있다는 관측이고, 어느 모델이 낫다는 결론이 아니다.", {
-    x: 0.9, y: 6.15, w: 11.6, h: 0.8, fontSize: 12.5, color: INK,
-    fontFace: F, lineSpacing: 20, margin: 0,
+  card(s, 0.62, 6.35, 12.1, 0.62, TEAL_BG);
+  s.addText("장면 5개에서 각각 다른 실패 경로가 나왔다. 검색 성능은 “화면을 봤는가”뿐 아니라 “화면에서 무엇을 문장으로 남겼는가”의 영향을 받는다.", {
+    x: 0.9, y: 6.35, w: 11.6, h: 0.62, fontSize: 12, bold: true, color: INK,
+    valign: "middle", fontFace: F, margin: 0,
   });
 }
 
-/* ---------------------------------------------------------------- 9 */
+/* ---------------------------------------------------------------- 12 Q&A */
 {
-  const s = slide("경계", "이 자료로 말할 수 있는 것 / 없는 것");
-  s.addShape(p.shapes.ROUNDED_RECTANGLE, {
-    x: 0.62, y: 1.8, w: 5.95, h: 2.95, fill: { color: TEAL_BG }, rectRadius: 0.06,
-    line: { color: TEAL_BG },
-  });
-  s.addText("말할 수 있다", {
-    x: 0.95, y: 2.05, w: 5.3, h: 0.4, fontSize: 15, bold: true, color: TEAL, fontFace: F, margin: 0,
-  });
-  s.addText([
-    { text: "캡션이 무엇을 골라 묘사하느냐가 검색 순위에 전달된다", options: { bullet: true, breakLine: true } },
-    { text: "정답을 못 찾았을 때 원인을 캡션 수준까지 되짚을 수 있다", options: { bullet: true, breakLine: true } },
-    { text: "한 모델이 항상 유리하지는 않다", options: { bullet: true } },
-  ], {
-    x: 0.95, y: 2.6, w: 5.3, h: 2.4, fontSize: 13.5, color: INK, valign: "top",
-    fontFace: F, lineSpacing: 22, paraSpaceAfter: 10, margin: 0,
-  });
-
-  s.addShape(p.shapes.ROUNDED_RECTANGLE, {
-    x: 6.77, y: 1.8, w: 5.95, h: 2.95, fill: { color: "EDEAE6" }, rectRadius: 0.06,
-    line: { color: "EDEAE6" },
-  });
-  s.addText("말할 수 없다", {
-    x: 7.1, y: 2.05, w: 5.3, h: 0.4, fontSize: 15, bold: true, color: "8A5A2B", fontFace: F, margin: 0,
-  });
-  s.addText([
-    { text: "모델 우열", options: { bullet: true, breakLine: true } },
-    { text: "성능 추정 · 벤치마크", options: { bullet: true, breakLine: true } },
-    { text: "통계적 유의성", options: { bullet: true, breakLine: true } },
-    { text: "4B 채택 근거", options: { bullet: true } },
-  ], {
-    x: 7.1, y: 2.6, w: 5.3, h: 2.4, fontSize: 13.5, color: INK, valign: "top",
-    fontFace: F, lineSpacing: 22, paraSpaceAfter: 10, margin: 0,
-  });
-  s.addText("영상 1편 · 장면 5개 · 질의 15개", {
-    x: 7.1, y: 4.32, w: 5.3, h: 0.3, fontSize: 11.5, italic: true, color: MUTED, fontFace: F, margin: 0,
-  });
-
-  s.addText("한계 하나 더 — 두 모델을 같은 조건에서 새로 생성해 맞췄지만, 두 실행의 저장소 상태가 완전히 같았다는 것까지는 입증하지 못했다(생성 코드·설정 경로에는 차이가 없음을 확인했다).", {
-    x: 0.62, y: 5.15, w: 12.1, h: 0.7, fontSize: 12.5, color: MUTED,
-    fontFace: F, lineSpacing: 20, margin: 0,
+  const s = slide("답", "튜터 질문에 대한 답");
+  const qa = [
+    ["같은 질문지를 넣었을 때 내가 고른 장면이 나왔나?",
+     "일부는 1위로 나왔지만, 15개 중 Top-1 적중은 두 모델 모두 2건이었다."],
+    ["모델별 차이가 있었나?",
+     "내가 고른 장면의 순위는 15개 중 11개에서 4B가 더 높았다. 다만 이 작은 사례만으로 일반적인 우열을 말할 수는 없다."],
+    ["다른 장면이 1위가 됐을 때 그 장면은 왜 올라왔나?",
+     "정답 캡션에서 필요한 정보가 빠지거나, 다른 장면 캡션이 질문과 더 직접적인 표현을 가진 경우가 있었다."],
+    ["그래서 무엇을 확인했나?",
+     "캡션 모델이 화면에서 어떤 정보를 골라 문장으로 남기는지가 실제 검색 순위까지 전달된다."],
+  ];
+  let y = 1.52;
+  qa.forEach((r, i) => {
+    const last = i === qa.length - 1;
+    card(s, 0.62, y, 12.1, 1.24, last ? TEAL_BG : WHITE, last ? TEAL_BG : LINE);
+    s.addText("Q", {
+      x: 0.9, y: y + 0.13, w: 0.4, h: 0.3, fontSize: 13, bold: true, color: TEAL,
+      fontFace: MONO, margin: 0,
+    });
+    s.addText(r[0], {
+      x: 1.35, y: y + 0.11, w: 11.1, h: 0.34, fontSize: 14, bold: true, color: INK,
+      fontFace: F, margin: 0,
+    });
+    s.addText("A", {
+      x: 0.9, y: y + 0.57, w: 0.4, h: 0.3, fontSize: 13, bold: true, color: MUTED,
+      fontFace: MONO, margin: 0,
+    });
+    s.addText(r[1], {
+      x: 1.35, y: y + 0.53, w: 11.1, h: 0.6, fontSize: 12.5,
+      color: INK, bold: last,
+      fontFace: F, lineSpacing: 18, valign: "top", margin: 0,
+    });
+    y += 1.34;
   });
 }
 
-/* ---------------------------------------------------------------- 10 */
+/* ---------------------------------------------------------------- 13 경계 */
+{
+  const s = slide("경계", "말할 수 있는 것 / 말할 수 없는 것");
+  card(s, 0.62, 1.52, 5.95, 3.35, TEAL_BG);
+  s.addText("말할 수 있다", {
+    x: 0.95, y: 1.74, w: 5.3, h: 0.36, fontSize: 15, bold: true, color: TEAL, fontFace: F, margin: 0,
+  });
+  s.addText([
+    { text: "캡션의 정보 선택이 검색 순위에 전달된다", options: { bullet: true, breakLine: true } },
+    { text: "정답을 못 찾았을 때 원인을 캡션 수준까지 추적할 수 있다", options: { bullet: true, breakLine: true } },
+    { text: "한 모델이 모든 질문에서 항상 유리한 것은 아니다", options: { bullet: true, breakLine: true } },
+    { text: "실패 경로가 장면마다 달랐다", options: { bullet: true } },
+  ], {
+    x: 0.95, y: 2.22, w: 5.3, h: 2.5, fontSize: 13, color: INK, valign: "top",
+    fontFace: F, lineSpacing: 21, paraSpaceAfter: 9, margin: 0,
+  });
+  card(s, 6.77, 1.52, 5.95, 3.35, "EDEAE6");
+  s.addText("말할 수 없다", {
+    x: 7.1, y: 1.74, w: 5.3, h: 0.36, fontSize: 15, bold: true, color: "8A5A2B", fontFace: F, margin: 0,
+  });
+  s.addText([
+    { text: "4B가 일반적으로 더 좋다", options: { bullet: true, breakLine: true } },
+    { text: "3B가 일반적으로 더 좋다", options: { bullet: true, breakLine: true } },
+    { text: "15개 질의로 성능을 추정할 수 있다", options: { bullet: true, breakLine: true } },
+    { text: "이 결과만으로 모델을 교체해야 한다", options: { bullet: true } },
+  ], {
+    x: 7.1, y: 2.22, w: 5.3, h: 2.5, fontSize: 13, color: INK, valign: "top",
+    fontFace: F, lineSpacing: 21, paraSpaceAfter: 9, margin: 0,
+  });
+  s.addText("영상 1편 · 장면 5개 · 질의 15개의 정성 사례 연구다.", {
+    x: 7.1, y: 4.4, w: 5.3, h: 0.3, fontSize: 11.5, italic: true, color: MUTED,
+    fontFace: F, margin: 0,
+  });
+  s.addText("한계 하나 더 — 두 모델을 같은 조건에서 새로 생성해 맞췄지만, 두 실행의 저장소 상태가 완전히 같았다는 것까지는\n입증하지 못했다(생성 코드·설정 경로에는 차이가 없음을 확인했다).", {
+    x: 0.62, y: 5.2, w: 12.1, h: 0.7, fontSize: 12, color: MUTED,
+    fontFace: F, lineSpacing: 19, valign: "top", margin: 0,
+  });
+}
+
+/* ---------------------------------------------------------------- 14 결론 */
 {
   const s = darkSlide();
   s.addText("결론", {
-    x: 0.9, y: 1.6, w: 11, h: 0.3, fontSize: 12, bold: true,
+    x: 0.9, y: 1.5, w: 11, h: 0.3, fontSize: 12, bold: true,
     color: "8FA9AE", charSpacing: 2, fontFace: F, margin: 0,
   });
-  s.addText("캡션이 무엇을 적느냐는 검색 순위까지 전달된다.\n그러나 이 사례로 모델 우열을 말할 수는 없다.", {
-    x: 0.88, y: 2.05, w: 11.4, h: 1.3, fontSize: 26, bold: true,
+  s.addText("캡션 모델의 차이는 문장 표현에서 끝나지 않고\n실제 검색 순위까지 전달된다.", {
+    x: 0.88, y: 1.95, w: 11.4, h: 1.3, fontSize: 26, bold: true,
     color: WHITE, fontFace: F, lineSpacing: 38, margin: 0,
   });
-  const box = [
-    ["배포", "Qwen2.5-VL-3B 유지"],
-    ["Qwen3-VL-4B", "후보이며 채택 아님"],
-    ["과학적 우열", "미해결"],
-  ];
+  const box = [["배포", "Qwen2.5-VL-3B 유지"], ["Qwen3-VL-4B", "후보이며 채택 아님"],
+               ["과학적 우열", "미해결"]];
   let x = 0.9;
   box.forEach((b) => {
     s.addShape(p.shapes.ROUNDED_RECTANGLE, {
-      x: x, y: 3.75, w: 3.83, h: 1.25, fill: { color: "1B4650" }, rectRadius: 0.06,
+      x: x, y: 3.6, w: 3.83, h: 1.2, fill: { color: "1B4650" }, rectRadius: 0.06,
       line: { color: "2C6E75" },
     });
-    s.addText(b[0], {
-      x: x + 0.3, y: 3.95, w: 3.3, h: 0.3, fontSize: 11, bold: true,
-      color: "8FA9AE", fontFace: F, margin: 0,
-    });
-    s.addText(b[1], {
-      x: x + 0.3, y: 4.28, w: 3.3, h: 0.5, fontSize: 15, bold: true,
-      color: WHITE, fontFace: F, margin: 0,
-    });
+    s.addText(b[0], { x: x + 0.3, y: 3.78, w: 3.3, h: 0.3, fontSize: 11, bold: true,
+                      color: "8FA9AE", fontFace: F, margin: 0 });
+    s.addText(b[1], { x: x + 0.3, y: 4.1, w: 3.3, h: 0.5, fontSize: 15, bold: true,
+                      color: WHITE, fontFace: F, margin: 0 });
     x += 4.02;
   });
-  s.addText("이 케이스 스터디는 그 판단을 바꾸지 않는다.", {
-    x: 0.92, y: 5.35, w: 11, h: 0.4, fontSize: 14, color: "C9D8DA", fontFace: F, margin: 0,
+  s.addShape(p.shapes.LINE, {
+    x: 0.92, y: 5.2, w: 3.2, h: 0, line: { color: "3E5F68", width: 2 },
   });
-  s.addText("상세  docs/finalization/CAPTION_RETRIEVAL_CASESTUDY_RESULTS_2026-08-25.md\n15질의 전체표  docs/finalization/CAPTION_RETRIEVAL_CASESTUDY_TABLE.md", {
-    x: 0.9, y: 5.95, w: 11, h: 0.7, fontSize: 11, color: "6E8B92",
-    fontFace: MONO, lineSpacing: 18, margin: 0,
+  s.addText("이번 분석의 가장 중요한 결과는 “어느 모델이 이겼는가”보다,\n왜 검색 결과가 달라지는지를 장면 · 캡션 · 오답 1위까지 추적해 설명할 수 있게 된 것이다.", {
+    x: 0.9, y: 5.45, w: 11.4, h: 0.9, fontSize: 14, color: "C9D8DA",
+    fontFace: F, lineSpacing: 24, valign: "top", margin: 0,
+  });
+  s.addText("상세  docs/finalization/CAPTION_RETRIEVAL_CASESTUDY_RESULTS_2026-08-25.md", {
+    x: 0.9, y: 6.5, w: 11, h: 0.3, fontSize: 10.5, color: "6E8B92", fontFace: MONO, margin: 0,
   });
 }
 
 fs.mkdirSync(OUTDIR, { recursive: true });
-p.writeFile({ fileName: OUT }).then(() => console.log("wrote " + OUT));
+p.writeFile({ fileName: OUT }).then(() => console.log("wrote " + OUT + "  (" + page + "장)"));
