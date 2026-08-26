@@ -100,15 +100,16 @@ function card(s, x, y, w, h, fill, line) {
 }
 
 /* 캡션 카드 — 라벨 + 원문 + 한 줄 진단 */
-function capCard(s, x, y, w, h, label, labelColor, body, diag, diagColor) {
+function capCard(s, x, y, w, h, label, labelColor, body, diag, diagColor, fs) {
   card(s, x, y, w, h, WHITE, LINE);
   s.addText(label, {
     x: x + 0.18, y: y + 0.08, w: w - 0.36, h: 0.26, fontSize: 10, bold: true,
     color: labelColor, fontFace: F, margin: 0,
   });
   s.addText(body, {
-    x: x + 0.18, y: y + 0.34, w: w - 0.36, h: h - 0.78, fontSize: 10.5, color: INK,
-    fontFace: F, lineSpacing: 15, valign: "top", margin: 0,
+    // 카드 3장(3B·4B·1위 장면) 배치에서는 폭이 좁아 본문을 줄인다
+    x: x + 0.18, y: y + 0.34, w: w - 0.36, h: h - 0.78, fontSize: fs || 10.5, color: INK,
+    fontFace: F, lineSpacing: (fs || 10.5) + 4.5, valign: "top", margin: 0,
   });
   s.addText(diag, {
     x: x + 0.18, y: y + h - 0.42, w: w - 0.36, h: 0.34, fontSize: 10, bold: true,
@@ -189,7 +190,9 @@ function sceneSlide(d) {
 
   /* ④⑤ 아래 띠 — 대표 사례 하나만 크게 */
   s.addShape(p.shapes.RECTANGLE, {
-    x: 0.62, y: 4.6, w: 12.1, h: 1.74, fill: { color: BAND }, line: { color: BAND },
+    x: 0.62, y: 4.6, w: 12.1,
+    h: (d.miss && d.miss.altCap) ? 1.9 : 1.74,
+    fill: { color: BAND }, line: { color: BAND },
   });
   if (d.compare) {
     s.addText(d.compare.head, {
@@ -210,19 +213,35 @@ function sceneSlide(d) {
       x: 0.85, y: 4.7, w: 11.6, h: 0.28, fontSize: 10.5, bold: true, color: INK,
       fontFace: F, margin: 0,
     });
-    s.addImage({ path: frame(m.top1Frame), x: 0.85, y: 5.02, w: 1.96, h: 1.1 });
-    s.addText(m.top1Label, {
-      x: 0.85, y: 6.12, w: 2.2, h: 0.2, fontSize: 8.5, color: MUTED, fontFace: F, margin: 0,
-    });
-    capCard(s, 3.0, 5.02, 4.72, 1.2, "⑤ 내가 고른 장면의 " + m.arm + " 캡션", col,
-            m.targetCap, "✕  " + m.targetMiss, col);
-    capCard(s, 7.9, 5.02, 4.6, 1.2, m.top1CardLabel || "1위가 된 다른 장면의 캡션", MUTED,
-            m.top1Cap, "✓  " + m.top1Hit, INK);
+    if (m.altCap) {
+      /* 두 모델이 **같은 장면**을 뭐라고 썼는지 나란히 보여야 한다 — 카드 3장.
+       * 그래서 이 분기만 띠·카드가 조금 높고 본문이 9.5pt다. */
+      s.addImage({ path: frame(m.top1Frame), x: 0.85, y: 5.02, w: 1.6, h: 0.9 });
+      s.addText(m.top1Label, {
+        x: 0.85, y: 5.94, w: 2.0, h: 0.2, fontSize: 8, color: MUTED, fontFace: F, margin: 0,
+      });
+      capCard(s, 2.62, 5.02, 3.24, 1.36, "⑤ 내가 고른 장면의 3B 캡션", TEAL,
+              m.targetCap, "✕  " + m.targetMiss, TEAL, 9.5);
+      capCard(s, 6.02, 5.02, 3.24, 1.36, m.altLabel || "같은 장면의 4B 캡션", AMBER,
+              m.altCap, "✕  " + m.altMiss, AMBER, 9.5);
+      capCard(s, 9.42, 5.02, 3.3, 1.36, m.top1CardLabel || "1위가 된 다른 장면의 캡션", MUTED,
+              m.top1Cap, "✓  " + m.top1Hit, INK, 9.5);
+    } else {
+      s.addImage({ path: frame(m.top1Frame), x: 0.85, y: 5.02, w: 1.96, h: 1.1 });
+      s.addText(m.top1Label, {
+        x: 0.85, y: 6.12, w: 2.2, h: 0.2, fontSize: 8.5, color: MUTED, fontFace: F, margin: 0,
+      });
+      capCard(s, 3.0, 5.02, 4.72, 1.2, "⑤ 내가 고른 장면의 " + m.arm + " 캡션", col,
+              m.targetCap, "✕  " + m.targetMiss, col);
+      capCard(s, 7.9, 5.02, 4.6, 1.2, m.top1CardLabel || "1위가 된 다른 장면의 캡션", MUTED,
+              m.top1Cap, "✓  " + m.top1Hit, INK);
+    }
   }
 
   /* ⑥ 한 줄 해석 */
   s.addText("⑥  " + d.read, {
-    x: 0.62, y: 6.46, w: 12.1, h: 0.52, fontSize: 12, bold: true, color: INK,
+    x: 0.62, y: (d.miss && d.miss.altCap) ? 6.6 : 6.46, w: 12.1, h: 0.52,
+    fontSize: 12, bold: true, color: INK,
     fontFace: F, lineSpacing: 18, valign: "top", margin: 0,
   });
   return s;
@@ -370,7 +389,15 @@ sceneSlide({
     bandHead: "④ Q3에서 3B는 내가 고른 장면을 93위로 두고 seg171을 1위로 올렸다 — 같은 다지기 작업의 14분 뒤 시점이다",
     top1Frame: "seg0171_00855s.jpg", top1Label: "1위가 된 장면 — seg171 · 14:15",
     targetCap: "“…손가락으로 전자식 주방기구를 조절하고 있습니다. 주방기구 안에는 다양한 재료들이 들어 있습니다.”",
-    targetMiss: "새우 · 마늘 · 투명 없음 · 수동 기구를 “전자식”으로",
+    /* 카드 3장 배치에서 진단 줄은 한 줄만 들어간다 — 두 줄이면 카드 밖으로 넘친다.
+     * "수동 기구를 전자로 읽었다"는 제목과 ⑥이 들고 있고, 두 카드 본문에도 그대로 있다. */
+    targetMiss: "새우 · 마늘 · 투명 없음",
+    /* 4B가 같은 프레임을 뭐라고 썼는지 나란히 둔다 — "두 모델 모두 전자로 읽었다"는
+     * 제목이 3B 카드 하나로는 확인되지 않는다. 원문:
+     * runs/casestudy_caption_retrieval/cs_20260825/4b_fresh/…/segments.json seg 2 */
+    altLabel: "같은 장면의 4B 캡션 — Q3에서 107위",
+    altCap: "“흰색과 녹색의 손잡이가 있는 전자 식품 절편기에서 생선 조각이 잘게 썰리되고 있으며, 사람의 손이 기계를 조작하고 있다.”",
+    altMiss: "새우를 “생선”으로 · 마늘 없음",
     /* seg171 프레임에는 편집 자막 "청양고추 + 새우 + 마늘 / Cheongyang chili pepper +
      * shrimp + garlic"이 박혀 있고 캡션의 세 단어가 그것과 일치한다. 인과 단정은 하지
      * 않는다 — 자막을 언급하지도, 따옴표를 쓰지도 않은 형태의 유입이다. */
