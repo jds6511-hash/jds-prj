@@ -388,7 +388,9 @@
       "docs/finalization/CAPTION_RETRIEVAL_CASESTUDY_TABLE.md",
       "docs/finalization/caption_retrieval_casestudy_comparability_audit.json",
       "docs/tutor/캡션검색_케이스스터디_1페이지.md"
-    ]
+    ],
+    "revision_note": "Scene01이 인트로 타이틀 오버레이로 핵심 피사체를 가려 A2(2026-08-26)로 재지정했다(seg0→seg2). 아래 v1 블록은 재지정 전 동결본이고 case_study_r2가 현재 기준이다. 두 판을 합산하지 않는다.",
+    "superseded_by": "case_study_r2"
   },
   "p2": {
     "status": "annotation-cost-driven HOLD",
@@ -726,7 +728,9 @@
         "subtitle_mentioned": 613,
         "subtitle_and_quote": 193,
         "quote_any": 540,
-        "note": "문자열 규칙의 후보 빈도다 — detector 성능·오염률이 아니고 오탐·미탐 미측정. 코드에 넣지 않았다"
+        "note": "문자열 규칙의 후보 빈도다 — detector 성능·오염률이 아니고 오탐·미탐 미측정. 코드에 넣지 않았다",
+        "is_lower_bound": true,
+        "undercount_note": "캡션이 자막 내용을 '자막'이라 말하지 않고 따옴표도 없이 본문에 흡수하는 형태를 놓친다 — seg171 실물 확인(A2). 193건은 하한이다"
       },
       "casestudy_arm_asymmetry": {
         "n_segments": 395,
@@ -1167,5 +1171,80 @@
     "design_spec": "docs/DESIGN_SPEC.md",
     "source_pack": "docs/finalization/FINAL_REPORT_SOURCE_PACK_2026-08-26.md",
     "claim_matrix": "docs/finalization/CLAIM_EVIDENCE_MATRIX_2026-08-26.md"
+  },
+  "case_study_r2": {
+    "id": "caption_retrieval_casestudy_r2_2026-08-26",
+    "base": "caption_retrieval_casestudy_2026-08-25",
+    "amendment": "A2_scene01_reassignment",
+    "amendment_doc": "docs/finalization/CAPTION_RETRIEVAL_CASESTUDY_AMENDMENT_A2_2026-08-26.md",
+    "outcome_blind_freeze": false,
+    "user_approved": true,
+    "study_type": "qualitative / illustrative / one-video case study",
+    "adoption_evidence": false,
+    "model_superiority_evidence": false,
+    "formal_model_selection_experiment": false,
+    "video_id": "pland_costco_hosting",
+    "n_segments": 395,
+    "n_scenes": 5,
+    "scene_indices": [
+      2,
+      79,
+      158,
+      237,
+      316
+    ],
+    "n_queries": 15,
+    "queries_per_scene": 3,
+    "view": "caption-only",
+    "alpha": 0.0,
+    "alpha_sweep": false,
+    "comparison": "fresh_3b_q4_vs_fresh_4b_q4",
+    "recaption": false,
+    "reindex": false,
+    "indexes_reused": "runs/casestudy_caption_retrieval/cs_20260825/{3b,4b}_fresh/work",
+    "frozen_queries_sha256": "f645e9a3b33ac73c8118dda34947d67b88c94251fcdec234dc201f398417a082",
+    "frozen_scenes_sha256": "a9f4860161ed1724d996a4e21135f1f745620667b736a0f7708178ed36bb96a7",
+    "query_set_heterogeneous": {
+      "new": 3,
+      "reused_from_v1": 12,
+      "new_authored_by": "user",
+      "new_authored_after_outcome_access": true,
+      "agent_could_not_author": "두 arm 캡션 395건과 v1 검색 결과를 이미 열람했다"
+    },
+    "counts": {
+      "illustrative_top1_hit": {
+        "3b": 2,
+        "4b": 1,
+        "of": 15
+      },
+      "queries_with_higher_target_rank": {
+        "3b": 7,
+        "4b": 8,
+        "tie": 0,
+        "of": 15
+      },
+      "median_target_rank": {
+        "3b": 52,
+        "4b": 20
+      },
+      "caption_length_mean_chars": {
+        "3b": 128.5,
+        "4b": 76.4
+      }
+    },
+    "counts_caveat": "한 영상 5장면 15질의의 one-video qualitative case-study count다. 모델 정확도·superiority estimate·benchmark·유의성 결과가 아니고 채택 근거로 쓰지 않는다. v1 수치와 합산하지 않는다",
+    "scenes_02_to_05_identical_to_v1": true,
+    "headline_observations": {
+      "instability": "v1에서 4B 쪽이 높았던 질의가 11/15였는데 장면 하나를 재지정하자 8/15가 됐다 — 분모 15 count가 장면 선택에 민감하다",
+      "scene01": "두 모델 모두 수동 다지기를 '전자' 기구로 읽고 새우·마늘·투명을 쓰지 않아 59~248위로 밀렸다",
+      "scene01_top1": "3B의 1위 seg171 캡션의 '청양고추·새우·마늘'이 그 프레임에 덧씌운 편집 자막 문구와 그대로 일치한다 — 자막 언급도 따옴표도 없는 형태의 overlay 유입",
+      "scene02": "같은 프레임에서 3B는 배너 문구를, 4B는 냉장 진열대를 캡션에 남겼고, 질의가 어느 요소를 묻느냐에 따라 top1이 뒤집혔다"
+    },
+    "source_path": "runs/casestudy_caption_retrieval/cs_20260826/step6_retrieval_alpha0.json",
+    "secondary_sources": [
+      "docs/finalization/caption_retrieval_casestudy_plan_r2.json",
+      "docs/finalization/CAPTION_TO_RETRIEVAL_INTEGRITY_AUDIT_2026-08-26.md",
+      "tests/test_casestudy_integrity.py"
+    ]
   }
 }

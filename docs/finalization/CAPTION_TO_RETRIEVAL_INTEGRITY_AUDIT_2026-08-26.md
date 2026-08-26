@@ -485,3 +485,76 @@ NONE
 
 사용자 결정이 필요한 항목은 없다. MEDIUM 2건은 해석 병기로 처리했고, LOW·INFO는
 기록으로 남겼다. 케이스 스터디 쪽은 이 감사로 닫는다.
+
+---
+
+## 부록 — r2(Scene01 재지정) 반영 (2026-08-26 추가)
+
+본문 A~O는 **v1(cs_20260825)** 을 대상으로 한 감사다. 그 뒤 MEDIUM-1(Scene01 프레임이
+인트로 타이틀 오버레이로 가림)을 사용자 승인으로 처리해 Scene01을 재지정했다.
+절차·비용: `CAPTION_RETRIEVAL_CASESTUDY_AMENDMENT_A2_2026-08-26.md`.
+
+```
+새 Scene01   seg2 · 0:10~0:15 · frame f5febbd05e7e81ae0…
+질의          신규 3개(사용자 작성) + v1 12개 재사용 = 15개
+인덱스        cs_20260825의 것을 그대로 재사용 — 재캡셔닝·재임베딩 없음
+산출물        runs/casestudy_caption_retrieval/cs_20260826/step6_retrieval_alpha0.json
+v1 산출물     무변경 (plan · RESULTS · TABLE · results JSON · step6 전부 diff 0)
+```
+
+### 부록-1. r2 정합성 — 같은 조건을 다시 통과한다
+
+`tests/test_casestudy_integrity.py`가 v1·r2 **두 판 모두**에 같은 검사를 적용한다.
+
+```
+frozen_queries_sha256 재현   f645e9a3b33ac73c…   (r2 정의 동일)
+frozen_scenes_sha256 재현    a9f4860161ed1724…
+질의 문구 == plan            PASS       target_segment == plan   PASS
+alpha 0.0 · sweep False      PASS       n_ranked 전건 395         PASS
+Scene02~05 12질의 v1 대조     순위·1위 전건 동일 (전용 테스트로 고정)
+```
+
+### 부록-2. 수치가 흔들린 것 자체가 관측이다
+
+```
+                        r2              v1
+Top-1 적중              3B 2 · 4B 1     3B 2 · 4B 2
+순위가 더 높았던 질의       3B 7 · 4B 8     3B 4 · 4B 11
+순위 중앙값              3B 52 · 4B 20   3B 31 · 4B 10
+```
+
+**v1에서 보였던 4B 우위 방향(11/15)이 장면 하나를 바꾸자 8 대 7로 사라졌다.**
+이것은 어느 판이 맞는지의 문제가 아니라, **분모 15의 사례 연구 count가 장면 선택에
+민감하다는 증거**다. 보고 시 두 판을 합산하지 않고, r2를 "올바른 결과"로 제시하지 않는다.
+
+### 부록-3. §G 분류 갱신 — UNRELATED 0건 유지
+
+새 Scene01의 비-target 1위 6쌍:
+
+| query | arm | rank | top1 | primary | secondary |
+|---|---|---|---|---|---|
+| s01_q1 | 3B | 200 | seg352 (29:20) 토마토 다지기 | SAME_ACTION_DIFFERENT_OBJECT | — |
+| s01_q2 | 3B | 59 | seg253 (21:05) 젓가락으로 음식 집기 | SEMANTICALLY_RELATED_DISTRACTOR | — |
+| s01_q3 | 3B | 93 | seg171 (14:15) 같은 다지기 작업 뒤 시점 | SAME_EVENT_NONADJACENT | **TEXT_LEAKAGE_CANDIDATE** |
+| s01_q1~q3 | 4B | 248·156·107 | seg22 (1:50) 투명 용기에 식재료 섞기 | SAME_EVENT_NONADJACENT | — |
+
+**UNRELATED 0건이 유지된다.** 비-target 1위 27쌍 전부 같은 사건·같은 동작·의미 근접이다.
+
+### 부록-4. 새로 드러난 것
+
+```
+INFO-5   3B seg253 캡션이 "箸으로 음식을 집는 모습이 보입니다"다 — 한자 1자 혼입.
+         is_corrupted_caption은 한자 3자 이상 또는 20% 초과에서 flag하므로 걸리지 않는다.
+         LIMITATIONS 11번(검출기가 흔한 혼입 유형을 flag하지 않음)의 실제 사례다.
+MEDIUM-3 편집 자막이 캡션에 "자막"이라는 말도 따옴표도 없이 흡수되는 형태를 확인했다
+         (seg171). CAPTION_TEXT_HANDLING_AUDIT §3-1-a로 정정 기록했다 — 그 감사의
+         193건(5.0%)은 하한이다.
+```
+
+### 부록-5. 경계
+
+```
+recaption NO · reindex NO · new embedding NO · prompt NO · deployment NO · alpha NO
+test/M9 NO · P2/P3 NO · 새 metric NO · Top-1 재정의 NO · v1 frozen artifact 변경 NO
+질의 작성자   사용자 (에이전트는 outcome을 이미 열람해 작성 자격이 없다)
+```

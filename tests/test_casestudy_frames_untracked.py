@@ -72,7 +72,8 @@ def test_local_frames_are_preserved_for_deck_rebuild():
     if not d.is_dir():
         pytest.skip("프레임 로컬 사본이 없는 환경이다 (clone 직후 정상)")
     jpgs = sorted(d.glob("*.jpg"))
-    assert len(jpgs) == 27, "프레임 %d장 (27장이어야 한다)" % len(jpgs)
+    # A2(2026-08-26)에서 새 Scene01 target(seg2)과 그 1위(seg171) 2장을 반입했다.
+    assert len(jpgs) == 29, "프레임 %d장 (29장이어야 한다)" % len(jpgs)
     builder = ROOT / "docs/presentation/build_casestudy_deck.js"
     if builder.is_file():
         import re

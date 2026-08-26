@@ -43,6 +43,12 @@
 | `CAPTION_TEXT_HANDLING_AUDIT_2026-08-26.md` | 편집 자막(overlay) ↔ 장면 속 실제 텍스트 처리 정의 감사. **판정: 프롬프트 지시만 · 픽셀 제거 없음 · P0 문구와 의도 MISMATCH** | 감사 |
 | `CAPTION_TO_RETRIEVAL_INTEGRITY_AUDIT_2026-08-26.md` | 프레임→질의→캡션→임베딩→인덱스→순위→비-target 1위 연결 정합성 감사. **판정: PASS_WITH_CAVEATS · 결론 SUPPORTED_WITH_CAVEATS** | 감사 |
 | `caption_to_retrieval_integrity_2026-08-26.json` | 위 감사의 기계 판독본 — 15질의 end-to-end 매핑 · 질의 가시성 · 비-target 1위 분류 | 감사 |
+| `CAPTION_RETRIEVAL_CASESTUDY_AMENDMENT_A2_2026-08-26.md` | **A2** — Scene01 재지정(seg0→seg2). 인트로 오버레이 가림 대응. `outcome_blind: false` 사건이고 방법론 비용을 명시했다 | 사전등록 |
+| `caption_retrieval_casestudy_plan_r2.json` | A2 반영 동결 계획 — 제외 기준 E7·E8 추가, 새 질의 3 + 기존 12, 해시 재계산 | 사전등록 |
+
+**케이스 스터디는 두 판이 있다.** v1(`cs_20260825`)은 Scene01이 인트로 가림 프레임이었던
+판이고 동결 상태로 보존한다. r2(`cs_20260826`)가 발표·보고 기준이다. **두 판의 수치를
+합산하거나 유리한 쪽만 고르지 않는다** — 근거는 `CLAIM_EVIDENCE_MATRIX` C07.
 
 ## 2. 신규 제품 코드
 

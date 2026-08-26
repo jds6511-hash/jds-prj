@@ -36,10 +36,21 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--alpha", type=float, default=0.0)
     ap.add_argument("--out", default=None)
+    # A2(2026-08-26): Scene01 재지정 판(r2)을 v1 산출물을 덮지 않고 돌리기 위한 주입 경로.
+    # 인덱스는 cs_20260825를 그대로 재사용한다 — 캡션·프레임이 같으므로 재생성이 없다.
+    ap.add_argument("--plan", default=None,
+                    help="동결 plan JSON 경로 (기본: v1 plan)")
+    ap.add_argument("--run-dir", default=None,
+                    help="출력 run 디렉터리 (기본: cs_20260825). --out이 있으면 무시된다")
     a = ap.parse_args()
 
-    plan = json.loads(PLAN.read_text(encoding="utf-8"))
+    plan_path = (Path(a.plan).resolve() if a.plan else PLAN)
+    plan = json.loads(plan_path.read_text(encoding="utf-8"))
     scenes = plan["scenes"]
+    if any(not sc.get("queries") for sc in scenes):
+        raise SystemExit(
+            "plan에 질의가 비어 있는 scene이 있다 — 질의를 동결하기 전에는 돌리지 않는다. "
+            "(A2 절차 6번: 사용자가 프레임만 보고 작성)")
 
     idx_by_arm, cfgs = {}, {}
     for arm in ARMS:
@@ -97,8 +108,16 @@ def main() -> None:
         "n_queries": len(rows),
         "results": rows,
     }
+    out["plan_path"] = plan_path.relative_to(ROOT).as_posix()
+    out["plan_revision"] = plan.get("plan_id", "v1")
+    rd = Path(a.run_dir) if a.run_dir else RD
     dst = Path(a.out) if a.out else (
-        RD / ("step6_retrieval_alpha%s.json" % ("0" if a.alpha == 0.0 else str(a.alpha))))
+        rd / ("step6_retrieval_alpha%s.json" % ("0" if a.alpha == 0.0 else str(a.alpha))))
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    if dst.exists():
+        raise SystemExit(
+            "%s 가 이미 있다 — 동결 산출물을 덮지 않는다. --out 또는 --run-dir로 새 "
+            "경로를 지정하라 (A2: v1 결과 보존)" % dst)
     dst.write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     print("wrote %s" % dst)
     print("queries: %d · segments: %d · alpha=%.2f" % (len(rows), n_seg, a.alpha))

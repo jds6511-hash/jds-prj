@@ -23,6 +23,9 @@ sys.path.insert(0, str(ROOT / "src"))
 RUN = ROOT / "runs/casestudy_caption_retrieval/cs_20260825"
 PLAN = ROOT / "docs/finalization/caption_retrieval_casestudy_plan.json"
 STEP6 = RUN / "step6_retrieval_alpha0.json"
+# A2(2026-08-26): Scene01 재지정 판. v1은 보존하고 발표·보고는 r2를 쓴다.
+PLAN_R2 = ROOT / "docs/finalization/caption_retrieval_casestudy_plan_r2.json"
+STEP6_R2 = ROOT / "runs/casestudy_caption_retrieval/cs_20260826/step6_retrieval_alpha0.json"
 VIDEO = "pland_costco_hosting"
 ARMS = ("3b", "4b")
 N_SEG = 395
@@ -34,16 +37,25 @@ def _need(*paths):
             pytest.skip("케이스 스터디 로컬 산출물이 없는 환경이다 (clone 직후 정상)")
 
 
-@pytest.fixture(scope="module")
-def plan():
-    _need(PLAN)
-    return json.loads(PLAN.read_text(encoding="utf-8"))
+@pytest.fixture(scope="module", params=["v1", "r2"])
+def plan(request):
+    p = PLAN if request.param == "v1" else PLAN_R2
+    _need(p)
+    return json.loads(p.read_text(encoding="utf-8"))
+
+
+@pytest.fixture(scope="module", params=["v1", "r2"])
+def step6(request):
+    """v1·r2 두 판 모두 같은 정합성 조건을 만족해야 한다."""
+    p = STEP6 if request.param == "v1" else STEP6_R2
+    _need(p)
+    return json.loads(p.read_text(encoding="utf-8"))
 
 
 @pytest.fixture(scope="module")
-def step6():
-    _need(STEP6)
-    return json.loads(STEP6.read_text(encoding="utf-8"))
+def step6_r2():
+    _need(STEP6_R2)
+    return json.loads(STEP6_R2.read_text(encoding="utf-8"))
 
 
 @pytest.fixture(scope="module")
@@ -82,15 +94,23 @@ def test_frozen_scene_hash_reproduces(plan):
     assert hashlib.sha256(dump.encode()).hexdigest() == plan["frozen_scenes_sha256"]
 
 
-def test_retrieval_artifact_query_text_matches_plan(step6, plan):
+@pytest.mark.parametrize("plan_path,step6_path", [(PLAN, STEP6), (PLAN_R2, STEP6_R2)])
+def test_retrieval_artifact_query_text_matches_plan(plan_path, step6_path):
+    _need(plan_path, step6_path)
+    plan = json.loads(plan_path.read_text(encoding="utf-8"))
+    s6 = json.loads(step6_path.read_text(encoding="utf-8"))
     qs = [q for sc in plan["scenes"] for q in sc["queries"]]
-    assert [r["query"] for r in step6["results"]] == [q["text"] for q in qs]
-    assert [r["query_id"] for r in step6["results"]] == [q["query_id"] for q in qs]
+    assert [r["query"] for r in s6["results"]] == [q["text"] for q in qs]
+    assert [r["query_id"] for r in s6["results"]] == [q["query_id"] for q in qs]
 
 
-def test_retrieval_artifact_target_segment_matches_plan(step6, plan):
+@pytest.mark.parametrize("plan_path,step6_path", [(PLAN, STEP6), (PLAN_R2, STEP6_R2)])
+def test_retrieval_artifact_target_segment_matches_plan(plan_path, step6_path):
+    _need(plan_path, step6_path)
+    plan = json.loads(plan_path.read_text(encoding="utf-8"))
+    s6 = json.loads(step6_path.read_text(encoding="utf-8"))
     want = [sc["segment_idx"] for sc in plan["scenes"] for _ in sc["queries"]]
-    assert [r["target_segment"] for r in step6["results"]] == want
+    assert [r["target_segment"] for r in s6["results"]] == want
 
 
 # ---------------------------------------------------------------- retrieval config
@@ -208,12 +228,13 @@ def test_discussion_frames_match_caption_input_frames(work):
             got = h(work[a] / "frames" / ("seg_%04d.jpg" % idx))
             assert got == want, (f.name, a)
         checked += 1
-    assert checked == 27, "논의용 프레임 %d장 (27장이어야 한다)" % checked
+    # A2(2026-08-26)에서 새 Scene01 target(seg2)과 그 1위(seg171) 2장을 반입했다.
+    assert checked == 29, "논의용 프레임 %d장 (29장이어야 한다)" % checked
 
 
 # ---------------------------------------------------------------- deck ↔ artifact
 
-def test_deck_ranks_match_frozen_retrieval_artifact(step6):
+def test_deck_ranks_match_frozen_retrieval_artifact(step6_r2):
     """덱의 15질의 전체표 순위가 동결 검색 산출물과 일치해야 한다."""
     builder = ROOT / "docs/presentation/build_casestudy_deck.js"
     if not builder.is_file():
@@ -222,16 +243,45 @@ def test_deck_ranks_match_frozen_retrieval_artifact(step6):
     rows = re.findall(r'\["(?:\d\d|)",\s*"([^"]+)",\s*(\d+),\s*(\d+),\s*"\w*"\]', src)
     assert len(rows) == 15, "덱 전체표 행이 15개가 아니다: %d" % len(rows)
     want = {r["query"]: (r["arms"]["3b"]["target_rank"], r["arms"]["4b"]["target_rank"])
-            for r in step6["results"]}
+            for r in step6_r2["results"]}
     for text, r3, r4 in rows:
         assert text in want, "덱 질의가 동결본에 없다: %s" % text
         assert want[text] == (int(r3), int(r4)), (text, want[text], (r3, r4))
 
 
-def test_deck_top1_hit_count_matches_artifact(step6):
-    """덱이 말하는 '1위 적중 2건씩'이 산출물과 맞아야 한다."""
-    hit = {a: sum(1 for r in step6["results"]
+def test_deck_top1_hit_count_matches_artifact(step6_r2):
+    """덱이 말하는 '1위 적중 3B 2건 · 4B 1건'이 r2 산출물과 맞아야 한다."""
+    hit = {a: sum(1 for r in step6_r2["results"]
                   if r["arms"][a]["top1_segment"] == r["target_segment"])
            for a in ARMS}
-    assert hit == step6["illustrative_top1_hit_count"], hit
-    assert hit == {"3b": 2, "4b": 2}, hit
+    assert hit == step6_r2["illustrative_top1_hit_count"], hit
+    assert hit == {"3b": 2, "4b": 1}, hit
+
+
+def test_r2_did_not_change_scenes_02_to_05(step6_r2):
+    """A2는 Scene01만 바꿨다 — 나머지 12질의는 v1과 순위·1위가 같아야 한다."""
+    _need(STEP6)
+    v1 = json.loads(STEP6.read_text(encoding="utf-8"))
+    m1 = {r["query_id"]: r for r in v1["results"]}
+    for r in step6_r2["results"]:
+        if r["query_id"].startswith("cs_s01"):
+            continue
+        a = m1[r["query_id"]]
+        assert a["query"] == r["query"]
+        assert a["target_segment"] == r["target_segment"]
+        for arm in ARMS:
+            assert a["arms"][arm]["target_rank"] == r["arms"][arm]["target_rank"], r["query_id"]
+            assert a["arms"][arm]["top1_segment"] == r["arms"][arm]["top1_segment"], r["query_id"]
+
+
+def test_r2_scene01_is_not_the_occluded_intro_segment():
+    """seg0(인트로 타이틀 가림)으로 되돌아가면 실패한다 — A2 결정 고정."""
+    _need(PLAN_R2)
+    plan = json.loads(PLAN_R2.read_text(encoding="utf-8"))
+    sc = plan["scenes"][0]
+    assert sc["scene_id"] == "scene01"
+    assert sc["segment_idx"] == 2, sc["segment_idx"]
+    ex = plan["scene_selection_rule"]["exclusion_criteria"]
+    assert any("오버레이" in e for e in ex), ex
+    assert any("같은 작업" in e for e in ex), ex
+    assert plan["revision"]["outcome_blind"] is False

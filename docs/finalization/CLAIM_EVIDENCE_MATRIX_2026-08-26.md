@@ -226,22 +226,30 @@ limitations  one-video qualitative case study; not a general performance estimat
 유형/강도      qualitative_observation / illustrative
 ```
 
-**주장.** 이 사례 연구에서 top-1 적중 수는 두 모델이 같았고, 정답 구간의 순위는 4B 쪽이
-더 높은 질의가 많았다. **두 지표가 다른 이야기를 한다는 관측이지 우열 결론이 아니다.**
+**주장.** 이 사례 연구의 두 count는 **장면 하나를 바꾸면 방향이 흔들린다.** top-1 적중은
+두 판 모두 낮고, 순위 방향은 v1에서 4B 쪽으로 기울었다가 r2에서 사실상 갈렸다.
+**분모 15의 사례 연구 수치가 불안정하다는 관측이지 우열 결론이 아니다.**
 
 ```
-primary      docs/finalization/caption_retrieval_casestudy_results.json (case_study_counts)
-secondary    docs/finalization/CAPTION_RETRIEVAL_CASESTUDY_TABLE.md
+primary      runs/casestudy_caption_retrieval/cs_20260826/step6_retrieval_alpha0.json  (r2, 현재 기준)
+secondary    docs/finalization/caption_retrieval_casestudy_results.json (case_study_counts, v1 동결)
+             docs/finalization/CAPTION_RETRIEVAL_CASESTUDY_AMENDMENT_A2_2026-08-26.md (재지정 절차·비용)
 exact        one-video case study · 15 illustrative query
-             top-1 적중            3B 2/15 · 4B 2/15 (동일)
-             정답 순위가 더 높은 질의  3B 4/15 · 4B 11/15 · 동률 0
-             정답 순위 중위수        3B 31위 · 4B 10위
-             평균 캡션 길이          3B 128.5자 · 4B 76.4자
-allowed      "top-1 count는 같았고 target rank 방향에는 차이가 관찰됐다 — illustrative다"
+             r2  top-1 적중            3B 2/15 · 4B 1/15
+                 정답 순위가 더 높은 질의  3B 7/15 · 4B 8/15 · 동률 0
+                 정답 순위 중위수        3B 52위 · 4B 20위
+             v1  top-1 적중            3B 2/15 · 4B 2/15
+                 정답 순위가 더 높은 질의  3B 4/15 · 4B 11/15 · 동률 0
+                 정답 순위 중위수        3B 31위 · 4B 10위
+             공통 평균 캡션 길이         3B 128.5자 · 4B 76.4자 (인덱스 무변경)
+allowed      "top-1 적중은 두 판 모두 낮았고, 순위 방향은 장면 재지정으로 흔들렸다 — illustrative다"
+             "v1 수치와 r2 수치를 각각 그 판의 것으로 제시한다"
 forbidden    "4B가 순위를 더 잘 매긴다" · 이 count를 성능 추정치·benchmark로 제시하는 것
              15개 중 11개를 승률처럼 일반화하는 것
+             **v1과 r2를 합산하거나 유리한 판만 고르는 것** · "r2가 올바른 결과"
 limitations  분모가 15다. 한 영상의 다섯 장면에서 나온 수이고 유의성 검정을 하지 않았다.
-             먼저 2/15 vs 2/15(동일)를 말한 뒤 순위 관측을 덧붙이는 순서를 유지한다
+             r2 질의 세트는 동질적이지 않다 — 신규 3(사용자 작성, outcome 열람 후) + v1 12.
+             r2 amendment는 outcome_blind가 아니다.
 ```
 
 ---
