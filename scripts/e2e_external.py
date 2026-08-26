@@ -29,14 +29,9 @@ SCHEMA_VERSIONS = (1,)
 ID_PREFIX = "e2e_"
 
 # 배포 identity. 이 값과 다른 조합으로 E2E를 돌리지 않는다.
-DEPLOYMENT_IDENTITY = {
-    "caption_model": "Qwen/Qwen2.5-VL-3B-Instruct",
-    "vlm_4bit": True,
-    "embed_model": "nlpai-lab/KURE-v1",
-    "seg_len_sec": 5,
-    "static_threshold": 0,
-    "alpha": 0.5,
-}
+# 값은 `src/deployment.py`가 단일 출처다 — 여기에 사본을 두면 표류한다(감사 2026-08-26).
+import deployment                                                    # noqa: E402
+DEPLOYMENT_IDENTITY = {**deployment.DEPLOYMENT, "alpha": deployment.ALPHA}
 EMBED_DIM = 1024
 
 # manifest video의 허용 키. 모르는 키는 통과시키지 않는다 — 연구용 필드가

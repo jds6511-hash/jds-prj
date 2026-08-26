@@ -4,16 +4,23 @@
   "phase": "FINALIZATION",
   "scope": "설계 선언 → 코드 구현 → 런타임 강제 → 산출물 증거의 일대일 대조",
   "principle": "'선언돼 있다'와 '실제로 강제된다'를 분리한다. 테스트 개수를 품질 증거로 세지 않는다.",
-  "tests_at_audit_end": {"passed": 1824, "exit_code": 0, "seconds": 51},
+  "tests_at_audit_end": {"passed": 1869, "exit_code": 0, "seconds": 52},
+  "test_access_log": {
+    "test_outcomes_evaluated": false,
+    "test_split_metadata_inspected": true,
+    "test_split_metadata_scope": "data/queries/queries.jsonl의 video_id·split·질의 수 (자격 경계 강제 확인 목적)",
+    "test_video_captions_or_subtitles_read": false,
+    "note": "경계 테스트는 tmp에 합성한 restricted 산출물을 사용했다. 'test 접근 없음'으로 적지 않는다"
+  },
   "changed_nothing": [
     "results/eval_test.json", "results/alpha_search_dev.json",
     "config.yaml", "work/* (재캡셔닝·재임베딩·재색인 0건)",
     "케이스 스터디 v1 동결본"
   ],
   "summary": {
-    "PASS": 15,
+    "PASS": 17,
     "PASS_WITH_CAVEAT": 5,
-    "IMPLEMENTED_NOT_ENFORCED_then_fixed": 3,
+    "IMPLEMENTED_NOT_ENFORCED_then_fixed": 5,
     "MISMATCH": 0,
     "NOT_IMPLEMENTED": 0
   },
@@ -75,8 +82,62 @@
       "severity": "LOW",
       "title": "중복 선언 표류 방지",
       "actual_before": "배포 identity가 scripts/demo.py와 scripts/e2e_external.py 두 곳, 연구 영상 이름이 eligibility와 e2e_external 두 곳",
-      "fix": "합치지 않고(리팩터링 HOLD) 어긋나면 실패하는 테스트 2건 추가",
+      "fix": "표류 테스트 2건 추가 → C-7에서 src/deployment.py로 출처를 하나로 합쳤다",
       "tests": ["tests/test_deployment_identity.py"]
+    },
+    {
+      "id": "C-6",
+      "severity": "HIGH",
+      "title": "자격 경계 우회 경로 — route 열거로 재감사",
+      "standard": "'요청 경로 4곳에 403'이 아니라 'guard를 거치지 않고 restricted 영상에 도달하는 route가 0개'",
+      "found": [
+        "/api/status/{video_id}에 guard가 없었다 — m2·m3 단계에서 segments.json·frames를 읽는다",
+        "대소문자 변형(Gemini_Promo)이 정책을 통과했다. Windows 파일시스템은 대소문자를 구분하지 않으므로 work/gemini_promo/를 그대로 읽었다 — 실측 우회",
+        "upload가 같은 이름으로 기존 mp4를 무조건 덮었다 — 조회 금지와 덮어쓰기 금지는 다른 문제이고 text_hash·embed_model은 인덱스만 본다"
+      ],
+      "fix": [
+        "eligibility._norm() — 판정 전 대소문자·공백 정규화 (manifest 집합·접두어 포함)",
+        "/api/status에 sanitize + _guard를 job 조회보다 앞에 배치",
+        "/api/upload — 기존 mp4 또는 work/<id>/ 존재 시 409",
+        "정책 우선순위를 코드에 명시: ① 동결 split 목록 ② manifest 선언 ③ 이름 접두어(마지막 방어선)"
+      ],
+      "verified": [
+        "route table 열거 — {video_id}를 받는 모든 GET이 restricted ID에 403",
+        "403이 artifact 읽기 전에 나온다 — Path.read_text 감시로 읽기 0건 확인",
+        "manifest 부재 의미 분리 — 알려진 restricted는 계속 차단, 일반 영상은 정상 실행(경고만)"
+      ],
+      "files": ["src/eligibility.py", "src/m7_webui.py"],
+      "tests": ["tests/test_demo_policy_boundary.py"]
+    },
+    {
+      "id": "C-7",
+      "severity": "HIGH",
+      "title": "진입점별 배포 identity",
+      "actual_before": "scripts/demo.py만 α=0.5를 강제. README가 함께 안내하는 python src/m7_webui.py --alpha 0.7이 그대로 떴다 — 진입점을 바꾸면 배포 구성이 아닌 UI가 production처럼 보였다",
+      "fix": [
+        "src/deployment.py 신설 — DEPLOYMENT·ALPHA·SUPPORTED_ENTRYPOINTS·check_alpha 단일 출처",
+        "demo.py·e2e_external.py의 identity 사본 제거",
+        "m7_webui·m7_demo에 α 강제 + 진단용 --allow-nondeployment-alpha 명시 플래그",
+        "demo.py는 alpha_strict — 우회 플래그가 없다"
+      ],
+      "supported_entrypoints": {
+        "scripts/demo.py": "identity · alpha_strict · eligibility · index · text_hash",
+        "src/m7_webui.py": "alpha · eligibility",
+        "src/m7_demo.py": "alpha · eligibility",
+        "src/m5_search.py": "alpha_range",
+        "src/m6_evaluate.py": "alpha_range · test_opening",
+        "src/m9_report_eval.py": "test_opening"
+      },
+      "files": ["src/deployment.py", "src/m7_webui.py", "src/m7_demo.py", "scripts/demo.py", "scripts/e2e_external.py", "README.md"],
+      "tests": ["tests/test_entrypoint_identity.py"]
+    },
+    {
+      "id": "C-8",
+      "severity": "MEDIUM",
+      "title": "abstention 판정 단일화",
+      "actual_before": "응답과 로그가 max(sub,cap)<τ를 각각 계산했다 — 8-2 개정 때 응답만 바뀌어 갈라졌다",
+      "fix": "low_relevance_flag(stats, tau) 하나를 응답과 로그가 공유한다",
+      "files": ["src/m7_webui.py"]
     }
   ],
   "test_narrowed": {
@@ -96,12 +157,12 @@
     {"id": "R08", "requirement": "재캡셔닝 후 임베딩 미갱신 차단 (text_hash)", "enforced_at": "m5_search.py:69 · scripts/demo.py:131", "status": "PASS"},
     {"id": "R09", "requirement": "연산 순서 cos → z-score → 정적 치환 → α 가중합", "enforced_at": "m5_search.combine_scores", "status": "PASS"},
     {"id": "R10", "requirement": "static_threshold는 config 단일 출처 (저장된 is_static 무시)", "enforced_at": "m5_search.VideoIndex.load:53-56", "status": "PASS"},
-    {"id": "R11", "requirement": "α는 config에 없다 — CLI 주입, 배포 확정 0.5", "enforced_at": "scripts/demo.py:100 (α≠0.5 거부) · combine_scores 범위 검증", "status": "PASS_WITH_CAVEAT", "caveat": "컴포넌트 진입점(m5·m7_demo·m7_webui)은 dev 용도로 임의 α 허용. 배포 경로는 demo.py 하나"},
+    {"id": "R11", "requirement": "α는 config에 없다 — CLI 주입, 배포 확정 0.5", "enforced_at": "src/deployment.check_alpha — demo.py(우회 불가) · m7_webui · m7_demo. 범위 검증은 combine_scores가 전 경로에서", "status": "PASS", "status_before": "IMPLEMENTED_NOT_ENFORCED", "note": "진단 목적의 다른 α는 --allow-nondeployment-alpha 명시로만. m5_search CLI는 연구·진단 경로라 범위 검증만 한다"},
     {"id": "R12", "requirement": "abstention은 경고 전용 — 순위·결과 불변", "enforced_at": "m7_webui 부가 필드만 · 로그와 응답이 같은 식 max(sub,cap)<τ", "status": "PASS"},
     {"id": "R13", "requirement": "test 재평가 금지 — 승인 사건", "enforced_at": "m6_evaluate.main --test-opening 필수 (이번 추가)", "status": "PASS", "status_before": "IMPLEMENTED_NOT_ENFORCED"},
     {"id": "R14", "requirement": "gt_seg_idx 파생 규칙 (1초 겹침, 없으면 최대 겹침)", "enforced_at": "common.derive_gt_seg_idx:87-100 · m6_evaluate.validate_gt_seg_idx", "status": "PASS"},
     {"id": "R15", "requirement": "데모는 배포 구성으로만 시작", "enforced_at": "scripts/demo.py preflight 12항목 fail-closed", "status": "PASS"},
-    {"id": "R16", "requirement": "test split · E2E 전용 · P2/P3 영상은 데모 불가", "enforced_at": "src/eligibility.py 단일 출처 → m7_webui 4경로 403 · demo.py · m7_demo (이번 추가)", "status": "PASS", "status_before": "IMPLEMENTED_NOT_ENFORCED"},
+    {"id": "R16", "requirement": "test split · E2E 전용 · P2/P3 영상은 데모 불가", "enforced_at": "src/eligibility.py 단일 출처 → video_id를 받는 **모든** route 403(열거 테스트) · demo.py preflight · m7_demo. 대소문자 정규화 · upload 덮어쓰기 금지 · 403이 artifact 읽기 전", "status": "PASS", "status_before": "IMPLEMENTED_NOT_ENFORCED", "note": "C-6에서 우회 3건(status route·대소문자·overwrite)을 더 잡고 닫았다"},
     {"id": "R17", "requirement": "AAR 인용은 인덱스 구간에 대응", "enforced_at": "m9_report_eval.main cites 범위 assert · aar_view.check_precomputed", "status": "PASS"},
     {"id": "R18", "requirement": "M9 실행은 test 접촉 — 승인 필요", "enforced_at": "m9_report_eval.main --test-opening 필수 (이번 추가)", "status": "PASS", "status_before": "IMPLEMENTED_NOT_ENFORCED"},
     {"id": "R19", "requirement": "영상 출처 provenance 인덱싱 전 기록 · fail-closed · 지표 미사용", "enforced_at": "src/provenance.py · m1_preprocess resolve · tests/test_provenance.py", "status": "PASS_WITH_CAVEAT", "caveat": "기존 11편은 legacy_exempt로 데이터에 면제 기록 — 코드가 조용히 넘어가지 않는다"},
@@ -111,9 +172,11 @@
   ],
   "hold": [
     "확정 인덱스 11편의 caption_provenance 채우기 — 재색인 필요",
-    "배포 identity 선언 단일화 (demo ↔ e2e_external) — 리팩터링, 표류 테스트로 대체",
-    "R11 컴포넌트 진입점의 α 자유도 제거 — dev 사용성과 상충, 문서화로 종결",
     "push / 외부 공개 — 사용자 승인 사항"
+  ],
+  "closed_during_audit": [
+    "배포 identity 선언 단일화 — src/deployment.py로 합쳤다 (C-7)",
+    "지원 진입점의 α 자유도 — 배포값이 기본, 우회는 명시 플래그 (C-7)"
   ],
   "residual_risk": [
     "11편의 캡션 출처는 산출물로 증명되지 않는다 — 근거는 커밋 이력·작업현황 문서뿐. 보고서에는 'provenance 있는 4편에서만 대조 가능'으로 적어야 한다",

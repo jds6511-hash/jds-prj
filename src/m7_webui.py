@@ -8,6 +8,7 @@ from fastapi import FastAPI, HTTPException, UploadFile
 from fastapi.responses import FileResponse, HTMLResponse
 
 import common
+import deployment
 import eligibility
 from m5_search import VideoIndex, search, search_with_stats
 
@@ -100,8 +101,20 @@ def _progress_m3(cfg: dict, video_id: str) -> dict | None:
         lambda doc: sum(1 for s in doc["segments"] if s.get("caption")))
 
 
+def low_relevance_flag(stats: dict, tau) -> bool | None:
+    """abstention 배너 판정 — **응답과 로그가 같은 값을 쓰도록 한 곳에서 계산한다.**
+
+    이전에는 두 곳에서 따로 계산했고, 8-2 개정(sub 단독 → max(sub, cap)) 때 응답만
+    바뀌어 로그가 다른 판정을 기록했다. 기존 테스트가 그 옛 판정을 정답으로 고정하고
+    있었다 [정합성 감사 2026-08-26]. 규칙이 또 바뀌어도 갈라지지 않게 함수로 묶는다.
+    """
+    if tau is None:
+        return None
+    return bool(max(stats["raw_sub_max"], stats["raw_cap_max"]) < tau)
+
+
 def _log_search(cfg: dict, video_id: str, query: str, alpha: float,
-                stats: dict, top1) -> None:
+                stats: dict, top1, low_relevance=None) -> None:
     """검색 1건을 search_log.jsonl에 append. 무관련 질의 판정 근거 축적용 [HIGH-2].
     로깅은 best-effort — 실패해도 검색 응답에 영향 없음."""
     try:
@@ -115,13 +128,11 @@ def _log_search(cfg: dict, video_id: str, query: str, alpha: float,
                  "alpha": alpha, **loggable,
                  # 당시 tau·배너 판정을 함께 기록 — tau 재캘리브레이션 후에도 "사용자가
                  # 실제로 본 경고"를 복원 가능하게 [리뷰 2026-07-11 Minor]
-                 # 판정식은 응답과 **같아야 한다**. sub 단독으로 적어 두면 사용자가 본
-                 # 배너와 다른 값이 남는다 — 2026-08-26 정합성 감사에서 적발했다
-                 # (8-2 개정 이후 채널은 max(sub, cap)다).
+                 # 판정은 호출부가 응답에 쓴 값을 그대로 받는다 — 여기서 다시 계산하면
+                 # 규칙이 바뀔 때 또 갈라진다. 호출부가 안 넘기면 같은 함수로 계산한다.
                  "abstention_tau": tau,
-                 "low_relevance": (
-                     bool(max(stats["raw_sub_max"], stats["raw_cap_max"]) < tau)
-                     if tau is not None else None),
+                 "low_relevance": (low_relevance if low_relevance is not None
+                                   else low_relevance_flag(stats, tau)),
                  "top1_idx": top1.idx if top1 is not None else None,
                  "top1_score": top1.score if top1 is not None else None}
         with open(results_dir / "search_log.jsonl", "a", encoding="utf-8") as f:
@@ -174,6 +185,13 @@ def create_app(cfg: dict, config_path: str, alpha: float,
             raise HTTPException(400, "mp4 파일만 업로드할 수 있어요")
         video_id = sanitize_video_id(Path(file.filename).stem)
         _guard(video_id)
+        # 조회 금지와 **덮어쓰기 금지**는 다른 문제다. 같은 이름 업로드로 확정 인덱스의
+        # 원본 영상을 갈아치울 수 있으면 배포 정합성이 무너지고, text_hash·embed_model은
+        # 둘 다 인덱스만 보므로 이것을 잡지 못한다 [경계 감사 2026-08-26]
+        if (videos_dir / f"{video_id}.mp4").exists() or common.work_dir(cfg, video_id).is_dir():
+            raise HTTPException(
+                409, f"{video_id}는 이미 있는 영상이다 — 기존 산출물을 덮지 않는다. "
+                     f"다시 인덱싱하려면 파일 이름을 바꿔 올려라")
         if not jobs.try_start(video_id):
             raise HTTPException(409, "다른 영상 인덱싱 중이에요 — 잠시 후 다시 시도하세요")
         try:
@@ -187,6 +205,11 @@ def create_app(cfg: dict, config_path: str, alpha: float,
 
     @app.get("/api/status/{video_id}")
     def status(video_id: str):
+        # 이 route도 video_id를 받고, m2·m3 단계에서 **segments.json·frames를 읽는다**.
+        # 상태만 돌려준다고 해서 예외를 두지 않는다 — 기준은 "guard를 거치지 않고
+        # restricted 영상에 도달하는 route가 0개"다 [경계 감사 2026-08-26]
+        video_id = sanitize_video_id(video_id)
+        _guard(video_id)
         st = jobs.get(video_id)
         if st is None:
             raise HTTPException(404, f"{video_id}: 업로드 기록 없음")
@@ -291,11 +314,11 @@ def create_app(cfg: dict, config_path: str, alpha: float,
             # 채널은 max(sub, cap) — sub 단독은 무발화 장면을 찾는 장면형 유관 질의
             # (자막과 원래 안 붙음)를 무관 질의와 구분 못 해 오배제가 장면형에 쏠린다
             # [8-2 개정, 2026-07-13 설계 점검 1]
-            tau = cfg.get("abstention_tau")
-            if tau is not None:
-                response["low_relevance"] = bool(
-                    max(stats["raw_sub_max"], stats["raw_cap_max"]) < tau)
-            _log_search(cfg, video_id, query, alpha, stats, top[0] if top else None)
+            flag = low_relevance_flag(stats, cfg.get("abstention_tau"))
+            if flag is not None:
+                response["low_relevance"] = flag
+            _log_search(cfg, video_id, query, alpha, stats,
+                        top[0] if top else None, low_relevance=flag)
         return response
 
     @app.get("/api/video/{video_id}")
@@ -316,7 +339,16 @@ def main():
     ap.add_argument("--alpha", type=float, required=True,
                     help="M6 grid search로 확정한 alpha_star 값(results/alpha_search_dev.json 참조)")
     ap.add_argument("--port", type=int, default=7860)
+    ap.add_argument("--allow-nondeployment-alpha", action="store_true",
+                    help="배포 확정 α가 아닌 값으로 띄운다(진단 전용) — 그 실행은 배포 구성이 아니다")
     args = ap.parse_args()
+    # README가 이 실행을 함께 안내하므로 **지원 진입점**이다. preflight는 없어도
+    # 배포 identity의 α는 여기서 강제한다 — 진입점에 따라 identity가 달라지면 안 된다
+    # [감사 2026-08-26]
+    try:
+        deployment.check_alpha(args.alpha, args.allow_nondeployment_alpha)
+    except deployment.DeploymentIdentityError as e:
+        raise SystemExit(str(e))
     import uvicorn
     cfg = common.load_config(args.config)
     uvicorn.run(create_app(cfg, args.config, args.alpha),

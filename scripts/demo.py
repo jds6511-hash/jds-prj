@@ -16,19 +16,14 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 import common                                                       # noqa: E402
+import deployment                                                   # noqa: E402
 import eligibility                                                  # noqa: E402
 
-# 현행 배포 구성 (CLAUDE.md 절대규칙 · DESIGN_SPEC 8-0). 여기 값을 바꾸는 것은
-# deployment 변경이고 별도 승인 사건이다.
-DEPLOYMENT = {
-    "caption_model": "Qwen/Qwen2.5-VL-3B-Instruct",
-    "vlm_4bit": True,
-    "embed_model": "nlpai-lab/KURE-v1",
-    "seg_len_sec": 5,
-    "static_threshold": 0,
-}
-# α는 config에 없다 — CLI 주입값이고 확정값은 results/alpha_search_dev.json의 alpha_star.
-DEPLOYMENT_ALPHA = 0.5
+# 현행 배포 구성은 `src/deployment.py`가 단일 출처다. 값을 여기에 다시 적지 않는다 —
+# 같은 dict가 demo.py와 e2e_external.py에 복사돼 있었고 표류 위험이 있었다
+# (감사 2026-08-26). 이름은 기존 호출부 호환을 위해 유지한다.
+DEPLOYMENT = deployment.DEPLOYMENT
+DEPLOYMENT_ALPHA = deployment.ALPHA
 
 REQUIRED_ARTIFACTS = ("segments.json", "emb_sub.npy", "emb_cap.npy", "meta.json")
 

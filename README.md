@@ -92,7 +92,9 @@ python scripts/demo.py --list                          # 인덱스 완성 영상
 python scripts/demo.py --video-id myvideo --check-only  # 배포 구성·인덱스 정합 12항목만 확인
 python scripts/demo.py --video-id myvideo               # preflight 통과 시 웹 UI 시작
 
-# (웹 UI 직접 실행도 가능하다 — preflight는 붙지 않는다)
+# (웹 UI 직접 실행도 가능하다 — 인덱스 preflight는 붙지 않는다.
+#  배포 α와 자격 경계는 이 경로에서도 강제된다. 다른 α는 명시 플래그로만:
+#  --alpha 0.7 --allow-nondeployment-alpha  ← 그 실행은 배포 구성이 아니다)
 python src/m7_webui.py --alpha 0.5 --port 7860
 ```
 

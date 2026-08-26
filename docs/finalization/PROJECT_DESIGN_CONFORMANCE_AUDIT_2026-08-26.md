@@ -26,9 +26,9 @@
 
 | | 건수 |
 |---|---|
-| PASS | 15 |
+| PASS | 17 |
 | PASS_WITH_CAVEAT | 5 |
-| IMPLEMENTED_NOT_ENFORCED → 이번에 강제 | 4 (R13·R16·R18 + 로그 판정) |
+| IMPLEMENTED_NOT_ENFORCED → 이번에 강제 | 5 (R11·R13·R16·R18 + 로그 판정) |
 | MISMATCH | 0 |
 | NOT_IMPLEMENTED | 0 |
 
@@ -131,18 +131,86 @@ MISMATCH(문서와 코드가 다름) / NOT_IMPLEMENTED / NOT_APPLICABLE.
 | R08 | 재캡셔닝 후 임베딩 미갱신 차단(text_hash) | `m5_search.py:69` · `scripts/demo.py:131` | PASS |
 | R09 | 연산 순서 cos → z-score → 정적 치환 → α 가중합 | `m5_search.combine_scores` | PASS |
 | R10 | `static_threshold`는 config가 단일 출처(저장된 is_static 무시) | `m5_search.VideoIndex.load:53-56` | PASS |
-| R11 | α는 config에 없다 — CLI 주입, 배포 0.5 | `scripts/demo.py:100` α≠0.5 거부 · `combine_scores` 범위 검증(C-3) | PASS_WITH_CAVEAT — 컴포넌트 진입점(`m5`·`m7_demo`·`m7_webui`)은 dev 용도로 임의 α를 허용한다. 배포 경로는 `demo.py` 하나다 |
+| R11 | α는 config에 없다 — CLI 주입, 배포 0.5 | `deployment.check_alpha` — `demo.py`(우회 불가) · `m7_webui` · `m7_demo`. 범위 검증은 `combine_scores`가 전 경로에서(C-3·C-7) | IMPLEMENTED_NOT_ENFORCED → **PASS** (진단용 다른 α는 `--allow-nondeployment-alpha` 명시로만) |
 | R12 | abstention은 경고 전용 — 순위·결과 불변 | `m7_webui` 부가 필드만 · 로그와 응답이 같은 식(`max(sub,cap)<τ`) | PASS |
 | R13 | test 재평가 금지 — 승인 사건 | ~~없음~~ → `m6_evaluate.main` `--test-opening` 필수(C-1) | IMPLEMENTED_NOT_ENFORCED → **PASS** |
 | R14 | gt_seg_idx 파생 규칙(1초 겹침, 없으면 최대 겹침) | `common.derive_gt_seg_idx:87-100` · `m6_evaluate.validate_gt_seg_idx` | PASS |
 | R15 | 데모는 배포 구성으로만 시작 | `scripts/demo.py preflight` 12항목 fail-closed | PASS |
-| R16 | test split · E2E 전용 · P2/P3 영상은 데모 불가 | `src/eligibility.py` 단일 출처 → `m7_webui` 4개 경로 403 · `demo.py` · `m7_demo`(C-4) | IMPLEMENTED_NOT_ENFORCED → **PASS** |
+| R16 | test split · E2E 전용 · P2/P3 영상은 데모 불가 | `src/eligibility.py` 단일 출처 → **video_id를 받는 모든 route** 403(열거 테스트) · `demo.py` · `m7_demo`. 대소문자 정규화 · upload 덮어쓰기 금지 · 403이 artifact 읽기 전(C-4·C-6) | IMPLEMENTED_NOT_ENFORCED → **PASS** |
 | R17 | AAR 인용은 인덱스 구간에 대응 | `m9_report_eval.main` cites 범위 assert · `aar_view.check_precomputed` | PASS |
 | R18 | M9 실행은 test 접촉 — 승인 필요 | ~~없음~~ → `--test-opening` 필수(C-1) | IMPLEMENTED_NOT_ENFORCED → **PASS** |
 | R19 | 영상 출처 provenance 인덱싱 전 기록 · fail-closed · 지표 미사용 | `src/provenance.py` · `m1_preprocess` resolve · `tests/test_provenance.py` | PASS_WITH_CAVEAT — 기존 11편은 `legacy_exempt`로 **데이터에** 면제가 있다(코드가 조용히 넘어가지 않는다) |
 | R20 | 캡션 생성 조건 기록(요청값·실효값 둘 다) | `m3_generate.caption_provenance` | PASS_WITH_CAVEAT — 2026-08-17 도입, 확정 인덱스 11편에 없음. 부재를 preflight가 공시(C-2) |
 | R21 | 변형 실험 격리 — config 사본 · work/results 동시 분리 | `scripts/casestudy_make_config.py:33-43`(KEEP_IDENTICAL assert) · `make_server_config.py` | PASS |
 | R22 | 공개 저장소에 원본 영상·프레임·인덱스 텍스트 미추적 | `.gitignore` · `git ls-files` 실측 **0건** | PASS_WITH_CAVEAT — 발췌 인용(케이스 스터디·AAR 추적 문서)은 존재한다. 전량 덤프는 없다 |
+
+---
+
+### C-6. 자격 경계 우회 경로 — route 열거로 재감사 (HIGH)
+
+첫 수정은 "요청 경로 4곳에 403"이었다. 기준을 다시 세우면 그건 부족하다 —
+**guard를 거치지 않고 restricted 영상에 도달하는 route가 0개**여야 한다. route table을
+열거해 다시 봤고 셋이 더 나왔다.
+
+```
+① /api/status/{video_id}  guard 없음. m2·m3 단계에서 segments.json·frames를 읽는다
+② 대소문자 변형           Gemini_Promo → 정책 통과. Windows 파일시스템은 대소문자를
+                         구분하지 않으므로 work/gemini_promo/ 를 그대로 읽었다 ← 실측 우회
+③ upload 덮어쓰기         같은 이름 업로드가 기존 mp4를 무조건 덮었다. 조회 금지와
+                         덮어쓰기 금지는 다른 문제다 — text_hash·embed_model은 인덱스만 본다
+```
+
+수정:
+
+```
+eligibility._norm()          판정 전 대소문자·공백 정규화 (manifest 집합·접두어 모두)
+/api/status                  sanitize → _guard 를 job 조회보다 앞에 둔다
+/api/upload                  기존 mp4 또는 work/<id>/ 가 있으면 409 (덮지 않는다)
+tests/test_demo_policy_boundary.py (23건)
+  · route table 열거 — {video_id}를 받는 모든 GET이 403
+  · 대소문자 3변형 × 전 route
+  · **403이 artifact 읽기 전에 나오는가** — Path.read_text를 감시해 읽기 0건 확인
+  · manifest 부재 의미 분리 — 알려진 restricted는 계속 차단 / 일반 영상은 정상 실행
+```
+
+정책 우선순위도 코드에 적었다. **접두어는 출처가 아니라 마지막 방어선이다.**
+
+```
+① 동결 split 목록(TEST_SPLIT_VIDEOS)  manifest 유무와 무관하게 차단
+② manifest 명시 선언(eligible_for_public_demo 등)
+③ 이름 접두어 p2_ · p3_               ①②가 비어도 위험한 이름은 막는다
+```
+
+### C-7. 진입점별 배포 identity (HIGH)
+
+`scripts/demo.py`만 α=0.5를 강제했고, **README가 함께 안내하는**
+`python src/m7_webui.py --alpha 0.7`은 그대로 떴다. 지원 진입점이므로 HIGH로 본다 —
+진입점을 바꾸면 배포 구성이 아닌 UI가 production처럼 보였다.
+
+```
+src/deployment.py 신설    DEPLOYMENT · ALPHA · SUPPORTED_ENTRYPOINTS · check_alpha
+                         demo.py·e2e_external.py의 identity 사본 제거(단일 출처)
+m7_webui · m7_demo       α는 배포값만. 진단용은 --allow-nondeployment-alpha 명시
+demo.py                  alpha_strict — 우회 플래그가 없다
+tests/test_entrypoint_identity.py (22건) — 목록에 항목을 추가하고 구현을 잊으면 깨진다
+```
+
+지원 진입점과 각자 강제하는 것:
+
+| 진입점 | 역할 | 강제 |
+|---|---|---|
+| `scripts/demo.py` | 배포 데모(권장) | identity · α(우회 불가) · 자격 · 인덱스 · text_hash |
+| `src/m7_webui.py` | 웹 UI 직접 실행 | α · 자격 |
+| `src/m7_demo.py` | Gradio 단일 영상 | α · 자격 |
+| `src/m5_search.py` | CLI 검색(진단) | α 범위 |
+| `src/m6_evaluate.py` | 평가(dev 기본) | α 범위 · test-opening |
+| `src/m9_report_eval.py` | AAR 평가 | test-opening |
+
+### C-8. abstention 판정 단일화 (MEDIUM)
+
+응답과 로그가 `max(sub, cap) < τ`를 **각각** 계산하고 있었다. 8-2 개정 때 응답만 바뀌어
+갈라진 것이 원인이므로, 같은 값을 두 번 계산하는 구조 자체를 없앤다 —
+`low_relevance_flag(stats, tau)` 하나를 응답과 로그가 공유한다.
 
 ---
 
@@ -155,13 +223,29 @@ MISMATCH(문서와 코드가 다름) / NOT_IMPLEMENTED / NOT_APPLICABLE.
 케이스 스터디   v1 동결 보존, r2가 발표 기준. 두 판을 합산하지 않는다
 ```
 
+**test 접촉을 "없음"으로 적지 않는다.** 이 감사는 자격 경계 강제를 확인하려고
+`data/queries/queries.jsonl`의 `split=="test"`를 읽어 test 영상 4편·39질의를 대조했고,
+경계 테스트에서는 restricted 영상의 **합성** 산출물을 tmp에 깔아 사용했다. 감사 로그는
+둘을 분리해 적는 것이 정확하다.
+
+```
+test outcomes evaluated                              NO   (M6·M9 실행 0회, 순위·지표 미산출)
+test split metadata inspected (eligibility 강제 확인)   YES  (video_id·split·질의 수만)
+test 영상의 캡션·자막 열람                              NO   (경계 테스트는 tmp 합성 데이터)
+```
+
 ## F. HOLD로 남긴 것 (승인 사건)
 
 ```
 확정 인덱스 11편의 caption_provenance 채우기   → 재색인 필요. HOLD
-배포 identity 선언 단일화(demo ↔ e2e_external) → 리팩터링. 표류 테스트로 대체
-R11 컴포넌트 진입점의 α 자유도 제거            → dev 사용성과 상충. 문서화로 종결
 push / 외부 공개                               → 사용자 승인 사항
+```
+
+감사 중에 닫은 것(HOLD 아님):
+
+```
+배포 identity 선언 단일화   src/deployment.py로 합쳤다 (C-7)
+지원 진입점의 α 자유도      배포값이 기본, 우회는 명시 플래그 (C-7)
 ```
 
 ## G. 남은 위험

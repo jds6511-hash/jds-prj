@@ -27,8 +27,25 @@ TEST_SPLIT_VIDEOS = ("gemini_promo", "itsub_viral_gadgets",
 E2E_MANIFEST = ROOT / "planning/e2e_external_manifest.json"
 
 # P2/P3 산출물은 별도 paths를 쓰고 work/에 들어오지 않는다. 그래도 이름 접두어로
-# 한 겹 더 막는다 — generic glob이 섞여 들어오는 경로를 차단하는 값싼 방어다.
+# 한 겹 더 막는다.
+#
+# **접두어는 정책의 출처가 아니라 마지막 방어선이다.** 판정 우선순위는 셋이고,
+# 위에서 결론이 나면 아래는 보지 않는다.
+#   ① 동결된 split 목록(TEST_SPLIT_VIDEOS)      — 연구 표본의 사실
+#   ② manifest의 명시 선언(eligible_for_public_demo 등)
+#   ③ 이름 접두어                                — ①②가 비어도 위험한 이름은 막는다
+# 이름 규칙만으로 정책을 정의하면 naming drift가 곧 정책 구멍이 된다.
 RESTRICTED_PREFIXES = ("p2_", "p3_")
+
+
+def _norm(video_id: str) -> str:
+    """판정용 정규화. **대소문자를 접는다.**
+
+    Windows·macOS 파일시스템은 대소문자를 구분하지 않는다. 판정이 구분하면
+    `Gemini_Promo`가 정책을 통과한 뒤 `work/gemini_promo/`를 그대로 읽는다 —
+    2026-08-26 경계 감사에서 실측한 우회다.
+    """
+    return (video_id or "").strip().lower()
 
 
 def e2e_only_videos() -> frozenset:
@@ -49,7 +66,7 @@ def e2e_only_videos() -> frozenset:
     for v in m.get("videos", []):
         vid = v.get("e2e_id")
         if vid and (v.get("e2e_only") or v.get("eligible_for_public_demo") is False):
-            out.add(vid)
+            out.add(_norm(vid))
     return frozenset(out)
 
 
@@ -58,16 +75,20 @@ def demo_block_reason(video_id: str) -> str | None:
 
     반환 문자열은 사용자에게 그대로 보여도 되는 문장이다.
     """
-    if not video_id:
+    vid = _norm(video_id)
+    if not vid:
         return "video_id가 비어 있다"
-    if video_id in TEST_SPLIT_VIDEOS:
+    # ① 동결 split 목록 — manifest 유무와 무관하게 항상 막힌다
+    if vid in {_norm(v) for v in TEST_SPLIT_VIDEOS}:
         return (f"{video_id}는 test split 영상이다 — 데모로 실행하지 않는다. "
                 f"공표된 test 결과는 results/eval_test.json 인용으로만 쓴다")
-    if video_id in e2e_only_videos():
+    # ② manifest의 명시 선언
+    if vid in e2e_only_videos():
         return (f"{video_id}는 external E2E 전용 영상이다"
                 f"(eligible_for_public_demo=false) — 기능 검증용으로 편입한 "
                 f"외부 영상이라 데모로 실행하지 않는다")
-    if video_id.startswith(RESTRICTED_PREFIXES):
+    # ③ 마지막 방어선 — 이름 규칙
+    if vid.startswith(RESTRICTED_PREFIXES):
         return f"{video_id}는 P2/P3 전용 이름 규칙이다 — 데모 경로에서 다루지 않는다"
     return None
 
