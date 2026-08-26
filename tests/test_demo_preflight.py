@@ -310,7 +310,10 @@ def test_readme_documents_current_preflight_check_count():
     """
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "11항목" not in readme
+    # 감사 문서는 "11 → 12로 바꿨다"를 설명하므로 옛 값이 등장하는 것이 정상이다.
     for p in (ROOT / "docs/finalization").glob("*.md"):
+        if "_AUDIT_" in p.name:
+            continue
         assert "11항목" not in p.read_text(encoding="utf-8"), p.name
 
 
