@@ -141,10 +141,14 @@ PHASE 4에서는 **외부 공개 전사의 timestamp가 이 영상 타임라인�
    — 현재 R_only(2) 동결, validation까지. hard gate·자동 recaption trigger가 아니다.
      통합하려면 read-only diagnostic/warning부터 검토하고 별도 승인을 받는다
 
-6  M8/M9 확장
-   — **M8 research evaluation**(6분류 taxonomy·human review) 미완(HOLD).
-     AAR demo generation(기능 확인용 실행)과는 다른 사건이다
-   — M9는 test-opening 승인 사건
+6  M8/M9 — **2026-08-26에 향후과제에서 필수 완료 범위로 승격**
+   — M8: dev에서 판정·동결까지가 완료 조건. 잔여 결정 6건(판정 주체·판정 표본·
+     threshold·인용 없는 문장·taxonomy 층·GPU 승인)은
+     docs/finalization/M8_M9_PROTOCOL_2026-08-26.md
+   — 판정 표본 제약: reference 사건 목록이 있는 2편은 **표본 소비 선언**으로
+     확증에 재사용 불가 — C2 집행에는 신규 영상 라벨링이 선행한다
+   — M9는 M8 freeze 후 test-opening 승인 사건(변동 없음)
+   — POST-M9: 검증된 report.json → HWPX/HWP 렌더가 최종 산출물(새 LLM 호출 없음)
 
 7  회의록 생성 (Phase 4)
    — 설계만 있음 (docs/planning/phase4_회의록_설계.md)
@@ -157,7 +161,8 @@ PHASE 4에서는 **외부 공개 전사의 timestamp가 이 영상 타임라인�
 ```
 deployment      Qwen2.5-VL-3B / P0 / 4bit · KURE-v1 · α=0.5
 4B              viable candidate · not adopted · superiority unresolved
-P2 / P3 / M8    HOLD
+P2 / P3         HOLD
+M8              dev 범위 GO (2026-08-26 승격) — 판정·동결까지. 방법론 변경은 승인 사항
 registry SoT    HOLD (read-only 어댑터)
-test / M9       HOLD
+test / M9       HOLD (M8 freeze 후 별도 test-opening 승인)
 ```
