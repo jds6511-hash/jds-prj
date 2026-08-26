@@ -129,14 +129,22 @@ def test_dryrun_rejects_out_of_range_citation(dryrun):
     assert dryrun["checks"]["structural_rejects_bad_citation"] is True
 
 
-def test_dryrun_records_the_two_validator_standards():
-    """`aar_view`는 인용 없는 문장을 거부하고 M9는 자동 ungrounded로 센다.
+def test_the_two_validators_now_share_one_standard(dryrun):
+    """D4(2026-08-26): 인용 없는 evaluable 문장은 **양쪽 모두 거부**한다.
 
-    같은 산출물에 기준이 둘이라는 사실을 코드 주석과 프로토콜 문서에 남긴다 —
-    어느 쪽이 옳은지는 test를 열기 전에 결정할 사항이다.
+    종전에는 `aar_view`가 거부하고 M9는 자동 ungrounded로 점수화해 같은 산출물에
+    기준이 둘이었다. 판정 함수는 `common`에 하나만 둔다 — 사본을 만들면 다시 갈라진다.
     """
-    src = (ROOT / "scripts/m9_dryrun.py").read_text(encoding="utf-8")
-    assert "aar_view(추적 뷰)" in src and "자동 ungrounded" in src
+    import common
+    import m9_report_eval
+    assert dryrun["checks"]["uncited_sentence_is_structural_fail"] is True
+    for mod in ("scripts/aar_view.py", "src/m9_report_eval.py"):
+        src = (ROOT / mod).read_text(encoding="utf-8")
+        assert "uncited_evaluable_sentences" in src, mod
+    rep = {"sentences": [{"sent_id": 0, "text": "인용 없다", "cites": []}]}
+    with pytest.raises(m9_report_eval.StructuralError):
+        m9_report_eval.structural_precheck(rep, n_segments=3)
+    assert common.uncited_evaluable_sentences(rep["sentences"]) == [0]
 
 
 def test_dryrun_with_freeze_manifest(tmp_path):

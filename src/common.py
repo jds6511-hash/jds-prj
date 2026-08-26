@@ -100,6 +100,31 @@ def derive_gt_seg_idx(gt_start, gt_end, n_segments, seg_len: int) -> list[int]:
     return idx if idx else [max(overlaps, key=lambda t: t[1])[0]]
 
 
+# 인용 의무가 없는 문장 역할. **evidence claim이 아닌 필드만** 여기 들어간다 —
+# 제목·metadata·명시적 non-evaluable 한계 서술. 모든 문자열에 인용을 강제하는 것이
+# 아니라, 평가 대상 factual sentence에만 인용을 의무화하기 위한 예외 목록이다.
+# 현행 생성기는 role을 붙이지 않으므로 기존 산출물은 전부 evaluable이다(gwaktube
+# report.json 83문장 실측: 인용 없는 문장 0건 — 이 규칙은 소급 효과가 없다).
+CITATION_EXEMPT_ROLES = ("title", "metadata", "limitation")
+
+
+def is_evaluable_sentence(s: dict) -> bool:
+    """인용 의무 대상인가. role 미지정은 claim으로 본다(fail-closed 방향)."""
+    return str(s.get("role") or "claim").strip().lower() not in CITATION_EXEMPT_ROLES
+
+
+def uncited_evaluable_sentences(sentences) -> list:
+    """인용 없는 evaluable 문장의 sent_id 목록. 비어 있어야 구조 유효다.
+
+    **중립 모듈에 둔다.** `aar_view`(렌더 validator)와 `m9_report_eval`(평가)이 같은
+    판정을 써야 한다 — 2026-08-26까지 두 곳의 기준이 달랐다(aar_view는 거부, M9는
+    자동 ungrounded로 점수화). 사본을 만들면 다시 갈라진다.
+    근거: docs/finalization/M8_M9_DECISIONS_2026-08-26.md §D4
+    """
+    return [s.get("sent_id") for s in sentences
+            if is_evaluable_sentence(s) and not (s.get("cites") or [])]
+
+
 def index_text_hash(doc) -> str:
     """임베딩 입력 텍스트(subtitle·caption)의 내용 해시. M4가 meta.json에 기록하고
     스킵 판정·M5 로드에서 대조 — 재캡셔닝 후 --force 누락 시 낡은 임베딩이 무증상으로

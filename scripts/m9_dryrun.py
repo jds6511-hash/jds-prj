@@ -69,10 +69,11 @@ def write_fixture(root: Path) -> dict:
     doc = {"video_id": FIXTURE_VIDEO, "n_segments": N_SEG, "segments": segments}
     common.save_segments(wdir / "segments.json", doc)
 
-    # 두 validator의 기준이 다르다 — 그래서 리포트를 두 벌 만든다.
+    # 2026-08-26(D4)까지 두 validator의 기준이 달랐다 — 그 흔적으로 리포트를 두 벌 만든다.
     #   aar_view(추적 뷰)  인용 없는 문장을 **거부**한다("추적 불가한 주장을 남기지 않는다")
-    #   M9(평가)          인용 없는 문장을 judge 호출 없이 **자동 ungrounded로 계수**한다
-    # 어느 쪽이 옳은지는 이 스크립트가 정하지 않는다(프로토콜 문서 §충돌 표에 기록).
+    #   M9(평가)          같은 문장을 judge 호출 없이 **자동 ungrounded로 계수**했다
+    # 거부 쪽으로 통일됐으므로 지금은 **양쪽이 같이 거부**하는지를 확인하는 판이다.
+    # 근거: docs/finalization/M8_M9_DECISIONS_2026-08-26.md §D4
     report = {
         "video_id": FIXTURE_VIDEO, "schema_version": 2,
         "model": "stub", "map_chunk_size": 60,
@@ -151,14 +152,21 @@ def run(root: Path, freeze_manifest: Path | None = None) -> dict:
     for q in test_qs:
         for i in q["gt_seg_idx"]:
             gt_types.setdefault(i, []).append(q["type"])
-    judge = StubJudge([True, False, None, True, False, True, True, False])
-    # 인용 없는 문장이 든 판을 쓴다 — M9의 "judge 호출 없이 ungrounded" 경로를 지나야 한다
-    res = M9.eval_report(fx["report_with_uncited"], fx["doc"]["segments"], gt_idx,
+    # 두 번째 응답을 파싱 불가로 둔다 — groundedness 판정에서 parse_ok=False가 기록되는지
+    # 확인하려면 **문장 판정 구간**에 떨어져야 한다(문장 2건 → 앞의 두 응답이 그것이다)
+    judge = StubJudge([True, None, True, False, True, True, False, True])
+    # 인용 없는 문장이 든 판은 **판정 전에** 거부돼야 한다 — judge 호출이 0이어야 한다 [D4]
+    probe = StubJudge([True] * 8)
+    try:
+        M9.eval_report(fx["report_with_uncited"], fx["doc"]["segments"], gt_idx,
+                       probe, gt_types=gt_types)
+        out["checks"]["uncited_sentence_is_structural_fail"] = False
+    except M9.StructuralError:
+        out["checks"]["uncited_sentence_is_structural_fail"] = not probe.calls
+    # 정상 판으로 배선을 지난다
+    res = M9.eval_report(fx["report"], fx["doc"]["segments"], gt_idx,
                          judge, gt_types=gt_types)
     out["checks"]["judge_called"] = bool(judge.calls)
-    out["checks"]["uncited_sentence_is_ungrounded"] = (
-        res["per_sentence"][2]["grounded"] is False
-        and res["per_sentence"][2]["cites"] == [])
     out["checks"]["parse_failure_recorded"] = any(
         p["judge_parse_ok"] is False for p in res["per_sentence"])
     out["checks"]["coverage_by_type_present"] = "coverage_by_type" in res

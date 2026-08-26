@@ -192,6 +192,27 @@
       "e2e_only": true,
       "eligible_for_research_evaluation": false,
       "note": "external E2E functional test 전용 (FINALIZATION-F2, OPTIONAL_LONGFORM_STRESS). 연구 표본이 아니다."
+    },
+    "wonyi_gyeongju": {
+      "source_url": "https://www.youtube.com/watch?v=4m9eLr-NofA",
+      "source_id": "4m9eLr-NofA",
+      "file_sha256": "209974b05ac57da5057ce948274d29f6b7f8427615f77da06d40af196c976da1",
+      "acquired": "2026-08-26",
+      "acquisition_tool": "yt-dlp 2026.08.19"
+    },
+    "wonyi_geoje": {
+      "source_url": "https://www.youtube.com/watch?v=OrCOflk2QmQ",
+      "source_id": "OrCOflk2QmQ",
+      "file_sha256": "182a7fd11eb0645e7e8a5482aa5146fb13ab3016d9213e5bada5a4b9438b9490",
+      "acquired": "2026-08-26",
+      "acquisition_tool": "yt-dlp 2026.08.19"
+    },
+    "kbs_banff": {
+      "source_url": "https://www.youtube.com/watch?v=F46FVgLr3eQ",
+      "source_id": "F46FVgLr3eQ",
+      "file_sha256": "935c6f7270e16a1744d164358951e2c0c6d5baa6514568839efa69408a66c204",
+      "acquired": "2026-08-26",
+      "acquisition_tool": "yt-dlp 2026.08.19"
     }
   },
   "legacy_exempt": {

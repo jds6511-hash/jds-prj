@@ -15,6 +15,8 @@ from collections import Counter
 import numpy as np
 from scipy.optimize import linear_sum_assignment
 
+import common
+
 IOU_THETAS = (0.3, 0.5, 0.7)          # 사전등록 §3-3 — 하나를 고르지 않고 전부 보고
 
 
@@ -108,6 +110,14 @@ def timeline_span_coverage(events: list, n_segments: int):
     return round(_union_len(events) / n_segments, 4)
 
 
+# Layer 1 — 사건 정렬 실패 유형. `docs/재분석_M8pilot_2026-08-18.md` §3에서 동결됐다.
+# C1·C2·C3와 사건 구조 평가에 쓴다. **늘리거나 줄이지 않는다** — 새 유형이 필요하면
+# outcome-blind amendment 사건이다. 문장 근거성 실패 유형(Layer 2)은 층이 달라
+# `m9_report_eval.CLAIM_GROUNDING_REASONS`에 따로 있다 [D5].
+EVENT_ALIGNMENT_TYPES = ("overmerge", "boundary_too_wide", "boundary_shift",
+                         "missed_event", "spurious_event", "reasonable_match")
+
+
 def structural_summary(report: dict, n_segments: int) -> dict:
     """`validate_events`가 코드로 판정한 값에서만 뽑는다. 품질 판단이 아니다."""
     ev = report.get("events") or []
@@ -126,4 +136,9 @@ def structural_summary(report: dict, n_segments: int) -> dict:
         "event_span_overlap_pairs": overlaps,
         "timeline_span_coverage": timeline_span_coverage(ev, n_segments),
         "chunk_retries": len(report.get("chunk_retries") or []),
+        # 인용 없는 evaluable 문장은 M8 출력 계약 위반이다 — 여기서 세고, 판정은
+        # aar_view / m9_report_eval.structural_precheck가 거부로 한다 [D4].
+        # 생성 단계에서 저장을 막지는 않는다(raw_output 보존 원칙) — 대신 드러낸다.
+        "uncited_evaluable_sentences": common.uncited_evaluable_sentences(
+            report.get("sentences") or []),
     }

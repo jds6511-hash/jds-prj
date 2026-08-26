@@ -1,5 +1,7 @@
 import pytest
-from m9_report_eval import eval_report, check_judge_config, judge_grounded, _grounded_prompt, judge_coverage
+import common
+from m9_report_eval import (eval_report, check_judge_config, judge_grounded, _grounded_prompt,
+                            judge_coverage, structural_precheck, StructuralError)
 
 def _segs(n):
     return [{"idx": i, "start": i * 5, "end": i * 5 + 5,
@@ -9,15 +11,71 @@ def _report(sent_specs):
     return {"video_id": "v", "sentences": [
         {"sent_id": i, "text": t, "cites": c} for i, (t, c) in enumerate(sent_specs)]}
 
-def test_uncited_sentence_auto_ungrounded_without_judge_call():
+# ---- D4 (2026-08-26 승인): 인용 없는 evaluable 문장은 **구조 오류**다 --------------
+# 종전 계약은 "judge 호출 없이 자동 ungrounded 점수화"였다. `aar_view`는 같은 문장을
+# 거부했으므로 같은 산출물에 기준이 둘이었다 — 거부 쪽으로 통일했다.
+# 근거: docs/finalization/M8_M9_DECISIONS_2026-08-26.md §D4
+
+def test_uncited_evaluable_sentence_is_a_structural_failure():
+    rep = _report([("근거 없는 문장", [])])
+    with pytest.raises(StructuralError, match="인용이 없다"):
+        structural_precheck(rep, n_segments=3)
+
+def test_eval_report_refuses_to_score_a_structurally_invalid_report():
+    """점수화되면 "0.5는 낮지만 정상 수치"로 읽힌다 — 구조 위반은 판정 대상이 아니다."""
     calls = []
     judge = lambda prompt: (calls.append(prompt) or '{"match": true}')
-    rep = _report([("근거 없는 문장", [])])
+    rep = _report([("사건 [seg#0]", [0]), ("근거 없는 문장", [])])
+    with pytest.raises(StructuralError):
+        eval_report(rep, _segs(3), gt_seg_indices=[0], judge=judge)
+    assert calls == []                       # judge 비용을 치르기 전에 막는다
+
+def test_structural_precheck_still_catches_out_of_range_citation():
+    rep = _report([("사건 [seg#9]", [9])])
+    with pytest.raises(StructuralError, match="범위"):
+        structural_precheck(rep, n_segments=3)
+
+def test_exempt_role_may_omit_citation():
+    """evidence claim이 아닌 필드(제목·metadata·한계)는 인용 의무가 없다 — D4 exempt."""
+    rep = {"video_id": "v", "sentences": [
+        {"sent_id": 0, "text": "소비에트 아파트 답사", "cites": [], "role": "title"},
+        {"sent_id": 1, "text": "사건 [seg#0]", "cites": [0]}]}
+    structural_precheck(rep, n_segments=3)                       # 예외 없음
+    judge = lambda prompt: '{"match": true}'
     out = eval_report(rep, _segs(3), gt_seg_indices=[0], judge=judge)
-    assert out["per_sentence"][0]["grounded"] is False   # 자동 ungrounded [15-1]
-    # cites=[] 문장은 judge 호출을 유발하지 않으므로 coverage 1회만 호출됨
-    # [m8m9-prompt-critique B-8: 무의미 assert 단순화]
-    assert len(calls) == 1
+    assert [p["sent_id"] for p in out["per_sentence"]] == [1]     # exempt는 판정 대상 아님
+    assert out["n_exempt_sentences"] == 1
+    assert out["groundedness_rate"] == 1.0                        # 분모에도 들어가지 않는다
+
+def test_exempt_roles_are_shared_with_the_render_validator():
+    """`aar_view`와 M9가 같은 판정을 쓰는지 — 사본을 만들면 다시 갈라진다."""
+    assert common.is_evaluable_sentence({"text": "x", "cites": []}) is True
+    assert common.is_evaluable_sentence({"text": "x", "role": "title"}) is False
+    assert common.uncited_evaluable_sentences(
+        [{"sent_id": 0, "cites": []}, {"sent_id": 1, "cites": [0]},
+         {"sent_id": 2, "cites": [], "role": "limitation"}]) == [0]
+
+# ---- D5 (2026-08-26 승인): taxonomy 2층. Layer1 동결 유지 · Layer2는 보조 진단 ----
+
+def test_frozen_event_taxonomy_is_unchanged():
+    """Layer 1 — 사건 정렬 실패 유형. 2026-08-18에 동결됐다. 늘리거나 줄이지 않는다."""
+    from m8_metrics import EVENT_ALIGNMENT_TYPES
+    assert EVENT_ALIGNMENT_TYPES == ("overmerge", "boundary_too_wide", "boundary_shift",
+                                     "missed_event", "spurious_event", "reasonable_match")
+
+def test_claim_grounding_reasons_are_secondary_only():
+    """Layer 2 — 왜 지원되지 않았는지 설명하는 reason code. **지표가 아니다.**
+
+    새 점수·비율로 집계되면 acceptance criterion이 하나 늘어난 것과 같다 [D5].
+    """
+    from m9_report_eval import CLAIM_GROUNDING_REASONS
+    assert len(CLAIM_GROUNDING_REASONS) == 9
+    assert "temporal_merge" in CLAIM_GROUNDING_REASONS          # overmerge와 층이 다르다
+    judge = lambda prompt: '{"match": true}'
+    out = eval_report(_report([("사건 [seg#0]", [0])]), _segs(3),
+                      gt_seg_indices=[0], judge=judge)
+    assert not [k for k in out if "reason" in k]                # 결과에 reason 집계 없음
+    assert not [k for k in out["per_sentence"][0] if "reason" in k]
 
 def test_rates_computed():
     # 호출 구분은 프롬프트 **구조**로 한다 — 문구("언급했는지")로 분기했더니 프롬프트
@@ -27,8 +85,10 @@ def test_rates_computed():
     def judge(prompt):
         if "검증 대상 문장:" not in prompt:               # coverage 호출
             return '{"match": true}' if "(idx 0)" in prompt else '{"match": false}'
-        return '{"match": true}'                          # groundedness 호출
-    rep = _report([("사건 [seg#0]", [0]), ("무근거", [])])
+        # groundedness 호출 — 인용은 있으나 뒷받침되지 않는 문장을 판정으로 걸러야 한다
+        # (인용 자체가 없는 문장은 D4 이후 구조 오류이므로 여기 올 수 없다)
+        return '{"match": false}' if "무근거" in prompt else '{"match": true}'
+    rep = _report([("사건 [seg#0]", [0]), ("무근거 [seg#1]", [1])])
     out = eval_report(rep, _segs(3), gt_seg_indices=[0, 1], judge=judge)
     assert out["groundedness_rate"] == 0.5               # 2문장 중 1개 grounded
     assert out["coverage_rate"] == 0.5                   # gt 2개 중 1개 커버

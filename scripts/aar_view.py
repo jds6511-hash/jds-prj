@@ -74,12 +74,21 @@ def build(report_path, segments_path, video_id: str | None = None) -> dict:
                  "리포트 생성 시점과 현재 인덱스의 구간 수가 같다"),
     }
 
-    out, cited = [], set()
+    # 인용 없는 evaluable 문장 판정은 `common`에 있다 — M9(m9_report_eval.structural_precheck)와
+    # **같은 함수**를 쓴다. 2026-08-26까지 이쪽은 거부하고 M9는 자동 ungrounded로
+    # 점수화해 기준이 둘이었다 [D4].
+    uncited = common.uncited_evaluable_sentences(rep["sentences"])
+    if uncited:
+        raise TraceError(f"sent {uncited}: 인용이 없다 — 추적 불가한 주장을 리포트에 "
+                         f"남기지 않는다 (인용 면제 역할: "
+                         f"{', '.join(common.CITATION_EXEMPT_ROLES)})")
+
+    out, cited, exempt = [], set(), 0
     for s in rep["sentences"]:
         cites = list(s.get("cites") or [])
-        if not cites:
-            raise TraceError(f"sent {s.get('sent_id')}: 인용이 없다 — 추적 불가한 "
-                             f"주장을 리포트에 남기지 않는다")
+        if not cites:                       # 면제 문장 — 추적 대상이 아니라 표시 대상이다
+            exempt += 1
+            continue
         bad = [c for c in cites if c not in segs]
         if bad:
             raise TraceError(f"sent {s.get('sent_id')}: 인용 범위 위반 {bad} "
@@ -111,6 +120,7 @@ def build(report_path, segments_path, video_id: str | None = None) -> dict:
         "report_schema_version": ver,
         "n_segments": n,
         "n_sentences": len(out),
+        "n_exempt_sentences": exempt,       # 인용 면제 역할 — 추적 대상에서 제외 [D4]
         "cited_segments": len(cited),
         "cited_fraction": round(len(cited) / n, 4) if n else 0.0,
         "coverage_note": ("인용된 구간 비율이다. M9의 coverage 지표가 아니고 "

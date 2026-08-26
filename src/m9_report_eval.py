@@ -1,5 +1,10 @@
 """M9 AAR 평가: Coverage(LLM-judge 이진) + Groundedness(G-Eval 3단계 CoT).
-cites==[] 문장은 judge 없이 자동 ungrounded. [DESIGN_SPEC 4-9, v2 14·17장]"""
+
+인용 없는 evaluable 문장은 **구조 오류**다 — 점수화하지 않는다(D4, 2026-08-26 승인).
+종전에는 judge 호출 없이 자동 ungrounded로 계수했으나, 같은 산출물을 `aar_view`는
+거부하고 있어 기준이 둘이었다. M8 출력 계약이 "인용이 붙은 문장 집합"이므로 거부 쪽으로
+통일한다. 근거: docs/finalization/M8_M9_DECISIONS_2026-08-26.md §D4
+[DESIGN_SPEC 4-9, v2 14·17장]"""
 import argparse, json, random, re
 from pathlib import Path
 import common
@@ -51,6 +56,17 @@ JSON으로만 답하라: {{"match": true}} 또는 {{"match": false}}
 # 통째 정확도 0.83(재현 0.73·특이도 0.93) / 8줄 0.90(0.80·1.00) / 4줄 0.90(0.93·0.87).
 # 8줄을 쓴다 — 4줄은 재현이 높지만 특이도가 떨어져 coverage를 부풀린다. [8-5(6-f)]
 COVERAGE_CHUNK_SENTENCES = 8
+
+# Layer 2 — claim grounding 진단 reason code [D5, 2026-08-26 승인].
+# **보조 진단이다.** groundedness 이진 판정이 primary이고, 이 코드는 "왜 지원되지
+# 않았는지"를 사람 스팟체크에서 적을 때 쓰는 고정 어휘다. 새 metric·acceptance
+# criterion으로 집계하지 않는다 — 집계하면 관문이 하나 늘어난 것과 같다.
+# Layer 1(사건 정렬 6분류, 동결)은 `m8_metrics.EVENT_ALIGNMENT_TYPES`에 있다.
+# `temporal_merge`↔`overmerge`는 이름이 닮았을 뿐 층이 다르다(문장 vs 사건).
+CLAIM_GROUNDING_REASONS = (
+    "unsupported_detail", "wrong_object", "wrong_action", "wrong_entity",
+    "temporal_merge", "unsupported_causality", "citation_mismatch",
+    "overgeneralization", "insufficient_evidence")
 
 
 def _parse_verdict(text: str) -> bool:
@@ -132,25 +148,47 @@ def coverage_by_type(per_gt: list[dict], gt_types: dict[int, list[str]]) -> dict
     return {t: round(sum(v) / len(v), 4) for t, v in buckets.items()}
 
 
+class StructuralError(RuntimeError):
+    """구조 검증 실패. 내용 판정 대상이 아니다 — 점수로 환산하면 "낮지만 정상"으로 읽힌다."""
+
+
+def structural_precheck(report: dict, n_segments: int) -> None:
+    """판정 전 구조 검증. `aar_view`와 같은 기준을 쓴다 [D4].
+
+    judge 비용을 다 치른 뒤가 아니라 **호출 전에** 막는다.
+    """
+    sents = report["sentences"]
+    uncited = common.uncited_evaluable_sentences(sents)
+    if uncited:
+        raise StructuralError(
+            f"sent {uncited}: 인용이 없다 — 추적 불가한 주장은 판정 대상이 아니다 "
+            f"(인용 면제 역할: {', '.join(common.CITATION_EXEMPT_ROLES)})")
+    bad = [(s.get("sent_id"), c) for s in sents for c in (s.get("cites") or [])
+           if not 0 <= c < n_segments]
+    if bad:
+        raise StructuralError(f"인용 범위 위반 {bad} (구간 0~{n_segments - 1}) — "
+                              f"라벨/seg_len 불일치 또는 인덱스 재생성 가능성")
+
+
 def eval_report(report: dict, segments: list[dict], gt_seg_indices: list[int],
                 judge, gt_types: dict[int, list[str]] | None = None) -> dict:
     by_idx = {s["idx"]: s for s in segments}
+    structural_precheck(report, len(segments))
     # gt 인덱스 범위 검증 — judge 비용을 다 치른 뒤 KeyError로 죽는 경로 차단
     # (m6 validate_gt_seg_idx의 대응물) [리뷰 2026-07-11 Major]
     bad_gt = [i for i in gt_seg_indices if i not in by_idx]
     assert not bad_gt, f"gt_seg_idx 범위 밖 인덱스 {bad_gt} — 라벨/seg_len 불일치 가능성"
+    # 인용 면제 문장(제목·metadata·한계)은 evidence claim이 아니므로 groundedness
+    # 분모에 넣지 않는다 — 넣으면 면제 문장을 늘려 비율을 올릴 수 있다 [D4]
+    evaluable = [s for s in report["sentences"] if common.is_evaluable_sentence(s)]
     per_sentence = []
-    for s in report["sentences"]:
-        if not s["cites"]:
-            # 자동 ungrounded, judge 호출 없음 — 원문이 없는 것과 "판정 실패"는
-            # 다른 상태이므로 None으로 둔다(빈 문자열이면 구분이 안 된다)
-            grounded, parse_ok, raw = False, True, None
-        else:
-            raw = judge(_grounded_prompt(s, [by_idx[c] for c in s["cites"]]))
-            grounded, parse_ok = _parse_verdict(raw), _parse_ok(raw)
+    for s in evaluable:
+        raw = judge(_grounded_prompt(s, [by_idx[c] for c in s["cites"]]))
+        grounded, parse_ok = _parse_verdict(raw), _parse_ok(raw)
         per_sentence.append({"sent_id": s["sent_id"], "cites": s["cites"],
                              "grounded": grounded, "judge_parse_ok": parse_ok,
                              "judge_raw": raw})
+    # coverage는 리포트가 사건을 **언급했는지**를 보므로 면제 문장도 본문에 포함한다
     report_text = "\n".join(s["text"] for s in report["sentences"])
     per_gt = []
     for i in sorted(set(gt_seg_indices)):
@@ -168,6 +206,7 @@ def eval_report(report: dict, segments: list[dict], gt_seg_indices: list[int],
     out = {
         "groundedness_rate": grounded_rate,
         "coverage_rate": coverage_rate,
+        "n_exempt_sentences": len(report["sentences"]) - len(evaluable),
         "per_sentence": per_sentence, "per_gt_segment": per_gt}
     if gt_types is not None:
         out["coverage_by_type"] = coverage_by_type(per_gt, gt_types)
@@ -227,9 +266,9 @@ def main():
     doc = common.load_segments(wdir / "segments.json", require=["subtitle", "caption"],
                                seg_len=cfg["seg_len_sec"])
     report = json.loads((wdir / "report.json").read_text(encoding="utf-8"))
-    n = doc["n_segments"]
-    for s in report["sentences"]:                       # 검증 포인트 [4-9]
-        assert all(0 <= c < n for c in s["cites"]), f"cites 범위 위반: {s}"
+    # 검증 포인트 [4-9] — judge 모델을 올리기 전에 구조를 본다. 실패는 STRUCTURAL FAIL이고
+    # 점수화하지 않는다 [D4]. 구조 위반을 수동 패치하지 않는다(PROTOCOL §6).
+    structural_precheck(report, doc["n_segments"])
 
     test_qs = [q for q in load_queries(args.queries)
                if q["split"] == "test" and q["video_id"] == args.video_id]
@@ -256,7 +295,13 @@ def main():
         rng = random.Random(cfg["seed"])
         pool = [s for s in report["sentences"]]
         sample = rng.sample(pool, min(cfg["human_check_n"], len(pool)))
-        common.atomic_write_json(human_path, sample)
+        # 고정 어휘를 같은 파일에 넣는다 — 자유 서술로 적으면 Layer 1(사건)과 Layer 2
+        # (문장 근거성)가 다시 섞인다. 이 코드는 **집계하지 않는 보조 진단**이다 [D5]
+        common.atomic_write_json(human_path, {
+            "reason_vocabulary": list(CLAIM_GROUNDING_REASONS),
+            "note": ("groundedness 이진 판정이 primary다. reason code는 왜 지원되지 "
+                     "않았는지를 적는 보조 진단이며 새 지표로 집계하지 않는다 [D5]"),
+            "sentences": sample})
         print(f"same_model_judge=true → 사람 스팟체크 {len(sample)}문장 추출")
 
 
