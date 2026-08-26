@@ -246,6 +246,9 @@ def main():
     ap.add_argument("--recompute-gt-seg-idx", action="store_true",
                     help="저장된 gt_seg_idx를 무시하고 gt_start/gt_end에서 cfg seg_len_sec 기준 "
                          "재계산 — seg_len ablation 전용 [ablation_plan 1-4④]")
+    ap.add_argument("--test-opening", metavar="사유",
+                    help="test 39건을 여는 사유. **test 평가에 필수** — 사용자 승인 사건이다 "
+                         "(CLAUDE.md 절대규칙 1). 결과 JSON에 그대로 기록된다")
     args = ap.parse_args()
     if args.static_threshold is not None and not args.dev_only:
         # 확정 config 값과 다른 threshold로 test를 평가하는 경로 차단 [8-5(2)]
@@ -254,6 +257,12 @@ def main():
     if args.recompute_gt_seg_idx and not args.dev_only:
         # 공식 test 평가는 확정 5초 라벨(gt_seg_idx)로만 수행 [9-1]
         ap.error("--recompute-gt-seg-idx는 --dev-only와 함께만 사용할 수 있습니다")
+    if not args.dev_only and not args.test_opening:
+        # test 접촉은 승인 사건인데 코드에는 게이트가 없었고 **기본 경로가 test 평가**였다.
+        # 규칙이 문서에만 있었다는 것은 `python src/m6_evaluate.py` 한 줄로 비가역
+        # 자원에 닿았다는 뜻이다 [감사 2026-08-26]
+        ap.error("test 평가는 승인 사건이다 — dev 작업이면 --dev-only, 승인받았으면 "
+                 "--test-opening '<사유>'로 사유를 남겨라 (CLAUDE.md 절대규칙 1)")
     cfg = common.load_config(args.config)
     queries = load_queries(args.queries)
     dev = [q for q in queries if q["split"] == "dev"]
@@ -291,6 +300,7 @@ def main():
     prop = evaluate(test, indexes, alpha, cfg)
     result = build_eval_result(test, base, prop, alpha, cfg)
     result["static_threshold"] = cfg["static_threshold"]   # 재현성 기록 [리뷰 2026-07-11]
+    result["test_opening"] = args.test_opening             # 이 실행이 test를 연 사유
     common.atomic_write_json(rdir / "eval_test.json", result)
     c = result["contested"]
     print(f"M6 완료: eval_test.json (baseline mrr={base['metrics']['mrr']}, "

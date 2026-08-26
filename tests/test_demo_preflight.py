@@ -173,6 +173,34 @@ def test_index_embed_model_mismatch_is_refused(tmp_path):
     assert "embed_model" in str(e.value)
 
 
+def test_index_without_caption_provenance_is_disclosed_not_blocked(tmp_path):
+    """확정 인덱스 11편에는 캡션 생성 기록이 없다 — 채우려면 재색인이다.
+
+    막으면 발표 데모가 통째로 죽고, 조용히 넘기면 "3B로 만든 캡션"이라는 주장이
+    산출물 없이 통과한다. 경고로 **보이게** 하고 실행은 막지 않는다 [감사 2026-08-26].
+    """
+    cfg = _cfg(tmp_path)
+    _index(cfg, "v")
+    r = D.preflight(cfg, "v", alpha=0.5)
+    assert r["ok"] is True
+    assert any("caption_provenance" in w for w in r["warnings"])
+
+
+def test_index_with_matching_caption_provenance_has_no_warning(tmp_path):
+    import hashlib
+    cfg = _cfg(tmp_path)
+    w = _index(cfg, "v")
+    doc = json.loads((w / "segments.json").read_text(encoding="utf-8"))
+    doc["caption_provenance"] = {
+        "config_caption_model": cfg["caption_model"],
+        "prompt_sha256": hashlib.sha256(
+            cfg.get("caption_prompt", "").encode("utf-8")).hexdigest()}
+    (w / "segments.json").write_text(json.dumps(doc, ensure_ascii=False),
+                                     encoding="utf-8")
+    r = D.preflight(cfg, "v", alpha=0.5)
+    assert not any("caption_provenance" in x for x in r["warnings"])
+
+
 # ---- 재생 대상 ------------------------------------------------------------
 
 def test_missing_mp4_is_reported_not_fatal(tmp_path):

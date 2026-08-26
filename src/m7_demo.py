@@ -2,6 +2,7 @@
 import argparse
 from pathlib import Path
 import common
+import eligibility
 from m5_search import VideoIndex, search
 
 
@@ -41,6 +42,11 @@ def main():
     ap.add_argument("--alpha", type=float, required=True,
                     help="eval에서 고정한 α (results/alpha_search_dev.json)")
     args = ap.parse_args()
+    # 자격 경계는 `scripts/demo.py`만이 아니라 진입점마다 강제한다 — 컴포넌트를
+    # 직접 실행하면 preflight를 지나지 않는다 [감사 2026-08-26]
+    block = eligibility.demo_block_reason(args.video_id)
+    if block:
+        raise SystemExit(block)
     cfg = common.load_config(args.config)
     video = VideoIndex.load(cfg, args.video_id)
     mp4 = Path(cfg["paths"]["data"]) / "videos" / f"{args.video_id}.mp4"

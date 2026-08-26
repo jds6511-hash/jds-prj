@@ -140,6 +140,17 @@ def preflight(cfg: dict, video_id: str, alpha: float) -> dict:
             f"config {cfg['embed_model']!r}와 다르다 — 점수가 비교 불가다")
     checks += 1
 
+    # 캡션 identity — text_hash는 "캡션과 임베딩이 같은 시점인가"만 본다. 어느 모델이
+    # 그 캡션을 썼는지는 `caption_provenance`에만 있고, 그건 2026-08-17 도입이라
+    # 확정 인덱스 11편에는 없다(채우려면 재색인). 불일치는 m5가 막고, **증거가 없다는
+    # 사실 자체를 여기서 보이게 한다** — 없는 것을 있는 것처럼 넘기지 않는다 [감사 2026-08-26]
+    prov = doc.get("caption_provenance")
+    if not prov:
+        warnings.append(
+            f"{video_id}: 캡션 생성 기록(caption_provenance)이 없다 — 이 인덱스의 "
+            f"캡션이 config의 caption_model로 만들어졌다는 것을 산출물로 확인할 수 없다")
+    # 게이트가 아니라 공시다 — `checks`를 올리지 않는다(mp4·AAR 경고와 같은 취급).
+
     embs = {}
     for name in ("emb_sub", "emb_cap"):
         a = np.load(wdir / f"{name}.npy")

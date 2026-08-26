@@ -134,7 +134,12 @@ M3가 전체의 대부분이다. GPU 성능에 비례해 줄어든다.
 | 자막·캡션 (`work/*/segments.json`) | X | M1~M3 실행 |
 | 임베딩 (`work/*/emb_*.npy`) | X | M4 실행 |
 
-**따라서 `python src/m6_evaluate.py`는 clone 직후에 동작하지 않는다** —
+평가 진입점에는 경계가 하나 더 있다. **test 39건 접촉은 승인 사건이므로**
+`src/m6_evaluate.py`는 `--dev-only` 없이 돌리려면 `--test-opening '<사유>'`를,
+`src/m9_report_eval.py`는(질의를 `split=="test"`로 하드코딩해 읽으므로 실행 자체가
+test 접촉이다) 항상 `--test-opening '<사유>'`를 요구한다. 사유는 결과 JSON에 기록된다.
+
+**따라서 `python src/m6_evaluate.py --dev-only`는 clone 직후에 동작하지 않는다** —
 `work/{video_id}/emb_sub.npy`·`emb_cap.npy`·`meta.json`을 요구하고([m5_search.py:60-73](src/m5_search.py#L60-L73)),
 셋 다 저장소에 없다. 같은 영상을 구해 M1~M4를 돌린 뒤에야 평가가 재현된다.
 

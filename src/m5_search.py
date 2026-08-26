@@ -29,6 +29,11 @@ def zscore(x: np.ndarray) -> np.ndarray:
 
 def combine_scores(s_sub: np.ndarray, s_cap: np.ndarray,
                    static_mask: np.ndarray, alpha: float) -> np.ndarray:
+    # α 범위 검증 — CLI `--alpha`에는 검증이 없어 1.5·NaN도 그대로 흘러든다. 가중합이라
+    # 예외 없이 "동작"하고 랭킹만 조용히 무의미해진다. 진입점마다 막지 않고 여기서 한 번
+    # 막는다 — 모든 검색·평가 경로가 이 함수를 지난다 [감사 2026-08-26]
+    if not (0.0 <= float(alpha) <= 1.0):   # NaN도 걸린다(모든 비교가 False)
+        raise ValueError(f"alpha={alpha}는 [0, 1] 밖이다 — 융합 가중치 범위 위반")
     # 2) 채널별 z-score 정규화 (단일 영상 범위). minmax에서 개정(2026-07-13):
     #    per-query 극값이 유효 범위를 압축해 dev 96에서 유의 손실(-0.065 mrr, CI 0
     #    배제)을 만드는 것이 실측됨 — docs/probes/fusion_alternatives_probe.py.
@@ -37,6 +42,36 @@ def combine_scores(s_sub: np.ndarray, s_cap: np.ndarray,
     s_cap_n = s_cap_n.copy()
     s_cap_n[static_mask] = s_sub_n[static_mask]  # 3) 정규화 '이후' 치환 [v2 8-4]
     return alpha * s_sub_n + (1 - alpha) * s_cap_n  # 4) 가중합
+
+
+def _check_caption_identity(cfg: dict, doc: dict, video_id: str) -> None:
+    """인덱스의 캡션이 **지금 config가 주장하는 모델·프롬프트로 생성됐는지** 대조한다.
+
+    `text_hash`는 "캡션과 임베딩이 같은 시점인가"만 본다 — 어느 모델이 그 캡션을
+    썼는지는 보지 않는다. 4B로 만든 인덱스를 3B config로 열면 두 해시가 모두 맞으므로
+    통과하고, 그 검색 결과가 "3B 배포"로 보고된다 [감사 2026-08-26].
+
+    증거가 없는 인덱스는 통과시킨다 — `caption_provenance`는 2026-08-17 도입이라
+    확정 인덱스 11편에는 없고, 채우려면 재색인이 필요하다. **있는 것은 반드시 본다.**
+    """
+    prov = doc.get("caption_provenance")
+    if not prov:
+        return
+    want_model = cfg.get("caption_model")
+    got_model = prov.get("config_caption_model") or prov.get("model_id")
+    if want_model and got_model and want_model != got_model:
+        raise ValueError(
+            f"캡션 모델 불일치: index={got_model} config={want_model} "
+            f"({video_id}) — 다른 모델이 만든 캡션이다")
+    want_prompt = cfg.get("caption_prompt")
+    got_prompt = prov.get("prompt_sha256")
+    if want_prompt and got_prompt:
+        import hashlib
+        h = hashlib.sha256(want_prompt.encode("utf-8")).hexdigest()
+        if h != got_prompt:
+            raise ValueError(
+                f"캡션 프롬프트 불일치: index={got_prompt[:12]} config={h[:12]} "
+                f"({video_id}) — 다른 프롬프트로 만든 캡션이다")
 
 
 @dataclass
@@ -69,6 +104,7 @@ class VideoIndex:
         if "text_hash" in meta and meta["text_hash"] != common.index_text_hash(doc):
             raise ValueError("segments.json 텍스트와 임베딩 불일치(재캡셔닝 후 미갱신) "
                              "— run m4_index.py --force")
+        _check_caption_identity(cfg, doc, video_id)
         emb_sub = np.load(wdir / "emb_sub.npy")
         emb_cap = np.load(wdir / "emb_cap.npy")
         n_seg = len(doc["segments"])

@@ -213,7 +213,14 @@ def main():
     ap.add_argument("--config", default="config.yaml")
     ap.add_argument("--video-id", required=True)
     ap.add_argument("--queries", default="data/queries/queries.jsonl")
+    ap.add_argument("--test-opening", metavar="사유",
+                    help="이 모듈은 split==\"test\" 질의만 읽는다 — **실행 자체가 test 접촉**이다. "
+                         "사용자 승인 사건 사유를 적는다 (CLAUDE.md 절대규칙 1)")
     args = ap.parse_args()
+    if not args.test_opening:
+        raise SystemExit(
+            "M9는 test 질의만 읽는다 — 실행 자체가 test 접촉이고 승인 사건이다. "
+            "승인받았으면 --test-opening '<사유>'로 사유를 남겨라 (CLAUDE.md 절대규칙 1)")
     cfg = common.load_config(args.config)
     check_judge_config(cfg)
     wdir = common.work_dir(cfg, args.video_id)
@@ -241,6 +248,7 @@ def main():
                              {"video_id": args.video_id,
                               "schema_version": SCHEMA_VERSION,
                               "judge_model": cfg["judge_model"],
+                              "test_opening": args.test_opening,
                               "provenance": judge_provenance(judge, cfg), **out})
     print(f"M9 완료: coverage={out['coverage_rate']} groundedness={out['groundedness_rate']}")
 

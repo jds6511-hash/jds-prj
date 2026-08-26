@@ -146,10 +146,21 @@ def test_m4_propagates_instead_of_recomputing():
 
 
 def test_provenance_is_not_used_in_metrics_or_eligibility():
-    """기록 전용이다 — 지표·적격 판정에 들어가면 안 된다."""
+    """**영상 출처** provenance는 기록 전용이다 — 지표·적격 판정에 들어가면 안 된다.
+
+    판정 대상은 이 모듈이 다루는 출처 기록(`source_url`·`source_id`·`file_sha256`,
+    `doc["provenance"]`)이다. 2026-08-26까지는 파일 전체에서 `"provenance"` 문자열
+    유무만 봤는데, 그 검사는 **이름이 겹치는 다른 기록까지 같이 막았다** —
+    `m3_generate.caption_provenance`(캡션 생성 조건)를 m5가 읽어 인덱스 캡션이 config의
+    모델·프롬프트로 만들어졌는지 대조하는 fail-closed guard가 여기서 걸렸다.
+    그 guard는 지표도 eligibility도 아니므로 금지 대상이 아니다. 규칙을 완화하지 않고
+    **대상을 정확히 좁힌다.**"""
+    banned = ("import provenance", "source_url", "source_id", "file_sha256",
+              '"provenance"', "'provenance'", "legacy_exempt")
     for name in ("m6_evaluate.py", "m5_search.py"):
         src = (ROOT / "src" / name).read_text(encoding="utf-8")
-        assert "provenance" not in src, name
+        for token in banned:
+            assert token not in src, f"{name}: {token}"
     gate = (ROOT / "scripts" / "p2_staging_verify.py").read_text(
         encoding="utf-8")
     # 게이트는 provenance를 기록하지만 판정식에는 n_segments만 쓴다
