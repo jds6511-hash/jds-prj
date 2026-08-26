@@ -1,6 +1,12 @@
-# 최종 보고서 개요 (2026-08-25)
+# 최종 보고서 개요 (2026-08-25 · 08-26 보강)
 
 각 절에 **어느 산출물에서 가져올지**를 붙였다. 새로 계산할 것은 없다.
+
+> **집필은 F5 source pack에서 시작한다** — `FINAL_REPORT_SOURCE_PACK_2026-08-26.md`가
+> 절별 본문 재료·수치·쉬운 표현·표그림 후보를 전부 담고 있고, 주장별 근거·허용/금지
+> 표현은 `CLAIM_EVIDENCE_MATRIX_2026-08-26.md`(C01~C20), 수치의 source-of-truth는
+> `final_report_facts_2026-08-26.json`이다. **이 개요는 절 배치 지도로 쓴다.**
+> 08-26에 추가된 절은 아래 §12에 적었다.
 
 ## 1. 문제 정의 (1~1.5p)
 
@@ -90,8 +96,30 @@ Qwen3-VL 세대 개선 주장 · 본 endpoint를 대리하지 못하는 5가지 
 ## 11. 한계와 향후 과제 (1~1.5p)
 
 ```
-한계 10항목 · 향후 과제 7항목 — 두 절을 분리한다
-출처     LIMITATIONS_FUTURE_WORK_2026-08-25.md
+한계 14항목 · 향후 과제 7항목 — 두 절을 분리한다
+출처     LIMITATIONS_FUTURE_WORK_2026-08-25.md · final_report_facts L01~L15
+```
+
+## 12. 08-26에 추가되는 절
+
+```
+캡션 → 검색 케이스 스터디 (1~1.5p)
+  영상 1편 · 5장면 · 15질의 · caption-only · scene02(1위 역전) · scene01(오답 1위 추적)
+  caveat: one-video qualitative case study · 성능 추정·채택 근거 아님
+  출처   FINAL_REPORT_SOURCE_PACK §6 · caption_retrieval_casestudy_results.json
+
+external E2E 기능 검증 (0.5~1p)
+  PHASE 1~4 (58 · 125 · 258 · 824구간) 전부 functional PASS · kfood 제외(인증)
+  caveat: benchmark·정확도 아님 · anchor REVIEW는 external timestamp 품질 문제
+  출처   FINAL_REPORT_SOURCE_PACK §10 · e2e_external_results.json
+
+캡션 QC 한계 (0.5p)
+  현행 규칙이 flag하지 않은 추가 foreign-script candidate — 오염 GT 아님
+  출처   FINAL_REPORT_SOURCE_PACK §11 · LIMITATIONS 11
+
+AAR 상태는 §8에서 **PARTIAL**로 적는다
+  runbook·렌더·추적 경로 준비 완료 · 서버 생성 artifact 1회 남음
+  출처   AAR_SERVER_RUNBOOK_2026-08-26.md
 ```
 
 ## 부록

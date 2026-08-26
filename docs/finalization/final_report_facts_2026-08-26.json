@@ -1,0 +1,489 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-08-26",
+  "purpose": "최종 보고서에서 사용하는 확정 fact index. raw-result dump가 아니라 보고서용 source-of-truth 색인이다. 각 numeric fact에 source_path를 붙인다.",
+  "produced_by": "F5 (최종 보고서 source pack + claim-evidence matrix)",
+  "new_experiment_run": false,
+  "new_metric_computed": false,
+  "recomputed_official_metrics": false,
+
+  "deployment": {
+    "caption_model": {"value": "Qwen/Qwen2.5-VL-3B-Instruct", "source_path": "config.yaml"},
+    "caption_prompt": {"value": "P0", "note": "화면 글자 전사 금지 문구 포함", "source_path": "config.yaml"},
+    "vlm_4bit": {"value": true, "note": "NF4 · double quant", "source_path": "config.yaml"},
+    "stt_model": {"value": "large-v3", "source_path": "config.yaml"},
+    "embed_model": {"value": "nlpai-lab/KURE-v1", "embedding_dim": 1024, "source_path": "config.yaml"},
+    "seg_len_sec": {"value": 5, "source_path": "config.yaml"},
+    "static_threshold": {"value": 0, "note": "치환 off", "source_path": "config.yaml"},
+    "fusion": {"value": "채널별 z-score 정규화 후 alpha 가중합", "source_path": "src/m5_search.py"},
+    "alpha": {
+      "value": 0.5,
+      "in_config": false,
+      "injection": "CLI --alpha",
+      "alpha_star": 0.5,
+      "alpha_best_point": 0.4,
+      "tie_set": [0.2, 0.4, 0.5],
+      "selection": "dev grid search · paired-diff bootstrap B=2000 seed 42",
+      "source_path": "results/alpha_search_dev.json"
+    },
+    "abstention_tau": {
+      "value": 0.55,
+      "channel": "max(sub, cap)",
+      "user_visible_behavior": "저관련도 배너 경고뿐 — 랭킹·결과 불변, 결과 숨김·거부 없음",
+      "source_path": "docs/DESIGN_SPEC.md §8-2"
+    },
+    "preflight_checks": {"value": 12, "source_path": "scripts/demo.py"},
+    "unit_tests": {"value": 1748, "as_of": "2026-08-26", "note": "테스트 추가마다 바뀌는 값이다. 인용 시점의 pytest 실측이 authoritative다", "source_path": "tests/ (pytest --collect-only)"},
+    "deployment_changed_in_finalization": false
+  },
+
+  "deployment_decision": {
+    "status": "incumbent Qwen2.5-VL-3B retained",
+    "reason": "3B가 4B보다 우월하다고 증명되어서가 아니라, 4B로 교체할 충분한 fresh deployment-relevant evidence를 확보하지 못했기 때문",
+    "scientific_superiority": "unresolved",
+    "candidate_4b": {
+      "model": "Qwen/Qwen3-VL-4B-Instruct",
+      "status": "viable candidate · not adopted",
+      "operationally_feasible": true
+    },
+    "forbidden_wording": [
+      "3B winner", "3B 승리", "3B proven superior", "3B가 더 좋은 모델로 검증됐다",
+      "4B loser", "4B failed", "4B 실패", "4B rejected", "4B 기각",
+      "4B cheaper", "4B 운영비가 더 싸다", "4B compute-efficient", "계산적으로 더 효율적",
+      "P3를 못 해서 3B가 이겼다"
+    ],
+    "source_path": "docs/finalization/MODEL_SELECTION_CASE_STUDY_2026-08-25.md"
+  },
+
+  "official_test_result": {
+    "scope": "공식 test 39질의 · 영상 4편 · 확정 배포 구성 · frozen",
+    "n_queries": {"total": 39, "자막형": 12, "복합형": 14, "장면형": 13},
+    "n_video_clusters": 4,
+    "alpha_from_dev": 0.5,
+    "baseline": {"label": "자막 단독", "mrr": 0.6489, "hit@1": 0.5641, "hit@5": 0.7692, "hit@10": 0.7949},
+    "proposed": {"label": "자막+캡션 융합 α=0.5", "mrr": 0.8286, "hit@1": 0.7692, "hit@5": 0.8718, "hit@10": 0.9231},
+    "diff_ci95": {
+      "mrr": [0.0583, 0.3098],
+      "hit@1": [0.0769, 0.3590],
+      "hit@5": [-0.0256, 0.2564],
+      "hit@10": [-0.0256, 0.2821]
+    },
+    "significance_note": "Hit@5·Hit@10은 CI가 0을 포함한다 — 유의를 주장하지 않는다",
+    "by_type_mrr": {
+      "장면형": {"baseline": 0.1741, "proposed": 0.7183, "n": 13},
+      "복합형": {"baseline": 0.8246, "proposed": 0.8869, "n": 14},
+      "자막형": {"baseline": 0.9583, "proposed": 0.8802, "n": 12, "note": "유일한 하락 — 트레이드오프이고 숨기지 않는다"}
+    },
+    "by_type_test_note": "유형별 수치는 사후 부분집합이고 검정하지 않았다. 헤드라인은 전체 MRR·Hit@1이다",
+    "test_contact": {"tuning": 0, "official_procedures": 7, "note": "검색 M6 5회 + 리포트 M9 2회", "source_path": "docs/DESIGN_SPEC.md §8-6"},
+    "source_path": "results/eval_test.json"
+  },
+
+  "model_selection": {
+    "endpoint_note": "캡션 단독(α=0.0)과 융합(α=0.5)은 다른 endpoint다. 값을 섞어 쓰지 않는다",
+    "aihub": {
+      "sample": "AI Hub · reused sample",
+      "reuse_note": "4B/P1 vs 3B/P0 확증에 이미 1회 사용했다 — 확증이 아니라 선택·추정이다",
+      "n_queries": 1086,
+      "n_video_clusters": 194,
+      "n_captions_per_arm": 2328,
+      "candidates_per_query": 12,
+      "precision": "양 arm bf16",
+      "caption_only_delta_4b_minus_3b": {"value": 0.0310, "query_ci95": [0.0080, 0.0536], "cluster_ci95": [0.0101, 0.0533], "macro_ci95": [0.0165, 0.0626], "p": 0.006, "bh_q05": "유의"},
+      "caption_only_mrr": {"3b_p0": 0.4773, "4b_p0": 0.5083},
+      "fusion_alpha_0_5_delta": {"value": 0.0191, "ci_note": "cluster에서 0 배제 · query CI는 0 포함"},
+      "subtitle_only_mrr": {"value": 0.4107, "note": "네 arm 전부 동일 — 캡션 arm 교체가 자막 채널을 건드리지 않았다는 채널 격리 증거"},
+      "caption_length_chars": {"3b_p0": 131.4, "4b_p0": 82.0},
+      "prompt_effect": {"at_3b": 0.0046, "at_4b": 0.0067, "interaction": 0.0021, "verdict": "전부 비유의 — 효과는 거의 전부 모델 몫"},
+      "source_path": "docs/재분석_2x2_2026-08-18.md"
+    },
+    "dev": {
+      "sample": "dev · deployment-like",
+      "n_queries": 96,
+      "n_video_clusters": 3,
+      "cluster_note": "cluster 3이므로 CI는 diagnostic_only다 — formal gate로 쓰지 않는다",
+      "precision": "양 arm 실효 4bit",
+      "caption_only_mrr": {"3b_p0_4bit": 0.4644, "4b_p0_4bit": 0.3741, "4b_p0_bf16": 0.3650},
+      "caption_only_delta_deploy": {"value": -0.0903, "ci95": [-0.2112, -0.0276], "ci_interpretation": "diagnostic_only"},
+      "delta_quant": {"value": 0.0091, "ci95": [-0.0406, 0.0656], "verdict": "양자화는 설명이 아니다 — 4B bf16도 함께 열세였다"},
+      "fusion_alpha_0_5_delta": {"value": -0.0764, "ci": null, "ci_note": "산술 차이. SECONDARY에 CI 추정을 사전등록하지 않아 CI를 붙이지 않는다"},
+      "subtitle_only_mrr": {"value": 0.4144, "note": "α=1.0에서 세 arm 전부 동일. AI Hub의 0.4107과 다른 데이터셋이므로 서로 비교하지 않는다"},
+      "by_query_type_caption_only_delta": {
+        "복합형": {"value": -0.2407, "n": 34},
+        "자막형": {"value": -0.0412, "n": 24},
+        "장면형": {"value": 0.0132, "n": 38}
+      },
+      "query_type_labels_in_aihub": false,
+      "caption_length_chars_deployment_laptop": {"3b": 133.6, "4b": 82.9},
+      "corrupted_caption_retry": {"3b_p0_4bit": 3, "4b_p0_4bit": 14, "4b_p0_bf16": 15, "of_segments": 655, "causal_claim": false},
+      "source_path": "docs/재분석_dev정밀도3arm_2026-08-18.md"
+    },
+    "sign_reversal": {
+      "statement": "두 데이터에서 차이의 방향이 반대로 나타났다",
+      "both_ci_exclude_zero": true,
+      "neither_is_confirmatory": true,
+      "forbidden_wording": ["두 데이터가 서로를 완전히 부정한다", "dev가 3B 승리를 증명했다"],
+      "source_path": "docs/재분석_부호역전_2026-08-18.md"
+    },
+    "explanations": {
+      "confirmed_observed": [
+        "AI Hub는 짧은 clip 구조 · 영상당 후보 12구간 (본 배포는 영상당 약 150~400구간)",
+        "subtitle availability 차이 — AI Hub는 자막 공백 비율이 높다",
+        "caption embedding pairwise 유사도 차이 — AI Hub 0.7603 vs 본 인덱스 0.5629 (segment distinguishability 차이)",
+        "dev는 영상 3편 · cluster 3으로 작다",
+        "AI Hub 1,086은 재사용 표본이다",
+        "dev 질의 유형별 방향이 갈린다 (복합형 −0.2407 ↔ 장면형 +0.0132)",
+        "후보 풀 크기 조작에서 I_pool 부호가 두 데이터셋 모두 예측대로 음수다"
+      ],
+      "plausible_unconfirmed": [
+        "query composition interaction (AI Hub에는 유형 라벨이 없어 검정 불가)",
+        "caption style ↔ query style 적합성",
+        "dataset domain composition 차이",
+        "공개 벤치마크 학습 노출 가능성"
+      ],
+      "unexplained_gap": {"value": 0.067, "note": "풀 크기로 설명되지 않고 남은 격차. I_pool을 adoption gate로 승격하지 않는다 — plausible contributor까지다"},
+      "interpretation_grade": "plausible contributor only — no root-cause proof",
+      "source_path": "docs/재분석_P1풀크기_2026-08-18.md"
+    }
+  },
+
+  "case_study": {
+    "id": "caption_retrieval_casestudy_2026-08-25",
+    "study_type": "qualitative / illustrative / one-video case study",
+    "adoption_evidence": false,
+    "model_superiority_evidence": false,
+    "formal_model_selection_experiment": false,
+    "video_id": "pland_costco_hosting",
+    "n_segments": 395,
+    "n_scenes": 5,
+    "scene_indices": [0, 79, 158, 237, 316],
+    "n_queries": 15,
+    "queries_per_scene": 3,
+    "query_types": ["Q1_object", "Q2_action", "Q3_relation"],
+    "view": "caption-only",
+    "alpha": 0.0,
+    "alpha_sweep": false,
+    "comparison": "fresh_3b_q4_vs_fresh_4b_q4",
+    "outcome_blind_freeze": true,
+    "frozen_queries_sha256": "752e8fe3de1e3f06995b099a62c4fde451deb82a4e44fbdf1b68ac3481792747",
+    "frozen_scenes_sha256": "d41fe13c46e61efe7d7c2617255d5c5ba396b3b8ba9459b41984db5cc69d13d9",
+    "counts": {
+      "illustrative_top1_hit": {"3b": 2, "4b": 2, "of": 15},
+      "queries_with_higher_target_rank": {"3b": 4, "4b": 11, "tie": 0, "of": 15},
+      "median_target_rank": {"3b": 31, "4b": 10},
+      "caption_length_mean_chars": {"3b": 128.5, "4b": 76.4},
+      "current_qc_rule_flags": {"3b": 4, "4b": 1}
+    },
+    "counts_caveat": "한 영상 5장면 15질의의 one-video qualitative case-study count다. 모델 정확도·superiority estimate·benchmark·유의성 결과가 아니고 채택 근거로 쓰지 않는다",
+    "headline_observations": {
+      "scene02": "같은 프레임에서 3B는 배너 문구를, 4B는 냉장 진열대를 캡션에 남겼고, 질의가 어느 요소를 묻느냐에 따라 top1이 뒤집혔다",
+      "scene01": "target 캡션에 질의 어휘(팬·기름·새우·튀기다)가 없어, 그 어휘를 가진 다른 구간(seg188)이 1위가 됐다"
+    },
+    "environment_limitation": "repository HEADs differed, but no differences were found in the generation code/config path. Both runs used dirty working trees; exact equality of the uncommitted state was not established.",
+    "source_path": "docs/finalization/caption_retrieval_casestudy_results.json",
+    "secondary_sources": [
+      "docs/finalization/CAPTION_RETRIEVAL_CASESTUDY_RESULTS_2026-08-25.md",
+      "docs/finalization/CAPTION_RETRIEVAL_CASESTUDY_TABLE.md",
+      "docs/finalization/caption_retrieval_casestudy_comparability_audit.json",
+      "docs/tutor/캡션검색_케이스스터디_1페이지.md"
+    ]
+  },
+
+  "p2": {
+    "status": "annotation-cost-driven HOLD",
+    "design": "p2_175",
+    "planned_labels": 175,
+    "completed_labels": 20,
+    "incomplete_labels": 155,
+    "n_videos": 35,
+    "queries_per_video": 5,
+    "quota": {"복합형": 62, "자막형": 44, "장면형": 69},
+    "fixed_n": true,
+    "no_outcome_based_top_up": true,
+    "two_arm_captions_index_prepared": true,
+    "retrieval_run": false,
+    "evaluation_run": false,
+    "outcome_opened": false,
+    "partial_20_analyzed": false,
+    "bottleneck": "도구가 아니라 라벨 작성 자체",
+    "forbidden_wording": ["155 total", "P2 result", "partial performance", "failed experiment", "P2 HOLD가 3B 우세의 증거", "P2 HOLD가 4B 기각의 증거"],
+    "source_path": "docs/P2_활성설계_2026-08-24.json"
+  },
+
+  "p3": {
+    "status": "설계 동결 · 실행 HOLD · future work",
+    "design_frozen_at": "2026-08-24",
+    "decided_before_outcome_access": true,
+    "primary_channel": "rr_fus_alpha_0_5",
+    "key_secondary_channel": "rr_cap_alpha_0_0",
+    "secondary_is_co_primary": false,
+    "minimum_deployment_relevant_gain": {"value": 0.02, "kind": "deployment_policy_threshold", "is_measured_constant": false},
+    "primary_half_width_target": 0.02,
+    "video_clusters": 300,
+    "queries_per_video": 5,
+    "total_gt_rows": 1500,
+    "math_minimum": {"video_clusters": 273, "total_gt_rows": 1365},
+    "primary_projected_half_width": 0.0191,
+    "secondary_projected_half_width": 0.0204,
+    "sample_size_driver": "PRIMARY",
+    "precision_claim_rule": "1,500은 현재 설계·가정(historical variance + ICC=0 근사)에서 정한 표본 규모다. '1,500행이면 +0.02를 반드시 검출한다'가 아니다 — 검출 보장이 아니고 실제 P3 cluster 구조에서는 더 넓어질 수 있다",
+    "topup_after_results_allowed": false,
+    "labeling_route": "external_human_annotator",
+    "blocking_item": "annotation_logistics",
+    "blocking_note": "통계 설계가 덜 끝나서가 아니다. 1,500행을 처리할 외부 annotator 경로가 확보되기 전에는 표본 수집도 시작하지 않는다",
+    "rights_audit": {"videos_audited": 35, "all_unclear": true, "pilot_cohort_secured": 0, "pilot_cohort_target": 10, "source_path": "docs/P3_반출권한감사_2026-08-24.json"},
+    "icc_zero_assumed_as_truth": false,
+    "source_path": "docs/P3_설계민감도_2026-08-24.json"
+  },
+
+  "operational": {
+    "probe": "p3_opcost_v1",
+    "device": "RTX 3060 Laptop · vram_total 6.0GB · 실제 배포 노트북",
+    "precision": "양 arm 실효 4bit (quantization_mismatch false)",
+    "sample": {"frames": 40, "videos": 11, "seed": 20260824, "frozen_before_run": true, "selection": "경로 해시 정렬 — 내용 신호 미사용"},
+    "batch": "3b → 4b → 3b → 4b 교대 · 블록 2개",
+    "wallclock_per_frame_median_sec": {
+      "3b": {"run1": 8.061, "run2": 8.344},
+      "4b": {"run1": 5.974, "run2": 5.895},
+      "ratio_4b_over_3b": [0.7411, 0.7065]
+    },
+    "peak_reserved_vram_gb": {"3b": 2.637, "4b": 3.068, "delta": 0.431},
+    "peak_allocated_vram_gb": {"3b": 2.440, "4b": 3.043, "delta": 0.604},
+    "min_free_vram_during_generation_gb": {"3b": [2.338, 2.420], "4b": 1.906},
+    "model_storage_gb": {"3b": 7.00, "4b": 8.28, "delta": 1.28},
+    "oom_count": {"3b": 0, "4b": 0},
+    "failure_count": {"3b": 0, "4b": 0},
+    "output_length_chars": {"3b": 133.6, "4b": 82.9},
+    "output_tokens": {"3b": 92.2, "4b": 59.7},
+    "tokens_per_wallclock_sec": {"3b": 11.05, "4b": 10.13, "ratio": 0.9165},
+    "determinism_observation": "두 실행에서 출력 길이·토큰이 완전 동일했다. timing만 3B +3.5% · 4B −1.3%로 움직이고 방향은 불변",
+    "verdict": "deployment blocker는 관측되지 않았고, resource-footprint penalty는 관측됐다",
+    "not_measured": ["retrieval 성능", "캡션 품질", "MRR", "전력 소비", "금전 비용", "수천 구간 연속 실행의 장기 안정성", "model load 구간의 free VRAM 수치", "decoder token-generation 속도 분리 측정"],
+    "causal_claim_output_length_to_wallclock": false,
+    "descriptive_not_population_estimate": true,
+    "pipeline_timing_3b_395seg_33min_video": {"m1": "수 초", "m2": "약 25분", "m3": "약 75분", "m4": "약 2분", "m6": "약 2분"},
+    "disk": {"search_models_gb": 12, "artifacts_per_video_mb": 75},
+    "source_path": "docs/finalization/OPERATIONAL_PROFILE_SUMMARY_2026-08-25.md",
+    "frozen_raw": ["docs/probes/_scratch/p3_opcost_full.json", "docs/probes/_scratch/p3_opcost_full_prelim_no_reserved.json", "docs/probes/_scratch/p3_opcost_verdict.json"]
+  },
+
+  "e2e": {
+    "suite_id": "e2e_external_core_2026-08-25",
+    "kind": "external functional validation",
+    "research_metric": false,
+    "is_benchmark": false,
+    "is_accuracy_evaluation": false,
+    "status": "COMPLETE",
+    "core_videos_planned": 4,
+    "core_videos_run": 4,
+    "excluded": [{"e2e_id": "e2e_kfood", "reason": "authentication required — 우회하지 않았다"}],
+    "coverage_statement": "short / speech / mixed / long-form external functional paths completed",
+    "phases": [
+      {"phase": 1, "e2e_id": "e2e_scene_fast", "role": "짧은 장면 중심", "duration_sec": 287.951, "segments": 58, "verdict": "PASS", "pipeline_elapsed_sec": 538, "subtitle_rows": 47},
+      {"phase": 2, "e2e_id": "e2e_speech_medium", "role": "발화 중심 강연", "duration_sec": 623.595, "segments": 125, "verdict": "PASS", "pipeline_elapsed_sec": 2001, "subtitle_rows": 92},
+      {"phase": 3, "e2e_id": "e2e_cooking_1", "role": "장면+발화 혼합", "duration_sec": 1289.474, "segments": 258, "verdict": "PASS", "pipeline_elapsed_sec": 2610, "subtitle_rows": 162},
+      {"phase": 4, "e2e_id": "e2e_interview", "role": "OPTIONAL_LONGFORM_STRESS — 필수 gate가 아니었지만 실행했다", "duration_sec": 4115.992, "segments": 824, "verdict": "PASS", "pipeline_elapsed_sec": 8468}
+    ],
+    "stages_verified": ["ingest", "stt", "caption", "embedding", "index", "search", "playback"],
+    "playback_evidence": {"range_request_status": 206, "wrong_id_status": 404, "seek_equals_start": true},
+    "provenance": {"status": "recorded", "sha256_verified_at_m1": true},
+    "anchor_issue": {
+      "phase": 4,
+      "level_1_anchors": 2,
+      "status": "REVIEW",
+      "classification": "external timestamp reference의 데이터 품질 문제 — 검색 품질 판정이 아니다",
+      "evidence": "anchor 1465s의 실제 자막은 '뷔 만드는 과정', 1563s는 '쌀이 생긴 라면' 내용이다",
+      "action_taken": "anchor를 사후 수정하지 않고 REVIEW로 기록했다",
+      "not_used_as": "검색 정확도·성능 근거",
+      "functional_fail": false
+    },
+    "defects_found_and_fixed": [
+      "M1 provenance fail-closed가 미등록 영상을 막았다 — 정상 동작",
+      "level 1 anchor 경로 첫 실행에서 semantic_observation에 (start,end) 쌍 대신 시작값만 넘기던 검증기 버그가 드러났다 — 고치고 재실행"
+    ],
+    "observations_not_converted_to_metrics": [
+      "PHASE 1 seg51 캡션이 지시문을 되받아 적었다 — 현행 오염 판정에 걸리지 않는다. 규칙을 바꾸지 않고 관측만 기록",
+      "PHASE 4 824구간에서 규모 관련 색인·검색·seek·resume 결함이 관측되지 않았다"
+    ],
+    "corruption_wording": "각 run의 '오염 0'은 현행 detector 기준 flag 0이라는 뜻이다. 절대적 무오염으로 읽지 않는다",
+    "source_path": "docs/finalization/e2e_external_results.json"
+  },
+
+  "caption_qc_limitation": {
+    "current_rule": "한자·가나 절대 3자 이상 또는 비율 20% 초과 (common.is_corrupted_caption)",
+    "hypothetical_scan_rule": "한글·ASCII 외 글자(str.isalpha)가 1자 이상",
+    "scans": [
+      {
+        "label": "work/ 인덱스 (스캔 시점 13영상 — test 4편·E2E 2편 포함)",
+        "n_videos": 13,
+        "n_captions": 2751,
+        "current_rule_flags": 4,
+        "current_rule_flag_ratio": 0.0015,
+        "additional_foreign_script_candidates": 227,
+        "additional_candidate_ratio": 0.0825,
+        "script_buckets": {"CJK/KANA만": 201, "CYRILLIC": 17, "LATIN": 8, "CYRILLIC+KANA": 1},
+        "cjk_kana_only_ratio": 0.8855
+      },
+      {
+        "label": "AI Hub",
+        "n_videos": 194,
+        "n_captions": 2328,
+        "current_rule_flags": 0,
+        "additional_foreign_script_candidates": 179,
+        "additional_candidate_ratio": 0.0769,
+        "script_buckets": {"CJK/KANA만": 178, "CYRILLIC+KANA": 1},
+        "cjk_kana_only_ratio": 0.9944
+      }
+    ],
+    "is_contamination_ground_truth": false,
+    "is_detector_miss_rate": false,
+    "why_not": "'한글·ASCII 외 글자를 포함한다'는 기계적 후보 비율이고, 그 안에 정상적인 외국어 인용·간판 전사(예: 'МАГАЗИН', 'PHỞ CÀ')와 mixed-script artifact가 섞여 있다. 전면 차단 규칙은 정확한 캡션을 부정확한 것으로 재생성한다",
+    "mixed_script_examples": ["카모フラ주제 의상", "훈련기가停박되어", "금속 구조물이满了", "잎っぱ라진"],
+    "instruction_echo_observation": {
+      "where": "external E2E PHASE 1 · segment 51",
+      "detail": "캡션이 지시문을 되받아 적었다. is_corrupted_caption 판정에 걸리지 않는다",
+      "action": "보고만 한다 — 오염 판정 규칙 변경은 frozen methodology 사건이다"
+    },
+    "decision_2026_08_25": "A — 기록만. detector·재캡셔닝 규칙·확정 인덱스를 바꾸지 않는다",
+    "why_not_changed": "규칙을 바꾸면 227건이 새로 '오염'이 되어 재캡셔닝 → text_hash 변경 → 재임베딩 → test 39를 평가했던 그 인덱스가 아니게 된다. 별도 승인 사건이다",
+    "forbidden_wording": ["captions X% are corrupted", "detector miss rate = X%", "미탐률 8.25%", "오염 0"],
+    "allowed_wording": "현행 규칙이 flag하지 않은 추가 foreign-script candidate 비율 · 현행 detector 기준 flag 0",
+    "source_path": "docs/probes/_scratch/caption_foreign_char_scan.json",
+    "reproduce": "python docs/probes/caption_foreign_char_scan.py"
+  },
+
+  "reproducibility": {
+    "items": [
+      {"name": "deployment preflight fail-closed", "detail": "시작 전 12항목 확인, 하나라도 어긋나면 실행하지 않는다", "source_path": "scripts/demo.py"},
+      {"name": "alpha drift rejection", "detail": "α≠0.5는 데모 진입점이 거부한다", "source_path": "scripts/demo.py"},
+      {"name": "text_hash stale-embedding rejection", "detail": "캡션·자막 변경 후 m4 미실행이면 M5 로드가 ValueError, preflight가 그보다 먼저 막는다", "source_path": "src/common.py (index_text_hash)"},
+      {"name": "index embed_model mismatch rejection", "detail": "인덱스를 만든 embed_model ≠ 현재 config면 점수 비교 불가로 막는다", "source_path": "scripts/demo.py"},
+      {"name": "provenance registration fail-closed", "detail": "미등록 영상은 M1에서 멈춘다 (external E2E PHASE 1에서 실제 발동)", "source_path": "src/provenance.py"},
+      {"name": "automatic-judgement-only caption QC", "detail": "내용을 보고 고치는 경로를 두지 않는다", "source_path": "src/common.py (is_corrupted_caption · is_subtitle_credit)"},
+      {"name": "label allowlist", "detail": "idx·start·end·rep_frame만 통과. 라벨 도구는 m5_search·m6_evaluate를 import하지 않는다", "source_path": "scripts/label_guard.py"},
+      {"name": "marker / RUN_COMPLETE / validator", "detail": "진행 판정을 프로세스 유무가 아니라 완료 마커 + validator PASS로 한다", "source_path": "scripts/run_status.py · scripts/exp_launcher.py"},
+      {"name": "CANARY coverage declaration", "detail": "plan_schema_version ≥ 2면 canary 선언 누락 시 fail-closed", "source_path": "scripts/canary_coverage.py"},
+      {"name": "frozen artifact byte pinning", "detail": ".gitattributes -text · index 바이트 == worktree 바이트 확인", "source_path": ".gitattributes"},
+      {"name": "AAR traceability fail-closed", "detail": "인용 범위 밖·인용 없는 문장·video_id 불일치·schema 미지원이면 TraceError", "source_path": "scripts/aar_view.py"},
+      {"name": "E2E public-demo eligibility guard", "detail": "manifest가 eligible_for_public_demo=false로 선언한 영상을 진입점이 거부한다 (2026-08-26 F4에서 선언만 있고 강제되지 않던 결함을 수정)", "source_path": "scripts/demo.py (demo_ineligible)"},
+      {"name": "test split guard", "detail": "test 4편은 데모로 실행하지 않는다", "source_path": "scripts/demo.py"}
+    ],
+    "determinism_observation": {
+      "same_machine": "같은 서버·commit·경로에서 AI Hub 2,328구간 재생성 결과 상이 0건 · 완전일치 1.0 · MRR 소수 4자리까지 동일",
+      "across_machines": "노트북↔서버 캡션 완전일치율 25.6%(dev) · 23.2%(AI Hub A-half)",
+      "across_machines_retrieval": {"n_queries": 562, "delta": -0.0046, "ci95": [-0.0267, 0.0174], "mde": 0.036, "reading": "문자열이 달라지는 것을 곧 성능 저하로 해석하지 않는다"},
+      "source_path": "docs/재분석_2x2_2026-08-18.md §8 · docs/probes/_scratch/aihub_env_check.json"
+    },
+    "absolute_wording_forbidden": ["완벽히 재현 가능", "fully reproducible"],
+    "source_path": "docs/finalization/REPRODUCIBILITY_SUMMARY_2026-08-25.md"
+  },
+
+  "aar": {
+    "renderer_ready": true,
+    "traceability_path_ready": true,
+    "server_runbook_ready": true,
+    "local_generation_possible": false,
+    "local_generation_blocker": "report_model이 Qwen/Qwen2.5-7B-Instruct이고 로컬 6GB에서 4bit로도 실행 불가(실측). 3B 하향은 프롬프트 예시 복사 오염으로 2026-07-11 기각",
+    "precomputed_local_render_possible": true,
+    "demo_report_artifact_obtained": false,
+    "demo_report_artifact_path_when_obtained": "work/{video_id}/report.json",
+    "target_video": {"video_id": "gwaktube_soviet_apartment", "split": "dev", "n_segments": 149},
+    "server": {"host": "kixlab2", "gpu": "RTX 4090 24GB", "storage": "/ssd", "llm_4bit": false, "config": "config_server.yaml (scripts/make_server_config.py로 생성 · 본 config 편집 금지)"},
+    "status_wording": "AAR generation runbook and local rendering/traceability path are prepared; one server-generated demo artifact remains.",
+    "forbidden_wording": ["end-to-end AAR complete", "AAR 완주 완료"],
+    "name_separation": {
+      "aar_demo_generation": "기존 M8 파이프라인을 dev/demo 영상에 기능 확인용으로 1회 실행 — finalization functional run · 가능",
+      "m8_research_evaluation": "6분류 taxonomy · human review — HOLD · 별도 사건"
+    },
+    "source_path": "docs/finalization/AAR_SERVER_RUNBOOK_2026-08-26.md",
+    "secondary_sources": ["docs/finalization/AAR_TRACEABILITY_2026-08-25.md", "scripts/aar_view.py"]
+  },
+
+  "research_discipline": {
+    "items": [
+      "outcome access 전 설계 freeze (케이스 스터디 질의·장면 해시 동결 후 첫 열람)",
+      "partial GT 미분석 (P2 20행을 어떤 분석에도 쓰지 않았다)",
+      "test unopened — 이번 기간 접촉 0회 · 39→72 확장 미개방 · M9 미실행",
+      "fail-closed provenance · text_hash · preflight",
+      "external rights audit (35편 전부 unclear로 그대로 기록)",
+      "deployment와 candidate의 분리 표기",
+      "functional E2E와 semantic observation의 분리 (REVIEW ≠ FAIL)",
+      "qualitative case study의 scene/query 사전 동결 · 결과를 본 뒤 교체하지 않음",
+      "stale/incorrect external anchor를 결과에 맞춰 수정하지 않음",
+      "caption QC 자체 측정에서 규칙을 바꾸지 않고 기록만 하는 선택"
+    ],
+    "framing": "성능이 아니라 연구·엔지니어링 프로세스의 품질로 표현한다",
+    "source_path": "CLAUDE.md · docs/DESIGN_SPEC.md §8-6 · docs/preregistration/"
+  },
+
+  "boundaries_preserved": {
+    "test_accessed": false,
+    "test_expansion_39_to_72_opened": false,
+    "m9_run": false,
+    "p2_outcome_accessed": false,
+    "p3_outcome_accessed": false,
+    "m8_research_evaluation_run": false,
+    "deployment_changed": false,
+    "alpha_sweep_run": false,
+    "detector_changed": false,
+    "production_index_modified": false,
+    "frozen_artifact_modified": false,
+    "pushed": false
+  },
+
+  "limitations": [
+    {"id": "L01", "text": "3B ↔ 4B scientific superiority unresolved — 두 표본이 반대 방향이고 어느 쪽도 확증 자격이 없다", "source_path": "docs/finalization/MODEL_SELECTION_CASE_STUDY_2026-08-25.md"},
+    {"id": "L02", "text": "AI Hub external validity — 짧은 clip 구조·영상당 후보 12구간·유형 라벨 없음·재사용 표본", "source_path": "docs/재분석_2x2_2026-08-18.md"},
+    {"id": "L03", "text": "deployment-like dev의 video cluster가 3이라 CI를 진단용으로만 쓴다. 관측 ICC 0을 진실로 가정하지 않는다", "source_path": "docs/재분석_dev정밀도3arm_2026-08-18.md"},
+    {"id": "L04", "text": "P2 fresh annotation 미완 — 175행 설계에서 20행. 병목은 도구가 아니라 라벨 작성이다", "source_path": "docs/P2_활성설계_2026-08-24.json"},
+    {"id": "L05", "text": "P3-A는 현재 자원으로 실행 불가 — 막는 것은 통계가 아니라 annotation logistics와 영상 외부 반출 권한이다", "source_path": "docs/P3_설계민감도_2026-08-24.json"},
+    {"id": "L06", "text": "일부 오류 유형이 descriptive에 머문다 — 질의 유형 이질성·풀 크기 효과는 plausible contributor까지다", "source_path": "docs/재분석_P1풀크기_2026-08-18.md"},
+    {"id": "L07", "text": "test를 열지 않았다. 최종 test 결과를 이번 기간에 새로 생산하지 않았다", "source_path": "docs/DESIGN_SPEC.md §8-6"},
+    {"id": "L08", "text": "기계를 건너면 캡션 문자열은 대부분 달라진다. 다만 그것을 곧 성능 저하로 해석하지 않는다", "source_path": "docs/probes/_scratch/aihub_env_check.json"},
+    {"id": "L09", "text": "AAR는 로컬 6GB에서 생성 불가 — 서버 GPU 의존이고, 아직 demo report artifact가 없다", "source_path": "docs/finalization/AAR_SERVER_RUNBOOK_2026-08-26.md"},
+    {"id": "L10", "text": "자막형에서 융합이 손해를 본다 (0.9583 → 0.8802) — 트레이드오프이고 숨기지 않는다", "source_path": "results/eval_test.json"},
+    {"id": "L11", "text": "재현에 원본 영상이 필요하다. 코드·절차·평가 라벨은 공개, 영상·파생 텍스트는 비공개다", "source_path": "README.md"},
+    {"id": "L12", "text": "캡션 QC 검출기가 2자 삽입형 혼입을 flag하지 않는다. 다만 그 후보 비율은 오염 GT가 아니다", "source_path": "docs/probes/_scratch/caption_foreign_char_scan.json"},
+    {"id": "L13", "text": "external E2E는 functional validation이고 성능 평가가 아니다. 외부 anchor 품질 문제도 확인됐다", "source_path": "docs/finalization/e2e_external_results.json"},
+    {"id": "L14", "text": "캡션→검색 사례 연구는 영상 1편·장면 5개·질의 15개의 정성 관찰이고 일반 성능 추정이 아니다. 두 arm의 dirty tree 동일성도 입증하지 못했다", "source_path": "docs/finalization/caption_retrieval_casestudy_results.json"},
+    {"id": "L15", "text": "평가 도메인이 좁다 — 한국어 vlog 계열 11편(그중 평가 대상 7편)", "source_path": "README.md"}
+  ],
+
+  "future_work": [
+    {"id": "F01", "text": "rights-cleared 외부 annotation 경로 기반 fresh deployment-like P3 실행", "commitment": "not promised in this project"},
+    {"id": "F02", "text": "더 큰 한국어 long-form GT — dev cluster 3의 한계를 정면으로 푸는 길", "commitment": "not promised in this project"},
+    {"id": "F03", "text": "질의 유형 이질성 확증 (복합형 열세·장면형 우세 재현 여부)", "commitment": "not promised in this project"},
+    {"id": "F04", "text": "유형별 캡션 모델 라우터 (P3-B 설계만 있음, 미실행)", "commitment": "not promised in this project"},
+    {"id": "F05", "text": "caption QC detector v2 — 별도 dev fixture에서 개발. 확정 인덱스에 소급 적용하지 않는다", "commitment": "not promised in this project"},
+    {"id": "F06", "text": "I1 production 통합 — read-only diagnostic/warning부터 검토하고 별도 승인", "commitment": "separate approval required"},
+    {"id": "F07", "text": "AAR / M8 research evaluation 계속 (6분류 taxonomy · human review)", "commitment": "HOLD"},
+    {"id": "F08", "text": "M9 · test 확장 — 명시적 승인 하에서만", "commitment": "explicit approval required"},
+    {"id": "F09", "text": "4B 재검토 — fresh evidence가 뒷받침할 때", "commitment": "conditional"},
+    {"id": "F10", "text": "회의록 생성 (Phase 4) — 설계만 있음", "commitment": "not started"}
+  ],
+
+  "sources": {
+    "config": "config.yaml",
+    "official_test": "results/eval_test.json",
+    "alpha_search": "results/alpha_search_dev.json",
+    "aihub_2x2": "docs/재분석_2x2_2026-08-18.md",
+    "dev_precision_3arm": "docs/재분석_dev정밀도3arm_2026-08-18.md",
+    "sign_reversal": "docs/재분석_부호역전_2026-08-18.md",
+    "pool_size": "docs/재분석_P1풀크기_2026-08-18.md",
+    "p2_active_design": "docs/P2_활성설계_2026-08-24.json",
+    "p3_design": "docs/P3_설계민감도_2026-08-24.json",
+    "p3_rights_audit": "docs/P3_반출권한감사_2026-08-24.json",
+    "operational": "docs/finalization/OPERATIONAL_PROFILE_SUMMARY_2026-08-25.md",
+    "e2e": "docs/finalization/e2e_external_results.json",
+    "case_study": "docs/finalization/caption_retrieval_casestudy_results.json",
+    "caption_qc_scan": "docs/probes/_scratch/caption_foreign_char_scan.json",
+    "aar_runbook": "docs/finalization/AAR_SERVER_RUNBOOK_2026-08-26.md",
+    "reproducibility": "docs/finalization/REPRODUCIBILITY_SUMMARY_2026-08-25.md",
+    "limitations": "docs/finalization/LIMITATIONS_FUTURE_WORK_2026-08-25.md",
+    "architecture": "docs/finalization/SYSTEM_ARCHITECTURE_2026-08-25.md",
+    "discipline": "CLAUDE.md",
+    "design_spec": "docs/DESIGN_SPEC.md",
+    "source_pack": "docs/finalization/FINAL_REPORT_SOURCE_PACK_2026-08-26.md",
+    "claim_matrix": "docs/finalization/CLAIM_EVIDENCE_MATRIX_2026-08-26.md"
+  }
+}

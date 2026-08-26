@@ -53,7 +53,7 @@ CI[−0.0267, +0.0174]**로 큰 방향성 환경 페널티는 재현되지 않�
 배포 인덱스   캡션 2,751건 · 현행 규칙 flag 4건(0.15%) · 현행 규칙이 flag하지 않은
              추가 foreign-script candidate 227건(8.25%)
 AI Hub       캡션 2,328건 · 현행 규칙 flag 0건        · 동일 기준 179건(7.69%)
-추가 후보 227건의 구성   CJK/가나만 87.7% · 키릴 · 라틴(악센트) 소수
+추가 후보 227건의 구성   CJK/가나만 201건(88.5%) · 키릴 17 · 라틴 8 · 키릴+가나 1
 실제 예          "카모フラ주제 의상" · "훈련기가停박되어" · "금속 구조물이满了" · "잎っぱ라진"
 ```
 
@@ -70,6 +70,23 @@ AI Hub       캡션 2,328건 · 현행 규칙 flag 0건        · 동일 기준 
 **test 39를 평가했던 그 인덱스가 아니게 된다.** 이는 별도 승인 사건이다.
 재현: `python docs/probes/caption_foreign_char_scan.py`
 → `docs/probes/_scratch/caption_foreign_char_scan.json`
+
+**12. external E2E는 기능 검증이고 성능 평가가 아니다 (2026-08-26 추가).** 저장소 밖 영상
+4편(58 · 125 · 258 · 824구간)에서 수집→STT→캡션→색인→검색→재생 경로가 완주했지만,
+`research_metrics_generated: false`다. 정확도·MRR·유의성으로 전환하지 않는다.
+PHASE 4에서는 **외부 공개 전사의 timestamp가 이 영상 타임라인과 어긋나** level 1 anchor
+2건이 REVIEW로 남았다 — external timestamp reference의 **데이터 품질 문제**이고
+검색 품질 판정이 아니다. 결과에 맞춰 anchor를 고치지 않았다.
+근거: `docs/finalization/e2e_external_results.json`
+
+**13. 캡션→검색 사례 연구는 정성 관찰이다 (2026-08-26 추가).** 영상 1편 · 장면 5개 ·
+질의 15개다. **one-video qualitative case study이고 성능 추정·모델 우열·채택 근거가
+아니다.** 두 arm을 같은 기계·프롬프트·양자화로 새로 생성했지만 두 실행 모두 dirty tree
+였고 그 동일성은 입증하지 못했다 — "완전히 동일한 실행 환경"이라고 쓰지 않는다.
+근거: `docs/finalization/caption_retrieval_casestudy_results.json`
+
+**14. 평가 도메인이 좁다.** 한국어 vlog 계열 11편(그중 평가 대상 7편)이다. external E2E
+4편이 다루는 도메인은 더 넓지만 **그것은 기능 검증이고 평가 표본이 아니다**(12번).
 
 ## 향후 과제 (Future work)
 
