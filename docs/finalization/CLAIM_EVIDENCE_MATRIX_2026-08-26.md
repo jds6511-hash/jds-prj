@@ -36,7 +36,7 @@ policy        측정값이 아니라 사전에 정한 결정 규칙
 | C12 | 5-10 | system_fact | direct | READY |
 | C13 | 5-10 | limitation | direct | READY |
 | C14 | 5-11 | limitation | measured | READY |
-| C15 | 5-13 | system_fact | direct | **PARTIAL** — artifact 1회 미확보 |
+| C15 | 5-13 | system_fact | direct | READY |
 | C16 | 5-15 · 15 | system_fact | direct | READY |
 | C17 | 5-1 · 문제정의 | measured_result | measured | READY |
 | C18 | 5-12 | system_fact | direct | READY |
@@ -61,7 +61,7 @@ primary      config.yaml · scripts/demo.py (preflight가 이 identity를 강제
 secondary    docs/finalization/SYSTEM_ARCHITECTURE_2026-08-25.md
 exact        seg_len 5s · embedding_dim 1024 · static_threshold 0 · α=0.5 (config에 없음, CLI 주입)
              alpha_star 0.5 · tie_set [0.2, 0.4, 0.5] · best point 0.4 (results/alpha_search_dev.json)
-             preflight 확인 12항목 · 단위테스트 1,748건
+             preflight 확인 12항목 · 단위테스트 1,752건
 allowed      "현재 deployment는 3B/P0/4bit이고 α=0.5다"
              "α는 config에 없고 CLI로 주입한다 — 확정값 근거는 dev α 탐색이다"
 forbidden    4B·P2·P3·external E2E·케이스 스터디를 production flow 안에 그리는 것
@@ -457,33 +457,49 @@ limitations  **오염 GT로 판정한 값이 아니다.** 후보 중 일부는 �
 
 ---
 
-## C15 — AAR: 경로는 준비됐고 demo artifact 1회가 남았다  **(PARTIAL)**
+## C15 — AAR demo functional path를 한 dev 영상에서 완주했다
 
 ```
 절            5-13
 유형/강도      system_fact / direct
-상태          PARTIAL — report.json artifact 미확보
+상태          READY (2026-08-26 서버 1회 완주 · 검증 완료)
 ```
 
-**주장.** AAR generation runbook과 로컬 렌더·추적 경로는 준비돼 있다. **서버에서 생성한
-demo artifact 1회 확보가 남아 있다.**
+**주장.** 서버에서 AAR 리포트 artifact를 1회 생성해 노트북으로 반입하고, 문장 → 인용
+구간 → 시각 → 재생 위치 → 근거까지 추적되는 것을 로컬 렌더로 확인했다.
 
 ```
-primary      docs/finalization/AAR_SERVER_RUNBOOK_2026-08-26.md · scripts/make_server_config.py
-secondary    docs/finalization/AAR_TRACEABILITY_2026-08-25.md · scripts/aar_view.py
-exact        report_model Qwen/Qwen2.5-7B-Instruct · 로컬 6GB에서 4bit로도 실행 불가(실측)
-             3B 하향은 프롬프트 예시 복사 오염으로 2026-07-11 기각
-             서버 kixlab2 · RTX 4090 24GB · /ssd · llm_4bit false (config_server.yaml 사본)
-             대상 gwaktube_soviet_apartment (dev · 149구간)
-             현재 work/*/report.json 존재 0건
-             aar_view는 LLM을 쓰지 않는다 — 사전계산 report.json만 읽는 결정적 렌더
-allowed      "AAR generation runbook and local rendering/traceability path are prepared;
-              one server-generated demo artifact remains."
-forbidden    "end-to-end AAR complete" · "AAR 완주 완료"
+primary      docs/finalization/final_report_facts_2026-08-26.json (aar.demo_run)
+secondary    docs/finalization/AAR_SERVER_RUNBOOK_2026-08-26.md · scripts/aar_view.py
+             docs/finalization/AAR_TRACEABILITY_2026-08-25.md
+exact        대상 gwaktube_soviet_apartment · dev · 149구간
+             서버 RTX 4090 24GB · llm_4bit false(bf16) · peak VRAM 18.1GB · 소요 212초
+             모델 Qwen/Qwen2.5-7B-Instruct · map_chunk 60/overlap 5 · max_new_tokens 16384
+             입력 segments.json sha256 4c37c1cc… (실행 후 불변) — M8은 이 파일만 읽는다
+             코드 로컬 HEAD e00603d(clean) · src+scripts manifest 4e0193e8… 서버와 동일
+             config base 72475952… → server d97570fe… · 변경 키 llm_4bit·paths · 불변 14키 PASS
+             산출 report.json sha256 1a9e1429… · 서버↔로컬 해시 일치
+             결과 schema v2 · 문장 83 · 인용 구간 121/149(0.8121)
+                  인용 없는 문장 0 · 범위 밖 인용 0 · 문장 중복 0 · 최대 인용 13
+             검증 생성기 자체 assert 4개 PASS · check_precomputed ok ·
+                  traceability 10/10 PASS · demo preflight "사용 가능(문장 83·인용 121)"
+allowed      "A validated dev/demo AAR report artifact was generated on the server
+              and rendered locally with citation-to-segment traceability."
+             "AAR demo functional path completed on one dev/demo video:
+              server generation → artifact verification → local render → evidence trace."
+forbidden    end-to-end AAR complete · AAR 완주 완료
+             AAR research accuracy validated · M8 evaluation complete
+             AAR quality proven · test AAR validated
              AAR demo generation과 M8 research evaluation을 같은 이름으로 쓰는 것
-limitations  AAR가 없어도 검색·재생·근거 표시 데모는 그대로 동작한다 — AAR는 부가 화면이다.
-             M8 research evaluation(6분류 taxonomy·human review)은 여전히 HOLD이고,
-             이 실행으로 그 권한이 생기지 않는다
+limitations  **functional completion이고 research evaluation이 아니다.** 리포트 내용이
+             얼마나 정확한지 재지 않았다.
+             관측 — timeline 앞 5건(위치 기준) 중 sent 0의 서술이 인용 구간 seg#0의
+             캡션·자막 어느 쪽과도 대응하지 않는다. 나머지 4건은 대응했다. 이것을
+             비율·지표로 계량하지 않았다(M8 research evaluation 영역 · HOLD).
+             index_consistency 개수 대조는 수행되지 않았다 — report에 n_segments 필드가
+             없기 때문이고, 대신 입력 segments.json 해시 일치로 판정했다.
+             artifact와 렌더본은 영상 파생 텍스트라 저장소에 추적하지 않는다 —
+             해시·수치만 남긴다. M8 research evaluation은 여전히 HOLD다
 ```
 
 ---
@@ -567,7 +583,7 @@ exact        preflight 12항목 fail-closed · α≠0.5 거부 · text_hash 불�
              CANARY coverage 선언 누락 시 fail-closed (plan_schema_version ≥ 2)
              AAR 인용 범위 밖·인용 없는 문장·video_id 불일치 → TraceError
              동결 artifact 바이트 고정 (.gitattributes -text)
-             단위테스트 1,748건 (GPU 불필요)
+             단위테스트 1,752건 (GPU 불필요)
 allowed      "선언된 경계를 코드가 강제한다" · "진행 판정을 프로세스 유무가 아니라
               완료 마커 + validator PASS로 한다"
 forbidden    "완벽히 재현 가능" · "fully reproducible"

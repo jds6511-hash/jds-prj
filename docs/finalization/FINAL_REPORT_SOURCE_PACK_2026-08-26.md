@@ -515,7 +515,7 @@ easy       검출기가 못 잡는 유형이 있다는 것은 재봤다. 다만 
 | test split guard | test 4편을 데모로 돌리는 것 | `scripts/demo.py` |
 | E2E public-demo eligibility guard | 선언된 데모 부적격이 강제되지 않는 것 | `scripts/demo.py` (`demo_ineligible`) |
 
-단위테스트 **1,748건**(GPU 불필요). `src/mN_*.py` ↔ `tests/test_mN_*.py` 1:1 대응.
+단위테스트 **1,752건**(GPU 불필요). `src/mN_*.py` ↔ `tests/test_mN_*.py` 1:1 대응.
 
 ### 생성 결정성 — 조건부다
 
@@ -536,7 +536,7 @@ p3_opcost 두 실행      출력 길이·토큰 완전 동일 (3B 133.6자·92.2
 
 ---
 
-## 13. AAR  **(PARTIAL — artifact 1회 미확보)**
+## 13. AAR  **(READY — 2026-08-26 서버 1회 완주)**
 
 ```
 renderer / traceability path   ready       scripts/aar_view.py (LLM 미사용 · 결정적 렌더)
@@ -545,20 +545,74 @@ server config 생성기            ready       scripts/make_server_config.py (�
 로컬 full generation            불가        report_model 7B · 6GB에서 4bit로도 실행 불가(실측)
                                           3B 하향은 프롬프트 예시 복사 오염으로 2026-07-11 기각
 precomputed report 로컬 렌더     가능
-실제 report.json artifact       **미확보**   현재 work/*/report.json 0건
+실제 report.json artifact       **확보**     work/gwaktube_soviet_apartment/report.json
 ```
+
+### 실행 기록 (functional run)
+
+```
+대상        gwaktube_soviet_apartment · dev · 149구간
+서버        RTX 4090 24GB · /ssd · llm_4bit false(bf16) · peak VRAM 18.1GB
+모델        Qwen/Qwen2.5-7B-Instruct · map_chunk 60/overlap 5 · max_new_tokens 16384
+소요        212초 (2026-08-26 14:08:56 → 14:12:28 +09:00)
+입력        segments.json sha256 4c37c1cc… · 91,711바이트 · 149구간 · 실행 후 불변
+           M8은 segments.json만 읽는다 — 영상·프레임·임베딩·retrieval·test artifact 불필요
+코드        로컬 HEAD e00603d (clean) · src+scripts 69파일 manifest 4e0193e8… 서버와 동일
+config     base 72475952… → server d97570fe… · 변경 키는 llm_4bit·paths 둘뿐 · 불변 14키 assert PASS
+산출        report.json sha256 1a9e1429… · 47,719바이트 · 서버↔로컬 해시 일치
+결과        schema v2 · 문장 83 · 인용 구간 121/149(0.8121) · 인용 없는 문장 0 ·
+           범위 밖 인용 0 · 문장 중복 0 · 한 문장 최대 인용 13(퇴화 상한 아래)
+```
+
+### 검증 결과
+
+```
+생성기 자체 검증 4개      PASS  (반복 루프 · 인용 범위 · 서술 공백 · reduce 퇴화)
+                              save_report 직후 실행되므로 종료코드 0이 통과 증거다
+check_precomputed        ok    사용 가능
+demo.py preflight        AAR 사전 생성물 "없음/사용 불가" → **"사용 가능 (문장 83 · 인용 구간 121)"**
+traceability 10항목       10/10 PASS
+   모든 문장에 인용 · 인용 0<=idx<149 · timestamp <= duration · seek_to 유효 ·
+   video_id 일치 · evidence lookup 가능 · schema 지원 · stale mismatch 없음 ·
+   span == 인덱스 실측값 · evidence == 인덱스 원문(렌더가 지어내지 않았다)
+```
+
+`index_consistency.n_segments_checked`는 **false**다 — `report.json` provenance에
+`n_segments`가 없기 때문이고 결함이 아니다(렌더러가 그 경우를 보고만 하도록 설계돼 있고
+테스트도 있다). 인덱스 대응은 **생성 입력 `segments.json`의 sha256이 로컬 원본과 같음**으로
+판정했다 — 구간 수만 세는 것보다 강한 검사다.
+
+### 관측된 것 — 계량하지 않는다
+
+> 리포트 서술과 인용 구간 근거가 어긋나는 문장이 있다. timeline 앞 5건(**위치 기준 ·
+> 내용을 보고 고르지 않았다**) 중 `sent 0`의 서술 "남성이 창고에서 상자를 열어 내용물을
+> 확인한다"가 `seg#0`의 캡션·자막 어느 쪽과도 대응하지 않는다. 나머지 4건은 인용 구간
+> 근거와 대응했다.
+
+**리포트 내용 품질 관측이고 기능 실패가 아니다.** 프롬프트·규칙을 바꾸지 않았고,
+이 관측을 비율·지표로 계량하지 않았다 — **그것은 M8 research evaluation 영역이고 HOLD다.**
+
+### 저장소 정책
+
+`report.json`은 `work/` 아래라 이미 추적 대상이 아니다. **렌더본(`AAR_SAMPLE_*.md` ·
+`aar_sample_*.json`)도 추적하지 않는다** — 인용 구간의 **자막·캡션 원문이 그대로 실린다**
+(자막 99 · 캡션 121구간). `work/*/segments.json`을 공개하지 않는 것과 같은 이유다.
+저장소에는 해시·수치만 남기고 재생성은 `scripts/aar_view.py`로 한다.
 
 ### 정확한 상태 문장
 
-> **AAR generation runbook and local rendering/traceability path are prepared;
-> one server-generated demo artifact remains.**
+> **AAR demo functional path completed on one dev/demo video:
+> server generation → artifact verification → local render → evidence trace.**
 
-**금지** — `end-to-end AAR complete` · "AAR 완주 완료".
+이것은 **functional completion**이지 **research evaluation이 아니다.**
+
+**금지** — `end-to-end AAR complete` · "AAR 완주 완료" · `AAR research accuracy validated` ·
+`M8 evaluation complete` · `AAR quality proven` · `test AAR validated`.
 
 ### 이름을 반드시 가른다
 
 ```
-AAR demo generation using existing M8 pipeline   =  finalization functional run  (가능)
+AAR demo generation using existing M8 pipeline   =  finalization functional run  (완료)
 M8 research evaluation / taxonomy / human review =  HOLD (별도 사건)
 ```
 
@@ -569,11 +623,12 @@ M8 research evaluation / taxonomy / human review =  HOLD (별도 사건)
 못하면 `TraceError`로 막는다.
 
 ```
-technical  The AAR rendering and traceability path is implemented and tested; the
-           generation step requires a server GPU and one artifact remains to be produced.
-easy       리포트를 보여주고 근거까지 되짚는 화면은 만들어져 있다. 리포트를 실제로 한 번
-           만들어 오는 일만 서버 GPU에서 남았다.
-근거        AAR_SERVER_RUNBOOK_2026-08-26.md · 매트릭스 C15
+technical  A validated dev/demo AAR report artifact was generated on the server and
+           rendered locally with citation-to-segment traceability.
+easy       리포트를 서버에서 한 번 만들어 노트북으로 가져왔고, 문장마다 근거 구간·시각·
+           재생 위치까지 되짚어지는 것을 확인했다. 리포트 내용이 얼마나 정확한지를 잰
+           것은 아니다.
+근거        final_report_facts_2026-08-26.json (aar.demo_run) · 매트릭스 C15
 ```
 
 ---
@@ -591,7 +646,7 @@ L05  P3 규모·권리·logistics — 막는 것은 통계가 아니다
 L06  질의 유형 이질성·풀 크기 효과는 plausible contributor까지
 L07  test 미개방 — 최종 test 결과를 이번 기간에 새로 생산하지 않았다
 L08  기계를 건너면 캡션 문자열이 달라진다 (성능 저하로 해석하지 않는다)
-L09  AAR는 서버 GPU 의존 · demo artifact 미확보
+L09  AAR 생성은 서버 GPU 의존 (로컬 6GB 불가). demo artifact 1건 확보 · 내용 품질 미평가
 L10  자막형 트레이드오프 (0.9583 → 0.8802)
 L11  재현에 원본 영상이 필요 — 영상·파생 텍스트 비공개
 L12  캡션 QC 검출기가 2자 삽입형을 flag하지 않는다 (후보 비율은 오염 GT가 아니다)
@@ -707,7 +762,7 @@ action        작업현황_2026-08-25는 **그날의 스냅샷**이라 당시에
 ```
 location A   docs/tutor/튜터회의_2026-08-25.md:456   테스트 1,719건 통과 (08-25 기록)
 location B   F4_DOCUMENTATION_AUDIT_2026-08-26.md    1,719 + 6 = 1,725 (08-26 F4 시점)
-location C   README.md · 본 팩 §12                   1,748  (F5 검증 테스트 23건 추가)
+location C   README.md · 본 팩 §12                   1,752  (F5 검증 23건 + AAR 검증 4건 추가)
 authoritative  pytest 실측 — 인용 시점의 값이 authoritative다
 action        A·B는 preserved — 각각 그 시점의 기록이다(회의 기록·감사 기록). 고치지 않는다.
               현재 상태를 말하는 문서(README · source pack · matrix)만 1,748로 맞췄다.
@@ -747,16 +802,35 @@ action      no action
 ```
 검토        README 구현 상태표의 "M8~M9 구현 완료"가 artifact 확보로 읽히는지 확인했다
 결과        같은 칸에 "로컬 6GB에서 생성 불가" · "M8 research evaluation HOLD"가 병기돼 있고,
-            README §Quick Start는 서버 runbook을 가리킨다. artifact가 있다고 주장하지 않는다
-action      no action. 다만 보고서 §13은 반드시 **PARTIAL**로 적는다
+            README §Quick Start는 서버 runbook을 가리킨다. artifact가 있다고 주장하지 않았다
+action      2026-08-26에 artifact를 실제로 확보해 §13을 READY로 바꿨다.
+            표현은 functional completion으로 한정한다 — research evaluation이 아니다
+```
+
+### CF-07 — runbook 초판 결함 3건 (2026-08-26 실행에서 드러남)
+
+```
+① 접속 주소   `<LAB_MACHINE>`(머신 라벨)을 호스트명처럼 써서 이름 해석에 실패했다.
+             실제 계정명도 공개 저장소 문서에 그대로 노출돼 있었다
+             → `<SERVER_USER>`·`<SERVER_HOST>` 자리표시자로 바꿨다(SERVER_LOCAL.md 규약)
+② 인터프리터  runbook에 명시가 없었고 서버 system python3에는 torch가 없다
+             → `/ssd/$U/envs/prj/bin/python`을 셸 변수로 고정했다
+③ 검증 스니펫  `r["n_segments"]`를 assert하는데 `m8_report.save_report`는 그 필드를 쓰지 않는다.
+             **정상 리포트에서도 반드시 실패하는 검사였다**
+             → 실제 스키마(video_id·schema_version·인용 범위·인용 없는 문장)로 바꾸고,
+               인덱스 대응은 segments.json 해시 일치로 판정하게 했다
+authoritative  실제 코드(`src/m8_report.py`) · SERVER_LOCAL.md
+action        runbook을 고쳤다. **생성 코드는 바꾸지 않았다** — 결과를 본 뒤 생성 조건을
+              바꾸는 것이 되므로 별도 승인 사건이다
 ```
 
 ```
-conflicts_found          6건 검토 (실질 충돌 3 · 무충돌 확인 3)
-fixed_active_docs        2건 (CF-01 주석 · CF-03 수치 정정)
+conflicts_found          7건 검토 (실질 충돌 4 · 무충돌 확인 3)
+fixed_active_docs        3건 (CF-01 주석 · CF-03 수치 정정 · CF-07 runbook 3항목)
 frozen_conflicts_preserved  1건 (CF-02 — 튜터 회의 기록)
 remaining                0
 frozen artifact modified  0
+생성 코드 변경             0 (CF-07 ③은 문서만 고쳤다)
 ```
 
 ---

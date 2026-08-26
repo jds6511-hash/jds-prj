@@ -76,3 +76,10 @@ artifacts/
 
 # 튜터 회의 슬라이드·렌더 (AI Hub 프레임 embed — 재배포 권한 미확인, 얼굴 식별 가능)
 docs/tutor/_local/
+
+# AAR 렌더 산출물 (2026-08-26). report.json 자체는 work/ 아래라 이미 제외되지만,
+# 렌더본에는 **인용 구간의 자막·캡션 원문이 그대로 실린다**(149구간 중 자막 99·캡션 121).
+# work/*/segments.json을 공개하지 않는 것과 같은 이유로 추적하지 않는다.
+# 재생성: scripts/aar_view.py (해시·수치는 final_report_facts JSON에 기록돼 있다)
+docs/finalization/AAR_SAMPLE_*.md
+docs/finalization/aar_sample_*.json

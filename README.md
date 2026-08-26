@@ -76,7 +76,7 @@ ffmpeg -version            # 없으면 먼저 설치
 # 2) 파이썬 패키지
 pip install -r requirements.txt
 
-# 3) 테스트 — GPU 없이 CPU만으로 통과한다(약 1분, 1,748건)
+# 3) 테스트 — GPU 없이 CPU만으로 통과한다(약 1분, 1,752건)
 python -m pytest tests/ -q
 
 # 4) 영상 1편 인덱싱 → 검색
@@ -185,7 +185,7 @@ M1 5초 분할+오디오 → M2 대표 프레임 → M3 자막(Whisper large-v3)
 
 ```
 src/        M1~M9 + common.py(공용 계약) + llm.py(로컬 LLM 로더)
-tests/      모듈별 단위테스트 1,748건
+tests/      모듈별 단위테스트 1,752건
 config.yaml 확정 config (α는 여기 없다 — CLI 주입)
 data/queries/  질의·정답 라벨 (공개)
 results/    확정 평가 결과 (공개)
@@ -233,6 +233,7 @@ README 위쪽의 **핵심 결과는 확정 배포 구성으로 끝난 공식 tes
 | P3 (확증 설계) | **설계 동결 · 실행 HOLD.** 300영상 × 5질의 = 1,500 GT는 가정 위의 설계 목표이지 검출 보장 수치가 아니다 |
 | test 39 / M9 | **HOLD** — 이번 기간 접촉 0회. 39→72 확장도 열지 않았다 |
 | M8 research evaluation | **HOLD**. AAR demo generation(기능 확인용 실행)과는 다른 사건이다 |
+| AAR demo generation | **functional path 완주(2026-08-26).** dev 1편(149구간)을 서버에서 생성 → 반입 → 로컬 렌더 → 근거 추적까지 확인했다. **리포트 내용의 정확도를 잰 것이 아니다** |
 | external E2E | **functional validation COMPLETE** — scene/speech/mixed/long-form 4편 PASS. 벤치마크가 아니다 |
 | 캡션→검색 케이스 스터디 | **정성 사례 연구.** 채택 근거·성능 추정이 아니다 |
 

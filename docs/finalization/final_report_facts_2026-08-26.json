@@ -33,7 +33,7 @@
       "source_path": "docs/DESIGN_SPEC.md §8-2"
     },
     "preflight_checks": {"value": 12, "source_path": "scripts/demo.py"},
-    "unit_tests": {"value": 1748, "as_of": "2026-08-26", "note": "테스트 추가마다 바뀌는 값이다. 인용 시점의 pytest 실측이 authoritative다", "source_path": "tests/ (pytest --collect-only)"},
+    "unit_tests": {"value": 1752, "as_of": "2026-08-26", "note": "테스트 추가마다 바뀌는 값이다. 인용 시점의 pytest 실측이 authoritative다", "source_path": "tests/ (pytest --collect-only)"},
     "deployment_changed_in_finalization": false
   },
 
@@ -385,12 +385,92 @@
     "local_generation_possible": false,
     "local_generation_blocker": "report_model이 Qwen/Qwen2.5-7B-Instruct이고 로컬 6GB에서 4bit로도 실행 불가(실측). 3B 하향은 프롬프트 예시 복사 오염으로 2026-07-11 기각",
     "precomputed_local_render_possible": true,
-    "demo_report_artifact_obtained": false,
-    "demo_report_artifact_path_when_obtained": "work/{video_id}/report.json",
+    "demo_report_artifact_obtained": true,
+    "demo_report_artifact_path": "work/gwaktube_soviet_apartment/report.json",
+    "demo_report_artifact_tracked_in_git": false,
+    "demo_report_artifact_tracking_note": "work/가 .gitignore 대상이다. 렌더본(AAR_SAMPLE_*.md · aar_sample_*.json)도 인용 구간의 자막·캡션 원문을 그대로 담아 같은 이유로 추적하지 않는다. 저장소에는 해시·수치만 남기고 재생성은 scripts/aar_view.py로 한다",
     "target_video": {"video_id": "gwaktube_soviet_apartment", "split": "dev", "n_segments": 149},
-    "server": {"host": "kixlab2", "gpu": "RTX 4090 24GB", "storage": "/ssd", "llm_4bit": false, "config": "config_server.yaml (scripts/make_server_config.py로 생성 · 본 config 편집 금지)"},
-    "status_wording": "AAR generation runbook and local rendering/traceability path are prepared; one server-generated demo artifact remains.",
-    "forbidden_wording": ["end-to-end AAR complete", "AAR 완주 완료"],
+    "server": {"machine_label": "<LAB_MACHINE>", "gpu": "RTX 4090 24GB", "vram_total_mib": 24564, "storage": "/ssd", "llm_4bit": false, "config": "config_server.yaml (scripts/make_server_config.py로 생성 · 본 config 편집 금지)", "connection_note": "실제 host·account는 SERVER_LOCAL.md(추적 안 함)에만 둔다"},
+
+    "demo_run": {
+      "run_kind": "aar_demo_render",
+      "m8_research_evaluation": false,
+      "m9_evaluated": false,
+      "test_split_used": false,
+      "purpose": "finalization functional run — 기능 확인 · traceability 확인 · 발표 fallback",
+      "video_id": "gwaktube_soviet_apartment",
+      "started_at": "2026-08-26T14:08:56+09:00",
+      "completed_at": "2026-08-26T14:12:28+09:00",
+      "elapsed_sec": 212,
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "llm_4bit": false,
+      "precision": "bf16",
+      "peak_vram_mib_observed": 18061,
+      "map_chunk_size": 60,
+      "map_chunk_overlap": 5,
+      "report_max_new_tokens": 16384,
+      "input": {
+        "segments_path": "work/gwaktube_soviet_apartment/segments.json",
+        "segments_sha256": "4c37c1cc0f314ce593832f132e1558a46fe56d732c02e9b7129bc5a10c3e543a",
+        "segments_bytes": 91711,
+        "n_segments": 149,
+        "unchanged_after_run": true,
+        "note": "M8은 segments.json만 읽는다 — 영상·프레임·임베딩·retrieval·test artifact를 요구하지 않는다"
+      },
+      "code_provenance": {
+        "local_git_head": "e00603da780b9258ffdc964cadabdb340611caac",
+        "local_git_dirty": false,
+        "code_manifest_sha256": "4e0193e8976b0ba64fb97ff903d34b21218bad03bdc1313ecdd4f9392b80a347",
+        "code_manifest_files": 69,
+        "server_manifest_identical": true,
+        "note": "서버 실행 디렉터리에는 git이 없다(scp 동기화). 로컬 HEAD를 기록하고 src+scripts 바이트 동일성을 manifest 해시로 대조했다"
+      },
+      "config": {
+        "base_config_sha256": "72475952bbf56581cbc3a90944804ad2990ed2f9ef35e5103731d7670a47af2f",
+        "server_config_sha256": "d97570feecbd9951631a1ebe3c3adb09352c0f9e439cd25474710fc64a9fb535",
+        "changed_keys": ["llm_4bit", "paths"],
+        "invariant_keys_identical": 14,
+        "generator": "scripts/make_server_config.py"
+      },
+      "output": {
+        "report_sha256": "1a9e1429f1c7f1ce2f8fbf27d536f964bcdf32987736d775f448ec02fbbf2899",
+        "report_bytes": 47719,
+        "server_local_hash_match": true,
+        "schema_version": 2,
+        "n_sentences": 83,
+        "cited_segments": 121,
+        "cited_fraction": 0.8121,
+        "max_cites_per_sentence": 13,
+        "sentences_without_citation": 0,
+        "out_of_range_citations": 0,
+        "duplicate_sentence_ratio": 0.0
+      },
+      "validation": {
+        "generator_asserts_passed": true,
+        "generator_asserts_note": "save_report의 4개 검증(반복 루프 · 인용 범위 · 서술 공백 · reduce 퇴화)은 저장 직후 실행된다. 종료코드 0과 'M8 완료' 출력이 그 통과 증거다",
+        "check_precomputed_ok": true,
+        "index_consistency_n_segments_checked": false,
+        "index_consistency_note": "report provenance에 n_segments가 없어 개수 대조는 수행되지 않았다. 대신 생성 입력 segments.json의 sha256이 로컬 원본과 같음을 확인했다 — 개수 대조보다 강한 검사다",
+        "traceability_checks_passed": 10,
+        "traceability_checks_total": 10,
+        "traceability_items": ["모든 문장에 인용", "인용 0<=idx<149", "timestamp <= duration", "seek_to 유효", "video_id 일치", "evidence lookup 가능", "schema 지원", "stale mismatch 없음", "span == 인덱스 실측값", "evidence == 인덱스 원문"],
+        "demo_preflight_aar_status": "사용 가능 (문장 83 · 인용 구간 121)"
+      },
+      "render_outputs": {
+        "markdown": {"path": "docs/finalization/AAR_SAMPLE_gwaktube_soviet_apartment.md", "sha256": "6d02c20e06e106429b59e44a6aee2f8503bc31c00902731a0e25fee361a6dffc", "bytes": 75521, "tracked_in_git": false},
+        "json": {"path": "docs/finalization/aar_sample_gwaktube_soviet_apartment.json", "sha256": "54dbcd1558f06a6a2852b0da59dcf3dbf569f2d97bbb6386992ca09f75cf3988", "bytes": 219240, "tracked_in_git": false, "derived_text_note": "인용 구간의 자막 99 · 캡션 121구간 원문 포함"},
+        "regenerate": "python scripts/aar_view.py --config config.yaml --video-id gwaktube_soviet_apartment"
+      },
+      "observations": [
+        "리포트 서술과 인용 구간 근거가 어긋나는 문장이 있다 — timeline 앞 5건(위치 기준, 내용 보고 고르지 않음) 중 sent 0의 서술('남성이 창고에서 상자를 열어')이 seg#0의 캡션·자막 어느 쪽과도 대응하지 않는다. 나머지 4건은 인용 구간 근거와 대응했다. **리포트 내용 품질 관측이고 기능 실패가 아니다.** 프롬프트·규칙을 바꾸지 않았고, 이 관측을 AAR 품질 지표로 계량하지 않았다(그것은 M8 research evaluation 영역이다)",
+        "aar_view의 index_consistency 개수 대조가 수행되지 않는다 — report에 n_segments 필드가 없기 때문이고 렌더러가 그 경우를 보고만 하도록 만들어져 있다. 생성 코드를 결과를 본 뒤 바꾸지 않았다",
+        "runbook 초판의 서버 산출물 검증 스니펫이 코드가 쓰지 않는 n_segments 필드를 assert하고 있었다 — 실행에서 드러나 runbook을 실제 스키마에 맞게 고쳤다"
+      ],
+      "not_used_as": ["research performance claim", "M8 PRIMARY", "taxonomy result", "model selection evidence", "AAR 품질 증명"]
+    },
+
+    "status_wording": "AAR demo functional path completed on one dev/demo video: server generation → artifact verification → local render → evidence trace.",
+    "forbidden_wording": ["end-to-end AAR complete", "AAR 완주 완료", "AAR research accuracy validated", "M8 evaluation complete", "AAR quality proven", "test AAR validated"],
     "name_separation": {
       "aar_demo_generation": "기존 M8 파이프라인을 dev/demo 영상에 기능 확인용으로 1회 실행 — finalization functional run · 가능",
       "m8_research_evaluation": "6분류 taxonomy · human review — HOLD · 별도 사건"

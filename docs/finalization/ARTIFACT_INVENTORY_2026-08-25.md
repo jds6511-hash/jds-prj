@@ -35,7 +35,7 @@
 | `CAPTION_RETRIEVAL_CASESTUDY_RESULTS_2026-08-25.md` · `CAPTION_RETRIEVAL_CASESTUDY_TABLE.md` · `caption_retrieval_casestudy_results.json` | 5장면·15질의 결과 전량 | 보고서 |
 | `docs/tutor/캡션검색_케이스스터디_1페이지.md` | 위의 1페이지 요약 | 튜터·발표 |
 | `e2e_external_results.json` | external E2E PHASE 1~4 (schema v2 · runs[]) | 기능 검증 |
-| `AAR_SERVER_RUNBOOK_2026-08-26.md` | F3 — 서버 1회 완주 절차·검증·실패 조건 | 운영 |
+| `AAR_SERVER_RUNBOOK_2026-08-26.md` | F3 — 서버 1회 완주 절차·검증·실패 조건. **2026-08-26에 이 절차로 완주했고 실행에서 드러난 결함 3건을 반영했다** | 운영 |
 | `F4_DOCUMENTATION_AUDIT_2026-08-26.md` | F4 — 문서·코드 정합성 감사 A~G | 감사 |
 | `FINAL_REPORT_SOURCE_PACK_2026-08-26.md` | **F5** — 보고서 절별 재료 + conflict audit + 표·그림 후보 | 보고서 |
 | `CLAIM_EVIDENCE_MATRIX_2026-08-26.md` | **F5** — 주장 C01~C20 · 근거 · 허용/금지 표현 | 보고서 |
@@ -94,6 +94,9 @@ docs/작업현황_2026-08-25.md              현재 상태 (FINALIZATION)
 ```
 원본 영상 mp4                     저작물. 저장소 비포함 정책 유지
 work/*/segments.json · 임베딩      영상 파생 텍스트. 같은 이유로 비포함
+work/*/report.json                AAR artifact. work/ 아래라 이미 비포함
+AAR_SAMPLE_*.md · aar_sample_*.json  렌더본 — 인용 구간의 자막·캡션 원문이 실린다.
+                                  같은 이유로 비포함. 해시·수치는 final_report_facts에 있다
 P2 라벨 작업 파일                  annotation HOLD 상태
 test 39 원본 판정 과정             DESIGN_SPEC 8-6 기록으로 대체
 ```
@@ -103,7 +106,8 @@ test 39 원본 판정 과정             DESIGN_SPEC 8-6 기록으로 대체
 ```
 python -m pytest tests/ -q                                    전체 통과
 python scripts/demo.py --list                                 인덱스 목록
-python -m pytest tests/test_final_report_facts.py -q          F5 근거 경로·상태 정합
+python -m pytest tests/test_final_report_facts.py -q          F5 근거 경로·상태 정합 + AAR artifact 대조
+python scripts/aar_view.py --video-id gwaktube_soviet_apartment  AAR 렌더 (산출물은 비추적)
 python scripts/demo.py --video-id <dev> --check-only          preflight 12항목 + AAR 상태
 README의 모든 명령이 실제로 존재하는지 확인 (smoke)
 finalization 문서에 test/P2/P3 outcome이 새로 들어가지 않았는지 확인

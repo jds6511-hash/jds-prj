@@ -226,16 +226,94 @@ def test_limitations_doc_matches_scan_ratio():
     assert "88.5%" in t
 
 
-def test_aar_status_is_partial_until_artifact_exists(facts):
-    """artifact가 실제로 들어오면 이 fact를 갱신해야 한다 — 그때 이 테스트가 알려준다."""
+def test_aar_fact_tracks_actual_artifact_presence(facts):
+    """fact가 실제 파일 상태와 어긋나면 실패한다 — artifact가 사라져도 알려준다."""
     aar = facts["aar"]
     present = sorted(p.as_posix() for p in ROOT.glob("work/*/report.json"))
     assert aar["demo_report_artifact_obtained"] == bool(present), \
         "report.json 존재 여부와 fact가 어긋난다: %s" % present
     assert aar["local_generation_possible"] is False
     assert aar["renderer_ready"] and aar["server_runbook_ready"]
-    assert "one server-generated demo artifact remains" in aar["status_wording"]
-    assert "end-to-end AAR complete" in aar["forbidden_wording"]
+    for w in ("end-to-end AAR complete", "AAR quality proven", "M8 evaluation complete"):
+        assert w in aar["forbidden_wording"], w
+
+
+def test_aar_demo_run_matches_the_artifact_on_disk(facts):
+    """기록한 해시·수치가 실제 report.json과 같아야 한다."""
+    run = facts["aar"]["demo_run"]
+    rep = ROOT / facts["aar"]["demo_report_artifact_path"]
+    if not rep.is_file():
+        pytest.skip("work/는 gitignore 대상 — artifact가 없는 환경이다")
+    import hashlib
+    raw = rep.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == run["output"]["report_sha256"]
+    assert len(raw) == run["output"]["report_bytes"]
+    r = json.loads(raw.decode("utf-8"))
+    assert r["video_id"] == run["video_id"] == "gwaktube_soviet_apartment"
+    assert r["schema_version"] == run["output"]["schema_version"]
+    assert len(r["sentences"]) == run["output"]["n_sentences"]
+
+    segs = json.loads((rep.parent / "segments.json").read_text(encoding="utf-8"))
+    idxs = {s["idx"] for s in segs["segments"]}
+    assert segs["n_segments"] == run["input"]["n_segments"] == 149
+    assert hashlib.sha256((rep.parent / "segments.json").read_bytes()).hexdigest() == \
+        run["input"]["segments_sha256"], "생성 입력이 현재 인덱스와 다르다"
+    assert not [s for s in r["sentences"] if not s.get("cites")]
+    assert not [c for s in r["sentences"] for c in s["cites"] if c not in idxs]
+
+
+def test_aar_render_traces_every_sentence_to_the_index(facts):
+    """렌더가 실제로 문장 → 구간 → 시각 → 근거를 잇는지 본다 (LLM 미사용 경로)."""
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import aar_view                                                 # noqa: E402
+    rep = ROOT / facts["aar"]["demo_report_artifact_path"]
+    if not rep.is_file():
+        pytest.skip("work/는 gitignore 대상 — artifact가 없는 환경이다")
+    segp = rep.parent / "segments.json"
+    V = facts["aar"]["demo_run"]["video_id"]
+    st = aar_view.check_precomputed(rep, segp, video_id=V)
+    assert st["ok"], st["reason"]
+
+    doc = aar_view.build(rep, segp, video_id=V)
+    segs = {s["idx"]: s for s in json.loads(segp.read_text(encoding="utf-8"))["segments"]}
+    dur = max(s["end"] for s in segs.values())
+    assert doc["run_kind"] == "aar_demo_render"
+    assert doc["m8_research_evaluation"] is False and doc["m9_evaluated"] is False
+    assert doc["n_sentences"] == facts["aar"]["demo_run"]["output"]["n_sentences"]
+    assert doc["cited_segments"] == facts["aar"]["demo_run"]["output"]["cited_segments"]
+    for s in doc["sentences"]:
+        assert s["cites"], s["sent_id"]
+        assert s["seek_to"] == min(sp["start"] for sp in s["spans"])
+        assert 0 <= s["time_range"]["start"] <= s["time_range"]["end"] <= dur
+        assert len(s["evidence"]) == len(s["cites"])
+        for sp in s["spans"]:                       # 렌더가 시각을 지어내지 않는다
+            assert sp["start"] == int(segs[sp["idx"]]["start"])
+            assert sp["end"] == int(segs[sp["idx"]]["end"])
+        for e in s["evidence"]:                     # 근거는 인덱스 원문 그대로다
+            assert e["subtitle"] == segs[e["idx"]].get("subtitle", "")
+            assert e["caption"] == segs[e["idx"]].get("caption", "")
+
+
+def test_aar_render_outputs_are_not_tracked(facts):
+    """렌더본에는 자막·캡션 원문이 실린다 — work/*/segments.json과 같이 비공개다."""
+    import subprocess
+    ro = facts["aar"]["demo_run"]["render_outputs"]
+    for key in ("markdown", "json"):
+        rel = ro[key]["path"]
+        assert ro[key]["tracked_in_git"] is False, rel
+        r = subprocess.run(["git", "check-ignore", "-q", rel], cwd=ROOT)
+        assert r.returncode == 0, "%s 가 .gitignore 대상이 아니다" % rel
+    assert facts["aar"]["demo_report_artifact_tracked_in_git"] is False
+
+
+def test_aar_functional_run_claims_no_research_result(facts):
+    run = facts["aar"]["demo_run"]
+    assert run["run_kind"] == "aar_demo_render"
+    for k in ("m8_research_evaluation", "m9_evaluated", "test_split_used"):
+        assert run[k] is False, k
+    for banned in ("research performance claim", "M8 PRIMARY", "AAR 품질 증명"):
+        assert banned in run["not_used_as"], banned
+    assert "functional path completed" in facts["aar"]["status_wording"]
 
 
 def test_research_boundaries_all_preserved(facts):
