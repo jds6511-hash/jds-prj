@@ -33,7 +33,7 @@
       "source_path": "docs/DESIGN_SPEC.md §8-2"
     },
     "preflight_checks": {"value": 12, "source_path": "scripts/demo.py"},
-    "unit_tests": {"value": 1752, "as_of": "2026-08-26", "note": "테스트 추가마다 바뀌는 값이다. 인용 시점의 pytest 실측이 authoritative다", "source_path": "tests/ (pytest --collect-only)"},
+    "unit_tests": {"value": 1757, "as_of": "2026-08-26", "note": "테스트 추가마다 바뀌는 값이다. 인용 시점의 pytest 실측이 authoritative다", "source_path": "tests/ (pytest --collect-only)"},
     "deployment_changed_in_finalization": false
   },
 
@@ -418,7 +418,9 @@
         "note": "M8은 segments.json만 읽는다 — 영상·프레임·임베딩·retrieval·test artifact를 요구하지 않는다"
       },
       "code_provenance": {
-        "local_git_head": "e00603da780b9258ffdc964cadabdb340611caac",
+        "local_git_head": "7621fe19c9ba9ff09371ba622bc13a373d56922a",
+        "local_git_head_at_run": "e00603da780b9258ffdc964cadabdb340611caac",
+        "local_git_head_note": "실행 시점 SHA는 e00603da…였다. 2026-08-26에 미푸시 히스토리에서 케이스 스터디 논의용 프레임 blob을 제거해 그 이후 SHA가 바뀌었다. src·scripts 바이트는 동일하며 code_manifest_sha256이 그 증거다. 매핑: docs/finalization/HISTORY_REWRITE_2026-08-26.md",
         "local_git_dirty": false,
         "code_manifest_sha256": "4e0193e8976b0ba64fb97ff903d34b21218bad03bdc1313ecdd4f9392b80a347",
         "code_manifest_files": 69,

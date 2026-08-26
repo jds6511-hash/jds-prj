@@ -76,7 +76,7 @@ ffmpeg -version            # 없으면 먼저 설치
 # 2) 파이썬 패키지
 pip install -r requirements.txt
 
-# 3) 테스트 — GPU 없이 CPU만으로 통과한다(약 1분, 1,752건)
+# 3) 테스트 — GPU 없이 CPU만으로 통과한다(약 1분, 1,757건)
 python -m pytest tests/ -q
 
 # 4) 영상 1편 인덱싱 → 검색
@@ -185,7 +185,7 @@ M1 5초 분할+오디오 → M2 대표 프레임 → M3 자막(Whisper large-v3)
 
 ```
 src/        M1~M9 + common.py(공용 계약) + llm.py(로컬 LLM 로더)
-tests/      모듈별 단위테스트 1,752건
+tests/      모듈별 단위테스트 1,757건
 config.yaml 확정 config (α는 여기 없다 — CLI 주입)
 data/queries/  질의·정답 라벨 (공개)
 results/    확정 평가 결과 (공개)

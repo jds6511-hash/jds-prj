@@ -61,7 +61,7 @@ primary      config.yaml · scripts/demo.py (preflight가 이 identity를 강제
 secondary    docs/finalization/SYSTEM_ARCHITECTURE_2026-08-25.md
 exact        seg_len 5s · embedding_dim 1024 · static_threshold 0 · α=0.5 (config에 없음, CLI 주입)
              alpha_star 0.5 · tie_set [0.2, 0.4, 0.5] · best point 0.4 (results/alpha_search_dev.json)
-             preflight 확인 12항목 · 단위테스트 1,752건
+             preflight 확인 12항목 · 단위테스트 1,757건
 allowed      "현재 deployment는 3B/P0/4bit이고 α=0.5다"
              "α는 config에 없고 CLI로 주입한다 — 확정값 근거는 dev α 탐색이다"
 forbidden    4B·P2·P3·external E2E·케이스 스터디를 production flow 안에 그리는 것
@@ -476,7 +476,7 @@ exact        대상 gwaktube_soviet_apartment · dev · 149구간
              서버 RTX 4090 24GB · llm_4bit false(bf16) · peak VRAM 18.1GB · 소요 212초
              모델 Qwen/Qwen2.5-7B-Instruct · map_chunk 60/overlap 5 · max_new_tokens 16384
              입력 segments.json sha256 4c37c1cc… (실행 후 불변) — M8은 이 파일만 읽는다
-             코드 로컬 HEAD e00603d(clean) · src+scripts manifest 4e0193e8… 서버와 동일
+             코드 로컬 HEAD 7621fe1(clean) · src+scripts manifest 4e0193e8… 서버와 동일
              config base 72475952… → server d97570fe… · 변경 키 llm_4bit·paths · 불변 14키 PASS
              산출 report.json sha256 1a9e1429… · 서버↔로컬 해시 일치
              결과 schema v2 · 문장 83 · 인용 구간 121/149(0.8121)

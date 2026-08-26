@@ -515,7 +515,7 @@ easy       검출기가 못 잡는 유형이 있다는 것은 재봤다. 다만 
 | test split guard | test 4편을 데모로 돌리는 것 | `scripts/demo.py` |
 | E2E public-demo eligibility guard | 선언된 데모 부적격이 강제되지 않는 것 | `scripts/demo.py` (`demo_ineligible`) |
 
-단위테스트 **1,752건**(GPU 불필요). `src/mN_*.py` ↔ `tests/test_mN_*.py` 1:1 대응.
+단위테스트 **1,757건**(GPU 불필요). `src/mN_*.py` ↔ `tests/test_mN_*.py` 1:1 대응.
 
 ### 생성 결정성 — 조건부다
 
@@ -557,7 +557,9 @@ precomputed report 로컬 렌더     가능
 소요        212초 (2026-08-26 14:08:56 → 14:12:28 +09:00)
 입력        segments.json sha256 4c37c1cc… · 91,711바이트 · 149구간 · 실행 후 불변
            M8은 segments.json만 읽는다 — 영상·프레임·임베딩·retrieval·test artifact 불필요
-코드        로컬 HEAD e00603d (clean) · src+scripts 69파일 manifest 4e0193e8… 서버와 동일
+코드        로컬 HEAD 7621fe1 (clean) · src+scripts 69파일 manifest 4e0193e8… 서버와 동일
+           (실행 시점 SHA는 e00603d였다 — 2026-08-26 히스토리 재작성으로 바뀌었고
+            src·scripts 바이트는 동일하다. HISTORY_REWRITE_2026-08-26.md 참조)
 config     base 72475952… → server d97570fe… · 변경 키는 llm_4bit·paths 둘뿐 · 불변 14키 assert PASS
 산출        report.json sha256 1a9e1429… · 47,719바이트 · 서버↔로컬 해시 일치
 결과        schema v2 · 문장 83 · 인용 구간 121/149(0.8121) · 인용 없는 문장 0 ·
@@ -762,7 +764,7 @@ action        작업현황_2026-08-25는 **그날의 스냅샷**이라 당시에
 ```
 location A   docs/tutor/튜터회의_2026-08-25.md:456   테스트 1,719건 통과 (08-25 기록)
 location B   F4_DOCUMENTATION_AUDIT_2026-08-26.md    1,719 + 6 = 1,725 (08-26 F4 시점)
-location C   README.md · 본 팩 §12                   1,752  (F5 검증 23건 + AAR 검증 4건 추가)
+location C   README.md · 본 팩 §12                   1,757  (F5 23 + AAR 4 + 프레임 guard 5)
 authoritative  pytest 실측 — 인용 시점의 값이 authoritative다
 action        A·B는 preserved — 각각 그 시점의 기록이다(회의 기록·감사 기록). 고치지 않는다.
               현재 상태를 말하는 문서(README · source pack · matrix)만 1,748로 맞췄다.

@@ -77,6 +77,14 @@ artifacts/
 # 튜터 회의 슬라이드·렌더 (AI Hub 프레임 embed — 재배포 권한 미확인, 얼굴 식별 가능)
 docs/tutor/_local/
 
+# 케이스 스터디 논의용 프레임 (2026-08-26). 원본 영상 프레임이고 결과 artifact가
+# "미추적 · 튜터 논의 한정 · 공개 금지"로 선언한 대상이다. 선언과 실제가 어긋나 있었고
+# (acb8650에서 27장이 추적됐다) 미푸시 상태에서 히스토리째로 제거했다 —
+# docs/finalization/HISTORY_REWRITE_2026-08-26.md.
+# 로컬 사본은 유지한다: PPT 재생성과 튜터 논의에 계속 쓴다.
+# 재생성은 docs/probes/casestudy_step7_extract.py.
+runs/casestudy_caption_retrieval/*/frames_for_discussion/
+
 # AAR 렌더 산출물 (2026-08-26). report.json 자체는 work/ 아래라 이미 제외되지만,
 # 렌더본에는 **인용 구간의 자막·캡션 원문이 그대로 실린다**(149구간 중 자막 99·캡션 121).
 # work/*/segments.json을 공개하지 않는 것과 같은 이유로 추적하지 않는다.
