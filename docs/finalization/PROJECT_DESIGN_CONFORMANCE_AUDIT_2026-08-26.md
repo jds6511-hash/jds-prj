@@ -111,6 +111,87 @@ pland_costco_hosting   통과 (증거 없음 — 위 CAVEAT 그대로)
 이름 집합이 `eligibility`와 `e2e_external`에 각각 있다. 발표 전에 합치는 것은
 리팩터링이라 하지 않았다 — 대신 **어긋나면 실패하는 테스트**를 넣었다.
 
+### C-9. hidden fallback — 조용한 기본값 (MEDIUM)
+
+`cfg.get(key, default)`는 키가 없어도 기본값으로 계속 돈다. **모든 fallback이 문제는
+아니다** — 결과·정체성·경계를 바꾸는 것만 문제다. 셋으로 분류했다.
+
+| key | 위치 | 부재 시 동작 | 영향 | 분류 | 조치 |
+|---|---|---|---|---|---|
+| `abstention_tau` | `m7_webui:123,317` | `None` → 저관련 경고가 **조용히 꺼진다** | 사용자에게 보이는 경고·로그 복원성. **랭킹 불변** | REQUIRED_FAIL_CLOSED | `search` 역할 필수 키. demo preflight·webui·m7_demo 시작 시 검증 |
+| `vlm_max_new_tokens` | `m3:239` | 암묵 128 | **캡션 문자열이 바뀐다** — 3B 57/395가 실제로 상한에 닿았다 | REQUIRED_FAIL_CLOSED | `caption_generation` 역할 필수. 값은 그대로 128 |
+| `vlm_rep_penalty` | `m3:244` | 암묵 1.0(=off) | 캡션 문자열 | REQUIRED_FAIL_CLOSED | 같음 |
+| `caption_normalize_cjk` | `common:80` | off | 캡션 문자열 → `text_hash` → 인덱스 identity | REQUIRED_FAIL_CLOSED | 같음. **provenance에 기록 추가**(빠져 있었다) |
+| `caption_truncate_incomplete` | `common:82` | off | 같음(8-3(b) 후처리 절단 — 토큰 상한 절단과 다른 것이다) | REQUIRED_FAIL_CLOSED | 같음 |
+| `stt_beam_size` | `m3:373,398` | `DEFAULT_BEAM_SIZE=5` | STT 전사 → 자막 | EXPLICIT_DEFAULT | **config.yaml에 이 키가 없다** — 확정 인덱스는 암묵 5로 만들어졌다. 상수·캐시 키를 테스트로 고정. config 편집은 HOLD(배포 파일) |
+| `load_segments(seg_len=5)` | `common:32` | 5초 격자로 검증 | 5가 아닌 config에서 조용한 mismatch | EXPLICIT_DEFAULT | AST 스캔 테스트 — src·scripts의 **모든** 호출부가 `seg_len`을 명시한다(현재 위반 0) |
+| `query_synonyms` | `m5:130` | 빈 사전 = 확장 off | 없음(공식 경로가 off) | SAFE_DEFAULT | 유지 |
+| `vlm_4bit` | `m3:92,215` | falsy = fp16 | 생성 identity | 이미 강제 | `identity` 필수 키 + preflight 값 대조 |
+| `_read_segments_progress` except → `None` | `m7_webui:87` | 진행률 생략 | UI 표시만 | SAFE_DEFAULT | 유지 |
+| `_log_search` except → `pass` | `m7_webui:141` | 로그 1건 유실 | 검색 응답 불변(best-effort 명시) | SAFE_DEFAULT | 유지 |
+| `env_provenance` except → `None` | `common:197~216` | torch·cuda·gpu가 null | 기록이 "모른다"로 남는다(거짓 아님) | SAFE_DEFAULT | 유지 |
+| `research_source_ids` except → `∅` | `e2e_external:79` | 출처 ID 대조가 비활성 | 파일명 검사가 2선으로 남는다 | EXPLICIT_DEFAULT | 문서화(현 상태 유지) |
+| `e2e_only_videos` manifest 부재 → `∅` | `eligibility:41` | E2E 차단만 비활성 | 동결 split·접두어는 계속 차단 | EXPLICIT_DEFAULT | 양방향 테스트로 의미 고정(C-6) |
+
+검증 수단을 `src/deployment.py`에 하나로 뒀다 — 진입점마다 복붙하지 않는다.
+
+```
+REQUIRED_KEYS = {identity, search, caption_generation, index}
+validate_production_config(cfg, roles=…)   키가 있는지만 본다(값 대조는 진입점 몫)
+  scripts/demo.py   identity + search      m7_webui·m7_demo  search
+  src/m3_generate.py  caption_generation    src/m4_index.py   index
+```
+
+**기본값은 하나도 바꾸지 않았다.** 128·1.0·5·off는 그대로다 — 현재 동작을 명시적으로
+고정한 것이고, `tests/test_config_contract.py`가 그 값들을 문자열까지 고정한다.
+
+### C-10. config drift matrix
+
+| 설정 | 정본 | 중복 정의 | CLI 기본 | 코드 기본 | 런타임 검증 | 산출물 기록 | 표류 위험 | 조치 |
+|---|---|---|---|---|---|---|---|---|
+| caption model | `src/deployment.py` | 없음(사본 제거) | — | — | preflight 값 대조 + 인덱스 provenance 대조 | `caption_provenance` (4편만) | LOW | C-2·C-7 |
+| prompt | `config.yaml:17` | 없음(문자열 사본 0) | — | — | `caption_generation` 필수 + 인덱스 해시 대조 | `prompt_sha256` | LOW | 유지 |
+| quantization | `deployment.py` | 없음 | — | `cfg.get("vlm_4bit")` falsy | preflight 값 대조 | 요청·실효 둘 다 | NONE | 유지 |
+| segment duration | `config.yaml seg_len_sec` | `deployment.DEPLOYMENT`·`m1.make_segments(5)`·`load_segments(5)` | — | 5 | 로드마다 `start=idx*seg_len` 재검증 | `n_segments` | LOW | 호출부 명시 테스트 |
+| STT model·lang | `config.yaml` | `m3.transcribe` 함수 기본값 `large-v3` (main은 cfg를 넘긴다) | — | large-v3 | — | `stt_cache.json` meta | LOW | 문서화 |
+| stt_beam_size | **없음(암묵 5)** | `DEFAULT_BEAM_SIZE` | — | 5 | — | 캐시 키에 포함 | MEDIUM | 상수·캐시 키 고정 테스트. config 추가는 HOLD |
+| embed model | `config.yaml` | `deployment.DEPLOYMENT` | — | — | `meta.embed_model` 대조(m5·preflight) | `meta.json` | NONE | 유지 |
+| alpha | `deployment.ALPHA` | 없음(사본 제거) | `m5 --alpha 1.0`(baseline 진단) | — | `check_alpha` + `combine_scores` 범위 | 결과 JSON | LOW | C-3·C-7 |
+| top_k | `m7_webui.DEFAULT_TOP_K=3` | `m5 --topk 5` | 3 / 5 | — | 정수·≥1 검증 | 응답 `top_k` | LOW(표시 계층) | §C-11 |
+| abstention_tau | `config.yaml` | 없음 | — | `None` | `search` 필수 키 | 로그·응답 동일 값 | NONE | C-8·C-9 |
+| vlm_max_new_tokens | `config.yaml` | 없음 | — | 128 | `caption_generation` 필수 | provenance | NONE | C-9 |
+| caption 후처리 2플래그 | `config.yaml` | 없음 | — | off | `caption_generation` 필수 | provenance(이번에 추가) | NONE | C-9 |
+
+**중복이 있다는 이유만으로 제거하지 않았다.** 판단 기준은 "지원 진입점이 서로 다른
+값으로 돌 수 있는가"다. `m5 --alpha 1.0`·`--topk 5`는 baseline 진단용 CLI라 남긴다.
+
+### C-11. top_k는 표시 계층이다
+
+```
+search_with_stats  전 세그먼트를 정렬해 results 전체를 만든다
+do_search          top = results[:top_k] — 자르기만 한다
+```
+
+랭킹·점수·평가에 관여하지 않는다. 따라서 severity를 낮게 두고, 의미(“표시 개수”)만
+한 곳으로 유지한다.
+
+### C-12. Git 공개 안전성 회귀 방지 (⑦)
+
+스캔 결과는 이전과 같다(위험 tracked **0건**). 없던 것은 그것을 지키는 장치다 —
+2026-08-26에 논의용 프레임 27장이 실제로 커밋됐고(`acb8650`) 미푸시 상태에서 히스토리째
+제거했다. 정책은 문서에, 강제는 없었다.
+
+```
+tests/test_publication_safety.py (36건 + skip 1)
+  ① tracked_forbidden == 0        정책 경로/패턴으로 검사 — 파일명 키워드 판정 금지
+  ② git check-ignore 실측         대표 경로 11개가 실제로 무시되는지 (패턴 독해 아님)
+  ③ 과하지 않은지                 공개 대상 11개(코드·config·질의·확정 결과·덱 소스·
+                                 FROZEN 목록)가 무시되지 않고 추적되는지
+```
+
+과거 히스토리는 다시 손대지 않았다. 이번 항목의 질문은 "앞으로 `git add -A`를 해도
+막히는가"이고, 답은 이제 테스트가 지킨다.
+
 ---
 
 ## D. 요구사항 추적표 (R01~R22)
@@ -125,7 +206,8 @@ MISMATCH(문서와 코드가 다름) / NOT_IMPLEMENTED / NOT_APPLICABLE.
 | R02 | 구간당 대표 프레임 1장(차분 argmax, 평활) | `m2_keyframe.py:11-21,112,128` | PASS |
 | R03 | 오버랩 자막 귀속(겹치는 모든 구간) | `m3_generate.py:176-190` | PASS |
 | R04 | 자막 크레딧 환각 제거는 **전체 일치 자동 판정만** | `common.is_subtitle_credit` · `m3_generate.py:183` | PASS |
-| R05 | P0 프롬프트 동결 · 캡션 후처리 기본 off | `config.yaml caption_prompt` · `common.py:80-82`(플래그 둘 다 false → 실질 no-op) | PASS_WITH_CAVEAT — 프롬프트 동일성은 provenance 있는 4편에서만 대조된다(C-2) |
+| R05 | P0 프롬프트 동결 · 캡션 후처리 기본 off | `config.yaml caption_prompt` · `common.py:80-82`(플래그 둘 다 false) · 두 플래그는 이제 `caption_generation` 필수 키이고 provenance에 기록된다(C-9) | PASS_WITH_CAVEAT — 프롬프트 동일성은 provenance 있는 4편에서만 대조된다(C-2) |
+| R05-b | 편집 자막은 제외, 장면 속 텍스트(간판·배너)는 포함 | 픽셀 제거 없음 — 프롬프트 문안만. `α=0`에서 STT 자막 기여는 0 | **MISMATCH (범위 한정)** — P0 문안이 덧씌운 자막과 장면 속 텍스트를 구분하지 못한다. 근거·실측은 `CAPTION_TEXT_HANDLING_AUDIT_2026-08-26.md`. 프롬프트 수정·재캡셔닝이 HOLD라 이번 감사에서 닫지 않는다. 영향은 **캡션 텍스트 품질 해석**에 한정되고 배포 파이프라인·경계·데이터 정합성에는 미치지 않는다 |
 | R06 | 캡션 재생성은 자동 오염 판정분만 | `m3_generate.py:271-278,319-322` · `--recaption-corrupted` 배타 플래그(`:343-346`) | PASS |
 | R07 | 자막·캡션·질의 동일 embed_model · L2 · float32 | `m4_index.py` 생성 · `m5_search.py:64` 로드 대조 | PASS |
 | R08 | 재캡셔닝 후 임베딩 미갱신 차단(text_hash) | `m5_search.py:69` · `scripts/demo.py:131` | PASS |
@@ -142,7 +224,7 @@ MISMATCH(문서와 코드가 다름) / NOT_IMPLEMENTED / NOT_APPLICABLE.
 | R19 | 영상 출처 provenance 인덱싱 전 기록 · fail-closed · 지표 미사용 | `src/provenance.py` · `m1_preprocess` resolve · `tests/test_provenance.py` | PASS_WITH_CAVEAT — 기존 11편은 `legacy_exempt`로 **데이터에** 면제가 있다(코드가 조용히 넘어가지 않는다) |
 | R20 | 캡션 생성 조건 기록(요청값·실효값 둘 다) | `m3_generate.caption_provenance` | PASS_WITH_CAVEAT — 2026-08-17 도입, 확정 인덱스 11편에 없음. 부재를 preflight가 공시(C-2) |
 | R21 | 변형 실험 격리 — config 사본 · work/results 동시 분리 | `scripts/casestudy_make_config.py:33-43`(KEEP_IDENTICAL assert) · `make_server_config.py` | PASS |
-| R22 | 공개 저장소에 원본 영상·프레임·인덱스 텍스트 미추적 | `.gitignore` · `git ls-files` 실측 **0건** | PASS_WITH_CAVEAT — 발췌 인용(케이스 스터디·AAR 추적 문서)은 존재한다. 전량 덤프는 없다 |
+| R22 | 공개 저장소에 원본 영상·프레임·인덱스 텍스트 미추적 | `.gitignore` · `git ls-files` 실측 **0건** · `tests/test_publication_safety.py`가 tracked 0건·`check-ignore` 실측·과잉 차단 3방향을 지킨다(C-12) | PASS_WITH_CAVEAT — 발췌 인용(케이스 스터디·AAR 추적 문서)은 존재한다. 전량 덤프는 없다 |
 
 ---
 
@@ -256,5 +338,90 @@ push / 외부 공개                               → 사용자 승인 사항
 2. **`load_segments(seg_len=5)`의 기본값.** 호출부가 cfg를 넘기지 않으면 5초로 검증한다.
    현재 모든 production 호출부는 cfg를 넘긴다(확인). seg_len ablation 코드가 늘면
    여기가 함정이 된다.
+2-1. **`load_segments`의 기본값은 이제 테스트가 지킨다** — AST 스캔으로 src·scripts의
+   모든 호출부가 `seg_len`을 명시하는지 확인한다(현재 위반 0). 남은 위험은 새 호출부를
+   추가할 때 그 테스트를 지우는 경우다.
+
 3. **정책 단일 출처의 적용 범위.** `eligibility`는 데모 경로만 덮는다. 연구 스크립트
    (`p2_*`·`p3_*`)는 자체 arm 맵을 쓴다 — 의도된 분리지만 표류 감시는 테스트 2건뿐이다.
+
+4. **`stt_beam_size`가 config.yaml에 없다.** 확정 인덱스 자막은 암묵 기본값 5로
+   만들어졌다. 상수와 캐시 키는 테스트로 고정했지만, 배포 config에 키를 넣는 것은
+   config 편집이라 HOLD다.
+
+---
+
+## H. Findings 전체 (severity · 최종 상태)
+
+이미 고친 것도 남긴다 — "발견되지 않았던 것처럼" 지우지 않는다.
+
+| # | finding | severity | 상태 |
+|---|---|---|---|
+| F1 | 데모 자격 경계가 요청 경로에서 강제되지 않았다 (search·segments·video·upload) | HIGH | **FIXED** |
+| F2 | 자격 경계 우회 3건 — `/api/status` 무방비 · 대소문자 변형 · upload 덮어쓰기 | HIGH | **FIXED** |
+| F3 | test 접촉 게이트 없음 — `m6_evaluate` 기본 경로가 test 평가, `m9`는 실행 자체가 접촉 | HIGH | **FIXED** |
+| F4 | 인덱스 캡션 identity 미검증 — 4B 인덱스를 3B config로 열면 통과 | HIGH | **FIXED** (증거 있는 인덱스 한정) |
+| F5 | 진입점별 α 불일치 — `demo.py`만 강제, `m7_webui` 직접 실행은 무검증 | HIGH | **FIXED** |
+| F6 | 검색 로그 배너 판정이 응답과 달랐다(기존 테스트가 버그를 고정) | MEDIUM | **FIXED** |
+| F7 | α 범위 미검증 — 1.5·NaN이 가중합에 들어갔다 | MEDIUM | **FIXED** |
+| F8 | hidden fallback 5종 — 생성 조건·후처리 플래그·τ가 키 부재 시 조용한 기본값 | MEDIUM | **FIXED** (fail-closed 필수 키) |
+| F9 | 캡션 후처리 플래그가 provenance에 기록되지 않았다 | MEDIUM | **FIXED** |
+| F10 | 배포 identity 선언이 두 파일에 복사돼 있었다 | LOW | **FIXED** (단일 출처) |
+| F11 | Git 공개 안전성 회귀 방지 장치 없음 | MEDIUM | **FIXED** (테스트 36건) |
+| F12 | P0 문안이 편집 자막과 장면 속 텍스트를 구분하지 못한다 | MEDIUM | **HOLD** (프롬프트 수정·재캡셔닝 승인 사건) |
+| F13 | 확정 인덱스 11편에 `caption_provenance`가 없다 | MEDIUM | **ACCEPTED_CAVEAT** (재색인 필요 · preflight가 부재를 공시) |
+| F14 | `stt_beam_size`가 config에 없고 암묵 5로 동작 | LOW | **ACCEPTED_CAVEAT** (상수·캐시 키 고정) |
+
+미해결 CRITICAL·HIGH: **0**
+
+---
+
+## I. 감사 경계 (사실 기록)
+
+```
+test outcomes evaluated                          NO    M6·M9 실행 0회
+test split metadata inspected                    YES   자격 강제 확인 목적(video_id·split·질의 수)
+test 성능 재계산                                  NO
+test 확장(39→72) 개시                             NO
+새 연구·새 지표                                   NO
+캡션 재생성 · 재색인 · 새 임베딩                    NO
+배포 구성 변경 · 프롬프트 변경                      NO
+P2/P3 결과 접근 · M9                              NO
+동결 산출물 수정                                   NO
+push                                             NO
+```
+
+기본값 변경도 없다 — `vlm_max_new_tokens=128`·`vlm_rep_penalty=1.0`·
+`DEFAULT_BEAM_SIZE=5`·후처리 off는 그대로이고 테스트가 그 값을 고정한다.
+
+---
+
+## J. 최종 판정
+
+```
+PROJECT_DESIGN_CONFORMANCE_AUDIT      COMPLETE
+남은 감사 항목                          0
+overall verdict                       CONFORMANT_WITH_CAVEATS
+```
+
+근거: 배포 architecture·identity·데이터 매핑(구간↔프레임↔임베딩↔순위↔증거)·경계
+(test split·E2E·P2/P3·데모 자격)가 **현재 런타임에서 강제된다.** 남은 것은 문서화된
+caveat과 승인 사건이다.
+
+```
+caveat 1  확정 인덱스 11편의 캡션 출처는 산출물로 증명되지 않는다 (재색인 HOLD)
+caveat 2  P0 문안의 편집 자막 / 장면 속 텍스트 구분 부재 (프롬프트 수정 HOLD)
+          — 영향은 캡션 텍스트 품질 해석에 한정된다
+caveat 3  stt_beam_size가 config에 없다 (암묵 5, 테스트로 고정)
+```
+
+R05-b가 MISMATCH지만 이것 때문에 전체를 PARTIALLY_CONFORMANT로 두지 않는다 — 그
+항목은 배포 파이프라인·경계·정합성이 아니라 **캡션 문안 정책의 표현**에 관한 것이고,
+검색 경로에 미치는 영향은 별도 감사에서 정량화돼 있다(3B 21/395 전사 사례, 하한).
+
+## K. 이 감사 다음에 할 일
+
+```
+발표 본편 갱신 · 예상질문_방어 갱신 · 8분 리허설 · 보고서 본문
+승인 사항(재색인 · test 확장 · M9 · push)은 그대로 HOLD
+```

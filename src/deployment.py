@@ -54,6 +54,51 @@ SUPPORTED_ENTRYPOINTS = {
 
 ALPHA_OPT_OUT = "--allow-nondeployment-alpha"
 
+# ---------------------------------------------------------------- config 계약
+#
+# `.get(key, default)`로 읽는 값은 **키가 없어도 조용히 돌아간다.** 그중 결과·정체성을
+# 바꾸는 것은 없어지면 안 된다 — 없으면 그 실행이 무슨 구성이었는지 사후에 알 수 없다.
+# 2026-08-26 fallback 감사에서 아래를 역할별 필수로 확정했다. **기본값을 바꾸지 않고
+# 현재 동작을 명시적으로 고정하는 것이 목적이다.**
+#
+#   search             abstention_tau가 없으면 저관련 경고가 조용히 꺼진다(랭킹은 불변)
+#   caption_generation vlm_max_new_tokens·후처리 플래그는 캡션 문자열을 바꾼다
+#                      (실측: 3B 캡션 57/395가 128 토큰 상한에 닿았다)
+#   index              embed_model·batch·seg_len이 임베딩 산출물을 결정한다
+REQUIRED_KEYS = {
+    "identity": ("caption_model", "vlm_4bit", "embed_model", "seg_len_sec",
+                 "static_threshold"),
+    "search": ("embed_model", "seg_len_sec", "static_threshold", "abstention_tau"),
+    "caption_generation": ("caption_model", "caption_prompt", "vlm_4bit",
+                           "vlm_max_pixels", "vlm_max_new_tokens", "vlm_rep_penalty",
+                           "caption_normalize_cjk", "caption_truncate_incomplete"),
+    "index": ("embed_model", "embed_batch_size", "seg_len_sec"),
+}
+
+
+class ConfigContractError(RuntimeError):
+    pass
+
+
+def validate_production_config(cfg: dict, roles=("identity", "search")) -> int:
+    """역할별 필수 키가 **있는지** 본다. 값이 맞는지는 진입점별 대조가 따로 한다.
+
+    반환값은 확인한 키 수다. 없으면 `ConfigContractError` — 조용한 기본값보다 실패가
+    낫다는 판단이고, 그 판단 근거는 역할별로 위 주석에 적었다.
+    """
+    unknown = [r for r in roles if r not in REQUIRED_KEYS]
+    if unknown:
+        raise ConfigContractError(f"알 수 없는 역할: {unknown}")
+    n = 0
+    for role in roles:
+        missing = [k for k in REQUIRED_KEYS[role] if k not in cfg]
+        if missing:
+            raise ConfigContractError(
+                f"config에 {role} 필수 키가 없다: {missing} — 없으면 기본값으로 조용히 "
+                f"돌아가고 그 실행이 무슨 구성이었는지 사후에 알 수 없다")
+        n += len(REQUIRED_KEYS[role])
+    return n
+
 
 class DeploymentIdentityError(RuntimeError):
     pass

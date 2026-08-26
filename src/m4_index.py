@@ -4,6 +4,7 @@ import argparse, json, sys
 from pathlib import Path
 import numpy as np
 import common
+import deployment
 import provenance
 
 _model_cache = {}
@@ -30,6 +31,11 @@ def main():
     ap.add_argument("--force", action="store_true")
     args = ap.parse_args()
     cfg = common.load_config(args.config)
+    # 임베딩 산출물을 결정하는 키 — 부재 시 조용한 기본값을 허용하지 않는다
+    try:
+        deployment.validate_production_config(cfg, roles=("index",))
+    except deployment.ConfigContractError as e:
+        raise SystemExit(str(e))
     wdir = common.work_dir(cfg, args.video_id)
     doc = common.load_segments(wdir / "segments.json", require=["subtitle", "caption"],
                                seg_len=cfg["seg_len_sec"])

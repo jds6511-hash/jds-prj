@@ -55,6 +55,10 @@ def main():
     if block:
         raise SystemExit(block)
     cfg = common.load_config(args.config)
+    try:
+        deployment.validate_production_config(cfg, roles=("search",))
+    except deployment.ConfigContractError as e:
+        raise SystemExit(str(e))
     video = VideoIndex.load(cfg, args.video_id)
     mp4 = Path(cfg["paths"]["data"]) / "videos" / f"{args.video_id}.mp4"
 

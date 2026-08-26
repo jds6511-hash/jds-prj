@@ -98,6 +98,11 @@ def preflight(cfg: dict, video_id: str, alpha: float) -> dict:
             f"데모는 배포 구성으로만 돌린다 — α 탐색은 이 진입점의 일이 아니다")
     checks += 1
 
+    # 값 대조 전에 **키가 있는지** 본다. `.get(key, default)` 경로는 키가 없어도 조용히
+    # 돌아가므로(예: abstention_tau 부재 → 저관련 경고가 꺼진다) 여기서 먼저 막는다.
+    # 항목 수는 늘리지 않는다 — 아래 identity 루프의 일부로 센다 [fallback 감사 2026-08-26]
+    deployment.validate_production_config(cfg, roles=("identity", "search"))
+
     for key, want in DEPLOYMENT.items():
         got = cfg.get(key)
         if got != want:

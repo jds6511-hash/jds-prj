@@ -18,11 +18,15 @@
     "케이스 스터디 v1 동결본"
   ],
   "summary": {
+    "total_requirements": 23,
     "PASS": 17,
     "PASS_WITH_CAVEAT": 5,
     "IMPLEMENTED_NOT_ENFORCED_then_fixed": 5,
-    "MISMATCH": 0,
-    "NOT_IMPLEMENTED": 0
+    "MISMATCH": 1,
+    "DOC_ONLY": 0,
+    "NOT_IMPLEMENTED": 0,
+    "NOT_APPLICABLE": 0,
+    "note": "MISMATCH 1건은 R05-b(P0 문안의 편집 자막 / 장면 속 텍스트 구분) — 프롬프트 수정이 HOLD라 이번 감사에서 닫지 않는다"
   },
   "enforcement_added": [
     {
@@ -146,12 +150,81 @@
     "problem": "이름이 겹치는 다른 기록(caption_provenance)까지 막았다 — C-2의 fail-closed guard가 걸렸다",
     "after": "금지 토큰을 출처 provenance 것으로 좁힘 (import provenance · source_url · source_id · file_sha256 · \"provenance\" · legacy_exempt). 규칙을 완화한 것이 아니라 대상을 정확히 했다"
   },
+  "hidden_fallback": {
+    "principle": "모든 fallback이 문제는 아니다. 결과·정체성·경계를 바꾸는 것만 문제다. 기본값 자체는 바꾸지 않고 현재 동작을 명시적으로 고정한다",
+    "classification": {
+      "SAFE_DEFAULT": ["query_synonyms(빈 사전=확장 off)", "_read_segments_progress except→None(UI 진행률)", "_log_search except→pass(best-effort)", "env_provenance except→null(모른다로 기록)"],
+      "EXPLICIT_DEFAULT": ["stt_beam_size=5(config에 키 없음, 캐시 키·상수 테스트로 고정)", "load_segments(seg_len=5)(전 호출부 명시 — AST 테스트)", "research_source_ids except→∅(파일명 검사 2선)", "e2e_only_videos manifest 부재→∅(동결 split·접두어는 계속 차단)"],
+      "REQUIRED_FAIL_CLOSED": ["abstention_tau", "vlm_max_new_tokens", "vlm_rep_penalty", "caption_normalize_cjk", "caption_truncate_incomplete", "vlm_4bit", "embed_model", "embed_batch_size", "seg_len_sec", "static_threshold", "caption_model", "caption_prompt"]
+    },
+    "findings": [
+      {"key": "abstention_tau", "location": "src/m7_webui.py:123,317", "fallback": "None", "impact": "저관련 경고가 조용히 꺼진다. 랭킹 불변", "classification": "REQUIRED_FAIL_CLOSED", "action": "search 역할 필수 키 — demo preflight·m7_webui·m7_demo 시작 시 검증"},
+      {"key": "vlm_max_new_tokens", "location": "src/m3_generate.py:239", "fallback": 128, "impact": "캡션 문자열이 바뀐다 — 3B 캡션 57/395가 실제로 상한에 닿았다", "classification": "REQUIRED_FAIL_CLOSED", "action": "caption_generation 역할 필수. 값은 128 그대로"},
+      {"key": "vlm_rep_penalty", "location": "src/m3_generate.py:244", "fallback": 1.0, "impact": "캡션 문자열", "classification": "REQUIRED_FAIL_CLOSED", "action": "같음"},
+      {"key": "caption_normalize_cjk", "location": "src/common.py:80", "fallback": "off", "impact": "캡션 문자열 → text_hash → 인덱스 identity", "classification": "REQUIRED_FAIL_CLOSED", "action": "필수 키 + caption_provenance 기록 추가(빠져 있었다)"},
+      {"key": "caption_truncate_incomplete", "location": "src/common.py:82", "fallback": "off", "impact": "같음 (8-3(b) 후처리 절단 — 토큰 상한 절단과 다른 것)", "classification": "REQUIRED_FAIL_CLOSED", "action": "같음"},
+      {"key": "stt_beam_size", "location": "src/m3_generate.py:373,398", "fallback": 5, "impact": "STT 전사 → 자막", "classification": "EXPLICIT_DEFAULT", "action": "config.yaml에 키가 없다 — 확정 인덱스는 암묵 5로 생성. 상수·캐시 키를 테스트로 고정. config 편집은 HOLD", "note": "stt_cache.json meta가 beam_size를 캐시 키로 들고 있다"},
+      {"key": "load_segments(seg_len=5)", "location": "src/common.py:32", "fallback": 5, "impact": "5가 아닌 config에서 조용한 격자 mismatch", "classification": "EXPLICIT_DEFAULT", "action": "AST 스캔 테스트 — src·scripts 전 호출부가 seg_len 명시(위반 0)"}
+    ],
+    "validator": {
+      "module": "src/deployment.py",
+      "function": "validate_production_config(cfg, roles)",
+      "roles": {"identity": "caption_model·vlm_4bit·embed_model·seg_len_sec·static_threshold", "search": "embed_model·seg_len_sec·static_threshold·abstention_tau", "caption_generation": "caption_model·caption_prompt·vlm_4bit·vlm_max_pixels·vlm_max_new_tokens·vlm_rep_penalty·caption_normalize_cjk·caption_truncate_incomplete", "index": "embed_model·embed_batch_size·seg_len_sec"},
+      "wired_at": {"scripts/demo.py": ["identity", "search"], "src/m7_webui.py": ["search"], "src/m7_demo.py": ["search"], "src/m3_generate.py": ["caption_generation"], "src/m4_index.py": ["index"]}
+    },
+    "defaults_unchanged": {"vlm_max_new_tokens": 128, "vlm_rep_penalty": 1.0, "DEFAULT_BEAM_SIZE": 5, "caption_normalize_cjk": false, "caption_truncate_incomplete": false},
+    "tests": ["tests/test_config_contract.py"]
+  },
+  "config_drift_matrix": [
+    {"setting": "caption model", "canonical": "src/deployment.py", "duplicates": "없음(사본 제거)", "code_default": null, "runtime_validation": "preflight 값 대조 + 인덱스 provenance 대조", "artifact_provenance": "caption_provenance(4편만)", "drift_risk": "LOW"},
+    {"setting": "prompt", "canonical": "config.yaml:17", "duplicates": "없음(문자열 사본 0)", "code_default": null, "runtime_validation": "caption_generation 필수 + 인덱스 prompt_sha256 대조", "artifact_provenance": "prompt_sha256", "drift_risk": "LOW"},
+    {"setting": "quantization", "canonical": "src/deployment.py", "duplicates": "없음", "code_default": "cfg.get('vlm_4bit') falsy", "runtime_validation": "preflight 값 대조", "artifact_provenance": "요청·실효 둘 다", "drift_risk": "NONE"},
+    {"setting": "segment_duration", "canonical": "config.yaml seg_len_sec", "duplicates": "deployment.DEPLOYMENT · m1.make_segments(5) · load_segments(5)", "code_default": 5, "runtime_validation": "로드마다 start=idx*seg_len 재검증", "artifact_provenance": "n_segments", "drift_risk": "LOW"},
+    {"setting": "STT model/lang", "canonical": "config.yaml", "duplicates": "m3.transcribe 함수 기본값 large-v3 (main은 cfg를 넘긴다)", "code_default": "large-v3", "runtime_validation": null, "artifact_provenance": "stt_cache.json meta", "drift_risk": "LOW"},
+    {"setting": "stt_beam_size", "canonical": "없음 — 암묵 5", "duplicates": "DEFAULT_BEAM_SIZE", "code_default": 5, "runtime_validation": null, "artifact_provenance": "캐시 키에 포함", "drift_risk": "MEDIUM", "action": "테스트로 고정. config 추가는 HOLD"},
+    {"setting": "embed_model", "canonical": "config.yaml", "duplicates": "deployment.DEPLOYMENT", "code_default": null, "runtime_validation": "meta.embed_model 대조(m5·preflight)", "artifact_provenance": "meta.json", "drift_risk": "NONE"},
+    {"setting": "alpha", "canonical": "src/deployment.ALPHA", "duplicates": "없음(사본 제거)", "cli_default": "m5 --alpha 1.0 (baseline 진단)", "runtime_validation": "check_alpha + combine_scores 범위", "artifact_provenance": "결과 JSON", "drift_risk": "LOW"},
+    {"setting": "top_k", "canonical": "m7_webui.DEFAULT_TOP_K=3", "duplicates": "m5 --topk 5", "code_default": 3, "runtime_validation": "정수·>=1 검증", "artifact_provenance": "응답 top_k", "drift_risk": "LOW", "note": "표시 계층 — 전체 랭킹은 full pool에서 만들고 top_k는 자르기만 한다"},
+    {"setting": "abstention_tau", "canonical": "config.yaml", "duplicates": "없음", "code_default": null, "runtime_validation": "search 역할 필수 키", "artifact_provenance": "로그·응답 동일 값(low_relevance_flag)", "drift_risk": "NONE"},
+    {"setting": "vlm_max_new_tokens", "canonical": "config.yaml", "duplicates": "없음", "code_default": 128, "runtime_validation": "caption_generation 필수", "artifact_provenance": "caption_provenance", "drift_risk": "NONE"},
+    {"setting": "caption 후처리 2플래그", "canonical": "config.yaml", "duplicates": "없음", "code_default": "off", "runtime_validation": "caption_generation 필수", "artifact_provenance": "caption_provenance(이번에 추가)", "drift_risk": "NONE"}
+  ],
+  "publication_safety": {
+    "forbidden_patterns": ["docs/tutor/_local/**", "runs/**/frames_for_discussion/**", "data/videos/**", "work/**", "New_Sample/**", "data_aihub/**", "artifacts/**", "SERVER_LOCAL.md", "docs/finalization/AAR_SAMPLE_*", "label_kit/** (event_inventory/FROZEN_* 제외)", "*.mp4", "*.wav", "*.npy", "*.pptx"],
+    "tracked_forbidden_count": 0,
+    "gitignore_verified_with": "git check-ignore — 대표 경로 11개 실측(패턴 독해 아님)",
+    "over_broad_check": "공개 대상 11개(코드·config·질의·확정 결과·덱 소스·FROZEN 목록)가 무시되지 않고 추적됨",
+    "history": "과거 히스토리는 손대지 않았다. 이번 항목의 질문은 '앞으로 git add -A 해도 막히는가'다",
+    "tests": ["tests/test_publication_safety.py"]
+  },
+  "findings": [
+    {"id": "F1", "finding": "데모 자격 경계가 요청 경로에서 강제되지 않았다", "severity": "HIGH", "status": "FIXED"},
+    {"id": "F2", "finding": "자격 경계 우회 3건 — /api/status 무방비 · 대소문자 변형 · upload 덮어쓰기", "severity": "HIGH", "status": "FIXED"},
+    {"id": "F3", "finding": "test 접촉 게이트 없음 — m6 기본 경로가 test 평가, m9는 실행 자체가 접촉", "severity": "HIGH", "status": "FIXED"},
+    {"id": "F4", "finding": "인덱스 캡션 identity 미검증 — 4B 인덱스를 3B config로 열면 통과", "severity": "HIGH", "status": "FIXED", "scope": "증거(caption_provenance) 있는 인덱스 한정"},
+    {"id": "F5", "finding": "진입점별 α 불일치 — demo.py만 강제", "severity": "HIGH", "status": "FIXED"},
+    {"id": "F6", "finding": "검색 로그 배너 판정이 응답과 달랐다(기존 테스트가 버그를 고정)", "severity": "MEDIUM", "status": "FIXED"},
+    {"id": "F7", "finding": "α 범위 미검증 — 1.5·NaN 통과", "severity": "MEDIUM", "status": "FIXED"},
+    {"id": "F8", "finding": "hidden fallback 5종 — 생성 조건·후처리 플래그·τ가 조용한 기본값", "severity": "MEDIUM", "status": "FIXED"},
+    {"id": "F9", "finding": "캡션 후처리 플래그가 provenance에 기록되지 않았다", "severity": "MEDIUM", "status": "FIXED"},
+    {"id": "F10", "finding": "배포 identity 선언이 두 파일에 복사돼 있었다", "severity": "LOW", "status": "FIXED"},
+    {"id": "F11", "finding": "Git 공개 안전성 회귀 방지 장치 없음", "severity": "MEDIUM", "status": "FIXED"},
+    {"id": "F12", "finding": "P0 문안이 편집 자막과 장면 속 텍스트를 구분하지 못한다", "severity": "MEDIUM", "status": "HOLD", "note": "프롬프트 수정·재캡셔닝은 승인 사건. 영향은 캡션 텍스트 품질 해석에 한정"},
+    {"id": "F13", "finding": "확정 인덱스 11편에 caption_provenance가 없다", "severity": "MEDIUM", "status": "ACCEPTED_CAVEAT", "note": "재색인 필요 · preflight가 부재를 공시"},
+    {"id": "F14", "finding": "stt_beam_size가 config에 없고 암묵 5로 동작", "severity": "LOW", "status": "ACCEPTED_CAVEAT"}
+  ],
+  "unresolved_critical_or_high": 0,
+  "overall_verdict": "CONFORMANT_WITH_CAVEATS",
+  "verdict_rationale": "배포 architecture·identity·데이터 매핑(구간↔프레임↔임베딩↔순위↔증거)·경계(test split·E2E·P2/P3·데모 자격)가 현재 런타임에서 강제된다. 남은 것은 문서화된 caveat과 승인 사건이다. R05-b(MISMATCH)는 배포 파이프라인이 아니라 캡션 문안 정책의 표현에 관한 것이라 전체를 PARTIALLY_CONFORMANT로 내리지 않는다",
+  "audit_status": "COMPLETE",
+  "remaining_audit_items": 0,
   "requirements": [
     {"id": "R01", "requirement": "5초 등간격 분할 · start = idx*5 불변식", "enforced_at": "m1_preprocess.py:9-13,59-62 + common.load_segments:44 (로드마다 재검증)", "status": "PASS"},
     {"id": "R02", "requirement": "구간당 대표 프레임 1장 (차분 argmax, 가우시안 평활)", "enforced_at": "m2_keyframe.py:11-21,112,128", "status": "PASS"},
     {"id": "R03", "requirement": "오버랩 자막 귀속 — 겹치는 모든 구간에 포함", "enforced_at": "m3_generate.py:176-190", "status": "PASS"},
     {"id": "R04", "requirement": "자막 크레딧 환각 제거는 전체 일치 자동 판정만", "enforced_at": "common.is_subtitle_credit · m3_generate.py:183", "status": "PASS"},
-    {"id": "R05", "requirement": "P0 프롬프트 동결 · 캡션 후처리 기본 off", "enforced_at": "config.yaml caption_prompt · common.py:80-82 (플래그 둘 다 false → 실질 no-op)", "status": "PASS_WITH_CAVEAT", "caveat": "프롬프트 동일성 대조는 provenance 있는 4편에서만 가능"},
+    {"id": "R05", "requirement": "P0 프롬프트 동결 · 캡션 후처리 기본 off", "enforced_at": "config.yaml caption_prompt · common.py:80-82 · 두 플래그는 caption_generation 필수 키이고 caption_provenance에 기록된다(C-9)", "status": "PASS_WITH_CAVEAT", "caveat": "프롬프트 동일성 대조는 provenance 있는 4편에서만 가능"},
+    {"id": "R05-b", "requirement": "편집 자막은 제외, 장면 속 텍스트(간판·배너)는 포함", "enforced_at": "픽셀 제거 없음 — 프롬프트 문안만. α=0에서 STT 자막 기여 0", "status": "MISMATCH", "severity": "MEDIUM", "scope": "캡션 텍스트 품질 해석에 한정 — 배포 파이프라인·경계·데이터 정합성에는 영향 없음", "evidence": "docs/finalization/CAPTION_TEXT_HANDLING_AUDIT_2026-08-26.md", "action": "프롬프트 수정·재캡셔닝은 HOLD(승인 사건)"},
     {"id": "R06", "requirement": "캡션 재생성은 자동 오염 판정분만", "enforced_at": "m3_generate.py:271-278,319-322,343-346", "status": "PASS"},
     {"id": "R07", "requirement": "자막·캡션·질의 동일 embed_model · L2 정규화 · float32", "enforced_at": "m4_index.py 생성 · m5_search.py:64 로드 대조", "status": "PASS"},
     {"id": "R08", "requirement": "재캡셔닝 후 임베딩 미갱신 차단 (text_hash)", "enforced_at": "m5_search.py:69 · scripts/demo.py:131", "status": "PASS"},
@@ -168,7 +241,7 @@
     {"id": "R19", "requirement": "영상 출처 provenance 인덱싱 전 기록 · fail-closed · 지표 미사용", "enforced_at": "src/provenance.py · m1_preprocess resolve · tests/test_provenance.py", "status": "PASS_WITH_CAVEAT", "caveat": "기존 11편은 legacy_exempt로 데이터에 면제 기록 — 코드가 조용히 넘어가지 않는다"},
     {"id": "R20", "requirement": "캡션 생성 조건 기록 — 요청값·실효값 둘 다", "enforced_at": "m3_generate.caption_provenance", "status": "PASS_WITH_CAVEAT", "caveat": "2026-08-17 도입. 확정 인덱스 11편에 없고 부재를 preflight가 공시"},
     {"id": "R21", "requirement": "변형 실험 격리 — config 사본 · work/results 동시 분리", "enforced_at": "scripts/casestudy_make_config.py:33-43 (KEEP_IDENTICAL assert) · make_server_config.py", "status": "PASS"},
-    {"id": "R22", "requirement": "공개 저장소에 원본 영상·프레임·인덱스 텍스트 미추적", "enforced_at": ".gitignore · git ls-files 실측 0건", "status": "PASS_WITH_CAVEAT", "caveat": "발췌 인용(케이스 스터디·AAR 추적 문서)은 존재. 전량 덤프 없음"}
+    {"id": "R22", "requirement": "공개 저장소에 원본 영상·프레임·인덱스 텍스트 미추적", "enforced_at": ".gitignore · git ls-files 실측 0건 · tests/test_publication_safety.py(tracked 0건 · check-ignore 실측 · 과잉 차단 3방향)", "status": "PASS_WITH_CAVEAT", "caveat": "발췌 인용(케이스 스터디·AAR 추적 문서)은 존재. 전량 덤프 없음"}
   ],
   "hold": [
     "확정 인덱스 11편의 caption_provenance 채우기 — 재색인 필요",

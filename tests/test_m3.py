@@ -26,10 +26,14 @@ def _seed_work_dir(tmp_path, video_id="v1", filled=True, frames=True):
 
 
 def _cfg(tmp_path):
+    # 캡션 생성 조건은 전부 명시한다 — 키 부재 시 조용한 기본값을 m3가 거부한다
+    # (deployment.REQUIRED_KEYS["caption_generation"], fallback 감사 2026-08-26)
     return {"paths": {"work": str(tmp_path / "work")}, "seg_len_sec": 5,
             "stt_model": "large-v3", "stt_language": "ko",
             "caption_model": "m", "caption_prompt": "p",
-            "vlm_max_pixels": 1, "vlm_4bit": False}
+            "vlm_max_pixels": 1, "vlm_4bit": False,
+            "vlm_max_new_tokens": 128, "vlm_rep_penalty": 1.0,
+            "caption_normalize_cjk": False, "caption_truncate_incomplete": False}
 
 
 def test_captions_only_regenerates_caption_keeps_subtitle_never_transcribes(

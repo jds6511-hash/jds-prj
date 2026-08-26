@@ -108,7 +108,7 @@ def test_webui_starts_with_the_deployment_alpha(monkeypatch, tmp_path):
     started = {}
     monkeypatch.setattr(common, "load_config",
                         lambda p: {"seg_len_sec": 5, "embed_model": "m",
-                                   "abstention_tau": 0.55,
+                                   "abstention_tau": 0.55, "static_threshold": 0,
                                    "paths": {"data": str(tmp_path),
                                              "work": str(tmp_path),
                                              "results": str(tmp_path)}})

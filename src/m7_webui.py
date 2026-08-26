@@ -351,6 +351,11 @@ def main():
         raise SystemExit(str(e))
     import uvicorn
     cfg = common.load_config(args.config)
+    # 검색 역할 필수 키 — abstention_tau가 없으면 저관련 경고가 조용히 꺼진다
+    try:
+        deployment.validate_production_config(cfg, roles=("search",))
+    except deployment.ConfigContractError as e:
+        raise SystemExit(str(e))
     uvicorn.run(create_app(cfg, args.config, args.alpha),
                 host="127.0.0.1", port=args.port)
 

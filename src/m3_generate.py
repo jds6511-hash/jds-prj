@@ -3,6 +3,7 @@
 import argparse, json, os, re, sys
 from pathlib import Path
 import common
+import deployment
 
 # Windows 콘솔(cp949) 크래시 방지 [stt_local.py 차용]
 for _s in (sys.stdout, sys.stderr):
@@ -74,8 +75,11 @@ def caption_provenance(cfg: dict, model, prompt: str, entrypoint: str) -> dict:
         "generated_at": __import__("datetime").datetime.now().isoformat(timespec="seconds"),
     }
     # 요청값 — 실효값과 갈리면 그 자체가 사고다
+    # 후처리 플래그도 남긴다 — 켜지면 **캡션 문자열이 바뀌고** text_hash·임베딩까지
+    # 달라지는데 기록이 없었다(fallback 감사 2026-08-26). 기본은 둘 다 false다.
     for k in ("caption_model", "vlm_4bit", "vlm_max_pixels", "vlm_max_new_tokens",
-              "vlm_rep_penalty"):
+              "vlm_rep_penalty", "caption_normalize_cjk", "caption_truncate_incomplete",
+              "stt_beam_size"):
         if k in cfg:
             prov[f"config_{k}"] = cfg[k]
 
@@ -345,6 +349,13 @@ def main():
     if args.subtitles_only and (args.force or args.captions_only or args.recaption_corrupted):
         ap.error("--subtitles-only는 다른 모드와 동시 지정 불가")
     cfg = common.load_config(args.config)
+    # 캡션 생성 조건은 **캡션 문자열을 바꾼다** — 토큰 상한·반복 페널티·후처리 플래그가
+    # 키 부재로 조용히 기본값이 되면, 그 인덱스가 어떤 조건의 산출물인지 알 수 없다.
+    # 값은 검사하지 않는다(변경 금지 대상) — 있는지만 본다 [fallback 감사 2026-08-26]
+    try:
+        deployment.validate_production_config(cfg, roles=("caption_generation",))
+    except deployment.ConfigContractError as e:
+        raise SystemExit(str(e))
     wdir = common.work_dir(cfg, args.video_id)
 
     if args.captions_only:
