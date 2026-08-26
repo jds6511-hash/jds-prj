@@ -290,58 +290,59 @@ function sceneSlide(d) {
     { text: "장면을 고를 때는 대표 프레임만 봤다 — 캡션은 열지 않았다.", options: { breakLine: true } },
     { text: "각 장면에 사물 · 행동 · 맥락을 묻는 질문을 3개씩 작성했다.", options: { breakLine: true } },
     { text: "질문은 3B/4B 캡션과 검색 결과를 보기 전에 작성하고 동결했다.", options: { breakLine: true } },
-    { text: "같은 질문을 두 모델에 그대로 넣었고, 자막을 끄고 캡션만으로 검색했다.", options: {} },
+    { text: "같은 질문을 두 모델에 그대로 넣었고, 자막 검색 채널을 끄고 캡션만으로 검색했다.", options: {} },
   ], {
-    x: 0.85, y: 1.7, w: 7.6, h: 2.35, fontSize: 13.5, color: INK, valign: "top",
-    fontFace: F, lineSpacing: 25, margin: 0,
+    x: 0.85, y: 1.62, w: 7.5, h: 2.05, fontSize: 13, color: INK, valign: "top",
+    fontFace: F, lineSpacing: 24, margin: 0,
   });
+  /* 숫자 카드는 오른쪽 열 폭(8.72~12.72)에 맞춰 2×2로 둔다.
+   * 한 줄 4개는 폭 13.33을 넘어 뒤 2장이 슬라이드 밖으로 나갔다. */
   const nums = [["영상", "1편"], ["후보 구간", "395"], ["장면", "5"], ["질문", "15"]];
-  let x = 8.75;
-  nums.forEach((n) => {
-    card(s, x, 1.7, 1.9, 1.02, WHITE, LINE);
+  nums.forEach((n, i) => {
+    const x = 8.72 + (i % 2) * 2.07;
+    const y0 = 1.62 + Math.floor(i / 2) * 1.06;
+    card(s, x, y0, 1.9, 1.0, WHITE, LINE);
     s.addText(n[1], {
-      x: x, y: 1.79, w: 1.9, h: 0.58, fontSize: 23, bold: true, color: TEAL,
+      x: x, y: y0 + 0.08, w: 1.9, h: 0.55, fontSize: 22, bold: true, color: TEAL,
       align: "center", fontFace: MONO, margin: 0,
     });
     s.addText(n[0], {
-      x: x, y: 2.37, w: 1.9, h: 0.26, fontSize: 10.5, color: MUTED,
+      x: x, y: y0 + 0.64, w: 1.9, h: 0.26, fontSize: 10.5, color: MUTED,
       align: "center", fontFace: F, margin: 0,
     });
-    x += 2.03;
   });
-  card(s, 8.75, 2.85, 3.93, 1.2, TEAL_BG);
-  s.addText("두 모델에 같게 준 것\n프레임 · 프롬프트 · 4bit · 후보 풀 395구간\n다른 것은 캡션 모델 하나뿐이다", {
-    x: 8.95, y: 2.95, w: 3.55, h: 1.0, fontSize: 10.5, color: INK,
-    fontFace: F, lineSpacing: 15, valign: "top", margin: 0,
+  card(s, 0.62, 3.88, 12.1, 0.72, TEAL_BG);
+  s.addText("두 모델에 같게 준 것 — 프레임 · 프롬프트 · 4bit · 후보 풀 395구간.   다른 것은 캡션 모델 하나뿐이다.", {
+    x: 0.9, y: 3.88, w: 11.6, h: 0.72, fontSize: 12.5, color: INK,
+    valign: "middle", fontFace: F, margin: 0,
   });
 
   s.addShape(p.shapes.RECTANGLE, {
-    x: 0.62, y: 4.35, w: 12.1, h: 1.9, fill: { color: BAND }, line: { color: BAND },
+    x: 0.62, y: 4.78, w: 12.1, h: 1.62, fill: { color: BAND }, line: { color: BAND },
   });
   s.addText("각 질문에서 보는 것은 네 가지뿐이다", {
-    x: 0.9, y: 4.48, w: 11.5, h: 0.3, fontSize: 14, bold: true, color: INK, fontFace: F, margin: 0,
+    x: 0.9, y: 4.9, w: 11.5, h: 0.3, fontSize: 14, bold: true, color: INK, fontFace: F, margin: 0,
   });
   const four = [
-    ["①", "내가 고른 장면이 1위인가"],
-    ["②", "1위가 아니면 몇 위인가"],
-    ["③", "1위가 다른 장면이면 어떤 장면인가"],
-    ["④", "두 캡션이 무엇을 다르게 썼는가"],
+    ["①", "내가 고른 장면이\n1위인가"],
+    ["②", "1위가 아니면\n몇 위인가"],
+    ["③", "1위가 다른 장면이면\n어떤 장면인가"],
+    ["④", "두 캡션이 무엇을\n다르게 썼는가"],
   ];
-  let fx = 0.9;
-  four.forEach((f) => {
-    card(s, fx, 4.86, 2.87, 1.18, WHITE, LINE);
+  four.forEach((f, i) => {
+    const fx = 0.85 + i * 3.0;
+    card(s, fx, 5.24, 2.85, 1.02, WHITE, LINE);
     s.addText(f[0], {
-      x: fx + 0.18, y: 4.95, w: 0.5, h: 0.33, fontSize: 16, bold: true, color: TEAL,
+      x: fx + 0.18, y: 5.32, w: 0.5, h: 0.3, fontSize: 15, bold: true, color: TEAL,
       fontFace: F, margin: 0,
     });
     s.addText(f[1], {
-      x: fx + 0.18, y: 5.31, w: 2.5, h: 0.6, fontSize: 11.5, color: INK,
+      x: fx + 0.18, y: 5.62, w: 2.5, h: 0.58, fontSize: 11.5, color: INK,
       fontFace: F, lineSpacing: 16, valign: "top", margin: 0,
     });
-    fx += 3.03;
   });
   s.addText("장면 5개를 모두 같은 형식으로 본다 — 좋은 사례만 고르지 않았다.", {
-    x: 0.85, y: 6.42, w: 11.8, h: 0.35, fontSize: 12.5, italic: true, color: MUTED,
+    x: 0.85, y: 6.5, w: 11.8, h: 0.32, fontSize: 12.5, italic: true, color: MUTED,
     fontFace: F, margin: 0,
   });
 }
@@ -349,7 +350,7 @@ function sceneSlide(d) {
 /* ---------------------------------------------------------------- 4 Scene01 */
 sceneSlide({
   n: "01", seg: 0, time: "0:00~0:05",
-  title: "정답 캡션에 필요한 말이 없으면 다른 장면이 올라온다",
+  title: "정답에서는 핵심 정보가 빠지고, 오답에서는 편집 자막까지 읽혔다",
   frame: "seg0000_00000s.jpg",
   desc: "프라이팬에 기름이 차 있고 가운데에 새우 한 점을 튀긴다",
   queries: [
@@ -362,10 +363,13 @@ sceneSlide({
     top1Frame: "seg0188_00940s.jpg", top1Label: "1위가 된 장면 — seg188 · 15:40",
     targetCap: "“노란색 그릇에 담긴 노란색 소스가 보입니다. 그릇 위에는 작은 크림 요리가 놓여 있습니다.”",
     targetMiss: "팬 · 기름 · 새우 · 튀기다 — 하나도 없다",
-    top1Cap: "“…녹색 편으로 가득 차 있는 두 개의 새우가 보입니다. … ‘이대로 기름에 튀기듯 구워주면 끝!’”",
-    top1Hit: "질의의 “새우” · “기름에 튀기”가 그대로 있다",
+    /* seg188 프레임 실물 확인: 화면 하단 고정 · 반투명 자막 박스 · 한국어+영어 번역 병기
+     * → 촬영된 장면 안의 글자가 아니라 편집으로 덧씌운 overlay subtitle이다. */
+    top1CardLabel: "1위가 된 다른 장면 — 편집 자막까지 읽었다",
+    top1Cap: "“…두 개의 새우가 보입니다. … 화면 하단에는 한글 자막이 있으며, ‘이대로 기름에 튀기듯 구워주면 끝!’…”",
+    top1Hit: "“새우”는 장면에서 · “기름에 튀기”는 편집 자막에서",
   },
-  read: "정답 캡션에서 검색에 필요한 표현이 빠지고, 같은 요리의 다른 시점 캡션에는 그 표현이 직접 들어 있었다. 같은 질문에서 4B는 정답을 1위로 올렸다.",
+  read: "정답 캡션에는 팬 · 기름 · 새우 · 튀기다가 없었고, 오답 1위 캡션에는 영상 위에 덧씌운 편집 자막 문구까지 들어가 검색어와 직접 겹쳤다.\n두 요인이 함께 작용했을 가능성이 있다. 같은 질문에서 4B는 정답을 1위로 올렸다.",
 });
 
 /* ---------------------------------------------------------------- 5 Scene02 */
@@ -381,14 +385,16 @@ sceneSlide({
   ],
   compare: {
     head: "⑤ 같은 프레임 한 장을 두 모델이 이렇게 설명했다 — 배너를 묻는 Q1은 3B가 1위, 진열대를 묻는 Q3은 4B가 1위",
-    tag3: "배너 문구를 골랐다",
+    tag3: "장면 속 실제 배너를 골랐다",
     cap3: "“코스트코의 광고가 보입니다. 파란색 배경에 ‘COSTCO’와 함께 한국어로 된 메시지가 있습니다. 아래에는 ‘Join Now!’, 상단에는 트럭 이미지가 있습니다.”",
     diag3: "Q1 배너 1위  ·  Q3 진열대 18위",
     tag4: "냉장 진열대를 골랐다",
     cap4: "“코스트코 내부의 냉장고 진열대와 주변 상품들이 보이는 장면이다.”",
     diag4: "Q3 진열대 1위  ·  Q1 배너 15위",
   },
-  read: "같은 화면이어도 무엇을 캡션에 남겼는지에 따라 같은 장면의 순위가 반대로 뒤집혔다.\n3B가 배너 글자를 옮겨 적은 것은 프롬프트가 금지한 동작이므로 품질 우위로 읽지 않는다.",
+  /* 배너는 프레임 실물 확인 결과 냉장창고 벽면에 부착된 비닐 배너다 — in-scene text.
+   * 편집으로 덧씌운 자막(Scene 01)과 다른 종류이므로 같은 문제로 묶지 않는다. */
+  read: "3B는 장면에 실제로 걸려 있는 배너와 그 문구를, 4B는 냉장 진열대와 상품을 중심으로 설명했다.\n같은 화면에서도 어떤 시각 요소를 캡션에 남겼는지가 순위를 갈랐다. 배너 · 간판처럼 장면 속 실제 텍스트는 제외 대상이 아니다.",
 });
 
 /* ---------------------------------------------------------------- 6 Scene03 */
@@ -595,32 +601,34 @@ sceneSlide({
     ["③", "배경·맥락 정보 부족", "짧은 캡션이 사물은 맞혀도 장소·배경 질문에서 밀린다", "Scene 03"],
     ["④", "다른 장면의 더 직접적인 표현", "정답보다 다른 장면 캡션이 질문과 축자로 겹친다", "Scene 01 · 04"],
     ["⑤", "잘못 본 내용이 캡션에 들어감", "없는 정보가 임베딩에 함께 들어가 정답을 밀어낸다", "Scene 05"],
+    /* Scene01 프레임에서 overlay subtitle임을 실물 확인한 뒤 추가한 경로다. */
+    ["⑥", "편집 자막이 캡션에 들어옴", "영상 위에 덧씌운 자막 문구가 검색어와 직접 겹친다", "Scene 01"],
   ];
-  let y = 1.52;
+  let y = 1.46;
   items.forEach((it) => {
-    card(s, 0.62, y, 12.1, 0.85, WHITE, LINE);
+    card(s, 0.62, y, 12.1, 0.72, WHITE, LINE);
     s.addText(it[0], {
-      x: 0.9, y: y, w: 0.55, h: 0.85, fontSize: 18, bold: true, color: TEAL,
+      x: 0.9, y: y, w: 0.55, h: 0.72, fontSize: 17, bold: true, color: TEAL,
       valign: "middle", fontFace: F, margin: 0,
     });
     s.addText(it[1], {
-      x: 1.55, y: y, w: 4.15, h: 0.85, fontSize: 13, bold: true, color: INK,
+      x: 1.55, y: y, w: 4.15, h: 0.72, fontSize: 12.5, bold: true, color: INK,
       valign: "middle", fontFace: F, margin: 0,
     });
     s.addText(it[2], {
-      x: 5.85, y: y, w: 5.35, h: 0.85, fontSize: 12, color: MUTED,
+      x: 5.85, y: y, w: 5.35, h: 0.72, fontSize: 11.5, color: MUTED,
       valign: "middle", fontFace: F, margin: 0,
     });
     s.addText(it[3], {
-      x: 11.3, y: y, w: 1.25, h: 0.85, fontSize: 10.5, bold: true, color: TEAL,
+      x: 11.3, y: y, w: 1.25, h: 0.72, fontSize: 10.5, bold: true, color: TEAL,
       align: "right", valign: "middle", fontFace: F, margin: 0,
     });
-    y += 0.95;
+    y += 0.78;
   });
-  card(s, 0.62, 6.35, 12.1, 0.62, TEAL_BG);
-  s.addText("장면 5개에서 각각 다른 실패 경로가 나왔다. 검색 성능은 “화면을 봤는가”뿐 아니라 “화면에서 무엇을 문장으로 남겼는가”의 영향을 받는다.", {
-    x: 0.9, y: 6.35, w: 11.6, h: 0.62, fontSize: 12, bold: true, color: INK,
-    valign: "middle", fontFace: F, margin: 0,
+  card(s, 0.62, 6.3, 12.1, 0.62, TEAL_BG);
+  s.addText("장면마다 다른 실패 경로가 나왔다. 검색 성능은 “화면을 봤는가”뿐 아니라 “화면에서 무엇을 문장으로 남겼는가”의 영향을 받는다.\n간판 · 배너처럼 장면 속 실제 텍스트는 시각 근거로 보고, 영상 위에 덧씌운 편집 자막과 구분한다.", {
+    x: 0.9, y: 6.34, w: 11.6, h: 0.56, fontSize: 11.5, bold: true, color: INK,
+    fontFace: F, lineSpacing: 16, valign: "top", margin: 0,
   });
 }
 
@@ -633,7 +641,7 @@ sceneSlide({
     ["모델별 차이가 있었나?",
      "내가 고른 장면의 순위는 15개 중 11개에서 4B가 더 높았다. 다만 이 작은 사례만으로 일반적인 우열을 말할 수는 없다."],
     ["다른 장면이 1위가 됐을 때 그 장면은 왜 올라왔나?",
-     "정답 캡션에서 필요한 정보가 빠지거나, 다른 장면 캡션이 질문과 더 직접적인 표현을 가진 경우가 있었다."],
+     "정답 캡션에서 필요한 정보가 빠지거나, 다른 장면 캡션이 질문과 더 직접적인 표현을 가진 경우가 있었다. Scene 01에서는 영상 위에 덧씌운 편집 자막 문구가 그 표현으로 들어왔다."],
     ["그래서 무엇을 확인했나?",
      "캡션 모델이 화면에서 어떤 정보를 골라 문장으로 남기는지가 실제 검색 순위까지 전달된다."],
   ];
