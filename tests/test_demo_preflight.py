@@ -282,3 +282,61 @@ def test_stale_aar_is_flagged_but_does_not_block_search(tmp_path):
     assert r["aar"]["available"] is False
     assert "n_segments" in r["aar"]["reason"]
     assert any("AAR" in w for w in r["warnings"])
+
+
+def test_demo_ineligible_blocks_e2e_only_videos():
+    """E2E 전용 영상은 manifest·provenance가 이미 데모 부적격으로 선언한다.
+
+    실제 사고(2026-08-26 F4 감사): preflight가 test split만 막고 e2e_only 영상은
+    통과시켰다. `demo.py --list`에도 후보로 떴다. 선언된 경계를 진입점이 강제한다.
+    """
+    assert D.demo_ineligible("e2e_scene_fast")
+    assert D.demo_ineligible("e2e_interview")
+    assert not D.demo_ineligible("gwaktube_soviet_apartment")
+
+
+def test_preflight_raises_for_e2e_only_video(tmp_path):
+    cfg = dict(DEPLOY, seg_len_sec=5, static_threshold=0,
+               paths={"work": str(tmp_path)})
+    with pytest.raises(D.PreflightError) as e:
+        D.preflight(cfg, "e2e_scene_fast", D.DEPLOYMENT_ALPHA)
+    assert "데모" in str(e.value)
+
+
+def test_readme_documents_current_preflight_check_count():
+    """README·최종화 문서의 preflight 항목 수가 실제와 어긋나면 안 된다.
+
+    실제 사고(2026-08-26 F4): E2E 차단을 추가해 11 → 12가 됐는데 문서 7곳이 11로 남았다.
+    """
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "11항목" not in readme
+    for p in (ROOT / "docs/finalization").glob("*.md"):
+        assert "11항목" not in p.read_text(encoding="utf-8"), p.name
+
+
+def test_readme_commands_reference_existing_entrypoints():
+    """README에 적힌 python 진입점이 실제로 존재해야 한다."""
+    import re
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    for m in re.finditer(r"python (src/\S+\.py|scripts/\S+\.py)", readme):
+        assert (ROOT / m.group(1)).is_file(), m.group(1)
+
+
+def test_readme_does_not_put_4b_in_deployment():
+    """4B가 배포처럼 보이면 안 된다 — candidate/not adopted로만 표기한다."""
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "Qwen2.5-VL-3B" in readme
+    if "Qwen3-VL-4B" in readme:
+        idx = readme.index("Qwen3-VL-4B")
+        around = readme[max(0, idx - 200):idx + 300]
+        assert ("candidate" in around) or ("채택 아님" in around), \
+            "4B 언급 주변에 candidate/채택 아님 표기가 없다"
+
+
+def test_architecture_keeps_production_and_research_separate():
+    p = ROOT / "docs/finalization/SYSTEM_ARCHITECTURE_2026-08-25.md"
+    t = p.read_text(encoding="utf-8")
+    assert "Qwen/Qwen2.5-VL-3B-Instruct" in t or "Qwen2.5-VL-3B" in t
+    assert "production path에 없는 것" in t
+    for term in ("Qwen3-VL-4B", "P2 / P3", "external E2E"):
+        assert term in t.split("production path에 없는 것")[1], term

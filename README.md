@@ -76,7 +76,7 @@ ffmpeg -version            # 없으면 먼저 설치
 # 2) 파이썬 패키지
 pip install -r requirements.txt
 
-# 3) 테스트 — GPU 없이 CPU만으로 통과한다(약 4초, 180건)
+# 3) 테스트 — GPU 없이 CPU만으로 통과한다(약 1분, 1,725건)
 python -m pytest tests/ -q
 
 # 4) 영상 1편 인덱싱 → 검색
@@ -89,7 +89,7 @@ python src/m5_search.py     --config config.yaml --video-id myvideo --query "찾
 
 # 5) 데모 — preflight 후 웹 UI (권장 진입점)
 python scripts/demo.py --list                          # 인덱스 완성 영상 목록
-python scripts/demo.py --video-id myvideo --check-only  # 배포 구성·인덱스 정합 11항목만 확인
+python scripts/demo.py --video-id myvideo --check-only  # 배포 구성·인덱스 정합 12항목만 확인
 python scripts/demo.py --video-id myvideo               # preflight 통과 시 웹 UI 시작
 
 # (웹 UI 직접 실행도 가능하다 — preflight는 붙지 않는다)
@@ -98,8 +98,8 @@ python src/m7_webui.py --alpha 0.5 --port 7860
 
 `scripts/demo.py`는 검색을 재구현하지 않는다 — `m5_search.search`와 `m7_webui.create_app`을
 그대로 쓰고 앞에 **fail-closed preflight**만 붙인다. 배포 구성(`Qwen2.5-VL-3B`·4bit·
-`KURE-v1`·α=0.5)과 다른 조합, 낡은 임베딩(`text_hash` 불일치), test split 영상은
-**시작 자체를 거부한다.**
+`KURE-v1`·α=0.5)과 다른 조합, 낡은 임베딩(`text_hash` 불일치), test split 영상,
+external E2E 전용 영상(`eligible_for_public_demo: false`)은 **시작 자체를 거부한다.**
 
 모델은 최초 실행 시 HuggingFace에서 자동 다운로드된다(수동 준비 불필요).
 
@@ -154,7 +154,7 @@ RTX 3060(개발 노트북)과 RTX 4090(서버)에서 각각 생성한 dev 655개
 | 범위 | 상태 |
 |---|---|
 | M1~M7 영상 검색 + 웹 UI | **완료 · 공식 평가 완료** |
-| M8~M9 AAR 생성·이중 평가 | **구현·실행 완료**(2026-08-07). 결함 4건 규명·수정 후 test 평가 |
+| M8~M9 AAR 생성·이중 평가 | **구현 완료**(2026-08-07). 결함 4건 규명·수정 후 test 평가 수행. 다만 **로컬 6GB에서는 생성이 불가**(7B)하고, M8 research evaluation(6분류 taxonomy·human review)은 **HOLD**다 — 아래 §현재 연구 상태 |
 | 화자분리 (pyannote) | 실행 가능 확인 완료 — 화자 수 추정 오차 −3~0, 클러스터 순도 0.958(우연 기저 0.45) |
 | 회의록 생성 | 미착수 — Phase 4로 계획(설계: [docs/planning/phase4_회의록_설계.md](docs/planning/phase4_회의록_설계.md)) |
 | 화자별 요약 | **범위에서 제외**(2026-08-09 결정) |
@@ -185,7 +185,7 @@ M1 5초 분할+오디오 → M2 대표 프레임 → M3 자막(Whisper large-v3)
 
 ```
 src/        M1~M9 + common.py(공용 계약) + llm.py(로컬 LLM 로더)
-tests/      모듈별 단위테스트 180건
+tests/      모듈별 단위테스트 1,725건
 config.yaml 확정 config (α는 여기 없다 — CLI 주입)
 data/queries/  질의·정답 라벨 (공개)
 results/    확정 평가 결과 (공개)
@@ -196,7 +196,8 @@ docs/probes/  모든 대안 탐색 스크립트 (dev-only)
 ## 평가 방법과 연구 규율
 
 - **dev/test 분리**: 모든 튜닝·ablation은 dev(96질의/영상 3편)에서만. α, 정규화 방식,
-  abstention 임계값 등 **모든 선택이 dev에서 끝난 뒤** test를 돌렸다.
+  저관련도 경고 임계값(내부 config 키 이름은 `abstention_tau`지만 **실제 동작은 배너
+  경고뿐이고 순위·결과를 바꾸지 않는다**) 등 **모든 선택이 dev에서 끝난 뒤** test를 돌렸다.
 - **test 접촉 이력**: 튜닝 목적 접촉 **0회**, 확정 절차 공식 평가 **7회**(검색 M6 5회 +
   리포트 M9 2회). 7회 각각의 사유와, 무효 처리한 1회(M9 계측기 결함)와
   유일한 경계 사례 1건(pb_q08)까지 [DESIGN_SPEC §8-6](docs/DESIGN_SPEC.md)에 기록했다.
@@ -219,6 +220,33 @@ docs/probes/  모든 대안 탐색 스크립트 (dev-only)
   [오류분석](docs/archive/오류분석_test_2026-07-13.md)과 방어 문서 Q13.
 - **평가 도메인이 좁다.** 한국어 vlog 11편(그중 평가 대상 7편)이다.
 
+## 현재 연구 상태 (2026-08-26)
+
+README 위쪽의 **핵심 결과는 확정 배포 구성으로 끝난 공식 test 결과**다. 그 이후 진행한
+것들의 현재 상태는 다음과 같다 — **어느 것도 배포 구성을 바꾸지 않았다.**
+
+| 항목 | 상태 |
+|---|---|
+| 배포 캡션 모델 | `Qwen2.5-VL-3B` / P0 / 4bit **유지(incumbent)** |
+| `Qwen3-VL-4B` | **viable candidate · 채택 아님 · 우열 미해결.** 운영상 실행 가능함은 확인됐다 |
+| P2 (fresh 표본) | **HOLD** — 라벨 20/175에서 중단, retrieval·evaluation 미실행, 부분 20건 미분석 |
+| P3 (확증 설계) | **설계 동결 · 실행 HOLD.** 300영상 × 5질의 = 1,500 GT는 가정 위의 설계 목표이지 검출 보장 수치가 아니다 |
+| test 39 / M9 | **HOLD** — 이번 기간 접촉 0회. 39→72 확장도 열지 않았다 |
+| M8 research evaluation | **HOLD**. AAR demo generation(기능 확인용 실행)과는 다른 사건이다 |
+| external E2E | **functional validation COMPLETE** — scene/speech/mixed/long-form 4편 PASS. 벤치마크가 아니다 |
+| 캡션→검색 케이스 스터디 | **정성 사례 연구.** 채택 근거·성능 추정이 아니다 |
+
+**external E2E**는 외부 공개 영상 4편이 현행 배포 경로를 end-to-end로 통과하는지만 본
+기능 검증이다(68:36 · 824구간 long-form 포함). **정확도·벤치마크 성능·일반화 증명이
+아니다.** 원본 영상은 저장소에 포함되지 않는다.
+
+**캡션→검색 케이스 스터디**는 같은 프레임에서 두 캡션 모델이 서로 다른 요소를 기술할 때
+검색 순위가 달라질 수 있음을 보인 **한 영상·5장면·15질의의 정성 관찰**이다.
+참고 수치는 top-1 2/15 대 2/15, target 순위가 더 높았던 질의 4/15 대 11/15, 순위 중위수
+31위 대 10위 — **한 영상의 illustrative observation이고 성능 추정치가 아니다.**
+상세: [1페이지 요약](docs/tutor/캡션검색_케이스스터디_1페이지.md) ·
+[전체 결과](docs/finalization/CAPTION_RETRIEVAL_CASESTUDY_RESULTS_2026-08-25.md)
+
 ## 문서
 
 - **[docs/DESIGN_SPEC.md](docs/DESIGN_SPEC.md)** — 모듈 API·데이터 스키마 계약. §8-0 확정
@@ -230,6 +258,8 @@ docs/probes/  모든 대안 탐색 스크립트 (dev-only)
 - **[docs/archive/오류분석_test_2026-07-13.md](docs/archive/오류분석_test_2026-07-13.md)** — 사례 기반 정성 분석.
 - **[docs/probes/](docs/probes/)** — 대안·ablation 탐색 스크립트 전부. 각 파일 docstring에
   목적과 규율 준수 여부를 적었다(dev-only, 공식 결과 미접촉).
+- **[docs/finalization/](docs/finalization/)** — 최종화 산출물: 시스템 감사, 데모 시나리오,
+  한계·향후 과제, external E2E 결과, 캡션→검색 케이스 스터디, AAR 서버 runbook.
 - 최신 진행 상황: `docs/작업현황_*.md` 중 가장 최근 날짜 파일.
 
 ## 사용 모델
@@ -242,4 +272,8 @@ docs/probes/  모든 대안 탐색 스크립트 (dev-only)
 | AAR 생성·판정 (M8/M9) | `Qwen/Qwen2.5-7B-Instruct` |
 | 화자분리 | `pyannote/speaker-diarization-community-1` |
 
-전부 로컬 실행이다. 클라우드 API는 쓰지 않는다.
+클라우드 API는 쓰지 않는다. 다만 **전부가 노트북에서 도는 것은 아니다** —
+검색·재생(M1~M7)은 RTX 3060 Laptop 6GB에서 동작하지만, **AAR 생성(M8/M9, 7B)은 로컬
+6GB에서 실행 불가**이고 서버 GPU가 필요하다. 로컬에서는 서버에서 만든 `report.json`을
+렌더하는 경로만 쓴다 —
+[AAR 서버 runbook](docs/finalization/AAR_SERVER_RUNBOOK_2026-08-26.md).

@@ -35,6 +35,28 @@ REQUIRED_ARTIFACTS = ("segments.json", "emb_sub.npy", "emb_cap.npy", "meta.json"
 TEST_SPLIT_VIDEOS = ("gemini_promo", "itsub_viral_gadgets",
                      "panibottle_vietnam1", "yunnamnopo_tongyeong")
 
+E2E_MANIFEST = Path(__file__).resolve().parents[1] / "planning/e2e_external_manifest.json"
+
+
+def demo_ineligible(video_id: str) -> bool:
+    """E2E 전용 영상인가 — manifest가 `eligible_for_public_demo: false`로 선언한다.
+
+    E2E 영상은 기능 검증용으로 편입한 외부 영상이고 공개 데모 대상이 아니다.
+    선언만 해두고 진입점이 막지 않으면 선언이 아무 일도 하지 않는다.
+    manifest가 없으면(배포본에 planning/이 없을 수 있다) 막지 않는다 — 실행을
+    깨뜨리지 않되, 있으면 그대로 강제한다.
+    """
+    if not E2E_MANIFEST.is_file():
+        return False
+    try:
+        m = json.loads(E2E_MANIFEST.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return False
+    for v in m.get("videos", []):
+        if v.get("e2e_id") == video_id:
+            return bool(v.get("e2e_only")) or v.get("eligible_for_public_demo") is False
+    return False
+
 
 class PreflightError(RuntimeError):
     pass
@@ -84,6 +106,12 @@ def preflight(cfg: dict, video_id: str, alpha: float) -> dict:
         raise PreflightError(
             f"{video_id}는 test split 영상이다 — 데모로 실행하지 않는다. "
             f"공표된 test 결과는 results/eval_test.json 인용으로만 쓴다")
+    checks += 1
+
+    if demo_ineligible(video_id):
+        raise PreflightError(
+            f"{video_id}는 external E2E 전용 영상이다(eligible_for_public_demo=false) "
+            f"— 기능 검증용으로 편입한 외부 영상이라 데모로 실행하지 않는다")
     checks += 1
 
     if abs(float(alpha) - DEPLOYMENT_ALPHA) > 1e-9:
@@ -207,10 +235,16 @@ def main():
     cfg = common.load_config(a.config)
     if a.list or not a.video_id:
         vids = available_videos(cfg)
-        demo_ok = [v for v in vids if v not in TEST_SPLIT_VIDEOS]
+        demo_ok = [v for v in vids
+                   if v not in TEST_SPLIT_VIDEOS and not demo_ineligible(v)]
         print("인덱스 완성 영상:")
         for v in vids:
-            tag = "  (test split — 데모 불가)" if v in TEST_SPLIT_VIDEOS else ""
+            if v in TEST_SPLIT_VIDEOS:
+                tag = "  (test split — 데모 불가)"
+            elif demo_ineligible(v):
+                tag = "  (external E2E 전용 — 데모 불가)"
+            else:
+                tag = ""
             print(f"  {v}{tag}")
         if not a.video_id:
             print("\n--video-id 를 지정해라. 예: "

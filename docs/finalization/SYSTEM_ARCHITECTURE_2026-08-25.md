@@ -40,10 +40,23 @@ flowchart TD
 | 임베딩 | `src/m4_index.py` | `emb_sub.npy` · `emb_cap.npy` · `meta.json` | `nlpai-lab/KURE-v1` · 1024차원 |
 | 검색 | `src/m5_search.py` | (메모리) | 코사인 → **z-score** → α 가중합 · `static_threshold: 0` |
 | 융합 α | CLI 주입 | — | **0.5** (`results/alpha_search_dev.json`의 `alpha_star`) |
-| 경고 | UI 표시 계층 | — | `abstention_tau: 0.55` · `max(sub, cap)` 기준 · **배너만, 랭킹 불변** |
+| 저관련도 경고 | UI 표시 계층 | — | 내부 config 키는 `abstention_tau: 0.55`지만 실제 동작은 **배너 경고뿐** — `max(sub, cap)` 기준, **랭킹·결과 불변, 결과 숨김·거부 없음** |
 | UI | `src/m7_webui.py` · `src/webui/index.html` | `results/search_log.jsonl` | FastAPI · Range 재생 |
-| AAR | `src/m8_report.py` | `work/{id}/report.json` | `Qwen/Qwen2.5-7B-Instruct` · map-reduce · `[seg#N]` 강제 |
-| 추적 | `scripts/aar_view.py` | md/json | LLM 미사용 |
+| AAR 생성 | `src/m8_report.py` | `work/{id}/report.json` | `Qwen/Qwen2.5-7B-Instruct` · map-reduce · `[seg#N]` 강제 · **서버 GPU 전용**(로컬 6GB 불가) |
+| AAR 렌더·추적 | `scripts/aar_view.py` | md/json | LLM 미사용 · **로컬 가능**(사전계산 `report.json`이 있을 때) |
+
+## 연구·검증 곁길 (production path와 분리)
+
+```
+3B ↔ 4B 비교        historical + 정성 사례 연구. 채택 결정 없음
+P2                  annotation-cost-driven HOLD (20/175, retrieval 미실행)
+P3                  설계 동결 · 실행 HOLD
+external E2E        functional validation COMPLETE (PHASE 1~4). 벤치마크 아님
+운영비 프로파일       측정 종료. 배포 차단 요인 미관측 · 자원 점유 페널티 관측
+M8 / M9 research    HOLD
+```
+
+위 항목들은 **검색·재생 경로를 호출하지도, 호출당하지도 않는다.**
 
 ## 진입점
 
@@ -75,4 +88,8 @@ P2 / P3          annotation·설계 산출물. 검색·UI가 참조하지 않는
 M9               test 하드코딩. 배포 경로가 호출하지 않는다
 registry SoT     read-only 어댑터. 쓰기 경로 없음
 I1 detector      validation까지. 자동 recaption trigger 아님
+external E2E     기능 검증용 외부 영상 4편. 배포 인덱스와 같은 디렉터리에 있지만
+                 데모 진입점이 거부한다(eligible_for_public_demo: false)
+캡션 케이스 스터디  격리 namespace(runs/casestudy_…)에서만 생성. 본 인덱스 무접촉
+M8 research eval  6분류 taxonomy·human review는 HOLD. AAR 기능 실행과 다른 사건
 ```

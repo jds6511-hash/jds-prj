@@ -11,7 +11,7 @@
 ```
 0:00  preflight 보여주기      python scripts/demo.py --list
                             python scripts/demo.py --video-id <dev> --check-only
-                            → 배포 identity·인덱스 정합 11항목이 화면에 찍힌다
+                            → 배포 identity·인덱스 정합 12항목이 화면에 찍힌다
 1:00  웹 UI 시작             python scripts/demo.py --video-id <dev>
 1:30  장면형 질의 (라이브)     발화가 없는 장면을 찾는다 — 자막 검색이 못 하는 것
 3:30  자막형 질의            특정 발화 지점으로 이동
@@ -81,7 +81,7 @@ test 영상·질의 사용            preflight가 거부한다
 
 ```
 python scripts/demo.py --list                       인덱스 완성 영상 확인
-python scripts/demo.py --video-id <dev> --check-only  11항목 PASS 확인
+python scripts/demo.py --video-id <dev> --check-only  12항목 PASS 확인
 data/videos/<dev>.mp4 존재                          없으면 재생 불가 (검색은 됨)
 python -m pytest tests/ -q                          전체 통과 확인
 ```

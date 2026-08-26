@@ -74,7 +74,7 @@ test 39 원본 판정 과정             DESIGN_SPEC 8-6 기록으로 대체
 ```
 python -m pytest tests/ -q                                    전체 통과
 python scripts/demo.py --list                                 인덱스 목록
-python scripts/demo.py --video-id <dev> --check-only          preflight 11항목 + AAR 상태
+python scripts/demo.py --video-id <dev> --check-only          preflight 12항목 + AAR 상태
 README의 모든 명령이 실제로 존재하는지 확인 (smoke)
 finalization 문서에 test/P2/P3 outcome이 새로 들어가지 않았는지 확인
 ```

@@ -39,7 +39,7 @@ AAR 3순위   AAR_TRACEABILITY 구조 설명
 녹화물은 만들지 않는다 (2026-08-09 결정). 절차는 DEMO_REHEARSAL 참조
 ```
 
-시연 직전 체크: `python scripts/demo.py --video-id <dev> --check-only` 11항목 PASS ·
+시연 직전 체크: `python scripts/demo.py --video-id <dev> --check-only` 12항목 PASS ·
 `data/videos/<dev>.mp4` 존재 · `pytest tests/ -q` 통과.
 
 ## 예상 질문 — 짧은 답 3개

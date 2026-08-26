@@ -49,7 +49,7 @@ schema_version 미지원            → TraceError
 | 시각 | 동작 | 통과 기준 |
 |---|---|---|
 | 0:00 | `python scripts/demo.py --list` | dev 영상이 보이고 test 4편에 `(test split — 데모 불가)` 표시 |
-| 0:30 | `python scripts/demo.py --video-id <dev> --check-only` | `preflight PASS — 확인 11항목` · AAR 상태 줄 확인 |
+| 0:30 | `python scripts/demo.py --video-id <dev> --check-only` | `preflight PASS — 확인 12항목` · AAR 상태 줄 확인 |
 | 1:00 | `python scripts/demo.py --video-id <dev>` → 브라우저 | 페이지 로드 · 헤더에 α=0.5 표시 |
 | 1:30 | 장면 중심 질의 | 결과 카드 3장 · 순위·구간·점수·발화/화면 근거 |
 | 2:30 | 결과 클릭 | 해당 timestamp로 이동·재생 |
@@ -88,7 +88,7 @@ AAR   1순위 사전 렌더된 AAR_<dev>.md
 
 ```
 python -m pytest tests/ -q                            전체 통과
-python scripts/demo.py --video-id <dev> --check-only   11항목 + AAR 상태
+python scripts/demo.py --video-id <dev> --check-only   12항목 + AAR 상태
 ls data/videos/<dev>.mp4                              재생 대상 존재
 포트 7860 비어 있는지                                   이전 서버 종료 확인
 브라우저 캐시 새로고침                                   구 프런트 자산 방지

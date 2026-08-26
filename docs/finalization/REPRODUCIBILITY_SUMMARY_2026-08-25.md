@@ -9,7 +9,7 @@
 
 ## 1. 잘못된 조합으로 시작하지 못한다 — preflight
 
-`scripts/demo.py`가 시작 전 11항목을 확인하고, 하나라도 어긋나면 **실행하지 않는다.**
+`scripts/demo.py`가 시작 전 12항목을 확인하고, 하나라도 어긋나면 **실행하지 않는다.**
 
 ```
 배포 identity   caption_model · vlm_4bit · embed_model · seg_len_sec · static_threshold · α=0.5
