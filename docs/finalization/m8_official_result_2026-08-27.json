@@ -1,0 +1,328 @@
+{
+  "record": "M8 공식 생성·관문 판정 결과",
+  "date": "2026-08-27",
+  "run_id": "m8_official_0827",
+  "evaluation": "COMPLETE",
+  "acceptance": "FAIL",
+  "gate_spec": "docs/finalization/M8_GATE_SPEC_FREEZE_2026-08-27.md",
+  "evaluator_freeze": "docs/finalization/m8_evaluator_freeze_2026-08-27.json",
+  "gt_freeze": "docs/finalization/m8_c2_gt_freeze_2026-08-27.json",
+  "verdict": {
+    "C1": {
+      "kinds": [
+        "language_drift",
+        "early_stop",
+        "repetition_loop"
+      ],
+      "statuses": [
+        "ABSENT",
+        "ABSENT",
+        "ABSENT",
+        "PRESENT",
+        "ABSENT",
+        "PRESENT",
+        "PRESENT",
+        "PRESENT"
+      ],
+      "n_catastrophic_videos": 4,
+      "n_unclear_videos": 0,
+      "n_videos": 8,
+      "threshold": 0,
+      "passed": false
+    },
+    "C2": {
+      "statistic": "median",
+      "value": 0.3311,
+      "threshold": 0.7,
+      "n_videos": 8,
+      "passed": false
+    },
+    "C3": {
+      "statistic": "max",
+      "value": 7.0,
+      "threshold": 2.0,
+      "n_videos": 8,
+      "passed": false
+    }
+  },
+  "c2_metric": "event_temporal_alignment",
+  "all_passed": false,
+  "generation": {
+    "script": "scripts/m8_official.py",
+    "stage": "FULL",
+    "n_written": 8,
+    "failures": [],
+    "config": "config_server.yaml",
+    "model": "Qwen/Qwen2.5-7B-Instruct",
+    "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "dtype": "torch.bfloat16",
+    "quantized": false,
+    "do_sample": false,
+    "max_new_tokens": 16384,
+    "map_chunk_size": 60,
+    "map_chunk_overlap": 5,
+    "source_sha256": {
+      "src/m8_report.py": "87c2dfcbdf0a25c64955342c4a4afcee97bf742dc97da5483a3bc1f0f52eaa49",
+      "src/llm.py": "ed4d1f82cd5acd938d783fb883283f11c4ad28a11645d4b0a6d6dcbd6b797438",
+      "src/common.py": "a52156354df5f7522acdf04ce250f35647a2069f764db62df3e870f29d6e39e8"
+    },
+    "server_git_head": "41875218a1e5c2778fa5daecdca86a9e70855112",
+    "server_git_head_caveat": "서버는 push 없이 git archive로 동기화되므로 이 값은 서버의 마지막 commit이고 **실제로 실행된 코드의 commit이 아니다.** 코드 동일성은 source_sha256으로 보장된다(로컬 b92dc07과 3/3 일치)",
+    "local_commit_of_transferred_tree": "b92dc07"
+  },
+  "per_video": [
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "n_segments": 183,
+      "n_reference_events": 7,
+      "n_sentences": 15,
+      "n_events": 15,
+      "compression": 2.1429,
+      "c2_candidates": {
+        "event_temporal_alignment": 0.52,
+        "temporal_event_recall@IoU>=0.3": 0.8571,
+        "temporal_event_recall@IoU>=0.5": 0.7143,
+        "temporal_event_recall@IoU>=0.7": 0.1429
+      },
+      "c1_status": "ABSENT",
+      "c1_kind_status": {
+        "language_drift": "ABSENT",
+        "early_stop": "ABSENT",
+        "repetition_loop": "ABSENT"
+      },
+      "chunks": 4,
+      "chunk_retries": 0,
+      "rejected_events": 0,
+      "rejection_reasons": {},
+      "uncited_evaluable_sentences": [],
+      "diagnostics": {
+        "unmatched_reference_events": 1,
+        "unmatched_generated_events": 9,
+        "timeline_span_coverage": 1.0
+      }
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "n_segments": 192,
+      "n_reference_events": 12,
+      "n_sentences": 6,
+      "n_events": 6,
+      "compression": 0.5,
+      "c2_candidates": {
+        "event_temporal_alignment": 0.2172,
+        "temporal_event_recall@IoU>=0.3": 0.25,
+        "temporal_event_recall@IoU>=0.5": 0.1667,
+        "temporal_event_recall@IoU>=0.7": 0.1667
+      },
+      "c1_status": "ABSENT",
+      "c1_kind_status": {
+        "language_drift": "ABSENT",
+        "early_stop": "ABSENT",
+        "repetition_loop": "ABSENT"
+      },
+      "chunks": 4,
+      "chunk_retries": 0,
+      "rejected_events": 1,
+      "rejection_reasons": {
+        "bad_span": 1
+      },
+      "uncited_evaluable_sentences": [],
+      "diagnostics": {
+        "unmatched_reference_events": 6,
+        "unmatched_generated_events": 0,
+        "timeline_span_coverage": 0.974
+      }
+    },
+    {
+      "video_id": "jissi_farm",
+      "n_segments": 211,
+      "n_reference_events": 11,
+      "n_sentences": 11,
+      "n_events": 11,
+      "compression": 1.0,
+      "c2_candidates": {
+        "event_temporal_alignment": 0.428,
+        "temporal_event_recall@IoU>=0.3": 0.7273,
+        "temporal_event_recall@IoU>=0.5": 0.5455,
+        "temporal_event_recall@IoU>=0.7": 0.2727
+      },
+      "c1_status": "ABSENT",
+      "c1_kind_status": {
+        "language_drift": "ABSENT",
+        "early_stop": "ABSENT",
+        "repetition_loop": "ABSENT"
+      },
+      "chunks": 4,
+      "chunk_retries": 0,
+      "rejected_events": 0,
+      "rejection_reasons": {},
+      "uncited_evaluable_sentences": [],
+      "diagnostics": {
+        "unmatched_reference_events": 3,
+        "unmatched_generated_events": 3,
+        "timeline_span_coverage": 0.9194
+      }
+    },
+    {
+      "video_id": "kbs_banff",
+      "n_segments": 316,
+      "n_reference_events": 10,
+      "n_sentences": 14,
+      "n_events": 14,
+      "compression": 1.4,
+      "c2_candidates": {
+        "event_temporal_alignment": 0.1024,
+        "temporal_event_recall@IoU>=0.3": 0.2,
+        "temporal_event_recall@IoU>=0.5": 0.1,
+        "temporal_event_recall@IoU>=0.7": 0.0
+      },
+      "c1_status": "PRESENT",
+      "c1_kind_status": {
+        "language_drift": "ABSENT",
+        "early_stop": "PRESENT",
+        "repetition_loop": "ABSENT"
+      },
+      "chunks": 6,
+      "chunk_retries": 2,
+      "rejected_events": 5,
+      "rejection_reasons": {
+        "too_many_evidence": 4,
+        "evidence_outside_span": 1
+      },
+      "uncited_evaluable_sentences": [],
+      "diagnostics": {
+        "unmatched_reference_events": 8,
+        "unmatched_generated_events": 12,
+        "timeline_span_coverage": 0.6361
+      }
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "n_segments": 345,
+      "n_reference_events": 10,
+      "n_sentences": 16,
+      "n_events": 16,
+      "compression": 1.6,
+      "c2_candidates": {
+        "event_temporal_alignment": 0.5613,
+        "temporal_event_recall@IoU>=0.3": 0.9,
+        "temporal_event_recall@IoU>=0.5": 0.7,
+        "temporal_event_recall@IoU>=0.7": 0.4
+      },
+      "c1_status": "ABSENT",
+      "c1_kind_status": {
+        "language_drift": "ABSENT",
+        "early_stop": "ABSENT",
+        "repetition_loop": "ABSENT"
+      },
+      "chunks": 7,
+      "chunk_retries": 0,
+      "rejected_events": 0,
+      "rejection_reasons": {},
+      "uncited_evaluable_sentences": [],
+      "diagnostics": {
+        "unmatched_reference_events": 1,
+        "unmatched_generated_events": 7,
+        "timeline_span_coverage": 0.8609
+      }
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "n_segments": 327,
+      "n_reference_events": 8,
+      "n_sentences": 10,
+      "n_events": 10,
+      "compression": 1.25,
+      "c2_candidates": {
+        "event_temporal_alignment": 0.5471,
+        "temporal_event_recall@IoU>=0.3": 0.875,
+        "temporal_event_recall@IoU>=0.5": 0.625,
+        "temporal_event_recall@IoU>=0.7": 0.375
+      },
+      "c1_status": "PRESENT",
+      "c1_kind_status": {
+        "language_drift": "ABSENT",
+        "early_stop": "PRESENT",
+        "repetition_loop": "ABSENT"
+      },
+      "chunks": 6,
+      "chunk_retries": 1,
+      "rejected_events": 1,
+      "rejection_reasons": {
+        "evidence_outside_span": 1
+      },
+      "uncited_evaluable_sentences": [],
+      "diagnostics": {
+        "unmatched_reference_events": 1,
+        "unmatched_generated_events": 3,
+        "timeline_span_coverage": 0.8287
+      }
+    },
+    {
+      "video_id": "m8c2_3I7oGwk6EaQ",
+      "n_segments": 173,
+      "n_reference_events": 1,
+      "n_sentences": 7,
+      "n_events": 7,
+      "compression": 7.0,
+      "c2_candidates": {
+        "event_temporal_alignment": 0.2254,
+        "temporal_event_recall@IoU>=0.3": 0.0,
+        "temporal_event_recall@IoU>=0.5": 0.0,
+        "temporal_event_recall@IoU>=0.7": 0.0
+      },
+      "c1_status": "PRESENT",
+      "c1_kind_status": {
+        "language_drift": "ABSENT",
+        "early_stop": "PRESENT",
+        "repetition_loop": "ABSENT"
+      },
+      "chunks": 4,
+      "chunk_retries": 1,
+      "rejected_events": 1,
+      "rejection_reasons": {
+        "too_many_evidence": 1
+      },
+      "uncited_evaluable_sentences": [],
+      "diagnostics": {
+        "unmatched_reference_events": 0,
+        "unmatched_generated_events": 6,
+        "timeline_span_coverage": 0.711
+      }
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "n_segments": 328,
+      "n_reference_events": 9,
+      "n_sentences": 14,
+      "n_events": 14,
+      "compression": 1.5556,
+      "c2_candidates": {
+        "event_temporal_alignment": 0.2342,
+        "temporal_event_recall@IoU>=0.3": 0.3333,
+        "temporal_event_recall@IoU>=0.5": 0.1111,
+        "temporal_event_recall@IoU>=0.7": 0.0
+      },
+      "c1_status": "PRESENT",
+      "c1_kind_status": {
+        "language_drift": "ABSENT",
+        "early_stop": "PRESENT",
+        "repetition_loop": "ABSENT"
+      },
+      "chunks": 6,
+      "chunk_retries": 1,
+      "rejected_events": 3,
+      "rejection_reasons": {
+        "evidence_outside_span": 2,
+        "too_many_evidence": 1
+      },
+      "uncited_evaluable_sentences": [],
+      "diagnostics": {
+        "unmatched_reference_events": 2,
+        "unmatched_generated_events": 7,
+        "timeline_span_coverage": 0.7744
+      }
+    }
+  ],
+  "diagnostics_note": "Redundancy·overmerge·spurious_event는 관문이 아니라 진단이다(규격 §2-3). Redundancy는 아직 구현되지 않았다 — 미매칭 수를 후보로만 보고한다."
+}

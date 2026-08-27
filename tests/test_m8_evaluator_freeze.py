@@ -2,6 +2,7 @@
 
 테스트는 pytest를 재귀 실행하지 않는다(`run_tests=False`).
 """
+import json
 import sys
 from pathlib import Path
 
@@ -48,11 +49,24 @@ def test_evaluator_sources_are_hashed(art):
         assert len(s[k]) == 64
 
 
-def test_official_output_not_viewed_is_evidenced(art):
-    """선언이 아니라 실측이다 — 패널 8편에 리포트 파일이 없다는 것을 센다."""
+def test_frozen_artifact_recorded_zero_reports_at_freeze_time():
+    """**동결본에 기록된 값**을 본다. 지금 다시 세면 0이 아니다 — 2026-08-27에
+    공식 생성이 끝나 리포트 8건이 생겼기 때문이다. 동결의 요점은 그 시점의 사실이
+    남는 것이고, 라이브 재계산으로 검사하면 그 사실이 테스트에서 사라진다."""
+    art = json.loads(F.DEFAULT_OUT.read_text(encoding="utf-8"))
     assert art["official_m8_output_viewed"] is False
     ev = art["official_output_evidence"]
     assert ev["report_files_found"] == 0 and ev["videos_scanned"] == 8
+
+
+def test_evidence_counter_actually_counts(tmp_path):
+    """세는 기계가 실제로 세는지는 따로 확인한다 — 위 테스트는 과거 기록이다."""
+    cfg = {"paths": {"work": str(tmp_path)}}
+    assert F.official_output_evidence(cfg, ["a", "b"])["report_files_found"] == 0
+    (tmp_path / "a").mkdir()
+    (tmp_path / "a" / "report.json").write_text("{}", encoding="utf-8")
+    ev = F.official_output_evidence(cfg, ["a", "b"])
+    assert ev["report_files_found"] == 1 and ev["videos_scanned"] == 2
 
 
 def test_c2_metric_and_unmatched_handling_are_recorded(art):
