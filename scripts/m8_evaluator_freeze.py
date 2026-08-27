@@ -90,6 +90,25 @@ def _git(*a) -> str:
                           encoding="utf-8", errors="replace").stdout.strip()
 
 
+def git_dirty(exclude=()) -> bool:
+    """작업 트리 오염 여부. **자기 산출물은 제외한다.**
+
+    이 artifact는 쓰이는 순간 untracked라서 그대로 세면 `git_dirty`가 항상 true다.
+    항상 true인 필드로는 진짜 오염을 가릴 수 없다(2026-08-27 실측).
+    """
+    ex = {str(Path(e).as_posix()) for e in exclude}
+    for line in (_git("status", "--porcelain") or "").splitlines():
+        path = line[3:].strip().strip('"').split(" -> ")[-1]
+        if path and path not in ex:
+            return True
+    return False
+
+
+def _rel_out(out_path=None) -> str:
+    p = Path(out_path or DEFAULT_OUT)
+    return str((p.relative_to(ROOT) if p.is_relative_to(ROOT) else p).as_posix())
+
+
 def gate_hash(gate: str, extra_sources=None) -> str:
     src = [inspect.getsource(f) for f in GATE_FUNCS[gate]]
     src += list(extra_sources or [])
@@ -131,7 +150,7 @@ def run_test_suite() -> dict:
 
 
 def build_artifact(run_tests: bool = True, config_path=None, gt_dir=None,
-                   freeze_id: str = "m8_evaluator_2026-08-27") -> dict:
+                   freeze_id: str = "m8_evaluator_2026-08-27", out_path=None) -> dict:
     cfg_path = Path(config_path or (ROOT / "config.yaml"))
     cfg = common.load_config(cfg_path)
     videos = m8_gates.panel_videos()
@@ -144,7 +163,7 @@ def build_artifact(run_tests: bool = True, config_path=None, gt_dir=None,
         "official_m8_output_viewed": False,
         "official_output_evidence": official_output_evidence(cfg, videos),
         "git_head": _git("rev-parse", "HEAD"),
-        "git_dirty": bool(_git("status", "--porcelain")),
+        "git_dirty": git_dirty(exclude=[_rel_out(out_path)]),
         "n_videos": gt["n_videos"], "n_reference_events": gt["n_events"],
         "aggregate_gt_sha256": gt["sha256"],
         "spec_doc_sha256": {k: _sha_file(v) for k, v in sorted(SPEC_DOCS.items())},
@@ -214,7 +233,7 @@ def main() -> int:
     if out.exists():
         print(f"이미 있다: {out} — 동결본을 덮지 않는다. --verify로 대조하라")
         return 2
-    art = build_artifact(run_tests=not a.skip_tests)
+    art = build_artifact(run_tests=not a.skip_tests, out_path=out)
     common.atomic_write_json(out, art)
     print(f"기록: {out}")
     print(f"  GT {art['aggregate_gt_sha256'][:12]} · 사건 {art['n_reference_events']}건")

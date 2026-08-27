@@ -104,3 +104,20 @@ def test_file_hash_ignores_line_endings(tmp_path, monkeypatch):
     crlf.write_bytes(b"a\r\nb\r\n")
     monkeypatch.setattr(F, "ROOT", tmp_path)
     assert F._sha_file("lf.md") == F._sha_file("crlf.md")
+
+
+def test_git_dirty_excludes_its_own_output(monkeypatch):
+    """artifact는 쓰이는 순간 untracked다 — 자기 자신을 오염으로 세면 그 필드가
+    항상 true가 되고, 항상 true인 필드로는 진짜 오염을 못 가린다."""
+    own = F._rel_out()
+    assert own.endswith("m8_evaluator_freeze_2026-08-27.json")
+    monkeypatch.setattr(F, "_git", lambda *a: f"?? {own}")
+    assert F.git_dirty(exclude=[own]) is False
+    assert F.git_dirty(exclude=[]) is True
+
+
+def test_git_dirty_still_sees_real_changes(monkeypatch):
+    own = F._rel_out()
+    porcelain = f"?? {own}\n M src/m8_c1.py"
+    monkeypatch.setattr(F, "_git", lambda *a: porcelain)
+    assert F.git_dirty(exclude=[own]) is True
