@@ -128,11 +128,14 @@ def test_compression_is_none_when_no_reference_events():
 
 
 def test_c1_counts_videos_not_sentences():
-    """사전등록이 "발생 **영상 수**"로 정의했다."""
-    out = M.c1_verdict([False, True, False, True])
+    """사전등록이 "발생 **영상 수**"로 정의했다.
+
+    입력은 3-state다 — boolean은 받지 않는다(규격 M8_GATE_SPEC_FREEZE §1-3).
+    """
+    out = M.c1_verdict(["ABSENT", "PRESENT", "ABSENT", "PRESENT"])
     assert out["n_catastrophic_videos"] == 2 and out["n_videos"] == 4
     assert out["passed"] is False
-    assert M.c1_verdict([False] * 8)["passed"] is True
+    assert M.c1_verdict(["ABSENT"] * 8)["passed"] is True
 
 
 def test_c1_kinds_are_the_three_preregistered_ones():

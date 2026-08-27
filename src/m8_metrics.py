@@ -16,6 +16,7 @@ import numpy as np
 from scipy.optimize import linear_sum_assignment
 
 import common
+import m8_c1
 
 IOU_THETAS = (0.3, 0.5, 0.7)          # 사전등록 §3-3 — 하나를 고르지 않고 전부 보고
 
@@ -106,17 +107,42 @@ def compression(n_sentences: int, n_reference_events: int):
 CATASTROPHIC_KINDS = ("language_drift", "early_stop", "repetition_loop")
 
 
-def c1_catastrophic_count(per_video_flags: list) -> int:
+def _c1_statuses(per_video: list) -> list:
+    """영상별 입력을 상태 문자열로 정규화한다. 소견 dict도 받는다(`m8_c1.inspect_video`).
+
+    **boolean은 받지 않는다.** 3-state가 아니면 "판정 못 했다"가 조용히 통과로
+    떨어진다(규격 M8_GATE_SPEC_FREEZE §1-3).
+    """
+    out = []
+    for x in per_video:
+        if isinstance(x, dict):
+            out.append(m8_c1.video_status(x))
+        elif x in m8_c1.STATUSES:
+            out.append(x)
+        else:
+            raise GateSpecError(
+                f"C1 상태가 규격에 없다: {x!r} — {m8_c1.STATUSES} 또는 "
+                f"m8_c1.inspect_video 소견 dict여야 한다")
+    return out
+
+
+def c1_catastrophic_count(per_video: list) -> int:
     """파국이 난 **영상 수**. 사전등록이 "발생 영상 수"로 정의했으므로 문장 수가 아니다."""
-    return sum(1 for f in per_video_flags if f)
+    return sum(1 for s in _c1_statuses(per_video) if s == "PRESENT")
 
 
-def c1_verdict(per_video_flags: list) -> dict:
-    """C1 — 파국 0편이어야 한다."""
-    n = c1_catastrophic_count(per_video_flags)
-    return {"kinds": list(CATASTROPHIC_KINDS), "n_catastrophic_videos": n,
-            "n_videos": len(per_video_flags), "threshold": 0,
-            "passed": n == 0}
+def c1_verdict(per_video: list) -> dict:
+    """C1 — 파국 0편이어야 한다.
+
+    **UNCLEAR가 하나라도 있으면 `passed`는 `None`이다.** 판정 불가는 통과가 아니다.
+    단 PRESENT가 하나 있으면 UNCLEAR가 섞여 있어도 이미 FAIL이다.
+    """
+    st = _c1_statuses(per_video)
+    n, n_unclear = st.count("PRESENT"), st.count("UNCLEAR")
+    passed = False if n else (None if n_unclear else True)
+    return {"kinds": list(CATASTROPHIC_KINDS), "statuses": st,
+            "n_catastrophic_videos": n, "n_unclear_videos": n_unclear,
+            "n_videos": len(st), "threshold": 0, "passed": passed}
 
 
 def c3_verdict(per_video_compressions: list, statistic: str | None = None,
