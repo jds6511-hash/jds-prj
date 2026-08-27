@@ -1,0 +1,96 @@
+{
+  "record": "M8 C2 판정용 정답 사건 목록 동결",
+  "date": "2026-08-27",
+  "panel_manifest": "docs/finalization/m8_c2_panel_manifest_2026-08-27.json",
+  "preregistration": "docs/preregistration/event_inventory_사전등록_2026-08-18.md",
+  "gate_spec": "docs/finalization/M8_GATE_SPEC_FREEZE_2026-08-27.md",
+  "aggregate_gt_sha256": "68a079ba17eb09fb22575e0f5b0db6daab7b7601805205a0022910e496a5696f",
+  "n_videos": 8,
+  "n_events": 68,
+  "aggregate_rule": "sorted(video_id)별 'video_id:csv_sha256' 줄바꿈 연결 후 sha256",
+  "unclear_events_excluded": 0,
+  "overlap_pairs": 0,
+  "m8_outputs_at_freeze": 0,
+  "per_file": [
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "sha256": "0db262b7c216759385a72c1e8e66edd0a677b57e48451c0b119746a74e3f7cd6",
+      "frozen_sha256": "3fcdf1d092437742fc14bdcab655eea231f741e21ebfb24f846dbc5b3c3eaf74",
+      "n_events": 7,
+      "duration_sec": 914.28,
+      "n_segments": 183,
+      "frozen_at": "2026-08-27T21:41:58",
+      "git_head": "5a5d2b07fd3fd8ec172a69cfe9d36c435a8bb5c5"
+    },
+    {
+      "video_id": "jissi_farm",
+      "sha256": "18242e22d98e88621f5598f423b8c5d22bdcc3137de58590638b580de4059455",
+      "frozen_sha256": "1584219423e0bf2410dd10eca02e3ca9fcd8dcc2c46ae8ea8a9cafecd942d1cd",
+      "n_events": 11,
+      "duration_sec": 1054.4333333333334,
+      "n_segments": 211,
+      "frozen_at": "2026-08-27T21:41:58",
+      "git_head": "5a5d2b07fd3fd8ec172a69cfe9d36c435a8bb5c5"
+    },
+    {
+      "video_id": "kbs_banff",
+      "sha256": "7939ebafcd2e6c28d79bacfdef271859c82367febfcc5fd28b8bf6c219df0e5b",
+      "frozen_sha256": "8162b2aa1864ea6846d6f382037076d2783fd8a1f22e7c5dbd7ceaa2543c8dd1",
+      "n_events": 10,
+      "duration_sec": 1575.3666666666666,
+      "n_segments": 316,
+      "frozen_at": "2026-08-27T21:41:59",
+      "git_head": "5a5d2b07fd3fd8ec172a69cfe9d36c435a8bb5c5"
+    },
+    {
+      "video_id": "m8c2_3I7oGwk6EaQ",
+      "sha256": "66418feea90bf81196ae6926bb641ff1b32e2736a120f1e311bae43ae9d2dc98",
+      "frozen_sha256": "6d9ba14f622908f8ae9cd87329de3153c53b714468a28493ffb451f2ecc68153",
+      "n_events": 1,
+      "duration_sec": 863.799,
+      "n_segments": 173,
+      "frozen_at": "2026-08-27T21:42:00",
+      "git_head": "5a5d2b07fd3fd8ec172a69cfe9d36c435a8bb5c5"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "sha256": "b7b42d8201c116e9073e3b54cc745f856ed593444885dc3a93304cc98736b899",
+      "frozen_sha256": "a8e2bdf13775a79bfc6226fb04fe51aace31dc9a2e3c71f0a1f1c96a19e29f90",
+      "n_events": 9,
+      "duration_sec": 1637.999,
+      "n_segments": 328,
+      "frozen_at": "2026-08-27T21:42:00",
+      "git_head": "5a5d2b07fd3fd8ec172a69cfe9d36c435a8bb5c5"
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "sha256": "18619308629578b887083aaaf1e6aef8bb4eff8e67a239615d750b0a905d9f12",
+      "frozen_sha256": "3b644314a16647ef02070261cb0bab4c70e82e6e56a5b0b2c315c3419b2487d1",
+      "n_events": 12,
+      "duration_sec": 957.8902666666667,
+      "n_segments": 192,
+      "frozen_at": "2026-08-27T21:41:58",
+      "git_head": "5a5d2b07fd3fd8ec172a69cfe9d36c435a8bb5c5"
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "sha256": "f1a236c921c62d3497099d79d2f4ee0560cbf9e79c489c01f775ca0d4a36681c",
+      "frozen_sha256": "11d65a2d13322c83716ca385d7a15af4e2b88b6ea4d2ed2cfa014cbd45264b4a",
+      "n_events": 8,
+      "duration_sec": 1631.8302,
+      "n_segments": 327,
+      "frozen_at": "2026-08-27T21:41:59",
+      "git_head": "5a5d2b07fd3fd8ec172a69cfe9d36c435a8bb5c5"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "sha256": "5b065d30bdcecf320c9570fa6562ee7dccf95537cfaaf3b09d806256b8b75a10",
+      "frozen_sha256": "3f642693002c8e16190ad66fcb09c768cdba2f7afc84302d765e3eac47c759a3",
+      "n_events": 10,
+      "duration_sec": 1722.0333333333333,
+      "n_segments": 345,
+      "frozen_at": "2026-08-27T21:41:59",
+      "git_head": "5a5d2b07fd3fd8ec172a69cfe9d36c435a8bb5c5"
+    }
+  ]
+}

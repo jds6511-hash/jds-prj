@@ -148,6 +148,27 @@ def freeze(csv_path, video_id: str, duration_sec: float, n_segments: int,
     return p
 
 
+def aggregate_gt_hash(video_ids: list, out_dir=None) -> dict:
+    """패널 전체 정답 목록의 단일 해시. **보고서가 인용할 값이다.**
+
+    영상별 `FROZEN_*.json`의 sha256을 `video_id` 정렬 순으로 이어 붙여 해시한다.
+    정렬하는 이유는 입력 순서가 값을 바꾸면 그 해시로 무엇도 증명하지 못하기
+    때문이다. 동결 안 된 영상이 섞이면 **부분 해시를 내주지 않는다.**
+    """
+    per = []
+    for v in sorted(video_ids):
+        p = frozen_path(v, out_dir)
+        if not p.is_file():
+            raise InventoryError(f"{v}가 동결되지 않았다 — 부분 해시는 내주지 않는다")
+        d = json.loads(p.read_text(encoding="utf-8"))
+        per.append({"video_id": v, "sha256": d["sha256"],
+                    "frozen_sha256": _sha(p), "n_events": len(d["events"])})
+    h = hashlib.sha256("\n".join(f'{x["video_id"]}:{x["sha256"]}'
+                                 for x in per).encode()).hexdigest()
+    return {"sha256": h, "n_videos": len(per),
+            "n_events": sum(x["n_events"] for x in per), "per_file": per}
+
+
 def load_reference(video_id: str, out_dir=None, csv_path=None) -> list:
     """**오염 경계.** 동결 전에는 목록을 돌려주지 않는다 — 사람이 M8 출력을 보기
     전에 목록이 확정돼 있어야 한다(사전등록 §0). 동결 후 CSV를 고쳤으면 해시로 걸린다."""

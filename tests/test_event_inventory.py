@@ -209,3 +209,43 @@ def test_other_label_kit_files_stay_ignored(rel):
     """예외는 `FROZEN_*.json`뿐이다 — 프레임·시트가 같이 올라가면 안 된다.
     부모 디렉터리를 통째로 ignore하면 `!` 재포함이 먹지 않아 실수하기 쉽다."""
     assert _ignored(rel), rel
+
+
+# ---- 패널 전체 해시 -----------------------------------------------------
+
+def test_aggregate_gt_hash_is_order_independent(tmp_path):
+    """**입력 순서가 값을 바꾸면 해시가 증거가 되지 못한다.** 정렬해서 넣는다."""
+    for v in ("b", "a"):
+        (tmp_path / f"{v}.csv").write_text(CSV, encoding="utf-8")
+        K.freeze(tmp_path / f"{v}.csv", video_id=v, duration_sec=200,
+                 n_segments=40, seg_len=5, out_dir=tmp_path)
+    h1 = K.aggregate_gt_hash(["a", "b"], out_dir=tmp_path)
+    h2 = K.aggregate_gt_hash(["b", "a"], out_dir=tmp_path)
+    assert h1["sha256"] == h2["sha256"] and len(h1["sha256"]) == 64
+    assert [x["video_id"] for x in h1["per_file"]] == ["a", "b"]
+
+
+def test_aggregate_gt_hash_changes_when_a_label_changes(tmp_path):
+    (tmp_path / "a.csv").write_text(CSV, encoding="utf-8")
+    K.freeze(tmp_path / "a.csv", video_id="a", duration_sec=200, n_segments=40,
+             seg_len=5, out_dir=tmp_path)
+    before = K.aggregate_gt_hash(["a"], out_dir=tmp_path)["sha256"]
+    (tmp_path / "a.csv").write_text(CSV.replace("현장 도착", "현장 도착 수정"),
+                                    encoding="utf-8")
+    K.freeze(tmp_path / "a.csv", video_id="a", duration_sec=200, n_segments=40,
+             seg_len=5, out_dir=tmp_path)
+    assert K.aggregate_gt_hash(["a"], out_dir=tmp_path)["sha256"] != before
+
+
+def test_aggregate_gt_hash_refuses_unfrozen_video(tmp_path):
+    """동결 안 된 영상이 섞이면 **부분 해시를 조용히 내주지 않는다.**"""
+    with pytest.raises(K.InventoryError, match="동결"):
+        K.aggregate_gt_hash(["없는영상"], out_dir=tmp_path)
+
+
+def test_aggregate_gt_hash_counts_events(tmp_path):
+    (tmp_path / "a.csv").write_text(CSV, encoding="utf-8")
+    K.freeze(tmp_path / "a.csv", video_id="a", duration_sec=200, n_segments=40,
+             seg_len=5, out_dir=tmp_path)
+    h = K.aggregate_gt_hash(["a"], out_dir=tmp_path)
+    assert h["n_videos"] == 1 and h["n_events"] == 2
