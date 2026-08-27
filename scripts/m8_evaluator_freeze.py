@@ -98,7 +98,12 @@ def git_dirty(exclude=()) -> bool:
     """
     ex = {str(Path(e).as_posix()) for e in exclude}
     for line in (_git("status", "--porcelain") or "").splitlines():
-        path = line[3:].strip().strip('"').split(" -> ")[-1]
+        # **고정 인덱스로 자르지 않는다.** `_git`이 stdout을 strip해서 첫 줄의
+        # 선행 공백이 사라지고, `line[3:]`은 경로 첫 글자를 먹었다(2026-08-27 실측).
+        parts = line.strip().split(None, 1)
+        if len(parts) < 2:
+            continue
+        path = parts[1].strip().strip('"').split(" -> ")[-1]
         if path and path not in ex:
             return True
     return False

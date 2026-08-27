@@ -116,6 +116,16 @@ def test_git_dirty_excludes_its_own_output(monkeypatch):
     assert F.git_dirty(exclude=[]) is True
 
 
+def test_git_dirty_parses_stripped_leading_space(monkeypatch):
+    """`_git`이 stdout을 strip해서 첫 줄의 선행 공백이 사라진다.
+
+    고정 인덱스로 자르면 경로 첫 글자를 먹어 제외가 조용히 실패했다(실측).
+    """
+    own = F._rel_out()
+    monkeypatch.setattr(F, "_git", lambda *a: f"M {own}")     # ' M ' 아니라 'M '
+    assert F.git_dirty(exclude=[own]) is False
+
+
 def test_git_dirty_still_sees_real_changes(monkeypatch):
     own = F._rel_out()
     porcelain = f"?? {own}\n M src/m8_c1.py"
