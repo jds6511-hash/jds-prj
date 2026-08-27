@@ -1,0 +1,79 @@
+{
+  "freeze_id": "m8_evaluator_2026-08-27",
+  "purpose": "M8 공식 출력을 처음 보기 전에 판정 쪽을 고정한다",
+  "official_m8_output_viewed": false,
+  "official_output_evidence": {
+    "videos_scanned": 8,
+    "report_files_found": 0,
+    "files": []
+  },
+  "git_head": "d86fe2e7b15d335c8a07512a65232d670ab60b89",
+  "git_dirty": true,
+  "n_videos": 8,
+  "n_reference_events": 68,
+  "aggregate_gt_sha256": "68a079ba17eb09fb22575e0f5b0db6daab7b7601805205a0022910e496a5696f",
+  "spec_doc_sha256": {
+    "event_inventory_protocol": "fedec502feb802df85aa911a1729502453cc4066cd41a5771725e522ed59f088",
+    "event_metric_spec": "da907c6d21ec9bd98d57dafca3cd2a9cc59416fc05b5d569c5f1384f20242283",
+    "gate_rules": "c3b5d92dc31fa7b0d973d1c8a6cab1475c527080fc712354fc393fb2378bdc27",
+    "gate_spec": "0ef096c4b0542dfae99d6f7c9f29fc12c0cfddf5739695815aec8e5ddc9df16b",
+    "gt_freeze": "89d85ed68965c334b263b41dc8c2d2a68a1ee4bab5111cf39e8f1fb207a0d9c0"
+  },
+  "evaluator_source_sha256": {
+    "event_inventory_kit": "46a4dfef349f4c6489787570310da4011ea92dbbe7fd469d26f3fba69f16ed7f",
+    "m8_c1": "d4a22472e54154d397f3667675dd7d91704b01b6d7de0b43591dc97b67a05d49",
+    "m8_gates": "6587a3d585778cd97e6edcc5fb817ce1a7f550fbd5d33c25c624a5a082741dd2",
+    "m8_metrics": "4454607ffe845ef87d752d15d61dde1e4738d0a10cc374d82a0c8418c3c699c6"
+  },
+  "gate_implementation_sha256": {
+    "C1": "a9d29100b3b9586ea061008ab433c30a0805f286f7dab6376423f4484ddcc5f4",
+    "C2": "0880a4684b69c9b4e18b7310349126dae610565f8db7cfeecd98939b10b98695",
+    "C3": "9b686d006d2cd8edc9b3fe168a2712d27136e30e3bc01c44625ca1d7bd48532e"
+  },
+  "frozen_gate_constants": {
+    "C1_threshold_videos": 0,
+    "C1_kinds": [
+      "language_drift",
+      "early_stop",
+      "repetition_loop"
+    ],
+    "C1_statuses": [
+      "PRESENT",
+      "ABSENT",
+      "UNCLEAR"
+    ],
+    "C1_repetition_min_run": 3,
+    "C2_statistic": "median",
+    "C2_threshold": 0.7,
+    "C3_statistic": "max",
+    "C3_threshold": 2.0
+  },
+  "config_frozen_keys": {
+    "seg_len_sec": 5,
+    "report_model": "Qwen/Qwen2.5-7B-Instruct",
+    "report_max_new_tokens": 16384,
+    "llm_4bit": true,
+    "map_chunk_size": 60,
+    "map_chunk_overlap": 5
+  },
+  "config_sha256": "0e82337865b28e0f43c7120844b770bf1ad3175b1023cdfc1a68aabe7215c645",
+  "c2_metric_decided": false,
+  "c2_metric": null,
+  "c2_metric_candidates": [
+    "event_temporal_alignment",
+    "temporal_event_recall@IoU>=0.3",
+    "temporal_event_recall@IoU>=0.5",
+    "temporal_event_recall@IoU>=0.7"
+  ],
+  "c2_metric_note": "원 사전등록 §2-3은 'Event Recall 중앙값'이라 적었고 보충 §3-3은 주지표를 event_temporal_alignment(연속값)로 두면서 θ 기반 recall은 세 값을 모두 보고하고 하나를 고르지 않는다고 했다. 판정 지표를 결과 열람 전에 별도로 정해야 하며, m8_gates.panel_verdict는 명시 없이는 거부한다",
+  "unimplemented": [
+    "Redundancy(사전등록 §2-2 부지표) — 진단으로만 보고"
+  ],
+  "tests": {
+    "command": "python -m pytest tests/ -q",
+    "exit_code": 0,
+    "passed": 2136,
+    "skipped": 1
+  },
+  "note": "이 파일 이후 evaluator 소스·관문 상수·GT가 바뀌면 판정과 분리 불가능해진다. --verify로 대조한다."
+}

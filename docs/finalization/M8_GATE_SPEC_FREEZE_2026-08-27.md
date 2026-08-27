@@ -153,11 +153,39 @@ event_alignment_types     overmerge · spurious_event                  (m8_metri
 ## 4. 이 문서가 정하지 않은 것
 
 ```
-Event Recall 계산 방식        이미 동결 (m8_metrics · temporal 지표군)
 C2 임계·통계량               이미 동결 (0.70 · median)
 M9 실행 권한                 test-opening 별도 승인 사건
 39→72 확장                   HOLD
 ```
+
+### 4-1. 구현 중 발견한 미결 1건 — C2 판정 지표
+
+**임계·통계량은 동결됐지만 `median`에 넣을 per-video 값이 확정돼 있지 않다.**
+
+```
+원 사전등록 §2-3   "Event Recall 중앙값 >= 0.70"
+보충 §3-3         주  event_temporal_alignment (매칭 IoU macro 평균, 연속값)
+                  부  IoU >= θ event recall — "θ 세 값을 모두 보고하고
+                                              하나를 고르지 않는다"
+```
+
+즉 관문이 이름으로 지목한 "Event Recall"이 보충에서 **연속값 주지표와 θ별 부지표로
+갈렸고**, 부지표는 θ를 고르지 말라고 명시돼 있다. 그래서 채우지 않았다.
+
+`m8_gates.panel_verdict`는 `c2_metric` 없이 부르면 `GateSpecError`로 거부하고,
+후보 4개(`event_temporal_alignment` · `temporal_event_recall@IoU>=0.3/0.5/0.7`)를
+**전부 계산해 보고**하되 판정에는 쓰지 않는다. C3 집계 통계량과 같은 처리다.
+
+`m8_evaluator_freeze` artifact에 `c2_metric_decided: false`로 기록됐다.
+**M8 공식 리포트를 보기 전에 정해야 한다** — 보고 나서 고르면 결과가 지표를 고른다.
+
+### 4-2. 미구현 — Redundancy
+
+사전등록 §2-2의 부지표 `Redundancy`(같은 정답 사건을 여러 문장이 중복 서술한 비율)는
+구현돼 있지 않다. `m8_gates`는 기계로 셀 수 있는 미매칭 수
+(`unmatched_reference_events` · `unmatched_generated_events`)만 후보로 보고한다.
+`EVENT_ALIGNMENT_TYPES`(overmerge·spurious_event 등)는 **사람이 붙이는 라벨**이고
+자동 판정기가 아니다.
 
 ---
 
