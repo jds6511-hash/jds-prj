@@ -7,7 +7,7 @@
     "report_files_found": 0,
     "files": []
   },
-  "git_head": "d86fe2e7b15d335c8a07512a65232d670ab60b89",
+  "git_head": "c146f072637f36a6cc7a0e458692f2c42e6b2b8d",
   "git_dirty": true,
   "n_videos": 8,
   "n_reference_events": 68,
@@ -16,18 +16,18 @@
     "event_inventory_protocol": "fedec502feb802df85aa911a1729502453cc4066cd41a5771725e522ed59f088",
     "event_metric_spec": "da907c6d21ec9bd98d57dafca3cd2a9cc59416fc05b5d569c5f1384f20242283",
     "gate_rules": "c3b5d92dc31fa7b0d973d1c8a6cab1475c527080fc712354fc393fb2378bdc27",
-    "gate_spec": "0ef096c4b0542dfae99d6f7c9f29fc12c0cfddf5739695815aec8e5ddc9df16b",
+    "gate_spec": "8aba0267fa34816f71442cb662b0709f3e472fcb5460febe4706fbe7323d6f2b",
     "gt_freeze": "89d85ed68965c334b263b41dc8c2d2a68a1ee4bab5111cf39e8f1fb207a0d9c0"
   },
   "evaluator_source_sha256": {
     "event_inventory_kit": "46a4dfef349f4c6489787570310da4011ea92dbbe7fd469d26f3fba69f16ed7f",
     "m8_c1": "d4a22472e54154d397f3667675dd7d91704b01b6d7de0b43591dc97b67a05d49",
-    "m8_gates": "6587a3d585778cd97e6edcc5fb817ce1a7f550fbd5d33c25c624a5a082741dd2",
+    "m8_gates": "c22a65a383516c5cbff01bb574c2d4cad0a806f8bfb93a4e8f8d73d6e2143ea7",
     "m8_metrics": "4454607ffe845ef87d752d15d61dde1e4738d0a10cc374d82a0c8418c3c699c6"
   },
   "gate_implementation_sha256": {
     "C1": "a9d29100b3b9586ea061008ab433c30a0805f286f7dab6376423f4484ddcc5f4",
-    "C2": "0880a4684b69c9b4e18b7310349126dae610565f8db7cfeecd98939b10b98695",
+    "C2": "b7468edf0c136c6d24d1d889781bc7925199e0280a2417b85567fe32c35cad8f",
     "C3": "9b686d006d2cd8edc9b3fe168a2712d27136e30e3bc01c44625ca1d7bd48532e"
   },
   "frozen_gate_constants": {
@@ -57,22 +57,22 @@
     "map_chunk_overlap": 5
   },
   "config_sha256": "0e82337865b28e0f43c7120844b770bf1ad3175b1023cdfc1a68aabe7215c645",
-  "c2_metric_decided": false,
-  "c2_metric": null,
-  "c2_metric_candidates": [
-    "event_temporal_alignment",
+  "c2_metric_decided": true,
+  "c2_metric": "event_temporal_alignment",
+  "c2_diagnostics_only": [
     "temporal_event_recall@IoU>=0.3",
     "temporal_event_recall@IoU>=0.5",
     "temporal_event_recall@IoU>=0.7"
   ],
-  "c2_metric_note": "원 사전등록 §2-3은 'Event Recall 중앙값'이라 적었고 보충 §3-3은 주지표를 event_temporal_alignment(연속값)로 두면서 θ 기반 recall은 세 값을 모두 보고하고 하나를 고르지 않는다고 했다. 판정 지표를 결과 열람 전에 별도로 정해야 하며, m8_gates.panel_verdict는 명시 없이는 거부한다",
+  "c2_unmatched_reference_handling": "IoU 0으로 macro 평균에 포함 (보충 §3-3 '매칭 실패 = 0')",
+  "c2_metric_note": "원 사전등록 §2-3은 'Event Recall 중앙값'이라 이름만 적고 식을 특정하지 않았다. 보충 §3-3이 주지표를 event_temporal_alignment(연속값)로, θ별 recall을 부지표로 두고 'θ 하나를 고르지 않는다'고 동결했으므로 θ recall은 판정에 쓸 수 없다. 2026-08-27에 M8 출력 0건 시점에서 주지표로 명확화했다(규격 §2A). 임계·통계량·지표 정의는 바뀌지 않았다 — ambiguity resolution이다",
   "unimplemented": [
     "Redundancy(사전등록 §2-2 부지표) — 진단으로만 보고"
   ],
   "tests": {
     "command": "python -m pytest tests/ -q",
     "exit_code": 0,
-    "passed": 2136,
+    "passed": 2138,
     "skipped": 1
   },
   "note": "이 파일 이후 evaluator 소스·관문 상수·GT가 바뀌면 판정과 분리 불가능해진다. --verify로 대조한다."
