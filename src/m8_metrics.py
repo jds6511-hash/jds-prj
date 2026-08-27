@@ -88,6 +88,61 @@ def temporal_event_recall(refs: list, gens: list, thetas=IOU_THETAS) -> dict:
             round(sum(1 for v in ious if v >= t) / len(ious), 4) for t in thetas}
 
 
+class GateSpecError(RuntimeError):
+    """사전등록이 정하지 않은 것을 판정 시점에 정하려 할 때. **묻지 않고 고르지 않는다.**"""
+
+
+def compression(n_sentences: int, n_reference_events: int):
+    """C3 지표 — `리포트 문장 수 / 정답 사건 수`. 사전등록 §2-2 그대로다.
+
+    정답 사건이 0개면 `0.0`도 `inf`도 아니라 **None**(측정 불가)이다.
+    """
+    if not n_reference_events:
+        return None
+    return round(n_sentences / n_reference_events, 4)
+
+
+# C1의 파국 유형. 사전등록 §2-2가 이 셋을 열거했다 — 늘리지 않는다.
+CATASTROPHIC_KINDS = ("language_drift", "early_stop", "repetition_loop")
+
+
+def c1_catastrophic_count(per_video_flags: list) -> int:
+    """파국이 난 **영상 수**. 사전등록이 "발생 영상 수"로 정의했으므로 문장 수가 아니다."""
+    return sum(1 for f in per_video_flags if f)
+
+
+def c1_verdict(per_video_flags: list) -> dict:
+    """C1 — 파국 0편이어야 한다."""
+    n = c1_catastrophic_count(per_video_flags)
+    return {"kinds": list(CATASTROPHIC_KINDS), "n_catastrophic_videos": n,
+            "n_videos": len(per_video_flags), "threshold": 0,
+            "passed": n == 0}
+
+
+def c3_verdict(per_video_compressions: list, statistic: str | None = None,
+               threshold: float = 2.0) -> dict:
+    """C3 — Compression ≤ 2.0.
+
+    **집계 통계량을 기본값으로 고르지 않는다.** 사전등록 §2-3은 임계 2.0만 정했고
+    영상 여러 편을 어떻게 합칠지는 적지 않았다. C2가 중앙값이니 C3도 중앙값일 것
+    같지만, 그렇게 짐작해 넣는 순간 사전등록에 없는 규칙이 코드에 생긴다.
+    호출자가 명시해야 하고, 그 선택은 **결과를 보기 전에** 문서로 남겨야 한다.
+    """
+    if statistic not in ("median", "mean", "max"):
+        raise GateSpecError(
+            "C3 집계 통계량이 사전등록에 없다 — 'median' / 'mean' / 'max' 중 하나를 "
+            "명시하고 그 선택을 결과 열람 전에 문서로 남겨라 "
+            "(docs/preregistration/M8_구조변경_사전등록_2026-08-16.md §2-3)")
+    vals = [v for v in per_video_compressions if v is not None]
+    if not vals:
+        return {"statistic": statistic, "value": None, "threshold": threshold,
+                "n_videos": 0, "passed": None}
+    agg = {"median": np.median, "mean": np.mean, "max": np.max}[statistic]
+    val = round(float(agg(vals)), 4)
+    return {"statistic": statistic, "value": val, "threshold": threshold,
+            "n_videos": len(vals), "passed": bool(val <= threshold)}
+
+
 def c2_statistic(per_video_recalls: list):
     """C2 판정값 — 영상별 Event Recall의 **중앙값**. 평균이 아니다.
 

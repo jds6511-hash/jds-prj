@@ -112,3 +112,55 @@ def test_iou_counts_both_endpoints():
     assert M.temporal_iou([0, 4], [0, 4]) == 1.0
     assert M.temporal_iou([0, 4], [5, 9]) == 0.0
     assert M.temporal_iou([0, 9], [0, 4]) == pytest.approx(5 / 10)
+
+
+# ---------------------------------------------- C1 · C3 (사전등록 문언만 보고 구현)
+# 파일럿 산출물을 보면서 의미를 조정하지 않았다. 사전등록 §2-2·§2-3이 유일한 근거다.
+
+def test_compression_is_sentences_over_reference_events():
+    assert M.compression(6, 3) == 2.0
+    assert M.compression(5, 4) == 1.25
+
+
+def test_compression_is_none_when_no_reference_events():
+    """정답 사건 0개는 0.0도 inf도 아니라 측정 불가다."""
+    assert M.compression(10, 0) is None
+
+
+def test_c1_counts_videos_not_sentences():
+    """사전등록이 "발생 **영상 수**"로 정의했다."""
+    out = M.c1_verdict([False, True, False, True])
+    assert out["n_catastrophic_videos"] == 2 and out["n_videos"] == 4
+    assert out["passed"] is False
+    assert M.c1_verdict([False] * 8)["passed"] is True
+
+
+def test_c1_kinds_are_the_three_preregistered_ones():
+    assert M.CATASTROPHIC_KINDS == ("language_drift", "early_stop", "repetition_loop")
+    t = PREREG.read_text(encoding="utf-8")
+    assert "다른 언어 이탈·조기 종료·반복 루프" in t
+
+
+def test_c3_refuses_to_pick_an_aggregation_silently():
+    """사전등록에 C3 집계 통계량이 없다 — 짐작해 넣으면 코드가 규칙을 새로 만든다."""
+    with pytest.raises(M.GateSpecError, match="사전등록에 없다"):
+        M.c3_verdict([1.0, 2.5, 1.2])
+
+
+def test_c3_threshold_is_frozen_at_20():
+    assert M.c3_verdict([1.9] * 8, statistic="median")["passed"] is True
+    assert M.c3_verdict([2.0] * 8, statistic="median")["passed"] is True     # 경계는 통과(≤)
+    assert M.c3_verdict([2.1] * 8, statistic="median")["passed"] is False
+    assert M.c3_verdict([1.0], statistic="median")["threshold"] == 2.0
+
+
+def test_c3_aggregation_choice_changes_the_verdict():
+    """어느 통계량을 고르느냐가 판정을 바꾼다 — 그래서 결과 열람 전에 정해야 한다."""
+    v = [1.0, 1.2, 1.4, 9.0]
+    assert M.c3_verdict(v, statistic="median")["passed"] is True
+    assert M.c3_verdict(v, statistic="max")["passed"] is False
+
+
+def test_c3_is_unmeasurable_when_all_none():
+    out = M.c3_verdict([None, None], statistic="median")
+    assert out["value"] is None and out["passed"] is None

@@ -801,25 +801,45 @@ scope = SCOPE_CAUSE;
     x: 0.62, y: 2.56, w: 3, h: 0.24, fontSize: 10, bold: true, color: TEAL,
     fontFace: F, charSpacing: 1, margin: 0,
   });
+  /* 두 수치는 **데이터 범위와 판정 방식이 다르다.** 같은 줄에 나란히 두면 같은
+   * 모집단의 지표처럼 읽히므로 분모를 값 안에 박고 판정 방식을 따로 적는다. */
+  const head = [["항목", 0.85, 2.5], ["판정 방식", 3.45, 1.9],
+                ["데이터 범위", 5.45, 2.5], ["Qwen2.5-3B", 8.05, 2.2],
+                ["Qwen3-4B", 10.35, 2.2]];
+  head.forEach((h) => {
+    s.addText(h[0], { x: h[1], y: 2.84, w: h[2], h: 0.24, fontSize: 9.5, bold: true,
+                      color: TEAL, fontFace: F, margin: 0 });
+  });
   const meas = [
-    ["처리 방식", "프롬프트 지시뿐", "프레임은 원본 그대로 · 픽셀 mask · crop 없음"],
-    ["편집 자막 전사", "3B 21건 / 4B 0건", "같은 프레임 395구간 · 사람이 확인한 수"],
-    ["화면 글자 언급", "3B 11.1% / 4B 0.3%", "AI Hub 2,328구간 · 자동 후보(overlay 확정 아님)"],
+    ["편집 자막 전사", "사람 확인", "Costco 395구간", "21건 · 5.3%", "0건 · 0.0%"],
+    ["화면 글자 언급 후보", "자동 heuristic", "AI Hub 2,328쌍", "11.1%", "0.3%"],
+    ["처리 방식", "코드 감사", "전 구간", "프롬프트 지시뿐 — 픽셀 mask · crop 없음", ""],
   ];
-  let my = 2.84;
+  let my = 3.12;
   meas.forEach((r) => {
-    card(s, 0.62, my, 12.1, 0.56, WHITE, LINE);
-    s.addText(r[0], { x: 0.85, y: my + 0.14, w: 2.3, h: 0.28, fontSize: 11.5, bold: true,
+    card(s, 0.62, my, 12.1, 0.5, WHITE, LINE);
+    s.addText(r[0], { x: 0.85, y: my + 0.13, w: 2.5, h: 0.28, fontSize: 11, bold: true,
                       color: INK, fontFace: F, margin: 0 });
-    s.addText(r[1], { x: 3.2, y: my + 0.14, w: 2.9, h: 0.28, fontSize: 12,
-                      color: INK, fontFace: MONO, margin: 0 });
-    s.addText(r[2], { x: 6.2, y: my + 0.14, w: 6.3, h: 0.28, fontSize: 11,
+    s.addText(r[1], { x: 3.45, y: my + 0.13, w: 1.9, h: 0.28, fontSize: 10.5,
                       color: MUTED, fontFace: F, margin: 0 });
-    my += 0.64;
+    s.addText(r[2], { x: 5.45, y: my + 0.13, w: 2.5, h: 0.28, fontSize: 10.5,
+                      color: MUTED, fontFace: F, margin: 0 });
+    s.addText(r[3], { x: 8.05, y: my + 0.13, w: r[4] ? 2.2 : 4.5, h: 0.28,
+                      fontSize: r[4] ? 12 : 11, color: INK,
+                      fontFace: r[4] ? MONO : F, margin: 0 });
+    if (r[4]) {
+      s.addText(r[4], { x: 10.35, y: my + 0.13, w: 2.2, h: 0.28, fontSize: 12,
+                        color: INK, fontFace: MONO, margin: 0 });
+    }
+    my += 0.58;
+  });
+  s.addText("자동 후보율은 overlay 확정률이 아니다 — 편집 자막과 간판 · 라벨을 자동으로 가르지 못한다.", {
+    x: 0.85, y: my + 0.02, w: 11.8, h: 0.24, fontSize: 10, italic: true, color: MUTED,
+    fontFace: F, margin: 0,
   });
 
   s.addText("해석 — 측정한 것이 아니라 위 실측을 설명하는 가설이다", {
-    x: 0.62, y: 4.82, w: 8, h: 0.24, fontSize: 10, bold: true, color: "8A5A2B",
+    x: 0.62, y: 5.2, w: 8, h: 0.24, fontSize: 10, bold: true, color: "8A5A2B",
     fontFace: F, charSpacing: 1, margin: 0,
   });
   const why = [
@@ -829,16 +849,16 @@ scope = SCOPE_CAUSE;
   ];
   let wx = 0.62;
   why.forEach((w) => {
-    card(s, wx, 5.1, 3.9, 1.36, WHITE, LINE);
-    s.addText(w[0], { x: wx + 0.2, y: 5.22, w: 3.5, h: 0.28, fontSize: 11.5, bold: true,
+    card(s, wx, 5.48, 3.9, 1.18, WHITE, LINE);
+    s.addText(w[0], { x: wx + 0.2, y: 5.58, w: 3.5, h: 0.28, fontSize: 11.5, bold: true,
                       color: TEAL, fontFace: F, margin: 0 });
-    s.addText(w[1], { x: wx + 0.2, y: 5.54, w: 3.5, h: 0.8, fontSize: 10.5, color: INK,
+    s.addText(w[1], { x: wx + 0.2, y: 5.88, w: 3.5, h: 0.72, fontSize: 10.5, color: INK,
                       fontFace: F, lineSpacing: 15, valign: "top", margin: 0 });
     wx += 4.1;
   });
 
   s.addText("더 세게 금지하는 것이 답은 아니다 — 자막형 질의에서는 화면 글자가 도움이 되는 정보다. 억제와 활용이 긴장 관계라 현행 유지 + 한계 명시로 뒀다.", {
-    x: 0.62, y: 6.58, w: 12.1, h: 0.3, fontSize: 11, italic: true, color: MUTED,
+    x: 0.62, y: 6.76, w: 12.1, h: 0.3, fontSize: 11, italic: true, color: MUTED,
     fontFace: F, margin: 0,
   });
 }

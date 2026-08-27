@@ -43,5 +43,42 @@
     "event_recall_calculated": false,
     "m9_test_opened": false,
     "panel_modified_after_freeze": false
-  }
+  },
+  "editorial_text_handling": {
+    "status": "기존 사전등록 조항 적용 — 새 규칙을 만들지 않았다",
+    "source": "docs/preregistration/event_inventory_사전등록_2026-08-18.md §2",
+    "clauses": [
+      "사건 = 하나의 목적을 가진 연속된 행위·상태 변화·상호작용",
+      "제외한다: 인트로·아웃트로·협찬 고지·자막만 있는 전환 구간"
+    ],
+    "application": [
+      "편집 자막(post-production)은 그 자체로 독립 사건이 되지 않는다 — 자막만 있는 구간은 위 제외 조항에 이미 해당한다",
+      "in-scene text(간판·표지·제품 라벨)도 텍스트가 있다는 이유만으로 사건을 만들지 않는다 — 사건은 행위·상태 변화로 정의되고 텍스트는 그 정의의 항목이 아니다",
+      "라벨러가 화면에서 편집 자막을 보는 것은 막을 수 없다(하드섭). blind가 보장하는 것은 STT·캡션·검색 결과·M8 산출물을 보여주지 않는 것이다"
+    ],
+    "note": "사전등록 문서는 고치지 않았다. 조항이 이미 이 경우를 덮으므로 새 문언을 추가하면 '라벨링 직전에 규칙을 늘렸다'가 된다"
+  },
+  "gate_implementation": {
+    "c2": {
+      "status": "구현·테스트 완료",
+      "statistic": "median",
+      "threshold": 0.7,
+      "source": "사전등록 §2-3"
+    },
+    "c1": {
+      "status": "집계 구현 완료(파국 영상 수 0)",
+      "kinds": [
+        "language_drift",
+        "early_stop",
+        "repetition_loop"
+      ],
+      "open": "파국 탐지 임계가 사전등록에 없다 — 예: 비한글 비율 몇 %부터 language drift인가. 공식 판정 전에 결과를 보지 않은 상태로 정해야 한다"
+    },
+    "c3": {
+      "status": "지표 구현 완료(문장 수 / 정답 사건 수) · 임계 2.0",
+      "open": "영상 여러 편의 집계 통계량이 사전등록에 없다. c3_verdict는 statistic을 명시하지 않으면 GateSpecError로 거부한다 — 짐작해 median을 넣지 않았다"
+    },
+    "rule": "구현은 사전등록 문언만 보고 했다. 파일럿 산출물을 보며 의미를 조정하지 않았다"
+  },
+  "git_head_at_update": "f38bfc344cab2e88fc14b358c15f8e5896382aa8"
 }
