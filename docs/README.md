@@ -1,6 +1,6 @@
 # 문서 지도
 
-문서가 많다(루트 40 · `finalization/` 61 · `preregistration/` 26 · `probes/` 84).
+문서가 많다(루트 40 · `finalization/` 63 · `preregistration/` 26 · `probes/` 84).
 **전부 읽을 필요 없다.** 아래 세 줄이 진입점이고 나머지는 필요할 때 찾는다.
 
 | 상황 | 읽을 것 |
@@ -77,7 +77,7 @@
 `DRAFT`가 붙은 둘은 **초안 상태 그대로**다 — 확정본으로 인용하지 마라.
 JSON 산출물(`P2_*.json` · `P3_*.json`)은 같은 이름의 md와 짝이거나 도구가 읽는 정본이다.
 
-## `finalization/` — 최종화 산출물 (61건)
+## `finalization/` — 최종화 산출물 (63건)
 
 2026-08-25부터의 마감 작업이 전부 여기 있다.
 
@@ -89,6 +89,7 @@ JSON 산출물(`P2_*.json` · `P3_*.json`)은 같은 이름의 md와 짝이거�
 | **정답 사건 목록 동결** | [M8_C2_GT_FREEZE](finalization/M8_C2_GT_FREEZE_2026-08-27.md)(8편 68건 · review 수정 6건 사유) · `m8_c2_gt_freeze_*.json`(해시 정본) |
 | **M8 공식 결과** | [M8_OFFICIAL_RESULT](finalization/M8_OFFICIAL_RESULT_2026-08-27.md) — evaluation COMPLETE · **acceptance FAIL**(C1 4/8 · C2 0.3311 · C3 max 7.00) · `m8_official_result_*.json` |
 | **M8 실패 분해** | [M8_FAILURE_ANALYSIS](finalization/M8_FAILURE_ANALYSIS_2026-08-27.md) — **진단 전용**. 입도 불일치가 주원인 · 개선 후보 R1~R7(미구현) · `m8_failure_analysis_*.json` |
+| **M8 종결** | [M8_REDESIGN_CLOSURE](finalization/M8_REDESIGN_CLOSURE_2026-08-28.md) — FAIL 확정 · 후속 가설 future work · **M9 HOLD**(개방 3조건 중 1·2 부정) · [M8_HUMAN_REFERENCE_CONTRAST](finalization/M8_HUMAN_REFERENCE_CONTRAST_2026-08-28.md)(정성적 대조 1편) |
 | **M8 redesign R2** | [M8_REDESIGN_R2_GATE](finalization/M8_REDESIGN_R2_GATE_2026-08-28.md)(실행 전 동결) · [M8_REDESIGN_R2_RESULT](finalization/M8_REDESIGN_R2_RESULT_2026-08-28.md) — **REDESIGN_ROUND_LIMIT_REACHED** · `m8_redesign_r2_threeway_*.json` |
 | **M8 redesign R1** | [M8_REDESIGN_R1_RESULT](finalization/M8_REDESIGN_R1_RESULT_2026-08-28.md) — **REDESIGN_RETHINK**(R1 성공·R2 실패·새 파국 1건) · [M8_C1_PROSPECTIVE_AMENDMENT](finalization/M8_C1_PROSPECTIVE_AMENDMENT_2026-08-27.md)(**다음 confirmation에만** 적용) · `m8_redesign_r1_compare_*.json`(개발 점수 — 확증 아님) |
 | **evaluator 동결** | `m8_evaluator_freeze_2026-08-27.json` — 관문별 함수 해시·GT 해시·동결 상수. `m8_evaluator_freeze.py --verify`로 대조 |

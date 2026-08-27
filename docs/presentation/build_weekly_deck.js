@@ -50,7 +50,7 @@ function tab(s, x, y, h, color) {
 }
 function mono(s, x, y, w, h, text, size, color) {
   s.addText(text, { x, y, w, h, fontSize: size || 11, color: color || INK,
-    fontFace: MONO, lineSpacingMultiple: 1.22, margin: 0 });
+    valign: "top", fontFace: MONO, lineSpacingMultiple: 1.22, margin: 0 });
 }
 /* 지표 카드 — 값 하나 + 라벨 + 판정 */
 function stat(s, x, y, w, label, value, verdictText, color) {
@@ -290,6 +290,48 @@ function row(s, y, no, head, body, color) {
   mono(s, 0.95, 5.7, 11.5, 0.65,
     "· 후보가 검증에서 거부된 11건 중 7건이 '못 찾은 정답'과 같은 시간대였습니다 (인과 증명은 아님)\n" +
     "· 한 영상은 앞 절반의 후보가 전부 거부되고 재생성도 실패해 그 구간이 비었습니다", 11);
+}
+
+/* ─── 8 사람 서술 ↔ GT 대조 (정성적) ─── */
+{
+  const s = content("사람이 정리한 사건 구조는 GT와 비교적 가까웠습니다", "대조 · 정성적");
+  s.addText("영상 1편(거제 여행, 27분)에서 사람이 쓴 사건 중심 서술 7개 절을 동결 GT 8건과 사후 대조했습니다.",
+    { x: 0.6, y: 1.5, w: 12.15, h: 0.3, fontSize: 11.5, color: MUTED, fontFace: BF, margin: 0 });
+
+  card(s, 0.6, 1.9, 7.75, 4.05);
+  s.addText("사람이 쓴 서술 7절  ↔  동결 GT 8건", { x: 0.95, y: 2.02, w: 7.1, h: 0.3,
+    fontSize: 12.5, bold: true, color: NAVY, fontFace: HF, margin: 0 });
+  mono(s, 0.95, 2.45, 7.1, 3.35, `1 거제 여행의 시작        ->  1 거제시내를 대화하며 이동
+2 시내버스를 타고 해변으로  ->  2 버스를 타고 이동
+                            3 바닷가로 이동        <- 병합
+3 주민들과 만나 낚시 준비   ->  4 해산물 구경과 시식
+4 방파제에서 줄낚시 도전    ->  5 부두 근처로 나가 낚시
+5 해변으로 돌아와 입수     ->  6 해변에서 물놀이
+6 식사 준비와 주민 교류    ->  7 해변가에서 자리잡고 식사
+7 해변에서 식사하며 마무리  ->  7 (같은 사건의 후반)   <- 분할
+  (없음)                 ->  8 아웃트로            <- 누락`, 10.5);
+
+  const cells = [["병합", "1건", "인접 GT 2건을 한 절로", TEAL],
+                 ["분할", "1건", "GT 1건을 두 절로", TEAL],
+                 ["누락", "1건", "짧은 아웃트로", TEAL],
+                 ["M8 미매칭", "3 / 10", "같은 영상, 생성 10건 중", RED]];
+  cells.forEach((c, i) => {
+    const y = 1.9 + i * 1.02;
+    card(s, 8.6, y, 4.15, 0.92); tab(s, 8.6, y, 0.92, c[3]);
+    s.addText(c[0], { x: 8.85, y: y + 0.06, w: 1.8, h: 0.34, fontSize: 12, bold: true,
+      color: NAVY, valign: "middle", fontFace: HF, margin: 0 });
+    s.addText(c[1], { x: 8.85, y: y + 0.42, w: 1.8, h: 0.4, fontSize: 17, bold: true,
+      color: c[3], fontFace: MONO, margin: 0 });
+    s.addText(c[2], { x: 10.7, y, w: 1.9, h: 0.92, fontSize: 10, color: MUTED,
+      valign: "middle", fontFace: BF, lineSpacingMultiple: 1.1, margin: 0 });
+  });
+
+  card(s, 0.6, 6.05, 12.15, 0.62, "EEF4F8"); tab(s, 0.6, 6.05, 0.62, BLUE);
+  s.addText("이 사례에서는 목표 사건 단위가 사람이 작성하기 어려운 형식으로 보이지 않았습니다. 단, 단일 영상의 정성적 대조입니다.",
+    { x: 1.0, y: 6.05, w: 11.5, h: 0.62, fontSize: 11.5, bold: true, color: NAVY,
+      valign: "middle", fontFace: BF, margin: 0 });
+  s.addText("소비된 판정 패널의 영상이고 대응은 사후에 사람이 매핑했습니다 — 사건 입도의 보편적 명확성이나 모델 성능 차이를 검증하는 근거로 쓰지 않습니다.",
+    { x: 0.6, y: 6.76, w: 12.15, h: 0.3, fontSize: 10.5, color: MUTED, fontFace: BF, margin: 0 });
 }
 
 /* ─── 8 개선 시도 ─── */
