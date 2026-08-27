@@ -57,6 +57,8 @@ let page = 0;
 const SCOPE_CASE = "캡션 → 검색 케이스 스터디 · 영상 1편 · 장면 5 · 질의 15 · 정성 사례 연구";
 const SCOPE_PAIRED = "캡션 서술 방식 · AI Hub 194편 2,328구간 쌍대 기술 분석 · 채택 근거 아님";
 const SCOPE_OTHER = "캡션 서술 방식 · 자체 취득 영상 3편 · 구간별 쌍대 비교 · 채택 근거 아님";
+/* 원인 장은 사람이 확인한 395구간과 자동 후보 2,328구간을 함께 인용한다 — 둘을 갈라 적는다 */
+const SCOPE_CAUSE = "텍스트 처리 감사 · 확인분 395구간 + 자동 후보 2,328구간 · 원인은 해석";
 let scope = SCOPE_CASE;
 
 function foot(s, dark) {
@@ -775,7 +777,73 @@ scope = SCOPE_OTHER;
   /* 주석은 상단 부제로 합쳤다 — 셋째 행 이미지 아래에는 푸터까지 여유가 없다 */
 }
 
-/* ---------------------------------------------------------------- 14 경계 */
+/* ------------------------------------------- 14 왜 편집 자막이 캡션에 들어오나
+ * 13장 사례 둘(gwaktube 자막 · kheritage 로고)이 바로 이 현상이라 이어서 둔다.
+ * **실측과 해석을 갈라 적는다** — 유출률·프롬프트 원문·프레임 유형은 측정값이지만,
+ * "OCR 신호가 강하다"는 모델 학습에 관한 외부 주장이고 이 프로젝트가 측정한 것이 아니다.
+ * 근거: docs/finalization/CAPTION_TEXT_HANDLING_AUDIT_2026-08-26.md (판정 B) */
+scope = SCOPE_CAUSE;
+{
+  const s = slide("원인", "프롬프트는 금지하고 있다 — 그런데도 들어온다");
+
+  /* 프롬프트 원문을 그대로 보여준다. "지시가 없어서"라는 오해를 먼저 닫는다. */
+  card(s, 0.62, 1.5, 12.1, 0.92, "F3EFE7", "E0D6C2");
+  s.addText("P0 프롬프트 (현행 · 변경 없음)", {
+    x: 0.95, y: 1.58, w: 6, h: 0.24, fontSize: 9.5, bold: true, color: "8A5A2B",
+    fontFace: F, margin: 0,
+  });
+  s.addText("“화면에 자막이나 글자가 보이더라도 그 글자를 그대로 옮겨 적지 말고, 인물의 행동과 배경 등 시각적 내용만 묘사하라.”", {
+    x: 0.95, y: 1.84, w: 11.5, h: 0.42, fontSize: 12, color: INK,
+    fontFace: F, valign: "top", margin: 0,
+  });
+
+  s.addText("실측", {
+    x: 0.62, y: 2.56, w: 3, h: 0.24, fontSize: 10, bold: true, color: TEAL,
+    fontFace: F, charSpacing: 1, margin: 0,
+  });
+  const meas = [
+    ["처리 방식", "프롬프트 지시뿐", "프레임은 원본 그대로 · 픽셀 mask · crop 없음"],
+    ["편집 자막 전사", "3B 21건 / 4B 0건", "같은 프레임 395구간 · 사람이 확인한 수"],
+    ["화면 글자 언급", "3B 11.1% / 4B 0.3%", "AI Hub 2,328구간 · 자동 후보(overlay 확정 아님)"],
+  ];
+  let my = 2.84;
+  meas.forEach((r) => {
+    card(s, 0.62, my, 12.1, 0.56, WHITE, LINE);
+    s.addText(r[0], { x: 0.85, y: my + 0.14, w: 2.3, h: 0.28, fontSize: 11.5, bold: true,
+                      color: INK, fontFace: F, margin: 0 });
+    s.addText(r[1], { x: 3.2, y: my + 0.14, w: 2.9, h: 0.28, fontSize: 12,
+                      color: INK, fontFace: MONO, margin: 0 });
+    s.addText(r[2], { x: 6.2, y: my + 0.14, w: 6.3, h: 0.28, fontSize: 11,
+                      color: MUTED, fontFace: F, margin: 0 });
+    my += 0.64;
+  });
+
+  s.addText("해석 — 측정한 것이 아니라 위 실측을 설명하는 가설이다", {
+    x: 0.62, y: 4.82, w: 8, h: 0.24, fontSize: 10, bold: true, color: "8A5A2B",
+    fontFace: F, charSpacing: 1, margin: 0,
+  });
+  const why = [
+    ["글자는 지우기 어려운 신호", "말로 금지해도 픽셀은 그대로 들어간다.\n지시는 출력 단계에서 누르는 시도일 뿐이다"],
+    ["글자밖에 없는 구간", "검은 화면에 “DAY 59” · 인트로 로고.\n“묘사하라”와 “적지 마라”가 서로 충돌한다"],
+    ["편집 자막과 간판을 못 가른다", "모델에게는 둘 다 픽셀 위의 글자다.\n그래서 지시가 부분적으로만 듣는다"],
+  ];
+  let wx = 0.62;
+  why.forEach((w) => {
+    card(s, wx, 5.1, 3.9, 1.36, WHITE, LINE);
+    s.addText(w[0], { x: wx + 0.2, y: 5.22, w: 3.5, h: 0.28, fontSize: 11.5, bold: true,
+                      color: TEAL, fontFace: F, margin: 0 });
+    s.addText(w[1], { x: wx + 0.2, y: 5.54, w: 3.5, h: 0.8, fontSize: 10.5, color: INK,
+                      fontFace: F, lineSpacing: 15, valign: "top", margin: 0 });
+    wx += 4.1;
+  });
+
+  s.addText("더 세게 금지하는 것이 답은 아니다 — 자막형 질의에서는 화면 글자가 도움이 되는 정보다. 억제와 활용이 긴장 관계라 현행 유지 + 한계 명시로 뒀다.", {
+    x: 0.62, y: 6.58, w: 12.1, h: 0.3, fontSize: 11, italic: true, color: MUTED,
+    fontFace: F, margin: 0,
+  });
+}
+
+/* ---------------------------------------------------------------- 15 경계 */
 scope = SCOPE_CASE;
 {
   const s = slide("경계", "말할 수 있는 것 / 말할 수 없는 것");

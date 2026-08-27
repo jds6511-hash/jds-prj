@@ -40,6 +40,10 @@ FORBIDDEN = [
     ("New_Sample/spk_0001.wav", "AI Hub 화자 음성·전사 — 재배포 불허"),
     ("data_aihub/queries.jsonl", "AI Hub 라벨 파생 질의 — 재배포가 된다"),
     ("label_kit/clips/case_01.mp4", "라벨링 키트 클립 — 원본 영상 파생물"),
+    ("label_kit/contact_sheets/kbs_banff_p01.jpg",
+     "컨택트시트 — 원본 영상 프레임 격자"),
+    ("label_kit/blindness_check.json",
+     "유출 검사 산출물 — 실패 시 캡션 조각을 증거로 담는다"),
 ]
 
 # 공개돼야 하는 것. 규칙이 넓어져 이것들이 무시되면 재현성이 깨진다.
@@ -54,6 +58,8 @@ MUST_BE_PUBLISHABLE = [
     "docs/DESIGN_SPEC.md",
     "docs/presentation/build_casestudy_deck.js",
     "label_kit/event_inventory/FROZEN_events.json",
+    # 라벨링 착수 기록 — 해시·영상 ID·규칙만. 감사 흔적이라 저장소에 있어야 한다
+    "label_kit/labeling_start_record.json",
     "docs/finalization/project_design_conformance_2026-08-26.json",
 ]
 
@@ -94,7 +100,8 @@ def test_no_restricted_assets_tracked(tracked):
                 or p.startswith("artifacts/")
                 or p == "SERVER_LOCAL.md"
                 or p.startswith("docs/finalization/AAR_SAMPLE_")
-                or (p.startswith("label_kit/") and "/event_inventory/" not in p)
+                or (p.startswith("label_kit/") and "/event_inventory/" not in p
+                    and p != "label_kit/labeling_start_record.json")
                 or p.endswith((".mp4", ".wav", ".npy", ".pptx"))):
             bad.append(p)
     assert bad == [], f"공개 금지 자산이 추적되고 있다: {bad[:10]}"

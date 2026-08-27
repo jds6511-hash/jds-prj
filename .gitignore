@@ -67,6 +67,10 @@ label_kit/*
 !label_kit/event_inventory/
 label_kit/event_inventory/*
 !label_kit/event_inventory/FROZEN_*.json
+# 라벨링 착수 기록은 감사 흔적이라 추적한다 — 해시·영상 ID·규칙만 들어 있다.
+# **유출 검사 산출물(blindness_check.json)은 계속 제외한다** — 실패 시 캡션 조각을
+# 증거로 담기 때문이다. 통과 여부는 이 기록 파일에 요약으로 들어간다.
+!label_kit/labeling_start_record.json
 
 # 서버 접속 정보(공개 저장소 노출 방지)
 SERVER_LOCAL.md

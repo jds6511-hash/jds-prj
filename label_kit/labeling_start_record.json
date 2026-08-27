@@ -1,0 +1,47 @@
+{
+  "record": "M8_C2_LABELING_START",
+  "created": "2026-08-27",
+  "git_head": "d2d45885f70152a5846e449ca7c47154d7ee0f1e",
+  "panel_manifest_sha256": "b672b58d2dd179a7b406a333bc7987f359fdfe4c666d462631a1dd6a2e8afb05",
+  "final_video_ids": [
+    "baekmansonghee_jirisan",
+    "softyeon_ceramics",
+    "jissi_farm",
+    "kbs_banff",
+    "wonyi_gyeongju",
+    "wonyi_geoje",
+    "m8c2_3I7oGwk6EaQ",
+    "m8c2_cIxG7OHYMPU"
+  ],
+  "n": 8,
+  "protocol_hashes": {
+    "sourcing_rule": "cd6dd0ad2e2ffd452d36fdcfdae26d2dec6b151bd12b1f818cae95b1698aa803",
+    "panel_freeze_doc": "890b06a001a1f010d53bc629e5ec56bbe3c8e30b31b430051d0c6ea7ca2380ea",
+    "decisions": "ee62a0616d35da4682a86e7b7e2ecb1a6f11c967bb5529487ccddbc62542f2e9",
+    "event_inventory_prereg": "fedec502feb802df85aa911a1729502453cc4066cd41a5771725e522ed59f088",
+    "contact_sheet_tool": "3abd387d09fe3570d4fd0ee4c49a987ec5bc7bc0173011f98700df865119e7f0",
+    "label_guard": "c0871e28887071a89c287d433fa27bac8f957616fa0c962a57be294ebdfbd466"
+  },
+  "contact_sheets": {
+    "n_sheets": 39,
+    "coverage": "8/8 영상 · 구간 전수"
+  },
+  "blindness_check": {
+    "verdict": "PASS",
+    "artifact": "label_kit/blindness_check.json"
+  },
+  "rules": [
+    "8편 모두 같은 annotation rule을 쓴다. 중간 결과를 보고 사건 단위 규칙을 바꾸지 않는다",
+    "라벨러는 프레임·시각만 본다 — 캡션·STT·검색 결과·score·rank·M8 리포트·pilot 결과 금지",
+    "reference event에는 event_id · start/end(또는 대응 segment 범위) · 짧은 사건 설명을 남긴다",
+    "설명은 matching을 돕는 reference다. M8 문체를 흉내 내지 않는다",
+    "8편 전부 끝날 때까지 M8 report를 만들지 않는다. 중간 2편·4편 Event Recall도 계산하지 않는다",
+    "완료 후 GT 전체 freeze + hash 뒤에야 M8 official generation으로 넘어간다"
+  ],
+  "boundaries": {
+    "m8_report_generated": false,
+    "event_recall_calculated": false,
+    "m9_test_opened": false,
+    "panel_modified_after_freeze": false
+  }
+}

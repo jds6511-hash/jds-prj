@@ -49,6 +49,19 @@ def p2_targets(path=P2_SAMPLE) -> list:
     return sorted(p2_expected_segments(path))
 
 
+M8_C2_MANIFEST = ROOT / "docs" / "finalization" / "m8_c2_panel_manifest_2026-08-27.json"
+
+
+def m8_c2_panel_targets(path=M8_C2_MANIFEST) -> list:
+    """M8 C2 판정 패널 8편. **동결 manifest에서 읽는다** — 목록을 손으로 적으면
+    manifest와 갈릴 수 있고, 그러면 어느 쪽이 판정 표본인지 사후에 알 수 없다."""
+    man = json.loads(Path(path).read_text(encoding="utf-8"))
+    panel = man["final_panel"]
+    if len(panel) != man["design"]["fixed_n"] or len(set(panel)) != len(panel):
+        raise SheetError(f"패널이 고유 {man['design']['fixed_n']}편이 아니다: {panel}")
+    return list(panel)
+
+
 def mmss(sec: float) -> str:
     s = int(sec)
     return f"{s // 60}:{s % 60:02d}"
@@ -103,12 +116,15 @@ def main():
                     help="신규 test 후보 3편 전부")
     ap.add_argument("--p2-all", action="store_true",
                     help="P2 선정표본 35편 전부 (사전등록 구간 수와 대조한다)")
+    ap.add_argument("--m8-c2-panel", action="store_true",
+                    help="M8 C2 판정 패널 8편 — 동결 manifest에서 목록을 읽는다")
     ap.add_argument("--out", help="시트 출력 디렉터리 (기본 label_kit/contact_sheets)")
     ap.add_argument("--config", default="config.yaml")
     a = ap.parse_args()
     cfg = common.load_config(str(ROOT / a.config))
     expected = p2_expected_segments() if a.p2_all else {}
     vids = (p2_targets() if a.p2_all
+            else m8_c2_panel_targets() if a.m8_c2_panel
             else ["jissi_farm", "softyeon_ceramics", "baekmansonghee_jirisan"]
             if a.all else [a.video])
     if not vids or vids == [None]:
