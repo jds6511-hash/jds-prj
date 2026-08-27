@@ -1,6 +1,6 @@
 # 문서 지도
 
-문서가 많다(루트 39 · `finalization/` 43 · `preregistration/` 26 · `probes/` 81).
+문서가 많다(루트 40 · `finalization/` 46 · `preregistration/` 26 · `probes/` 84).
 **전부 읽을 필요 없다.** 아래 세 줄이 진입점이고 나머지는 필요할 때 찾는다.
 
 | 상황 | 읽을 것 |
@@ -77,7 +77,7 @@
 `DRAFT`가 붙은 둘은 **초안 상태 그대로**다 — 확정본으로 인용하지 마라.
 JSON 산출물(`P2_*.json` · `P3_*.json`)은 같은 이름의 md와 짝이거나 도구가 읽는 정본이다.
 
-## `finalization/` — 최종화 산출물 (43건)
+## `finalization/` — 최종화 산출물 (46건)
 
 2026-08-25부터의 마감 작업이 전부 여기 있다.
 
@@ -85,6 +85,7 @@ JSON 산출물(`P2_*.json` · `P3_*.json`)은 같은 이름의 md와 짝이거�
 |---|---|
 | **M8 · M9 완료 경로** | [M8_M9_PROTOCOL](finalization/M8_M9_PROTOCOL_2026-08-26.md) · [M8_M9_DECISIONS](finalization/M8_M9_DECISIONS_2026-08-26.md)(D1~D6 승인 기록) · [M8_생성배치_계획](finalization/M8_생성배치_계획_2026-08-26.md) · [AAR_SERVER_RUNBOOK](finalization/AAR_SERVER_RUNBOOK_2026-08-26.md) |
 | **C2 판정 패널** | [M8_C2_SOURCING_RULE](finalization/M8_C2_SOURCING_RULE_2026-08-27.md)(후보 조회 전 동결) · [M8_C2_PANEL_FREEZE](finalization/M8_C2_PANEL_FREEZE_2026-08-27.md) · `m8_c2_panel_manifest_*.json`(기계가 읽는 정본) |
+| **관문 집행 규격** | [M8_GATE_SPEC_FREEZE](finalization/M8_GATE_SPEC_FREEZE_2026-08-27.md) — C1 3-state·pre-merge 판정, C3 집계 MAX. **M8 산출물 0건 시점에 동결** |
 | **감사** | [PROJECT_DESIGN_CONFORMANCE_AUDIT](finalization/PROJECT_DESIGN_CONFORMANCE_AUDIT_2026-08-26.md)(COMPLETE) · [CAPTION_TO_RETRIEVAL_INTEGRITY_AUDIT](finalization/CAPTION_TO_RETRIEVAL_INTEGRITY_AUDIT_2026-08-26.md) · [CAPTION_TEXT_HANDLING_AUDIT](finalization/CAPTION_TEXT_HANDLING_AUDIT_2026-08-26.md) · [END_TO_END_AUDIT](finalization/END_TO_END_AUDIT_2026-08-25.md) · [F4_DOCUMENTATION_AUDIT](finalization/F4_DOCUMENTATION_AUDIT_2026-08-26.md) |
 | **캡션↔검색 케이스 스터디** | [PLAN](finalization/CAPTION_RETRIEVAL_CASESTUDY_PLAN_2026-08-25.md) · [RESULTS](finalization/CAPTION_RETRIEVAL_CASESTUDY_RESULTS_2026-08-25.md) · [AMENDMENT](finalization/CAPTION_RETRIEVAL_CASESTUDY_AMENDMENT_2026-08-25.md) · [A2 AMENDMENT](finalization/CAPTION_RETRIEVAL_CASESTUDY_AMENDMENT_A2_2026-08-26.md) · [TABLE](finalization/CAPTION_RETRIEVAL_CASESTUDY_TABLE.md) |
 | **AAR 추적** | [AAR_TRACEABILITY](finalization/AAR_TRACEABILITY_2026-08-25.md) · [AAR_SAMPLE](finalization/AAR_SAMPLE_gwaktube_soviet_apartment.md) |
