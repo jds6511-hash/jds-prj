@@ -7,8 +7,8 @@
     "report_files_found": 0,
     "files": []
   },
-  "git_head": "c146f072637f36a6cc7a0e458692f2c42e6b2b8d",
-  "git_dirty": true,
+  "git_head": "9dd9ec6f3feb98771f23f4fcca5cc626fe19a027",
+  "git_dirty": false,
   "n_videos": 8,
   "n_reference_events": 68,
   "aggregate_gt_sha256": "68a079ba17eb09fb22575e0f5b0db6daab7b7601805205a0022910e496a5696f",
@@ -72,7 +72,7 @@
   "tests": {
     "command": "python -m pytest tests/ -q",
     "exit_code": 0,
-    "passed": 2138,
+    "passed": 2141,
     "skipped": 1
   },
   "note": "이 파일 이후 evaluator 소스·관문 상수·GT가 바뀌면 판정과 분리 불가능해진다. --verify로 대조한다."
