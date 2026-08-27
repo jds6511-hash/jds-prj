@@ -4,9 +4,10 @@
 확증 표본으로서는 소진됐고, 지금부터는 개발 증거다.
 
 ```
-채택      R1 짧은 사건 보존 · R2 과분할 억제 (한 프롬프트의 양방향 계약)
-          R5 빈 청크 1단 분할 재시도 · R6 사건명 한국어
-보류      R3 span 정밀도 · R4 거부→절단 · R7 C3 amendment
+ROUND 1   R1 짧은 사건 보존 · R2 과분할 억제(양방향 계약) · R5 분할 재시도 ·
+          R6 사건명 한국어                                    → V2 규칙
+ROUND 2   위 + H1 보수적 consolidation(검증 전) + 중복 억제    → V3 규칙 · --round2
+보류      R3 span · R4 거부→절단 · R7 C3 amendment · H2 개수 상한 · H3 2층 schema
 ```
 
 **공식 산출물을 건드리지 않는다.** 확정 경로(`work/<vid>/report.json`)에 쓰지 않고
@@ -14,6 +15,7 @@ run 디렉터리에만 쓴다. 여기서 나온 C1/C2/C3는 **개발 점수**이
 
 사용:
     python scripts/m8_redesign_dev.py --run-id r1
+    python scripts/m8_redesign_dev.py --run-id r2 --round2
 """
 import argparse
 import io
@@ -31,17 +33,26 @@ import m8_report                                                   # noqa: E402
 from m8_gates import panel_videos                                   # noqa: E402
 
 RUN_KIND = "m8_redesign_dev"
+ROUND2_RUN_KIND = "m8_redesign_dev_round2"
 ADOPTED = ["R1_short_event_preserve", "R2_granularity_contract",
            "R5_empty_chunk_split_retry", "R6_korean_event_title"]
+ROUND2_ADOPTED = ADOPTED + ["H1_conservative_consolidation",
+                            "duplicate_suppression"]
 HELD = ["R3_span_refinement", "R4_reject_to_truncate", "R7_c3_amendment"]
+ROUND2_HELD = HELD + ["H2_output_count_cap", "H3_two_level_schema"]
 
 
 def dev_report_path(run_dir, video_id: str) -> Path:
     return Path(run_dir) / f"report_dev_{video_id}.json"
 
 
-def generate(segments: list, llm, cfg: dict) -> dict:
-    """redesign 계약 + 분할 재시도. baseline과 다른 것은 이 두 인자뿐이다."""
+def generate(segments: list, llm, cfg: dict, round2: bool = False) -> dict:
+    """ROUND 1은 V2 + 분할, ROUND 2는 V3 + 분할 + **검증 전 수렴**(H1)."""
+    if round2:
+        return m8_report.generate_report_structured(
+            segments, llm, cfg["map_chunk_size"], cfg["map_chunk_overlap"],
+            rules=m8_report.EVENT_RULES_V3, split_retry=True,
+            consolidate_llm=llm)
     return m8_report.generate_report_structured(
         segments, llm, cfg["map_chunk_size"], cfg["map_chunk_overlap"],
         rules=m8_report.EVENT_RULES_V2, split_retry=True)
@@ -60,13 +71,16 @@ def row(video_id: str, rep: dict, n_segments: int, path) -> dict:
             "chunks": len(rep.get("map_raw_outputs") or []),
             "chunk_retries": len(rep.get("chunk_retries") or []),
             "chunk_splits": rep.get("chunk_splits") or [],
+            "split_recovered": bool([s for s in (rep.get("chunk_splits") or [])
+                                     if s.get("recovered")]),
+            "consolidation": rep.get("consolidation"),
             "c1_status": m8_c1.video_status(f),
             "c1_kind_status": {k: f[k]["status"] for k in m8_c1.C1_KINDS},
             "path": str(path)}
 
 
 def run(cfg, videos: list, llm, run_dir, run_id: str,
-        limit_videos=None, limit_chunks=None) -> dict:
+        limit_videos=None, limit_chunks=None, round2: bool = False) -> dict:
     rows, failures = [], []
     Path(run_dir).mkdir(parents=True, exist_ok=True)
     for v in (videos[:limit_videos] if limit_videos else videos):
@@ -78,16 +92,20 @@ def run(cfg, videos: list, llm, run_dir, run_id: str,
             s = doc["segments"]
             if limit_chunks:
                 s = s[:cfg["map_chunk_size"] * limit_chunks]
-            rep = generate(s, llm, cfg)
+            rep = generate(s, llm, cfg, round2)
             out = dev_report_path(run_dir, v)
             common.atomic_write_json(out, {
-                "video_id": v, "run_kind": RUN_KIND, "run_id": run_id,
+                "video_id": v, "run_id": run_id,
+                "run_kind": ROUND2_RUN_KIND if round2 else RUN_KIND,
                 "schema_version": m8_report.SCHEMA_VERSION,
                 "model": cfg["report_model"],
                 "map_chunk_size": cfg["map_chunk_size"],
                 "provenance": m8_report.report_provenance(llm, cfg),
-                "redesign": {"adopted": ADOPTED, "held": HELD,
-                             "rules": "EVENT_RULES_V2", "split_retry": True},
+                "redesign": {
+                    "adopted": ROUND2_ADOPTED if round2 else ADOPTED,
+                    "held": ROUND2_HELD if round2 else HELD,
+                    "rules": "EVENT_RULES_V3" if round2 else "EVENT_RULES_V2",
+                    "split_retry": True, "consolidation": bool(round2)},
                 **rep})
             rows.append(row(v, rep, len(s), out))
             print(f"  {v}: 완료", flush=True)
@@ -95,10 +113,13 @@ def run(cfg, videos: list, llm, run_dir, run_id: str,
             failures.append({"video_id": v,
                              "error": f"{type(e).__name__}: {e}"[:300]})
             print(f"  {v}: 실패 ({type(e).__name__})", flush=True)
-    return {"run_kind": RUN_KIND, "run_id": run_id,
+    return {"run_kind": ROUND2_RUN_KIND if round2 else RUN_KIND,
+            "run_id": run_id,
+            "gate": "docs/finalization/M8_REDESIGN_R2_GATE_2026-08-28.md",
             "note": ("development only — 이 실행의 C1/C2/C3는 개발 점수이고 "
                      "확증이 아니다. 소비된 패널이라 fresh confirmation에 쓸 수 없다."),
-            "adopted": ADOPTED, "held": HELD,
+            "adopted": ROUND2_ADOPTED if round2 else ADOPTED,
+            "held": ROUND2_HELD if round2 else HELD,
             "n_requested": len(videos), "n_written": len(rows),
             "failures": failures, "per_video": rows}
 
@@ -111,6 +132,8 @@ def main() -> int:
     ap.add_argument("--out", default=None)
     ap.add_argument("--limit-videos", type=int, default=None)
     ap.add_argument("--limit-chunks", type=int, default=None)
+    ap.add_argument("--round2", action="store_true",
+                    help="H1 수렴 + V3 계약 (ROUND 2)")
     a = ap.parse_args()
     cfg = common.load_config(str(ROOT / a.config))
     run_dir = Path(a.out) if a.out else ROOT / "results" / f"m8_redesign_{a.run_id}"
@@ -119,7 +142,7 @@ def main() -> int:
                    max_new_tokens=cfg.get("report_max_new_tokens", 2048),
                    load_4bit=cfg.get("llm_4bit", False))
     man = run(cfg, panel_videos(), llm, run_dir, a.run_id,
-              a.limit_videos, a.limit_chunks)
+              a.limit_videos, a.limit_chunks, a.round2)
     p = Path(run_dir) / f"m8_redesign_dev_{a.run_id}.json"
     common.atomic_write_json(p, man)
     print(f"완료 — 생성 {man['n_written']}편 · 실패 {len(man['failures'])}편")

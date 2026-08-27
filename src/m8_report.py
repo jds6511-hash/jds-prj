@@ -1,6 +1,7 @@
 """M8 AAR 리포트 생성: [seg#N] 인용 강제 + map-reduce. [DESIGN_SPEC 4-8, v2 13장]"""
 import argparse, inspect, json, re
 import common
+import m8_consolidate
 from llm import llm_provenance, make_llm
 
 # report.json 스키마 버전. 필드가 추가·의미 변경될 때만 올린다 — 어느 판본의
@@ -421,6 +422,16 @@ EVENT_RULES_V2 = f"""
 """
 
 
+# REDESIGN ROUND 2 (2026-08-28) — V2 + 중복 억제. ROUND 1에서 `wonyi_gyeongju`에
+# 연속 4회·6회 동일 단위 반복이 실제로 생겼다. consolidation으로 지워도 C1은 병합 전
+# 원본을 보므로 숨겨지지 않는다 — 그래서 생성 계약에서 막는다.
+# **C1 기준(정규화 완전일치 연속 3회)은 바꾸지 않는다.**
+EVENT_RULES_V3 = EVENT_RULES_V2.rstrip() + """
+10. **이미 출력한 것과 실질적으로 동일한 사건을 반복해서 다시 출력하지 않는다.**
+    새로운 독립 사건이 없으면 출력을 종료한다.
+"""
+
+
 def build_event_prompt(chunk: list[dict], rules: str | None = None) -> str:
     """`rules`를 주지 않으면 **공식 실행과 같은** 규칙을 쓴다."""
     lo, hi = chunk[0]["idx"], chunk[-1]["idx"]
@@ -534,11 +545,17 @@ def events_to_sentences(events: list[dict]) -> list[dict]:
 
 def generate_report_structured(segments: list[dict], llm, chunk_size: int = 60,
                                overlap: int = 5, rules: str | None = None,
-                               split_retry: bool = False) -> dict:
+                               split_retry: bool = False,
+                               consolidate_llm=None) -> dict:
     """reduce 없는 경로. 실패한 청크만 국소 재생성한다(전체 재생성 금지).
 
     `rules`·`split_retry` 기본값은 **공식 실행과 같다** — baseline을 재현할 수 있어야
     비교가 성립한다.
+
+    `consolidate_llm`(REDESIGN R2/H1): 주면 파싱된 후보를 **검증 전에** 그룹으로
+    수렴시킨다. 거부(`thin_description`·`too_many_evidence`)가 과분할의 하류이므로
+    거부보다 앞에 두어야 효과가 있다. 청크 안에서만 하고, 청크를 넘는 통합은 기존
+    `merge_events`가 담당한다(규격 §2-1의 한계).
 
     `split_retry`(REDESIGN R5): 재생성도 0건이면 그 청크를 중점에서 **한 번만**
     반으로 쪼개 각 절반에 같은 추출을 1회 한다. 재귀 분할은 하지 않는다 — 공식
@@ -547,15 +564,25 @@ def generate_report_structured(segments: list[dict], llm, chunk_size: int = 60,
     """
     assert overlap < chunk_size, f"map_chunk_overlap({overlap}) >= map_chunk_size({chunk_size})"
     events, rejected, raws, retries, splits, start = [], [], [], [], [], 0
+    cons = []
+
+    def extract(chunk_):
+        """생성 → 파싱 → (선택) 수렴 → 검증. 재시도·분할도 같은 경로를 탄다."""
+        raw_ = llm(build_event_prompt(chunk_, rules))
+        parsed = parse_events(raw_)
+        if consolidate_llm is not None and parsed:
+            parsed, d = m8_consolidate.consolidate(parsed, consolidate_llm)
+            cons.append(d)
+        k_, b_ = validate_events(parsed, chunk_)
+        return raw_, k_, b_
+
     while start < len(segments):
         chunk = segments[start:start + chunk_size]
-        raw = llm(build_event_prompt(chunk, rules))
-        kept, bad = validate_events(parse_events(raw), chunk)
+        raw, kept, bad = extract(chunk)
         if not kept:
             # 유효 사건이 0개인 청크만 다시 만든다. 다른 청크는 건드리지 않는다.
             print(f"[warn] 청크 {len(raws)} 유효 사건 0건 — 이 청크만 재생성")
-            raw2 = llm(build_event_prompt(chunk, rules))
-            kept2, bad2 = validate_events(parse_events(raw2), chunk)
+            raw2, kept2, bad2 = extract(chunk)
             retries.append({"chunk": len(raws), "recovered": bool(kept2)})
             if kept2:
                 raw, kept, bad = raw2, kept2, bad2
@@ -564,8 +591,7 @@ def generate_report_structured(segments: list[dict], llm, chunk_size: int = 60,
                 halves = [chunk[:mid], chunk[mid:]]
                 got, raw_halves = [], []
                 for h in halves:
-                    rh = llm(build_event_prompt(h, rules))
-                    kh, bh = validate_events(parse_events(rh), h)
+                    rh, kh, bh = extract(h)
                     got += kh
                     bad += bh
                     raw_halves.append(rh)
@@ -582,11 +608,24 @@ def generate_report_structured(segments: list[dict], llm, chunk_size: int = 60,
             break
         start += chunk_size - overlap
     merged = merge_events(events)
-    return {"sentences": events_to_sentences(merged), "events": merged,
-            "rejected": rejected, "raw_output": "", "truncated_tail": None,
-            "degenerate_dropped": [], "reduce_retry": None,
-            "map_raw_outputs": raws, "map_retries": [], "chunk_retries": retries,
-            "chunk_splits": splits}
+    out = {"sentences": events_to_sentences(merged), "events": merged,
+           "rejected": rejected, "raw_output": "", "truncated_tail": None,
+           "degenerate_dropped": [], "reduce_retry": None,
+           "map_raw_outputs": raws, "map_retries": [], "chunk_retries": retries,
+           "chunk_splits": splits}
+    if consolidate_llm is not None:
+        out["consolidation"] = {
+            "calls": len(cons),
+            "input_candidates": sum(d["input_candidates"] for d in cons),
+            "output_events": sum(d["output_events"] for d in cons),
+            "groups": sum(d["groups"] for d in cons),
+            "singletons": sum(d["singletons"] for d in cons),
+            "merged_groups": sum(d["merged_groups"] for d in cons),
+            "largest_group": max([d["largest_group"] for d in cons] or [0]),
+            "invalid_grouping": sum(d["invalid_grouping"] for d in cons),
+            "applied_calls": sum(1 for d in cons if d["applied"]),
+            "per_call": cons}
+    return out
 
 
 def prompt_sources() -> dict:
