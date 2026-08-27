@@ -81,7 +81,7 @@ def next_event_id(events: list) -> str:
     raise UIError("event_id 한도 초과")
 
 
-def normalize(draft: dict, segs: list) -> dict:
+def normalize(draft: dict, segs: list, duration_sec: float | None = None) -> dict:
     """사람이 준 것은 구간 번호뿐 — **시각은 코드가 채운다.**
 
     사람이 초를 타이핑하면 오탈자가 섞이고, 그 오탈자는 V1~V4 검증을 통과할 수도 있다.
@@ -105,7 +105,10 @@ def normalize(draft: dict, segs: list) -> dict:
             "event_id": eid,
             "start_seg": a, "end_seg": b,
             "start_sec": float(by_idx[a]["start"]),
-            "end_sec": float(by_idx[b]["end"]),
+            # 마지막 구간의 `end`가 영상 길이를 넘는 인덱스가 있다(m1 반올림 산물).
+            # 그대로 내보내면 V2(영상 길이 안)에서 거부되고, 그것은 사람 입력 문제가 아니다.
+            "end_sec": (min(float(by_idx[b]["end"]), float(duration_sec))
+                        if duration_sec else float(by_idx[b]["end"])),
             "description": (e.get("description") or "").strip(),
             "unclear": 1 if e.get("unclear") else 0,
         })
@@ -115,10 +118,18 @@ def normalize(draft: dict, segs: list) -> dict:
     return draft
 
 
-def save_draft(video_id: str, draft: dict, segs: list, root=INVENTORY) -> dict:
-    draft = normalize({**draft, "video_id": video_id}, segs)
+def save_draft(video_id: str, draft: dict, segs: list, root=INVENTORY,
+               duration_sec: float | None = None) -> dict:
+    draft = normalize({**draft, "video_id": video_id}, segs, duration_sec)
     common.atomic_write_json(draft_path(video_id, root), draft)
     return draft
+
+
+def _sec(x: float) -> str:
+    """초를 문자열로. **`%g`를 쓰지 않는다** — 유효숫자 6자리라 1637.999가 1638이 되고,
+    그 0.001 때문에 V2(영상 길이 안)가 거부한다."""
+    s = f"{float(x):.3f}".rstrip("0").rstrip(".")
+    return s or "0"
 
 
 def to_csv_rows(draft: dict) -> list:
@@ -127,7 +138,7 @@ def to_csv_rows(draft: dict) -> list:
     for e in draft["events"]:
         if not e["description"]:
             raise UIError(f"{e['event_id']}: 설명이 비어 있다 — 내보내기 전에 채워라")
-        rows.append([f"{e['start_sec']:g}", f"{e['end_sec']:g}",
+        rows.append([_sec(e["start_sec"]), _sec(e["end_sec"]),
                      e["description"], "1" if e["unclear"] else ""])
     return rows
 
@@ -154,10 +165,13 @@ def create_app(cfg: dict, videos=None, root=INVENTORY) -> FastAPI:
                                      f"동결 패널만 열 수 있다")
         return video_id
 
-    def segments(video_id: str) -> list:
+    def doc_of(video_id: str) -> dict:
         """**allowlist를 지나는 유일한 경로.** caption·subtitle은 여기서 이미 없다."""
         wdir = common.work_dir(cfg, video_id)
-        return label_guard.load_segments_for_labeling(wdir / "segments.json")["segments"]
+        return label_guard.load_segments_for_labeling(wdir / "segments.json")
+
+    def segments(video_id: str) -> list:
+        return doc_of(video_id)["segments"]
 
     @app.get("/")
     def index() -> HTMLResponse:
@@ -211,7 +225,9 @@ def create_app(cfg: dict, videos=None, root=INVENTORY) -> FastAPI:
     def put_draft(video_id: str, draft: dict) -> dict:
         check(video_id)
         try:
-            return save_draft(video_id, draft, segments(video_id), root)
+            d = doc_of(video_id)
+            return save_draft(video_id, draft, d["segments"], root,
+                              d.get("duration_sec"))
         except UIError as e:
             raise HTTPException(400, str(e))
 

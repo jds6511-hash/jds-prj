@@ -227,3 +227,32 @@ def test_duplicate_ids_in_input_are_repaired(env):
     ids = [e["event_id"] for e in ev]
     assert len(set(ids)) == 2, ids
     assert ev[0]["event_id"] == "E007" and ev[0]["description"] == "먼저"
+
+
+def test_end_sec_is_clamped_to_video_duration(env):
+    """마지막 구간의 `end`가 `duration_sec`를 넘는 인덱스가 있다 — m1 반올림 산물이다.
+
+    실측: `m8c2_cIxG7OHYMPU`는 마지막 구간 end 1638.0 · duration 1637.999로
+    V2(영상 길이 안)에서 거부됐다. 사람 입력 문제가 아니므로 내보낼 때 잘라 준다.
+    """
+    w = env["tmp"] / "work" / VID / "segments.json"
+    doc = json.loads(w.read_text(encoding="utf-8"))
+    doc["duration_sec"] = 29.999                  # 마지막 구간 end(30)보다 짧다
+    w.write_text(json.dumps(doc, ensure_ascii=False), encoding="utf-8")
+    r = env["client"].put(f"/api/draft/{VID}", json={"events": [
+        {"start_seg": 4, "end_seg": 5, "description": "마지막 구간"}]})
+    assert r.json()["events"][0]["end_sec"] == 29.999
+
+
+def test_export_does_not_lose_subsecond_precision(env):
+    """`%g`는 유효숫자 6자리라 1637.999를 1638로 반올림한다 — V2가 그 0.001로 거부한다."""
+    w = env["tmp"] / "work" / VID / "segments.json"
+    doc = json.loads(w.read_text(encoding="utf-8"))
+    doc["duration_sec"] = 29.999
+    w.write_text(json.dumps(doc, ensure_ascii=False), encoding="utf-8")
+    c = env["client"]
+    c.put(f"/api/draft/{VID}", json={"events": [
+        {"start_seg": 4, "end_seg": 5, "description": "마지막 구간"}]})
+    c.post(f"/api/export/{VID}")
+    line = (env["inv"] / f"{VID}.csv").read_text(encoding="utf-8").splitlines()[1]
+    assert line.startswith("20,29.999,"), line
