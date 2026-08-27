@@ -1,0 +1,1459 @@
+{
+  "schema_version": 1,
+  "panel_id": "m8_c2_n8_v1",
+  "created": "2026-08-27",
+  "design": {
+    "fixed_n": 8,
+    "top_up_allowed": false,
+    "c2_statistic": "median",
+    "c2_threshold": 0.7,
+    "reference_author": "human",
+    "reference_blinded_to_m8": true,
+    "evaluation_complete_is_not_acceptance_pass": true
+  },
+  "seed": {
+    "namespace": "M8-C2-N8-v1",
+    "commit": "f035073",
+    "algorithm": "sha256"
+  },
+  "sourcing_rule": {
+    "path": "docs/finalization/M8_C2_SOURCING_RULE_2026-08-27.md",
+    "sha256": "cd6dd0ad2e2ffd452d36fdcfdae26d2dec6b151bd12b1f818cae95b1698aa803",
+    "frozen_before_candidate_review": true,
+    "frozen_commit": "66b0f93",
+    "reused_from": "docs/P2_영상후보_스크리닝규격_2026-08-20.md"
+  },
+  "existing_panel": [
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "n_segments": 183,
+      "eligibility": "ELIGIBLE",
+      "channel_id": null,
+      "channel_known": false
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "n_segments": 192,
+      "eligibility": "ELIGIBLE",
+      "channel_id": null,
+      "channel_known": false
+    },
+    {
+      "video_id": "jissi_farm",
+      "n_segments": 211,
+      "eligibility": "ELIGIBLE",
+      "channel_id": null,
+      "channel_known": false
+    },
+    {
+      "video_id": "kbs_banff",
+      "n_segments": 316,
+      "eligibility": "ELIGIBLE",
+      "channel_id": "UCFw4M1BJYYdN1YtS8SzlDzg",
+      "channel_known": true
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "n_segments": 345,
+      "eligibility": "ELIGIBLE",
+      "channel_id": "UCWpY0eSJtyO-qNAPbKFRSSg",
+      "channel_known": true
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "n_segments": 327,
+      "eligibility": "ELIGIBLE",
+      "channel_id": "UCWpY0eSJtyO-qNAPbKFRSSg",
+      "channel_known": true
+    }
+  ],
+  "caption_remediation": {
+    "procedure": "m3 --recaption-corrupted → m4 (자동 판정분만. 사람이 캡션을 보고 고르지 않았다)",
+    "verdict_rule": "잔존이 재캡셔닝 대상 목록에 있었으면 pipeline-verify 규약상 '재시도 실패 시 greedy 유지'에 따른 정상 동작이다 — 감지 휴리스틱 버그가 아니다. 패널 수준의 오염 허용 임계는 사전에 정의된 적이 없으므로 지금 만들지 않는다",
+    "videos": {
+      "jissi_farm": {
+        "segments": 211,
+        "targets": [
+          14,
+          117
+        ],
+        "recovered": 0,
+        "residual": [
+          14,
+          117
+        ],
+        "residual_rate": 0.0095,
+        "verdict": "ELIGIBLE",
+        "note": "VLM이 실제 실행됐고 출력이 동일했다(greedy 결정적). text_hash 불변"
+      },
+      "m8c2_3I7oGwk6EaQ": {
+        "segments": 173,
+        "targets": [
+          1,
+          29,
+          126
+        ],
+        "recovered": 2,
+        "residual": [
+          1
+        ],
+        "residual_rate": 0.0058,
+        "verdict": "ELIGIBLE",
+        "note": "구간 29·126 회복. 구간 1은 재시도 실패로 greedy 유지"
+      }
+    }
+  },
+  "candidate_pool": {
+    "sha256": "364c28f67a47a87a19c2c15f9ffcf79766cfafc884accc9903992d34c74aedc8",
+    "n": 62,
+    "videos": [
+      {
+        "id": "-1FLhLNN6ak",
+        "query": "공방 제작 과정",
+        "duration": 1003,
+        "channel": "Workflow korea",
+        "channel_id": "UCDEovNz_Q84WrfmzRiiRTrw",
+        "language": null,
+        "upload_date": "20250407"
+      },
+      {
+        "id": "-1G_zTSUSWE",
+        "query": "공방 제작 과정",
+        "duration": 1483,
+        "channel": "FactoryTrip",
+        "channel_id": "UC3IvLmPGOpCcgpa-Psg5V5Q",
+        "language": null,
+        "upload_date": "20240401"
+      },
+      {
+        "id": "0PYvd7jliwA",
+        "query": "캠핑 자연 기록",
+        "duration": 1459,
+        "channel": "꾸옹camp",
+        "channel_id": "UCmxVl4n9HrgciXSK_9z4l4w",
+        "language": null,
+        "upload_date": "20240610"
+      },
+      {
+        "id": "0h4ig0T2tu4",
+        "query": "공방 제작 과정",
+        "duration": 1273,
+        "channel": "Makers Hot Item 메이커스 핫템",
+        "channel_id": "UCSYroPzzk7o_igHU-usjaIQ",
+        "language": null,
+        "upload_date": "20230312"
+      },
+      {
+        "id": "1CV9lYN_wd4",
+        "query": "공방 제작 과정",
+        "duration": 1032,
+        "channel": "FactoryTrip",
+        "channel_id": "UC3IvLmPGOpCcgpa-Psg5V5Q",
+        "language": null,
+        "upload_date": "20231023"
+      },
+      {
+        "id": "1Le4Zp4V-vo",
+        "query": "공방 제작 과정",
+        "duration": 759,
+        "channel": "IMBOLDN Korea",
+        "channel_id": "UCXjM4LB9qTt6zhEo8Medl6w",
+        "language": "ko",
+        "upload_date": "20230428"
+      },
+      {
+        "id": "1STGYPNSpY0",
+        "query": "캠핑 자연 기록",
+        "duration": 1020,
+        "channel": "캠핑하는녕",
+        "channel_id": "UCJa9qq-HeUScMM-vs2j_XyQ",
+        "language": null,
+        "upload_date": "20251224"
+      },
+      {
+        "id": "3I7oGwk6EaQ",
+        "query": "등산 종주 기록",
+        "duration": 864,
+        "channel": "알로에베라",
+        "channel_id": "UC5GS_91qBp9EIvZptq2LhsA",
+        "language": null,
+        "upload_date": "20230723"
+      },
+      {
+        "id": "3xJr-isvPhE",
+        "query": "시장 골목 탐방",
+        "duration": 1029,
+        "channel": "EBS Documentary",
+        "channel_id": "UCFCtZJTuJhE18k8IXwmXTYQ",
+        "language": "ko",
+        "upload_date": "20230308"
+      },
+      {
+        "id": "4_LL4GxN6SY",
+        "query": "시장 골목 탐방",
+        "duration": 1290,
+        "channel": "폭간트",
+        "channel_id": "UCszldUWUiNaoDoiEZP7uWgA",
+        "language": "ko",
+        "upload_date": "20241118"
+      },
+      {
+        "id": "4noSsjUIdOw",
+        "query": "등산 종주 기록",
+        "duration": 1920,
+        "channel": "산이 좋아-산다람쥐TV(mountain chipmunk)",
+        "channel_id": "UCcIW0cS-KCu2S2KoQMpe9Tw",
+        "language": "ko",
+        "upload_date": "20230601"
+      },
+      {
+        "id": "4v0Pd8IuMxk",
+        "query": "다큐멘터리 한국",
+        "duration": 1895,
+        "channel": "EBS Documentary",
+        "channel_id": "UCFCtZJTuJhE18k8IXwmXTYQ",
+        "language": "ko",
+        "upload_date": "20260821"
+      },
+      {
+        "id": "5m1mbripojE",
+        "query": "브이로그 일상",
+        "duration": 1892,
+        "channel": "째링",
+        "channel_id": "UCb2wQgdDmoAbLdiBpJ8Ruiw",
+        "language": "ko",
+        "upload_date": "20260819"
+      },
+      {
+        "id": "5ymbI9zwMFM",
+        "query": "브이로그 일상",
+        "duration": 1170,
+        "channel": "그냥혜",
+        "channel_id": "UC5iaVwMPNnYUkCqriaEDslQ",
+        "language": "ko",
+        "upload_date": "20260822"
+      },
+      {
+        "id": "9ncny-Lc2yA",
+        "query": "브이로그 일상",
+        "duration": 1141,
+        "channel": "Actor Jiwon Uhm",
+        "channel_id": "UCmPwArWf76QEMw2VOnuK8sg",
+        "language": "ko",
+        "upload_date": "20260820"
+      },
+      {
+        "id": "FZqNeouAunI",
+        "query": "브이로그 일상",
+        "duration": 1968,
+        "channel": "유현SHINE",
+        "channel_id": "UCD-OvrYXC3uxq5xL9mKi2vQ",
+        "language": "ko",
+        "upload_date": "20260826"
+      },
+      {
+        "id": "G8l4NnjTwTU",
+        "query": "공방 제작 과정",
+        "duration": 1187,
+        "channel": "우리악기사",
+        "channel_id": "UCQEfpzXCq-RBRNHxiMcAggA",
+        "language": "ko",
+        "upload_date": "20251008"
+      },
+      {
+        "id": "H6ATzDQjZPI",
+        "query": "브이로그 일상",
+        "duration": 957,
+        "channel": "jihofilm",
+        "channel_id": "UCKFc5qzH_Z1_inEFFN1CXJA",
+        "language": null,
+        "upload_date": "20230125"
+      },
+      {
+        "id": "I7mNaeLmcZE",
+        "query": "캠핑 자연 기록",
+        "duration": 1881,
+        "channel": "육씨네",
+        "channel_id": "UCy0ohx4OzH0iChOa_yxWy8A",
+        "language": "ko",
+        "upload_date": "20221109"
+      },
+      {
+        "id": "J681zZut5rk",
+        "query": "캠핑 자연 기록",
+        "duration": 764,
+        "channel": "로우트립 RAWTRIP",
+        "channel_id": "UCJjZrhImcxrMnKVX1PILC1Q",
+        "language": "ko",
+        "upload_date": "20250725"
+      },
+      {
+        "id": "K8IDIzVS_Xo",
+        "query": "캠핑 자연 기록",
+        "duration": 1177,
+        "channel": "Euni * Life",
+        "channel_id": "UCbzzN5kLhbZKRciattazTDA",
+        "language": "ko",
+        "upload_date": "20250604"
+      },
+      {
+        "id": "KDItxOhVspo",
+        "query": "브이로그 일상",
+        "duration": 1241,
+        "channel": "고나윤 Nayun Ko",
+        "channel_id": "UCX7JYcZIbRUxXaFMKDXLxtA",
+        "language": "ko",
+        "upload_date": "20260820"
+      },
+      {
+        "id": "KbU1AoBDgzI",
+        "query": "브이로그 일상",
+        "duration": 1586,
+        "channel": "째링",
+        "channel_id": "UCb2wQgdDmoAbLdiBpJ8Ruiw",
+        "language": "ko",
+        "upload_date": "20260826"
+      },
+      {
+        "id": "LZoEp9GZqOg",
+        "query": "등산 종주 기록",
+        "duration": 1930,
+        "channel": "아웃도어 지브로",
+        "channel_id": "UCv2OrIMe0OH-8G0wjVNLZdA",
+        "language": "ko",
+        "upload_date": "20260629"
+      },
+      {
+        "id": "M6W5qDSnExI",
+        "query": "브이로그 일상",
+        "duration": 1654,
+        "channel": "Jihyunkkung",
+        "channel_id": "UCyG7zAV_2JlPnxhwDxZN6sA",
+        "language": null,
+        "upload_date": "20260821"
+      },
+      {
+        "id": "MpbtkB10Z9Q",
+        "query": "시장 골목 탐방",
+        "duration": 951,
+        "channel": "떡볶퀸 Tteokbokqueen",
+        "channel_id": "UCAoyR-sL6B0S93AMR-HVTvg",
+        "language": "ko",
+        "upload_date": "20250408"
+      },
+      {
+        "id": "MrGyY10SiJk",
+        "query": "공방 제작 과정",
+        "duration": 1463,
+        "channel": "EBS Documentary",
+        "channel_id": "UCFCtZJTuJhE18k8IXwmXTYQ",
+        "language": "ko",
+        "upload_date": "20221201"
+      },
+      {
+        "id": "NlMD3e8_Pqo",
+        "query": "캠핑 자연 기록",
+        "duration": 1053,
+        "channel": "HANACAMPER",
+        "channel_id": "UCKJ4e7zWGy4rWUwvqsrzMzg",
+        "language": null,
+        "upload_date": "20260109"
+      },
+      {
+        "id": "Nl_ZDEGFAbY",
+        "query": "시장 골목 탐방",
+        "duration": 1554,
+        "channel": "sookoh 수코",
+        "channel_id": "UC3Cr1vv_kevdIL2C0zE6DmQ",
+        "language": "ko",
+        "upload_date": "20250902"
+      },
+      {
+        "id": "TMKs-6EDh2c",
+        "query": "브이로그 일상",
+        "duration": 1903,
+        "channel": "다정이Dajung",
+        "channel_id": "UCkjsh6EUxDMRZazR2X9Fu4A",
+        "language": "ko",
+        "upload_date": "20260818"
+      },
+      {
+        "id": "WBaTzCZRiII",
+        "query": "시장 골목 탐방",
+        "duration": 1054,
+        "channel": "딜라이브 다큐",
+        "channel_id": "UCaL0curCc6jc49XM751_6lg",
+        "language": "ko",
+        "upload_date": "20211110"
+      },
+      {
+        "id": "WDx69W4g0eg",
+        "query": "캠핑 자연 기록",
+        "duration": 1755,
+        "channel": "Euni * Life",
+        "channel_id": "UCbzzN5kLhbZKRciattazTDA",
+        "language": "ko",
+        "upload_date": "20250622"
+      },
+      {
+        "id": "WQXBcB2bfQM",
+        "query": "등산 종주 기록",
+        "duration": 1333,
+        "channel": "KBS 교양",
+        "channel_id": "UCHlSeJxRIXZWMARC2oMwmcQ",
+        "language": "ko",
+        "upload_date": "20250825"
+      },
+      {
+        "id": "X8-H4z98C_U",
+        "query": "캠핑 자연 기록",
+        "duration": 1402,
+        "channel": "라니무드 ranimood",
+        "channel_id": "UC_LOl_kaI_tdzaRCTcwO0UA",
+        "language": "ko",
+        "upload_date": "20230322"
+      },
+      {
+        "id": "X9kusde2vNs",
+        "query": "다큐멘터리 한국",
+        "duration": 950,
+        "channel": "EBS Documentary",
+        "channel_id": "UCFCtZJTuJhE18k8IXwmXTYQ",
+        "language": "ko",
+        "upload_date": "20250102"
+      },
+      {
+        "id": "YC8-6anP1gE",
+        "query": "캠핑 자연 기록",
+        "duration": 1761,
+        "channel": "육씨네",
+        "channel_id": "UCy0ohx4OzH0iChOa_yxWy8A",
+        "language": "ko",
+        "upload_date": "20241201"
+      },
+      {
+        "id": "YSlGx47reNg",
+        "query": "다큐멘터리 한국",
+        "duration": 928,
+        "channel": "EBS Documentary",
+        "channel_id": "UCFCtZJTuJhE18k8IXwmXTYQ",
+        "language": "ko",
+        "upload_date": "20260818"
+      },
+      {
+        "id": "ZZ5zcOjPZNE",
+        "query": "브이로그 일상",
+        "duration": 1758,
+        "channel": "김미선",
+        "channel_id": "UCirE2xLmVE5i8xSi_7bpvsA",
+        "language": "ko",
+        "upload_date": "20260823"
+      },
+      {
+        "id": "Zy02454lBKI",
+        "query": "캠핑 자연 기록",
+        "duration": 1336,
+        "channel": "Euni * Life",
+        "channel_id": "UCbzzN5kLhbZKRciattazTDA",
+        "language": null,
+        "upload_date": "20260329"
+      },
+      {
+        "id": "_NfJYsJ6EZg",
+        "query": "캠핑 자연 기록",
+        "duration": 1150,
+        "channel": "캠핑기록",
+        "channel_id": "UC0VOy6bqQcVCmGhDYQPZL-w",
+        "language": "ko",
+        "upload_date": "20240813"
+      },
+      {
+        "id": "ai8mNS5ShRg",
+        "query": "캠핑 자연 기록",
+        "duration": 1083,
+        "channel": "범투캠핑 BumtooCamping",
+        "channel_id": "UCiWvaCEZ-DUrF6aKZLMBs5A",
+        "language": null,
+        "upload_date": "20240915"
+      },
+      {
+        "id": "cIxG7OHYMPU",
+        "query": "등산 종주 기록",
+        "duration": 1638,
+        "channel": "산타는 아재-등산.MTB라이딩",
+        "channel_id": "UCcq6xvN-jblaoK2hYkh35lw",
+        "language": "ko",
+        "upload_date": "20221010"
+      },
+      {
+        "id": "fL3fAxnO8kU",
+        "query": "등산 종주 기록",
+        "duration": 1357,
+        "channel": "크리스땀",
+        "channel_id": "UCH9TxTY0i9pXx9xeOMq7lXQ",
+        "language": "ko",
+        "upload_date": "20221016"
+      },
+      {
+        "id": "h3cNwKd78lc",
+        "query": "공방 제작 과정",
+        "duration": 1619,
+        "channel": "업투유가죽공방",
+        "channel_id": "UCepOZ1knY4R56b5rAJcidWg",
+        "language": null,
+        "upload_date": "20260824"
+      },
+      {
+        "id": "hFnSHUwb4Tc",
+        "query": "공방 제작 과정",
+        "duration": 788,
+        "channel": "크랩 KLAB",
+        "channel_id": "UCoxT1kQSLq564FwpK473w-g",
+        "language": "ko",
+        "upload_date": "20230224"
+      },
+      {
+        "id": "hG1XmuSHkfE",
+        "query": "시장 골목 탐방",
+        "duration": 1193,
+        "channel": "서울촌놈의 사람사는세상",
+        "channel_id": "UCQRw2Ni6Nup3-A7BX2t9Nvw",
+        "language": "ko",
+        "upload_date": "20250330"
+      },
+      {
+        "id": "hSGOf5HY4t4",
+        "query": "브이로그 일상",
+        "duration": 1508,
+        "channel": "좋은희Joeunhee",
+        "channel_id": "UCchl4cNkzAqwp_n3Qf-_Gag",
+        "language": "ko",
+        "upload_date": "20260824"
+      },
+      {
+        "id": "iExrgN7pRYw",
+        "query": "브이로그 일상",
+        "duration": 1169,
+        "channel": "유정 YUJEONG",
+        "channel_id": "UCBoQ8_HIOVbOA_FuYtTapqA",
+        "language": "ko",
+        "upload_date": "20260822"
+      },
+      {
+        "id": "ikCn1nRkOCU",
+        "query": "시장 골목 탐방",
+        "duration": 1747,
+        "channel": "폭간트",
+        "channel_id": "UCszldUWUiNaoDoiEZP7uWgA",
+        "language": "ko",
+        "upload_date": "20241212"
+      },
+      {
+        "id": "ivafHXhl9Xc",
+        "query": "다큐멘터리 한국",
+        "duration": 969,
+        "channel": "EBS Documentary",
+        "channel_id": "UCFCtZJTuJhE18k8IXwmXTYQ",
+        "language": "ko",
+        "upload_date": "20260819"
+      },
+      {
+        "id": "k-ik2zbV2EM",
+        "query": "시장 골목 탐방",
+        "duration": 1143,
+        "channel": "하이갱스 higaengs",
+        "channel_id": "UC86GzuZXRb7aZnhnnUA3IAg",
+        "language": "ko",
+        "upload_date": "20230617"
+      },
+      {
+        "id": "kMIHMxvHHBw",
+        "query": "브이로그 일상",
+        "duration": 1018,
+        "channel": "나상실",
+        "channel_id": "UCrZWMIdJziA6wnmDrKW_kjA",
+        "language": "ko",
+        "upload_date": "20260826"
+      },
+      {
+        "id": "kk1yVryFzpA",
+        "query": "캠핑 자연 기록",
+        "duration": 1420,
+        "channel": "육씨네",
+        "channel_id": "UCy0ohx4OzH0iChOa_yxWy8A",
+        "language": "ko",
+        "upload_date": "20250817"
+      },
+      {
+        "id": "mPJgi5YP75Q",
+        "query": "등산 종주 기록",
+        "duration": 1376,
+        "channel": "크리스땀",
+        "channel_id": "UCH9TxTY0i9pXx9xeOMq7lXQ",
+        "language": "ko",
+        "upload_date": "20250523"
+      },
+      {
+        "id": "pw-k3s1mWGU",
+        "query": "등산 종주 기록",
+        "duration": 1771,
+        "channel": "미선하이킹",
+        "channel_id": "UCsBQ2HYNuTwdZeJk_3DKNSg",
+        "language": "ko",
+        "upload_date": "20250406"
+      },
+      {
+        "id": "q39Lnh3qqeI",
+        "query": "공방 제작 과정",
+        "duration": 936,
+        "channel": "FactoryTrip",
+        "channel_id": "UC3IvLmPGOpCcgpa-Psg5V5Q",
+        "language": null,
+        "upload_date": "20250502"
+      },
+      {
+        "id": "qQRDtxH5d8g",
+        "query": "시장 골목 탐방",
+        "duration": 1115,
+        "channel": "상원리옹TV",
+        "channel_id": "UC85HXCPnIIti_y5Gp3fwBQA",
+        "language": "ko",
+        "upload_date": "20260605"
+      },
+      {
+        "id": "r8kYXd5U_mY",
+        "query": "브이로그 일상",
+        "duration": 1093,
+        "channel": "WE HAYOUNG",
+        "channel_id": "UCMcu3SWzZtJtoC5ZwXkqHvA",
+        "language": null,
+        "upload_date": "20260820"
+      },
+      {
+        "id": "v3O9MzPXzyU",
+        "query": "브이로그 일상",
+        "duration": 1248,
+        "channel": "misonugool미소너굴",
+        "channel_id": "UC9Ji0-yyImYeg8nllLyDjiQ",
+        "language": "ko",
+        "upload_date": "20260820"
+      },
+      {
+        "id": "vaiDwbiXec0",
+        "query": "캠핑 자연 기록",
+        "duration": 1146,
+        "channel": "띵굿",
+        "channel_id": "UCQjEl9sz5Nw7epsGUIEhUEw",
+        "language": null,
+        "upload_date": "20220624"
+      },
+      {
+        "id": "wMsKr_hjcBY",
+        "query": "공방 제작 과정",
+        "duration": 848,
+        "channel": "FactoryTrip",
+        "channel_id": "UC3IvLmPGOpCcgpa-Psg5V5Q",
+        "language": null,
+        "upload_date": "20241025"
+      },
+      {
+        "id": "yehlRL7o-Kc",
+        "query": "브이로그 일상",
+        "duration": 1189,
+        "channel": "이은지",
+        "channel_id": "UCR6KxFzwY0D8-lhcUns-Y5w",
+        "language": "ko",
+        "upload_date": "20251120"
+      }
+    ]
+  },
+  "rejected_candidates": [],
+  "selected_new": [
+    {
+      "id": "3I7oGwk6EaQ",
+      "query": "등산 종주 기록",
+      "duration": 864,
+      "channel": "알로에베라",
+      "channel_id": "UC5GS_91qBp9EIvZptq2LhsA",
+      "language": null,
+      "upload_date": "20230723",
+      "selection_key": "05af41876897d49574919d104213a9cbaac69117669acfe5f487f06697122c5f",
+      "rank": 1,
+      "video_id": "m8c2_3I7oGwk6EaQ",
+      "n_segments": 173
+    },
+    {
+      "id": "cIxG7OHYMPU",
+      "query": "등산 종주 기록",
+      "duration": 1638,
+      "channel": "산타는 아재-등산.MTB라이딩",
+      "channel_id": "UCcq6xvN-jblaoK2hYkh35lw",
+      "language": "ko",
+      "upload_date": "20221010",
+      "selection_key": "0ca8190600850103ebd450e8c01e88b8e99ede90f82c88e490a874470e4261ee",
+      "rank": 2,
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "n_segments": 328
+    }
+  ],
+  "reserve_order": [
+    {
+      "id": "0PYvd7jliwA",
+      "query": "캠핑 자연 기록",
+      "duration": 1459,
+      "channel": "꾸옹camp",
+      "channel_id": "UCmxVl4n9HrgciXSK_9z4l4w",
+      "language": null,
+      "upload_date": "20240610",
+      "selection_key": "109d04cf07bc999aa7b9124dfbdca606c55d54b77c6c8a94e52410ce5b6a0acf",
+      "rank": 1
+    },
+    {
+      "id": "pw-k3s1mWGU",
+      "query": "등산 종주 기록",
+      "duration": 1771,
+      "channel": "미선하이킹",
+      "channel_id": "UCsBQ2HYNuTwdZeJk_3DKNSg",
+      "language": "ko",
+      "upload_date": "20250406",
+      "selection_key": "141ac92b7e44fccf747594bbac01c12f5804a8b8431c7deffe642d75a9d96fa1",
+      "rank": 2
+    },
+    {
+      "id": "r8kYXd5U_mY",
+      "query": "브이로그 일상",
+      "duration": 1093,
+      "channel": "WE HAYOUNG",
+      "channel_id": "UCMcu3SWzZtJtoC5ZwXkqHvA",
+      "language": null,
+      "upload_date": "20260820",
+      "selection_key": "28180c15ff707f2a4395826ab4e20529a5e1c37e2c696bedde0c35a7302dabc9",
+      "rank": 3
+    },
+    {
+      "id": "K8IDIzVS_Xo",
+      "query": "캠핑 자연 기록",
+      "duration": 1177,
+      "channel": "Euni * Life",
+      "channel_id": "UCbzzN5kLhbZKRciattazTDA",
+      "language": "ko",
+      "upload_date": "20250604",
+      "selection_key": "29271f9762de63ac9d2a7d3bd17ebe957b899513d5cf1602b27ba18c73d4a797",
+      "rank": 4
+    },
+    {
+      "id": "YSlGx47reNg",
+      "query": "다큐멘터리 한국",
+      "duration": 928,
+      "channel": "EBS Documentary",
+      "channel_id": "UCFCtZJTuJhE18k8IXwmXTYQ",
+      "language": "ko",
+      "upload_date": "20260818",
+      "selection_key": "2ae9e078c6fdc911180ae99173f929970772b676c96f51be5e507ba5cca6c29a",
+      "rank": 5
+    },
+    {
+      "id": "1STGYPNSpY0",
+      "query": "캠핑 자연 기록",
+      "duration": 1020,
+      "channel": "캠핑하는녕",
+      "channel_id": "UCJa9qq-HeUScMM-vs2j_XyQ",
+      "language": null,
+      "upload_date": "20251224",
+      "selection_key": "2c4c33104cf36f384ef118baacee3073ab126c43a24ae6fbf3b86219bea8488f",
+      "rank": 6
+    },
+    {
+      "id": "ai8mNS5ShRg",
+      "query": "캠핑 자연 기록",
+      "duration": 1083,
+      "channel": "범투캠핑 BumtooCamping",
+      "channel_id": "UCiWvaCEZ-DUrF6aKZLMBs5A",
+      "language": null,
+      "upload_date": "20240915",
+      "selection_key": "375dcc9aff2955869ff5e15ae76486c97f6b8599221716ccb442fcc04328c3d5",
+      "rank": 7
+    },
+    {
+      "id": "M6W5qDSnExI",
+      "query": "브이로그 일상",
+      "duration": 1654,
+      "channel": "Jihyunkkung",
+      "channel_id": "UCyG7zAV_2JlPnxhwDxZN6sA",
+      "language": null,
+      "upload_date": "20260821",
+      "selection_key": "37fa2ade2e87deef2dad4de7531983283c5ee66d472b1f98b12337904afc8be3",
+      "rank": 8
+    },
+    {
+      "id": "YC8-6anP1gE",
+      "query": "캠핑 자연 기록",
+      "duration": 1761,
+      "channel": "육씨네",
+      "channel_id": "UCy0ohx4OzH0iChOa_yxWy8A",
+      "language": "ko",
+      "upload_date": "20241201",
+      "selection_key": "383083fb1dbaffba3dc8d41a776cacd82d5656eeacc7f0d47aa58ca49984118b",
+      "rank": 9
+    },
+    {
+      "id": "fL3fAxnO8kU",
+      "query": "등산 종주 기록",
+      "duration": 1357,
+      "channel": "크리스땀",
+      "channel_id": "UCH9TxTY0i9pXx9xeOMq7lXQ",
+      "language": "ko",
+      "upload_date": "20221016",
+      "selection_key": "4067750fe3817f66ce732c8453c5923008a8f65301de25ee6dfb1a4cb4a7e8b6",
+      "rank": 10
+    },
+    {
+      "id": "4noSsjUIdOw",
+      "query": "등산 종주 기록",
+      "duration": 1920,
+      "channel": "산이 좋아-산다람쥐TV(mountain chipmunk)",
+      "channel_id": "UCcIW0cS-KCu2S2KoQMpe9Tw",
+      "language": "ko",
+      "upload_date": "20230601",
+      "selection_key": "42a4d186c22db3bc185bc00c9fa200bec6f5552fda5a85db5ea3ca04e77c531b",
+      "rank": 11
+    },
+    {
+      "id": "-1G_zTSUSWE",
+      "query": "공방 제작 과정",
+      "duration": 1483,
+      "channel": "FactoryTrip",
+      "channel_id": "UC3IvLmPGOpCcgpa-Psg5V5Q",
+      "language": null,
+      "upload_date": "20240401",
+      "selection_key": "47819acc1c133a09ab4acdfd624fd7ff669f5afd8faa1d6d3f6020176efb8847",
+      "rank": 12
+    },
+    {
+      "id": "Nl_ZDEGFAbY",
+      "query": "시장 골목 탐방",
+      "duration": 1554,
+      "channel": "sookoh 수코",
+      "channel_id": "UC3Cr1vv_kevdIL2C0zE6DmQ",
+      "language": "ko",
+      "upload_date": "20250902",
+      "selection_key": "48cd74f6eed6853742a37a04759ae58608a44b30a9c9b8959d7cd44b923c3472",
+      "rank": 13
+    },
+    {
+      "id": "NlMD3e8_Pqo",
+      "query": "캠핑 자연 기록",
+      "duration": 1053,
+      "channel": "HANACAMPER",
+      "channel_id": "UCKJ4e7zWGy4rWUwvqsrzMzg",
+      "language": null,
+      "upload_date": "20260109",
+      "selection_key": "503ac0c1b8eb740646fc584f0101bba3d6d3b14b768a3cbeb166fe693c8da233",
+      "rank": 14
+    },
+    {
+      "id": "kk1yVryFzpA",
+      "query": "캠핑 자연 기록",
+      "duration": 1420,
+      "channel": "육씨네",
+      "channel_id": "UCy0ohx4OzH0iChOa_yxWy8A",
+      "language": "ko",
+      "upload_date": "20250817",
+      "selection_key": "52980aa6adfed0af5ce8199ecacae5b60065834b92c695c1877d9ea71a5faa55",
+      "rank": 15
+    },
+    {
+      "id": "h3cNwKd78lc",
+      "query": "공방 제작 과정",
+      "duration": 1619,
+      "channel": "업투유가죽공방",
+      "channel_id": "UCepOZ1knY4R56b5rAJcidWg",
+      "language": null,
+      "upload_date": "20260824",
+      "selection_key": "5627fc5f20cc5f708a72dbc975ba7e39110f05b8f819c17290d4d54bfc7ccf1a",
+      "rank": 16
+    },
+    {
+      "id": "1CV9lYN_wd4",
+      "query": "공방 제작 과정",
+      "duration": 1032,
+      "channel": "FactoryTrip",
+      "channel_id": "UC3IvLmPGOpCcgpa-Psg5V5Q",
+      "language": null,
+      "upload_date": "20231023",
+      "selection_key": "5bedabddf61929c1ecc09d8bf0b1ca346ceacf109848ac77fbbca9ae07462ee0",
+      "rank": 17
+    },
+    {
+      "id": "MrGyY10SiJk",
+      "query": "공방 제작 과정",
+      "duration": 1463,
+      "channel": "EBS Documentary",
+      "channel_id": "UCFCtZJTuJhE18k8IXwmXTYQ",
+      "language": "ko",
+      "upload_date": "20221201",
+      "selection_key": "5f943bf186d89840f02d3bd61dad8183ad53522f61fd24d2c13c8b201beb5c36",
+      "rank": 18
+    },
+    {
+      "id": "ZZ5zcOjPZNE",
+      "query": "브이로그 일상",
+      "duration": 1758,
+      "channel": "김미선",
+      "channel_id": "UCirE2xLmVE5i8xSi_7bpvsA",
+      "language": "ko",
+      "upload_date": "20260823",
+      "selection_key": "635f0b5226a2886c09481b6a12ca55d0bb39095cd745acc44497b3ee4ba5c5b1",
+      "rank": 19
+    },
+    {
+      "id": "4_LL4GxN6SY",
+      "query": "시장 골목 탐방",
+      "duration": 1290,
+      "channel": "폭간트",
+      "channel_id": "UCszldUWUiNaoDoiEZP7uWgA",
+      "language": "ko",
+      "upload_date": "20241118",
+      "selection_key": "636a351638592c94abbd9edae19e4b55b1fb2339a6331c2d96a18df16436143b",
+      "rank": 20
+    },
+    {
+      "id": "v3O9MzPXzyU",
+      "query": "브이로그 일상",
+      "duration": 1248,
+      "channel": "misonugool미소너굴",
+      "channel_id": "UC9Ji0-yyImYeg8nllLyDjiQ",
+      "language": "ko",
+      "upload_date": "20260820",
+      "selection_key": "6da722e4ee3d501b8255ab426f91c732dd334673477d6aaab1aca1c41dfb1212",
+      "rank": 21
+    },
+    {
+      "id": "qQRDtxH5d8g",
+      "query": "시장 골목 탐방",
+      "duration": 1115,
+      "channel": "상원리옹TV",
+      "channel_id": "UC85HXCPnIIti_y5Gp3fwBQA",
+      "language": "ko",
+      "upload_date": "20260605",
+      "selection_key": "707a2ab60f91e602149692d2a9bba8df4a3a96f8b5391601dc3f6fa045cf0741",
+      "rank": 22
+    },
+    {
+      "id": "hFnSHUwb4Tc",
+      "query": "공방 제작 과정",
+      "duration": 788,
+      "channel": "크랩 KLAB",
+      "channel_id": "UCoxT1kQSLq564FwpK473w-g",
+      "language": "ko",
+      "upload_date": "20230224",
+      "selection_key": "77b5fd108954cc2f9a6742966cbe8d6296da47fa6b5e9ec54e25cffecf1ef5d6",
+      "rank": 23
+    },
+    {
+      "id": "4v0Pd8IuMxk",
+      "query": "다큐멘터리 한국",
+      "duration": 1895,
+      "channel": "EBS Documentary",
+      "channel_id": "UCFCtZJTuJhE18k8IXwmXTYQ",
+      "language": "ko",
+      "upload_date": "20260821",
+      "selection_key": "7d48dc518c3cf8f9b51bc6535dd45446d6ed0f7f0fa35ea70d516737010203c0",
+      "rank": 24
+    },
+    {
+      "id": "1Le4Zp4V-vo",
+      "query": "공방 제작 과정",
+      "duration": 759,
+      "channel": "IMBOLDN Korea",
+      "channel_id": "UCXjM4LB9qTt6zhEo8Medl6w",
+      "language": "ko",
+      "upload_date": "20230428",
+      "selection_key": "7f0cf042dcd351334716e95d4b82da7971022b90fdb2b0d8fc99f8e82fd72444",
+      "rank": 25
+    },
+    {
+      "id": "kMIHMxvHHBw",
+      "query": "브이로그 일상",
+      "duration": 1018,
+      "channel": "나상실",
+      "channel_id": "UCrZWMIdJziA6wnmDrKW_kjA",
+      "language": "ko",
+      "upload_date": "20260826",
+      "selection_key": "8828e12b4fd27d56b15cb1b0a52352079696fd65561388eaeace4df744166284",
+      "rank": 26
+    },
+    {
+      "id": "-1FLhLNN6ak",
+      "query": "공방 제작 과정",
+      "duration": 1003,
+      "channel": "Workflow korea",
+      "channel_id": "UCDEovNz_Q84WrfmzRiiRTrw",
+      "language": null,
+      "upload_date": "20250407",
+      "selection_key": "8b49e727654b0d574d2c66c8ca7b22dc9573d0cbf111665574c95389eefcb062",
+      "rank": 27
+    },
+    {
+      "id": "mPJgi5YP75Q",
+      "query": "등산 종주 기록",
+      "duration": 1376,
+      "channel": "크리스땀",
+      "channel_id": "UCH9TxTY0i9pXx9xeOMq7lXQ",
+      "language": "ko",
+      "upload_date": "20250523",
+      "selection_key": "8c12e4edfad1ad3e112254dbacfe5f3a2ff81cc4e831a22e3903f89fba4c3a25",
+      "rank": 28
+    },
+    {
+      "id": "hG1XmuSHkfE",
+      "query": "시장 골목 탐방",
+      "duration": 1193,
+      "channel": "서울촌놈의 사람사는세상",
+      "channel_id": "UCQRw2Ni6Nup3-A7BX2t9Nvw",
+      "language": "ko",
+      "upload_date": "20250330",
+      "selection_key": "8c81f2be8fae3c9bc31c9054b78b7fa78136ecf3e9db6a52ef89576e3785463d",
+      "rank": 29
+    },
+    {
+      "id": "Zy02454lBKI",
+      "query": "캠핑 자연 기록",
+      "duration": 1336,
+      "channel": "Euni * Life",
+      "channel_id": "UCbzzN5kLhbZKRciattazTDA",
+      "language": null,
+      "upload_date": "20260329",
+      "selection_key": "8d1b2da5f8e366e3fc209c888e1c56bfc17520b005652daec9e7512a62969b99",
+      "rank": 30
+    },
+    {
+      "id": "KbU1AoBDgzI",
+      "query": "브이로그 일상",
+      "duration": 1586,
+      "channel": "째링",
+      "channel_id": "UCb2wQgdDmoAbLdiBpJ8Ruiw",
+      "language": "ko",
+      "upload_date": "20260826",
+      "selection_key": "92e7a6cfd07720e62b6302325898144d43dca17993d628baf8cbccd99fc292e1",
+      "rank": 31
+    },
+    {
+      "id": "X8-H4z98C_U",
+      "query": "캠핑 자연 기록",
+      "duration": 1402,
+      "channel": "라니무드 ranimood",
+      "channel_id": "UC_LOl_kaI_tdzaRCTcwO0UA",
+      "language": "ko",
+      "upload_date": "20230322",
+      "selection_key": "9ee243ca48bc9dd9aae189d7eb050fec2f870f03b0ed141461a833408854d1db",
+      "rank": 32
+    },
+    {
+      "id": "LZoEp9GZqOg",
+      "query": "등산 종주 기록",
+      "duration": 1930,
+      "channel": "아웃도어 지브로",
+      "channel_id": "UCv2OrIMe0OH-8G0wjVNLZdA",
+      "language": "ko",
+      "upload_date": "20260629",
+      "selection_key": "a1407ec577a7696e8dae788a636eccb856c6ceb934b11e5032a7e86398d19867",
+      "rank": 33
+    },
+    {
+      "id": "vaiDwbiXec0",
+      "query": "캠핑 자연 기록",
+      "duration": 1146,
+      "channel": "띵굿",
+      "channel_id": "UCQjEl9sz5Nw7epsGUIEhUEw",
+      "language": null,
+      "upload_date": "20220624",
+      "selection_key": "a2b70a5675ba9f06fbddc3d034ed63014c09d421f8ada97219c3d180e55cf622",
+      "rank": 34
+    },
+    {
+      "id": "9ncny-Lc2yA",
+      "query": "브이로그 일상",
+      "duration": 1141,
+      "channel": "Actor Jiwon Uhm",
+      "channel_id": "UCmPwArWf76QEMw2VOnuK8sg",
+      "language": "ko",
+      "upload_date": "20260820",
+      "selection_key": "a5686a44012d2c2dfc40e8b46bd803d750ca0015a565cab1e9c5b2403d7de0f8",
+      "rank": 35
+    },
+    {
+      "id": "G8l4NnjTwTU",
+      "query": "공방 제작 과정",
+      "duration": 1187,
+      "channel": "우리악기사",
+      "channel_id": "UCQEfpzXCq-RBRNHxiMcAggA",
+      "language": "ko",
+      "upload_date": "20251008",
+      "selection_key": "a5fb8912f8437134e7ab64015414438eb0d8f6ba8c9ec035e998e740d7362dad",
+      "rank": 36
+    },
+    {
+      "id": "hSGOf5HY4t4",
+      "query": "브이로그 일상",
+      "duration": 1508,
+      "channel": "좋은희Joeunhee",
+      "channel_id": "UCchl4cNkzAqwp_n3Qf-_Gag",
+      "language": "ko",
+      "upload_date": "20260824",
+      "selection_key": "a6226f9be24b97dd7a05d179d780a941b9fe2a047bd67ac99d72eddc5e5a4d6f",
+      "rank": 37
+    },
+    {
+      "id": "X9kusde2vNs",
+      "query": "다큐멘터리 한국",
+      "duration": 950,
+      "channel": "EBS Documentary",
+      "channel_id": "UCFCtZJTuJhE18k8IXwmXTYQ",
+      "language": "ko",
+      "upload_date": "20250102",
+      "selection_key": "a648a11345a190e972c49150e640f4767a4dff0ecaca55b18bcdebfb09f24961",
+      "rank": 38
+    },
+    {
+      "id": "MpbtkB10Z9Q",
+      "query": "시장 골목 탐방",
+      "duration": 951,
+      "channel": "떡볶퀸 Tteokbokqueen",
+      "channel_id": "UCAoyR-sL6B0S93AMR-HVTvg",
+      "language": "ko",
+      "upload_date": "20250408",
+      "selection_key": "a6594dec3f60205fc31f686569ca2da83d546fa75375f480a7b66c7cd58cbc9c",
+      "rank": 39
+    },
+    {
+      "id": "q39Lnh3qqeI",
+      "query": "공방 제작 과정",
+      "duration": 936,
+      "channel": "FactoryTrip",
+      "channel_id": "UC3IvLmPGOpCcgpa-Psg5V5Q",
+      "language": null,
+      "upload_date": "20250502",
+      "selection_key": "af110762734abce5fa516b5b7aa4216b7abc774e2571a39e0be3e370389010f8",
+      "rank": 40
+    },
+    {
+      "id": "FZqNeouAunI",
+      "query": "브이로그 일상",
+      "duration": 1968,
+      "channel": "유현SHINE",
+      "channel_id": "UCD-OvrYXC3uxq5xL9mKi2vQ",
+      "language": "ko",
+      "upload_date": "20260826",
+      "selection_key": "b369a05914c4e618aecac425e3c60738801286b93e5992b05d29bd78103f7112",
+      "rank": 41
+    },
+    {
+      "id": "J681zZut5rk",
+      "query": "캠핑 자연 기록",
+      "duration": 764,
+      "channel": "로우트립 RAWTRIP",
+      "channel_id": "UCJjZrhImcxrMnKVX1PILC1Q",
+      "language": "ko",
+      "upload_date": "20250725",
+      "selection_key": "c8001f6cd895791771dffbd4c985ea397330909e6b355d9528f965ef61569367",
+      "rank": 42
+    },
+    {
+      "id": "TMKs-6EDh2c",
+      "query": "브이로그 일상",
+      "duration": 1903,
+      "channel": "다정이Dajung",
+      "channel_id": "UCkjsh6EUxDMRZazR2X9Fu4A",
+      "language": "ko",
+      "upload_date": "20260818",
+      "selection_key": "cbf9300833c8be098d4e99f952abec95482f22f26dfd5844d65acd222ccb4eb7",
+      "rank": 43
+    },
+    {
+      "id": "yehlRL7o-Kc",
+      "query": "브이로그 일상",
+      "duration": 1189,
+      "channel": "이은지",
+      "channel_id": "UCR6KxFzwY0D8-lhcUns-Y5w",
+      "language": "ko",
+      "upload_date": "20251120",
+      "selection_key": "ceb025992e35a455d52cc008f25e0d385e5967d392c7a881841327b794f8e448",
+      "rank": 44
+    },
+    {
+      "id": "3xJr-isvPhE",
+      "query": "시장 골목 탐방",
+      "duration": 1029,
+      "channel": "EBS Documentary",
+      "channel_id": "UCFCtZJTuJhE18k8IXwmXTYQ",
+      "language": "ko",
+      "upload_date": "20230308",
+      "selection_key": "cf83caeb0de9b016d6f183a6dad67221e4298c5e28a93ecbdec85fd4007daf10",
+      "rank": 45
+    },
+    {
+      "id": "I7mNaeLmcZE",
+      "query": "캠핑 자연 기록",
+      "duration": 1881,
+      "channel": "육씨네",
+      "channel_id": "UCy0ohx4OzH0iChOa_yxWy8A",
+      "language": "ko",
+      "upload_date": "20221109",
+      "selection_key": "d1afd50f27780464485b8728a1a25ea9ebb0710acc03d09e27ef9992b812d350",
+      "rank": 46
+    },
+    {
+      "id": "WDx69W4g0eg",
+      "query": "캠핑 자연 기록",
+      "duration": 1755,
+      "channel": "Euni * Life",
+      "channel_id": "UCbzzN5kLhbZKRciattazTDA",
+      "language": "ko",
+      "upload_date": "20250622",
+      "selection_key": "d21864ffdcd1daf86ffd939c616c207de6925d3f64fc829b8a6d8de9587a3b7d",
+      "rank": 47
+    },
+    {
+      "id": "wMsKr_hjcBY",
+      "query": "공방 제작 과정",
+      "duration": 848,
+      "channel": "FactoryTrip",
+      "channel_id": "UC3IvLmPGOpCcgpa-Psg5V5Q",
+      "language": null,
+      "upload_date": "20241025",
+      "selection_key": "d787b76d56db46735a8d905a424ffcd28dd9f099b6f33a0a106a59b875b19699",
+      "rank": 48
+    },
+    {
+      "id": "KDItxOhVspo",
+      "query": "브이로그 일상",
+      "duration": 1241,
+      "channel": "고나윤 Nayun Ko",
+      "channel_id": "UCX7JYcZIbRUxXaFMKDXLxtA",
+      "language": "ko",
+      "upload_date": "20260820",
+      "selection_key": "d86a6f9ee33d7f2b4c4d64558864140a4488f69fcf7d20d0e5f1b272548b4145",
+      "rank": 49
+    },
+    {
+      "id": "H6ATzDQjZPI",
+      "query": "브이로그 일상",
+      "duration": 957,
+      "channel": "jihofilm",
+      "channel_id": "UCKFc5qzH_Z1_inEFFN1CXJA",
+      "language": null,
+      "upload_date": "20230125",
+      "selection_key": "d9badfaace57b57726a959d8e096458be0b097e5e6a65272c457ebe362842c09",
+      "rank": 50
+    },
+    {
+      "id": "ivafHXhl9Xc",
+      "query": "다큐멘터리 한국",
+      "duration": 969,
+      "channel": "EBS Documentary",
+      "channel_id": "UCFCtZJTuJhE18k8IXwmXTYQ",
+      "language": "ko",
+      "upload_date": "20260819",
+      "selection_key": "db2ac886ff97a0a9cb7958f2242688cd7806b78d95953ae47cea29c60c1b5c69",
+      "rank": 51
+    },
+    {
+      "id": "5ymbI9zwMFM",
+      "query": "브이로그 일상",
+      "duration": 1170,
+      "channel": "그냥혜",
+      "channel_id": "UC5iaVwMPNnYUkCqriaEDslQ",
+      "language": "ko",
+      "upload_date": "20260822",
+      "selection_key": "dcfe64f831218c956706d311b8a4d341547cf78a8f24994802b5ff7a4a8a3e58",
+      "rank": 52
+    },
+    {
+      "id": "WQXBcB2bfQM",
+      "query": "등산 종주 기록",
+      "duration": 1333,
+      "channel": "KBS 교양",
+      "channel_id": "UCHlSeJxRIXZWMARC2oMwmcQ",
+      "language": "ko",
+      "upload_date": "20250825",
+      "selection_key": "e4c3ad17bdd8b24060230dc1e39e9527817300e3d364a007a6f94c42352fe8d9",
+      "rank": 53
+    },
+    {
+      "id": "0h4ig0T2tu4",
+      "query": "공방 제작 과정",
+      "duration": 1273,
+      "channel": "Makers Hot Item 메이커스 핫템",
+      "channel_id": "UCSYroPzzk7o_igHU-usjaIQ",
+      "language": null,
+      "upload_date": "20230312",
+      "selection_key": "ed246278b47867c2d5ed73e156524fb77bbe91340c9f124b86a7003d0a33cbe8",
+      "rank": 54
+    },
+    {
+      "id": "5m1mbripojE",
+      "query": "브이로그 일상",
+      "duration": 1892,
+      "channel": "째링",
+      "channel_id": "UCb2wQgdDmoAbLdiBpJ8Ruiw",
+      "language": "ko",
+      "upload_date": "20260819",
+      "selection_key": "f0a2850af6a29e91a246bdd4f58a878b426cf8d9b2b61d381c6833674bcc3c12",
+      "rank": 55
+    },
+    {
+      "id": "ikCn1nRkOCU",
+      "query": "시장 골목 탐방",
+      "duration": 1747,
+      "channel": "폭간트",
+      "channel_id": "UCszldUWUiNaoDoiEZP7uWgA",
+      "language": "ko",
+      "upload_date": "20241212",
+      "selection_key": "f589c2d512883341b4ae24457fe6768ddd3150443328baf159f7b06c18907cce",
+      "rank": 56
+    },
+    {
+      "id": "WBaTzCZRiII",
+      "query": "시장 골목 탐방",
+      "duration": 1054,
+      "channel": "딜라이브 다큐",
+      "channel_id": "UCaL0curCc6jc49XM751_6lg",
+      "language": "ko",
+      "upload_date": "20211110",
+      "selection_key": "fa9947ea792cd3a9e911035383ea676f466c9869c8b161ba11dedcd802be0c19",
+      "rank": 57
+    },
+    {
+      "id": "iExrgN7pRYw",
+      "query": "브이로그 일상",
+      "duration": 1169,
+      "channel": "유정 YUJEONG",
+      "channel_id": "UCBoQ8_HIOVbOA_FuYtTapqA",
+      "language": "ko",
+      "upload_date": "20260822",
+      "selection_key": "fc09dfed9088e6e6b4cdb740d308dc97c1dfd37a017883cc8dccd1e62ee0a719",
+      "rank": 58
+    },
+    {
+      "id": "_NfJYsJ6EZg",
+      "query": "캠핑 자연 기록",
+      "duration": 1150,
+      "channel": "캠핑기록",
+      "channel_id": "UC0VOy6bqQcVCmGhDYQPZL-w",
+      "language": "ko",
+      "upload_date": "20240813",
+      "selection_key": "fe48a0af94cbd389ba48db0e9de5fac10ff1fe989408390abd5c85d130332d38",
+      "rank": 59
+    },
+    {
+      "id": "k-ik2zbV2EM",
+      "query": "시장 골목 탐방",
+      "duration": 1143,
+      "channel": "하이갱스 higaengs",
+      "channel_id": "UC86GzuZXRb7aZnhnnUA3IAg",
+      "language": "ko",
+      "upload_date": "20230617",
+      "selection_key": "ff74988dba30a9ae03a2fddf6f633320d01358d6b976c2c71ab1ab0a80092d59",
+      "rank": 60
+    }
+  ],
+  "final_panel": [
+    "baekmansonghee_jirisan",
+    "softyeon_ceramics",
+    "jissi_farm",
+    "kbs_banff",
+    "wonyi_gyeongju",
+    "wonyi_geoje",
+    "m8c2_3I7oGwk6EaQ",
+    "m8c2_cIxG7OHYMPU"
+  ],
+  "exclusions": [
+    {
+      "video_id": "gwaktube_soviet_apartment",
+      "reason_code": "SAMPLE_CONSUMED_PILOT"
+    },
+    {
+      "video_id": "kheritage_grave_excavation",
+      "reason_code": "SAMPLE_CONSUMED_PILOT"
+    },
+    {
+      "video_id": "_10_000_Every_Day_You_Survive_In_The_Wilderness",
+      "reason_code": "NO_INDEPENDENT_REFERENCE"
+    },
+    {
+      "video_id": "pland_costco_hosting",
+      "reason_code": "PRIOR_EXPOSURE_RISK"
+    }
+  ],
+  "prior_exposure_exclusions": [
+    {
+      "video_id": "pland_costco_hosting",
+      "statement": "M8 산출물은 없고 표본 소비 선언 대상도 아니다. 다만 케이스 스터디에서 캡션·검색 결과·프레임을 상세 열람했다",
+      "classification": "avoidable prior-exposure risk (오염 확정이 아니다)"
+    }
+  ],
+  "channel_constraints": {
+    "new_distinct_from_each_other": true,
+    "new_distinct_from_known_existing": true,
+    "existing_known_channel_ids": {
+      "kbs_banff": "UCFw4M1BJYYdN1YtS8SzlDzg",
+      "wonyi_gyeongju": "UCWpY0eSJtyO-qNAPbKFRSSg",
+      "wonyi_geoje": "UCWpY0eSJtyO-qNAPbKFRSSg"
+    },
+    "existing_unknown_channel": [
+      "baekmansonghee_jirisan",
+      "softyeon_ceramics",
+      "jissi_farm"
+    ],
+    "same_channel_pair_in_panel": [
+      "wonyi_gyeongju",
+      "wonyi_geoje"
+    ],
+    "note": "동일 채널 2편은 한계로 기록만 한다 — C2 계산법·weighting·clustering 보정을 새로 만들지 않는다"
+  },
+  "replacement_policy": {
+    "allowed_reasons": [
+      "TECH_FILE_UNAVAILABLE",
+      "TECH_DOWNLOAD_FAILURE",
+      "TECH_DECODE_FAILURE",
+      "TECH_SEGMENTATION_FAILURE",
+      "TECH_PIPELINE_FAILURE",
+      "RIGHTS_NOT_USABLE",
+      "PREDEFINED_AUTOMATIC_QC_FAILURE"
+    ],
+    "human_choice_allowed": false,
+    "order": "reserve_order 그대로"
+  },
+  "replacements": [],
+  "boundaries": {
+    "m8_official_run": false,
+    "event_recall_calculated": false,
+    "m9_test_opened": false,
+    "test_outcome_viewed": false,
+    "threshold_changed": false,
+    "panel_chosen_from_outcome": false,
+    "selection_used_only_metadata": true
+  },
+  "pilot_note": "소비된 2개 pilot 영상에서 temporal Event Recall@IoU>=0.3 = 0.3019가 관찰되었으나, 해당 영상은 사전 선언에 따라 confirmation panel에서 제외했으며 C2 판정에는 포함하지 않았다",
+  "representativeness": "확률표본이 아니다. 사전 정의된 적격 조건과 deterministic selection rule로 고정한 M8 구조 판정 패널이다",
+  "indexing_provenance": {
+    "note": "신규 5편은 배포 구성 그대로 M1~M4를 돌렸다 — caption_model·vlm_4bit·P0 prompt sha가 config와 일치하고 quantization_mismatch는 False다",
+    "git_dirty_at_generation": {
+      "kbs_banff": false,
+      "wonyi_gyeongju": false,
+      "wonyi_geoje": false,
+      "m8c2_3I7oGwk6EaQ": true,
+      "m8c2_cIxG7OHYMPU": true
+    },
+    "dirty_scope": "dirty였던 두 편도 캡션 경로는 33b5509 상태 그대로다 — git diff 33b5509..HEAD -- src/ config.yaml 이 비어 있고 미커밋 변경도 src/·config.yaml에 없다. dirty 원인은 문서·분석 스크립트·테스트다",
+    "verified": [
+      "구간 수 = 선언값",
+      "오염 스캔",
+      "자막 크레딧 0",
+      "text_hash 일치",
+      "emb_sub·emb_cap (n,1024)",
+      "기존 인덱스 text_hash 전수 불변"
+    ]
+  }
+}

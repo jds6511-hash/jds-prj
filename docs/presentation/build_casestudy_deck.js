@@ -52,9 +52,15 @@ const MONO = "Consolas";
 
 let page = 0;
 
+/* 푸터는 그 장의 **표본 범위**를 적는다. 14·15장은 194편 쌍대 분석이라 1편 사례
+ * 문구를 그대로 두면 슬라이드와 푸터가 서로 다른 범위를 주장하게 된다. */
+const SCOPE_CASE = "캡션 → 검색 케이스 스터디 · 영상 1편 · 장면 5 · 질의 15 · 정성 사례 연구";
+const SCOPE_PAIRED = "캡션 서술 방식 · AI Hub 194편 2,328구간 쌍대 기술 분석 · 채택 근거 아님";
+let scope = SCOPE_CASE;
+
 function foot(s, dark) {
   const c = dark ? "8FA9AE" : MUTED;
-  s.addText("캡션 → 검색 케이스 스터디 · 영상 1편 · 장면 5 · 질의 15 · 정성 사례 연구", {
+  s.addText(scope, {
     x: 0.62, y: H - 0.42, w: 9, h: 0.3, fontSize: 9, color: c, fontFace: F, margin: 0,
   });
   s.addText(String(page), {
@@ -759,7 +765,110 @@ sceneSlide({
   });
 }
 
-/* ---------------------------------------------------------------- 14 결론 */
+/* --------------------------------------- 14 서술 방식 — 194편 쌍대 기술 분석
+ * 이 슬라이드까지는 영상 1편 사례다. 여기서 처음으로 표본이 194편으로 늘어난다.
+ * 성능 비교가 아니라 **캡션에 무엇을 남겼는가**의 기술이므로 문구를 그렇게 고정한다.
+ * 근거: docs/재분석_캡션서술방식_2026-08-27.md (AI Hub 2,328쌍) */
+scope = SCOPE_PAIRED;
+{
+  const s = slide("서술 방식", "같은 프레임, 다른 선택 — 194편 2,328구간에서 다시 보면");
+  s.addText("저장해 둔 두 모델의 캡션을 같은 프레임끼리 짝지어 비교했다. 새로 생성하지 않았고 검색도 돌리지 않았다.", {
+    x: 0.62, y: 1.55, w: 12.1, h: 0.3, fontSize: 12.5, color: MUTED, fontFace: F, margin: 0,
+  });
+
+  /* 3열 수치 카드 — 길이 · 겹침 · 화면 글자 */
+  const stat = [
+    ["캡션 길이 중앙값", "133자  vs  73자", "P0에서 3B가 60자 길다"],
+    ["내용어 겹침", "0.13", "같은 화면인데 쓰는 단어가 거의 다르다"],
+    ["화면 글자를 언급", "11.1%  vs  0.3%", "네 표본 모두 3B가 높았다"],
+  ];
+  let sx = 0.62;
+  stat.forEach((t) => {
+    card(s, sx, 2.0, 3.9, 1.5, WHITE, LINE);
+    s.addText(t[0], { x: sx + 0.22, y: 2.14, w: 3.5, h: 0.28, fontSize: 10.5, bold: true,
+                      color: TEAL, fontFace: F, margin: 0 });
+    s.addText(t[1], { x: sx + 0.22, y: 2.46, w: 3.5, h: 0.42, fontSize: 19, bold: true,
+                      color: INK, fontFace: F, margin: 0 });
+    s.addText(t[2], { x: sx + 0.22, y: 2.94, w: 3.5, h: 0.46, fontSize: 10.5,
+                      color: MUTED, fontFace: F, lineSpacing: 14, valign: "top", margin: 0 });
+    sx += 4.09;
+  });
+
+  /* 뒤집히는 지점을 같은 슬라이드에 둔다 — 여기가 이 분석의 핵심 절제다 */
+  card(s, 0.62, 3.72, 12.1, 1.16, "F3EFE7", "E0D6C2");
+  s.addText("다만 길이 우열은 프롬프트에서 뒤집힌다", {
+    x: 0.95, y: 3.84, w: 6, h: 0.3, fontSize: 12.5, bold: true, color: INK, fontFace: F, margin: 0,
+  });
+  s.addText("P0에서는 3B 133자 · 4B 73자였지만, P1에서는 3B 82자 · 4B 97자로 4B가 더 길다.\n따라서 “3B가 더 자세한 모델”이라고 말할 수 없다 — 길이는 모델과 프롬프트가 함께 만든다.", {
+    x: 0.95, y: 4.16, w: 11.5, h: 0.66, fontSize: 12, color: INK,
+    fontFace: F, lineSpacing: 19, valign: "top", margin: 0,
+  });
+
+  /* 실제 쌍 하나 — 숫자보다 이 한 쌍이 설명을 대신한다 */
+  s.addText("같은 프레임 (AI Hub)", {
+    x: 0.62, y: 5.02, w: 6, h: 0.28, fontSize: 10.5, bold: true, color: TEAL,
+    fontFace: F, charSpacing: 1, margin: 0,
+  });
+  capCard(s, 0.62, 5.34, 6.0, 1.5, "Qwen2.5-VL-3B", TEAL,
+          "“여성은 나무로 만든 정원 카페에서 책을 읽고 있습니다. 검은색 상의와 스트라이프 바지를 입고 있으며, 그녀 앞 테이블에는 컵과 종이가 놓여 있습니다.”",
+          "옷 · 소품 · 배경까지 적는다", MUTED, 10.5);
+  capCard(s, 6.72, 5.34, 6.0, 1.5, "Qwen3-VL-4B", "8A5A2B",
+          "“숲 속 목조 휴식처에 앉아 책을 읽는 사람.”",
+          "핵심 행위 하나로 압축한다", MUTED, 10.5);
+}
+
+/* ------------------------------------------- 15 부작용은 양쪽 다 있고 종류가 다르다
+ * "4B는 간결하고 깨끗하다"는 그림을 여기서 깬다. 발표에서 가장 반박당하기 쉬운 지점이라
+ * 먼저 인정하고 들어간다. */
+{
+  const s = slide("부작용", "한쪽이 깨끗한 것이 아니라, 고장 나는 방식이 서로 다르다");
+  const rows = [
+    ["한자 혼입", "4.1%", "10.3%", "4B가 2배 이상 — P1에서는 2.6% vs 14.7%"],
+    ["가나 혼입", "1.9%", "0.04%", "반대로 3B가 높다"],
+    ["문장 미완결", "6.6%", "4.5%", "공유 상한 128토큰이 3B를 더 자주 자른다"],
+  ];
+  s.addText("AI Hub 2,328구간 · P0", {
+    x: 0.62, y: 1.55, w: 6, h: 0.28, fontSize: 11, color: MUTED, fontFace: F, margin: 0,
+  });
+  const head = ["", "Qwen2.5-3B", "Qwen3-4B", ""];
+  const cx = [0.62, 3.5, 5.3, 7.1];
+  head.forEach((h, i) => {
+    if (!h) return;
+    s.addText(h, { x: cx[i], y: 1.95, w: 1.7, h: 0.28, fontSize: 10.5, bold: true,
+                   color: TEAL, fontFace: F, margin: 0 });
+  });
+  let ry = 2.32;
+  rows.forEach((r) => {
+    card(s, 0.62, ry, 12.1, 0.62, WHITE, LINE);
+    s.addText(r[0], { x: 0.85, y: ry + 0.16, w: 2.6, h: 0.3, fontSize: 12.5, bold: true,
+                      color: INK, fontFace: F, margin: 0 });
+    s.addText(r[1], { x: 3.5, y: ry + 0.16, w: 1.7, h: 0.3, fontSize: 13,
+                      color: INK, fontFace: MONO, margin: 0 });
+    s.addText(r[2], { x: 5.3, y: ry + 0.16, w: 1.7, h: 0.3, fontSize: 13,
+                      color: INK, fontFace: MONO, margin: 0 });
+    s.addText(r[3], { x: 7.1, y: ry + 0.16, w: 5.4, h: 0.3, fontSize: 11.5,
+                      color: MUTED, fontFace: F, margin: 0 });
+    ry += 0.74;
+  });
+
+  s.addText("실제로 관찰된 실패 사례", {
+    x: 0.62, y: 4.66, w: 6, h: 0.28, fontSize: 10.5, bold: true, color: TEAL,
+    fontFace: F, charSpacing: 1, margin: 0,
+  });
+  capCard(s, 0.62, 4.98, 6.0, 1.14, "Qwen2.5-VL-3B", TEAL,
+          "캡션 전체를 중국어로 생성 · 같은 표현을 세 번 되풀이한 구간",
+          "", MUTED, 11);
+  capCard(s, 6.72, 4.98, 6.0, 1.14, "Qwen3-VL-4B", "8A5A2B",
+          "영어 명사구를 그대로 남김 — “wooden gazebo 아래에서 책을 읽고 있는 사람”",
+          "", MUTED, 11);
+  s.addText("사후 기술 분석이다. 재사용 표본이며 모델 채택 근거가 아니다 — 채택 판정은 사전등록된 2×2가 한다.", {
+    x: 0.62, y: 6.28, w: 12.1, h: 0.3, fontSize: 11, italic: true, color: MUTED,
+    fontFace: F, margin: 0,
+  });
+}
+
+/* ---------------------------------------------------------------- 16 결론 */
+scope = SCOPE_CASE;
 {
   const s = darkSlide();
   s.addText("결론", {

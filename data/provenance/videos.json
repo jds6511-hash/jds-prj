@@ -213,6 +213,22 @@
       "file_sha256": "935c6f7270e16a1744d164358951e2c0c6d5baa6514568839efa69408a66c204",
       "acquired": "2026-08-26",
       "acquisition_tool": "yt-dlp 2026.08.19"
+    },
+    "m8c2_3I7oGwk6EaQ": {
+      "source_url": "https://www.youtube.com/watch?v=3I7oGwk6EaQ",
+      "source_id": "3I7oGwk6EaQ",
+      "file_sha256": "5536a5391da48ab78f686a47ce373ac7386f6bdb5b7d26bac694b93cfe67e5fb",
+      "acquired": "2026-08-27",
+      "acquisition_tool": "yt-dlp 2026.08.19",
+      "acquired_for": "M8_C2_PANEL deterministic selection (M8-C2-N8-v1)"
+    },
+    "m8c2_cIxG7OHYMPU": {
+      "source_url": "https://www.youtube.com/watch?v=cIxG7OHYMPU",
+      "source_id": "cIxG7OHYMPU",
+      "file_sha256": "536fd1e3165dee37407061351a66471233fce5546a83a3773b5a93d09047eb46",
+      "acquired": "2026-08-27",
+      "acquisition_tool": "yt-dlp 2026.08.19",
+      "acquired_for": "M8_C2_PANEL deterministic selection (M8-C2-N8-v1)"
     }
   },
   "legacy_exempt": {
