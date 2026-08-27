@@ -5,7 +5,7 @@
 ```
 분모는 FROZEN에서만 온다        draft CSV가 우회로 들어오면 동결이 무의미하다
 C3 집계는 MAX로 동결됐다        median/mean과 값이 갈리는 fixture로 확인
-C2 판정 지표는 아직 안 정해졌다   코드가 거부한다 — 판정 시점에 고르면 결과가 고른다
+C2 판정 지표는 주지표로 동결됐다   θ recall을 판정에 넘기면 거부한다
 ```
 """
 import json
@@ -107,18 +107,38 @@ def test_c3_input_order_does_not_change_verdict():
     assert a["value"] == b["value"] and a["passed"] == b["passed"]
 
 
-# ---------------------------------------------------------------- C2 미결
+# ---------------------------------------------------------------- C2
 
-def test_c2_metric_choice_is_refused_by_default():
-    """C2 판정에 쓸 per-video 지표가 사전등록에 확정돼 있지 않다.
+def test_c2_metric_is_frozen_to_the_primary_metric():
+    """2026-08-27 확정 — 주지표 `event_temporal_alignment`.
 
-    원 사전등록은 "Event Recall 중앙값"이라 적었고, 보충이 주지표를
-    `event_temporal_alignment`(연속값)로 두면서 θ 기반 recall은 **세 값을 모두
-    보고하고 하나를 고르지 않는다**고 했다. 그래서 코드가 고르지 않는다.
+    θ 기반 recall은 보충 §3-3이 **세 값을 모두 보고하고 하나를 고르지 않는다**고
+    동결했으므로, 특정 θ를 C2 판정에 쓰는 것은 그 문구와 직접 충돌한다.
     """
-    rows = [{"video_id": "v", "c2_candidates": {"event_temporal_alignment": 0.8}}]
-    with pytest.raises(M.GateSpecError, match="C2"):
-        G.panel_verdict(rows)
+    assert G.C2_METRIC == "event_temporal_alignment"
+    rows = [{"video_id": "v", "c1_status": "ABSENT", "compression": 1.0,
+             "c2_candidates": {"event_temporal_alignment": 0.8}}]
+    assert G.panel_verdict(rows)["c2_metric"] == "event_temporal_alignment"
+
+
+def test_c2_refuses_threshold_recall_as_verdict_metric():
+    """θ recall은 진단 전용이다 — 판정 지표로 넘기면 거부한다."""
+    rows = [{"video_id": "v", "c1_status": "ABSENT", "compression": 1.0,
+             "c2_candidates": {"event_temporal_alignment": 0.8,
+                               "temporal_event_recall@IoU>=0.3": 0.9}}]
+    with pytest.raises(M.GateSpecError, match="진단"):
+        G.panel_verdict(rows, c2_metric="temporal_event_recall@IoU>=0.3")
+
+
+def test_unmatched_reference_event_counts_as_zero():
+    """**주지표의 미매칭 처리는 사전등록 §3-3에 이미 있다** — 매칭 실패 = 0.
+
+    matched만 평균내면 값이 크게 달라진다. 결과를 보기 전에 이 정의를 못박는다.
+    """
+    refs = [{"span": [0, 4]}, {"span": [100, 104]}]
+    gens = [{"span": [0, 4]}]
+    assert M.event_temporal_alignment(refs, gens) == 0.5      # (1.0 + 0.0) / 2
+    assert M.matched_ious(refs, gens) == [1.0, 0.0]
 
 
 def test_c2_metric_must_be_one_of_the_reported_candidates():
@@ -127,12 +147,14 @@ def test_c2_metric_must_be_one_of_the_reported_candidates():
         G.panel_verdict(rows, c2_metric="made_up_metric")
 
 
-def test_c2_metric_explicit_choice_is_honored():
+def test_c2_uses_median_and_070_unchanged():
+    """통계량·임계는 이번 결정으로 바뀌지 않았다."""
     rows = [{"video_id": f"v{i}", "c1_status": "ABSENT", "compression": 1.0,
-             "c2_candidates": {"event_temporal_alignment": 0.8}} for i in range(8)]
-    out = G.panel_verdict(rows, c2_metric="event_temporal_alignment")
-    assert out["C2"]["value"] == 0.8 and out["C2"]["passed"] is True
-    assert out["c2_metric"] == "event_temporal_alignment"
+             "c2_candidates": {"event_temporal_alignment": v}}
+            for i, v in enumerate([0.6, 0.6, 0.6, 0.6, 0.9, 0.9, 0.9, 0.9])]
+    out = G.panel_verdict(rows)
+    assert out["C2"]["statistic"] == "median" and out["C2"]["threshold"] == 0.70
+    assert out["C2"]["value"] == 0.75 and out["C2"]["passed"] is True
 
 
 # ---------------------------------------------------------------- 패널 판정
@@ -156,7 +178,7 @@ def test_panel_all_pass():
 def test_panel_c1_unclear_blocks_overall_pass():
     rows = rows_ok()
     rows[3]["c1_status"] = "UNCLEAR"
-    out = G.panel_verdict(rows, c2_metric="event_temporal_alignment")
+    out = G.panel_verdict(rows)
     assert out["C1"]["passed"] is None and out["all_passed"] is None
 
 
@@ -164,7 +186,7 @@ def test_panel_c1_present_fails_even_with_unclear():
     rows = rows_ok()
     rows[0]["c1_status"] = "PRESENT"
     rows[1]["c1_status"] = "UNCLEAR"
-    out = G.panel_verdict(rows, c2_metric="event_temporal_alignment")
+    out = G.panel_verdict(rows)
     assert out["C1"]["passed"] is False and out["all_passed"] is False
 
 

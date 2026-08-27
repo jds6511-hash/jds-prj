@@ -142,6 +142,74 @@ event_alignment_types     overmerge · spurious_event                  (m8_metri
 
 ---
 
+## 2A. C2 — 판정 지표 명확화 (ambiguity resolution)
+
+C1·C3를 구현하면서 **C2에 빈 연결고리가 있다는 것을 발견했다.** 임계·통계량은
+동결됐지만 `median`에 넣을 per-video 값이 식으로 특정돼 있지 않았다.
+아래는 그 해소 기록이고, **M8 공식 출력을 보기 전에 적었다**(§0 실측 참조).
+
+### 2A-1. 무엇이 어긋나 있었나 — 그대로 남긴다
+
+```
+원 사전등록 §2-3   "C2 = Event Recall 중앙값 >= 0.70"   ← 이름만, 식 없음
+보충 §3-3         주  event_temporal_alignment
+                     = reference event별 매칭 temporal IoU의 macro 평균
+                       (매칭 실패 = 0), 연속값 [0, 1]
+                  부  IoU >= θ event recall — "θ = 0.3 · 0.5 · 0.7 **세 값 모두
+                     보고**, 하나를 고르지 않는다"
+```
+
+**"원래부터 명백했다"고 쓰지 않는다.** §2-3이 지목한 `Event Recall`이라는 이름과
+§3-3의 주지표/부지표 정의 사이에 용어 불일치가 실제로 있었다.
+
+### 2A-2. 확정
+
+```
+per-video 지표   event_temporal_alignment
+패널 통계량      8편의 중앙값        ← 변경 없음
+임계            >= 0.70            ← 변경 없음
+C2 PASS         median(event_temporal_alignment across 8) >= 0.70
+```
+
+θ별 recall 3종은 **전부 계산해 보고하되 acceptance verdict에 쓰지 않는다.**
+`m8_gates.panel_verdict`에 넘기면 `GateSpecError`로 거부한다.
+
+### 2A-3. 왜 θ recall을 쓰지 않는가
+
+**① §3-3 문구와 직접 충돌한다.** "세 값을 모두 보고하고 하나를 고르지 않는다"가
+동결돼 있는데 그중 하나를 관문에 쓰면 그 조항을 어긴다.
+
+**② θ=0.3은 이미 값을 본 자리다.** 2026-08-18 dev 예비 실행에서 `0.3019`가
+관측됐다. 다른 사유를 대더라도 사후에 특정 θ를 골랐다는 공격을 피할 수 없다.
+
+**③ 사전등록 안에 이미 위계가 있다.** 새 지표를 발명하는 것이 아니라, §2-3의
+모호한 shorthand를 뒤쪽의 더 구체적인 metric specification으로 해석하는 것이다.
+연속값이라 기존 `0.70`과 수학적으로도 호환된다.
+
+### 2A-4. 미매칭 정답 사건 처리 — 새로 고르지 않았다
+
+macro 평균에서 미매칭을 0으로 넣는지, matched만 평균내는지에 따라 값이 크게
+달라진다. **이 정의는 이미 존재했고 그대로 쓴다.**
+
+```
+docs/preregistration/M8_event지표_보충_2026-08-18.md §3-3   "(매칭 실패 = 0)"
+src/m8_metrics.py:65  event_temporal_alignment            "매칭 실패는 0으로 센다"
+src/m8_metrics.py:59  matched_ious                        미매칭에 0.0을 넣는다
+```
+
+문서와 구현이 일치한다. 테스트로 고정했다(`refs 2개 · 1개만 매칭 → 0.5`).
+정답 사건이 0개면 `0.0`이 아니라 `None`(측정 불가)인 것도 기존 정의 그대로다.
+
+### 2A-5. 이 결정의 성격
+
+```
+아님   임계 변경 · 통계량 변경 · 새 지표 발명 · 사전등록 수정
+임     사전등록 내부의 주지표/부지표 위계를 따라 빈 연결고리를 채운 것
+       (ambiguity resolution, methodology amendment 아님)
+```
+
+---
+
 ## 3. 임계의 근거가 약하다는 것을 다시 적는다
 
 사전등록 §2-4가 이미 자백했다 — **0.70·2.0에 외부 근거가 없다.** 이 문서가 추가한
@@ -158,28 +226,10 @@ M9 실행 권한                 test-opening 별도 승인 사건
 39→72 확장                   HOLD
 ```
 
-### 4-1. 구현 중 발견한 미결 1건 — C2 판정 지표
+C2 판정 지표는 구현 중 미결로 발견했고 **같은 날 §2A에서 해소했다** —
+M8 출력 0건 시점이다.
 
-**임계·통계량은 동결됐지만 `median`에 넣을 per-video 값이 확정돼 있지 않다.**
-
-```
-원 사전등록 §2-3   "Event Recall 중앙값 >= 0.70"
-보충 §3-3         주  event_temporal_alignment (매칭 IoU macro 평균, 연속값)
-                  부  IoU >= θ event recall — "θ 세 값을 모두 보고하고
-                                              하나를 고르지 않는다"
-```
-
-즉 관문이 이름으로 지목한 "Event Recall"이 보충에서 **연속값 주지표와 θ별 부지표로
-갈렸고**, 부지표는 θ를 고르지 말라고 명시돼 있다. 그래서 채우지 않았다.
-
-`m8_gates.panel_verdict`는 `c2_metric` 없이 부르면 `GateSpecError`로 거부하고,
-후보 4개(`event_temporal_alignment` · `temporal_event_recall@IoU>=0.3/0.5/0.7`)를
-**전부 계산해 보고**하되 판정에는 쓰지 않는다. C3 집계 통계량과 같은 처리다.
-
-`m8_evaluator_freeze` artifact에 `c2_metric_decided: false`로 기록됐다.
-**M8 공식 리포트를 보기 전에 정해야 한다** — 보고 나서 고르면 결과가 지표를 고른다.
-
-### 4-2. 미구현 — Redundancy
+### 4-1. 미구현 — Redundancy
 
 사전등록 §2-2의 부지표 `Redundancy`(같은 정답 사건을 여러 문장이 중복 서술한 비율)는
 구현돼 있지 않다. `m8_gates`는 기계로 셀 수 있는 미매칭 수

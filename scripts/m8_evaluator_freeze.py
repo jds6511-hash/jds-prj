@@ -10,7 +10,7 @@ GT             동결본 8편의 aggregate hash
 관문 구현        C1/C2/C3별로 그 관문을 계산하는 **함수 소스**의 해시
 evaluator 소스   m8_c1 · m8_metrics · m8_gates · event_inventory_kit
 동결 상수        임계·통계량·상태 enum·반복 연속 하한
-미결             C2 판정 지표 — **채우지 않고 미결로 기록한다**
+C2 판정 지표      주지표 · θ recall은 진단 전용 · 미매칭 처리까지 기록
 열람 여부        official_m8_output_viewed=false, 파일 수 실측으로 증거
 ```
 
@@ -137,9 +137,7 @@ def build_artifact(run_tests: bool = True, config_path=None, gt_dir=None,
     videos = m8_gates.panel_videos()
     gt = K.aggregate_gt_hash(videos, out_dir=gt_dir)      # 미동결이면 여기서 거부된다
     frozen_cfg = {k: cfg.get(k) for k in CONFIG_KEYS}
-    cands = sorted(set(M.IOU_THETAS and
-                       [f"temporal_event_recall@IoU>={t}" for t in M.IOU_THETAS])
-                   | {"event_temporal_alignment"})
+    diagnostics = [f"temporal_event_recall@IoU>={t}" for t in M.IOU_THETAS]
     return {
         "freeze_id": freeze_id,
         "purpose": "M8 공식 출력을 처음 보기 전에 판정 쪽을 고정한다",
@@ -157,14 +155,16 @@ def build_artifact(run_tests: bool = True, config_path=None, gt_dir=None,
         "config_frozen_keys": frozen_cfg,
         "config_sha256": _sha_text(json.dumps(frozen_cfg, ensure_ascii=False,
                                               sort_keys=True)),
-        "c2_metric_decided": False,
-        "c2_metric": None,
-        "c2_metric_candidates": cands,
-        "c2_metric_note": ("원 사전등록 §2-3은 'Event Recall 중앙값'이라 적었고 보충 "
-                           "§3-3은 주지표를 event_temporal_alignment(연속값)로 두면서 "
-                           "θ 기반 recall은 세 값을 모두 보고하고 하나를 고르지 "
-                           "않는다고 했다. 판정 지표를 결과 열람 전에 별도로 정해야 "
-                           "하며, m8_gates.panel_verdict는 명시 없이는 거부한다"),
+        "c2_metric_decided": True,
+        "c2_metric": m8_gates.C2_METRIC,
+        "c2_diagnostics_only": diagnostics,
+        "c2_unmatched_reference_handling": "IoU 0으로 macro 평균에 포함 (보충 §3-3 '매칭 실패 = 0')",
+        "c2_metric_note": ("원 사전등록 §2-3은 'Event Recall 중앙값'이라 이름만 적고 식을 "
+                           "특정하지 않았다. 보충 §3-3이 주지표를 event_temporal_alignment"
+                           "(연속값)로, θ별 recall을 부지표로 두고 'θ 하나를 고르지 않는다'고 "
+                           "동결했으므로 θ recall은 판정에 쓸 수 없다. 2026-08-27에 M8 출력 "
+                           "0건 시점에서 주지표로 명확화했다(규격 §2A). 임계·통계량·지표 "
+                           "정의는 바뀌지 않았다 — ambiguity resolution이다"),
         "unimplemented": ["Redundancy(사전등록 §2-2 부지표) — 진단으로만 보고"],
         "tests": run_test_suite() if run_tests else None,
         "note": ("이 파일 이후 evaluator 소스·관문 상수·GT가 바뀌면 판정과 분리 "
@@ -226,7 +226,7 @@ def main() -> int:
     if art["tests"]:
         print(f"  tests {art['tests']['passed']} passed · "
               f"exit {art['tests']['exit_code']}")
-    print("  C2 판정 지표는 미결로 기록됐다 — 정한 뒤 별도 문서로 남겨라")
+    print(f"  C2 판정 지표 {art['c2_metric']} · θ recall은 진단 전용")
     return 0
 
 

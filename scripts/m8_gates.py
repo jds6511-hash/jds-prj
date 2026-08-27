@@ -8,8 +8,8 @@
        (동결 뒤 CSV가 바뀌면 해시 불일치로 fail-closed)
 C1    m8_c1 3-state. UNCLEAR는 통과가 아니다
 C3    영상별 = 리포트 문장 수 / 정답 사건 수. 패널 집계 = MAX. PASS = MAX <= 2.0
-C2    **판정 지표가 아직 확정되지 않았다.** 후보를 전부 계산해 보고하고,
-      호출자가 명시하지 않으면 GateSpecError로 거부한다
+C2    주지표 `event_temporal_alignment` 중앙값 >= 0.70. θ별 recall 3종은
+      전부 계산해 보고하되 **판정에는 쓰지 않는다**(넘기면 거부)
 ```
 
 `Redundancy`·`overmerge`·`spurious_event`는 C3에 합치지 않는다(규격 §2-3) —
@@ -35,7 +35,13 @@ from event_inventory_kit import OUT, load_reference                 # noqa: E402
 PANEL_MANIFEST = ROOT / "docs" / "finalization" / "m8_c2_panel_manifest_2026-08-27.json"
 C3_STATISTIC = "max"          # 규격 §2-1에서 동결. 결과를 보고 바꾸지 않는다
 C3_THRESHOLD = 2.0
+# 규격 §2A에서 동결(2026-08-27, M8 출력 0건 시점). 보충 §3-3의 **주지표**다.
+# θ 기반 recall은 "세 값을 모두 보고하고 하나를 고르지 않는다"고 동결돼 있어
+# 판정 지표로 쓸 수 없다 — 그래서 후보가 아니라 상수다.
+C2_METRIC = "event_temporal_alignment"
 C2_THRESHOLD = 0.70
+# 진단 전용. C2 PASS/FAIL에 들어가지 않는다.
+C2_DIAGNOSTIC_PREFIX = "temporal_event_recall@"
 
 DIAGNOSTICS_NOTE = (
     "Redundancy·overmerge·spurious_event는 관문이 아니라 진단이다(규격 §2-3). "
@@ -65,7 +71,7 @@ def video_compression(rep: dict, refs: list):
 
 
 def c2_candidates(rep: dict, refs: list) -> dict:
-    """C2에 쓸 수 있는 per-video 값 **전부**. 하나를 고르지 않는다."""
+    """per-video 값 전부. 판정에 쓰는 것은 `C2_METRIC` 하나이고 나머지는 진단이다."""
     gens = [e for e in (rep.get("events") or []) if e.get("span")]
     out = {"event_temporal_alignment": M.event_temporal_alignment(refs, gens)}
     out.update(M.temporal_event_recall(refs, gens))
@@ -104,19 +110,22 @@ def video_row(video_id: str, wdir, n_segments: int, out_dir=None,
 
 
 def panel_verdict(rows: list, c2_metric: str | None = None) -> dict:
-    """패널 판정. **C2 지표를 기본값으로 고르지 않는다.**
+    """패널 판정. C2 지표는 규격 §2A에서 동결된 **주지표**다.
 
-    원 사전등록은 "Event Recall 중앙값"이라 적었고, 보충 사전등록이 주지표를
-    `event_temporal_alignment`(연속값)로 두면서 θ 기반 recall은 세 값을 모두
-    보고하고 **하나를 고르지 않는다**고 했다. 판정 시점에 짐작해 넣으면 그 선택이
-    결과를 만든다 — C3 집계 통계량과 같은 문제다.
+    원 사전등록 §2-3은 "Event Recall 중앙값"이라 이름만 적었고, 보충 §3-3이 그 자리를
+    주지표 `event_temporal_alignment`(연속값)와 θ별 부지표로 갈랐다. 부지표는
+    "θ 세 값을 모두 보고하고 하나를 고르지 않는다"고 동결돼 있으므로, θ recall을
+    판정에 쓰는 것은 그 문구와 직접 충돌한다 — 그래서 여기서 거부한다.
+
+    미매칭 정답 사건은 **IoU 0으로 평균에 들어간다**(보충 §3-3 "매칭 실패 = 0").
+    matched만 평균내면 값이 달라지므로 그 정의를 바꾸지 않는다.
     """
     names = sorted({k for r in rows for k in (r.get("c2_candidates") or {})})
-    if c2_metric is None:
+    c2_metric = C2_METRIC if c2_metric is None else c2_metric
+    if c2_metric.startswith(C2_DIAGNOSTIC_PREFIX):
         raise M.GateSpecError(
-            "C2 판정에 쓸 per-video 지표가 확정되지 않았다 — 후보 "
-            f"{names} 중 하나를 명시하고 그 선택을 결과 열람 전에 문서로 남겨라 "
-            "(원 사전등록 §2-3 'Event Recall 중앙값' vs 보충 §3-3 주지표/부지표)")
+            f"{c2_metric}는 **진단 전용**이다 — 보충 §3-3이 θ 세 값을 모두 보고하고 "
+            f"하나를 고르지 않는다고 동결했다. C2 판정은 {C2_METRIC}로 한다")
     if c2_metric not in names:
         raise M.GateSpecError(f"C2 지표 {c2_metric!r}는 보고된 후보가 아니다 — {names}")
 
@@ -141,7 +150,8 @@ def main() -> int:
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="config.yaml")
-    ap.add_argument("--c2-metric", default=None)
+    ap.add_argument("--c2-metric", default=None,
+                    help="기본값은 동결된 주지표. θ recall은 거부된다")
     ap.add_argument("--out", default="results/m8_gates.json")
     a = ap.parse_args()
     cfg = common.load_config(str(ROOT / a.config))

@@ -55,11 +55,17 @@ def test_official_output_not_viewed_is_evidenced(art):
     assert ev["report_files_found"] == 0 and ev["videos_scanned"] == 8
 
 
-def test_c2_metric_gap_is_recorded_not_filled(art):
-    """C2 판정 지표는 아직 확정되지 않았다. **artifact가 그것을 숨기지 않는다.**"""
-    assert art["c2_metric_decided"] is False
-    assert art["c2_metric"] is None
-    assert art["c2_metric_candidates"]
+def test_c2_metric_and_unmatched_handling_are_recorded(art):
+    """C2는 2026-08-27에 주지표로 확정됐다. **θ recall은 진단으로 분리 기록된다.**
+
+    미매칭 정답 사건 처리(매칭 실패 = 0)도 artifact에 박는다 — 그 정의가
+    값을 크게 바꾸므로 나중에 "그때 어느 쪽이었나"를 물을 수 있어야 한다.
+    """
+    assert art["c2_metric_decided"] is True
+    assert art["c2_metric"] == "event_temporal_alignment"
+    assert len(art["c2_diagnostics_only"]) == 3
+    assert all(d.startswith("temporal_event_recall@") for d in art["c2_diagnostics_only"])
+    assert "매칭 실패 = 0" in art["c2_unmatched_reference_handling"]
 
 
 def test_frozen_gate_constants_are_recorded(art):
