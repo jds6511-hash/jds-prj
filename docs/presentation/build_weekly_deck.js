@@ -110,16 +110,18 @@ function row(s, y, no, head, body, color) {
     { text: "못 넘은 것   ", options: { bold: true, color: RED, fontFace: HF } },
     { text: "세 관문이 모두 미달입니다. 원인은 " },
     { text: "\"사건을 어느 크기로 자를지\"가 사람 기준과 안 맞는 것", options: { bold: true } },
-    { text: "이었습니다. 짧은 사건은 큰 사건에 삼켜지고, 긴 사건은 여러 조각으로 쪼개집니다. 개선을 2회 시도했고 방향은 맞았지만 크기가 부족했습니다." },
+    { text: "이었습니다. 짧은 사건은 큰 사건에 삼켜지고, 긴 사건은 여러 조각으로 쪼개집니다. 개선을 2회 시도했지만 필요한 수준까지 수렴시키지 못했고, 원래 정상이던 영상에서 회귀가 나왔습니다." },
   ], { x: 1.0, y: 3.12, w: 11.5, h: 1.35, fontSize: 12.5, color: INK, valign: "middle",
        fontFace: BF, lineSpacingMultiple: 1.2, margin: 0 });
 
   card(s, 0.6, 4.62, 12.15, 1.35, "FFF8E7"); tab(s, 0.6, 4.62, 1.35, AMBER);
   s.addText([
-    { text: "다음   ", options: { bold: true, color: AMBER, fontFace: HF } },
-    { text: "개발 반복 상한(2회)에 도달했으므로 추가 튜닝을 멈췄습니다. " },
-    { text: "① 이 결과를 최종 한계로 확정  ② 미달 상태로 M9(품질 채점)까지 수행  ③ 범위 재정의", options: { bold: true } },
-    { text: " 중 무엇으로 갈지 결정이 필요합니다." },
+    { text: "결정   ", options: { bold: true, color: AMBER, fontFace: HF } },
+    { text: "개발 반복 상한(2회)에 도달해 추가 튜닝을 멈췄습니다. " },
+    { text: "M8 미달을 최종 결과로 확정", options: { bold: true } },
+    { text: "하고, 후속 가설은 향후과제로 이관합니다. " },
+    { text: "M9(품질 채점)는 HOLD", options: { bold: true } },
+    { text: " — 합격 기준이 설계에 없어 지금 열지 않습니다." },
   ], { x: 1.0, y: 4.62, w: 11.5, h: 1.35, fontSize: 12.5, color: INK, valign: "middle",
        fontFace: BF, lineSpacingMultiple: 1.2, margin: 0 });
 
@@ -292,7 +294,7 @@ function row(s, y, no, head, body, color) {
 
 /* ─── 8 개선 시도 ─── */
 {
-  const s = content("개선 2회 시도 — 방향은 맞았고 크기가 부족했습니다", "개선");
+  const s = content("개선 2회 시도 — 필요한 수준까지 수렴시키지 못했습니다", "개선");
   s.addText("아래 수치는 이미 결과를 본 8편에서 재실행한 개발용 점수입니다. 성능 검증(확증)이 아닙니다.",
     { x: 0.6, y: 1.5, w: 12.15, h: 0.3, fontSize: 11, color: MUTED, italic: true,
       fontFace: BF, margin: 0 });
@@ -316,7 +318,7 @@ function row(s, y, no, head, body, color) {
   card(s, 6.8, 4.4, 5.95, 1.05, "FBEEEC"); tab(s, 6.8, 4.4, 1.05, RED);
   s.addText([
     { text: "안 된 것   ", options: { bold: true, color: RED, fontFace: HF } },
-    { text: "쪼갬이 기준선보다 나빠졌고(7.00→13.00), 같은 문장 반복이라는 새 실패가 생겼습니다." },
+    { text: "쪼갬이 기준선보다 나빠졌고(7.00→13.00), 같은 문장 반복이라는 새 실패가 생겼습니다. 원래 정상이던 영상까지 나빠진 회귀도 있습니다." },
   ], { x: 7.15, y: 4.4, w: 5.4, h: 1.05, fontSize: 11.5, color: INK, valign: "middle",
        fontFace: BF, lineSpacingMultiple: 1.15, margin: 0 });
 
@@ -333,7 +335,7 @@ function row(s, y, no, head, body, color) {
   const s = content("막힌 부분 — 5가지", "현안");
   const blocks = [
     ["M8 품질이 기준 미달", RED,
-     "세 관문 모두 미달. 개선 2회로도 기준선을 넘지 못했습니다. 지금 상태로는 \"보고서를 자동으로 쓴다\"를 성능으로 주장할 수 없습니다."],
+     "세 관문 모두 미달. 개선 2회로도 기준선을 넘지 못했고, 2차에서는 원래 정상이던 영상이 나빠지는 회귀가 관찰됐습니다. 지금 상태로는 \"보고서를 자동으로 쓴다\"를 성능으로 주장할 수 없습니다."],
     ["사건 단위 정의 자체의 한계", RED,
      "긴 활동 안의 세부 단계를 표현할 자리가 현재 출력 형식에 없습니다. 모델이 그걸 적으려면 별개 사건으로 만들 수밖에 없습니다. 근본 해결은 출력 구조 2층화인데, 채점·후속 문서 생성까지 연쇄 변경이라 이번엔 보류했습니다."],
     ["판정 표본을 다 썼음", AMBER,
@@ -402,18 +404,18 @@ function row(s, y, no, head, body, color) {
   const s = content("향후 추진 일정", "계획");
   card(s, 0.6, 1.55, 12.15, 1.25, "FFF8E7"); tab(s, 0.6, 1.55, 1.25, AMBER);
   s.addText([
-    { text: "먼저 결정할 것 (8/29~30)   ", options: { bold: true, color: AMBER, fontFace: HF } },
-    { text: "①  이 결과를 최종 한계로 확정하고 보고서에 그대로 기술    " },
-    { text: "②  미달 상태로 M9까지 수행해 파이프라인 전체를 닫기    " },
-    { text: "③  범위 재정의 — 출력 구조 2층화 등을 향후과제로 이관" },
+    { text: "결정됨 (2026-08-28)   ", options: { bold: true, color: AMBER, fontFace: HF } },
+    { text: "①  M8 acceptance FAIL을 최종 결과로 확정 — 추가 redesign 종료    " },
+    { text: "③  후속 가설(출력 구조 2층화 등)은 향후과제로 이관    " },
+    { text: "②  M9는 HOLD — test 개방 조건이 충족되지 않았습니다" },
   ], { x: 1.0, y: 1.55, w: 11.5, h: 1.25, fontSize: 12, color: INK, valign: "middle",
        fontFace: BF, lineSpacingMultiple: 1.25, margin: 0 });
 
   const plan = [
-    ["8/29 ~ 8/30", "방향 결정 · 문서 정리", "①~③ 결정. M8 결과 문서·실패 분해 문서 확정. 발표 자료 반영", TEAL],
-    ["9/1 주", "M9 판단과 실행 (②일 때)", "test 개방 승인 → M9 품질 채점 실행 → 결과 기록. 승인 없으면 미실행", BLUE],
-    ["9/2 주", "최종 산출물 생성", "보고서(HWPX) 자동 생성기 구현 — 현재 미구현. 새 분석 없이 형식 변환만", BLUE],
-    ["9/3 주", "최종 보고서·발표 준비", "결과·한계·향후과제 정리. 시연 시나리오 점검", TEAL],
+    ["8/29 ~ 8/30", "종결 문서 확정", "M8 종결 기록 · 한계·향후과제 반영 · 최종 보고서 문구 고정", TEAL],
+    ["9/1 주", "최종 보고서 작성", "M1~M7 결과 + M8 실패와 원인. 기준을 움직이지 않았다는 근거 정리", TEAL],
+    ["9/2 주", "산출물·시연 점검", "검색 시연 시나리오 · 문서 지도 · 재현 절차 확인", TEAL],
+    ["9/3 주", "발표 준비", "결과·한계·향후과제 발표본 확정. M9는 조건 충족 전까지 미실행", TEAL],
     ["향후과제", "이번 범위에서 제외", "출력 구조 2층화 · 선택적 고재현율 추출 · 새 8편 확증 · test 39→72 확장", MUTED],
   ];
   let y = 2.95;
@@ -427,8 +429,8 @@ function row(s, y, no, head, body, color) {
       valign: "middle", fontFace: BF, margin: 0 });
     y += 0.75;
   });
-  s.addText("일정은 ②를 선택한 경우를 기준으로 적었습니다. ①이면 9/1 주부터 곧바로 최종 보고서 작성으로 넘어갑니다.",
-    { x: 0.6, y: 6.72, w: 12.15, h: 0.3, fontSize: 10.5, color: MUTED, fontFace: BF, margin: 0 });
+  s.addText("M9를 열려면 (a) FAIL 상태 개방 여부 결정 (b) 합격 기준·해석 규칙 동결이 선행합니다 — 그 자체가 별도 승인 사건입니다.",
+    { x: 0.6, y: 6.68, w: 12.15, h: 0.3, fontSize: 10.5, color: MUTED, fontFace: BF, margin: 0 });
 }
 
 /* ─── 12 마무리 ─── */

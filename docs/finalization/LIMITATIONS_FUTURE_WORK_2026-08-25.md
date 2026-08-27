@@ -152,6 +152,29 @@ PHASE 4에서는 **외부 공개 전사의 timestamp가 이 영상 타임라인�
 
 7  회의록 생성 (Phase 4)
    — 설계만 있음 (docs/planning/phase4_회의록_설계.md)
+
+8  M8 사건 입도(granularity) 재설계 — **2026-08-28 추가**
+   — 근거: M8 acceptance FAIL 확정. 두 차례 사전 정의 redesign round가 동결된
+     gate를 충족하지 못했다(docs/finalization/M8_REDESIGN_CLOSURE_2026-08-28.md)
+   — H3  출력 구조 2층화(주요 사건 + 내부 단계). 현재 형식에는 긴 활동 안의
+          세부 단계를 표현할 자리가 없어 조각이 곧 별개 사건이 된다.
+          도입하면 report.json schema · M8 지표 · M9 sent_id/cites · 최종 렌더러까지
+          연쇄 변경이다
+   — H5  영상 전체 후보에 2차 수렴을 한 번 더 적용
+   — H6  고재현율을 전역이 아니라 짧은 사건이 실제로 누락된 구간에만 선택 적용
+          (어디에 적용할지 정하는 새 detector/policy가 필요하다)
+   — H7  반복 생성을 프롬프트가 아니라 생성 파라미터로 억제
+          (결정성·재현성 전제를 다시 검토해야 한다)
+   — **네 가설 모두 현재 결과를 보고 고안됐다(outcome-informed).** 같은 표본으로
+     검증할 수 없고, 각각 별도 사전등록과 fresh confirmation 경계를 요구한다
+   — 소비 선언: 판정 표본 N=8은 결과 열람으로 소진됐다. 어떤 수정안도 새 8편과
+     새 사람 정답으로만 확증할 수 있다
+
+9  M9 개방 여부 — **2026-08-28 HOLD로 명시**
+   — M8 acceptance FAIL 상태에서 M9를 여는가는 기존 설계에 없다(별도 결정 사항)
+   — M9 acceptance 기준 자체가 저장소에 없다. D3는 "절차만 확정, 값은 미정"이고
+     그 절차의 1단계(dev judge validation)도 미실행이다
+   — 따라서 endpoint를 동결하기 전에는 test를 열지 않는다
 ```
 
 ## 경계 유지 선언
