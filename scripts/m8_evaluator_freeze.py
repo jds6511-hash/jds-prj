@@ -21,6 +21,7 @@ evaluator 소스   m8_c1 · m8_metrics · m8_gates · event_inventory_kit
 import argparse
 import hashlib
 import inspect
+import io
 import json
 import re
 import subprocess
@@ -72,8 +73,16 @@ def _sha_text(t: str) -> str:
 
 
 def _sha_file(rel: str):
+    """**줄바꿈을 정규화한 뒤** 해시한다.
+
+    Windows에서 `git checkout`이 LF를 CRLF로 바꾸므로 바이트 해시는 내용이 같아도
+    달라진다(2026-08-27 실측 — 같은 커밋을 되돌린 직후 verify가 깨졌다). 줄바꿈
+    때문에 깨지는 대조 도구는 대조를 안 하는 것과 같다.
+    """
     p = ROOT / rel
-    return hashlib.sha256(p.read_bytes()).hexdigest() if p.is_file() else None
+    if not p.is_file():
+        return None
+    return _sha_text(p.read_text(encoding="utf-8").replace("\r\n", "\n"))
 
 
 def _git(*a) -> str:
@@ -180,6 +189,8 @@ def verify(artifact: dict) -> list:
 
 
 def main() -> int:
+    # 콘솔이 cp949라 한글·em dash가 그대로는 터진다(2026-08-27 실측)
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default=str(DEFAULT_OUT))
     ap.add_argument("--verify", action="store_true")

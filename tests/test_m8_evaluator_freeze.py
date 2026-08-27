@@ -85,3 +85,16 @@ def test_verify_detects_drift(art):
 def test_build_refuses_when_gt_not_frozen(tmp_path):
     with pytest.raises(Exception):
         F.build_artifact(run_tests=False, gt_dir=tmp_path)
+
+
+def test_file_hash_ignores_line_endings(tmp_path, monkeypatch):
+    """**줄바꿈만으로 verify가 깨지면 대조 도구가 아니다.**
+
+    Windows에서 git checkout이 LF를 CRLF로 바꾼다 — 같은 커밋을 되돌린 직후
+    verify가 깨진 실측(2026-08-27)이 이 테스트의 이유다.
+    """
+    lf, crlf = tmp_path / "lf.md", tmp_path / "crlf.md"
+    lf.write_bytes(b"a\nb\n")
+    crlf.write_bytes(b"a\r\nb\r\n")
+    monkeypatch.setattr(F, "ROOT", tmp_path)
+    assert F._sha_file("lf.md") == F._sha_file("crlf.md")
