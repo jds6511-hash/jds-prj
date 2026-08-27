@@ -162,3 +162,37 @@ def test_dev_runner_never_writes_canonical_report():
 def test_dev_runner_declares_run_kind():
     import m8_redesign_dev as D
     assert D.RUN_KIND == "m8_redesign_dev"
+
+
+# ---------------------------------------------------------------- 비교 도구
+
+def test_compare_labels_scores_as_development_not_confirmation():
+    import m8_redesign_compare as C
+    rows = {"v": {"alignment": 0.8, "compression": 1.0, "c1_status": "ABSENT"}}
+    s = C.panel_dev_scores(rows)
+    assert s["is_confirmation"] is False
+    assert set(s) >= {"dev_c1_present_videos", "dev_c2_median_alignment",
+                      "dev_c3_max_compression"}
+    for k in s:
+        assert not k.startswith("C1") and not k.startswith("C2")
+
+
+def test_compare_never_writes_official_paths():
+    src = (ROOT / "scripts" / "m8_redesign_compare.py").read_text(encoding="utf-8")
+    assert "m8_official_result" not in src
+    assert 'work' in src and 'report.json' in src          # baseline은 읽는다
+    assert "atomic_write_json" not in src                  # 자기 산출물만 write_text
+
+
+def test_compare_metrics_cover_the_four_failure_axes():
+    import m8_redesign_compare as C
+    rep = {"sentences": [{"sent_id": 0, "text": "가", "cites": [0]}],
+           "events": [{"event": "가", "span": [0, 4], "evidence_segments": [0],
+                       "description": "가나다"}],
+           "rejected": [], "map_raw_outputs": ["[]"], "chunk_retries": [],
+           "chunk_splits": []}
+    m = C.metrics(rep, [{"event": "GT", "span": [0, 4]}], 10)
+    for k in ("unmatched_gt", "unmatched_gt_short", "unmatched_generated",
+              "alignment", "compression", "rejections", "zero_event_chunks",
+              "chunk_splits", "non_korean_event_titles", "span_coverage"):
+        assert k in m
