@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>사건 목록 작성 — DRAFT</title>
+<style>
+  :root{--ink:#1d2426;--mute:#6b7a7d;--line:#dcd8cf;--paper:#faf8f4;--teal:#1f5d66;
+        --sel:#cfe6e4;--edge:#8a5a2b;--card:#fff}
+  *{box-sizing:border-box}
+  body{margin:0;font:14px/1.5 "Malgun Gothic",system-ui,sans-serif;color:var(--ink);
+       background:var(--paper)}
+  header{display:flex;align-items:center;gap:16px;padding:10px 16px;
+         border-bottom:1px solid var(--line);background:var(--card);position:sticky;top:0;z-index:5}
+  header b{font-size:15px}
+  .bar{flex:1;height:8px;background:#eee;border-radius:4px;overflow:hidden}
+  .bar>div{height:100%;background:var(--teal)}
+  .draft{font:11px/1 monospace;color:#fff;background:var(--edge);padding:4px 7px;border-radius:3px}
+  main{display:grid;grid-template-columns:1fr 320px;gap:0;height:calc(100vh - 49px)}
+  #grid{overflow:auto;padding:12px}
+  .row{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-bottom:6px}
+  .cell{position:relative;cursor:pointer;border:2px solid transparent;border-radius:3px;
+        background:#e9e6e0;overflow:hidden}
+  .cell img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
+  .cell span{position:absolute;left:0;bottom:0;font:10px/1 monospace;color:#fff;
+             background:rgba(0,0,0,.62);padding:2px 4px}
+  .cell.in{background:var(--sel)}
+  .cell.in img{opacity:.55}
+  .cell.a{border-color:var(--teal)}
+  .cell.b{border-color:var(--edge)}
+  .cell.has{outline:2px solid #b9c9c6;outline-offset:-2px}
+  aside{border-left:1px solid var(--line);background:var(--card);overflow:auto;padding:12px}
+  h3{margin:0 0 8px;font-size:12px;letter-spacing:1px;color:var(--teal)}
+  #sel{font:12px/1.6 monospace;color:var(--mute);margin-bottom:8px}
+  input[type=text]{width:100%;padding:7px 8px;border:1px solid var(--line);border-radius:3px;
+                   font:14px/1.4 inherit}
+  label.unc{display:block;font-size:12px;color:var(--mute);margin:6px 0}
+  button{font:12px inherit;padding:6px 10px;border:1px solid var(--line);border-radius:3px;
+         background:#fff;cursor:pointer}
+  button.p{background:var(--teal);color:#fff;border-color:var(--teal)}
+  .ev{padding:6px;border:1px solid var(--line);border-radius:3px;margin-bottom:5px;cursor:pointer;
+      font-size:12.5px}
+  .ev:hover{background:#f3f0ea}
+  .ev.cur{border-color:var(--teal);background:#eef5f4}
+  .ev code{color:var(--mute);font-size:11px}
+  .ev.empty{border-color:var(--edge)}
+  #video{width:100%;background:#000;margin-bottom:8px;display:none}
+  .keys{margin-top:14px;font:11px/1.7 monospace;color:var(--mute);border-top:1px solid var(--line);
+        padding-top:8px}
+  #saved{font:11px monospace;color:var(--mute)}
+</style>
+</head>
+<body>
+<header>
+  <b id="vid">—</b>
+  <select id="pick"></select>
+  <div class="bar"><div id="prog" style="width:0"></div></div>
+  <span id="cnt">0 events</span>
+  <span id="saved">—</span>
+  <span class="draft">DRAFT</span>
+</header>
+<main>
+  <div id="grid"></div>
+  <aside>
+    <video id="video" muted playsinline controls></video>
+    <h3>선택</h3>
+    <div id="sel">시작 썸네일을 클릭하고, 끝을 Shift+클릭</div>
+    <input type="text" id="desc" placeholder="사건 설명 — 객체 + 행동 한 줄">
+    <label class="unc"><input type="checkbox" id="unc"> 판단 불가 (unclear)</label>
+    <div style="display:flex;gap:6px;margin-bottom:12px">
+      <button class="p" id="save">저장 (N)</button>
+      <button id="del">삭제 (D)</button>
+      <button id="prev">미리보기 (Space)</button>
+    </div>
+    <h3>사건 목록</h3>
+    <div id="list"></div>
+    <div style="margin-top:10px"><button id="exp">CSV 내보내기</button></div>
+    <div class="keys">
+클릭 / Shift+클릭   시작 · 끝
+N                  저장
+D                  선택 사건 삭제
+← →                시작 경계 이동
+Shift + ← →        끝 경계 이동
+Space              무음 미리보기
+Ctrl+Z             직전 저장 취소
+    </div>
+  </aside>
+</main>
+<script>
+const S = {vid:null, segs:[], events:[], a:null, b:null, cur:null, undo:[]};
+const $ = (id) => document.getElementById(id);
+const fmt = (s) => `${String(Math.floor(s/60)).padStart(2,"0")}:${String(Math.floor(s%60)).padStart(2,"0")}`;
+
+async function boot(){
+  const {videos} = await (await fetch("/api/videos")).json();
+  $("pick").innerHTML = videos.map(v =>
+    `<option value="${v.video_id}">${v.video_id} — ${v.n_events} events</option>`).join("");
+  $("pick").onchange = () => open($("pick").value);
+  open(videos[0].video_id);
+}
+
+async function open(vid){
+  S.vid = vid; S.a = S.b = S.cur = null; S.undo = [];
+  const s = await (await fetch(`/api/segments/${vid}`)).json();
+  S.segs = s.segments;
+  const d = await (await fetch(`/api/draft/${vid}`)).json();
+  S.events = d.events || [];
+  $("vid").textContent = vid;
+  $("pick").value = vid;
+  $("video").src = `/api/video/${vid}`;
+  drawGrid(); drawList(); drawSel();
+}
+
+/* 8열 격자. 구간 번호와 시각만 얹는다 — 캡션·자막은 서버가 주지 않는다 */
+function drawGrid(){
+  const g = $("grid"); g.innerHTML = "";
+  let row = null;
+  S.segs.forEach((seg, i) => {
+    if (i % 8 === 0){ row = document.createElement("div"); row.className = "row"; g.appendChild(row); }
+    const c = document.createElement("div");
+    c.className = "cell"; c.dataset.idx = seg.idx;
+    c.innerHTML = `<img loading="lazy" src="/api/frame/${S.vid}/${seg.idx}" alt="">` +
+                  `<span>${seg.idx} · ${fmt(seg.start)}</span>`;
+    c.onclick = (e) => { if (e.shiftKey) S.b = seg.idx; else { S.a = seg.idx; S.b = seg.idx; } paint(); drawSel(); };
+    row.appendChild(c);
+  });
+  paint();
+}
+
+function covered(){
+  const m = new Map();
+  S.events.forEach(e => { for (let i = e.start_seg; i <= e.end_seg; i++) m.set(i, e.event_id); });
+  return m;
+}
+
+function paint(){
+  const lo = Math.min(S.a ?? 1e9, S.b ?? 1e9), hi = Math.max(S.a ?? -1, S.b ?? -1);
+  const cov = covered();
+  document.querySelectorAll(".cell").forEach(c => {
+    const i = +c.dataset.idx;
+    c.classList.toggle("in", i >= lo && i <= hi);
+    c.classList.toggle("a", i === S.a);
+    c.classList.toggle("b", i === S.b);
+    c.classList.toggle("has", cov.has(i));
+  });
+  const n = cov.size, tot = S.segs.length || 1;
+  $("prog").style.width = `${(n / tot * 100).toFixed(1)}%`;
+  $("cnt").textContent = `${S.events.length} events · 구간 ${n}/${tot}`;
+}
+
+function drawSel(){
+  if (S.a === null){ $("sel").textContent = "시작 썸네일을 클릭하고, 끝을 Shift+클릭"; return; }
+  const lo = Math.min(S.a, S.b), hi = Math.max(S.a, S.b);
+  const A = S.segs.find(s => s.idx === lo), B = S.segs.find(s => s.idx === hi);
+  $("sel").textContent = `seg ${lo} ~ ${hi}   ${fmt(A.start)} ~ ${fmt(B.end)}   (${hi-lo+1}구간)`;
+}
+
+function drawList(){
+  $("list").innerHTML = S.events.map(e =>
+    `<div class="ev ${e.event_id === S.cur ? "cur" : ""} ${e.description ? "" : "empty"}"
+          data-id="${e.event_id}">
+       <code>${e.event_id}</code> seg ${e.start_seg}~${e.end_seg}
+       <code>${fmt(e.start_sec)}</code><br>${e.description || "(설명 없음)"}
+       ${e.unclear ? " <code>unclear</code>" : ""}
+     </div>`).join("");
+  $("list").querySelectorAll(".ev").forEach(d => d.onclick = () => {
+    const e = S.events.find(x => x.event_id === d.dataset.id);
+    S.cur = e.event_id; S.a = e.start_seg; S.b = e.end_seg;
+    $("desc").value = e.description; $("unc").checked = !!e.unclear;
+    paint(); drawSel(); drawList();
+    document.querySelector(`.cell[data-idx="${e.start_seg}"]`)
+      ?.scrollIntoView({block:"center", behavior:"smooth"});
+  });
+}
+
+async function put(){
+  S.undo.push(JSON.parse(JSON.stringify(S.events)));
+  const r = await fetch(`/api/draft/${S.vid}`, {
+    method:"PUT", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({events: S.events})});
+  if (!r.ok){ alert((await r.json()).detail); return; }
+  S.events = (await r.json()).events;
+  $("saved").textContent = "저장 " + new Date().toTimeString().slice(0,8);
+  paint(); drawList();
+}
+
+/* 저장 — 사람이 주는 것은 구간 번호와 설명뿐. 시각·event_id는 서버가 채운다 */
+$("save").onclick = () => {
+  if (S.a === null) return;
+  const lo = Math.min(S.a, S.b), hi = Math.max(S.a, S.b);
+  const body = {start_seg: lo, end_seg: hi, description: $("desc").value,
+                unclear: $("unc").checked ? 1 : 0};
+  const cur = S.events.find(e => e.event_id === S.cur);
+  if (cur) Object.assign(cur, body);
+  else S.events.push({event_id: null, ...body});
+  S.cur = null; $("desc").value = ""; $("unc").checked = false;
+  put();
+};
+$("del").onclick = () => {
+  if (!S.cur) return;
+  S.events = S.events.filter(e => e.event_id !== S.cur);
+  S.cur = null; $("desc").value = ""; put();
+};
+$("prev").onclick = () => {
+  if (S.a === null) return;
+  const lo = Math.min(S.a, S.b), hi = Math.max(S.a, S.b);
+  const A = S.segs.find(s => s.idx === lo), B = S.segs.find(s => s.idx === hi);
+  const v = $("video");
+  v.style.display = "block"; v.currentTime = A.start; v.muted = true; v.play();
+  clearTimeout(window._t);
+  window._t = setTimeout(() => v.pause(), Math.min(20, B.end - A.start) * 1000);
+};
+$("exp").onclick = async () => {
+  const r = await fetch(`/api/export/${S.vid}`, {method:"POST"});
+  const j = await r.json();
+  alert(r.ok ? `${j.csv}\n\n다음:\n${j.next.join("\n")}` : j.detail);
+};
+
+document.addEventListener("keydown", (e) => {
+  if (e.target.tagName === "INPUT" && e.key !== "Escape") {
+    if (e.key === "Enter") $("save").click();
+    return;
+  }
+  const step = (which, d) => {
+    if (S.a === null) return;
+    if (which === "a") S.a = Math.max(0, Math.min(S.segs.length - 1, S.a + d));
+    else S.b = Math.max(0, Math.min(S.segs.length - 1, S.b + d));
+    paint(); drawSel();
+  };
+  if (e.key === "ArrowLeft")  step(e.shiftKey ? "b" : "a", -1);
+  if (e.key === "ArrowRight") step(e.shiftKey ? "b" : "a", +1);
+  if (e.key === "n" || e.key === "N") $("save").click();
+  if (e.key === "d" || e.key === "D") $("del").click();
+  if (e.key === " ") { e.preventDefault(); $("prev").click(); }
+  if (e.ctrlKey && (e.key === "z" || e.key === "Z") && S.undo.length) {
+    S.events = S.undo.pop(); put();
+  }
+});
+boot();
+</script>
+</body>
+</html>
