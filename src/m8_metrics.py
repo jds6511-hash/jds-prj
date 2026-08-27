@@ -88,6 +88,31 @@ def temporal_event_recall(refs: list, gens: list, thetas=IOU_THETAS) -> dict:
             round(sum(1 for v in ious if v >= t) / len(ious), 4) for t in thetas}
 
 
+def c2_statistic(per_video_recalls: list):
+    """C2 판정값 — 영상별 Event Recall의 **중앙값**. 평균이 아니다.
+
+    사전등록 `M8_구조변경_사전등록_2026-08-16.md` §2-3이 "평균이 아니라 중앙값"을
+    명시했고(영상 간 편차 ±48%p 실측), 판정 표본은 8~12편이다. **N이 짝수면
+    중앙값은 정렬된 가운데 두 값의 평균**이므로 N=8에서는 4번째와 5번째의 평균이다.
+
+    판정 시점에 즉석으로 `mean`이나 다른 quantile 규칙을 쓰면 사전등록과 어긋난다 —
+    그래서 함수로 고정한다. 이 함수는 새 방법론이 아니라 **구현 정합성 장치**다.
+    영상이 0편이면 `0.0`이 아니라 None(측정 불가)이다.
+    """
+    vals = [v for v in per_video_recalls if v is not None]
+    if not vals:
+        return None
+    return round(float(np.median(vals)), 4)
+
+
+def c2_verdict(per_video_recalls: list, threshold: float = 0.70) -> dict:
+    """C2 통과 여부. **결과를 보고 threshold를 바꾸지 않는다** — 인자 기본값이 동결값이다."""
+    stat = c2_statistic(per_video_recalls)
+    return {"statistic": "median", "value": stat, "threshold": threshold,
+            "n_videos": len([v for v in per_video_recalls if v is not None]),
+            "passed": None if stat is None else bool(stat >= threshold)}
+
+
 def _union_len(events: list) -> int:
     """겹치는 span을 합집합으로. 단순 합이면 1을 넘는다."""
     total, cur = 0, None

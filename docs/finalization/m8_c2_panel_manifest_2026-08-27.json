@@ -1454,6 +1454,27 @@
       "text_hash 일치",
       "emb_sub·emb_cap (n,1024)",
       "기존 인덱스 text_hash 전수 불변"
-    ]
+    ],
+    "dirty_evidence": {
+      "claim": "완전히 동일한 repository state였다고 주장하지 않는다. **캡션 생성 경로**가 기준 commit과 동일했다는 것만 주장한다",
+      "baseline_commit": "33b5509",
+      "caption_paths": [
+        "src/m1_preprocess.py",
+        "src/m2_keyframe.py",
+        "src/m3_generate.py",
+        "src/m4_index.py",
+        "src/common.py",
+        "src/llm.py",
+        "config.yaml"
+      ],
+      "note": "`src/` 전체가 아니라 위 경로만 본다 — 같은 폴더의 `m8_metrics.py`는 생성 이후에 C2 집계 헬퍼가 추가됐고 캡션 생성에 관여하지 않는다",
+      "committed_range_diff_bytes": 0,
+      "uncommitted_diff_bytes": 0,
+      "committed_range_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncommitted_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "empty_string_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "both_empty": true,
+      "verified_after_generation": true
+    }
   }
 }
