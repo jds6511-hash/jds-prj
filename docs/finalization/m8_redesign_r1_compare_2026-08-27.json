@@ -1,0 +1,906 @@
+{
+  "record": "M8 REDESIGN ROUND 1 — baseline vs development",
+  "date": "2026-08-27",
+  "is_confirmation": false,
+  "baseline_lineage": {
+    "checked": 8,
+    "all_match": true,
+    "lineage_file": "m8_official_report_lineage_2026-08-27.json"
+  },
+  "baseline": {
+    "source": "work/<vid>/report.json (공식 m8_official_0827)",
+    "per_video": {
+      "baekmansonghee_jirisan": {
+        "n_reference_events": 7,
+        "n_sentences": 15,
+        "n_generated_events": 15,
+        "raw_events_total": 15,
+        "chunks": 4,
+        "raw_events_per_chunk_median": 4.0,
+        "unmatched_gt": 1,
+        "unmatched_gt_short": 1,
+        "n_gt_short": 2,
+        "unmatched_generated": 9,
+        "alignment": 0.52,
+        "theta_recall": {
+          "temporal_event_recall@IoU>=0.3": 0.8571,
+          "temporal_event_recall@IoU>=0.5": 0.7143,
+          "temporal_event_recall@IoU>=0.7": 0.1429
+        },
+        "compression": 2.1429,
+        "rejections": 0,
+        "rejection_reasons": {},
+        "zero_event_chunks": 0,
+        "chunk_retries": 0,
+        "chunk_splits": 0,
+        "splits_recovered": 0,
+        "span_coverage": 1.0,
+        "alignment_types": {
+          "overmerge": 1,
+          "boundary_shift": 1,
+          "missed_event": 1,
+          "reasonable_match": 4
+        },
+        "c1_status": "ABSENT",
+        "c1_kind_status": {
+          "language_drift": "ABSENT",
+          "early_stop": "ABSENT",
+          "repetition_loop": "ABSENT"
+        },
+        "non_korean_event_titles": 0,
+        "iou_distribution": {
+          "n": 7,
+          "min": 0.0,
+          "p25": 0.5556,
+          "median": 0.5714,
+          "p75": 0.625,
+          "max": 0.9545,
+          "buckets": {
+            "HIGH": 1,
+            "MID": 5,
+            "LOW": 0,
+            "UNMATCHED": 1
+          }
+        }
+      },
+      "softyeon_ceramics": {
+        "n_reference_events": 12,
+        "n_sentences": 6,
+        "n_generated_events": 6,
+        "raw_events_total": 7,
+        "chunks": 4,
+        "raw_events_per_chunk_median": 1.5,
+        "unmatched_gt": 6,
+        "unmatched_gt_short": 5,
+        "n_gt_short": 6,
+        "unmatched_generated": 0,
+        "alignment": 0.2172,
+        "theta_recall": {
+          "temporal_event_recall@IoU>=0.3": 0.25,
+          "temporal_event_recall@IoU>=0.5": 0.1667,
+          "temporal_event_recall@IoU>=0.7": 0.1667
+        },
+        "compression": 0.5,
+        "rejections": 1,
+        "rejection_reasons": {
+          "bad_span": 1
+        },
+        "zero_event_chunks": 0,
+        "chunk_retries": 0,
+        "chunk_splits": 0,
+        "splits_recovered": 0,
+        "span_coverage": 0.974,
+        "alignment_types": {
+          "overmerge": 3,
+          "boundary_shift": 2,
+          "missed_event": 6,
+          "reasonable_match": 1
+        },
+        "c1_status": "ABSENT",
+        "c1_kind_status": {
+          "language_drift": "ABSENT",
+          "early_stop": "ABSENT",
+          "repetition_loop": "ABSENT"
+        },
+        "non_korean_event_titles": 0,
+        "iou_distribution": {
+          "n": 12,
+          "min": 0.0,
+          "p25": 0.0,
+          "median": 0.0667,
+          "p75": 0.25,
+          "max": 0.9487,
+          "buckets": {
+            "HIGH": 2,
+            "MID": 1,
+            "LOW": 3,
+            "UNMATCHED": 6
+          }
+        }
+      },
+      "jissi_farm": {
+        "n_reference_events": 11,
+        "n_sentences": 11,
+        "n_generated_events": 11,
+        "raw_events_total": 11,
+        "chunks": 4,
+        "raw_events_per_chunk_median": 2.0,
+        "unmatched_gt": 3,
+        "unmatched_gt_short": 3,
+        "n_gt_short": 7,
+        "unmatched_generated": 3,
+        "alignment": 0.428,
+        "theta_recall": {
+          "temporal_event_recall@IoU>=0.3": 0.7273,
+          "temporal_event_recall@IoU>=0.5": 0.5455,
+          "temporal_event_recall@IoU>=0.7": 0.2727
+        },
+        "compression": 1.0,
+        "rejections": 0,
+        "rejection_reasons": {},
+        "zero_event_chunks": 0,
+        "chunk_retries": 0,
+        "chunk_splits": 0,
+        "splits_recovered": 0,
+        "span_coverage": 0.9194,
+        "alignment_types": {
+          "overmerge": 1,
+          "boundary_shift": 1,
+          "missed_event": 3,
+          "reasonable_match": 6
+        },
+        "c1_status": "ABSENT",
+        "c1_kind_status": {
+          "language_drift": "ABSENT",
+          "early_stop": "ABSENT",
+          "repetition_loop": "ABSENT"
+        },
+        "non_korean_event_titles": 0,
+        "iou_distribution": {
+          "n": 11,
+          "min": 0.0,
+          "p25": 0.3056,
+          "median": 0.5,
+          "p75": 0.75,
+          "max": 0.8333,
+          "buckets": {
+            "HIGH": 3,
+            "MID": 5,
+            "LOW": 0,
+            "UNMATCHED": 3
+          }
+        }
+      },
+      "kbs_banff": {
+        "n_reference_events": 10,
+        "n_sentences": 14,
+        "n_generated_events": 14,
+        "raw_events_total": 19,
+        "chunks": 6,
+        "raw_events_per_chunk_median": 2.5,
+        "unmatched_gt": 8,
+        "unmatched_gt_short": 6,
+        "n_gt_short": 6,
+        "unmatched_generated": 12,
+        "alignment": 0.1024,
+        "theta_recall": {
+          "temporal_event_recall@IoU>=0.3": 0.2,
+          "temporal_event_recall@IoU>=0.5": 0.1,
+          "temporal_event_recall@IoU>=0.7": 0.0
+        },
+        "compression": 1.4,
+        "rejections": 5,
+        "rejection_reasons": {
+          "too_many_evidence": 4,
+          "evidence_outside_span": 1
+        },
+        "zero_event_chunks": 0,
+        "chunk_retries": 2,
+        "chunk_splits": 0,
+        "splits_recovered": 0,
+        "span_coverage": 0.6361,
+        "alignment_types": {
+          "overmerge": 1,
+          "missed_event": 8,
+          "reasonable_match": 1
+        },
+        "c1_status": "PRESENT",
+        "c1_kind_status": {
+          "language_drift": "ABSENT",
+          "early_stop": "PRESENT",
+          "repetition_loop": "ABSENT"
+        },
+        "non_korean_event_titles": 0,
+        "iou_distribution": {
+          "n": 10,
+          "min": 0.0,
+          "p25": 0.0,
+          "median": 0.0,
+          "p75": 0.0,
+          "max": 0.557,
+          "buckets": {
+            "HIGH": 0,
+            "MID": 2,
+            "LOW": 0,
+            "UNMATCHED": 8
+          }
+        }
+      },
+      "wonyi_gyeongju": {
+        "n_reference_events": 10,
+        "n_sentences": 16,
+        "n_generated_events": 16,
+        "raw_events_total": 16,
+        "chunks": 7,
+        "raw_events_per_chunk_median": 2,
+        "unmatched_gt": 1,
+        "unmatched_gt_short": 1,
+        "n_gt_short": 4,
+        "unmatched_generated": 7,
+        "alignment": 0.5613,
+        "theta_recall": {
+          "temporal_event_recall@IoU>=0.3": 0.9,
+          "temporal_event_recall@IoU>=0.5": 0.7,
+          "temporal_event_recall@IoU>=0.7": 0.4
+        },
+        "compression": 1.6,
+        "rejections": 0,
+        "rejection_reasons": {},
+        "zero_event_chunks": 0,
+        "chunk_retries": 0,
+        "chunk_splits": 0,
+        "splits_recovered": 0,
+        "span_coverage": 0.8609,
+        "alignment_types": {
+          "boundary_too_wide": 1,
+          "boundary_shift": 1,
+          "missed_event": 1,
+          "reasonable_match": 7
+        },
+        "c1_status": "ABSENT",
+        "c1_kind_status": {
+          "language_drift": "ABSENT",
+          "early_stop": "ABSENT",
+          "repetition_loop": "ABSENT"
+        },
+        "non_korean_event_titles": 0,
+        "iou_distribution": {
+          "n": 10,
+          "min": 0.0,
+          "p25": 0.375,
+          "median": 0.6246,
+          "p75": 0.7222,
+          "max": 0.9231,
+          "buckets": {
+            "HIGH": 4,
+            "MID": 5,
+            "LOW": 0,
+            "UNMATCHED": 1
+          }
+        }
+      },
+      "wonyi_geoje": {
+        "n_reference_events": 8,
+        "n_sentences": 10,
+        "n_generated_events": 10,
+        "raw_events_total": 11,
+        "chunks": 6,
+        "raw_events_per_chunk_median": 1.5,
+        "unmatched_gt": 1,
+        "unmatched_gt_short": 1,
+        "n_gt_short": 1,
+        "unmatched_generated": 3,
+        "alignment": 0.5471,
+        "theta_recall": {
+          "temporal_event_recall@IoU>=0.3": 0.875,
+          "temporal_event_recall@IoU>=0.5": 0.625,
+          "temporal_event_recall@IoU>=0.7": 0.375
+        },
+        "compression": 1.25,
+        "rejections": 1,
+        "rejection_reasons": {
+          "evidence_outside_span": 1
+        },
+        "zero_event_chunks": 1,
+        "chunk_retries": 1,
+        "chunk_splits": 0,
+        "splits_recovered": 0,
+        "span_coverage": 0.8287,
+        "alignment_types": {
+          "boundary_shift": 2,
+          "missed_event": 1,
+          "reasonable_match": 5
+        },
+        "c1_status": "PRESENT",
+        "c1_kind_status": {
+          "language_drift": "ABSENT",
+          "early_stop": "PRESENT",
+          "repetition_loop": "ABSENT"
+        },
+        "non_korean_event_titles": 0,
+        "iou_distribution": {
+          "n": 8,
+          "min": 0.0,
+          "p25": 0.4906,
+          "median": 0.5555,
+          "p75": 0.746,
+          "max": 0.8235,
+          "buckets": {
+            "HIGH": 3,
+            "MID": 4,
+            "LOW": 0,
+            "UNMATCHED": 1
+          }
+        }
+      },
+      "m8c2_3I7oGwk6EaQ": {
+        "n_reference_events": 1,
+        "n_sentences": 7,
+        "n_generated_events": 7,
+        "raw_events_total": 8,
+        "chunks": 4,
+        "raw_events_per_chunk_median": 1.5,
+        "unmatched_gt": 0,
+        "unmatched_gt_short": 0,
+        "n_gt_short": 0,
+        "unmatched_generated": 6,
+        "alignment": 0.2254,
+        "theta_recall": {
+          "temporal_event_recall@IoU>=0.3": 0.0,
+          "temporal_event_recall@IoU>=0.5": 0.0,
+          "temporal_event_recall@IoU>=0.7": 0.0
+        },
+        "compression": 7.0,
+        "rejections": 1,
+        "rejection_reasons": {
+          "too_many_evidence": 1
+        },
+        "zero_event_chunks": 0,
+        "chunk_retries": 1,
+        "chunk_splits": 0,
+        "splits_recovered": 0,
+        "span_coverage": 0.711,
+        "alignment_types": {
+          "boundary_shift": 1
+        },
+        "c1_status": "PRESENT",
+        "c1_kind_status": {
+          "language_drift": "ABSENT",
+          "early_stop": "PRESENT",
+          "repetition_loop": "ABSENT"
+        },
+        "non_korean_event_titles": 2,
+        "iou_distribution": {
+          "n": 1,
+          "min": 0.2254,
+          "p25": 0.2254,
+          "median": 0.2254,
+          "p75": 0.2254,
+          "max": 0.2254,
+          "buckets": {
+            "HIGH": 0,
+            "MID": 0,
+            "LOW": 1,
+            "UNMATCHED": 0
+          }
+        }
+      },
+      "m8c2_cIxG7OHYMPU": {
+        "n_reference_events": 9,
+        "n_sentences": 14,
+        "n_generated_events": 14,
+        "raw_events_total": 17,
+        "chunks": 6,
+        "raw_events_per_chunk_median": 2.5,
+        "unmatched_gt": 2,
+        "unmatched_gt_short": 1,
+        "n_gt_short": 4,
+        "unmatched_generated": 7,
+        "alignment": 0.2342,
+        "theta_recall": {
+          "temporal_event_recall@IoU>=0.3": 0.3333,
+          "temporal_event_recall@IoU>=0.5": 0.1111,
+          "temporal_event_recall@IoU>=0.7": 0.0
+        },
+        "compression": 1.5556,
+        "rejections": 3,
+        "rejection_reasons": {
+          "evidence_outside_span": 2,
+          "too_many_evidence": 1
+        },
+        "zero_event_chunks": 0,
+        "chunk_retries": 1,
+        "chunk_splits": 0,
+        "splits_recovered": 0,
+        "span_coverage": 0.7744,
+        "alignment_types": {
+          "overmerge": 1,
+          "boundary_too_wide": 3,
+          "boundary_shift": 2,
+          "missed_event": 2,
+          "reasonable_match": 1
+        },
+        "c1_status": "PRESENT",
+        "c1_kind_status": {
+          "language_drift": "ABSENT",
+          "early_stop": "PRESENT",
+          "repetition_loop": "ABSENT"
+        },
+        "non_korean_event_titles": 0,
+        "iou_distribution": {
+          "n": 9,
+          "min": 0.0,
+          "p25": 0.1077,
+          "median": 0.1828,
+          "p75": 0.4545,
+          "max": 0.5357,
+          "buckets": {
+            "HIGH": 0,
+            "MID": 3,
+            "LOW": 4,
+            "UNMATCHED": 2
+          }
+        }
+      }
+    }
+  },
+  "redesign_dev": {
+    "source": "C:\\Users\\UserK\\Desktop\\prj\\results\\m8_redesign_r1",
+    "per_video": {
+      "baekmansonghee_jirisan": {
+        "n_reference_events": 7,
+        "n_sentences": 23,
+        "n_generated_events": 23,
+        "raw_events_total": 24,
+        "chunks": 4,
+        "raw_events_per_chunk_median": 4.0,
+        "unmatched_gt": 0,
+        "unmatched_gt_short": 0,
+        "n_gt_short": 2,
+        "unmatched_generated": 16,
+        "alignment": 0.469,
+        "theta_recall": {
+          "temporal_event_recall@IoU>=0.3": 0.8571,
+          "temporal_event_recall@IoU>=0.5": 0.4286,
+          "temporal_event_recall@IoU>=0.7": 0.0
+        },
+        "compression": 3.2857,
+        "rejections": 1,
+        "rejection_reasons": {
+          "thin_description": 1
+        },
+        "zero_event_chunks": 0,
+        "chunk_retries": 0,
+        "chunk_splits": 0,
+        "splits_recovered": 0,
+        "span_coverage": 0.9836,
+        "alignment_types": {
+          "boundary_too_wide": 1,
+          "boundary_shift": 3,
+          "reasonable_match": 3
+        },
+        "c1_status": "ABSENT",
+        "c1_kind_status": {
+          "language_drift": "ABSENT",
+          "early_stop": "ABSENT",
+          "repetition_loop": "ABSENT"
+        },
+        "non_korean_event_titles": 0,
+        "iou_distribution": {
+          "n": 7,
+          "min": 0.2762,
+          "p25": 0.4167,
+          "median": 0.4762,
+          "p75": 0.5625,
+          "max": 0.6667,
+          "buckets": {
+            "HIGH": 0,
+            "MID": 6,
+            "LOW": 1,
+            "UNMATCHED": 0
+          }
+        }
+      },
+      "softyeon_ceramics": {
+        "n_reference_events": 12,
+        "n_sentences": 23,
+        "n_generated_events": 23,
+        "raw_events_total": 26,
+        "chunks": 4,
+        "raw_events_per_chunk_median": 6.5,
+        "unmatched_gt": 2,
+        "unmatched_gt_short": 2,
+        "n_gt_short": 6,
+        "unmatched_generated": 13,
+        "alignment": 0.4541,
+        "theta_recall": {
+          "temporal_event_recall@IoU>=0.3": 0.75,
+          "temporal_event_recall@IoU>=0.5": 0.5,
+          "temporal_event_recall@IoU>=0.7": 0.1667
+        },
+        "compression": 1.9167,
+        "rejections": 3,
+        "rejection_reasons": {
+          "too_many_evidence": 3
+        },
+        "zero_event_chunks": 0,
+        "chunk_retries": 0,
+        "chunk_splits": 0,
+        "splits_recovered": 0,
+        "span_coverage": 0.8177,
+        "alignment_types": {
+          "overmerge": 1,
+          "boundary_shift": 4,
+          "missed_event": 2,
+          "reasonable_match": 5
+        },
+        "c1_status": "ABSENT",
+        "c1_kind_status": {
+          "language_drift": "ABSENT",
+          "early_stop": "ABSENT",
+          "repetition_loop": "ABSENT"
+        },
+        "non_korean_event_titles": 0,
+        "iou_distribution": {
+          "n": 12,
+          "min": 0.0,
+          "p25": 0.45,
+          "median": 0.49,
+          "p75": 0.5455,
+          "max": 0.9091,
+          "buckets": {
+            "HIGH": 2,
+            "MID": 7,
+            "LOW": 1,
+            "UNMATCHED": 2
+          }
+        }
+      },
+      "jissi_farm": {
+        "n_reference_events": 11,
+        "n_sentences": 30,
+        "n_generated_events": 30,
+        "raw_events_total": 39,
+        "chunks": 4,
+        "raw_events_per_chunk_median": 9.0,
+        "unmatched_gt": 2,
+        "unmatched_gt_short": 2,
+        "n_gt_short": 7,
+        "unmatched_generated": 21,
+        "alignment": 0.3926,
+        "theta_recall": {
+          "temporal_event_recall@IoU>=0.3": 0.5455,
+          "temporal_event_recall@IoU>=0.5": 0.3636,
+          "temporal_event_recall@IoU>=0.7": 0.2727
+        },
+        "compression": 2.7273,
+        "rejections": 0,
+        "rejection_reasons": {},
+        "zero_event_chunks": 0,
+        "chunk_retries": 0,
+        "chunk_splits": 0,
+        "splits_recovered": 0,
+        "span_coverage": 0.9716,
+        "alignment_types": {
+          "overmerge": 1,
+          "boundary_too_wide": 1,
+          "boundary_shift": 3,
+          "missed_event": 2,
+          "reasonable_match": 4
+        },
+        "c1_status": "ABSENT",
+        "c1_kind_status": {
+          "language_drift": "ABSENT",
+          "early_stop": "ABSENT",
+          "repetition_loop": "ABSENT"
+        },
+        "non_korean_event_titles": 0,
+        "iou_distribution": {
+          "n": 11,
+          "min": 0.0,
+          "p25": 0.2083,
+          "median": 0.3478,
+          "p75": 0.7143,
+          "max": 0.9,
+          "buckets": {
+            "HIGH": 3,
+            "MID": 3,
+            "LOW": 3,
+            "UNMATCHED": 2
+          }
+        }
+      },
+      "kbs_banff": {
+        "n_reference_events": 10,
+        "n_sentences": 24,
+        "n_generated_events": 24,
+        "raw_events_total": 43,
+        "chunks": 6,
+        "raw_events_per_chunk_median": 5.0,
+        "unmatched_gt": 3,
+        "unmatched_gt_short": 3,
+        "n_gt_short": 6,
+        "unmatched_generated": 17,
+        "alignment": 0.3342,
+        "theta_recall": {
+          "temporal_event_recall@IoU>=0.3": 0.6,
+          "temporal_event_recall@IoU>=0.5": 0.4,
+          "temporal_event_recall@IoU>=0.7": 0.0
+        },
+        "compression": 2.4,
+        "rejections": 5,
+        "rejection_reasons": {
+          "too_many_evidence": 5
+        },
+        "zero_event_chunks": 0,
+        "chunk_retries": 0,
+        "chunk_splits": 0,
+        "splits_recovered": 0,
+        "span_coverage": 0.7563,
+        "alignment_types": {
+          "overmerge": 2,
+          "boundary_shift": 3,
+          "missed_event": 3,
+          "reasonable_match": 2
+        },
+        "c1_status": "ABSENT",
+        "c1_kind_status": {
+          "language_drift": "ABSENT",
+          "early_stop": "ABSENT",
+          "repetition_loop": "ABSENT"
+        },
+        "non_korean_event_titles": 0,
+        "iou_distribution": {
+          "n": 10,
+          "min": 0.0,
+          "p25": 0.0,
+          "median": 0.4839,
+          "p75": 0.5294,
+          "max": 0.625,
+          "buckets": {
+            "HIGH": 0,
+            "MID": 6,
+            "LOW": 1,
+            "UNMATCHED": 3
+          }
+        }
+      },
+      "wonyi_gyeongju": {
+        "n_reference_events": 10,
+        "n_sentences": 36,
+        "n_generated_events": 36,
+        "raw_events_total": 40,
+        "chunks": 7,
+        "raw_events_per_chunk_median": 4,
+        "unmatched_gt": 1,
+        "unmatched_gt_short": 1,
+        "n_gt_short": 4,
+        "unmatched_generated": 27,
+        "alignment": 0.3858,
+        "theta_recall": {
+          "temporal_event_recall@IoU>=0.3": 0.7,
+          "temporal_event_recall@IoU>=0.5": 0.3,
+          "temporal_event_recall@IoU>=0.7": 0.2
+        },
+        "compression": 3.6,
+        "rejections": 21,
+        "rejection_reasons": {
+          "thin_description": 13,
+          "too_many_evidence": 7,
+          "bad_span": 1
+        },
+        "zero_event_chunks": 1,
+        "chunk_retries": 1,
+        "chunk_splits": 1,
+        "splits_recovered": 1,
+        "span_coverage": 0.7304,
+        "alignment_types": {
+          "overmerge": 2,
+          "boundary_shift": 5,
+          "missed_event": 1,
+          "reasonable_match": 2
+        },
+        "c1_status": "PRESENT",
+        "c1_kind_status": {
+          "language_drift": "ABSENT",
+          "early_stop": "PRESENT",
+          "repetition_loop": "PRESENT"
+        },
+        "non_korean_event_titles": 0,
+        "iou_distribution": {
+          "n": 10,
+          "min": 0.0,
+          "p25": 0.233,
+          "median": 0.3333,
+          "p75": 0.5729,
+          "max": 0.8222,
+          "buckets": {
+            "HIGH": 2,
+            "MID": 5,
+            "LOW": 2,
+            "UNMATCHED": 1
+          }
+        }
+      },
+      "wonyi_geoje": {
+        "n_reference_events": 8,
+        "n_sentences": 27,
+        "n_generated_events": 27,
+        "raw_events_total": 30,
+        "chunks": 6,
+        "raw_events_per_chunk_median": 6.0,
+        "unmatched_gt": 0,
+        "unmatched_gt_short": 0,
+        "n_gt_short": 1,
+        "unmatched_generated": 19,
+        "alignment": 0.4611,
+        "theta_recall": {
+          "temporal_event_recall@IoU>=0.3": 0.625,
+          "temporal_event_recall@IoU>=0.5": 0.375,
+          "temporal_event_recall@IoU>=0.7": 0.25
+        },
+        "compression": 3.375,
+        "rejections": 7,
+        "rejection_reasons": {
+          "thin_description": 6,
+          "too_many_evidence": 1
+        },
+        "zero_event_chunks": 1,
+        "chunk_retries": 1,
+        "chunk_splits": 1,
+        "splits_recovered": 1,
+        "span_coverage": 0.9113,
+        "alignment_types": {
+          "boundary_too_wide": 1,
+          "boundary_shift": 4,
+          "reasonable_match": 3
+        },
+        "c1_status": "PRESENT",
+        "c1_kind_status": {
+          "language_drift": "ABSENT",
+          "early_stop": "PRESENT",
+          "repetition_loop": "ABSENT"
+        },
+        "non_korean_event_titles": 0,
+        "iou_distribution": {
+          "n": 8,
+          "min": 0.25,
+          "p25": 0.2604,
+          "median": 0.4108,
+          "p75": 0.6111,
+          "max": 0.75,
+          "buckets": {
+            "HIGH": 2,
+            "MID": 3,
+            "LOW": 3,
+            "UNMATCHED": 0
+          }
+        }
+      },
+      "m8c2_3I7oGwk6EaQ": {
+        "n_reference_events": 1,
+        "n_sentences": 16,
+        "n_generated_events": 16,
+        "raw_events_total": 28,
+        "chunks": 4,
+        "raw_events_per_chunk_median": 6.0,
+        "unmatched_gt": 0,
+        "unmatched_gt_short": 0,
+        "n_gt_short": 0,
+        "unmatched_generated": 15,
+        "alignment": 0.3468,
+        "theta_recall": {
+          "temporal_event_recall@IoU>=0.3": 1.0,
+          "temporal_event_recall@IoU>=0.5": 0.0,
+          "temporal_event_recall@IoU>=0.7": 0.0
+        },
+        "compression": 16.0,
+        "rejections": 0,
+        "rejection_reasons": {},
+        "zero_event_chunks": 0,
+        "chunk_retries": 0,
+        "chunk_splits": 0,
+        "splits_recovered": 0,
+        "span_coverage": 1.0,
+        "alignment_types": {
+          "boundary_shift": 1
+        },
+        "c1_status": "ABSENT",
+        "c1_kind_status": {
+          "language_drift": "ABSENT",
+          "early_stop": "ABSENT",
+          "repetition_loop": "ABSENT"
+        },
+        "non_korean_event_titles": 1,
+        "iou_distribution": {
+          "n": 1,
+          "min": 0.3468,
+          "p25": 0.3468,
+          "median": 0.3468,
+          "p75": 0.3468,
+          "max": 0.3468,
+          "buckets": {
+            "HIGH": 0,
+            "MID": 1,
+            "LOW": 0,
+            "UNMATCHED": 0
+          }
+        }
+      },
+      "m8c2_cIxG7OHYMPU": {
+        "n_reference_events": 9,
+        "n_sentences": 40,
+        "n_generated_events": 40,
+        "raw_events_total": 32,
+        "chunks": 6,
+        "raw_events_per_chunk_median": 5.0,
+        "unmatched_gt": 2,
+        "unmatched_gt_short": 2,
+        "n_gt_short": 4,
+        "unmatched_generated": 33,
+        "alignment": 0.2942,
+        "theta_recall": {
+          "temporal_event_recall@IoU>=0.3": 0.4444,
+          "temporal_event_recall@IoU>=0.5": 0.2222,
+          "temporal_event_recall@IoU>=0.7": 0.0
+        },
+        "compression": 4.4444,
+        "rejections": 7,
+        "rejection_reasons": {
+          "thin_description": 5,
+          "bad_span": 1,
+          "evidence_outside_span": 1
+        },
+        "zero_event_chunks": 1,
+        "chunk_retries": 1,
+        "chunk_splits": 1,
+        "splits_recovered": 1,
+        "span_coverage": 0.7805,
+        "alignment_types": {
+          "boundary_too_wide": 2,
+          "boundary_shift": 3,
+          "missed_event": 2,
+          "reasonable_match": 2
+        },
+        "c1_status": "PRESENT",
+        "c1_kind_status": {
+          "language_drift": "ABSENT",
+          "early_stop": "PRESENT",
+          "repetition_loop": "ABSENT"
+        },
+        "non_korean_event_titles": 0,
+        "iou_distribution": {
+          "n": 9,
+          "min": 0.0,
+          "p25": 0.172,
+          "median": 0.2632,
+          "p75": 0.4605,
+          "max": 0.55,
+          "buckets": {
+            "HIGH": 0,
+            "MID": 4,
+            "LOW": 3,
+            "UNMATCHED": 2
+          }
+        }
+      }
+    }
+  },
+  "baseline_panel_dev_scores": {
+    "is_confirmation": false,
+    "dev_c1_present_videos": 4,
+    "dev_c1_unclear_videos": 0,
+    "dev_c2_median_alignment": 0.3311,
+    "dev_c3_max_compression": 7.0,
+    "note": "소비된 패널의 개발 점수다. 확증이 아니며 통과/미달로 표현하지 않는다."
+  },
+  "redesign_panel_dev_scores": {
+    "is_confirmation": false,
+    "dev_c1_present_videos": 3,
+    "dev_c1_unclear_videos": 0,
+    "dev_c2_median_alignment": 0.3892,
+    "dev_c3_max_compression": 16.0,
+    "note": "소비된 패널의 개발 점수다. 확증이 아니며 통과/미달로 표현하지 않는다."
+  },
+  "official_verdict_unchanged": true
+}

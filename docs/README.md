@@ -1,6 +1,6 @@
 # 문서 지도
 
-문서가 많다(루트 40 · `finalization/` 54 · `preregistration/` 26 · `probes/` 84).
+문서가 많다(루트 40 · `finalization/` 57 · `preregistration/` 26 · `probes/` 84).
 **전부 읽을 필요 없다.** 아래 세 줄이 진입점이고 나머지는 필요할 때 찾는다.
 
 | 상황 | 읽을 것 |
@@ -77,7 +77,7 @@
 `DRAFT`가 붙은 둘은 **초안 상태 그대로**다 — 확정본으로 인용하지 마라.
 JSON 산출물(`P2_*.json` · `P3_*.json`)은 같은 이름의 md와 짝이거나 도구가 읽는 정본이다.
 
-## `finalization/` — 최종화 산출물 (54건)
+## `finalization/` — 최종화 산출물 (57건)
 
 2026-08-25부터의 마감 작업이 전부 여기 있다.
 
@@ -89,7 +89,7 @@ JSON 산출물(`P2_*.json` · `P3_*.json`)은 같은 이름의 md와 짝이거�
 | **정답 사건 목록 동결** | [M8_C2_GT_FREEZE](finalization/M8_C2_GT_FREEZE_2026-08-27.md)(8편 68건 · review 수정 6건 사유) · `m8_c2_gt_freeze_*.json`(해시 정본) |
 | **M8 공식 결과** | [M8_OFFICIAL_RESULT](finalization/M8_OFFICIAL_RESULT_2026-08-27.md) — evaluation COMPLETE · **acceptance FAIL**(C1 4/8 · C2 0.3311 · C3 max 7.00) · `m8_official_result_*.json` |
 | **M8 실패 분해** | [M8_FAILURE_ANALYSIS](finalization/M8_FAILURE_ANALYSIS_2026-08-27.md) — **진단 전용**. 입도 불일치가 주원인 · 개선 후보 R1~R7(미구현) · `m8_failure_analysis_*.json` |
-| **M8 redesign R1** | [M8_C1_PROSPECTIVE_AMENDMENT](finalization/M8_C1_PROSPECTIVE_AMENDMENT_2026-08-27.md)(**다음 confirmation에만** 적용) · `m8_redesign_r1_compare_*.json`(개발 점수 — 확증 아님) |
+| **M8 redesign R1** | [M8_REDESIGN_R1_RESULT](finalization/M8_REDESIGN_R1_RESULT_2026-08-28.md) — **REDESIGN_RETHINK**(R1 성공·R2 실패·새 파국 1건) · [M8_C1_PROSPECTIVE_AMENDMENT](finalization/M8_C1_PROSPECTIVE_AMENDMENT_2026-08-27.md)(**다음 confirmation에만** 적용) · `m8_redesign_r1_compare_*.json`(개발 점수 — 확증 아님) |
 | **evaluator 동결** | `m8_evaluator_freeze_2026-08-27.json` — 관문별 함수 해시·GT 해시·동결 상수. `m8_evaluator_freeze.py --verify`로 대조 |
 | **감사** | [PROJECT_DESIGN_CONFORMANCE_AUDIT](finalization/PROJECT_DESIGN_CONFORMANCE_AUDIT_2026-08-26.md)(COMPLETE) · [CAPTION_TO_RETRIEVAL_INTEGRITY_AUDIT](finalization/CAPTION_TO_RETRIEVAL_INTEGRITY_AUDIT_2026-08-26.md) · [CAPTION_TEXT_HANDLING_AUDIT](finalization/CAPTION_TEXT_HANDLING_AUDIT_2026-08-26.md) · [END_TO_END_AUDIT](finalization/END_TO_END_AUDIT_2026-08-25.md) · [F4_DOCUMENTATION_AUDIT](finalization/F4_DOCUMENTATION_AUDIT_2026-08-26.md) |
 | **캡션↔검색 케이스 스터디** | [PLAN](finalization/CAPTION_RETRIEVAL_CASESTUDY_PLAN_2026-08-25.md) · [RESULTS](finalization/CAPTION_RETRIEVAL_CASESTUDY_RESULTS_2026-08-25.md) · [AMENDMENT](finalization/CAPTION_RETRIEVAL_CASESTUDY_AMENDMENT_2026-08-25.md) · [A2 AMENDMENT](finalization/CAPTION_RETRIEVAL_CASESTUDY_AMENDMENT_A2_2026-08-26.md) · [TABLE](finalization/CAPTION_RETRIEVAL_CASESTUDY_TABLE.md) |
