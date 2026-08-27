@@ -87,15 +87,22 @@ def normalize(draft: dict, segs: list) -> dict:
     사람이 초를 타이핑하면 오탈자가 섞이고, 그 오탈자는 V1~V4 검증을 통과할 수도 있다.
     """
     by_idx = {s["idx"]: s for s in segs}
-    out = []
+    out, used = [], set()
     for e in draft.get("events", []):
         a, b = int(e["start_seg"]), int(e["end_seg"])
         if a > b:
             a, b = b, a
         if a not in by_idx or b not in by_idx:
             raise UIError(f"구간 번호가 범위 밖이다: {a}~{b}")
+        # **번호를 목록 길이로 매기지 않는다.** 가운데 사건을 지운 뒤 새로 추가하면
+        # 번호가 재사용돼 같은 id가 둘 생긴다(실측 사고: E007 둘·E006 없음).
+        # id는 UI가 사건을 고르고 지우는 유일한 손잡이라 겹치면 엉뚱한 사건이 지워진다.
+        eid = e.get("event_id")
+        if not eid or eid in used:            # 중복은 먼저 온 것을 살리고 뒤를 새로 준다
+            eid = next_event_id([{"event_id": u} for u in used])
+        used.add(eid)
         out.append({
-            "event_id": e.get("event_id") or f"E{len(out) + 1:03d}",
+            "event_id": eid,
             "start_seg": a, "end_seg": b,
             "start_sec": float(by_idx[a]["start"]),
             "end_sec": float(by_idx[b]["end"]),

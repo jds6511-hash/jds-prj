@@ -193,3 +193,37 @@ def test_ui_never_touches_freeze(env):
     assert "FROZEN_" not in src
     paths = [getattr(r, "path", "") for r in env["client"].app.routes]
     assert not [p for p in paths if "freeze" in p]
+
+
+def test_ids_stay_unique_after_deleting_a_middle_event(env):
+    """중간 사건을 지우고 새로 추가해도 id가 겹치면 안 된다.
+
+    실측 사고: 목록에 `E007`이 둘, `E006`이 없는 상태가 나왔다 — 새 id를 목록 길이로
+    매겨서 삭제 뒤 번호가 재사용됐다. id는 사건을 가리키는 유일한 손잡이라
+    겹치면 UI에서 다른 사건이 선택되고 삭제도 엉킨다.
+    """
+    c = env["client"]
+    r = c.put(f"/api/draft/{VID}", json={"events": [
+        {"start_seg": 0, "end_seg": 0, "description": "하나"},
+        {"start_seg": 1, "end_seg": 1, "description": "둘"},
+        {"start_seg": 2, "end_seg": 2, "description": "셋"}]})
+    ev = r.json()["events"]
+    assert [e["event_id"] for e in ev] == ["E001", "E002", "E003"]
+
+    kept = [e for e in ev if e["event_id"] != "E002"]          # 가운데 삭제
+    kept.append({"event_id": None, "start_seg": 4, "end_seg": 4, "description": "넷"})
+    ev2 = c.put(f"/api/draft/{VID}", json={"events": kept}).json()["events"]
+    ids = [e["event_id"] for e in ev2]
+    assert len(ids) == len(set(ids)), ids
+    assert "E003" in ids                                        # 기존 id는 그대로 둔다
+
+
+def test_duplicate_ids_in_input_are_repaired(env):
+    """이미 저장된 초안에 중복 id가 있으면 저장할 때 고쳐 준다(먼저 온 것을 유지)."""
+    c = env["client"]
+    ev = c.put(f"/api/draft/{VID}", json={"events": [
+        {"event_id": "E007", "start_seg": 0, "end_seg": 1, "description": "먼저"},
+        {"event_id": "E007", "start_seg": 2, "end_seg": 3, "description": "나중"}]}).json()["events"]
+    ids = [e["event_id"] for e in ev]
+    assert len(set(ids)) == 2, ids
+    assert ev[0]["event_id"] == "E007" and ev[0]["description"] == "먼저"
