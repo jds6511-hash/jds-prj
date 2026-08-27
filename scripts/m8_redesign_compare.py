@@ -15,6 +15,7 @@ redesign   results/m8_redesign_<id>/report_dev_<vid>.json
     python scripts/m8_redesign_compare.py --run-id r1
 """
 import argparse
+import hashlib
 import io
 import json
 import statistics
@@ -32,6 +33,33 @@ from event_inventory_kit import OUT, load_reference                 # noqa: E402
 from m8_gates import panel_videos                                   # noqa: E402
 
 SHORT_GT_MAX = 10     # 진단 bucket. 공식 실행에서 미매칭 GT 길이 median이 6구간이었다
+LINEAGE = (ROOT / "docs" / "finalization"
+           / "m8_official_report_lineage_2026-08-27.json")
+
+
+class LineageError(RuntimeError):
+    """baseline이 공식 8편이 아닐 때. **경고가 아니라 중단이다.**"""
+
+
+def check_baseline_lineage(cfg, videos: list, lineage_path=LINEAGE) -> dict:
+    """baseline을 직접 재계산하기 전에 **그 파일이 공식 산출물인지** 닫는다.
+
+    공식 run manifest는 report 해시를 기록하지 않았다(그때 빠진 항목이다).
+    그래서 바이트 해시를 별도 lineage 파일에 고정해 두고 여기서 대조한다.
+    """
+    want = json.loads(Path(lineage_path).read_text(encoding="utf-8"))["report_sha256"]
+    got, bad = {}, []
+    for v in videos:
+        p = Path(common.work_dir(cfg, v)) / "report.json"
+        got[v] = hashlib.sha256(p.read_bytes()).hexdigest()
+        if want.get(v) != got[v]:
+            bad.append(v)
+    if bad:
+        raise LineageError(
+            f"baseline 리포트가 공식 산출물과 다르다: {bad} — 이 상태로 비교하면 "
+            f"baseline이 무엇인지 말할 수 없다")
+    return {"checked": len(videos), "all_match": True,
+            "lineage_file": str(Path(lineage_path).name)}
 
 
 def metrics(rep: dict, refs: list, n_segments: int) -> dict:
@@ -90,8 +118,9 @@ def panel_dev_scores(rows: dict) -> dict:
                      "표현하지 않는다.")}
 
 
-def compare(cfg, run_dir, videos=None) -> dict:
+def compare(cfg, run_dir, videos=None, lineage_path=LINEAGE) -> dict:
     videos = videos or panel_videos()
+    lineage = check_baseline_lineage(cfg, videos, lineage_path)
     base, dev = {}, {}
     for v in videos:
         wdir = Path(common.work_dir(cfg, v))
@@ -105,6 +134,7 @@ def compare(cfg, run_dir, videos=None) -> dict:
             dev[v] = metrics(json.loads(p.read_text(encoding="utf-8")), refs, n)
     return {"record": "M8 REDESIGN ROUND 1 — baseline vs development",
             "date": "2026-08-27", "is_confirmation": False,
+            "baseline_lineage": lineage,
             "baseline": {"source": "work/<vid>/report.json (공식 m8_official_0827)",
                          "per_video": base},
             "redesign_dev": {"source": str(run_dir), "per_video": dev},

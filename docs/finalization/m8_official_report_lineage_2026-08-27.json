@@ -1,0 +1,17 @@
+{
+  "record": "공식 M8 리포트 8편의 바이트 해시 (baseline lineage)",
+  "date": "2026-08-27",
+  "run_id": "m8_official_0827",
+  "why": "공식 run manifest가 report 해시를 기록하지 않았다 — 그때 빠진 항목이다. baseline을 직접 재계산하는 도구가 정말 공식 8편을 대상으로 했는지 닫으려면 대조할 값이 필요하다. 서버 원본과 로컬 사본이 8/8 바이트 일치함을 2026-08-27에 확인하고 그 값을 여기 고정한다.",
+  "algorithm": "sha256 of raw bytes (줄바꿈 정규화 없음 — 추적되지 않는 파일이라 변환이 없다)",
+  "report_sha256": {
+    "baekmansonghee_jirisan": "a078e4634b4e8d9c056aa4c8689b7c9744d15f7baef6523e685bc8a48893264c",
+    "softyeon_ceramics": "e89d7ddb038672295b13df31da6d530dcd32085b03419ef4ed7afff221b54ae4",
+    "jissi_farm": "f8fe5590372dc27e1fff186926c533919cdf95235c139bf55c875cfc97b1406c",
+    "kbs_banff": "48e786661a28e6a16ec03b3b1706e5b35ef02e5f12efa0287db77d3245238be7",
+    "wonyi_gyeongju": "1f045ae47ae8afc34c009f6599a77ef70e8c0fb285f808146f7fe3c18c3f5e3c",
+    "wonyi_geoje": "a640e6423fbc128968b7b23497d6def059d356d95c26f7bd9ba703e2836633a1",
+    "m8c2_3I7oGwk6EaQ": "c1fb5284fb2cc02cb18e9b5fbe482ab6e231e0c60c40d3043ffb1ce8861ac2fa",
+    "m8c2_cIxG7OHYMPU": "e3efee595cbaa68c7a8354ac32dc164d6e5766943177c7addc9906c9de38fbf5"
+  }
+}

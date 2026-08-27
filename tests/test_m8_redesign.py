@@ -196,3 +196,24 @@ def test_compare_metrics_cover_the_four_failure_axes():
               "alignment", "compression", "rejections", "zero_event_chunks",
               "chunk_splits", "non_korean_event_titles", "span_coverage"):
         assert k in m
+
+
+def test_compare_refuses_when_baseline_is_not_official(tmp_path):
+    """baseline lineage가 안 맞으면 비교를 시작하지 않는다."""
+    import m8_redesign_compare as C
+    (tmp_path / "v1").mkdir()
+    (tmp_path / "v1" / "report.json").write_text("{}", encoding="utf-8")
+    lin = tmp_path / "lineage.json"
+    lin.write_text(json.dumps({"report_sha256": {"v1": "0" * 64}}), encoding="utf-8")
+    cfg = {"paths": {"work": str(tmp_path)}}
+    with pytest.raises(C.LineageError):
+        C.check_baseline_lineage(cfg, ["v1"], lineage_path=lin)
+
+
+def test_compare_lineage_passes_on_real_official_reports():
+    import m8_redesign_compare as C
+    import common as CM
+    from m8_gates import panel_videos as PV
+    cfg = CM.load_config(str(ROOT / "config.yaml"))
+    out = C.check_baseline_lineage(cfg, PV())
+    assert out["all_match"] is True and out["checked"] == 8
