@@ -133,17 +133,18 @@ C1 evidence를 담지 않는다(도구가 강제).
 ## 4. 진단 — 관문이 아니다
 
 `Redundancy`는 미구현이다(규격 §4-1). 기계로 셀 수 있는 것만 적는다.
+**이 표는 2026-08-27에 정정됐다** — 최초 판에서 미매칭 수 4행을 손으로 잘못 옮겼다(`softyeon 8→6` · `kbs_banff 7→8` · `3I7OgwK 1→0` · `cIxG 6→2`). 값은 정본 JSON에서 생성한다.
 
 ```
 video                      미매칭 GT  미매칭 생성  span 커버  거부
-baekmansonghee_jirisan          1        9      1.000     0
-softyeon_ceramics               8        2      0.974     1
-jissi_farm                      3        3      0.919     0
-kbs_banff                       7       11      0.636     5
-wonyi_gyeongju                  1        7      0.861     0
-wonyi_geoje                     1        3      0.829     1
-m8c2_3I7oGwk6EaQ                1        7      0.711     1
-m8c2_cIxG7OHYMPU                6       11      0.774     3
+baekmansonghee_jirisan           1          9      1.000      0
+softyeon_ceramics                6          0      0.974      1
+jissi_farm                       3          3      0.919      0
+kbs_banff                        8         12      0.636      5
+wonyi_gyeongju                   1          7      0.861      0
+wonyi_geoje                      1          3      0.829      1
+m8c2_3I7oGwk6EaQ                 0          6      0.711      1
+m8c2_cIxG7OHYMPU                 2          7      0.774      3
 
 거부 사유 합계   too_many_evidence 6 · evidence_outside_span 4 · bad_span 1
 ```

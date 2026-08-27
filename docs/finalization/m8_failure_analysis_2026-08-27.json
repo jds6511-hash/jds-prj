@@ -1,0 +1,4281 @@
+{
+  "record": "M8 실패 분해 (진단 전용)",
+  "date": "2026-08-27",
+  "official_result": {
+    "evaluation": "COMPLETE",
+    "acceptance": "FAIL",
+    "c1": {
+      "kinds": [
+        "language_drift",
+        "early_stop",
+        "repetition_loop"
+      ],
+      "statuses": [
+        "ABSENT",
+        "ABSENT",
+        "ABSENT",
+        "PRESENT",
+        "ABSENT",
+        "PRESENT",
+        "PRESENT",
+        "PRESENT"
+      ],
+      "n_catastrophic_videos": 4,
+      "n_unclear_videos": 0,
+      "n_videos": 8,
+      "threshold": 0,
+      "passed": false
+    },
+    "c2": {
+      "statistic": "median",
+      "value": 0.3311,
+      "threshold": 0.7,
+      "n_videos": 8,
+      "passed": false
+    },
+    "c3": {
+      "statistic": "max",
+      "value": 7.0,
+      "threshold": 2.0,
+      "n_videos": 8,
+      "passed": false
+    },
+    "changed_by_this_analysis": false
+  },
+  "operationalization_note": "alignment_type은 동결 taxonomy 이름에 post-hoc 기계 규칙을 붙인 것이다 (reasonable_match IoU>=0.5, boundary_too_wide >=2.0배, overmerge는 다른 GT를 그 길이의 50% 이상 먹었을 때). 규칙 자체는 사전등록에 없고 진단 전용이다. bucket(HIGH/MID/LOW/UNMATCHED)도 관문 임계가 아니다.",
+  "per_video": {
+    "baekmansonghee_jirisan": {
+      "n_reference_events": 7,
+      "n_sentences": 15,
+      "n_generated_events": 15,
+      "compression": 2.1429,
+      "alignment": 0.52,
+      "theta_recall": {
+        "temporal_event_recall@IoU>=0.3": 0.8571,
+        "temporal_event_recall@IoU>=0.5": 0.7143,
+        "temporal_event_recall@IoU>=0.7": 0.1429
+      },
+      "unmatched_gt": 1,
+      "unmatched_generated": 9,
+      "rejections": 0,
+      "rejection_reasons": {},
+      "span_coverage": 1.0,
+      "c1_status": "ABSENT",
+      "zero_event_chunks": 0,
+      "alignment_types": {
+        "overmerge": 1,
+        "boundary_shift": 1,
+        "missed_event": 1,
+        "reasonable_match": 4
+      },
+      "iou_distribution": {
+        "n": 7,
+        "min": 0.0,
+        "p25": 0.5556,
+        "median": 0.5714,
+        "p75": 0.625,
+        "max": 0.9545,
+        "buckets": {
+          "HIGH": 1,
+          "MID": 5,
+          "LOW": 0,
+          "UNMATCHED": 1
+        }
+      },
+      "redundancy_diagnostic": {
+        "status": "DEFINITION_AMBIGUOUS",
+        "note": "사전등록 M8_구조변경_2026-08-16 §2-2는 Redundancy를 '같은 정답 사건을 여러 문장이 중복 서술한 비율'로만 적었고 분자·분모를 특정하지 않았다. 임의 정의를 만들지 않는다. 아래 gt_events_with_multiple_overlapping_generated는 그 자리를 대신하는 값이 아니라 **다른 이름의 기계적 관측치**이며 진단 전용이다.",
+        "gt_events_with_multiple_overlapping_generated": 5,
+        "n_gt_events": 7,
+        "overlapping_generated_per_gt_distribution": {
+          "1": 2,
+          "2": 2,
+          "3": 1,
+          "4": 1,
+          "7": 1
+        }
+      },
+      "failure_modes": [
+        "OVER_FRAGMENTATION_DOMINANT"
+      ],
+      "evidence": [
+        "compression 2.1429"
+      ]
+    },
+    "softyeon_ceramics": {
+      "n_reference_events": 12,
+      "n_sentences": 6,
+      "n_generated_events": 6,
+      "compression": 0.5,
+      "alignment": 0.2172,
+      "theta_recall": {
+        "temporal_event_recall@IoU>=0.3": 0.25,
+        "temporal_event_recall@IoU>=0.5": 0.1667,
+        "temporal_event_recall@IoU>=0.7": 0.1667
+      },
+      "unmatched_gt": 6,
+      "unmatched_generated": 0,
+      "rejections": 1,
+      "rejection_reasons": {
+        "bad_span": 1
+      },
+      "span_coverage": 0.974,
+      "c1_status": "ABSENT",
+      "zero_event_chunks": 0,
+      "alignment_types": {
+        "overmerge": 3,
+        "boundary_shift": 2,
+        "missed_event": 6,
+        "reasonable_match": 1
+      },
+      "iou_distribution": {
+        "n": 12,
+        "min": 0.0,
+        "p25": 0.0,
+        "median": 0.0667,
+        "p75": 0.25,
+        "max": 0.9487,
+        "buckets": {
+          "HIGH": 2,
+          "MID": 1,
+          "LOW": 3,
+          "UNMATCHED": 6
+        }
+      },
+      "redundancy_diagnostic": {
+        "status": "DEFINITION_AMBIGUOUS",
+        "note": "사전등록 M8_구조변경_2026-08-16 §2-2는 Redundancy를 '같은 정답 사건을 여러 문장이 중복 서술한 비율'로만 적었고 분자·분모를 특정하지 않았다. 임의 정의를 만들지 않는다. 아래 gt_events_with_multiple_overlapping_generated는 그 자리를 대신하는 값이 아니라 **다른 이름의 기계적 관측치**이며 진단 전용이다.",
+        "gt_events_with_multiple_overlapping_generated": 4,
+        "n_gt_events": 12,
+        "overlapping_generated_per_gt_distribution": {
+          "1": 8,
+          "2": 4
+        }
+      },
+      "failure_modes": [
+        "UNDER_GENERATION_DOMINANT"
+      ],
+      "evidence": [
+        "생성 6 < GT 12"
+      ]
+    },
+    "jissi_farm": {
+      "n_reference_events": 11,
+      "n_sentences": 11,
+      "n_generated_events": 11,
+      "compression": 1.0,
+      "alignment": 0.428,
+      "theta_recall": {
+        "temporal_event_recall@IoU>=0.3": 0.7273,
+        "temporal_event_recall@IoU>=0.5": 0.5455,
+        "temporal_event_recall@IoU>=0.7": 0.2727
+      },
+      "unmatched_gt": 3,
+      "unmatched_generated": 3,
+      "rejections": 0,
+      "rejection_reasons": {},
+      "span_coverage": 0.9194,
+      "c1_status": "ABSENT",
+      "zero_event_chunks": 0,
+      "alignment_types": {
+        "overmerge": 1,
+        "boundary_shift": 1,
+        "missed_event": 3,
+        "reasonable_match": 6
+      },
+      "iou_distribution": {
+        "n": 11,
+        "min": 0.0,
+        "p25": 0.3056,
+        "median": 0.5,
+        "p75": 0.75,
+        "max": 0.8333,
+        "buckets": {
+          "HIGH": 3,
+          "MID": 5,
+          "LOW": 0,
+          "UNMATCHED": 3
+        }
+      },
+      "redundancy_diagnostic": {
+        "status": "DEFINITION_AMBIGUOUS",
+        "note": "사전등록 M8_구조변경_2026-08-16 §2-2는 Redundancy를 '같은 정답 사건을 여러 문장이 중복 서술한 비율'로만 적었고 분자·분모를 특정하지 않았다. 임의 정의를 만들지 않는다. 아래 gt_events_with_multiple_overlapping_generated는 그 자리를 대신하는 값이 아니라 **다른 이름의 기계적 관측치**이며 진단 전용이다.",
+        "gt_events_with_multiple_overlapping_generated": 5,
+        "n_gt_events": 11,
+        "overlapping_generated_per_gt_distribution": {
+          "1": 6,
+          "2": 3,
+          "3": 2
+        }
+      },
+      "failure_modes": [
+        "RELATIVELY_STABLE"
+      ],
+      "evidence": [
+        "alignment 0.428 · compression 1.0"
+      ]
+    },
+    "kbs_banff": {
+      "n_reference_events": 10,
+      "n_sentences": 14,
+      "n_generated_events": 14,
+      "compression": 1.4,
+      "alignment": 0.1024,
+      "theta_recall": {
+        "temporal_event_recall@IoU>=0.3": 0.2,
+        "temporal_event_recall@IoU>=0.5": 0.1,
+        "temporal_event_recall@IoU>=0.7": 0.0
+      },
+      "unmatched_gt": 8,
+      "unmatched_generated": 12,
+      "rejections": 5,
+      "rejection_reasons": {
+        "too_many_evidence": 4,
+        "evidence_outside_span": 1
+      },
+      "span_coverage": 0.6361,
+      "c1_status": "PRESENT",
+      "zero_event_chunks": 0,
+      "alignment_types": {
+        "overmerge": 1,
+        "missed_event": 8,
+        "reasonable_match": 1
+      },
+      "iou_distribution": {
+        "n": 10,
+        "min": 0.0,
+        "p25": 0.0,
+        "median": 0.0,
+        "p75": 0.0,
+        "max": 0.557,
+        "buckets": {
+          "HIGH": 0,
+          "MID": 2,
+          "LOW": 0,
+          "UNMATCHED": 8
+        }
+      },
+      "redundancy_diagnostic": {
+        "status": "DEFINITION_AMBIGUOUS",
+        "note": "사전등록 M8_구조변경_2026-08-16 §2-2는 Redundancy를 '같은 정답 사건을 여러 문장이 중복 서술한 비율'로만 적었고 분자·분모를 특정하지 않았다. 임의 정의를 만들지 않는다. 아래 gt_events_with_multiple_overlapping_generated는 그 자리를 대신하는 값이 아니라 **다른 이름의 기계적 관측치**이며 진단 전용이다.",
+        "gt_events_with_multiple_overlapping_generated": 1,
+        "n_gt_events": 10,
+        "overlapping_generated_per_gt_distribution": {
+          "0": 4,
+          "1": 5,
+          "5": 1
+        }
+      },
+      "failure_modes": [
+        "MIXED",
+        "SPAN_ALIGNMENT_DOMINANT",
+        "REJECTION_HEAVY"
+      ],
+      "evidence": [
+        "alignment 0.1024",
+        "거부 5건"
+      ]
+    },
+    "wonyi_gyeongju": {
+      "n_reference_events": 10,
+      "n_sentences": 16,
+      "n_generated_events": 16,
+      "compression": 1.6,
+      "alignment": 0.5613,
+      "theta_recall": {
+        "temporal_event_recall@IoU>=0.3": 0.9,
+        "temporal_event_recall@IoU>=0.5": 0.7,
+        "temporal_event_recall@IoU>=0.7": 0.4
+      },
+      "unmatched_gt": 1,
+      "unmatched_generated": 7,
+      "rejections": 0,
+      "rejection_reasons": {},
+      "span_coverage": 0.8609,
+      "c1_status": "ABSENT",
+      "zero_event_chunks": 0,
+      "alignment_types": {
+        "boundary_too_wide": 1,
+        "boundary_shift": 1,
+        "missed_event": 1,
+        "reasonable_match": 7
+      },
+      "iou_distribution": {
+        "n": 10,
+        "min": 0.0,
+        "p25": 0.375,
+        "median": 0.6246,
+        "p75": 0.7222,
+        "max": 0.9231,
+        "buckets": {
+          "HIGH": 4,
+          "MID": 5,
+          "LOW": 0,
+          "UNMATCHED": 1
+        }
+      },
+      "redundancy_diagnostic": {
+        "status": "DEFINITION_AMBIGUOUS",
+        "note": "사전등록 M8_구조변경_2026-08-16 §2-2는 Redundancy를 '같은 정답 사건을 여러 문장이 중복 서술한 비율'로만 적었고 분자·분모를 특정하지 않았다. 임의 정의를 만들지 않는다. 아래 gt_events_with_multiple_overlapping_generated는 그 자리를 대신하는 값이 아니라 **다른 이름의 기계적 관측치**이며 진단 전용이다.",
+        "gt_events_with_multiple_overlapping_generated": 7,
+        "n_gt_events": 10,
+        "overlapping_generated_per_gt_distribution": {
+          "0": 1,
+          "1": 2,
+          "2": 4,
+          "3": 1,
+          "4": 1,
+          "5": 1
+        }
+      },
+      "failure_modes": [
+        "RELATIVELY_STABLE"
+      ],
+      "evidence": [
+        "alignment 0.5613 · compression 1.6"
+      ]
+    },
+    "wonyi_geoje": {
+      "n_reference_events": 8,
+      "n_sentences": 10,
+      "n_generated_events": 10,
+      "compression": 1.25,
+      "alignment": 0.5471,
+      "theta_recall": {
+        "temporal_event_recall@IoU>=0.3": 0.875,
+        "temporal_event_recall@IoU>=0.5": 0.625,
+        "temporal_event_recall@IoU>=0.7": 0.375
+      },
+      "unmatched_gt": 1,
+      "unmatched_generated": 3,
+      "rejections": 1,
+      "rejection_reasons": {
+        "evidence_outside_span": 1
+      },
+      "span_coverage": 0.8287,
+      "c1_status": "PRESENT",
+      "zero_event_chunks": 1,
+      "alignment_types": {
+        "boundary_shift": 2,
+        "missed_event": 1,
+        "reasonable_match": 5
+      },
+      "iou_distribution": {
+        "n": 8,
+        "min": 0.0,
+        "p25": 0.4906,
+        "median": 0.5555,
+        "p75": 0.746,
+        "max": 0.8235,
+        "buckets": {
+          "HIGH": 3,
+          "MID": 4,
+          "LOW": 0,
+          "UNMATCHED": 1
+        }
+      },
+      "redundancy_diagnostic": {
+        "status": "DEFINITION_AMBIGUOUS",
+        "note": "사전등록 M8_구조변경_2026-08-16 §2-2는 Redundancy를 '같은 정답 사건을 여러 문장이 중복 서술한 비율'로만 적었고 분자·분모를 특정하지 않았다. 임의 정의를 만들지 않는다. 아래 gt_events_with_multiple_overlapping_generated는 그 자리를 대신하는 값이 아니라 **다른 이름의 기계적 관측치**이며 진단 전용이다.",
+        "gt_events_with_multiple_overlapping_generated": 5,
+        "n_gt_events": 8,
+        "overlapping_generated_per_gt_distribution": {
+          "0": 1,
+          "1": 2,
+          "2": 1,
+          "3": 4
+        }
+      },
+      "failure_modes": [
+        "RELATIVELY_STABLE"
+      ],
+      "evidence": [
+        "alignment 0.5471 · compression 1.25"
+      ]
+    },
+    "m8c2_3I7oGwk6EaQ": {
+      "n_reference_events": 1,
+      "n_sentences": 7,
+      "n_generated_events": 7,
+      "compression": 7.0,
+      "alignment": 0.2254,
+      "theta_recall": {
+        "temporal_event_recall@IoU>=0.3": 0.0,
+        "temporal_event_recall@IoU>=0.5": 0.0,
+        "temporal_event_recall@IoU>=0.7": 0.0
+      },
+      "unmatched_gt": 0,
+      "unmatched_generated": 6,
+      "rejections": 1,
+      "rejection_reasons": {
+        "too_many_evidence": 1
+      },
+      "span_coverage": 0.711,
+      "c1_status": "PRESENT",
+      "zero_event_chunks": 0,
+      "alignment_types": {
+        "boundary_shift": 1
+      },
+      "iou_distribution": {
+        "n": 1,
+        "min": 0.2254,
+        "p25": 0.2254,
+        "median": 0.2254,
+        "p75": 0.2254,
+        "max": 0.2254,
+        "buckets": {
+          "HIGH": 0,
+          "MID": 0,
+          "LOW": 1,
+          "UNMATCHED": 0
+        }
+      },
+      "redundancy_diagnostic": {
+        "status": "DEFINITION_AMBIGUOUS",
+        "note": "사전등록 M8_구조변경_2026-08-16 §2-2는 Redundancy를 '같은 정답 사건을 여러 문장이 중복 서술한 비율'로만 적었고 분자·분모를 특정하지 않았다. 임의 정의를 만들지 않는다. 아래 gt_events_with_multiple_overlapping_generated는 그 자리를 대신하는 값이 아니라 **다른 이름의 기계적 관측치**이며 진단 전용이다.",
+        "gt_events_with_multiple_overlapping_generated": 1,
+        "n_gt_events": 1,
+        "overlapping_generated_per_gt_distribution": {
+          "7": 1
+        }
+      },
+      "failure_modes": [
+        "MIXED",
+        "OVER_FRAGMENTATION_DOMINANT",
+        "SPAN_ALIGNMENT_DOMINANT"
+      ],
+      "evidence": [
+        "compression 7.0",
+        "alignment 0.2254"
+      ]
+    },
+    "m8c2_cIxG7OHYMPU": {
+      "n_reference_events": 9,
+      "n_sentences": 14,
+      "n_generated_events": 14,
+      "compression": 1.5556,
+      "alignment": 0.2342,
+      "theta_recall": {
+        "temporal_event_recall@IoU>=0.3": 0.3333,
+        "temporal_event_recall@IoU>=0.5": 0.1111,
+        "temporal_event_recall@IoU>=0.7": 0.0
+      },
+      "unmatched_gt": 2,
+      "unmatched_generated": 7,
+      "rejections": 3,
+      "rejection_reasons": {
+        "evidence_outside_span": 2,
+        "too_many_evidence": 1
+      },
+      "span_coverage": 0.7744,
+      "c1_status": "PRESENT",
+      "zero_event_chunks": 0,
+      "alignment_types": {
+        "overmerge": 1,
+        "boundary_too_wide": 3,
+        "boundary_shift": 2,
+        "missed_event": 2,
+        "reasonable_match": 1
+      },
+      "iou_distribution": {
+        "n": 9,
+        "min": 0.0,
+        "p25": 0.1077,
+        "median": 0.1828,
+        "p75": 0.4545,
+        "max": 0.5357,
+        "buckets": {
+          "HIGH": 0,
+          "MID": 3,
+          "LOW": 4,
+          "UNMATCHED": 2
+        }
+      },
+      "redundancy_diagnostic": {
+        "status": "DEFINITION_AMBIGUOUS",
+        "note": "사전등록 M8_구조변경_2026-08-16 §2-2는 Redundancy를 '같은 정답 사건을 여러 문장이 중복 서술한 비율'로만 적었고 분자·분모를 특정하지 않았다. 임의 정의를 만들지 않는다. 아래 gt_events_with_multiple_overlapping_generated는 그 자리를 대신하는 값이 아니라 **다른 이름의 기계적 관측치**이며 진단 전용이다.",
+        "gt_events_with_multiple_overlapping_generated": 3,
+        "n_gt_events": 9,
+        "overlapping_generated_per_gt_distribution": {
+          "0": 1,
+          "1": 5,
+          "3": 1,
+          "5": 1,
+          "7": 1
+        }
+      },
+      "failure_modes": [
+        "MIXED",
+        "SPAN_ALIGNMENT_DOMINANT",
+        "REJECTION_HEAVY"
+      ],
+      "evidence": [
+        "alignment 0.2342",
+        "거부 3건"
+      ]
+    }
+  },
+  "event_level": [
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gt_index": 0,
+      "gt_event": "인트로",
+      "gt_span": [
+        0,
+        2
+      ],
+      "gt_len": 3,
+      "matched": false,
+      "matched_gen_index": null,
+      "gen_span": null,
+      "gen_len": null,
+      "matched_iou": 0.0,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 0,
+      "alignment_type": "missed_event",
+      "bucket": "UNMATCHED"
+    },
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gt_index": 1,
+      "gt_event": "주차장에서 산 입구까지 이동",
+      "gt_span": [
+        3,
+        14
+      ],
+      "gt_len": 12,
+      "matched": true,
+      "matched_gen_index": 0,
+      "gen_span": [
+        0,
+        11
+      ],
+      "gen_len": 12,
+      "matched_iou": 0.6,
+      "n_generated_overlapping": 2,
+      "n_gt_substantially_overlapped_by_matched_gen": 2,
+      "n_gt_touched_by_matched_gen": 2,
+      "alignment_type": "overmerge",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gt_index": 2,
+      "gt_event": "등산시작",
+      "gt_span": [
+        15,
+        119
+      ],
+      "gt_len": 105,
+      "matched": true,
+      "matched_gen_index": 6,
+      "gen_span": [
+        55,
+        114
+      ],
+      "gen_len": 60,
+      "matched_iou": 0.5714,
+      "n_generated_overlapping": 7,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 1,
+      "alignment_type": "reasonable_match",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gt_index": 3,
+      "gt_event": "산 정상에서 식사",
+      "gt_span": [
+        120,
+        141
+      ],
+      "gt_len": 22,
+      "matched": true,
+      "matched_gen_index": 8,
+      "gen_span": [
+        120,
+        140
+      ],
+      "gen_len": 21,
+      "matched_iou": 0.9545,
+      "n_generated_overlapping": 2,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 1,
+      "alignment_type": "reasonable_match",
+      "bucket": "HIGH"
+    },
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gt_index": 4,
+      "gt_event": "하산 시작",
+      "gt_span": [
+        142,
+        159
+      ],
+      "gt_len": 18,
+      "matched": true,
+      "matched_gen_index": 10,
+      "gen_span": [
+        147,
+        152
+      ],
+      "gen_len": 6,
+      "matched_iou": 0.3333,
+      "n_generated_overlapping": 4,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 1,
+      "alignment_type": "boundary_shift",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gt_index": 5,
+      "gt_event": "하산 후 식당에서 식사",
+      "gt_span": [
+        160,
+        177
+      ],
+      "gt_len": 18,
+      "matched": true,
+      "matched_gen_index": 13,
+      "gen_span": [
+        165,
+        174
+      ],
+      "gen_len": 10,
+      "matched_iou": 0.5556,
+      "n_generated_overlapping": 3,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 1,
+      "alignment_type": "reasonable_match",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gt_index": 6,
+      "gt_event": "마무리",
+      "gt_span": [
+        178,
+        182
+      ],
+      "gt_len": 5,
+      "matched": true,
+      "matched_gen_index": 14,
+      "gen_span": [
+        175,
+        182
+      ],
+      "gen_len": 8,
+      "matched_iou": 0.625,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 2,
+      "alignment_type": "reasonable_match",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "gt_index": 0,
+      "gt_event": "인트로 + 팝업 진행",
+      "gt_span": [
+        0,
+        4
+      ],
+      "gt_len": 5,
+      "matched": false,
+      "matched_gen_index": null,
+      "gen_span": null,
+      "gen_len": null,
+      "matched_iou": 0.0,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 0,
+      "alignment_type": "missed_event",
+      "bucket": "UNMATCHED"
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "gt_index": 1,
+      "gt_event": "축하파티",
+      "gt_span": [
+        5,
+        9
+      ],
+      "gt_len": 5,
+      "matched": false,
+      "matched_gen_index": null,
+      "gen_span": null,
+      "gen_len": null,
+      "matched_iou": 0.0,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 0,
+      "alignment_type": "missed_event",
+      "bucket": "UNMATCHED"
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "gt_index": 2,
+      "gt_event": "출근길",
+      "gt_span": [
+        10,
+        20
+      ],
+      "gt_len": 11,
+      "matched": false,
+      "matched_gen_index": null,
+      "gen_span": null,
+      "gen_len": null,
+      "matched_iou": 0.0,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 0,
+      "alignment_type": "missed_event",
+      "bucket": "UNMATCHED"
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "gt_index": 3,
+      "gt_event": "가게 오픈 및 정리",
+      "gt_span": [
+        21,
+        38
+      ],
+      "gt_len": 18,
+      "matched": true,
+      "matched_gen_index": 0,
+      "gen_span": [
+        0,
+        59
+      ],
+      "gen_len": 60,
+      "matched_iou": 0.3,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 5,
+      "n_gt_touched_by_matched_gen": 5,
+      "alignment_type": "overmerge",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "gt_index": 4,
+      "gt_event": "재료준비",
+      "gt_span": [
+        39,
+        63
+      ],
+      "gt_len": 25,
+      "matched": true,
+      "matched_gen_index": 1,
+      "gen_span": [
+        55,
+        74
+      ],
+      "gen_len": 20,
+      "matched_iou": 0.25,
+      "n_generated_overlapping": 2,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 1,
+      "alignment_type": "boundary_shift",
+      "bucket": "LOW"
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "gt_index": 5,
+      "gt_event": "수업진행",
+      "gt_span": [
+        75,
+        111
+      ],
+      "gt_len": 37,
+      "matched": true,
+      "matched_gen_index": 2,
+      "gen_span": [
+        75,
+        113
+      ],
+      "gen_len": 39,
+      "matched_iou": 0.9487,
+      "n_generated_overlapping": 2,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 2,
+      "alignment_type": "reasonable_match",
+      "bucket": "HIGH"
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "gt_index": 6,
+      "gt_event": "퇴근",
+      "gt_span": [
+        112,
+        116
+      ],
+      "gt_len": 5,
+      "matched": false,
+      "matched_gen_index": null,
+      "gen_span": null,
+      "gen_len": null,
+      "matched_iou": 0.0,
+      "n_generated_overlapping": 2,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 0,
+      "alignment_type": "missed_event",
+      "bucket": "UNMATCHED"
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "gt_index": 7,
+      "gt_event": "출근",
+      "gt_span": [
+        123,
+        127
+      ],
+      "gt_len": 5,
+      "matched": false,
+      "matched_gen_index": null,
+      "gen_span": null,
+      "gen_len": null,
+      "matched_iou": 0.0,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 0,
+      "alignment_type": "missed_event",
+      "bucket": "UNMATCHED"
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "gt_index": 8,
+      "gt_event": "식사",
+      "gt_span": [
+        131,
+        138
+      ],
+      "gt_len": 8,
+      "matched": true,
+      "matched_gen_index": 3,
+      "gen_span": [
+        110,
+        169
+      ],
+      "gen_len": 60,
+      "matched_iou": 0.1333,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 4,
+      "n_gt_touched_by_matched_gen": 5,
+      "alignment_type": "overmerge",
+      "bucket": "LOW"
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "gt_index": 9,
+      "gt_event": "포장작업",
+      "gt_span": [
+        148,
+        176
+      ],
+      "gt_len": 29,
+      "matched": true,
+      "matched_gen_index": 4,
+      "gen_span": [
+        165,
+        171
+      ],
+      "gen_len": 7,
+      "matched_iou": 0.2414,
+      "n_generated_overlapping": 2,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 1,
+      "alignment_type": "boundary_shift",
+      "bucket": "LOW"
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "gt_index": 10,
+      "gt_event": "타코야끼만들기",
+      "gt_span": [
+        177,
+        187
+      ],
+      "gt_len": 11,
+      "matched": true,
+      "matched_gen_index": 5,
+      "gen_span": [
+        177,
+        191
+      ],
+      "gen_len": 15,
+      "matched_iou": 0.7333,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 2,
+      "n_gt_touched_by_matched_gen": 2,
+      "alignment_type": "overmerge",
+      "bucket": "HIGH"
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "gt_index": 11,
+      "gt_event": "아웃트로",
+      "gt_span": [
+        188,
+        191
+      ],
+      "gt_len": 4,
+      "matched": false,
+      "matched_gen_index": null,
+      "gen_span": null,
+      "gen_len": null,
+      "matched_iou": 0.0,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 0,
+      "alignment_type": "missed_event",
+      "bucket": "UNMATCHED"
+    },
+    {
+      "video_id": "jissi_farm",
+      "gt_index": 0,
+      "gt_event": "호박순 정리",
+      "gt_span": [
+        0,
+        15
+      ],
+      "gt_len": 16,
+      "matched": true,
+      "matched_gen_index": 0,
+      "gen_span": [
+        0,
+        10
+      ],
+      "gen_len": 11,
+      "matched_iou": 0.6875,
+      "n_generated_overlapping": 2,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 1,
+      "alignment_type": "reasonable_match",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "jissi_farm",
+      "gt_index": 1,
+      "gt_event": "잡담",
+      "gt_span": [
+        18,
+        27
+      ],
+      "gt_len": 10,
+      "matched": true,
+      "matched_gen_index": 2,
+      "gen_span": [
+        16,
+        26
+      ],
+      "gen_len": 11,
+      "matched_iou": 0.75,
+      "n_generated_overlapping": 2,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 1,
+      "alignment_type": "reasonable_match",
+      "bucket": "HIGH"
+    },
+    {
+      "video_id": "jissi_farm",
+      "gt_index": 2,
+      "gt_event": "포장작업",
+      "gt_span": [
+        28,
+        34
+      ],
+      "gt_len": 7,
+      "matched": true,
+      "matched_gen_index": 3,
+      "gen_span": [
+        26,
+        39
+      ],
+      "gen_len": 14,
+      "matched_iou": 0.5,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 3,
+      "alignment_type": "reasonable_match",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "jissi_farm",
+      "gt_index": 3,
+      "gt_event": "자동차 운전",
+      "gt_span": [
+        36,
+        44
+      ],
+      "gt_len": 9,
+      "matched": true,
+      "matched_gen_index": 4,
+      "gen_span": [
+        36,
+        42
+      ],
+      "gen_len": 7,
+      "matched_iou": 0.7778,
+      "n_generated_overlapping": 2,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 1,
+      "alignment_type": "reasonable_match",
+      "bucket": "HIGH"
+    },
+    {
+      "video_id": "jissi_farm",
+      "gt_index": 4,
+      "gt_event": "비닐하우스 보수 작업",
+      "gt_span": [
+        45,
+        116
+      ],
+      "gt_len": 72,
+      "matched": true,
+      "matched_gen_index": 6,
+      "gen_span": [
+        55,
+        114
+      ],
+      "gen_len": 60,
+      "matched_iou": 0.8333,
+      "n_generated_overlapping": 3,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 1,
+      "alignment_type": "reasonable_match",
+      "bucket": "HIGH"
+    },
+    {
+      "video_id": "jissi_farm",
+      "gt_index": 5,
+      "gt_event": "퇴근",
+      "gt_span": [
+        117,
+        119
+      ],
+      "gt_len": 3,
+      "matched": false,
+      "matched_gen_index": null,
+      "gen_span": null,
+      "gen_len": null,
+      "matched_iou": 0.0,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 0,
+      "alignment_type": "missed_event",
+      "bucket": "UNMATCHED"
+    },
+    {
+      "video_id": "jissi_farm",
+      "gt_index": 6,
+      "gt_event": "호박순 정리",
+      "gt_span": [
+        120,
+        145
+      ],
+      "gt_len": 26,
+      "matched": true,
+      "matched_gen_index": 7,
+      "gen_span": [
+        110,
+        130
+      ],
+      "gen_len": 21,
+      "matched_iou": 0.3056,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 3,
+      "alignment_type": "boundary_shift",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "jissi_farm",
+      "gt_index": 7,
+      "gt_event": "강아지와 놀아주기",
+      "gt_span": [
+        146,
+        193
+      ],
+      "gt_len": 48,
+      "matched": true,
+      "matched_gen_index": 9,
+      "gen_span": [
+        165,
+        189
+      ],
+      "gen_len": 25,
+      "matched_iou": 0.5208,
+      "n_generated_overlapping": 3,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 1,
+      "alignment_type": "reasonable_match",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "jissi_farm",
+      "gt_index": 8,
+      "gt_event": "자동차를 타고 이동",
+      "gt_span": [
+        194,
+        199
+      ],
+      "gt_len": 6,
+      "matched": false,
+      "matched_gen_index": null,
+      "gen_span": null,
+      "gen_len": null,
+      "matched_iou": 0.0,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 0,
+      "alignment_type": "missed_event",
+      "bucket": "UNMATCHED"
+    },
+    {
+      "video_id": "jissi_farm",
+      "gt_index": 9,
+      "gt_event": "식사",
+      "gt_span": [
+        200,
+        206
+      ],
+      "gt_len": 7,
+      "matched": true,
+      "matched_gen_index": 10,
+      "gen_span": [
+        190,
+        210
+      ],
+      "gen_len": 21,
+      "matched_iou": 0.3333,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 3,
+      "n_gt_touched_by_matched_gen": 4,
+      "alignment_type": "overmerge",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "jissi_farm",
+      "gt_index": 10,
+      "gt_event": "아웃트로",
+      "gt_span": [
+        207,
+        210
+      ],
+      "gt_len": 4,
+      "matched": false,
+      "matched_gen_index": null,
+      "gen_span": null,
+      "gen_len": null,
+      "matched_iou": 0.0,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 0,
+      "alignment_type": "missed_event",
+      "bucket": "UNMATCHED"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gt_index": 0,
+      "gt_event": "산 능선 풍경",
+      "gt_span": [
+        0,
+        24
+      ],
+      "gt_len": 25,
+      "matched": false,
+      "matched_gen_index": null,
+      "gen_span": null,
+      "gen_len": null,
+      "matched_iou": 0.0,
+      "n_generated_overlapping": 0,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 0,
+      "alignment_type": "missed_event",
+      "bucket": "UNMATCHED"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gt_index": 1,
+      "gt_event": "운전하며 이동",
+      "gt_span": [
+        25,
+        29
+      ],
+      "gt_len": 5,
+      "matched": false,
+      "matched_gen_index": null,
+      "gen_span": null,
+      "gen_len": null,
+      "matched_iou": 0.0,
+      "n_generated_overlapping": 0,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 0,
+      "alignment_type": "missed_event",
+      "bucket": "UNMATCHED"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gt_index": 2,
+      "gt_event": "도로 근처의 야생동물",
+      "gt_span": [
+        30,
+        39
+      ],
+      "gt_len": 10,
+      "matched": false,
+      "matched_gen_index": null,
+      "gen_span": null,
+      "gen_len": null,
+      "matched_iou": 0.0,
+      "n_generated_overlapping": 0,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 0,
+      "alignment_type": "missed_event",
+      "bucket": "UNMATCHED"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gt_index": 3,
+      "gt_event": "호수와 숲",
+      "gt_span": [
+        47,
+        54
+      ],
+      "gt_len": 8,
+      "matched": false,
+      "matched_gen_index": null,
+      "gen_span": null,
+      "gen_len": null,
+      "matched_iou": 0.0,
+      "n_generated_overlapping": 0,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 0,
+      "alignment_type": "missed_event",
+      "bucket": "UNMATCHED"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gt_index": 4,
+      "gt_event": "출발 전 대화",
+      "gt_span": [
+        55,
+        62
+      ],
+      "gt_len": 8,
+      "matched": false,
+      "matched_gen_index": null,
+      "gen_span": null,
+      "gen_len": null,
+      "matched_iou": 0.0,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 0,
+      "alignment_type": "missed_event",
+      "bucket": "UNMATCHED"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gt_index": 5,
+      "gt_event": "숲길 트래킹",
+      "gt_span": [
+        66,
+        75
+      ],
+      "gt_len": 10,
+      "matched": false,
+      "matched_gen_index": null,
+      "gen_span": null,
+      "gen_len": null,
+      "matched_iou": 0.0,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 0,
+      "alignment_type": "missed_event",
+      "bucket": "UNMATCHED"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gt_index": 6,
+      "gt_event": "숲 풍경",
+      "gt_span": [
+        76,
+        84
+      ],
+      "gt_len": 9,
+      "matched": false,
+      "matched_gen_index": null,
+      "gen_span": null,
+      "gen_len": null,
+      "matched_iou": 0.0,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 0,
+      "alignment_type": "missed_event",
+      "bucket": "UNMATCHED"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gt_index": 7,
+      "gt_event": "트래킹하며 사람들과 대화",
+      "gt_span": [
+        85,
+        112
+      ],
+      "gt_len": 28,
+      "matched": true,
+      "matched_gen_index": 0,
+      "gen_span": [
+        55,
+        114
+      ],
+      "gen_len": 60,
+      "matched_iou": 0.4667,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 4,
+      "n_gt_touched_by_matched_gen": 4,
+      "alignment_type": "overmerge",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gt_index": 8,
+      "gt_event": "눈 덮인 산 풍경",
+      "gt_span": [
+        140,
+        180
+      ],
+      "gt_len": 41,
+      "matched": false,
+      "matched_gen_index": null,
+      "gen_span": null,
+      "gen_len": null,
+      "matched_iou": 0.0,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 0,
+      "alignment_type": "missed_event",
+      "bucket": "UNMATCHED"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gt_index": 9,
+      "gt_event": "호숫가 근처 풍경",
+      "gt_span": [
+        181,
+        243
+      ],
+      "gt_len": 63,
+      "matched": true,
+      "matched_gen_index": 1,
+      "gen_span": [
+        165,
+        224
+      ],
+      "gen_len": 60,
+      "matched_iou": 0.557,
+      "n_generated_overlapping": 5,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 2,
+      "alignment_type": "reasonable_match",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gt_index": 0,
+      "gt_event": "기차역 앞에서 대화",
+      "gt_span": [
+        0,
+        12
+      ],
+      "gt_len": 13,
+      "matched": true,
+      "matched_gen_index": 0,
+      "gen_span": [
+        0,
+        11
+      ],
+      "gen_len": 12,
+      "matched_iou": 0.9231,
+      "n_generated_overlapping": 2,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 1,
+      "alignment_type": "reasonable_match",
+      "bucket": "HIGH"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gt_index": 1,
+      "gt_event": "역사 내부로 이동",
+      "gt_span": [
+        13,
+        18
+      ],
+      "gt_len": 6,
+      "matched": true,
+      "matched_gen_index": 1,
+      "gen_span": [
+        12,
+        27
+      ],
+      "gen_len": 16,
+      "matched_iou": 0.375,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 3,
+      "alignment_type": "boundary_too_wide",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gt_index": 2,
+      "gt_event": "기차에 탑승하여 대화",
+      "gt_span": [
+        19,
+        109
+      ],
+      "gt_len": 91,
+      "matched": true,
+      "matched_gen_index": 4,
+      "gen_span": [
+        55,
+        85
+      ],
+      "gen_len": 31,
+      "matched_iou": 0.3407,
+      "n_generated_overlapping": 5,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 1,
+      "alignment_type": "boundary_shift",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gt_index": 3,
+      "gt_event": "기차역 밖으로 이동",
+      "gt_span": [
+        110,
+        115
+      ],
+      "gt_len": 6,
+      "matched": true,
+      "matched_gen_index": 5,
+      "gen_span": [
+        109,
+        114
+      ],
+      "gen_len": 6,
+      "matched_iou": 0.7143,
+      "n_generated_overlapping": 2,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 2,
+      "alignment_type": "reasonable_match",
+      "bucket": "HIGH"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gt_index": 4,
+      "gt_event": "한복을 입고 상황극",
+      "gt_span": [
+        116,
+        141
+      ],
+      "gt_len": 26,
+      "matched": true,
+      "matched_gen_index": 7,
+      "gen_span": [
+        116,
+        129
+      ],
+      "gen_len": 14,
+      "matched_iou": 0.5385,
+      "n_generated_overlapping": 3,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 1,
+      "alignment_type": "reasonable_match",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gt_index": 5,
+      "gt_event": "식사",
+      "gt_span": [
+        142,
+        244
+      ],
+      "gt_len": 103,
+      "matched": true,
+      "matched_gen_index": 11,
+      "gen_span": [
+        165,
+        224
+      ],
+      "gen_len": 60,
+      "matched_iou": 0.5825,
+      "n_generated_overlapping": 4,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 1,
+      "alignment_type": "reasonable_match",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gt_index": 6,
+      "gt_event": "왕릉 옆으로 지나감",
+      "gt_span": [
+        245,
+        253
+      ],
+      "gt_len": 9,
+      "matched": false,
+      "matched_gen_index": null,
+      "gen_span": null,
+      "gen_len": null,
+      "matched_iou": 0.0,
+      "n_generated_overlapping": 0,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 0,
+      "alignment_type": "missed_event",
+      "bucket": "UNMATCHED"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gt_index": 7,
+      "gt_event": "발굴현장을 구경",
+      "gt_span": [
+        254,
+        289
+      ],
+      "gt_len": 36,
+      "matched": true,
+      "matched_gen_index": 13,
+      "gen_span": [
+        254,
+        279
+      ],
+      "gen_len": 26,
+      "matched_iou": 0.7222,
+      "n_generated_overlapping": 2,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 1,
+      "alignment_type": "reasonable_match",
+      "bucket": "HIGH"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gt_index": 8,
+      "gt_event": "정자에서 대화",
+      "gt_span": [
+        290,
+        334
+      ],
+      "gt_len": 45,
+      "matched": true,
+      "matched_gen_index": 14,
+      "gen_span": [
+        275,
+        334
+      ],
+      "gen_len": 60,
+      "matched_iou": 0.75,
+      "n_generated_overlapping": 2,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 2,
+      "alignment_type": "reasonable_match",
+      "bucket": "HIGH"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gt_index": 9,
+      "gt_event": "아웃트로",
+      "gt_span": [
+        335,
+        344
+      ],
+      "gt_len": 10,
+      "matched": true,
+      "matched_gen_index": 15,
+      "gen_span": [
+        330,
+        344
+      ],
+      "gen_len": 15,
+      "matched_iou": 0.6667,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 2,
+      "alignment_type": "reasonable_match",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "gt_index": 0,
+      "gt_event": "거제시내를 대화하며 이동",
+      "gt_span": [
+        0,
+        52
+      ],
+      "gt_len": 53,
+      "matched": true,
+      "matched_gen_index": 0,
+      "gen_span": [
+        0,
+        25
+      ],
+      "gen_len": 26,
+      "matched_iou": 0.4906,
+      "n_generated_overlapping": 3,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 1,
+      "alignment_type": "boundary_shift",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "gt_index": 1,
+      "gt_event": "버스를 타고 이동",
+      "gt_span": [
+        53,
+        70
+      ],
+      "gt_len": 18,
+      "matched": true,
+      "matched_gen_index": 3,
+      "gen_span": [
+        55,
+        65
+      ],
+      "gen_len": 11,
+      "matched_iou": 0.6111,
+      "n_generated_overlapping": 3,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 1,
+      "alignment_type": "reasonable_match",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "gt_index": 2,
+      "gt_event": "바닷가로 이동",
+      "gt_span": [
+        71,
+        98
+      ],
+      "gt_len": 28,
+      "matched": true,
+      "matched_gen_index": 4,
+      "gen_span": [
+        66,
+        99
+      ],
+      "gen_len": 34,
+      "matched_iou": 0.8235,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 3,
+      "alignment_type": "reasonable_match",
+      "bucket": "HIGH"
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "gt_index": 3,
+      "gt_event": "해산물 구경과 시식",
+      "gt_span": [
+        99,
+        118
+      ],
+      "gt_len": 20,
+      "matched": true,
+      "matched_gen_index": 5,
+      "gen_span": [
+        100,
+        114
+      ],
+      "gen_len": 15,
+      "matched_iou": 0.75,
+      "n_generated_overlapping": 3,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 1,
+      "alignment_type": "reasonable_match",
+      "bucket": "HIGH"
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "gt_index": 4,
+      "gt_event": "부두 근처로 나가 낚시",
+      "gt_span": [
+        119,
+        177
+      ],
+      "gt_len": 59,
+      "matched": true,
+      "matched_gen_index": 6,
+      "gen_span": [
+        110,
+        149
+      ],
+      "gen_len": 40,
+      "matched_iou": 0.4559,
+      "n_generated_overlapping": 3,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 2,
+      "alignment_type": "boundary_shift",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "gt_index": 5,
+      "gt_event": "해변에서 물놀이",
+      "gt_span": [
+        178,
+        227
+      ],
+      "gt_len": 50,
+      "matched": true,
+      "matched_gen_index": 8,
+      "gen_span": [
+        165,
+        224
+      ],
+      "gen_len": 60,
+      "matched_iou": 0.746,
+      "n_generated_overlapping": 2,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 2,
+      "alignment_type": "reasonable_match",
+      "bucket": "HIGH"
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "gt_index": 6,
+      "gt_event": "해변가에서 자리잡고 식사",
+      "gt_span": [
+        228,
+        323
+      ],
+      "gt_len": 96,
+      "matched": true,
+      "matched_gen_index": 9,
+      "gen_span": [
+        220,
+        279
+      ],
+      "gen_len": 60,
+      "matched_iou": 0.5,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 2,
+      "alignment_type": "reasonable_match",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "gt_index": 7,
+      "gt_event": "아웃트로",
+      "gt_span": [
+        324,
+        326
+      ],
+      "gt_len": 3,
+      "matched": false,
+      "matched_gen_index": null,
+      "gen_span": null,
+      "gen_len": null,
+      "matched_iou": 0.0,
+      "n_generated_overlapping": 0,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 0,
+      "alignment_type": "missed_event",
+      "bucket": "UNMATCHED"
+    },
+    {
+      "video_id": "m8c2_3I7oGwk6EaQ",
+      "gt_index": 0,
+      "gt_event": "등산",
+      "gt_span": [
+        0,
+        172
+      ],
+      "gt_len": 173,
+      "matched": true,
+      "matched_gen_index": 2,
+      "gen_span": [
+        55,
+        93
+      ],
+      "gen_len": 39,
+      "matched_iou": 0.2254,
+      "n_generated_overlapping": 7,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 1,
+      "alignment_type": "boundary_shift",
+      "bucket": "LOW"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gt_index": 0,
+      "gt_event": "산 정상",
+      "gt_span": [
+        0,
+        4
+      ],
+      "gt_len": 5,
+      "matched": true,
+      "matched_gen_index": 0,
+      "gen_span": [
+        0,
+        10
+      ],
+      "gen_len": 11,
+      "matched_iou": 0.4545,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 2,
+      "n_gt_touched_by_matched_gen": 3,
+      "alignment_type": "overmerge",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gt_index": 1,
+      "gt_event": "인트로",
+      "gt_span": [
+        5,
+        7
+      ],
+      "gt_len": 3,
+      "matched": false,
+      "matched_gen_index": null,
+      "gen_span": null,
+      "gen_len": null,
+      "matched_iou": 0.0,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 0,
+      "alignment_type": "missed_event",
+      "bucket": "UNMATCHED"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gt_index": 2,
+      "gt_event": "야간산행",
+      "gt_span": [
+        8,
+        100
+      ],
+      "gt_len": 93,
+      "matched": true,
+      "matched_gen_index": 5,
+      "gen_span": [
+        73,
+        89
+      ],
+      "gen_len": 17,
+      "matched_iou": 0.1828,
+      "n_generated_overlapping": 7,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 1,
+      "alignment_type": "boundary_shift",
+      "bucket": "LOW"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gt_index": 3,
+      "gt_event": "산 능선",
+      "gt_span": [
+        101,
+        105
+      ],
+      "gt_len": 5,
+      "matched": true,
+      "matched_gen_index": 6,
+      "gen_span": [
+        90,
+        114
+      ],
+      "gen_len": 25,
+      "matched_iou": 0.2,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 3,
+      "alignment_type": "boundary_too_wide",
+      "bucket": "LOW"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gt_index": 4,
+      "gt_event": "등산",
+      "gt_span": [
+        106,
+        217
+      ],
+      "gt_len": 112,
+      "matched": true,
+      "matched_gen_index": 7,
+      "gen_span": [
+        110,
+        169
+      ],
+      "gen_len": 60,
+      "matched_iou": 0.5357,
+      "n_generated_overlapping": 3,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 1,
+      "alignment_type": "reasonable_match",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gt_index": 5,
+      "gt_event": "휴게소에서 휴식",
+      "gt_span": [
+        218,
+        229
+      ],
+      "gt_len": 12,
+      "matched": true,
+      "matched_gen_index": 8,
+      "gen_span": [
+        165,
+        224
+      ],
+      "gen_len": 60,
+      "matched_iou": 0.1077,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 2,
+      "alignment_type": "boundary_too_wide",
+      "bucket": "LOW"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gt_index": 6,
+      "gt_event": "산 정상도착",
+      "gt_span": [
+        230,
+        249
+      ],
+      "gt_len": 20,
+      "matched": false,
+      "matched_gen_index": null,
+      "gen_span": null,
+      "gen_len": null,
+      "matched_iou": 0.0,
+      "n_generated_overlapping": 0,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 0,
+      "alignment_type": "missed_event",
+      "bucket": "UNMATCHED"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gt_index": 7,
+      "gt_event": "하산",
+      "gt_span": [
+        250,
+        325
+      ],
+      "gt_len": 76,
+      "matched": true,
+      "matched_gen_index": 9,
+      "gen_span": [
+        275,
+        309
+      ],
+      "gen_len": 35,
+      "matched_iou": 0.4605,
+      "n_generated_overlapping": 5,
+      "n_gt_substantially_overlapped_by_matched_gen": 0,
+      "n_gt_touched_by_matched_gen": 1,
+      "alignment_type": "boundary_shift",
+      "bucket": "MID"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gt_index": 8,
+      "gt_event": "아웃트로",
+      "gt_span": [
+        326,
+        327
+      ],
+      "gt_len": 2,
+      "matched": true,
+      "matched_gen_index": 13,
+      "gen_span": [
+        316,
+        327
+      ],
+      "gen_len": 12,
+      "matched_iou": 0.1667,
+      "n_generated_overlapping": 1,
+      "n_gt_substantially_overlapped_by_matched_gen": 1,
+      "n_gt_touched_by_matched_gen": 2,
+      "alignment_type": "boundary_too_wide",
+      "bucket": "LOW"
+    }
+  ],
+  "generated_level": [
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gen_index": 0,
+      "event": "등산 안내 및 시작",
+      "span": [
+        0,
+        11
+      ],
+      "len": 12,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 1,
+      "overlapping_gt": [
+        0,
+        1
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gen_index": 1,
+      "event": "주차장과 인터뷰 준비",
+      "span": [
+        11,
+        19
+      ],
+      "len": 9,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        1,
+        2
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gen_index": 2,
+      "event": "버스 이용 안내",
+      "span": [
+        19,
+        25
+      ],
+      "len": 7,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        2
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gen_index": 3,
+      "event": "지리산 역사와 코스 안내",
+      "span": [
+        25,
+        38
+      ],
+      "len": 14,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        2
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gen_index": 4,
+      "event": "식사와 휴식",
+      "span": [
+        38,
+        47
+      ],
+      "len": 10,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        2
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gen_index": 5,
+      "event": "로타리 대피소 도착",
+      "span": [
+        47,
+        59
+      ],
+      "len": 13,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        2
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gen_index": 6,
+      "event": "등산객들이 산을 오르며 풍경을 즐기고 이야기를 나눈다",
+      "span": [
+        55,
+        114
+      ],
+      "len": 60,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 2,
+      "overlapping_gt": [
+        2
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gen_index": 7,
+      "event": "등산객들이 정상을 오르고 정상에서 풍경을 감상하다",
+      "span": [
+        110,
+        119
+      ],
+      "len": 10,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        2
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gen_index": 8,
+      "event": "등산객들이 정상에서 휴식을 취하고 산행 정보를 공유하다",
+      "span": [
+        120,
+        140
+      ],
+      "len": 21,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 3,
+      "overlapping_gt": [
+        3
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gen_index": 9,
+      "event": "등산객들이 내려가며 지리산의 특성을 설명하다",
+      "span": [
+        141,
+        146
+      ],
+      "len": 6,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        3,
+        4
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gen_index": 10,
+      "event": "등산객들이 숲길을 따라 등산하다",
+      "span": [
+        147,
+        152
+      ],
+      "len": 6,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 4,
+      "overlapping_gt": [
+        4
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gen_index": 11,
+      "event": "등산객들이 정상에서 다시 만나 휴식을 취하다",
+      "span": [
+        153,
+        158
+      ],
+      "len": 6,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        4
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gen_index": 12,
+      "event": "등산객들이 식당에서 식사를 하다",
+      "span": [
+        159,
+        169
+      ],
+      "len": 11,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        4,
+        5
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gen_index": 13,
+      "event": "여성이 술을 포기하고 막걸리를 마신다",
+      "span": [
+        165,
+        174
+      ],
+      "len": 10,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 5,
+      "overlapping_gt": [
+        5
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gen_index": 14,
+      "event": "여성이 산책을 하며 음식을 먹는다",
+      "span": [
+        175,
+        182
+      ],
+      "len": 8,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 6,
+      "overlapping_gt": [
+        5,
+        6
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "gen_index": 0,
+      "event": "점토 작업",
+      "span": [
+        0,
+        59
+      ],
+      "len": 60,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 3,
+      "overlapping_gt": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "gen_index": 1,
+      "event": "작업 공간의 도구와 재료 정리",
+      "span": [
+        55,
+        74
+      ],
+      "len": 20,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 4,
+      "overlapping_gt": [
+        4
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "gen_index": 2,
+      "event": "공예품 작업",
+      "span": [
+        75,
+        113
+      ],
+      "len": 39,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 5,
+      "overlapping_gt": [
+        5,
+        6
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "gen_index": 3,
+      "event": "여성의 작업 장면",
+      "span": [
+        110,
+        169
+      ],
+      "len": 60,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 8,
+      "overlapping_gt": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "gen_index": 4,
+      "event": "인물이 흰색 상자와 테이블 위의 물건들을 조사하고 있습니다",
+      "span": [
+        165,
+        171
+      ],
+      "len": 7,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 9,
+      "overlapping_gt": [
+        9
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "gen_index": 5,
+      "event": "요리 준비 과정을 보여줍니다",
+      "span": [
+        177,
+        191
+      ],
+      "len": 15,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 10,
+      "overlapping_gt": [
+        10,
+        11
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "jissi_farm",
+      "gen_index": 0,
+      "event": "여성들이 농작물을 관리하고 있다",
+      "span": [
+        0,
+        10
+      ],
+      "len": 11,
+      "n_evidence": 3,
+      "matched": true,
+      "matched_gt_index": 0,
+      "overlapping_gt": [
+        0
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "jissi_farm",
+      "gen_index": 1,
+      "event": "여성들이 농작물을 정리하고 있다",
+      "span": [
+        10,
+        16
+      ],
+      "len": 7,
+      "n_evidence": 3,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        0
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "jissi_farm",
+      "gen_index": 2,
+      "event": "여성들이 농작물을 관리하고 있다",
+      "span": [
+        16,
+        26
+      ],
+      "len": 11,
+      "n_evidence": 3,
+      "matched": true,
+      "matched_gt_index": 1,
+      "overlapping_gt": [
+        1
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "jissi_farm",
+      "gen_index": 3,
+      "event": "여성들이 농작물을 정리하고 있다",
+      "span": [
+        26,
+        39
+      ],
+      "len": 14,
+      "n_evidence": 3,
+      "matched": true,
+      "matched_gt_index": 2,
+      "overlapping_gt": [
+        1,
+        2,
+        3
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "jissi_farm",
+      "gen_index": 4,
+      "event": "여성들이 차량을 운전하고 있다",
+      "span": [
+        36,
+        42
+      ],
+      "len": 7,
+      "n_evidence": 3,
+      "matched": true,
+      "matched_gt_index": 3,
+      "overlapping_gt": [
+        3
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "jissi_farm",
+      "gen_index": 5,
+      "event": "여성들이 농장에서 작업하고 있다",
+      "span": [
+        45,
+        59
+      ],
+      "len": 15,
+      "n_evidence": 3,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        4
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "jissi_farm",
+      "gen_index": 6,
+      "event": "농부들이 농작물 관리와 작업",
+      "span": [
+        55,
+        114
+      ],
+      "len": 60,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 4,
+      "overlapping_gt": [
+        4
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "jissi_farm",
+      "gen_index": 7,
+      "event": "농장 작업",
+      "span": [
+        110,
+        130
+      ],
+      "len": 21,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 6,
+      "overlapping_gt": [
+        4,
+        5,
+        6
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "jissi_farm",
+      "gen_index": 8,
+      "event": "강아지 돌보기",
+      "span": [
+        146,
+        169
+      ],
+      "len": 24,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        7
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "jissi_farm",
+      "gen_index": 9,
+      "event": "강아지와 사람들의 활동",
+      "span": [
+        165,
+        189
+      ],
+      "len": 25,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 7,
+      "overlapping_gt": [
+        7
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "jissi_farm",
+      "gen_index": 10,
+      "event": "사람들의 대화와 행동",
+      "span": [
+        190,
+        210
+      ],
+      "len": 21,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 9,
+      "overlapping_gt": [
+        7,
+        8,
+        9,
+        10
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gen_index": 0,
+      "event": "등산객들이 숲속에서 산책하고 자연에 대해 이야기 나누는 장면",
+      "span": [
+        55,
+        114
+      ],
+      "len": 60,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 7,
+      "overlapping_gt": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gen_index": 1,
+      "event": "등산객들이 미네스티마 호수 주변에서 산행하고 있다",
+      "span": [
+        165,
+        224
+      ],
+      "len": 60,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 9,
+      "overlapping_gt": [
+        8,
+        9
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gen_index": 2,
+      "event": "여성들이 숲속에서 산책을 하고 있다",
+      "span": [
+        220,
+        224
+      ],
+      "len": 5,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        9
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gen_index": 3,
+      "event": "여행객들이 숲속에서 대화를 나누고 있다",
+      "span": [
+        225,
+        228
+      ],
+      "len": 4,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        9
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gen_index": 4,
+      "event": "여행객들이 산길을 걷고 있다",
+      "span": [
+        229,
+        239
+      ],
+      "len": 11,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        9
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gen_index": 5,
+      "event": "여행객들이 호수 주변에서 산책을 하고 있다",
+      "span": [
+        240,
+        247
+      ],
+      "len": 8,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        9
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gen_index": 6,
+      "event": "여행객들이 산길을 따라 걷고 있다",
+      "span": [
+        248,
+        259
+      ],
+      "len": 12,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gen_index": 7,
+      "event": "여행객들이 아그네스 호수를 발견하고 있다",
+      "span": [
+        260,
+        264
+      ],
+      "len": 5,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gen_index": 8,
+      "event": "등산객들이 아그네스 호수 주변을 산책하며 풍경을 즐긴다",
+      "span": [
+        275,
+        298
+      ],
+      "len": 24,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gen_index": 9,
+      "event": "등산객들이 리틀 비하이브 방향으로 길을 이어간다",
+      "span": [
+        279,
+        281
+      ],
+      "len": 3,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gen_index": 10,
+      "event": "등산객들이 산악 풍경을 즐긴 후 휴식을 취한다",
+      "span": [
+        294,
+        300
+      ],
+      "len": 7,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gen_index": 11,
+      "event": "등산객들이 산 정상에서 대화를 나누고 있다",
+      "span": [
+        295,
+        300
+      ],
+      "len": 6,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gen_index": 12,
+      "event": "등산객들이 푸른 호수를 바라보며 손을 흔들고 있다",
+      "span": [
+        299,
+        300
+      ],
+      "len": 2,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "kbs_banff",
+      "gen_index": 13,
+      "event": "캐나디안 루키 풍경 앞에서 따뜻한 위로를 건네는 장면",
+      "span": [
+        301,
+        315
+      ],
+      "len": 15,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gen_index": 0,
+      "event": "연습생의 서울 방문 계획 설명",
+      "span": [
+        0,
+        11
+      ],
+      "len": 12,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 0,
+      "overlapping_gt": [
+        0
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gen_index": 1,
+      "event": "연습생과 원희의 대화와 웃음",
+      "span": [
+        12,
+        27
+      ],
+      "len": 16,
+      "n_evidence": 4,
+      "matched": true,
+      "matched_gt_index": 1,
+      "overlapping_gt": [
+        0,
+        1,
+        2
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gen_index": 2,
+      "event": "비행기와 열차 여행 중의 대화",
+      "span": [
+        28,
+        45
+      ],
+      "len": 18,
+      "n_evidence": 4,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        2
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gen_index": 3,
+      "event": "연습생의 첫 PPL 소개",
+      "span": [
+        46,
+        59
+      ],
+      "len": 14,
+      "n_evidence": 3,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        2
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gen_index": 4,
+      "event": "여성들이 열차에서 대화 나누고 운동을 함",
+      "span": [
+        55,
+        85
+      ],
+      "len": 31,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 2,
+      "overlapping_gt": [
+        2
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gen_index": 5,
+      "event": "여성들이 경주역에서 대화 나누고 집으로 가는 계획",
+      "span": [
+        109,
+        114
+      ],
+      "len": 6,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 3,
+      "overlapping_gt": [
+        2,
+        3
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gen_index": 6,
+      "event": "여성들이 경주역 근처에서 대화 나누고 집으로 가는 길",
+      "span": [
+        110,
+        113
+      ],
+      "len": 4,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        3
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gen_index": 7,
+      "event": "여성들이 한옥 정원에서 전통 의상 착용과 대화",
+      "span": [
+        116,
+        129
+      ],
+      "len": 14,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 4,
+      "overlapping_gt": [
+        4
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gen_index": 8,
+      "event": "여성들이 한복을 입고 야외에서 대화 나누고",
+      "span": [
+        130,
+        135
+      ],
+      "len": 6,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        4
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gen_index": 9,
+      "event": "남성과 여성들이 한옥 건물에서 식사를 준비하고",
+      "span": [
+        136,
+        145
+      ],
+      "len": 10,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        4,
+        5
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gen_index": 10,
+      "event": "여성들이 한복을 입고 식사하며 대화 나누고",
+      "span": [
+        146,
+        169
+      ],
+      "len": 24,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        5
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gen_index": 11,
+      "event": "여성들이 음식을 먹고 대화",
+      "span": [
+        165,
+        224
+      ],
+      "len": 60,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 5,
+      "overlapping_gt": [
+        5
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gen_index": 12,
+      "event": "여성들이 전통 음식을 즐기며 대화",
+      "span": [
+        220,
+        229
+      ],
+      "len": 10,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        5
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gen_index": 13,
+      "event": "여성들이 전통 유적지를 방문하여 순장을 관찰",
+      "span": [
+        254,
+        279
+      ],
+      "len": 26,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 7,
+      "overlapping_gt": [
+        7
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gen_index": 14,
+      "event": "공주와 친구들의 대화",
+      "span": [
+        275,
+        334
+      ],
+      "len": 60,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 8,
+      "overlapping_gt": [
+        7,
+        8
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gen_index": 15,
+      "event": "여성들이 대화하고 공주 역할에 대해 이야기함",
+      "span": [
+        330,
+        344
+      ],
+      "len": 15,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 9,
+      "overlapping_gt": [
+        8,
+        9
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "gen_index": 0,
+      "event": "여성들이 거리를 걷고 대화를 나누며 거제에 대한 이야기를 나눕니다",
+      "span": [
+        0,
+        25
+      ],
+      "len": 26,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 0,
+      "overlapping_gt": [
+        0
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "gen_index": 1,
+      "event": "여성들이 거제에서의 경험을 나누며 서로를 이해하려 노력함",
+      "span": [
+        35,
+        49
+      ],
+      "len": 15,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        0
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "gen_index": 2,
+      "event": "여성들이 거제에서의 활동을 설명하며 서로를 격려함",
+      "span": [
+        49,
+        59
+      ],
+      "len": 11,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        0,
+        1
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "gen_index": 3,
+      "event": "버스 안에서의 대화",
+      "span": [
+        55,
+        65
+      ],
+      "len": 11,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 1,
+      "overlapping_gt": [
+        1
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "gen_index": 4,
+      "event": "해변에서의 활동",
+      "span": [
+        66,
+        99
+      ],
+      "len": 34,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 2,
+      "overlapping_gt": [
+        1,
+        2,
+        3
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "gen_index": 5,
+      "event": "해녀 집 방문",
+      "span": [
+        100,
+        114
+      ],
+      "len": 15,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 3,
+      "overlapping_gt": [
+        3
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "gen_index": 6,
+      "event": "여성들이 해변에서 대화 나누고 낚시 활동",
+      "span": [
+        110,
+        149
+      ],
+      "len": 40,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 4,
+      "overlapping_gt": [
+        3,
+        4
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "gen_index": 7,
+      "event": "여성들이 바다를 바라보며 물고기를 찾는다",
+      "span": [
+        149,
+        169
+      ],
+      "len": 21,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        4
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "gen_index": 8,
+      "event": "여성들이 해변에서 대화하고 수영 준비",
+      "span": [
+        165,
+        224
+      ],
+      "len": 60,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 5,
+      "overlapping_gt": [
+        4,
+        5
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "gen_index": 9,
+      "event": "여성들이 해변에서 라면을 먹고 대화를 나누는 장면",
+      "span": [
+        220,
+        279
+      ],
+      "len": 60,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 6,
+      "overlapping_gt": [
+        5,
+        6
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "m8c2_3I7oGwk6EaQ",
+      "gen_index": 0,
+      "event": "NIGHT SCENE OF FOREST",
+      "span": [
+        0,
+        29
+      ],
+      "len": 30,
+      "n_evidence": 4,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        0
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "m8c2_3I7oGwk6EaQ",
+      "gen_index": 1,
+      "event": "SCENES OF NIGHT WALKING PATH",
+      "span": [
+        30,
+        59
+      ],
+      "len": 30,
+      "n_evidence": 4,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        0
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "m8c2_3I7oGwk6EaQ",
+      "gen_index": 2,
+      "event": "산의 자연 경관과 산책객들의 모습",
+      "span": [
+        55,
+        93
+      ],
+      "len": 39,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 0,
+      "overlapping_gt": [
+        0
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "m8c2_3I7oGwk6EaQ",
+      "gen_index": 3,
+      "event": "하산객의 모습과 자연 경관",
+      "span": [
+        65,
+        71
+      ],
+      "len": 7,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        0
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "m8c2_3I7oGwk6EaQ",
+      "gen_index": 4,
+      "event": "등산객들의 모습과 자연 경관",
+      "span": [
+        72,
+        89
+      ],
+      "len": 18,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        0
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "m8c2_3I7oGwk6EaQ",
+      "gen_index": 5,
+      "event": "숲속 길과 자연 경관",
+      "span": [
+        89,
+        114
+      ],
+      "len": 26,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        0
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "m8c2_3I7oGwk6EaQ",
+      "gen_index": 6,
+      "event": "풍경의 변화와 도시의 전경",
+      "span": [
+        165,
+        172
+      ],
+      "len": 8,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        0
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gen_index": 0,
+      "event": "등산객들의 준비와 대화",
+      "span": [
+        0,
+        10
+      ],
+      "len": 11,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 0,
+      "overlapping_gt": [
+        0,
+        1,
+        2
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gen_index": 1,
+      "event": "산행 계획 공유",
+      "span": [
+        10,
+        25
+      ],
+      "len": 16,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        2
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gen_index": 2,
+      "event": "휴식과 대화",
+      "span": [
+        50,
+        59
+      ],
+      "len": 10,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        2
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gen_index": 3,
+      "event": "등산객의 긴박한 상황",
+      "span": [
+        55,
+        63
+      ],
+      "len": 9,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        2
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gen_index": 4,
+      "event": "등산객의 긴장감",
+      "span": [
+        64,
+        72
+      ],
+      "len": 9,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        2
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gen_index": 5,
+      "event": "등산객의 휴식과 이동",
+      "span": [
+        73,
+        89
+      ],
+      "len": 17,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 2,
+      "overlapping_gt": [
+        2
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gen_index": 6,
+      "event": "등산객의 식사와 휴식",
+      "span": [
+        90,
+        114
+      ],
+      "len": 25,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 3,
+      "overlapping_gt": [
+        2,
+        3,
+        4
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gen_index": 7,
+      "event": "등산 중인 남성들의 대화와 산행",
+      "span": [
+        110,
+        169
+      ],
+      "len": 60,
+      "n_evidence": 4,
+      "matched": true,
+      "matched_gt_index": 4,
+      "overlapping_gt": [
+        4
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gen_index": 8,
+      "event": "등산 중인 두 남성의 대화와 행동",
+      "span": [
+        165,
+        224
+      ],
+      "len": 60,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 5,
+      "overlapping_gt": [
+        4,
+        5
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gen_index": 9,
+      "event": "등산객들이 산길을 걷고 있다",
+      "span": [
+        275,
+        309
+      ],
+      "len": 35,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 7,
+      "overlapping_gt": [
+        7
+      ],
+      "type": "reasonable_match"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gen_index": 10,
+      "event": "등산객들이 정상을 향해 계속 걷는다",
+      "span": [
+        290,
+        306
+      ],
+      "len": 17,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        7
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gen_index": 11,
+      "event": "등산객들이 하산 준비를 한다",
+      "span": [
+        307,
+        310
+      ],
+      "len": 4,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        7
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gen_index": 12,
+      "event": "등산객들이 목적지에 도착한다",
+      "span": [
+        311,
+        315
+      ],
+      "len": 5,
+      "n_evidence": 2,
+      "matched": false,
+      "matched_gt_index": null,
+      "overlapping_gt": [
+        7
+      ],
+      "type": "spurious_event"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gen_index": 13,
+      "event": "등산객들이 마지막으로 인사를 한다",
+      "span": [
+        316,
+        327
+      ],
+      "len": 12,
+      "n_evidence": 2,
+      "matched": true,
+      "matched_gt_index": 8,
+      "overlapping_gt": [
+        7,
+        8
+      ],
+      "type": "reasonable_match"
+    }
+  ],
+  "rejection_analysis": [
+    {
+      "video_id": "softyeon_ceramics",
+      "rejection_index": 0,
+      "chunk": 1,
+      "reason": "bad_span",
+      "span": [],
+      "event": "실내 공간의 모습",
+      "overlapping_gt": [],
+      "overlapping_unmatched_gt": []
+    },
+    {
+      "video_id": "kbs_banff",
+      "rejection_index": 0,
+      "chunk": 0,
+      "reason": "too_many_evidence",
+      "span": [
+        0,
+        29
+      ],
+      "event": "케나디안 로키의 자연 경관 소개",
+      "overlapping_gt": [
+        0,
+        1
+      ],
+      "overlapping_unmatched_gt": [
+        0,
+        1
+      ]
+    },
+    {
+      "video_id": "kbs_banff",
+      "rejection_index": 1,
+      "chunk": 0,
+      "reason": "too_many_evidence",
+      "span": [
+        29,
+        38
+      ],
+      "event": "캐나디안 로키의 진풍경과 아이스빌드 파크웨이",
+      "overlapping_gt": [
+        1,
+        2
+      ],
+      "overlapping_unmatched_gt": [
+        1,
+        2
+      ]
+    },
+    {
+      "video_id": "kbs_banff",
+      "rejection_index": 2,
+      "chunk": 0,
+      "reason": "evidence_outside_span",
+      "span": [
+        38,
+        41
+      ],
+      "event": "사냥꾼들과의 마주치기",
+      "overlapping_gt": [
+        2
+      ],
+      "overlapping_unmatched_gt": [
+        2
+      ]
+    },
+    {
+      "video_id": "kbs_banff",
+      "rejection_index": 3,
+      "chunk": 0,
+      "reason": "too_many_evidence",
+      "span": [
+        41,
+        59
+      ],
+      "event": "캐나디안 로키 남부의 벤프 국립공원",
+      "overlapping_gt": [
+        3,
+        4
+      ],
+      "overlapping_unmatched_gt": [
+        3,
+        4
+      ]
+    },
+    {
+      "video_id": "kbs_banff",
+      "rejection_index": 4,
+      "chunk": 2,
+      "reason": "too_many_evidence",
+      "span": [
+        110,
+        169
+      ],
+      "event": "등산객들이 자연 속에서 산책하고 등산",
+      "overlapping_gt": [
+        7,
+        8
+      ],
+      "overlapping_unmatched_gt": [
+        8
+      ]
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "rejection_index": 0,
+      "chunk": 0,
+      "reason": "evidence_outside_span",
+      "span": [
+        25,
+        35
+      ],
+      "event": "여성들이 거제에 왔다는 소식을 공유하며 기뻐함",
+      "overlapping_gt": [
+        0
+      ],
+      "overlapping_unmatched_gt": []
+    },
+    {
+      "video_id": "m8c2_3I7oGwk6EaQ",
+      "rejection_index": 0,
+      "chunk": 2,
+      "reason": "too_many_evidence",
+      "span": [
+        110,
+        169
+      ],
+      "event": "산책객이 숲속을 걷는다",
+      "overlapping_gt": [
+        0
+      ],
+      "overlapping_unmatched_gt": []
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "rejection_index": 0,
+      "chunk": 0,
+      "reason": "evidence_outside_span",
+      "span": [
+        25,
+        35
+      ],
+      "event": "출발 준비",
+      "overlapping_gt": [
+        2
+      ],
+      "overlapping_unmatched_gt": []
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "rejection_index": 1,
+      "chunk": 0,
+      "reason": "evidence_outside_span",
+      "span": [
+        35,
+        50
+      ],
+      "event": "산행 중의 풍경과 대화",
+      "overlapping_gt": [
+        2
+      ],
+      "overlapping_unmatched_gt": []
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "rejection_index": 2,
+      "chunk": 4,
+      "reason": "too_many_evidence",
+      "span": [
+        220,
+        279
+      ],
+      "event": "등산객들의 등산 준비와 진행",
+      "overlapping_gt": [
+        5,
+        6,
+        7
+      ],
+      "overlapping_unmatched_gt": [
+        6
+      ]
+    }
+  ],
+  "chunk_level": [
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "chunk": 0,
+      "raw_events": 6,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "chunk": 1,
+      "raw_events": 1,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "chunk": 2,
+      "raw_events": 6,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "chunk": 3,
+      "raw_events": 2,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "chunk": 0,
+      "raw_events": 1,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "chunk": 1,
+      "raw_events": 3,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "chunk": 2,
+      "raw_events": 1,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "chunk": 3,
+      "raw_events": 2,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "jissi_farm",
+      "chunk": 0,
+      "raw_events": 6,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "jissi_farm",
+      "chunk": 1,
+      "raw_events": 1,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "jissi_farm",
+      "chunk": 2,
+      "raw_events": 2,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "jissi_farm",
+      "chunk": 3,
+      "raw_events": 2,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "kbs_banff",
+      "chunk": 0,
+      "raw_events": 4,
+      "zero_event_chunk": false,
+      "regeneration_attempted": true,
+      "regeneration_recovered": false
+    },
+    {
+      "video_id": "kbs_banff",
+      "chunk": 1,
+      "raw_events": 1,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "kbs_banff",
+      "chunk": 2,
+      "raw_events": 1,
+      "zero_event_chunk": false,
+      "regeneration_attempted": true,
+      "regeneration_recovered": false
+    },
+    {
+      "video_id": "kbs_banff",
+      "chunk": 3,
+      "raw_events": 1,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "kbs_banff",
+      "chunk": 4,
+      "raw_events": 6,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "kbs_banff",
+      "chunk": 5,
+      "raw_events": 6,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "chunk": 0,
+      "raw_events": 4,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "chunk": 1,
+      "raw_events": 2,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "chunk": 2,
+      "raw_events": 5,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "chunk": 3,
+      "raw_events": 1,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "chunk": 4,
+      "raw_events": 2,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "chunk": 5,
+      "raw_events": 1,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "chunk": 6,
+      "raw_events": 1,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "chunk": 0,
+      "raw_events": 4,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "chunk": 1,
+      "raw_events": 3,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "chunk": 2,
+      "raw_events": 2,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "chunk": 3,
+      "raw_events": 1,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "chunk": 4,
+      "raw_events": 1,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "chunk": 5,
+      "raw_events": 0,
+      "zero_event_chunk": true,
+      "regeneration_attempted": true,
+      "regeneration_recovered": false
+    },
+    {
+      "video_id": "m8c2_3I7oGwk6EaQ",
+      "chunk": 0,
+      "raw_events": 2,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "m8c2_3I7oGwk6EaQ",
+      "chunk": 1,
+      "raw_events": 4,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "m8c2_3I7oGwk6EaQ",
+      "chunk": 2,
+      "raw_events": 1,
+      "zero_event_chunk": false,
+      "regeneration_attempted": true,
+      "regeneration_recovered": false
+    },
+    {
+      "video_id": "m8c2_3I7oGwk6EaQ",
+      "chunk": 3,
+      "raw_events": 1,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "chunk": 0,
+      "raw_events": 5,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "chunk": 1,
+      "raw_events": 4,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "chunk": 2,
+      "raw_events": 1,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "chunk": 3,
+      "raw_events": 1,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "chunk": 4,
+      "raw_events": 1,
+      "zero_event_chunk": false,
+      "regeneration_attempted": true,
+      "regeneration_recovered": false
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "chunk": 5,
+      "raw_events": 5,
+      "zero_event_chunk": false,
+      "regeneration_attempted": false,
+      "regeneration_recovered": null
+    }
+  ],
+  "c1_semantic_diagnostic": [
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "official_early_stop": "ABSENT",
+      "failed_chunks": [],
+      "n_chunks": 4,
+      "last_chunk_index": 3,
+      "post_hoc_kind": "NOT_PRESENT",
+      "truncated_tail": false
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "official_early_stop": "ABSENT",
+      "failed_chunks": [],
+      "n_chunks": 4,
+      "last_chunk_index": 3,
+      "post_hoc_kind": "NOT_PRESENT",
+      "truncated_tail": false
+    },
+    {
+      "video_id": "jissi_farm",
+      "official_early_stop": "ABSENT",
+      "failed_chunks": [],
+      "n_chunks": 4,
+      "last_chunk_index": 3,
+      "post_hoc_kind": "NOT_PRESENT",
+      "truncated_tail": false
+    },
+    {
+      "video_id": "kbs_banff",
+      "official_early_stop": "PRESENT",
+      "failed_chunks": [
+        0,
+        2
+      ],
+      "n_chunks": 6,
+      "last_chunk_index": 5,
+      "post_hoc_kind": "MID_STREAM_EMPTY_CHUNK",
+      "truncated_tail": false
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "official_early_stop": "ABSENT",
+      "failed_chunks": [],
+      "n_chunks": 7,
+      "last_chunk_index": 6,
+      "post_hoc_kind": "NOT_PRESENT",
+      "truncated_tail": false
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "official_early_stop": "PRESENT",
+      "failed_chunks": [
+        5
+      ],
+      "n_chunks": 6,
+      "last_chunk_index": 5,
+      "post_hoc_kind": "TAIL_TERMINATION",
+      "truncated_tail": false
+    },
+    {
+      "video_id": "m8c2_3I7oGwk6EaQ",
+      "official_early_stop": "PRESENT",
+      "failed_chunks": [
+        2
+      ],
+      "n_chunks": 4,
+      "last_chunk_index": 3,
+      "post_hoc_kind": "MID_STREAM_EMPTY_CHUNK",
+      "truncated_tail": false
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "official_early_stop": "PRESENT",
+      "failed_chunks": [
+        4
+      ],
+      "n_chunks": 6,
+      "last_chunk_index": 5,
+      "post_hoc_kind": "MID_STREAM_EMPTY_CHUNK",
+      "truncated_tail": false
+    }
+  ],
+  "redundancy": {
+    "status": "DEFINITION_AMBIGUOUS",
+    "note": "사전등록 M8_구조변경_2026-08-16 §2-2는 Redundancy를 '같은 정답 사건을 여러 문장이 중복 서술한 비율'로만 적었고 분자·분모를 특정하지 않았다. 임의 정의를 만들지 않는다. 아래 gt_events_with_multiple_overlapping_generated는 그 자리를 대신하는 값이 아니라 **다른 이름의 기계적 관측치**이며 진단 전용이다."
+  },
+  "overall_iou_distribution": {
+    "n": 68,
+    "min": 0.0,
+    "p25": 0.0,
+    "median": 0.337,
+    "p75": 0.6,
+    "max": 0.9545,
+    "buckets": {
+      "HIGH": 13,
+      "MID": 25,
+      "LOW": 8,
+      "UNMATCHED": 22
+    }
+  },
+  "failure_mode_summary": {
+    "baekmansonghee_jirisan": [
+      "OVER_FRAGMENTATION_DOMINANT"
+    ],
+    "softyeon_ceramics": [
+      "UNDER_GENERATION_DOMINANT"
+    ],
+    "jissi_farm": [
+      "RELATIVELY_STABLE"
+    ],
+    "kbs_banff": [
+      "MIXED",
+      "SPAN_ALIGNMENT_DOMINANT",
+      "REJECTION_HEAVY"
+    ],
+    "wonyi_gyeongju": [
+      "RELATIVELY_STABLE"
+    ],
+    "wonyi_geoje": [
+      "RELATIVELY_STABLE"
+    ],
+    "m8c2_3I7oGwk6EaQ": [
+      "MIXED",
+      "OVER_FRAGMENTATION_DOMINANT",
+      "SPAN_ALIGNMENT_DOMINANT"
+    ],
+    "m8c2_cIxG7OHYMPU": [
+      "MIXED",
+      "SPAN_ALIGNMENT_DOMINANT",
+      "REJECTION_HEAVY"
+    ]
+  },
+  "confirmation_consequence": {
+    "current_panel_reusable_for_fresh_confirmation": false,
+    "fresh_confirmation_needed_after_material_change": true,
+    "note": "N=8은 공식 결과를 본 순간 소비된 confirmation sample이다. 수정된 M8의 확증에 같은 8편을 다시 쓸 수 없다."
+  },
+  "m9_status": "HOLD"
+}
