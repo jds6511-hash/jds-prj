@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-08-28",
+  "purpose": "FINAL_REPORT_BASELINE_2026-08-28.md가 인용하는 수치의 source-of-truth 색인. 각 fact에 source_path를 붙인다. raw-result dump가 아니다.",
+  "relation_to_previous": {
+    "extends": "docs/finalization/final_report_facts_2026-08-26.json",
+    "note": "08-26 색인은 M1~M7 범위이며 수정하지 않는다. 이 파일은 M8 공식 판정(08-27)과 후속 feasibility STEP 0 / 0.5 / A(08-28)를 추가한다. 중복 항목은 08-26을 authoritative로 둔다."
+  },
+  "baseline_marker": {
+    "report_baseline_date": "2026-08-28",
+    "includes_research_through": "AAR-v2 STEP A",
+    "does_not_include": "AAR-v2 STEP B or later",
+    "revision_rule": "STEP B 결과는 addendum 또는 revision으로 명시 추가한다. 이 baseline을 조용히 다시 쓰지 않는다."
+  },
+  "new_experiment_run": false,
+  "new_metric_computed": false,
+  "recomputed_official_metrics": false,
+  "frozen_artifacts_modified": false,
+
+  "status": {
+    "m1_m7": "COMPLETE",
+    "m8_evaluation": "COMPLETE",
+    "m8_acceptance": "FAIL",
+    "m8_redesign": "CLOSED",
+    "m8_round3_performed": false,
+    "step0_verdict": "GO",
+    "step05_verdict": "NO-GO",
+    "stepa_verdict": "GO",
+    "aarv2_full_implemented": false,
+    "aarv2_stepb_started": false,
+    "m9": "HOLD",
+    "official_test_opened": false,
+    "test_39_to_72_expanded": false,
+    "fresh_data_used_in_followups": false,
+    "pushed": false,
+    "source_path": "docs/finalization/FINAL_REPORT_BASELINE_2026-08-28.md"
+  },
+
+  "facts": [
+    {"fact_id": "search.test.n_queries", "value": 39, "unit": "queries", "scope": "공식 test · 영상 4편 · 확정 배포 구성", "source_path": "results/eval_test.json", "status": "frozen"},
+    {"fact_id": "search.test.baseline_mrr", "value": 0.6489, "unit": "MRR", "scope": "자막 단독", "source_path": "results/eval_test.json", "status": "frozen"},
+    {"fact_id": "search.test.proposed_mrr", "value": 0.8286, "unit": "MRR", "scope": "자막+캡션 융합 α=0.5", "source_path": "results/eval_test.json", "status": "frozen"},
+    {"fact_id": "search.test.baseline_hit1", "value": 0.5641, "unit": "Hit@1", "scope": "자막 단독", "source_path": "results/eval_test.json", "status": "frozen"},
+    {"fact_id": "search.test.proposed_hit1", "value": 0.7692, "unit": "Hit@1", "scope": "자막+캡션 융합 α=0.5", "source_path": "results/eval_test.json", "status": "frozen"},
+    {"fact_id": "search.test.mrr_diff_ci95", "value": [0.0583, 0.3098], "unit": "MRR 차이 95% CI", "scope": "paired bootstrap", "source_path": "results/eval_test.json", "status": "frozen"},
+    {"fact_id": "search.test.hit5_hit10_ci_includes_zero", "value": true, "unit": "bool", "scope": "Hit@5·Hit@10 CI가 0을 포함 — 유의 주장 안 함", "source_path": "results/eval_test.json", "status": "frozen"},
+    {"fact_id": "search.test.scene_type_mrr", "value": {"baseline": 0.1741, "proposed": 0.7183, "n": 13}, "unit": "MRR", "scope": "장면형 · 사후 부분집합 · 미검정", "source_path": "results/eval_test.json", "status": "diagnostic"},
+    {"fact_id": "search.test.subtitle_type_mrr", "value": {"baseline": 0.9583, "proposed": 0.8802, "n": 12}, "unit": "MRR", "scope": "자막형 — 유일한 하락", "source_path": "results/eval_test.json", "status": "diagnostic"},
+
+    {"fact_id": "model.aihub.n_queries", "value": 1086, "unit": "queries", "scope": "AI Hub 재사용 표본 · 194 클러스터", "source_path": "docs/재분석_2x2_2026-08-18.md", "status": "frozen"},
+    {"fact_id": "model.aihub.caption_only_delta", "value": 0.031, "unit": "MRR 차이 (4B − 3B)", "scope": "캡션 단독 α=0.0 · query CI [0.008, 0.0536] · p=0.006", "source_path": "docs/재분석_2x2_2026-08-18.md", "status": "frozen"},
+    {"fact_id": "model.dev.n_queries", "value": 96, "unit": "queries", "scope": "dev 배포 유사 · 클러스터 3", "source_path": "docs/재분석_2x2_2026-08-18.md", "status": "frozen"},
+    {"fact_id": "model.dev.caption_only_delta", "value": -0.0903, "unit": "MRR 차이 (4B − 3B)", "scope": "캡션 단독 · CI [−0.2112, −0.0276] · 클러스터 3이므로 diagnostic only", "source_path": "docs/재분석_2x2_2026-08-18.md", "status": "diagnostic"},
+    {"fact_id": "model.superiority", "value": "unresolved", "unit": "verdict", "scope": "두 표본에서 부호 반대", "source_path": "docs/finalization/MODEL_SELECTION_CASE_STUDY_2026-08-25.md", "status": "decision"},
+    {"fact_id": "model.deployment", "value": "Qwen/Qwen2.5-VL-3B-Instruct / P0 / 4bit", "unit": "config", "scope": "incumbent 유지 — 우월 증명이 아니라 교체 근거 부족", "source_path": "config.yaml", "status": "deployed"},
+
+    {"fact_id": "casestudy.video", "value": "pland_costco_hosting", "unit": "video_id", "scope": "1편 · 395구간 · 5장면 · 15질의 · 캡션 단독", "source_path": "docs/finalization/caption_retrieval_casestudy_results.json", "status": "qualitative"},
+    {"fact_id": "casestudy.higher_target_rank", "value": {"3b": 4, "4b": 11, "tie": 0, "of": 15}, "unit": "queries", "scope": "정성 관찰 — 채택 근거 아님", "source_path": "docs/finalization/caption_retrieval_casestudy_results.json", "status": "qualitative"},
+
+    {"fact_id": "e2e.videos_run", "value": 4, "unit": "videos", "scope": "외부 기능 E2E PHASE 1~4 · 전부 PASS", "source_path": "docs/finalization/e2e_external_results.json", "status": "functional"},
+    {"fact_id": "e2e.longform_duration_sec", "value": 4115.992, "unit": "sec", "scope": "PHASE 4 · 824구간 · 선택 스트레스", "source_path": "docs/finalization/e2e_external_results.json", "status": "functional"},
+
+    {"fact_id": "m8.panel_videos", "value": 8, "unit": "videos", "scope": "M8 판정 패널 (소비됨)", "source_path": "docs/finalization/m8_official_result_2026-08-27.json", "status": "frozen"},
+    {"fact_id": "m8.gt_events", "value": 68, "unit": "events", "scope": "동결 GT 총 사건 수", "source_path": "docs/finalization/m8_c2_gt_freeze_2026-08-27.json", "status": "frozen"},
+    {"fact_id": "m8.reports_written", "value": 8, "unit": "videos", "scope": "생성 완료 · 실패 0편", "source_path": "docs/finalization/m8_official_result_2026-08-27.json", "status": "frozen"},
+    {"fact_id": "m8.uncited_evaluable_sentences", "value": 0, "unit": "sentences", "scope": "8편 전부 0 — 구조 유효성", "source_path": "results/m8_official_0827/m8_official_full.json", "status": "frozen"},
+    {"fact_id": "m8.generated_events", "value": 93, "unit": "events", "scope": "baseline 생성 사건 총수", "source_path": "docs/finalization/m8_redesign_r2_threeway_2026-08-28.json", "status": "frozen"},
+    {"fact_id": "m8.matched_gt", "value": 46, "unit": "events", "scope": "68건 중 대응 사건이 있는 정답 = 67.65%", "source_path": "docs/finalization/m8_redesign_r2_threeway_2026-08-28.json", "status": "derived"},
+    {"fact_id": "m8.unmatched_gt", "value": 22, "unit": "events", "scope": "baseline 미매칭 정답", "source_path": "docs/finalization/m8_redesign_r2_threeway_2026-08-28.json", "status": "frozen"},
+    {"fact_id": "m8.unmatched_gt_short", "value": 18, "unit": "events", "scope": "미매칭 22건 중 짧은 사건", "source_path": "docs/finalization/m8_redesign_r2_threeway_2026-08-28.json", "status": "frozen"},
+    {"fact_id": "m8.unmatched_generated", "value": 47, "unit": "events", "scope": "baseline 미매칭 생성", "source_path": "docs/finalization/m8_redesign_r2_threeway_2026-08-28.json", "status": "frozen"},
+    {"fact_id": "m8.c1_catastrophic_videos", "value": 4, "unit": "videos", "scope": "임계 0 · FAIL", "source_path": "docs/finalization/m8_official_result_2026-08-27.json", "status": "frozen"},
+    {"fact_id": "m8.c2_value", "value": 0.3311, "unit": "event_temporal_alignment 중앙값", "scope": "임계 0.70 · FAIL", "source_path": "docs/finalization/m8_official_result_2026-08-27.json", "status": "frozen"},
+    {"fact_id": "m8.c3_value", "value": 7.0, "unit": "압축률 max", "scope": "임계 2.00 · FAIL", "source_path": "docs/finalization/m8_official_result_2026-08-27.json", "status": "frozen"},
+    {"fact_id": "m8.c2_threshold_external_grounding", "value": "limited", "unit": "qualifier", "scope": "원 사전등록이 0.70의 외부 근거 부재를 명시", "source_path": "src/m8_metrics.py", "status": "limitation"},
+
+    {"fact_id": "m8.r1.generated_events", "value": 219, "unit": "events", "scope": "ROUND 1 (고재현율)", "source_path": "docs/finalization/m8_redesign_r2_threeway_2026-08-28.json", "status": "development"},
+    {"fact_id": "m8.r1.unmatched_gt", "value": 10, "unit": "events", "scope": "ROUND 1", "source_path": "docs/finalization/m8_redesign_r2_threeway_2026-08-28.json", "status": "development"},
+    {"fact_id": "m8.r1.unmatched_generated", "value": 161, "unit": "events", "scope": "ROUND 1", "source_path": "docs/finalization/m8_redesign_r2_threeway_2026-08-28.json", "status": "development"},
+    {"fact_id": "m8.r1.c3_max", "value": 16.0, "unit": "압축률 max", "scope": "ROUND 1", "source_path": "docs/finalization/m8_redesign_r2_threeway_2026-08-28.json", "status": "development"},
+    {"fact_id": "m8.r2.generated_events", "value": 134, "unit": "events", "scope": "ROUND 2 (+ consolidation)", "source_path": "docs/finalization/m8_redesign_r2_threeway_2026-08-28.json", "status": "development"},
+    {"fact_id": "m8.r2.unmatched_generated", "value": 76, "unit": "events", "scope": "ROUND 2", "source_path": "docs/finalization/m8_redesign_r2_threeway_2026-08-28.json", "status": "development"},
+    {"fact_id": "m8.r2.alignment_median", "value": 0.4498, "unit": "alignment 중앙값", "scope": "ROUND 2", "source_path": "docs/finalization/m8_redesign_r2_threeway_2026-08-28.json", "status": "development"},
+    {"fact_id": "m8.r2.c3_max", "value": 13.0, "unit": "압축률 max", "scope": "ROUND 2", "source_path": "docs/finalization/m8_redesign_r2_threeway_2026-08-28.json", "status": "development"},
+    {"fact_id": "m8.r2.gate_result", "value": {"A": "PASS", "B": "FAIL", "C": "FAIL", "D": "PASS", "E": "FAIL", "F": "FAIL"}, "unit": "gate", "scope": "동결 gate 6개 중 2 PASS", "source_path": "docs/finalization/m8_redesign_r2_threeway_2026-08-28.json", "status": "development"},
+
+    {"fact_id": "m8.gt_duration.median_sec", "value": 62.0, "unit": "sec", "scope": "정답 사건 68건 길이 중앙값", "source_path": "docs/finalization/m8_c2_gt_freeze_2026-08-27.json", "status": "derived"},
+    {"fact_id": "m8.gt_duration.range_sec", "value": [10, 865], "unit": "sec", "scope": "min / max", "source_path": "docs/finalization/m8_c2_gt_freeze_2026-08-27.json", "status": "derived"},
+    {"fact_id": "m8.gt_duration.bins", "value": {"le_40s": 23, "45_180s": 28, "gt_180s": 17, "of": 68}, "unit": "events", "scope": "descriptive bins — acceptance 기준 아님", "source_path": "docs/finalization/m8_c2_gt_freeze_2026-08-27.json", "status": "derived"},
+
+    {"fact_id": "human_contrast.video", "value": "wonyi_geoje", "unit": "video_id", "scope": "n=1 · 사후 매핑 · 동일 작성자 · 소비된 패널", "source_path": "docs/finalization/M8_HUMAN_REFERENCE_CONTRAST_2026-08-28.md", "status": "qualitative"},
+    {"fact_id": "human_contrast.mapping", "value": {"merge": 1, "split": 1, "omission": 1, "human_sections": 7, "gt_events": 8}, "unit": "count", "scope": "정성 대조", "source_path": "docs/finalization/M8_HUMAN_REFERENCE_CONTRAST_2026-08-28.md", "status": "qualitative"},
+
+    {"fact_id": "step0.chunks", "value": 41, "unit": "chunks", "scope": "패널 8편 전체 청크 수", "source_path": "results/m8v2_step0/m8v2_step0_reachability_2026-08-28.json", "status": "development"},
+    {"fact_id": "step0.t1_reachable", "value": 1, "unit": "GT events", "scope": "H6a zero-event rescue 도달 상한 = 1/22 → STRUCTURAL NO-GO", "source_path": "results/m8v2_step0/m8v2_step0_reachability_2026-08-28.json", "status": "development"},
+    {"fact_id": "step0.selected", "value": "T2@0.7", "unit": "trigger", "scope": "accepted_span_coverage < 0.7", "source_path": "results/m8v2_step0/m8v2_step0_reachability_2026-08-28.json", "status": "development"},
+    {"fact_id": "step0.selected_metrics", "value": {"reachable": 10, "of": 22, "videos": 4, "triggered_chunks": 8, "wasted": 2, "max_video_share": 0.6}, "unit": "count", "scope": "선택된 trigger", "source_path": "results/m8v2_step0/m8v2_step0_reachability_2026-08-28.json", "status": "development"},
+    {"fact_id": "step0.rejection_share_in_triggered", "value": 0.5625, "unit": "ratio", "scope": "발화 청크 내 거부 비율 (패널 전체 0.1058)", "source_path": "results/m8v2_step0/m8v2_step0_reachability_2026-08-28.json", "status": "development"},
+
+    {"fact_id": "step05.eligible_candidates", "value": 6, "unit": "candidates", "scope": "발화 청크 내 too_many_evidence 단독 거부", "source_path": "runs/m8v2_step05/step05_summary.json", "status": "development"},
+    {"fact_id": "step05.valid_after_truncation", "value": 5, "unit": "candidates", "scope": "evidence 4개 절단 후 validator 통과", "source_path": "runs/m8v2_step05/step05_summary.json", "status": "development"},
+    {"fact_id": "step05.newly_matched_gt", "value": 4, "unit": "GT events", "scope": "22건 중 새로 회수 · 영상 2편 · 최대 점유 0.75", "source_path": "runs/m8v2_step05/step05_summary.json", "status": "development"},
+    {"fact_id": "step05.added_events_unmatched", "value": 0, "unit": "events", "scope": "추가된 5건 전부 정답과 IoU>0 — 정확성 주장 아님", "source_path": "runs/m8v2_step05/step05_summary.json", "status": "development"},
+    {"fact_id": "step05.structural_infeasibility", "value": "A_and_C_jointly_unsatisfiable", "unit": "verdict", "scope": "회수 상한 5 · A 충족은 점유 0.80을 뜻함", "source_path": "docs/finalization/M8V2_STEP05_REJECTED_RESCUE_2026-08-28.md", "status": "development"},
+
+    {"fact_id": "stepa.gt_boundaries", "value": 60, "unit": "boundaries", "scope": "사건 68건 → 내부 경계 60개 · 적격 영상 7편", "source_path": "runs/aarv2_step_a/summary.json", "status": "development"},
+    {"fact_id": "stepa.embedding_recall", "value": 0.55, "unit": "boundary recall@K", "scope": "33/60 · τ=±10초 · 1:1 매칭", "source_path": "runs/aarv2_step_a/summary.json", "status": "development"},
+    {"fact_id": "stepa.uniform_recall", "value": 0.25, "unit": "boundary recall@K", "scope": "15/60 · 결정적 균등 baseline", "source_path": "runs/aarv2_step_a/summary.json", "status": "development"},
+    {"fact_id": "stepa.delta", "value": 0.3, "unit": "recall 차이", "scope": "임계 +0.15 · GO", "source_path": "runs/aarv2_step_a/summary.json", "status": "development"},
+    {"fact_id": "stepa.prediction_hit_ratio", "value": 0.209, "unit": "ratio", "scope": "예측 158 · 적중 33 — recall만 쟀고 정밀도는 재지 않았다", "source_path": "docs/finalization/AARV2_STEP_A_RESULT_2026-08-28.md", "status": "diagnostic"},
+    {"fact_id": "stepa.weakest_video", "value": {"video_id": "kbs_banff", "recall": 0.222}, "unit": "recall", "scope": "M8 미매칭 정답 최대 기여 영상에서 가장 약하다", "source_path": "runs/aarv2_step_a/manifest.json", "status": "diagnostic"},
+    {"fact_id": "stepa.channel_diagnostic", "value": {"primary": 33, "caption_only": 32, "subtitle_only": 20}, "unit": "hits", "scope": "판정 미사용 — 신호는 대부분 캡션", "source_path": "runs/aarv2_step_a/manifest.json", "status": "diagnostic"},
+
+    {"fact_id": "followups.new_labels", "value": 0, "unit": "labels", "scope": "STEP 0 · 0.5 · A 전체", "source_path": "docs/finalization/FINAL_REPORT_BASELINE_2026-08-28.md", "status": "boundary"},
+    {"fact_id": "followups.llm_calls", "value": 0, "unit": "calls", "scope": "STEP 0 · 0.5 · A 전체", "source_path": "docs/finalization/FINAL_REPORT_BASELINE_2026-08-28.md", "status": "boundary"},
+    {"fact_id": "followups.evidence_class", "value": "consumed-panel development evidence", "unit": "qualifier", "scope": "performance evidence 아님 · outcome-informed", "source_path": "docs/finalization/FINAL_REPORT_BASELINE_2026-08-28.md", "status": "boundary"}
+  ],
+
+  "forbidden_wording": [
+    "M8은 작동하지 않았다",
+    "M8은 보고서를 생성하지 못했다",
+    "M8은 완전히 실패했다",
+    "모델이 보고서를 못 쓴다",
+    "event boundary가 원인임을 증명했다",
+    "AAR-v2가 M8 문제를 해결했다",
+    "STEP A가 boundary detection을 검증했다",
+    "boundary detection solved",
+    "경계를 정확히 찾았다",
+    "human이 맞고 모델이 틀렸다",
+    "좋은 사건 5개를 복구했다",
+    "5개 모두 정확했다",
+    "deterministic merge면 해결된다",
+    "C1이 개선됐다",
+    "방향은 옳았고 크기가 부족했다",
+    "3B 승리",
+    "4B 기각",
+    "4B 실패"
+  ]
+}

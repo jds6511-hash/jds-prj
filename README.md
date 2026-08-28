@@ -161,7 +161,7 @@ RTX 3060(개발 노트북)과 RTX 4090(서버)에서 각각 생성한 dev 655개
 | 범위 | 상태 |
 |---|---|
 | M1~M7 영상 검색 + 웹 UI | **완료 · 공식 평가 완료** |
-| M8~M9 AAR 생성·이중 평가 | **구현 완료**(2026-08-07) · 결함 4건 규명·수정. **프로젝트 필수 완료 범위**로 승격(2026-08-26) — M8은 dev에서 판정·동결까지, M9는 M8 freeze 후 test-opening 승인 사건. 로컬 6GB에서는 생성 불가(7B, 서버 전용). 완료 프로토콜·잔여 결정 6건: [M8_M9_PROTOCOL_2026-08-26.md](docs/finalization/M8_M9_PROTOCOL_2026-08-26.md) |
+| M8~M9 AAR 생성·이중 평가 | **M8 evaluation COMPLETE · acceptance FAIL**(2026-08-27) · redesign CLOSED(2026-08-28). 생성 자체는 8/8 성공했고 품질 관문에서 실패했다 — 둘을 구분한다. **M9는 HOLD**(M8 freeze 없이 열지 않으며 test-opening은 별도 승인 사건). 로컬 6GB에서는 생성 불가(7B, 서버 전용). 최종 정리: [FINAL_REPORT_BASELINE_2026-08-28.md](docs/finalization/FINAL_REPORT_BASELINE_2026-08-28.md) |
 | 최종 문서 산출 (HWPX/HWP) | 미착수 — **M9 이후 필수 산출물**. `report.json`+`report_eval_*.json`을 서식만 입혀 렌더한다(새 LLM 호출 없음) |
 | 화자분리 (pyannote) | 실행 가능 확인 완료 — 화자 수 추정 오차 −3~0, 클러스터 순도 0.958(우연 기저 0.45) |
 | 회의록 생성 | 미착수 — Phase 4로 계획(설계: [docs/planning/phase4_회의록_설계.md](docs/planning/phase4_회의록_설계.md)) |
@@ -240,7 +240,8 @@ README 위쪽의 **핵심 결과는 확정 배포 구성으로 끝난 공식 tes
 | P2 (fresh 표본) | **HOLD** — 라벨 20/175에서 중단, retrieval·evaluation 미실행, 부분 20건 미분석 |
 | P3 (확증 설계) | **설계 동결 · 실행 HOLD.** 300영상 × 5질의 = 1,500 GT는 가정 위의 설계 목표이지 검출 보장 수치가 아니다 |
 | test 39 / M9 | **HOLD** — 이번 기간 접촉 0회. 39→72 확장도 열지 않았다 |
-| M8 research evaluation | **HOLD**. AAR demo generation(기능 확인용 실행)과는 다른 사건이다 |
+| M8 research evaluation | **evaluation COMPLETE · acceptance FAIL**(2026-08-27). 판정 패널 8편에서 보고서 생성 자체는 8/8 완료했으나 동결 관문 3개를 통과하지 못했다(C1 4/8편 · C2 0.3311 · C3 max 7.00). redesign 2라운드 후 **CLOSED**(ROUND 3 없음). AAR demo generation(기능 확인용 실행)과는 다른 사건이다 |
+| M8-v2 / AAR-v2 후속 feasibility | **STEP 0 GO · STEP 0.5 NO-GO · AAR-v2 STEP A GO.** 전부 소비된 패널의 development evidence이고 새 라벨·LLM·GPU를 쓰지 않았다. **AAR-v2 아키텍처는 미구현**이며 STEP B는 미착수 |
 | AAR demo generation | **functional path 완주(2026-08-26).** dev 1편(149구간)을 서버에서 생성 → 반입 → 로컬 렌더 → 근거 추적까지 확인했다. **리포트 내용의 정확도를 잰 것이 아니다** |
 | external E2E | **functional validation COMPLETE** — scene/speech/mixed/long-form 4편 PASS. 벤치마크가 아니다 |
 | 캡션→검색 케이스 스터디 | **정성 사례 연구.** 채택 근거·성능 추정이 아니다 |
