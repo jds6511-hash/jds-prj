@@ -1,0 +1,493 @@
+{
+  "provenance": {
+    "source_commit": "2a2ea54962588af9b03c829ad8c4471d83bb91f0",
+    "prereg": "docs/finalization/AARV2_STEP_A_PREREG_2026-08-28.md",
+    "prereg_sha256": "d92db3dc426b2f74e7be134397c8d8961738e05b1ccd3ebc0425febced15a782",
+    "panel": [
+      "baekmansonghee_jirisan",
+      "softyeon_ceramics",
+      "jissi_farm",
+      "kbs_banff",
+      "wonyi_gyeongju",
+      "wonyi_geoje",
+      "m8c2_3I7oGwk6EaQ",
+      "m8c2_cIxG7OHYMPU"
+    ],
+    "primary": "mean(percentile_norm(d_sub), percentile_norm(d_cap))",
+    "k_rule": "max(1, round(duration_sec / 60))",
+    "tolerance_sec": 10.0,
+    "matching": "1:1 Hungarian, max-cardinality",
+    "uniform_baseline": "duration * i / (K+1), i=1..K",
+    "go_threshold": {
+      "delta>=": 0.15,
+      "better>=": 5,
+      "worse<=": 2
+    },
+    "boundary": {
+      "new_labels": 0,
+      "llm_calls": 0,
+      "generation_calls": 0,
+      "new_embeddings": 0,
+      "gpu_required": false,
+      "model_training": 0,
+      "fresh_data": false,
+      "m8v1_verdict_changed": false,
+      "round3": false,
+      "m9_touched": false,
+      "official_test_touched": false,
+      "aarv2_architecture_implemented": false,
+      "pushed": false
+    }
+  },
+  "per_video": [
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gt_boundaries_sec": [
+        15,
+        75,
+        600,
+        710,
+        800,
+        890
+      ],
+      "embedding": {
+        "n_matched": 4,
+        "pairs": [
+          [
+            0,
+            3,
+            0.0
+          ],
+          [
+            2,
+            7,
+            0.0
+          ],
+          [
+            3,
+            2,
+            0.0
+          ],
+          [
+            4,
+            4,
+            0.0
+          ]
+        ],
+        "n_gt": 6,
+        "n_pred": 15
+      },
+      "uniform": {
+        "n_matched": 1,
+        "pairs": [
+          [
+            4,
+            13,
+            0.625
+          ]
+        ],
+        "n_gt": 6,
+        "n_pred": 15
+      }
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "gt_boundaries_sec": [
+        25,
+        50,
+        105,
+        195,
+        347.5,
+        560,
+        600.0,
+        647.5,
+        717.5,
+        885,
+        940
+      ],
+      "embedding": {
+        "n_matched": 6,
+        "pairs": [
+          [
+            1,
+            8,
+            0.0
+          ],
+          [
+            3,
+            13,
+            0.0
+          ],
+          [
+            5,
+            9,
+            10.0
+          ],
+          [
+            6,
+            14,
+            10.0
+          ],
+          [
+            8,
+            2,
+            2.5
+          ],
+          [
+            10,
+            10,
+            0.0
+          ]
+        ],
+        "n_gt": 11,
+        "n_pred": 16
+      },
+      "uniform": {
+        "n_matched": 4,
+        "pairs": [
+          [
+            1,
+            0,
+            6.470588235294116
+          ],
+          [
+            2,
+            1,
+            7.941176470588232
+          ],
+          [
+            4,
+            5,
+            8.676470588235304
+          ],
+          [
+            5,
+            9,
+            4.705882352941217
+          ]
+        ],
+        "n_gt": 11,
+        "n_pred": 16
+      }
+    },
+    {
+      "video_id": "jissi_farm",
+      "gt_boundaries_sec": [
+        85.0,
+        140,
+        177.5,
+        225,
+        585,
+        600,
+        730,
+        970,
+        1000,
+        1035
+      ],
+      "embedding": {
+        "n_matched": 7,
+        "pairs": [
+          [
+            1,
+            10,
+            5.0
+          ],
+          [
+            2,
+            17,
+            2.5
+          ],
+          [
+            3,
+            3,
+            0.0
+          ],
+          [
+            4,
+            2,
+            0.0
+          ],
+          [
+            5,
+            8,
+            0.0
+          ],
+          [
+            7,
+            11,
+            0.0
+          ],
+          [
+            9,
+            9,
+            5.0
+          ]
+        ],
+        "n_gt": 10,
+        "n_pred": 18
+      },
+      "uniform": {
+        "n_matched": 3,
+        "pairs": [
+          [
+            3,
+            3,
+            2.89473684210526
+          ],
+          [
+            6,
+            12,
+            8.157894736842081
+          ],
+          [
+            8,
+            17,
+            0.5263157894736423
+          ]
+        ],
+        "n_gt": 10,
+        "n_pred": 18
+      }
+    },
+    {
+      "video_id": "kbs_banff",
+      "gt_boundaries_sec": [
+        125,
+        150,
+        217.5,
+        275,
+        322.5,
+        380,
+        425,
+        632.5,
+        905
+      ],
+      "embedding": {
+        "n_matched": 2,
+        "pairs": [
+          [
+            6,
+            17,
+            5.0
+          ],
+          [
+            7,
+            16,
+            7.5
+          ]
+        ],
+        "n_gt": 9,
+        "n_pred": 26
+      },
+      "uniform": {
+        "n_matched": 1,
+        "pairs": [
+          [
+            0,
+            1,
+            7.962962962962962
+          ]
+        ],
+        "n_gt": 9,
+        "n_pred": 26
+      }
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gt_boundaries_sec": [
+        65,
+        95,
+        550,
+        580,
+        710,
+        1225,
+        1270,
+        1450,
+        1675
+      ],
+      "embedding": {
+        "n_matched": 4,
+        "pairs": [
+          [
+            3,
+            0,
+            5.0
+          ],
+          [
+            4,
+            10,
+            5.0
+          ],
+          [
+            6,
+            20,
+            0.0
+          ],
+          [
+            8,
+            19,
+            0.0
+          ]
+        ],
+        "n_gt": 9,
+        "n_pred": 29
+      },
+      "uniform": {
+        "n_matched": 4,
+        "pairs": [
+          [
+            0,
+            0,
+            7.5
+          ],
+          [
+            3,
+            9,
+            5.0
+          ],
+          [
+            6,
+            21,
+            5.0
+          ],
+          [
+            8,
+            28,
+            7.5
+          ]
+        ],
+        "n_gt": 9,
+        "n_pred": 29
+      }
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "gt_boundaries_sec": [
+        265,
+        355,
+        495,
+        595,
+        890,
+        1140,
+        1620
+      ],
+      "embedding": {
+        "n_matched": 5,
+        "pairs": [
+          [
+            0,
+            2,
+            5.0
+          ],
+          [
+            2,
+            22,
+            10.0
+          ],
+          [
+            3,
+            9,
+            0.0
+          ],
+          [
+            4,
+            16,
+            5.0
+          ],
+          [
+            6,
+            1,
+            0.0
+          ]
+        ],
+        "n_gt": 7,
+        "n_pred": 27
+      },
+      "uniform": {
+        "n_matched": 1,
+        "pairs": [
+          [
+            1,
+            5,
+            4.642857142857167
+          ]
+        ],
+        "n_gt": 7,
+        "n_pred": 27
+      }
+    },
+    {
+      "video_id": "m8c2_3I7oGwk6EaQ",
+      "gt_boundaries_sec": [],
+      "embedding": {
+        "n_matched": 0,
+        "pairs": [],
+        "n_gt": 0,
+        "n_pred": 14
+      },
+      "uniform": {
+        "n_matched": 0,
+        "pairs": [],
+        "n_gt": 0,
+        "n_pred": 14
+      }
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gt_boundaries_sec": [
+        25,
+        40,
+        505,
+        530,
+        1090,
+        1150,
+        1250,
+        1630
+      ],
+      "embedding": {
+        "n_matched": 5,
+        "pairs": [
+          [
+            0,
+            0,
+            0.0
+          ],
+          [
+            1,
+            17,
+            0.0
+          ],
+          [
+            4,
+            15,
+            5.0
+          ],
+          [
+            5,
+            4,
+            5.0
+          ],
+          [
+            7,
+            3,
+            0.0
+          ]
+        ],
+        "n_gt": 8,
+        "n_pred": 27
+      },
+      "uniform": {
+        "n_matched": 1,
+        "pairs": [
+          [
+            3,
+            8,
+            2.8571428571428896
+          ]
+        ],
+        "n_gt": 8,
+        "n_pred": 27
+      }
+    }
+  ]
+}

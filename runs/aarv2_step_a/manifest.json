@@ -1,0 +1,360 @@
+{
+  "record": "AAR-v2 STEP A — boundary detectability probe",
+  "date": "2026-08-28",
+  "provenance": {
+    "source_commit": "2a2ea54962588af9b03c829ad8c4471d83bb91f0",
+    "prereg": "docs/finalization/AARV2_STEP_A_PREREG_2026-08-28.md",
+    "prereg_sha256": "d92db3dc426b2f74e7be134397c8d8961738e05b1ccd3ebc0425febced15a782",
+    "panel": [
+      "baekmansonghee_jirisan",
+      "softyeon_ceramics",
+      "jissi_farm",
+      "kbs_banff",
+      "wonyi_gyeongju",
+      "wonyi_geoje",
+      "m8c2_3I7oGwk6EaQ",
+      "m8c2_cIxG7OHYMPU"
+    ],
+    "primary": "mean(percentile_norm(d_sub), percentile_norm(d_cap))",
+    "k_rule": "max(1, round(duration_sec / 60))",
+    "tolerance_sec": 10.0,
+    "matching": "1:1 Hungarian, max-cardinality",
+    "uniform_baseline": "duration * i / (K+1), i=1..K",
+    "go_threshold": {
+      "delta>=": 0.15,
+      "better>=": 5,
+      "worse<=": 2
+    },
+    "boundary": {
+      "new_labels": 0,
+      "llm_calls": 0,
+      "generation_calls": 0,
+      "new_embeddings": 0,
+      "gpu_required": false,
+      "model_training": 0,
+      "fresh_data": false,
+      "m8v1_verdict_changed": false,
+      "round3": false,
+      "m9_touched": false,
+      "official_test_touched": false,
+      "aarv2_architecture_implemented": false,
+      "pushed": false
+    }
+  },
+  "metrics": {
+    "n_videos": 8,
+    "n_eligible_videos": 7,
+    "excluded_videos": [
+      "m8c2_3I7oGwk6EaQ"
+    ],
+    "gt_boundaries": 60,
+    "embedding_matched": 33,
+    "embedding_recall": 0.55,
+    "uniform_matched": 15,
+    "uniform_recall": 0.25,
+    "delta": 0.3,
+    "n_better_or_equal": 7,
+    "n_worse": 0,
+    "secondary_subtitle_only": 20,
+    "secondary_caption_only": 32
+  },
+  "go": true,
+  "failed": [],
+  "per_video": [
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "n_segments": 183,
+      "duration_sec": 915,
+      "K": 15,
+      "n_gt_events": 7,
+      "n_gt_boundaries": 6,
+      "eligible": true,
+      "n_invalid_sub_transitions": 52,
+      "n_invalid_cap_transitions": 0,
+      "embedding_hits": 4,
+      "embedding_recall": 0.6667,
+      "uniform_hits": 1,
+      "uniform_recall": 0.1667,
+      "delta": 0.5,
+      "secondary": {
+        "subtitle_only": 2,
+        "caption_only": 4
+      },
+      "tolerance_sensitivity": {
+        "tau_5s": 4,
+        "tau_15s": 4
+      },
+      "duration_diagnostic": {
+        "short": {
+          "n": 2,
+          "hit": 1
+        },
+        "medium": {
+          "n": 4,
+          "hit": 3
+        }
+      }
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "n_segments": 192,
+      "duration_sec": 960,
+      "K": 16,
+      "n_gt_events": 12,
+      "n_gt_boundaries": 11,
+      "eligible": true,
+      "n_invalid_sub_transitions": 174,
+      "n_invalid_cap_transitions": 0,
+      "embedding_hits": 6,
+      "embedding_recall": 0.5455,
+      "uniform_hits": 4,
+      "uniform_recall": 0.3636,
+      "delta": 0.1818,
+      "secondary": {
+        "subtitle_only": 4,
+        "caption_only": 6
+      },
+      "tolerance_sensitivity": {
+        "tau_5s": 4,
+        "tau_15s": 6
+      },
+      "duration_diagnostic": {
+        "short": {
+          "n": 4,
+          "hit": 3
+        },
+        "medium": {
+          "n": 3,
+          "hit": 1
+        },
+        "unknown": {
+          "n": 4,
+          "hit": 2
+        }
+      }
+    },
+    {
+      "video_id": "jissi_farm",
+      "n_segments": 211,
+      "duration_sec": 1055,
+      "K": 18,
+      "n_gt_events": 11,
+      "n_gt_boundaries": 10,
+      "eligible": true,
+      "n_invalid_sub_transitions": 94,
+      "n_invalid_cap_transitions": 0,
+      "embedding_hits": 7,
+      "embedding_recall": 0.7,
+      "uniform_hits": 3,
+      "uniform_recall": 0.3,
+      "delta": 0.4,
+      "secondary": {
+        "subtitle_only": 2,
+        "caption_only": 8
+      },
+      "tolerance_sensitivity": {
+        "tau_5s": 7,
+        "tau_15s": 7
+      },
+      "duration_diagnostic": {
+        "unknown": {
+          "n": 2,
+          "hit": 1
+        },
+        "short": {
+          "n": 6,
+          "hit": 5
+        },
+        "medium": {
+          "n": 2,
+          "hit": 1
+        }
+      }
+    },
+    {
+      "video_id": "kbs_banff",
+      "n_segments": 316,
+      "duration_sec": 1580,
+      "K": 26,
+      "n_gt_events": 10,
+      "n_gt_boundaries": 9,
+      "eligible": true,
+      "n_invalid_sub_transitions": 104,
+      "n_invalid_cap_transitions": 0,
+      "embedding_hits": 2,
+      "embedding_recall": 0.2222,
+      "uniform_hits": 1,
+      "uniform_recall": 0.1111,
+      "delta": 0.1111,
+      "secondary": {
+        "subtitle_only": 4,
+        "caption_only": 3
+      },
+      "tolerance_sensitivity": {
+        "tau_5s": 1,
+        "tau_15s": 3
+      },
+      "duration_diagnostic": {
+        "short": {
+          "n": 3,
+          "hit": 0
+        },
+        "unknown": {
+          "n": 3,
+          "hit": 1
+        },
+        "medium": {
+          "n": 2,
+          "hit": 1
+        },
+        "long": {
+          "n": 1,
+          "hit": 0
+        }
+      }
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "n_segments": 345,
+      "duration_sec": 1725,
+      "K": 29,
+      "n_gt_events": 10,
+      "n_gt_boundaries": 9,
+      "eligible": true,
+      "n_invalid_sub_transitions": 22,
+      "n_invalid_cap_transitions": 0,
+      "embedding_hits": 4,
+      "embedding_recall": 0.4444,
+      "uniform_hits": 4,
+      "uniform_recall": 0.4444,
+      "delta": 0.0,
+      "secondary": {
+        "subtitle_only": 4,
+        "caption_only": 3
+      },
+      "tolerance_sensitivity": {
+        "tau_5s": 4,
+        "tau_15s": 4
+      },
+      "duration_diagnostic": {
+        "short": {
+          "n": 4,
+          "hit": 1
+        },
+        "medium": {
+          "n": 5,
+          "hit": 3
+        }
+      }
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "n_segments": 327,
+      "duration_sec": 1635,
+      "K": 27,
+      "n_gt_events": 8,
+      "n_gt_boundaries": 7,
+      "eligible": true,
+      "n_invalid_sub_transitions": 19,
+      "n_invalid_cap_transitions": 0,
+      "embedding_hits": 5,
+      "embedding_recall": 0.7143,
+      "uniform_hits": 1,
+      "uniform_recall": 0.1429,
+      "delta": 0.5714,
+      "secondary": {
+        "subtitle_only": 1,
+        "caption_only": 4
+      },
+      "tolerance_sensitivity": {
+        "tau_5s": 4,
+        "tau_15s": 5
+      },
+      "duration_diagnostic": {
+        "medium": {
+          "n": 4,
+          "hit": 3
+        },
+        "long": {
+          "n": 2,
+          "hit": 1
+        },
+        "short": {
+          "n": 1,
+          "hit": 1
+        }
+      }
+    },
+    {
+      "video_id": "m8c2_3I7oGwk6EaQ",
+      "n_segments": 173,
+      "duration_sec": 865,
+      "K": 14,
+      "n_gt_events": 1,
+      "n_gt_boundaries": 0,
+      "eligible": false,
+      "n_invalid_sub_transitions": 163,
+      "n_invalid_cap_transitions": 0,
+      "embedding_hits": 0,
+      "embedding_recall": null,
+      "uniform_hits": 0,
+      "uniform_recall": null,
+      "delta": null,
+      "secondary": {
+        "subtitle_only": 0,
+        "caption_only": 0
+      },
+      "tolerance_sensitivity": {
+        "tau_5s": 0,
+        "tau_15s": 0
+      },
+      "duration_diagnostic": {}
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "n_segments": 328,
+      "duration_sec": 1640,
+      "K": 27,
+      "n_gt_events": 9,
+      "n_gt_boundaries": 8,
+      "eligible": true,
+      "n_invalid_sub_transitions": 89,
+      "n_invalid_cap_transitions": 0,
+      "embedding_hits": 5,
+      "embedding_recall": 0.625,
+      "uniform_hits": 1,
+      "uniform_recall": 0.125,
+      "delta": 0.5,
+      "secondary": {
+        "subtitle_only": 3,
+        "caption_only": 4
+      },
+      "tolerance_sensitivity": {
+        "tau_5s": 5,
+        "tau_15s": 5
+      },
+      "duration_diagnostic": {
+        "short": {
+          "n": 5,
+          "hit": 3
+        },
+        "medium": {
+          "n": 3,
+          "hit": 2
+        }
+      }
+    }
+  ],
+  "interpretation": "GO는 기존 embedding의 국소 변화 신호가 균등 분할보다 GT 경계 위치에 대해 더 유용한 정보를 담았다는 뜻이다. AAR-v2 성공·event proposal 성공·hierarchy 성공·보고서 품질 개선·M8-v1 실패 해소·fresh 일반화를 뜻하지 않는다.",
+  "not_evaluated": [
+    "C1",
+    "C3",
+    "event proposal",
+    "hierarchy",
+    "merge",
+    "LLM 사건 서술",
+    "evidence attachment",
+    "report assembly",
+    "report synthesis"
+  ]
+}

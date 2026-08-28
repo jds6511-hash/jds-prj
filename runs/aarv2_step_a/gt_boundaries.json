@@ -1,0 +1,143 @@
+{
+  "provenance": {
+    "source_commit": "2a2ea54962588af9b03c829ad8c4471d83bb91f0",
+    "prereg": "docs/finalization/AARV2_STEP_A_PREREG_2026-08-28.md",
+    "prereg_sha256": "d92db3dc426b2f74e7be134397c8d8961738e05b1ccd3ebc0425febced15a782",
+    "panel": [
+      "baekmansonghee_jirisan",
+      "softyeon_ceramics",
+      "jissi_farm",
+      "kbs_banff",
+      "wonyi_gyeongju",
+      "wonyi_geoje",
+      "m8c2_3I7oGwk6EaQ",
+      "m8c2_cIxG7OHYMPU"
+    ],
+    "primary": "mean(percentile_norm(d_sub), percentile_norm(d_cap))",
+    "k_rule": "max(1, round(duration_sec / 60))",
+    "tolerance_sec": 10.0,
+    "matching": "1:1 Hungarian, max-cardinality",
+    "uniform_baseline": "duration * i / (K+1), i=1..K",
+    "go_threshold": {
+      "delta>=": 0.15,
+      "better>=": 5,
+      "worse<=": 2
+    },
+    "boundary": {
+      "new_labels": 0,
+      "llm_calls": 0,
+      "generation_calls": 0,
+      "new_embeddings": 0,
+      "gpu_required": false,
+      "model_training": 0,
+      "fresh_data": false,
+      "m8v1_verdict_changed": false,
+      "round3": false,
+      "m9_touched": false,
+      "official_test_touched": false,
+      "aarv2_architecture_implemented": false,
+      "pushed": false
+    }
+  },
+  "per_video": [
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "gt_boundaries_sec": [
+        15,
+        75,
+        600,
+        710,
+        800,
+        890
+      ]
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "gt_boundaries_sec": [
+        25,
+        50,
+        105,
+        195,
+        347.5,
+        560,
+        600.0,
+        647.5,
+        717.5,
+        885,
+        940
+      ]
+    },
+    {
+      "video_id": "jissi_farm",
+      "gt_boundaries_sec": [
+        85.0,
+        140,
+        177.5,
+        225,
+        585,
+        600,
+        730,
+        970,
+        1000,
+        1035
+      ]
+    },
+    {
+      "video_id": "kbs_banff",
+      "gt_boundaries_sec": [
+        125,
+        150,
+        217.5,
+        275,
+        322.5,
+        380,
+        425,
+        632.5,
+        905
+      ]
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "gt_boundaries_sec": [
+        65,
+        95,
+        550,
+        580,
+        710,
+        1225,
+        1270,
+        1450,
+        1675
+      ]
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "gt_boundaries_sec": [
+        265,
+        355,
+        495,
+        595,
+        890,
+        1140,
+        1620
+      ]
+    },
+    {
+      "video_id": "m8c2_3I7oGwk6EaQ",
+      "gt_boundaries_sec": []
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "gt_boundaries_sec": [
+        25,
+        40,
+        505,
+        530,
+        1090,
+        1150,
+        1250,
+        1630
+      ]
+    }
+  ]
+}

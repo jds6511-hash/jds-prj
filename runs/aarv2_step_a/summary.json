@@ -1,0 +1,61 @@
+{
+  "provenance": {
+    "source_commit": "2a2ea54962588af9b03c829ad8c4471d83bb91f0",
+    "prereg": "docs/finalization/AARV2_STEP_A_PREREG_2026-08-28.md",
+    "prereg_sha256": "d92db3dc426b2f74e7be134397c8d8961738e05b1ccd3ebc0425febced15a782",
+    "panel": [
+      "baekmansonghee_jirisan",
+      "softyeon_ceramics",
+      "jissi_farm",
+      "kbs_banff",
+      "wonyi_gyeongju",
+      "wonyi_geoje",
+      "m8c2_3I7oGwk6EaQ",
+      "m8c2_cIxG7OHYMPU"
+    ],
+    "primary": "mean(percentile_norm(d_sub), percentile_norm(d_cap))",
+    "k_rule": "max(1, round(duration_sec / 60))",
+    "tolerance_sec": 10.0,
+    "matching": "1:1 Hungarian, max-cardinality",
+    "uniform_baseline": "duration * i / (K+1), i=1..K",
+    "go_threshold": {
+      "delta>=": 0.15,
+      "better>=": 5,
+      "worse<=": 2
+    },
+    "boundary": {
+      "new_labels": 0,
+      "llm_calls": 0,
+      "generation_calls": 0,
+      "new_embeddings": 0,
+      "gpu_required": false,
+      "model_training": 0,
+      "fresh_data": false,
+      "m8v1_verdict_changed": false,
+      "round3": false,
+      "m9_touched": false,
+      "official_test_touched": false,
+      "aarv2_architecture_implemented": false,
+      "pushed": false
+    }
+  },
+  "metrics": {
+    "n_videos": 8,
+    "n_eligible_videos": 7,
+    "excluded_videos": [
+      "m8c2_3I7oGwk6EaQ"
+    ],
+    "gt_boundaries": 60,
+    "embedding_matched": 33,
+    "embedding_recall": 0.55,
+    "uniform_matched": 15,
+    "uniform_recall": 0.25,
+    "delta": 0.3,
+    "n_better_or_equal": 7,
+    "n_worse": 0,
+    "secondary_subtitle_only": 20,
+    "secondary_caption_only": 32
+  },
+  "go": true,
+  "failed": []
+}
