@@ -88,12 +88,37 @@ def build_atomic_boundary_prompt(chunk: list) -> str:
             + "\n".join(_fmt_seg(s) for s in chunk))
 
 
+def _as_int(x):
+    """모델은 `26`과 `"26"`을 섞어 쓴다. 숫자면 받는다 — 계약이 아니라 표기다."""
+    if isinstance(x, bool):
+        return None
+    if isinstance(x, int):
+        return x
+    if isinstance(x, str) and re.fullmatch(r"\s*-?\d+\s*", x):
+        return int(x)
+    return None
+
+
 def parse_boundaries(raw: str, key: str = "atomic_start_segments") -> list:
+    """객체(`{"key": [...]}`)와 **맨 배열(`[...]`)을 둘 다 받는다.**
+
+    2026-08-29 canary v2에서 모델이 네 청크 전부 맨 배열로 답해 경계가 0개가 됐고
+    그 결과 영상 전체가 사건 하나가 됐다. 구조 계약을 푸는 게 아니라 **표기를
+    받아들이는 것**이다 — 경계 위치는 여전히 모델이, span 구성은 코드가 한다.
+    """
     d = _obj(raw)
     v = d.get(key) if d else None
     if not isinstance(v, list):
+        m = re.search(r"\[[^\[\]]*\]", raw or "", re.S)
+        if not m:
+            return []
+        try:
+            v = json.loads(m.group(0))
+        except (json.JSONDecodeError, ValueError):
+            return []
+    if not isinstance(v, list):
         return []
-    return sorted({x for x in v if isinstance(x, int)})
+    return sorted({i for i in (_as_int(x) for x in v) if i is not None})
 
 
 def build_atomic_spans(boundaries: list, n_segments: int) -> list:
@@ -197,8 +222,8 @@ def parse_major_starts(raw: str):
     d = _obj(raw) or {}
     ids = d.get("major_start_atomic_ids")
     titles = d.get("titles")
-    return ([str(x) for x in ids] if isinstance(ids, list) else [],
-            [str(x) for x in titles] if isinstance(titles, list) else [])
+    return ([str(x).strip() for x in ids] if isinstance(ids, list) else [],
+            [str(x).strip() for x in titles] if isinstance(titles, list) else [])
 
 
 def build_major_spans(start_ids: list, titles: list, atomics: list) -> list:

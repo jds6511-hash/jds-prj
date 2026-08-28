@@ -1,0 +1,123 @@
+{
+  "video_id": "m8c2_3I7oGwk6EaQ",
+  "schema": "m8_hier_prototype_v2",
+  "run_kind": "m8_hier_prototype_canary_v2",
+  "n_segments": 173,
+  "provenance": {
+    "role": "report",
+    "model_loaded": false,
+    "requested_model": "Qwen/Qwen2.5-7B-Instruct",
+    "requested_4bit": false,
+    "max_new_tokens": 16384,
+    "do_sample": false,
+    "effective_model_id": null,
+    "effective_model_revision": null,
+    "effective_dtype": null,
+    "effective_quantized": null,
+    "attn_implementation": null,
+    "prompt_sha256": {
+      "system": "cf54f0ed85146176eb94a9aa99db0e68787af7878c8b76609a964d4926de6f24",
+      "event_rules": "7e23fc3a529d486005a97e891f1c28461089fc2ccc9ee504c4c27a0cd14985f3",
+      "build_map_prompt": "2bbcbc195f1b11e769acda7fe7babed20ed7f19fe99d6f71f08dbd1b43041510",
+      "build_reduce_prompt": "95f5c2c2c17eb4cf8ff8a43b93ca4c5c7075ddafe00911387201e6e433f9baf4",
+      "build_event_prompt": "791b4eed0ab6f93cae8df41a91e3bd8f93a8ce36e82de70ad922a778013bdf90"
+    },
+    "env": {
+      "git_head": "41875218a1e5c2778fa5daecdca86a9e70855112",
+      "git_dirty": true,
+      "python": "3.12.13",
+      "generated_at": "2026-08-29T01:05:28",
+      "torch": "2.13.0+cu130",
+      "cuda": "13.0",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "transformers": "5.14.1"
+    },
+    "quantization_mismatch": false,
+    "schema_version": 2,
+    "config_report_model": "Qwen/Qwen2.5-7B-Instruct",
+    "config_llm_4bit": false,
+    "config_map_chunk_size": 60,
+    "config_map_chunk_overlap": 5,
+    "config_report_max_new_tokens": 16384
+  },
+  "atomic_events": [
+    {
+      "event_id": "E01",
+      "start_seg": 0,
+      "end_seg": 172,
+      "title": "",
+      "description": "",
+      "support_span": {
+        "start_seg": 0,
+        "end_seg": 172
+      },
+      "anchor_cites": [
+        0,
+        86,
+        172
+      ]
+    }
+  ],
+  "major_events": [
+    {
+      "major_event_id": "M01",
+      "title": "산행 시작",
+      "subevents": [
+        "E01"
+      ],
+      "start_seg": 0,
+      "end_seg": 172,
+      "support_span": {
+        "start_seg": 0,
+        "end_seg": 172
+      },
+      "anchor_cites": [
+        0,
+        86,
+        172
+      ]
+    }
+  ],
+  "overview": {
+    "source": "deterministic",
+    "overview": "영상은 산행 시작의 순서로 진행된다.",
+    "flow": "산행 시작",
+    "supports": [
+      "M01"
+    ]
+  },
+  "diagnostics": {
+    "n_chunks": 4,
+    "n_boundaries": 0,
+    "n_atomic": 1,
+    "n_major": 1,
+    "atomic_spans_segments": [
+      173
+    ],
+    "major_sizes": [
+      1
+    ]
+  },
+  "prototype_status": "CANARY_INVALID",
+  "validation": {
+    "passed": false,
+    "failures": [
+      "atomic_empty_field"
+    ]
+  },
+  "raw": {
+    "atomic_boundaries": [
+      "[\"0\", \"26\", \"41\", \"58\"]",
+      "[55, 64, 91]",
+      "[\"110\", \"116\", \"118\", \"126\", \"135\", \"145\"]",
+      "[\"165\", \"169\", \"170\"]"
+    ],
+    "describe": [
+      {
+        "event_id": "E01",
+        "raw": "{\n  \"title\": \"산과 숲의 풍경\",\n  \"description\": \"영상은 주로 푸른 하늘과 푸른 나무, 잎, 그리고 다양한 종류의 식물들이 있는 숲과 산의 풍경을 보여줍니다. 주요 장소로는 고리봉, 만복대, 세걸산 등이 있으며, 산길과 숲속 길을 걸어가는 사람들도 등장합니다. 날씨는 주로 맑은 날씨但从描述来看，这段视频主要展示的是自然风光，包括森林、山脉和小径等场景。没有特别突出的事件或情节。因此，可以总结为：\n\n```json\n{\n  \"title\": \"自然风光\",\n  \"description\": \"视频展示了森林、山脉和小径等自然风光。画面中出现了一些人在森林和山路上行走的场景，但没有特别突出的事件或情节。背景主要是蓝天、绿色植被和自然环境。\"\n}\n```"
+      }
+    ],
+    "major": "```json\n{\"major_start_atomic_ids\": [\"E01\"], \"titles\": [\"산행 시작\"]}\n```"
+  }
+}

@@ -300,3 +300,27 @@ def test_검증_실패_문서는_렌더하지_않는다():
     d["atomic_events"][0]["anchor_cites"] = [999]
     with pytest.raises(mod.ViewError):
         mod.render(d)
+
+
+# ── 파서 강건성 (2026-08-29 canary v2 사고) ────────────────────────────
+def test_맨_배열도_받는다():
+    """모델이 네 청크 전부 맨 배열로 답해 경계가 0개가 됐던 사고."""
+    assert H.parse_boundaries('["0", "26", "41", "58"]') == [0, 26, 41, 58]
+    assert H.parse_boundaries("[55, 64, 91]") == [55, 64, 91]
+
+
+def test_문자열_숫자도_받는다():
+    assert H.parse_boundaries('{"atomic_start_segments":["110","116"]}') == [110, 116]
+
+
+def test_숫자가_아니면_버린다():
+    assert H.parse_boundaries('["a", "26", null, true]') == [26]
+
+
+def test_앞뒤_설명이_붙어도_배열을_건진다():
+    assert H.parse_boundaries('경계는 다음과 같다: [0, 30]\n끝') == [0, 30]
+
+
+def test_객체가_있으면_객체를_우선한다():
+    raw = '{"atomic_start_segments":[0,50],"note":[9,9,9]}'
+    assert H.parse_boundaries(raw) == [0, 50]
