@@ -19,9 +19,6 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 import m8_hier as H                                                 # noqa: E402
 
-MAX_CITES_SHOWN = 8
-
-
 class ViewError(RuntimeError):
     """구조가 깨진 문서를 읽기 좋게 포장하지 않는다."""
 
@@ -31,16 +28,19 @@ def hhmmss(seg: int, seg_len: int = 5) -> str:
     return f"{t // 3600:02d}:{t % 3600 // 60:02d}:{t % 60:02d}"
 
 
-def _cites(cs: list) -> str:
-    shown = cs[:MAX_CITES_SHOWN]
-    s = " ".join(f"[seg#{c}]" for c in shown)
-    return s + (f" 외 {len(cs) - len(shown)}건" if len(cs) > len(shown) else "")
+def _cites(ev: dict) -> str:
+    """근거 범위는 `support_span`이 갖고, 문서에는 대표 앵커만 보인다."""
+    sp = ev.get("support_span") or {}
+    a = " ".join(f"[seg#{c}]" for c in ev.get("anchor_cites") or [])
+    return f"{a}  (근거 범위 seg#{sp.get('start_seg')}~{sp.get('end_seg')})"
 
 
 def render(doc: dict, seg_len: int = 5) -> str:
     fails = H.validate_document(doc, doc.get("video_id"))
     if fails:
         raise ViewError(f"구조 검증 실패 — 렌더하지 않는다: {fails}")
+    if doc.get("prototype_status") == "CANARY_INVALID":
+        raise ViewError(f"CANARY_INVALID — {doc.get('invalid_reason')}")
     ov = doc.get("overview") or {}
     by_id = {a["event_id"]: a for a in doc["atomic_events"]}
     L = [f"# {doc['video_id']} — 사건 중심 보고서 (prototype)", ""]
@@ -56,8 +56,7 @@ def render(doc: dict, seg_len: int = 5) -> str:
 
     L += ["## 1. 영상 개요", ""]
     L += [ov.get("overview", "(없음)"), ""]
-    L += [f"근거: {' '.join('[' + m + ']' for m in ov.get('supports', []))}",
-          f"(개요 출처: {ov.get('source')})", ""]
+    L += [f"(개요 출처: {ov.get('source')} — 주요 사건 제목에서 코드가 구성)", ""]
 
     L += ["## 2. 전체 흐름", "", ov.get("flow") or "(없음)", ""]
 
@@ -75,23 +74,23 @@ def render(doc: dict, seg_len: int = 5) -> str:
         L += ["```", ""]
         for s in m["subevents"]:
             a = by_id[s]
-            L.append(f"- **{a['title']}** — {a['description']} {_cites(a['cites'])}")
-        L += ["", f"근거: {_cites(m['cites'])}", ""]
+            L.append(f"- **{a['title']}** — {a['description']}")
+            L.append(f"  {_cites(a)}")
+        L += ["", f"근거: {_cites(m)}", ""]
 
-    L += ["## 4. 특이사항 · 확인 불가", "", ov.get("notes") or "없음", ""]
-
-    L += ["## 5. 추적성", "", "```"]
+    L += ["## 4. 추적성", "", "```"]
     L += [f"주요 사건 {len(doc['major_events'])} → 하위 사건 "
-          f"{len(doc['atomic_events'])} → 인용 구간 "
-          f"{len({c for a in doc['atomic_events'] for c in a['cites']})}개",
-          "모든 하위 사건은 인용 구간을 가지며 그 구간은 자기 시간 범위 안에 있다",
-          "주요 사건의 시각·근거는 하위 사건에서 코드가 유도했다 (모델 생성 아님)"]
+          f"{len(doc['atomic_events'])}",
+          "하위 사건은 시간축을 빈틈·겹침 없이 분할한다 (경계 사이를 코드가 구성)",
+          "주요 사건의 시각·근거 앵커는 하위 사건에서 코드가 유도했다 (모델 생성 아님)",
+          "앵커는 first/middle/last 최대 3개 — 근거 범위 자체는 support_span이 보존한다"]
     d = doc.get("diagnostics") or {}
     if d:
-        L += ["", f"청크 {d.get('n_chunks')} · 거부 {d.get('n_atomic_rejected')} "
-              f"{d.get('rejection_reasons')} · 중복제거 "
-              f"{d.get('n_duplicate_removed')}",
-              f"grouping {d.get('grouping')}"]
+        L += ["", f"청크 {d.get('n_chunks')} · 모델이 고른 경계 "
+              f"{d.get('n_boundaries')} · 하위 사건 {d.get('n_atomic')} · "
+              f"주요 사건 {d.get('n_major')}",
+              f"하위 사건 길이(구간) {d.get('atomic_spans_segments')}",
+              f"주요 사건 크기(하위 수) {d.get('major_sizes')}"]
     L += ["```", ""]
     return "\n".join(L)
 
