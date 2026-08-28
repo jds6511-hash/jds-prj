@@ -1,0 +1,310 @@
+{
+  "provenance": {
+    "source_commit": "c654f39de5b5919f30ad6fcdb9d070646990cfd9",
+    "step0_commit": "c654f39",
+    "step0_artifact_sha256": "2a938d7249ab6da489546352455738ecadd696bf1d766d0fa64797cfda69f0c4",
+    "trigger": {
+      "family": "T2",
+      "threshold": 0.7,
+      "id": "T2@0.7"
+    },
+    "eligible_reason": "too_many_evidence",
+    "truncation_rule": "generation_order_first_4",
+    "max_evidence_per_event": 4,
+    "matcher": "m8_metrics.match_events (frozen)",
+    "boundary": {
+      "new_labels": 0,
+      "new_gt": 0,
+      "generation_calls": 0,
+      "llm_calls": 0,
+      "gpu_required": false,
+      "m8v1_verdict_changed": false,
+      "round3": false,
+      "m9_touched": false,
+      "official_test_touched": false,
+      "fresh_data": false,
+      "pushed": false,
+      "note": "evidence cap repair only — 재병합하지 않고 ADD-ONLY다"
+    }
+  },
+  "candidates": [
+    {
+      "video_id": "kbs_banff",
+      "chunk": 0,
+      "chunk_span": [
+        0,
+        59
+      ],
+      "candidate": "kbs_banff#c0#r0",
+      "reason": "too_many_evidence",
+      "n_evidence": 6,
+      "span": [
+        0,
+        29
+      ],
+      "eligible": true,
+      "outcome": "VALID",
+      "still_rejected_reason": null,
+      "retained": [
+        0,
+        5,
+        13,
+        16
+      ],
+      "dropped": [
+        17,
+        18
+      ]
+    },
+    {
+      "video_id": "kbs_banff",
+      "chunk": 0,
+      "chunk_span": [
+        0,
+        59
+      ],
+      "candidate": "kbs_banff#c0#r1",
+      "reason": "too_many_evidence",
+      "n_evidence": 6,
+      "span": [
+        29,
+        38
+      ],
+      "eligible": true,
+      "outcome": "STILL_REJECTED",
+      "still_rejected_reason": "evidence_outside_span",
+      "retained": [
+        22,
+        23,
+        26,
+        27
+      ],
+      "dropped": [
+        28,
+        29
+      ]
+    },
+    {
+      "video_id": "kbs_banff",
+      "chunk": 0,
+      "chunk_span": [
+        0,
+        59
+      ],
+      "candidate": "kbs_banff#c0#r2",
+      "reason": "evidence_outside_span",
+      "n_evidence": 4,
+      "span": [
+        38,
+        41
+      ],
+      "eligible": false,
+      "outcome": "NOT_ELIGIBLE"
+    },
+    {
+      "video_id": "kbs_banff",
+      "chunk": 0,
+      "chunk_span": [
+        0,
+        59
+      ],
+      "candidate": "kbs_banff#c0#r3",
+      "reason": "too_many_evidence",
+      "n_evidence": 16,
+      "span": [
+        41,
+        59
+      ],
+      "eligible": true,
+      "outcome": "VALID",
+      "still_rejected_reason": null,
+      "retained": [
+        41,
+        42,
+        45,
+        46
+      ],
+      "dropped": [
+        47,
+        48,
+        49,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59
+      ]
+    },
+    {
+      "video_id": "kbs_banff",
+      "chunk": 2,
+      "chunk_span": [
+        110,
+        169
+      ],
+      "candidate": "kbs_banff#c2#r0",
+      "reason": "too_many_evidence",
+      "n_evidence": 27,
+      "span": [
+        110,
+        169
+      ],
+      "eligible": true,
+      "outcome": "VALID",
+      "still_rejected_reason": null,
+      "retained": [
+        110,
+        112,
+        114,
+        116
+      ],
+      "dropped": [
+        120,
+        124,
+        128,
+        130,
+        134,
+        135,
+        137,
+        138,
+        140,
+        142,
+        144,
+        146,
+        148,
+        150,
+        152,
+        154,
+        156,
+        158,
+        160,
+        162,
+        164,
+        166,
+        168
+      ]
+    },
+    {
+      "video_id": "m8c2_3I7oGwk6EaQ",
+      "chunk": 2,
+      "chunk_span": [
+        110,
+        169
+      ],
+      "candidate": "m8c2_3I7oGwk6EaQ#c2#r0",
+      "reason": "too_many_evidence",
+      "n_evidence": 19,
+      "span": [
+        110,
+        169
+      ],
+      "eligible": true,
+      "outcome": "VALID",
+      "still_rejected_reason": null,
+      "retained": [
+        110,
+        116,
+        117,
+        118
+      ],
+      "dropped": [
+        126,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143
+      ]
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "chunk": 0,
+      "chunk_span": [
+        0,
+        59
+      ],
+      "candidate": "m8c2_cIxG7OHYMPU#c0#r0",
+      "reason": "evidence_outside_span",
+      "n_evidence": 2,
+      "span": [
+        25,
+        35
+      ],
+      "eligible": false,
+      "outcome": "NOT_ELIGIBLE"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "chunk": 0,
+      "chunk_span": [
+        0,
+        59
+      ],
+      "candidate": "m8c2_cIxG7OHYMPU#c0#r1",
+      "reason": "evidence_outside_span",
+      "n_evidence": 2,
+      "span": [
+        35,
+        50
+      ],
+      "eligible": false,
+      "outcome": "NOT_ELIGIBLE"
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "chunk": 4,
+      "chunk_span": [
+        220,
+        279
+      ],
+      "candidate": "m8c2_cIxG7OHYMPU#c4#r0",
+      "reason": "too_many_evidence",
+      "n_evidence": 21,
+      "span": [
+        220,
+        279
+      ],
+      "eligible": true,
+      "outcome": "VALID",
+      "still_rejected_reason": null,
+      "retained": [
+        220,
+        223,
+        226,
+        230
+      ],
+      "dropped": [
+        233,
+        234,
+        237,
+        240,
+        242,
+        244,
+        247,
+        250,
+        253,
+        255,
+        258,
+        263,
+        267,
+        271,
+        274,
+        277,
+        279
+      ]
+    }
+  ]
+}

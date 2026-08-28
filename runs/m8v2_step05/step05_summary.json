@@ -1,0 +1,55 @@
+{
+  "provenance": {
+    "source_commit": "c654f39de5b5919f30ad6fcdb9d070646990cfd9",
+    "step0_commit": "c654f39",
+    "step0_artifact_sha256": "2a938d7249ab6da489546352455738ecadd696bf1d766d0fa64797cfda69f0c4",
+    "trigger": {
+      "family": "T2",
+      "threshold": 0.7,
+      "id": "T2@0.7"
+    },
+    "eligible_reason": "too_many_evidence",
+    "truncation_rule": "generation_order_first_4",
+    "max_evidence_per_event": 4,
+    "matcher": "m8_metrics.match_events (frozen)",
+    "boundary": {
+      "new_labels": 0,
+      "new_gt": 0,
+      "generation_calls": 0,
+      "llm_calls": 0,
+      "gpu_required": false,
+      "m8v1_verdict_changed": false,
+      "round3": false,
+      "m9_touched": false,
+      "official_test_touched": false,
+      "fresh_data": false,
+      "pushed": false,
+      "note": "evidence cap repair only — 재병합하지 않고 ADD-ONLY다"
+    }
+  },
+  "metrics": {
+    "newly_matched_gt": 4,
+    "out_of": 22,
+    "videos_recovered": 2,
+    "per_video": {
+      "kbs_banff": 3,
+      "m8c2_cIxG7OHYMPU": 1
+    },
+    "max_video_share": 0.75,
+    "rescued_events": 5,
+    "rescued_unmatched": 0,
+    "still_rejected": 1,
+    "triggered_rejected_candidates": 9,
+    "eligible_for_repair": 6,
+    "multi_reason_or_other": 3,
+    "reason_breakdown": {
+      "too_many_evidence": 6,
+      "evidence_outside_span": 3
+    }
+  },
+  "go": false,
+  "failed": [
+    "A_recovered>=5",
+    "C_share<=0.60"
+  ]
+}

@@ -1,0 +1,179 @@
+{
+  "provenance": {
+    "source_commit": "c654f39de5b5919f30ad6fcdb9d070646990cfd9",
+    "step0_commit": "c654f39",
+    "step0_artifact_sha256": "2a938d7249ab6da489546352455738ecadd696bf1d766d0fa64797cfda69f0c4",
+    "trigger": {
+      "family": "T2",
+      "threshold": 0.7,
+      "id": "T2@0.7"
+    },
+    "eligible_reason": "too_many_evidence",
+    "truncation_rule": "generation_order_first_4",
+    "max_evidence_per_event": 4,
+    "matcher": "m8_metrics.match_events (frozen)",
+    "boundary": {
+      "new_labels": 0,
+      "new_gt": 0,
+      "generation_calls": 0,
+      "llm_calls": 0,
+      "gpu_required": false,
+      "m8v1_verdict_changed": false,
+      "round3": false,
+      "m9_touched": false,
+      "official_test_touched": false,
+      "fresh_data": false,
+      "pushed": false,
+      "note": "evidence cap repair only — 재병합하지 않고 ADD-ONLY다"
+    }
+  },
+  "per_video": [
+    {
+      "video_id": "baekmansonghee_jirisan",
+      "n_reference_events": 7,
+      "n_b0_events": 15,
+      "n_rescued_events": 0,
+      "n_still_rejected": 0,
+      "n_r1_events": 15,
+      "inflation": 1.0,
+      "rescued_unmatched": 0,
+      "b0_unmatched_idx": [
+        0
+      ],
+      "newly_matched_idx": [],
+      "n_b0_unmatched": 1,
+      "n_newly_matched": 0
+    },
+    {
+      "video_id": "softyeon_ceramics",
+      "n_reference_events": 12,
+      "n_b0_events": 6,
+      "n_rescued_events": 0,
+      "n_still_rejected": 0,
+      "n_r1_events": 6,
+      "inflation": 1.0,
+      "rescued_unmatched": 0,
+      "b0_unmatched_idx": [
+        0,
+        1,
+        2,
+        6,
+        7,
+        11
+      ],
+      "newly_matched_idx": [],
+      "n_b0_unmatched": 6,
+      "n_newly_matched": 0
+    },
+    {
+      "video_id": "jissi_farm",
+      "n_reference_events": 11,
+      "n_b0_events": 11,
+      "n_rescued_events": 0,
+      "n_still_rejected": 0,
+      "n_r1_events": 11,
+      "inflation": 1.0,
+      "rescued_unmatched": 0,
+      "b0_unmatched_idx": [
+        5,
+        8,
+        10
+      ],
+      "newly_matched_idx": [],
+      "n_b0_unmatched": 3,
+      "n_newly_matched": 0
+    },
+    {
+      "video_id": "kbs_banff",
+      "n_reference_events": 10,
+      "n_b0_events": 14,
+      "n_rescued_events": 3,
+      "n_still_rejected": 1,
+      "n_r1_events": 17,
+      "inflation": 1.2143,
+      "rescued_unmatched": 0,
+      "b0_unmatched_idx": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8
+      ],
+      "newly_matched_idx": [
+        0,
+        3,
+        8
+      ],
+      "n_b0_unmatched": 8,
+      "n_newly_matched": 3
+    },
+    {
+      "video_id": "wonyi_gyeongju",
+      "n_reference_events": 10,
+      "n_b0_events": 16,
+      "n_rescued_events": 0,
+      "n_still_rejected": 0,
+      "n_r1_events": 16,
+      "inflation": 1.0,
+      "rescued_unmatched": 0,
+      "b0_unmatched_idx": [
+        6
+      ],
+      "newly_matched_idx": [],
+      "n_b0_unmatched": 1,
+      "n_newly_matched": 0
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "n_reference_events": 8,
+      "n_b0_events": 10,
+      "n_rescued_events": 0,
+      "n_still_rejected": 0,
+      "n_r1_events": 10,
+      "inflation": 1.0,
+      "rescued_unmatched": 0,
+      "b0_unmatched_idx": [
+        7
+      ],
+      "newly_matched_idx": [],
+      "n_b0_unmatched": 1,
+      "n_newly_matched": 0
+    },
+    {
+      "video_id": "m8c2_3I7oGwk6EaQ",
+      "n_reference_events": 1,
+      "n_b0_events": 7,
+      "n_rescued_events": 1,
+      "n_still_rejected": 0,
+      "n_r1_events": 8,
+      "inflation": 1.1429,
+      "rescued_unmatched": 0,
+      "b0_unmatched_idx": [],
+      "newly_matched_idx": [],
+      "n_b0_unmatched": 0,
+      "n_newly_matched": 0
+    },
+    {
+      "video_id": "m8c2_cIxG7OHYMPU",
+      "n_reference_events": 9,
+      "n_b0_events": 14,
+      "n_rescued_events": 1,
+      "n_still_rejected": 0,
+      "n_r1_events": 15,
+      "inflation": 1.0714,
+      "rescued_unmatched": 0,
+      "b0_unmatched_idx": [
+        1,
+        6
+      ],
+      "newly_matched_idx": [
+        6
+      ],
+      "n_b0_unmatched": 2,
+      "n_newly_matched": 1
+    }
+  ]
+}
