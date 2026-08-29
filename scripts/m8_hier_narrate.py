@@ -38,15 +38,22 @@ RUNDIR = ROOT / "runs/m8_hier"
 FROZEN = ("event_id", "start_seg", "end_seg", "support_span", "anchor_cites")
 
 
-def narrate(src: dict, segments: list, llm) -> tuple:
-    """확정된 span마다 문장 하나. 시간 구조를 만들지도 바꾸지도 않는다."""
+def narrate(src: dict, segments: list, llm, save=None) -> tuple:
+    """확정된 span마다 문장 하나. 시간 구조를 만들지도 바꾸지도 않는다.
+
+    **호출 직후 raw를 먼저 남긴다** — parse/validate 실패가 저장보다 앞에 오면
+    프로세스가 죽었을 때 원인을 못 밝힌다(2026-08-29 사고 2건).
+    """
     by_idx = {s["idx"]: s for s in segments}
     out, raws, failed = [], [], []
     for a in src["atomic_events"]:
         span = [by_idx[i] for i in range(a["start_seg"], a["end_seg"] + 1)]
         r = llm(H.build_narration_prompt(span))
+        raws.append({"event_id": a["event_id"], "raw": r, "narration": None})
+        if save:
+            save(raws)
         t = H.parse_narration(r)
-        raws.append({"event_id": a["event_id"], "raw": r, "narration": t})
+        raws[-1]["narration"] = t
         if not t:
             failed.append(a["event_id"])
         out.append({**{k: a[k] for k in FROZEN}, "narration": t})
@@ -87,7 +94,11 @@ def main() -> int:
     p = out_dir / f"{vid}.json"
     assert "report.json" not in p.name, "공식 산출물 경로에 쓰지 않는다"
 
-    atomics, raws, failed = narrate(src, segs, llm)
+    ckpt_path = out_dir / f"{vid}.checkpoint.json"
+    atomics, raws, failed = narrate(
+        src, segs, llm,
+        save=lambda rs: common.atomic_write_json(
+            ckpt_path, {"video_id": vid, "stage": "narration", "raw": rs}))
     out = {"video_id": vid, "schema": H.NARRATION_SCHEMA, "run_kind": a.run_kind,
            "n_segments": src["n_segments"],
            "lineage": {"kind": "narration_only",

@@ -42,19 +42,36 @@ def chunks(segments: list, size: int, overlap: int):
         start += size - overlap
 
 
-def generate(segments: list, llm, size: int, overlap: int) -> dict:
+def generate(segments: list, llm, size: int, overlap: int, save=None) -> dict:
+    """**LLM 호출 직후 raw를 먼저 저장하고 그 다음 parse·validate한다.**
+
+    2026-08-29 softyeon 실행에서 마지막 1회 호출의 제목 개수 불일치 하나로
+    PASS1+PASS2 약 20회 호출 결과가 통째로 버려졌다. parse/validate 실패가
+    raw 저장보다 앞에 오면 안 된다.
+    """
     n = len(segments)
     by_idx = {s["idx"]: s for s in segments}
     raw = {"atomic_boundaries": [], "describe": [], "major": ""}
+    ckpt = {"raw": raw, "stage": "atomic_boundaries"}
+
+    def flush():
+        if save:
+            save(ckpt)
 
     # PASS 1 — 경계만 고른다. 청크가 겹치므로 합집합을 취한다.
     bounds = set()
     for ch in chunks(segments, size, overlap):
         r = llm(H.build_atomic_boundary_prompt(ch))
         raw["atomic_boundaries"].append(r)
+        flush()
         lo, hi = ch[0]["idx"], ch[-1]["idx"]
         bounds |= {b for b in H.parse_boundaries(r) if lo <= b <= hi}
+    ckpt["boundaries"] = sorted(bounds)
+    flush()
     atomics = H.build_atomic_spans(sorted(bounds), n)
+    ckpt["stage"] = "describe"
+    ckpt["atomic_events"] = atomics
+    flush()
 
     # PASS 2 — 확정된 span에만 제목·서술. 여기서 시간 구조를 바꿀 수 없다.
     described = []
@@ -62,12 +79,19 @@ def generate(segments: list, llm, size: int, overlap: int) -> dict:
         seg = [by_idx[i] for i in range(a["start_seg"], a["end_seg"] + 1)]
         r = llm(H.build_describe_prompt(seg))
         raw["describe"].append({"event_id": a["event_id"], "raw": r})
+        flush()
         described.append(H.with_evidence({**a, **H.parse_describe(r)}))
+        ckpt["atomic_events"] = described
+        flush()
 
     # PASS 3 — Major 경계만 고른다.
+    ckpt["stage"] = "major"
     raw["major"] = llm(H.build_major_boundary_prompt(described))
+    flush()
     ids, titles = H.parse_major_starts(raw["major"])
     majors = H.build_major_spans(ids, titles, described)
+    ckpt["stage"] = "complete"
+    flush()
 
     return {"atomic_events": described, "major_events": majors,
             "overview": H.compose_overview(majors),
@@ -112,13 +136,27 @@ def main() -> int:
             "n_segments": len(segs),
             "provenance": m8_report.report_provenance(llm, cfg)}
 
+    state = {}
+    ckpt_path = out / f"{a.video_id}.checkpoint.json"
+
+    def save(ck):
+        """메모리만이 아니라 **디스크에** 남긴다 — 프로세스가 죽어도 살아남는다."""
+        state.clear()
+        state.update(ck)
+        common.atomic_write_json(ckpt_path, {**base, "checkpoint": ck})
+
     try:
-        res = generate(segs, llm, cfg["map_chunk_size"], cfg["map_chunk_overlap"])
+        res = generate(segs, llm, cfg["map_chunk_size"], cfg["map_chunk_overlap"],
+                       save=save)
     except H.HierInvalid as e:
+        # 실패해도 여기까지 만든 것을 전부 남긴다 — 재시도는 실패한 단계부터면 된다
         common.atomic_write_json(p, {**base, "prototype_status": "CANARY_INVALID",
                                      "invalid_reason": e.reason,
-                                     "invalid_detail": e.detail})
+                                     "invalid_detail": e.detail,
+                                     "checkpoint": state})
         print(f"CANARY_INVALID — {e.reason}: {e.detail}")
+        print(f"checkpoint 보존: stage={state.get('stage')} · "
+              f"사건 {len(state.get('atomic_events') or [])} · raw 전량")
         print(f"산출물(무효 기록): {p}")
         print("fallback을 만들지 않는다 — 최종 AAR을 렌더하지 않는다")
         return 2

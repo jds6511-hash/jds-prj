@@ -8,6 +8,7 @@ v1은 LLM에게 사건 목록·그룹을 자유 생성시켜 실패했다(1구�
 
 채점하지 않는다 — C1/C2/C3·Event Recall·GT 대조 없음. judge 없음. fallback 없음.
 """
+import json
 import sys
 from pathlib import Path
 
@@ -501,3 +502,57 @@ def test_하위_사건은_한_번만_렌더된다():
     """코드블록 목록과 불릿을 같이 내면 같은 문장을 두 번 읽게 된다."""
     md = _view().render(_narr_doc("남성이 산길을 걸어 정상에 도착한다."))
     assert md.count("남성이 산길을 걸어 정상에 도착한다.") == 4    # 사건 4개 × 1회
+
+
+# ── checkpoint 내구성 (2026-08-29 softyeon 사고) ───────────────────────
+def _proto_mod():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "proto", ROOT / "scripts" / "m8_hier_prototype.py")
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules["proto"] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def test_raw는_parse보다_먼저_저장된다():
+    """마지막 1회 호출의 개수 불일치로 앞선 20회 결과가 통째로 버려졌다."""
+    src = (ROOT / "scripts" / "m8_hier_prototype.py").read_text(encoding="utf-8")
+    i_raw = src.index('raw["atomic_boundaries"].append(r)')
+    i_parse = src.index("H.parse_boundaries(r)")
+    assert i_raw < i_parse, "parse가 raw 저장보다 앞에 있다"
+    assert "atomic_write_json(ckpt_path" in src, "디스크에 남기지 않는다"
+
+
+def test_major_실패해도_앞선_결과가_남는다():
+    mod = _proto_mod()
+    segs = [{"idx": i, "start": i * 5, "end": i * 5 + 5,
+             "subtitle": "", "caption": f"장면 {i}"} for i in range(30)]
+    calls = {"n": 0}
+    saved = []
+
+    def llm(prompt):
+        calls["n"] += 1
+        if "major_start_atomic_ids" in prompt:
+            return '{"major_start_atomic_ids":["E01","E02"],"titles":["a"]}'
+        if "atomic_start_segments" in prompt:
+            return "[0, 10, 20]"
+        return '{"title":"제목","description":"서술이다."}'
+
+    with pytest.raises(H.HierInvalid) as e:
+        mod.generate(segs, llm, 60, 5, save=lambda ck: saved.append(
+            json.loads(json.dumps(ck))))
+    assert e.value.reason == "title_count_mismatch"
+    last = saved[-1]
+    assert last["stage"] == "major"
+    assert len(last["atomic_events"]) == 3
+    assert len(last["raw"]["describe"]) == 3
+    assert last["raw"]["major"]
+
+
+def test_narrate도_호출직후_저장한다():
+    src = (ROOT / "scripts" / "m8_hier_narrate.py").read_text(encoding="utf-8")
+    i_raw = src.index('raws.append({"event_id": a["event_id"], "raw": r')
+    i_parse = src.index("H.parse_narration(r)")
+    assert i_raw < i_parse
+    assert "ckpt_path" in src
