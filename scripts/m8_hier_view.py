@@ -68,17 +68,16 @@ def render(doc: dict, seg_len: int = 5) -> str:
               f"**시간:** {hhmmss(m['start_seg'], seg_len)} ~ "
               f"{hhmmss(m['end_seg'] + 1, seg_len)}"
               f"  (seg#{m['start_seg']}~{m['end_seg']})", "",
-              "하위 사건", "", "```"]
+              "하위 사건", ""]
+        # 한 사건은 **한 번만** 적는다. 코드블록 목록과 불릿을 같이 내면 같은
+        # 문장을 두 번 읽게 된다(2026-08-29 3I7 렌더에서 실제로 그랬다).
         for s in m["subevents"]:
             a = by_id[s]
-            L.append(f"{hhmmss(a['start_seg'], seg_len)}~"
-                     f"{hhmmss(a['end_seg'] + 1, seg_len)}  {a['event_id']}  "
-                     f"{a.get('narration') or a.get('title')}")
-        L += ["```", ""]
-        for s in m["subevents"]:
-            a = by_id[s]
-            body = a.get("narration") or f"**{a.get('title')}** — {a.get('description')}"
-            L.append(f"- {body}")
+            body = a.get("narration") or \
+                f"**{a.get('title')}** — {a.get('description')}"
+            L.append(f"- `{hhmmss(a['start_seg'], seg_len)}~"
+                     f"{hhmmss(a['end_seg'] + 1, seg_len)}` **{a['event_id']}** "
+                     f"{body}")
             L.append(f"  {_cites(a)}")
         L += ["", f"근거: {_cites(m)}", ""]
 

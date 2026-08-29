@@ -1,0 +1,448 @@
+{
+  "video_id": "m8c2_3I7oGwk6EaQ",
+  "schema": "m8_hier_narration_v1",
+  "run_kind": "m8_hier_narration",
+  "n_segments": 173,
+  "lineage": {
+    "kind": "narration_only",
+    "structure_from": "m8_hier_prototype_canary_v3",
+    "source_path": "runs/m8_hier/m8_hier_prototype_canary_v3/m8c2_3I7oGwk6EaQ.json",
+    "source_sha256": "6a782e3de00f7e5755f9ba0b551dc6e5ffce6e528abd8f759ed7880f8363d28f",
+    "structure_regenerated": false,
+    "frozen_fields": [
+      "event_id",
+      "start_seg",
+      "end_seg",
+      "support_span",
+      "anchor_cites",
+      "major_events"
+    ]
+  },
+  "atomic_events": [
+    {
+      "event_id": "E01",
+      "start_seg": 0,
+      "end_seg": 25,
+      "support_span": {
+        "start_seg": 0,
+        "end_seg": 25
+      },
+      "anchor_cites": [
+        0,
+        12,
+        25
+      ],
+      "narration": "남성이 바위 위에 앉아 있으며, 주변은 자연 경관이 있는 산길과 숲으로 둘러싸여 있다."
+    },
+    {
+      "event_id": "E02",
+      "start_seg": 26,
+      "end_seg": 40,
+      "support_span": {
+        "start_seg": 26,
+        "end_seg": 40
+      },
+      "anchor_cites": [
+        26,
+        33,
+        40
+      ],
+      "narration": "숲속에서 사람들이 산으로 가는 길을 걷고 있으며, 자연광이 비치는 어두운 숲의 풍경이 계속됩니다."
+    },
+    {
+      "event_id": "E03",
+      "start_seg": 41,
+      "end_seg": 54,
+      "support_span": {
+        "start_seg": 41,
+        "end_seg": 54
+      },
+      "anchor_cites": [
+        41,
+        47,
+        54
+      ],
+      "narration": "여성은 푸른 하늘 아래 산길을 오르내리며 걷고 있습니다."
+    },
+    {
+      "event_id": "E04",
+      "start_seg": 55,
+      "end_seg": 57,
+      "support_span": {
+        "start_seg": 55,
+        "end_seg": 57
+      },
+      "anchor_cites": [
+        55,
+        56,
+        57
+      ],
+      "narration": "산 위와 아래에 자연의 요소들이 변화하면서 산길이 이어진다."
+    },
+    {
+      "event_id": "E05",
+      "start_seg": 58,
+      "end_seg": 63,
+      "support_span": {
+        "start_seg": 58,
+        "end_seg": 63
+      },
+      "anchor_cites": [
+        58,
+        60,
+        63
+      ],
+      "narration": "한 남성이 나무 위에 앉아 있는 후, 산책을 하다가 숲속을 걷다가 다시 산길을 따라 올라가는 모습을 보여준다."
+    },
+    {
+      "event_id": "E06",
+      "start_seg": 64,
+      "end_seg": 90,
+      "support_span": {
+        "start_seg": 64,
+        "end_seg": 90
+      },
+      "anchor_cites": [
+        64,
+        77,
+        90
+      ],
+      "narration": "등산객이 산 위에서 휴식을 취하고 있습니다."
+    },
+    {
+      "event_id": "E07",
+      "start_seg": 91,
+      "end_seg": 109,
+      "support_span": {
+        "start_seg": 91,
+        "end_seg": 109
+      },
+      "anchor_cites": [
+        91,
+        100,
+        109
+      ],
+      "narration": "남성이 산책로를 따라 걷다가 마포구청 인터넷 방송국 홈페이지를 방문한 후, 비가 오는 숲속을 다시 걷게 된다."
+    },
+    {
+      "event_id": "E08",
+      "start_seg": 110,
+      "end_seg": 115,
+      "support_span": {
+        "start_seg": 110,
+        "end_seg": 115
+      },
+      "anchor_cites": [
+        110,
+        112,
+        115
+      ],
+      "narration": "한 사람이 숲속에서 걷다가 비가 오자마자 빗속에서 길을เดิน하는 상황이 발생했습니다."
+    },
+    {
+      "event_id": "E09",
+      "start_seg": 116,
+      "end_seg": 117,
+      "support_span": {
+        "start_seg": 116,
+        "end_seg": 117
+      },
+      "anchor_cites": [
+        116,
+        117
+      ],
+      "narration": "숲속길을 걷는 사람이 있습니다."
+    },
+    {
+      "event_id": "E10",
+      "start_seg": 118,
+      "end_seg": 125,
+      "support_span": {
+        "start_seg": 118,
+        "end_seg": 125
+      },
+      "anchor_cites": [
+        118,
+        121,
+        125
+      ],
+      "narration": "남성은 조심스럽게 숲속 산책길을 걷고 있습니다."
+    },
+    {
+      "event_id": "E11",
+      "start_seg": 126,
+      "end_seg": 134,
+      "support_span": {
+        "start_seg": 126,
+        "end_seg": 134
+      },
+      "anchor_cites": [
+        126,
+        130,
+        134
+      ],
+      "narration": "남성은 숲속 산책길을 걷다가 계곡을 지나 푸른 초원으로 이동한다."
+    },
+    {
+      "event_id": "E12",
+      "start_seg": 135,
+      "end_seg": 144,
+      "support_span": {
+        "start_seg": 135,
+        "end_seg": 144
+      },
+      "anchor_cites": [
+        135,
+        139,
+        144
+      ],
+      "narration": "한 남성이 푸른 하늘 아래 풀밭에서 산책을 하고 있습니다."
+    },
+    {
+      "event_id": "E13",
+      "start_seg": 145,
+      "end_seg": 164,
+      "support_span": {
+        "start_seg": 145,
+        "end_seg": 164
+      },
+      "anchor_cites": [
+        145,
+        154,
+        164
+      ],
+      "narration": "금발 여성이 등산 중이며, 그 주변은 푸른 하늘과 나무로 가득한 숲으로 둘러싸여 있다."
+    },
+    {
+      "event_id": "E14",
+      "start_seg": 165,
+      "end_seg": 168,
+      "support_span": {
+        "start_seg": 165,
+        "end_seg": 168
+      },
+      "anchor_cites": [
+        165,
+        166,
+        168
+      ],
+      "narration": "화면에 녹색 식물이 가득한 길이 나타나며, 길 한쪽에는 푸른색 차량이 있고 다른 한쪽에는 금속 구조의 검은색 물체가 위치해 있다."
+    },
+    {
+      "event_id": "E15",
+      "start_seg": 169,
+      "end_seg": 169,
+      "support_span": {
+        "start_seg": 169,
+        "end_seg": 169
+      },
+      "anchor_cites": [
+        169
+      ],
+      "narration": "영상이 끝나고 다음 영상에서 만나요라는 메시지를 보여주며 화면은 자연적인 풍경을 나타내고 있습니다."
+    },
+    {
+      "event_id": "E16",
+      "start_seg": 170,
+      "end_seg": 172,
+      "support_span": {
+        "start_seg": 170,
+        "end_seg": 172
+      },
+      "anchor_cites": [
+        170,
+        171,
+        172
+      ],
+      "narration": "도로와 도시를 지나 검은 화면으로 전환되었다."
+    }
+  ],
+  "major_events": [
+    {
+      "major_event_id": "M01",
+      "title": "산행 시작",
+      "subevents": [
+        "E01",
+        "E02",
+        "E03",
+        "E04",
+        "E05",
+        "E06",
+        "E07",
+        "E08",
+        "E09",
+        "E10",
+        "E11"
+      ],
+      "start_seg": 0,
+      "end_seg": 134,
+      "support_span": {
+        "start_seg": 0,
+        "end_seg": 134
+      },
+      "anchor_cites": [
+        0,
+        67,
+        134
+      ]
+    },
+    {
+      "major_event_id": "M02",
+      "title": "하산",
+      "subevents": [
+        "E12",
+        "E13",
+        "E14",
+        "E15",
+        "E16"
+      ],
+      "start_seg": 135,
+      "end_seg": 172,
+      "support_span": {
+        "start_seg": 135,
+        "end_seg": 172
+      },
+      "anchor_cites": [
+        135,
+        153,
+        172
+      ]
+    }
+  ],
+  "overview": {
+    "source": "deterministic",
+    "overview": "영상은 산행 시작, 하산의 순서로 진행된다.",
+    "flow": "산행 시작 → 하산",
+    "supports": [
+      "M01",
+      "M02"
+    ]
+  },
+  "provenance": {
+    "role": "report",
+    "model_loaded": true,
+    "requested_model": "Qwen/Qwen2.5-7B-Instruct",
+    "requested_4bit": false,
+    "max_new_tokens": 16384,
+    "do_sample": false,
+    "effective_model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "effective_model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "effective_dtype": "torch.bfloat16",
+    "effective_quantized": false,
+    "attn_implementation": "sdpa",
+    "prompt_sha256": {
+      "system": "cf54f0ed85146176eb94a9aa99db0e68787af7878c8b76609a964d4926de6f24",
+      "event_rules": "7e23fc3a529d486005a97e891f1c28461089fc2ccc9ee504c4c27a0cd14985f3",
+      "build_map_prompt": "2bbcbc195f1b11e769acda7fe7babed20ed7f19fe99d6f71f08dbd1b43041510",
+      "build_reduce_prompt": "95f5c2c2c17eb4cf8ff8a43b93ca4c5c7075ddafe00911387201e6e433f9baf4",
+      "build_event_prompt": "791b4eed0ab6f93cae8df41a91e3bd8f93a8ce36e82de70ad922a778013bdf90"
+    },
+    "env": {
+      "git_head": "41875218a1e5c2778fa5daecdca86a9e70855112",
+      "git_dirty": true,
+      "python": "3.12.13",
+      "generated_at": "2026-08-29T22:20:36",
+      "torch": "2.13.0+cu130",
+      "cuda": "13.0",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "transformers": "5.14.1"
+    },
+    "quantization_mismatch": false,
+    "schema_version": 2,
+    "config_report_model": "Qwen/Qwen2.5-7B-Instruct",
+    "config_llm_4bit": false,
+    "config_map_chunk_size": 60,
+    "config_map_chunk_overlap": 5,
+    "config_report_max_new_tokens": 16384
+  },
+  "raw": {
+    "narration": [
+      {
+        "event_id": "E01",
+        "raw": "남성이 바위 위에 앉아 있으며, 주변은 자연 경관이 있는 산길과 숲으로 둘러싸여 있다.",
+        "narration": "남성이 바위 위에 앉아 있으며, 주변은 자연 경관이 있는 산길과 숲으로 둘러싸여 있다."
+      },
+      {
+        "event_id": "E02",
+        "raw": "숲속에서 사람들이 산으로 가는 길을 걷고 있으며, 자연광이 비치는 어두운 숲의 풍경이 계속됩니다.",
+        "narration": "숲속에서 사람들이 산으로 가는 길을 걷고 있으며, 자연광이 비치는 어두운 숲의 풍경이 계속됩니다."
+      },
+      {
+        "event_id": "E03",
+        "raw": "여성은 푸른 하늘 아래 산길을 오르내리며 걷고 있습니다.",
+        "narration": "여성은 푸른 하늘 아래 산길을 오르내리며 걷고 있습니다."
+      },
+      {
+        "event_id": "E04",
+        "raw": "산 위와 아래에 자연의 요소들이 변화하면서 산길이 이어진다.",
+        "narration": "산 위와 아래에 자연의 요소들이 변화하면서 산길이 이어진다."
+      },
+      {
+        "event_id": "E05",
+        "raw": "한 남성이 나무 위에 앉아 있는 후, 산책을 하다가 숲속을 걷다가 다시 산길을 따라 올라가는 모습을 보여준다.",
+        "narration": "한 남성이 나무 위에 앉아 있는 후, 산책을 하다가 숲속을 걷다가 다시 산길을 따라 올라가는 모습을 보여준다."
+      },
+      {
+        "event_id": "E06",
+        "raw": "등산객이 산 위에서 휴식을 취하고 있습니다.",
+        "narration": "등산객이 산 위에서 휴식을 취하고 있습니다."
+      },
+      {
+        "event_id": "E07",
+        "raw": "남성이 산책로를 따라 걷다가 마포구청 인터넷 방송국 홈페이지를 방문한 후, 비가 오는 숲속을 다시 걷게 된다.",
+        "narration": "남성이 산책로를 따라 걷다가 마포구청 인터넷 방송국 홈페이지를 방문한 후, 비가 오는 숲속을 다시 걷게 된다."
+      },
+      {
+        "event_id": "E08",
+        "raw": "한 사람이 숲속에서 걷다가 비가 오자마자 빗속에서 길을เดิน하는 상황이 발생했습니다.",
+        "narration": "한 사람이 숲속에서 걷다가 비가 오자마자 빗속에서 길을เดิน하는 상황이 발생했습니다."
+      },
+      {
+        "event_id": "E09",
+        "raw": "숲속길을 걷는 사람이 있습니다.",
+        "narration": "숲속길을 걷는 사람이 있습니다."
+      },
+      {
+        "event_id": "E10",
+        "raw": "남성은 조심스럽게 숲속 산책길을 걷고 있습니다.",
+        "narration": "남성은 조심스럽게 숲속 산책길을 걷고 있습니다."
+      },
+      {
+        "event_id": "E11",
+        "raw": "남성은 숲속 산책길을 걷다가 계곡을 지나 푸른 초원으로 이동한다.",
+        "narration": "남성은 숲속 산책길을 걷다가 계곡을 지나 푸른 초원으로 이동한다."
+      },
+      {
+        "event_id": "E12",
+        "raw": "한 남성이 푸른 하늘 아래 풀밭에서 산책을 하고 있습니다.",
+        "narration": "한 남성이 푸른 하늘 아래 풀밭에서 산책을 하고 있습니다."
+      },
+      {
+        "event_id": "E13",
+        "raw": "금발 여성이 등산 중이며, 그 주변은 푸른 하늘과 나무로 가득한 숲으로 둘러싸여 있다.",
+        "narration": "금발 여성이 등산 중이며, 그 주변은 푸른 하늘과 나무로 가득한 숲으로 둘러싸여 있다."
+      },
+      {
+        "event_id": "E14",
+        "raw": "화면에 녹색 식물이 가득한 길이 나타나며, 길 한쪽에는 푸른색 차량이 있고 다른 한쪽에는 금속 구조의 검은색 물체가 위치해 있다.",
+        "narration": "화면에 녹색 식물이 가득한 길이 나타나며, 길 한쪽에는 푸른색 차량이 있고 다른 한쪽에는 금속 구조의 검은색 물체가 위치해 있다."
+      },
+      {
+        "event_id": "E15",
+        "raw": "영상이 끝나고 다음 영상에서 만나요라는 메시지를 보여주며 화면은 자연적인 풍경을 나타내고 있습니다.",
+        "narration": "영상이 끝나고 다음 영상에서 만나요라는 메시지를 보여주며 화면은 자연적인 풍경을 나타내고 있습니다."
+      },
+      {
+        "event_id": "E16",
+        "raw": "도로와 도시를 지나 검은 화면으로 전환되었다.",
+        "narration": "도로와 도시를 지나 검은 화면으로 전환되었다."
+      }
+    ]
+  },
+  "prototype_status": "OK",
+  "validation": {
+    "passed": true,
+    "failures": [],
+    "failed_events": []
+  }
+}

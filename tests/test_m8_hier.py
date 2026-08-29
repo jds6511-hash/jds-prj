@@ -495,3 +495,9 @@ def test_narrate_러너는_실패해도_원본을_남긴다():
     """v4는 fail-closed 경로에서 원본을 버려 원인을 못 밝혔다."""
     src = (ROOT / "scripts" / "m8_hier_narrate.py").read_text(encoding="utf-8")
     assert '"raw": {"narration": raws}' in src
+
+
+def test_하위_사건은_한_번만_렌더된다():
+    """코드블록 목록과 불릿을 같이 내면 같은 문장을 두 번 읽게 된다."""
+    md = _view().render(_narr_doc("남성이 산길을 걸어 정상에 도착한다."))
+    assert md.count("남성이 산길을 걸어 정상에 도착한다.") == 4    # 사건 4개 × 1회
