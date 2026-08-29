@@ -324,3 +324,102 @@ def test_앞뒤_설명이_붙어도_배열을_건진다():
 def test_객체가_있으면_객체를_우선한다():
     raw = '{"atomic_start_segments":[0,50],"note":[9,9,9]}'
     assert H.parse_boundaries(raw) == [0, 50]
+
+
+# ── v4 title-only format repair ────────────────────────────────────────
+def test_title_프롬프트는_서술만_준다():
+    """구간을 다시 읽혀 새 사실을 끌어오지 않는다."""
+    p = H.build_title_prompt("여성이 산길을 걷는다")
+    assert "여성이 산길을 걷는다" in p
+    assert "seg#" not in p and "자막" not in p
+
+
+def test_title_파싱():
+    assert H.parse_title('{"title": "산길 이동"}') == "산길 이동"
+    assert H.parse_title('```json\n{"title":"숲속 산책"}\n```') == "숲속 산책"
+    assert H.parse_title('"산길 이동"') == "산길 이동"
+
+
+def test_title을_못_만들면_빈값이다():
+    """fallback placeholder로 validator를 통과시키지 않는다."""
+    assert H.parse_title("제목을 정할 수 없습니다") == ""
+    assert H.parse_title("") == ""
+
+
+def test_오염된_title은_거부된다():
+    assert H.parse_title('{"title":"계단 위에는 계단 위에는 계단 위에는 "}') == ""
+
+
+def _repair_mod():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "titlerepair", ROOT / "scripts" / "m8_hier_title_repair.py")
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules["titlerepair"] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def _src():
+    atoms = _atomics([0, 15, 30, 45])
+    for a in atoms[1:3]:
+        a["title"] = ""
+    majors = H.build_major_spans(["E01", "E03"], ["산행", "하산"], atoms)
+    return {"video_id": "v", "schema": H.SCHEMA, "run_kind": "v3",
+            "n_segments": 60, "atomic_events": atoms,
+            "major_events": majors, "overview": H.compose_overview(majors)}
+
+
+def test_빈_title만_채운다():
+    mod = _repair_mod()
+    out, diag = mod.repair(_src(), lambda p: '{"title":"채운 제목"}')
+    assert diag["n_targets"] == 2 and diag["filled"] == ["E02", "E03"]
+    assert out["atomic_events"][0]["title"] == "산길 이동"     # 기존 유지
+    assert out["atomic_events"][1]["title"] == "채운 제목"
+
+
+def test_기존_title은_재생성하지_않는다():
+    mod = _repair_mod()
+    _, diag = mod.repair(_src(), lambda p: '{"title":"x"}')
+    assert "E01" not in diag["filled"] and "E04" not in diag["filled"]
+
+
+def test_하나라도_실패하면_무효다():
+    mod = _repair_mod()
+    with pytest.raises(H.HierInvalid) as e:
+        mod.repair(_src(), lambda p: "제목 못 만들겠습니다")
+    assert e.value.reason == "title_repair_failed"
+
+
+def test_원본을_변형하지_않는다():
+    mod = _repair_mod()
+    src = _src()
+    mod.repair(src, lambda p: '{"title":"x"}')
+    assert src["atomic_events"][1]["title"] == ""
+
+
+def test_구조가_바뀌면_무효다():
+    mod = _repair_mod()
+    src = _src()
+    out, _ = mod.repair(src, lambda p: '{"title":"x"}')
+    mod.assert_structure_unchanged(src, out)          # 정상 경로
+    out["atomic_events"][0]["end_seg"] = 99
+    with pytest.raises(H.HierInvalid) as e:
+        mod.assert_structure_unchanged(src, out)
+    assert e.value.reason == "frozen_field_changed"
+
+
+def test_major가_바뀌면_무효다():
+    mod = _repair_mod()
+    src = _src()
+    out, _ = mod.repair(src, lambda p: '{"title":"x"}')
+    out["major_events"][0]["title"] = "다른 제목"
+    with pytest.raises(H.HierInvalid) as e:
+        mod.assert_structure_unchanged(src, out)
+    assert e.value.reason == "major_changed"
+
+
+def test_보수_후_문서가_검증을_통과한다():
+    mod = _repair_mod()
+    out, _ = mod.repair(_src(), lambda p: '{"title":"채운 제목"}')
+    assert H.validate_document(out, "v") == []

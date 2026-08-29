@@ -192,6 +192,36 @@ def parse_describe(raw: str) -> dict:
     return {"title": t, "description": desc}
 
 
+# ── 사후 보수: title만 채운다 (v4 format repair) ────────────────────────
+_TITLE_RULES = """
+출력은 **JSON 하나만** 쓸 것. 설명·머리말·맺음말 금지.
+
+{"title": "산길 이동"}
+
+- 아래 서술에 **이미 있는 사실만** 써서 짧은 한국어 사건명을 만든다.
+- 새로운 인물·행동·원인·의도를 덧붙이지 말 것.
+- 서술을 다시 쓰지 말 것. 이름만 쓴다.
+- 장식적인 문장을 쓰지 말 것.
+"""
+
+
+def build_title_prompt(description: str) -> str:
+    """**기존 서술만** 입력한다 — 구간을 다시 읽혀 새 사실을 끌어오지 않는다."""
+    return (f"{_SYSTEM}\n\n아래는 한 사건에 대한 서술이다.\n{_TITLE_RULES}\n"
+            f"서술:\n{description}")
+
+
+def parse_title(raw: str) -> str:
+    """객체 `{"title": ...}`와 맨 문자열을 받는다. 그 외에는 빈 값 — fail-closed."""
+    d = _obj(raw)
+    if isinstance(d, dict) and str(d.get("title", "")).strip():
+        t = str(d["title"]).strip()
+    else:
+        m = re.search(r'"([^"\n]{1,200})"', raw or "")
+        t = m.group(1).strip() if m else ""
+    return "" if common.is_corrupted_caption(t) else t
+
+
 # ── PASS 3: Major 경계 선택 ─────────────────────────────────────────────
 _MAJOR_BOUNDARY_RULES = """
 출력은 **JSON 하나만** 쓸 것. 설명·머리말·맺음말 금지.
