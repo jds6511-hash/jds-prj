@@ -1,0 +1,1454 @@
+{
+  "video_id": "wonyi_geoje",
+  "schema": "m8_hier_narration_v1",
+  "run_kind": "m8_hier_narration_geoje",
+  "n_segments": 327,
+  "lineage": {
+    "kind": "narration_only",
+    "structure_from": "m8_hier_prototype_geoje",
+    "source_path": "runs/m8_hier/m8_hier_prototype_geoje/wonyi_geoje.json",
+    "source_sha256": "5f26d5fefc2919ae094689d20dac71c81197853c5034bc72819293e1dccd1946",
+    "structure_regenerated": false,
+    "frozen_fields": [
+      "event_id",
+      "start_seg",
+      "end_seg",
+      "support_span",
+      "anchor_cites",
+      "major_events"
+    ]
+  },
+  "atomic_events": [
+    {
+      "event_id": "E01",
+      "start_seg": 0,
+      "end_seg": 3,
+      "support_span": {
+        "start_seg": 0,
+        "end_seg": 3
+      },
+      "anchor_cites": [
+        0,
+        1,
+        3
+      ],
+      "narration": "미나미가 거제를 방문하며 리더 원희 언니의 삶을 탐구하고 있습니다."
+    },
+    {
+      "event_id": "E02",
+      "start_seg": 4,
+      "end_seg": 25,
+      "support_span": {
+        "start_seg": 4,
+        "end_seg": 25
+      },
+      "anchor_cites": [
+        4,
+        14,
+        25
+      ],
+      "narration": "두 여성은 거제 여행 후 서로의 경험을 나누며 즐거운 대화를 나누고 있습니다."
+    },
+    {
+      "event_id": "E03",
+      "start_seg": 26,
+      "end_seg": 54,
+      "support_span": {
+        "start_seg": 26,
+        "end_seg": 54
+      },
+      "anchor_cites": [
+        26,
+        40,
+        54
+      ],
+      "narration": "두 여성들이 거리를 산책하며 다양한 주제에 대해 대화를 나누다가 버스 타는 방법을 논의하다."
+    },
+    {
+      "event_id": "E04",
+      "start_seg": 55,
+      "end_seg": 58,
+      "support_span": {
+        "start_seg": 55,
+        "end_seg": 58
+      },
+      "anchor_cites": [
+        55,
+        56,
+        58
+      ],
+      "narration": "버스 안에서 할머니들은 순서대로 앉으며, 다른 승객들은 대화를 나누며 시간을 보내고 있습니다."
+    },
+    {
+      "event_id": "E05",
+      "start_seg": 59,
+      "end_seg": 63,
+      "support_span": {
+        "start_seg": 59,
+        "end_seg": 63
+      },
+      "anchor_cites": [
+        59,
+        61,
+        63
+      ],
+      "narration": "두 여성은 버스 안에서 대화를 나누며 웃고 있다."
+    },
+    {
+      "event_id": "E06",
+      "start_seg": 64,
+      "end_seg": 90,
+      "support_span": {
+        "start_seg": 64,
+        "end_seg": 90
+      },
+      "anchor_cites": [
+        64,
+        77,
+        90
+      ],
+      "narration": "두 여성은 해변에서 즐겁게 걷다가 발걸음을 맞추려고 노력하며 대화를 나누고 있습니다."
+    },
+    {
+      "event_id": "E07",
+      "start_seg": 91,
+      "end_seg": 109,
+      "support_span": {
+        "start_seg": 91,
+        "end_seg": 109
+      },
+      "anchor_cites": [
+        91,
+        100,
+        109
+      ],
+      "narration": "두 여성 사이의 대화가 계속되는 동안 여성 A가 여성 B에게 물어보는 모습입니다."
+    },
+    {
+      "event_id": "E08",
+      "start_seg": 110,
+      "end_seg": 119,
+      "support_span": {
+        "start_seg": 110,
+        "end_seg": 119
+      },
+      "anchor_cites": [
+        110,
+        114,
+        119
+      ],
+      "narration": "여성들이 거제도와 관련된 활동을 논의하며 즐거워하고 있습니다."
+    },
+    {
+      "event_id": "E09",
+      "start_seg": 120,
+      "end_seg": 129,
+      "support_span": {
+        "start_seg": 120,
+        "end_seg": 129
+      },
+      "anchor_cites": [
+        120,
+        124,
+        129
+      ],
+      "narration": "두 여성이 낚시를 하기 위해 해변을 방문하고, 초기에는 바다를 관찰하다가 결국 낚시를 하지 않기로 결정하며 대화를 나눕니다."
+    },
+    {
+      "event_id": "E10",
+      "start_seg": 130,
+      "end_seg": 139,
+      "support_span": {
+        "start_seg": 130,
+        "end_seg": 139
+      },
+      "anchor_cites": [
+        130,
+        134,
+        139
+      ],
+      "narration": "두 여성은 야외에서 불낚시를 하며 서로 도움을 청하고 있습니다."
+    },
+    {
+      "event_id": "E11",
+      "start_seg": 140,
+      "end_seg": 149,
+      "support_span": {
+        "start_seg": 140,
+        "end_seg": 149
+      },
+      "anchor_cites": [
+        140,
+        144,
+        149
+      ],
+      "narration": "두 여성은 해변에서 물고기를 찾으며 대화를 나누고 있습니다."
+    },
+    {
+      "event_id": "E12",
+      "start_seg": 150,
+      "end_seg": 164,
+      "support_span": {
+        "start_seg": 150,
+        "end_seg": 164
+      },
+      "anchor_cites": [
+        150,
+        157,
+        164
+      ],
+      "narration": "여성들은 바다낚시를 즐기며 다양한 활동을 하고 있습니다."
+    },
+    {
+      "event_id": "E13",
+      "start_seg": 165,
+      "end_seg": 177,
+      "support_span": {
+        "start_seg": 165,
+        "end_seg": 177
+      },
+      "anchor_cites": [
+        165,
+        171,
+        177
+      ],
+      "narration": "여성은 바다에서 물건을 잡기 위해 노력하다"
+    },
+    {
+      "event_id": "E14",
+      "start_seg": 178,
+      "end_seg": 185,
+      "support_span": {
+        "start_seg": 178,
+        "end_seg": 185
+      },
+      "anchor_cites": [
+        178,
+        181,
+        185
+      ],
+      "narration": "두 여성은 해변에서 라면과 꽃게를 먹기로 하고 대화를 나누며 수영복을 입지 않고 반팔을 입고 물에 들어가는 것을 결정합니다."
+    },
+    {
+      "event_id": "E15",
+      "start_seg": 186,
+      "end_seg": 189,
+      "support_span": {
+        "start_seg": 186,
+        "end_seg": 189
+      },
+      "anchor_cites": [
+        186,
+        187,
+        189
+      ],
+      "narration": "두 여성은 해변에서 우산 아래에서 가벼운 대화를 나누며 놀이를 즐기고 있습니다."
+    },
+    {
+      "event_id": "E16",
+      "start_seg": 190,
+      "end_seg": 205,
+      "support_span": {
+        "start_seg": 190,
+        "end_seg": 205
+      },
+      "anchor_cites": [
+        190,
+        197,
+        205
+      ],
+      "narration": "두 여성은 해변에서 우산을 들고 대화를 나누며 바닷물에 들어가려는 의도를 공유하다가, 한 남성의 등장으로 인해 상황이 변화한다."
+    },
+    {
+      "event_id": "E17",
+      "start_seg": 206,
+      "end_seg": 209,
+      "support_span": {
+        "start_seg": 206,
+        "end_seg": 209
+      },
+      "anchor_cites": [
+        206,
+        207,
+        209
+      ],
+      "narration": "두 여성은 해변에서 즐거운 시간을 보내며 서로를 돕고 있다."
+    },
+    {
+      "event_id": "E18",
+      "start_seg": 210,
+      "end_seg": 213,
+      "support_span": {
+        "start_seg": 210,
+        "end_seg": 213
+      },
+      "anchor_cites": [
+        210,
+        211,
+        213
+      ],
+      "narration": "여성들이 바다에서 즐겁게 놀고 있다."
+    },
+    {
+      "event_id": "E19",
+      "start_seg": 214,
+      "end_seg": 219,
+      "support_span": {
+        "start_seg": 214,
+        "end_seg": 219
+      },
+      "anchor_cites": [
+        214,
+        216,
+        219
+      ],
+      "narration": "두 사람이 물에서 놀다가 해변으로 돌아오는 과정을 보여준다."
+    },
+    {
+      "event_id": "E20",
+      "start_seg": 220,
+      "end_seg": 223,
+      "support_span": {
+        "start_seg": 220,
+        "end_seg": 223
+      },
+      "anchor_cites": [
+        220,
+        221,
+        223
+      ],
+      "narration": "소년이 모래에서 돌을 찾고, 두 여성과 함께 해변에서 즐거운 시간을 보내는 중이다."
+    },
+    {
+      "event_id": "E21",
+      "start_seg": 224,
+      "end_seg": 225,
+      "support_span": {
+        "start_seg": 224,
+        "end_seg": 225
+      },
+      "anchor_cites": [
+        224,
+        225
+      ],
+      "narration": "두 여성들이 바다쪽으로 걸어가고 있습니다."
+    },
+    {
+      "event_id": "E22",
+      "start_seg": 226,
+      "end_seg": 227,
+      "support_span": {
+        "start_seg": 226,
+        "end_seg": 227
+      },
+      "anchor_cites": [
+        226,
+        227
+      ],
+      "narration": "여성은 해변에서 라면을 먹으며 배고픔을 느끼고 피곤함을 표현한 후, 다른 여성에게 신발을 요청한다."
+    },
+    {
+      "event_id": "E23",
+      "start_seg": 228,
+      "end_seg": 229,
+      "support_span": {
+        "start_seg": 228,
+        "end_seg": 229
+      },
+      "anchor_cites": [
+        228,
+        229
+      ],
+      "narration": "두 여성이 해변에서 끓여진 음식을 준비하며, 그 중 한 명이 젖은 상태에서 라면을 먹기로 한다."
+    },
+    {
+      "event_id": "E24",
+      "start_seg": 230,
+      "end_seg": 231,
+      "support_span": {
+        "start_seg": 230,
+        "end_seg": 231
+      },
+      "anchor_cites": [
+        230,
+        231
+      ],
+      "narration": "미남이는 젖은 상태에서 라면을 먹자마자 매우 불만족스러운 표정을 짓는다."
+    },
+    {
+      "event_id": "E25",
+      "start_seg": 232,
+      "end_seg": 233,
+      "support_span": {
+        "start_seg": 232,
+        "end_seg": 233
+      },
+      "anchor_cites": [
+        232,
+        233
+      ],
+      "narration": "여성 A가 해변에서 라면을 만드는데 필요한 재료를 구하려고 합니다."
+    },
+    {
+      "event_id": "E26",
+      "start_seg": 234,
+      "end_seg": 235,
+      "support_span": {
+        "start_seg": 234,
+        "end_seg": 235
+      },
+      "anchor_cites": [
+        234,
+        235
+      ],
+      "narration": "여성은 이모들에게 자신의 요청을 전달하려고 합니다."
+    },
+    {
+      "event_id": "E27",
+      "start_seg": 236,
+      "end_seg": 237,
+      "support_span": {
+        "start_seg": 236,
+        "end_seg": 237
+      },
+      "anchor_cites": [
+        236,
+        237
+      ],
+      "narration": "여성은 창가에 서서 바다를 바라보며 대화를 나누고 있습니다."
+    },
+    {
+      "event_id": "E28",
+      "start_seg": 238,
+      "end_seg": 239,
+      "support_span": {
+        "start_seg": 238,
+        "end_seg": 239
+      },
+      "anchor_cites": [
+        238,
+        239
+      ],
+      "narration": "분홍색 앞치마를 입은 여성은 다른 여성에게 통닭을 주기로 한 약속을 설명하고 있습니다."
+    },
+    {
+      "event_id": "E29",
+      "start_seg": 240,
+      "end_seg": 241,
+      "support_span": {
+        "start_seg": 240,
+        "end_seg": 241
+      },
+      "anchor_cites": [
+        240,
+        241
+      ],
+      "narration": "두 여성들이 무료로 제공된 통닭에 대해 확인하고 추가로 하나를 요청하고 있습니다."
+    },
+    {
+      "event_id": "E30",
+      "start_seg": 242,
+      "end_seg": 243,
+      "support_span": {
+        "start_seg": 242,
+        "end_seg": 243
+      },
+      "anchor_cites": [
+        242,
+        243
+      ],
+      "narration": "여성이 데우려고 하는 사람을 기다리며 앉아 있고, 이모 라면에 추가할 것을 생각하고 있다."
+    },
+    {
+      "event_id": "E31",
+      "start_seg": 244,
+      "end_seg": 245,
+      "support_span": {
+        "start_seg": 244,
+        "end_seg": 245
+      },
+      "anchor_cites": [
+        244,
+        245
+      ],
+      "narration": "여성은 김치와 단무지를 가져갈 것을 제안하며 요리를 하는 중이다."
+    },
+    {
+      "event_id": "E32",
+      "start_seg": 246,
+      "end_seg": 247,
+      "support_span": {
+        "start_seg": 246,
+        "end_seg": 247
+      },
+      "anchor_cites": [
+        246,
+        247
+      ],
+      "narration": "엄마와 이모가 주방에서 음식을 나누어 먹으며 대화를 나누고 있습니다."
+    },
+    {
+      "event_id": "E33",
+      "start_seg": 248,
+      "end_seg": 249,
+      "support_span": {
+        "start_seg": 248,
+        "end_seg": 249
+      },
+      "anchor_cites": [
+        248,
+        249
+      ],
+      "narration": "여성이 치킨 주문을 마치고 식당에서 다른 여성과 대화를 나누고 있습니다."
+    },
+    {
+      "event_id": "E34",
+      "start_seg": 250,
+      "end_seg": 251,
+      "support_span": {
+        "start_seg": 250,
+        "end_seg": 251
+      },
+      "anchor_cites": [
+        250,
+        251
+      ],
+      "narration": "여성이 치킨을 사러 가기로 하고, 나중에 사진을 찍기로 약속합니다."
+    },
+    {
+      "event_id": "E35",
+      "start_seg": 252,
+      "end_seg": 253,
+      "support_span": {
+        "start_seg": 252,
+        "end_seg": 253
+      },
+      "anchor_cites": [
+        252,
+        253
+      ],
+      "narration": "여성은 식당에서 음식을 주문하러 가는 중이다."
+    },
+    {
+      "event_id": "E36",
+      "start_seg": 254,
+      "end_seg": 254,
+      "support_span": {
+        "start_seg": 254,
+        "end_seg": 254
+      },
+      "anchor_cites": [
+        254
+      ],
+      "narration": "여성은 웃으면서 서울에 가기 전 남자와 대화하고 있습니다."
+    },
+    {
+      "event_id": "E37",
+      "start_seg": 255,
+      "end_seg": 255,
+      "support_span": {
+        "start_seg": 255,
+        "end_seg": 255
+      },
+      "anchor_cites": [
+        255
+      ],
+      "narration": "두 여성 중 한 명이 다른 여성에게 자신이 가장 큰 가족 구성원임을 선언하며, 라면을 많이 먹을 수 있다는 것을 제시하고 있습니다."
+    },
+    {
+      "event_id": "E38",
+      "start_seg": 256,
+      "end_seg": 256,
+      "support_span": {
+        "start_seg": 256,
+        "end_seg": 256
+      },
+      "anchor_cites": [
+        256
+      ],
+      "narration": "두 여성이 해변에서 치킨을 먹으면서 대화하고 있습니다."
+    },
+    {
+      "event_id": "E39",
+      "start_seg": 257,
+      "end_seg": 257,
+      "support_span": {
+        "start_seg": 257,
+        "end_seg": 257
+      },
+      "anchor_cites": [
+        257
+      ],
+      "narration": "덕연이 딸이라고 부르는 것을 듣고 여성은 치킨 한 마리도 덕연이 딸이라고 해야 할지 궁금해하고 있다."
+    },
+    {
+      "event_id": "E40",
+      "start_seg": 258,
+      "end_seg": 258,
+      "support_span": {
+        "start_seg": 258,
+        "end_seg": 258
+      },
+      "anchor_cites": [
+        258
+      ],
+      "narration": "두 사람이 덕연이 딸이라는 주제로 대화를 나누고 있다."
+    },
+    {
+      "event_id": "E41",
+      "start_seg": 259,
+      "end_seg": 259,
+      "support_span": {
+        "start_seg": 259,
+        "end_seg": 259
+      },
+      "anchor_cites": [
+        259
+      ],
+      "narration": "여성은 휴대용 가스레인지에서 소스를 끓이는 중이다."
+    },
+    {
+      "event_id": "E42",
+      "start_seg": 260,
+      "end_seg": 260,
+      "support_span": {
+        "start_seg": 260,
+        "end_seg": 260
+      },
+      "anchor_cites": [
+        260
+      ],
+      "narration": "여성 A가 여성 B에게 음식을 주면서 대화를 나누고 있습니다."
+    },
+    {
+      "event_id": "E43",
+      "start_seg": 261,
+      "end_seg": 261,
+      "support_span": {
+        "start_seg": 261,
+        "end_seg": 261
+      },
+      "anchor_cites": [
+        261
+      ],
+      "narration": "왼쪽 여성이 오른쪽 여성에게 음식을 주면서 친근하게 대화하고 있습니다."
+    },
+    {
+      "event_id": "E44",
+      "start_seg": 262,
+      "end_seg": 262,
+      "support_span": {
+        "start_seg": 262,
+        "end_seg": 262
+      },
+      "anchor_cites": [
+        262
+      ],
+      "narration": "두 여성이 해변에서 휴식을 취하며 휴대용 식사를 하고 있습니다."
+    },
+    {
+      "event_id": "E45",
+      "start_seg": 263,
+      "end_seg": 263,
+      "support_span": {
+        "start_seg": 263,
+        "end_seg": 263
+      },
+      "anchor_cites": [
+        263
+      ],
+      "narration": "여성 A가 면을 먹으면서 여성 B가 컵을 건네주고 있다."
+    },
+    {
+      "event_id": "E46",
+      "start_seg": 264,
+      "end_seg": 264,
+      "support_span": {
+        "start_seg": 264,
+        "end_seg": 264
+      },
+      "anchor_cites": [
+        264
+      ],
+      "narration": "여성은 분홍색 커버 위에서 핑크색 봉지를 들고 바다와 나무가 있는 풍경 앞에 앉아 있다."
+    },
+    {
+      "event_id": "E47",
+      "start_seg": 265,
+      "end_seg": 265,
+      "support_span": {
+        "start_seg": 265,
+        "end_seg": 265
+      },
+      "anchor_cites": [
+        265
+      ],
+      "narration": "여성은 펌프를 들고 바다"
+    },
+    {
+      "event_id": "E48",
+      "start_seg": 266,
+      "end_seg": 266,
+      "support_span": {
+        "start_seg": 266,
+        "end_seg": 266
+      },
+      "anchor_cites": [
+        266
+      ],
+      "narration": "여성은 해변에서 커피를 마시며 휴식을 취하고 있다."
+    },
+    {
+      "event_id": "E49",
+      "start_seg": 267,
+      "end_seg": 267,
+      "support_span": {
+        "start_seg": 267,
+        "end_seg": 267
+      },
+      "anchor_cites": [
+        267
+      ],
+      "narration": "두 여성이 해변에서 휴식을 취하며 커피를 마시고 있습니다."
+    },
+    {
+      "event_id": "E50",
+      "start_seg": 268,
+      "end_seg": 268,
+      "support_span": {
+        "start_seg": 268,
+        "end_seg": 268
+      },
+      "anchor_cites": [
+        268
+      ],
+      "narration": "여성은 해변에서 라면을 먹으면서 어르신들과 소주를 마신 후 휴식을 취하고 있다."
+    },
+    {
+      "event_id": "E51",
+      "start_seg": 269,
+      "end_seg": 269,
+      "support_span": {
+        "start_seg": 269,
+        "end_seg": 269
+      },
+      "anchor_cites": [
+        269
+      ],
+      "narration": "두 여성이 해변에서 음료수를 마시며 식사하고 있습니다."
+    },
+    {
+      "event_id": "E52",
+      "start_seg": 270,
+      "end_seg": 270,
+      "support_span": {
+        "start_seg": 270,
+        "end_seg": 270
+      },
+      "anchor_cites": [
+        270
+      ],
+      "narration": "여성은 해변에서 친구들과 소주를 마시며 즐거운 시간을 보내고 있다."
+    },
+    {
+      "event_id": "E53",
+      "start_seg": 271,
+      "end_seg": 271,
+      "support_span": {
+        "start_seg": 271,
+        "end_seg": 271
+      },
+      "anchor_cites": [
+        271
+      ],
+      "narration": "두 여성이 해변에서 대화를 나누고 있습니다."
+    },
+    {
+      "event_id": "E54",
+      "start_seg": 272,
+      "end_seg": 272,
+      "support_span": {
+        "start_seg": 272,
+        "end_seg": 272
+      },
+      "anchor_cites": [
+        272
+      ],
+      "narration": "여성은 바다를 바라보며 손가락으로 무언가를 가리키고 있습니다."
+    },
+    {
+      "event_id": "E55",
+      "start_seg": 273,
+      "end_seg": 273,
+      "support_span": {
+        "start_seg": 273,
+        "end_seg": 273
+      },
+      "anchor_cites": [
+        273
+      ],
+      "narration": "두 여성이 해변에서 대화를 나누고 있습니다."
+    },
+    {
+      "event_id": "E56",
+      "start_seg": 274,
+      "end_seg": 274,
+      "support_span": {
+        "start_seg": 274,
+        "end_seg": 274
+      },
+      "anchor_cites": [
+        274
+      ],
+      "narration": "여성은 해변에서 편안한 자세로 휴식을 취하며, 첫 PPL 술을 준비하고 있습니다."
+    },
+    {
+      "event_id": "E57",
+      "start_seg": 275,
+      "end_seg": 275,
+      "support_span": {
+        "start_seg": 275,
+        "end_seg": 275
+      },
+      "anchor_cites": [
+        275
+      ],
+      "narration": "두 여성이 해변에서 휴식을 취하며, 한 명은 핑크색 모자를 쓰고 다른 명은 파란색 티셔츠를 입고 있다."
+    },
+    {
+      "event_id": "E58",
+      "start_seg": 276,
+      "end_seg": 276,
+      "support_span": {
+        "start_seg": 276,
+        "end_seg": 276
+      },
+      "anchor_cites": [
+        276
+      ],
+      "narration": "여성은 분홍색 모자를 쓰고 웃으며 레드벨벳 음료를 마시며 앉아 있다."
+    },
+    {
+      "event_id": "E59",
+      "start_seg": 277,
+      "end_seg": 277,
+      "support_span": {
+        "start_seg": 277,
+        "end_seg": 277
+      },
+      "anchor_cites": [
+        277
+      ],
+      "narration": "여성 A와 C는 음식을 제공하며, 여성 B는 음료를 가지고 있는 상태이다."
+    },
+    {
+      "event_id": "E60",
+      "start_seg": 278,
+      "end_seg": 278,
+      "support_span": {
+        "start_seg": 278,
+        "end_seg": 278
+      },
+      "anchor_cites": [
+        278
+      ],
+      "narration": "여성 A와 B는 모래 위에 텐트를 설치하고 있습니다."
+    },
+    {
+      "event_id": "E61",
+      "start_seg": 279,
+      "end_seg": 283,
+      "support_span": {
+        "start_seg": 279,
+        "end_seg": 283
+      },
+      "anchor_cites": [
+        279,
+        281,
+        283
+      ],
+      "narration": "여성 A가 여성 B에게 요리를 나누며 미안한 듯 말하고, 여성 B는 감사의 말을 전하며 음식을 먹기 시작한다."
+    },
+    {
+      "event_id": "E62",
+      "start_seg": 284,
+      "end_seg": 292,
+      "support_span": {
+        "start_seg": 284,
+        "end_seg": 292
+      },
+      "anchor_cites": [
+        284,
+        288,
+        292
+      ],
+      "narration": "두 여성은 해변에서 치맥을 즐기며 레몬 맛 음료와 계피를 함께 마신다."
+    },
+    {
+      "event_id": "E63",
+      "start_seg": 293,
+      "end_seg": 300,
+      "support_span": {
+        "start_seg": 293,
+        "end_seg": 300
+      },
+      "anchor_cites": [
+        293,
+        296,
+        300
+      ],
+      "narration": "여성들이 해변에서 휴식을 취하며 음료와 음식을 즐기고 있습니다."
+    },
+    {
+      "event_id": "E64",
+      "start_seg": 301,
+      "end_seg": 310,
+      "support_span": {
+        "start_seg": 301,
+        "end_seg": 310
+      },
+      "anchor_cites": [
+        301,
+        305,
+        310
+      ],
+      "narration": "두 여성은 해변에서 모래 위에 앉아 음식을 먹으면서 대화를 나누고 있습니다."
+    },
+    {
+      "event_id": "E65",
+      "start_seg": 311,
+      "end_seg": 320,
+      "support_span": {
+        "start_seg": 311,
+        "end_seg": 320
+      },
+      "anchor_cites": [
+        311,
+        315,
+        320
+      ],
+      "narration": "두 여성이 해변에서 휴식을 취하며 대화를 나누고 있습니다."
+    },
+    {
+      "event_id": "E66",
+      "start_seg": 321,
+      "end_seg": 326,
+      "support_span": {
+        "start_seg": 321,
+        "end_seg": 326
+      },
+      "anchor_cites": [
+        321,
+        323,
+        326
+      ],
+      "narration": "두 여성은 내일의 여행 계획을 논의하며 기뻐하고 있습니다."
+    }
+  ],
+  "major_events": [
+    {
+      "major_event_id": "M01",
+      "title": "거제 방문",
+      "subevents": [
+        "E01",
+        "E02",
+        "E03",
+        "E04",
+        "E05",
+        "E06",
+        "E07",
+        "E08",
+        "E09",
+        "E10",
+        "E11"
+      ],
+      "start_seg": 0,
+      "end_seg": 149,
+      "support_span": {
+        "start_seg": 0,
+        "end_seg": 149
+      },
+      "anchor_cites": [
+        0,
+        74,
+        149
+      ]
+    },
+    {
+      "major_event_id": "M02",
+      "title": "해변 활동",
+      "subevents": [
+        "E12",
+        "E13",
+        "E14",
+        "E15",
+        "E16",
+        "E17",
+        "E18",
+        "E19",
+        "E20",
+        "E21",
+        "E22",
+        "E23",
+        "E24",
+        "E25",
+        "E26",
+        "E27",
+        "E28",
+        "E29",
+        "E30"
+      ],
+      "start_seg": 150,
+      "end_seg": 243,
+      "support_span": {
+        "start_seg": 150,
+        "end_seg": 243
+      },
+      "anchor_cites": [
+        150,
+        196,
+        243
+      ]
+    },
+    {
+      "major_event_id": "M03",
+      "title": "해변 캠핑",
+      "subevents": [
+        "E31",
+        "E32",
+        "E33",
+        "E34",
+        "E35",
+        "E36",
+        "E37",
+        "E38",
+        "E39",
+        "E40",
+        "E41",
+        "E42",
+        "E43",
+        "E44",
+        "E45",
+        "E46",
+        "E47",
+        "E48",
+        "E49",
+        "E50",
+        "E51",
+        "E52",
+        "E53",
+        "E54",
+        "E55",
+        "E56",
+        "E57",
+        "E58",
+        "E59",
+        "E60",
+        "E61",
+        "E62",
+        "E63",
+        "E64",
+        "E65",
+        "E66"
+      ],
+      "start_seg": 244,
+      "end_seg": 326,
+      "support_span": {
+        "start_seg": 244,
+        "end_seg": 326
+      },
+      "anchor_cites": [
+        244,
+        285,
+        326
+      ]
+    }
+  ],
+  "overview": {
+    "source": "deterministic",
+    "overview": "영상은 거제 방문, 해변 활동, 해변 캠핑의 순서로 진행된다.",
+    "flow": "거제 방문 → 해변 활동 → 해변 캠핑",
+    "supports": [
+      "M01",
+      "M02",
+      "M03"
+    ]
+  },
+  "provenance": {
+    "role": "report",
+    "model_loaded": true,
+    "requested_model": "Qwen/Qwen2.5-7B-Instruct",
+    "requested_4bit": false,
+    "max_new_tokens": 16384,
+    "do_sample": false,
+    "effective_model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "effective_model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "effective_dtype": "torch.bfloat16",
+    "effective_quantized": false,
+    "attn_implementation": "sdpa",
+    "prompt_sha256": {
+      "system": "cf54f0ed85146176eb94a9aa99db0e68787af7878c8b76609a964d4926de6f24",
+      "event_rules": "7e23fc3a529d486005a97e891f1c28461089fc2ccc9ee504c4c27a0cd14985f3",
+      "build_map_prompt": "2bbcbc195f1b11e769acda7fe7babed20ed7f19fe99d6f71f08dbd1b43041510",
+      "build_reduce_prompt": "95f5c2c2c17eb4cf8ff8a43b93ca4c5c7075ddafe00911387201e6e433f9baf4",
+      "build_event_prompt": "791b4eed0ab6f93cae8df41a91e3bd8f93a8ce36e82de70ad922a778013bdf90"
+    },
+    "env": {
+      "git_head": "41875218a1e5c2778fa5daecdca86a9e70855112",
+      "git_dirty": true,
+      "python": "3.12.13",
+      "generated_at": "2026-08-29T22:50:53",
+      "torch": "2.13.0+cu130",
+      "cuda": "13.0",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "transformers": "5.14.1"
+    },
+    "quantization_mismatch": false,
+    "schema_version": 2,
+    "config_report_model": "Qwen/Qwen2.5-7B-Instruct",
+    "config_llm_4bit": false,
+    "config_map_chunk_size": 60,
+    "config_map_chunk_overlap": 5,
+    "config_report_max_new_tokens": 16384
+  },
+  "raw": {
+    "narration": [
+      {
+        "event_id": "E01",
+        "raw": "미나미가 거제를 방문하며 리더 원희 언니의 삶을 탐구하고 있습니다.",
+        "narration": "미나미가 거제를 방문하며 리더 원희 언니의 삶을 탐구하고 있습니다."
+      },
+      {
+        "event_id": "E02",
+        "raw": "두 여성은 거제 여행 후 서로의 경험을 나누며 즐거운 대화를 나누고 있습니다.",
+        "narration": "두 여성은 거제 여행 후 서로의 경험을 나누며 즐거운 대화를 나누고 있습니다."
+      },
+      {
+        "event_id": "E03",
+        "raw": "두 여성들이 거리를 산책하며 다양한 주제에 대해 대화를 나누다가 버스 타는 방법을 논의하다.",
+        "narration": "두 여성들이 거리를 산책하며 다양한 주제에 대해 대화를 나누다가 버스 타는 방법을 논의하다."
+      },
+      {
+        "event_id": "E04",
+        "raw": "버스 안에서 할머니들은 순서대로 앉으며, 다른 승객들은 대화를 나누며 시간을 보내고 있습니다.",
+        "narration": "버스 안에서 할머니들은 순서대로 앉으며, 다른 승객들은 대화를 나누며 시간을 보내고 있습니다."
+      },
+      {
+        "event_id": "E05",
+        "raw": "두 여성은 버스 안에서 대화를 나누며 웃고 있다.",
+        "narration": "두 여성은 버스 안에서 대화를 나누며 웃고 있다."
+      },
+      {
+        "event_id": "E06",
+        "raw": "두 여성은 해변에서 즐겁게 걷다가 발걸음을 맞추려고 노력하며 대화를 나누고 있습니다.",
+        "narration": "두 여성은 해변에서 즐겁게 걷다가 발걸음을 맞추려고 노력하며 대화를 나누고 있습니다."
+      },
+      {
+        "event_id": "E07",
+        "raw": "두 여성 사이의 대화가 계속되는 동안 여성 A가 여성 B에게 물어보는 모습입니다.",
+        "narration": "두 여성 사이의 대화가 계속되는 동안 여성 A가 여성 B에게 물어보는 모습입니다."
+      },
+      {
+        "event_id": "E08",
+        "raw": "여성들이 거제도와 관련된 활동을 논의하며 즐거워하고 있습니다.",
+        "narration": "여성들이 거제도와 관련된 활동을 논의하며 즐거워하고 있습니다."
+      },
+      {
+        "event_id": "E09",
+        "raw": "두 여성이 낚시를 하기 위해 해변을 방문하고, 초기에는 바다를 관찰하다가 결국 낚시를 하지 않기로 결정하며 대화를 나눕니다.",
+        "narration": "두 여성이 낚시를 하기 위해 해변을 방문하고, 초기에는 바다를 관찰하다가 결국 낚시를 하지 않기로 결정하며 대화를 나눕니다."
+      },
+      {
+        "event_id": "E10",
+        "raw": "두 여성은 야외에서 불낚시를 하며 서로 도움을 청하고 있습니다.",
+        "narration": "두 여성은 야외에서 불낚시를 하며 서로 도움을 청하고 있습니다."
+      },
+      {
+        "event_id": "E11",
+        "raw": "두 여성은 해변에서 물고기를 찾으며 대화를 나누고 있습니다.",
+        "narration": "두 여성은 해변에서 물고기를 찾으며 대화를 나누고 있습니다."
+      },
+      {
+        "event_id": "E12",
+        "raw": "여성들은 바다낚시를 즐기며 다양한 활동을 하고 있습니다.",
+        "narration": "여성들은 바다낚시를 즐기며 다양한 활동을 하고 있습니다."
+      },
+      {
+        "event_id": "E13",
+        "raw": "여성은 바다에서 물건을 잡기 위해 노력하다 결국 잡아내는 것을 시도합니다.",
+        "narration": "여성은 바다에서 물건을 잡기 위해 노력하다"
+      },
+      {
+        "event_id": "E14",
+        "raw": "두 여성은 해변에서 라면과 꽃게를 먹기로 하고 대화를 나누며 수영복을 입지 않고 반팔을 입고 물에 들어가는 것을 결정합니다.",
+        "narration": "두 여성은 해변에서 라면과 꽃게를 먹기로 하고 대화를 나누며 수영복을 입지 않고 반팔을 입고 물에 들어가는 것을 결정합니다."
+      },
+      {
+        "event_id": "E15",
+        "raw": "두 여성은 해변에서 우산 아래에서 가벼운 대화를 나누며 놀이를 즐기고 있습니다.",
+        "narration": "두 여성은 해변에서 우산 아래에서 가벼운 대화를 나누며 놀이를 즐기고 있습니다."
+      },
+      {
+        "event_id": "E16",
+        "raw": "두 여성은 해변에서 우산을 들고 대화를 나누며 바닷물에 들어가려는 의도를 공유하다가, 한 남성의 등장으로 인해 상황이 변화한다.",
+        "narration": "두 여성은 해변에서 우산을 들고 대화를 나누며 바닷물에 들어가려는 의도를 공유하다가, 한 남성의 등장으로 인해 상황이 변화한다."
+      },
+      {
+        "event_id": "E17",
+        "raw": "두 여성은 해변에서 즐거운 시간을 보내며 서로를 돕고 있다.",
+        "narration": "두 여성은 해변에서 즐거운 시간을 보내며 서로를 돕고 있다."
+      },
+      {
+        "event_id": "E18",
+        "raw": "여성들이 바다에서 즐겁게 놀고 있다.",
+        "narration": "여성들이 바다에서 즐겁게 놀고 있다."
+      },
+      {
+        "event_id": "E19",
+        "raw": "두 사람이 물에서 놀다가 해변으로 돌아오는 과정을 보여준다.",
+        "narration": "두 사람이 물에서 놀다가 해변으로 돌아오는 과정을 보여준다."
+      },
+      {
+        "event_id": "E20",
+        "raw": "소년이 모래에서 돌을 찾고, 두 여성과 함께 해변에서 즐거운 시간을 보내는 중이다.",
+        "narration": "소년이 모래에서 돌을 찾고, 두 여성과 함께 해변에서 즐거운 시간을 보내는 중이다."
+      },
+      {
+        "event_id": "E21",
+        "raw": "두 여성들이 바다쪽으로 걸어가고 있습니다.",
+        "narration": "두 여성들이 바다쪽으로 걸어가고 있습니다."
+      },
+      {
+        "event_id": "E22",
+        "raw": "여성은 해변에서 라면을 먹으며 배고픔을 느끼고 피곤함을 표현한 후, 다른 여성에게 신발을 요청한다.",
+        "narration": "여성은 해변에서 라면을 먹으며 배고픔을 느끼고 피곤함을 표현한 후, 다른 여성에게 신발을 요청한다."
+      },
+      {
+        "event_id": "E23",
+        "raw": "두 여성이 해변에서 끓여진 음식을 준비하며, 그 중 한 명이 젖은 상태에서 라면을 먹기로 한다.",
+        "narration": "두 여성이 해변에서 끓여진 음식을 준비하며, 그 중 한 명이 젖은 상태에서 라면을 먹기로 한다."
+      },
+      {
+        "event_id": "E24",
+        "raw": "미남이는 젖은 상태에서 라면을 먹자마자 매우 불만족스러운 표정을 짓는다.",
+        "narration": "미남이는 젖은 상태에서 라면을 먹자마자 매우 불만족스러운 표정을 짓는다."
+      },
+      {
+        "event_id": "E25",
+        "raw": "여성 A가 해변에서 라면을 만드는데 필요한 재료를 구하려고 합니다.",
+        "narration": "여성 A가 해변에서 라면을 만드는데 필요한 재료를 구하려고 합니다."
+      },
+      {
+        "event_id": "E26",
+        "raw": "여성은 이모들에게 자신의 요청을 전달하려고 합니다.",
+        "narration": "여성은 이모들에게 자신의 요청을 전달하려고 합니다."
+      },
+      {
+        "event_id": "E27",
+        "raw": "여성은 창가에 서서 바다를 바라보며 대화를 나누고 있습니다.",
+        "narration": "여성은 창가에 서서 바다를 바라보며 대화를 나누고 있습니다."
+      },
+      {
+        "event_id": "E28",
+        "raw": "분홍색 앞치마를 입은 여성은 다른 여성에게 통닭을 주기로 한 약속을 설명하고 있습니다.",
+        "narration": "분홍색 앞치마를 입은 여성은 다른 여성에게 통닭을 주기로 한 약속을 설명하고 있습니다."
+      },
+      {
+        "event_id": "E29",
+        "raw": "두 여성들이 무료로 제공된 통닭에 대해 확인하고 추가로 하나를 요청하고 있습니다.",
+        "narration": "두 여성들이 무료로 제공된 통닭에 대해 확인하고 추가로 하나를 요청하고 있습니다."
+      },
+      {
+        "event_id": "E30",
+        "raw": "여성이 데우려고 하는 사람을 기다리며 앉아 있고, 이모 라면에 추가할 것을 생각하고 있다.",
+        "narration": "여성이 데우려고 하는 사람을 기다리며 앉아 있고, 이모 라면에 추가할 것을 생각하고 있다."
+      },
+      {
+        "event_id": "E31",
+        "raw": "여성은 김치와 단무지를 가져갈 것을 제안하며 요리를 하는 중이다.",
+        "narration": "여성은 김치와 단무지를 가져갈 것을 제안하며 요리를 하는 중이다."
+      },
+      {
+        "event_id": "E32",
+        "raw": "엄마와 이모가 주방에서 음식을 나누어 먹으며 대화를 나누고 있습니다.",
+        "narration": "엄마와 이모가 주방에서 음식을 나누어 먹으며 대화를 나누고 있습니다."
+      },
+      {
+        "event_id": "E33",
+        "raw": "여성이 치킨 주문을 마치고 식당에서 다른 여성과 대화를 나누고 있습니다.",
+        "narration": "여성이 치킨 주문을 마치고 식당에서 다른 여성과 대화를 나누고 있습니다."
+      },
+      {
+        "event_id": "E34",
+        "raw": "여성이 치킨을 사러 가기로 하고, 나중에 사진을 찍기로 약속합니다.",
+        "narration": "여성이 치킨을 사러 가기로 하고, 나중에 사진을 찍기로 약속합니다."
+      },
+      {
+        "event_id": "E35",
+        "raw": "여성은 식당에서 음식을 주문하러 가는 중이다.",
+        "narration": "여성은 식당에서 음식을 주문하러 가는 중이다."
+      },
+      {
+        "event_id": "E36",
+        "raw": "여성은 웃으면서 서울에 가기 전 남자와 대화하고 있습니다.",
+        "narration": "여성은 웃으면서 서울에 가기 전 남자와 대화하고 있습니다."
+      },
+      {
+        "event_id": "E37",
+        "raw": "두 여성 중 한 명이 다른 여성에게 자신이 가장 큰 가족 구성원임을 선언하며, 라면을 많이 먹을 수 있다는 것을 제시하고 있습니다.",
+        "narration": "두 여성 중 한 명이 다른 여성에게 자신이 가장 큰 가족 구성원임을 선언하며, 라면을 많이 먹을 수 있다는 것을 제시하고 있습니다."
+      },
+      {
+        "event_id": "E38",
+        "raw": "두 여성이 해변에서 치킨을 먹으면서 대화하고 있습니다.",
+        "narration": "두 여성이 해변에서 치킨을 먹으면서 대화하고 있습니다."
+      },
+      {
+        "event_id": "E39",
+        "raw": "덕연이 딸이라고 부르는 것을 듣고 여성은 치킨 한 마리도 덕연이 딸이라고 해야 할지 궁금해하고 있다.",
+        "narration": "덕연이 딸이라고 부르는 것을 듣고 여성은 치킨 한 마리도 덕연이 딸이라고 해야 할지 궁금해하고 있다."
+      },
+      {
+        "event_id": "E40",
+        "raw": "두 사람이 덕연이 딸이라는 주제로 대화를 나누고 있다.",
+        "narration": "두 사람이 덕연이 딸이라는 주제로 대화를 나누고 있다."
+      },
+      {
+        "event_id": "E41",
+        "raw": "여성은 휴대용 가스레인지에서 소스를 끓이는 중이다.",
+        "narration": "여성은 휴대용 가스레인지에서 소스를 끓이는 중이다."
+      },
+      {
+        "event_id": "E42",
+        "raw": "여성 A가 여성 B에게 음식을 주면서 대화를 나누고 있습니다.",
+        "narration": "여성 A가 여성 B에게 음식을 주면서 대화를 나누고 있습니다."
+      },
+      {
+        "event_id": "E43",
+        "raw": "왼쪽 여성이 오른쪽 여성에게 음식을 주면서 친근하게 대화하고 있습니다.",
+        "narration": "왼쪽 여성이 오른쪽 여성에게 음식을 주면서 친근하게 대화하고 있습니다."
+      },
+      {
+        "event_id": "E44",
+        "raw": "두 여성이 해변에서 휴식을 취하며 휴대용 식사를 하고 있습니다.",
+        "narration": "두 여성이 해변에서 휴식을 취하며 휴대용 식사를 하고 있습니다."
+      },
+      {
+        "event_id": "E45",
+        "raw": "여성 A가 면을 먹으면서 여성 B가 컵을 건네주고 있다.",
+        "narration": "여성 A가 면을 먹으면서 여성 B가 컵을 건네주고 있다."
+      },
+      {
+        "event_id": "E46",
+        "raw": "여성은 분홍색 커버 위에서 핑크색 봉지를 들고 바다와 나무가 있는 풍경 앞에 앉아 있다.",
+        "narration": "여성은 분홍색 커버 위에서 핑크색 봉지를 들고 바다와 나무가 있는 풍경 앞에 앉아 있다."
+      },
+      {
+        "event_id": "E47",
+        "raw": "여성은 펌프를 들고 바다 주변에서 휴식을 취하고 있습니다.",
+        "narration": "여성은 펌프를 들고 바다"
+      },
+      {
+        "event_id": "E48",
+        "raw": "여성은 해변에서 커피를 마시며 휴식을 취하고 있다.",
+        "narration": "여성은 해변에서 커피를 마시며 휴식을 취하고 있다."
+      },
+      {
+        "event_id": "E49",
+        "raw": "두 여성이 해변에서 휴식을 취하며 커피를 마시고 있습니다.",
+        "narration": "두 여성이 해변에서 휴식을 취하며 커피를 마시고 있습니다."
+      },
+      {
+        "event_id": "E50",
+        "raw": "여성은 해변에서 라면을 먹으면서 어르신들과 소주를 마신 후 휴식을 취하고 있다.",
+        "narration": "여성은 해변에서 라면을 먹으면서 어르신들과 소주를 마신 후 휴식을 취하고 있다."
+      },
+      {
+        "event_id": "E51",
+        "raw": "두 여성이 해변에서 음료수를 마시며 식사하고 있습니다.",
+        "narration": "두 여성이 해변에서 음료수를 마시며 식사하고 있습니다."
+      },
+      {
+        "event_id": "E52",
+        "raw": "여성은 해변에서 친구들과 소주를 마시며 즐거운 시간을 보내고 있다.",
+        "narration": "여성은 해변에서 친구들과 소주를 마시며 즐거운 시간을 보내고 있다."
+      },
+      {
+        "event_id": "E53",
+        "raw": "두 여성이 해변에서 대화를 나누고 있습니다.",
+        "narration": "두 여성이 해변에서 대화를 나누고 있습니다."
+      },
+      {
+        "event_id": "E54",
+        "raw": "여성은 바다를 바라보며 손가락으로 무언가를 가리키고 있습니다.",
+        "narration": "여성은 바다를 바라보며 손가락으로 무언가를 가리키고 있습니다."
+      },
+      {
+        "event_id": "E55",
+        "raw": "두 여성이 해변에서 대화를 나누고 있습니다.",
+        "narration": "두 여성이 해변에서 대화를 나누고 있습니다."
+      },
+      {
+        "event_id": "E56",
+        "raw": "여성은 해변에서 편안한 자세로 휴식을 취하며, 첫 PPL 술을 준비하고 있습니다.",
+        "narration": "여성은 해변에서 편안한 자세로 휴식을 취하며, 첫 PPL 술을 준비하고 있습니다."
+      },
+      {
+        "event_id": "E57",
+        "raw": "두 여성이 해변에서 휴식을 취하며, 한 명은 핑크색 모자를 쓰고 다른 명은 파란색 티셔츠를 입고 있다.",
+        "narration": "두 여성이 해변에서 휴식을 취하며, 한 명은 핑크색 모자를 쓰고 다른 명은 파란색 티셔츠를 입고 있다."
+      },
+      {
+        "event_id": "E58",
+        "raw": "여성은 분홍색 모자를 쓰고 웃으며 레드벨벳 음료를 마시며 앉아 있다.",
+        "narration": "여성은 분홍색 모자를 쓰고 웃으며 레드벨벳 음료를 마시며 앉아 있다."
+      },
+      {
+        "event_id": "E59",
+        "raw": "여성 A와 C는 음식을 제공하며, 여성 B는 음료를 가지고 있는 상태이다.",
+        "narration": "여성 A와 C는 음식을 제공하며, 여성 B는 음료를 가지고 있는 상태이다."
+      },
+      {
+        "event_id": "E60",
+        "raw": "여성 A와 B는 모래 위에 텐트를 설치하고 있습니다.",
+        "narration": "여성 A와 B는 모래 위에 텐트를 설치하고 있습니다."
+      },
+      {
+        "event_id": "E61",
+        "raw": "여성 A가 여성 B에게 요리를 나누며 미안한 듯 말하고, 여성 B는 감사의 말을 전하며 음식을 먹기 시작한다.",
+        "narration": "여성 A가 여성 B에게 요리를 나누며 미안한 듯 말하고, 여성 B는 감사의 말을 전하며 음식을 먹기 시작한다."
+      },
+      {
+        "event_id": "E62",
+        "raw": "두 여성은 해변에서 치맥을 즐기며 레몬 맛 음료와 계피를 함께 마신다.",
+        "narration": "두 여성은 해변에서 치맥을 즐기며 레몬 맛 음료와 계피를 함께 마신다."
+      },
+      {
+        "event_id": "E63",
+        "raw": "여성들이 해변에서 휴식을 취하며 음료와 음식을 즐기고 있습니다.",
+        "narration": "여성들이 해변에서 휴식을 취하며 음료와 음식을 즐기고 있습니다."
+      },
+      {
+        "event_id": "E64",
+        "raw": "두 여성은 해변에서 모래 위에 앉아 음식을 먹으면서 대화를 나누고 있습니다.",
+        "narration": "두 여성은 해변에서 모래 위에 앉아 음식을 먹으면서 대화를 나누고 있습니다."
+      },
+      {
+        "event_id": "E65",
+        "raw": "두 여성이 해변에서 휴식을 취하며 대화를 나누고 있습니다.",
+        "narration": "두 여성이 해변에서 휴식을 취하며 대화를 나누고 있습니다."
+      },
+      {
+        "event_id": "E66",
+        "raw": "두 여성은 내일의 여행 계획을 논의하며 기뻐하고 있습니다.",
+        "narration": "두 여성은 내일의 여행 계획을 논의하며 기뻐하고 있습니다."
+      }
+    ]
+  },
+  "prototype_status": "OK",
+  "validation": {
+    "passed": true,
+    "failures": [],
+    "failed_events": []
+  }
+}
