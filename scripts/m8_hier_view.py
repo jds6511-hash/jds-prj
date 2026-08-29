@@ -36,7 +36,9 @@ def _cites(ev: dict) -> str:
 
 
 def render(doc: dict, seg_len: int = 5) -> str:
-    fails = H.validate_document(doc, doc.get("video_id"))
+    narration = doc.get("schema") == H.NARRATION_SCHEMA
+    fails = (H.validate_narration_document if narration
+             else H.validate_document)(doc, doc.get("video_id"))
     if fails:
         raise ViewError(f"구조 검증 실패 — 렌더하지 않는다: {fails}")
     if doc.get("prototype_status") == "CANARY_INVALID":
@@ -69,12 +71,14 @@ def render(doc: dict, seg_len: int = 5) -> str:
               "하위 사건", "", "```"]
         for s in m["subevents"]:
             a = by_id[s]
-            L.append(f"{hhmmss(a['start_seg'], seg_len)}  {a['event_id']}  "
-                     f"{a['title']}")
+            L.append(f"{hhmmss(a['start_seg'], seg_len)}~"
+                     f"{hhmmss(a['end_seg'] + 1, seg_len)}  {a['event_id']}  "
+                     f"{a.get('narration') or a.get('title')}")
         L += ["```", ""]
         for s in m["subevents"]:
             a = by_id[s]
-            L.append(f"- **{a['title']}** — {a['description']}")
+            body = a.get("narration") or f"**{a.get('title')}** — {a.get('description')}"
+            L.append(f"- {body}")
             L.append(f"  {_cites(a)}")
         L += ["", f"근거: {_cites(m)}", ""]
 

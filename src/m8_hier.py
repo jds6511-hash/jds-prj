@@ -222,6 +222,53 @@ def parse_title(raw: str) -> str:
     return "" if common.is_corrupted_caption(t) else t
 
 
+# ── 사건 서술 — 한 문장. JSON도 title도 요구하지 않는다 ─────────────────
+NARRATION_SCHEMA = "m8_hier_narration_v1"
+
+# 프로토타입 4회에서 실패한 것은 계층이 아니라 **출력 형식**이었다
+# (v1 자유생성 · v3 title 12/16 누락 · v4 title 보수 실패). 그래서 이 경로는
+# JSON을 요구하지 않고 문장 하나만 받는다 — 파싱 실패면이 거의 없다.
+# `title`도 두지 않는다. 누락되는 필드를 패치하는 대신 없앤다.
+_NARRATION_RULES = """
+이 구간의 **핵심 행동 또는 상태 변화**를 한 문장으로 쓴다.
+
+- 색상·배경·옷차림·식물처럼 사건 진행에 중요하지 않은 시각적 세부는 생략한다.
+- 관찰되지 않은 의도·감정·원인은 추론하지 않는다.
+- 한 문장만 쓴다. 목록·제목·JSON·머리말을 쓰지 않는다.
+- 한국어로 쓴다.
+"""
+
+
+def build_narration_prompt(span_segments: list) -> str:
+    """해당 span의 구간만 준다. 시간 구조는 이미 확정돼 있다."""
+    lo, hi = span_segments[0]["idx"], span_segments[-1]["idx"]
+    return (f"{_SYSTEM}\n\n아래는 한 구간(seg#{lo}~seg#{hi})의 자막과 화면 "
+            f"설명이다.\n{_NARRATION_RULES}\n입력:\n"
+            + "\n".join(_fmt_seg(s) for s in span_segments))
+
+
+def parse_narration(raw: str) -> str:
+    """문장 하나를 건진다. 모델이 여러 줄을 써도 **첫 문장만** 쓴다."""
+    t = re.sub(r"^```[a-z]*|```$", "", (raw or "").strip(), flags=re.M).strip()
+    t = re.sub(r"\s+", " ", t).strip().strip('"').strip()
+    if not t or common.is_corrupted_caption(t):
+        return ""
+    m = re.search(r"^(.+?[.!?다])(\s|$)", t)
+    return (m.group(1) if m else t).strip()
+
+
+def validate_narration_document(doc: dict, video_id: str) -> list:
+    """서술 경로용 검증. `title` 대신 `narration`을 본다."""
+    bad = [c for c in validate_document(
+        {**doc, "atomic_events": [{**a, "title": "x", "description": "x"}
+                                  for a in doc.get("atomic_events") or []]},
+        video_id) if c != "atomic_empty_field"]
+    for a in doc.get("atomic_events") or []:
+        if not (a.get("narration") or "").strip():
+            bad.append("atomic_no_narration")
+    return sorted(set(bad))
+
+
 # ── PASS 3: Major 경계 선택 ─────────────────────────────────────────────
 _MAJOR_BOUNDARY_RULES = """
 출력은 **JSON 하나만** 쓸 것. 설명·머리말·맺음말 금지.

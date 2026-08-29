@@ -423,3 +423,75 @@ def test_보수_후_문서가_검증을_통과한다():
     mod = _repair_mod()
     out, _ = mod.repair(_src(), lambda p: '{"title":"채운 제목"}')
     assert H.validate_document(out, "v") == []
+
+
+# ── 사건 서술 경로 (한 문장) ────────────────────────────────────────────
+def test_서술_프롬프트는_JSON을_요구하지_않는다():
+    """형식 실패면을 없애는 게 이 경로의 요점이다."""
+    p = H.build_narration_prompt(SEGS[:3])
+    assert "한 문장" in p
+    assert '{"' not in p and "title" not in p
+
+
+def test_한_문장만_취한다():
+    assert H.parse_narration("남성이 산길을 걷는다. 이후 표지판을 확인한다.") == \
+        "남성이 산길을 걷는다."
+
+
+def test_코드펜스와_따옴표를_벗긴다():
+    assert H.parse_narration('```\n"두 사람이 버스에 탑승한다."\n```') == \
+        "두 사람이 버스에 탑승한다."
+
+
+def test_빈_서술은_빈값이다():
+    assert H.parse_narration("   ") == "" and H.parse_narration(None) == ""
+
+
+def test_오염된_서술은_거부된다():
+    assert H.parse_narration("계단 위에는 계단 위에는 계단 위에는 ") == ""
+
+
+def _narr_doc(narr="남성이 산길을 걸어 정상에 도착한다."):
+    atoms = _atomics([0, 15, 30, 45])
+    majors = H.build_major_spans(["E01", "E03"], ["산행", "하산"], atoms)
+    return {"video_id": "v", "schema": H.NARRATION_SCHEMA, "n_segments": 60,
+            "atomic_events": [{**{k: a[k] for k in
+                                  ("event_id", "start_seg", "end_seg",
+                                   "support_span", "anchor_cites")},
+                               "narration": narr} for a in atoms],
+            "major_events": majors, "overview": H.compose_overview(majors)}
+
+
+def test_서술_문서는_title_없이_검증을_통과한다():
+    assert H.validate_narration_document(_narr_doc(), "v") == []
+
+
+def test_서술이_비면_무효다():
+    assert "atomic_no_narration" in H.validate_narration_document(
+        _narr_doc(""), "v")
+
+
+def test_서술_문서도_구조_위반을_잡는다():
+    import copy
+    d = copy.deepcopy(_narr_doc())
+    d["atomic_events"][1]["start_seg"] = 5
+    assert "atomic_overlap" in H.validate_narration_document(d, "v")
+
+
+def test_서술_문서를_렌더한다():
+    md = _view().render(_narr_doc())
+    assert "남성이 산길을 걸어 정상에 도착한다." in md and "M01 — 산행" in md
+
+
+def test_narrate_러너는_구조를_만들지_않는다():
+    src = (ROOT / "scripts" / "m8_hier_narrate.py").read_text(encoding="utf-8")
+    for bad in ("build_atomic_spans", "build_major_spans", "parse_boundaries",
+                "reference_events", "m8_metrics", "event_temporal_alignment"):
+        assert bad not in src, bad
+    assert '"structure_regenerated": False' in src
+
+
+def test_narrate_러너는_실패해도_원본을_남긴다():
+    """v4는 fail-closed 경로에서 원본을 버려 원인을 못 밝혔다."""
+    src = (ROOT / "scripts" / "m8_hier_narrate.py").read_text(encoding="utf-8")
+    assert '"raw": {"narration": raws}' in src
