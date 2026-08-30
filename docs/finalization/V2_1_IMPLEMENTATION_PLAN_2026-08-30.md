@@ -97,6 +97,14 @@ segment_id · start_sec · end_sec · duration_sec
 5초 canonical segment가 기본이며 **마지막 segment만** 영상 길이에 따라 5초보다
 짧을 수 있다.
 
+v2.1 artifact는 `outputs/v2_1/<video_id>/`에 저장한다. legacy `work/<video_id>/`를
+수정하지도 저장 위치로 쓰지도 않는다. legacy↔canonical 변환은 **ingest boundary의
+단일 adapter에서만** 한다 (ADDENDUM OPEN-1).
+
+```
+segment_id := idx · start_sec := start · end_sec := end · duration_sec := end - start
+```
+
 ### Evidence reference
 
 downstream은 원문 중복 저장 대신 참조를 쓴다.
@@ -233,8 +241,8 @@ scaffold를 구현하더라도 disabled 또는 experimental 상태.
 ## 12. Phase 8 — Canonical Partition Validator (hard gate)
 
 ```
-1 first episode start == video start      6 exactly once assignment
-2 last episode end == video end           7 strictly monotonic order
+1 first episode start == canonical_video_start   6 exactly once assignment
+2 last episode end == canonical_video_end        7 strictly monotonic order
 3 episode[i].end == episode[i+1].start    8 no negative duration
 4 no overlap                              9 no zero-duration episode
 5 no gap                                 10 referenced segment exists
@@ -313,6 +321,10 @@ overlap은 허용하되 **source lineage는 끊기지 않는다.**
 ---
 
 ## 18. Phase 14 — Preview / MD / HWPX Interlock
+
+**v2.1 renderer는 신규 코드다.** `src/bcs_present.py` · `scripts/bcs_hwpx.py`를
+수정하지 않고, 공용화 목적의 추출 refactor도 하지 않는다 (ADDENDUM OPEN-6).
+렌더 로직 중복은 의도된 비용이다.
 
 ```
 aar_canonical.json → presentation model → preview · MD · HWPX

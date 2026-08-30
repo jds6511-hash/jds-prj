@@ -10,9 +10,13 @@ Official test              MUST NOT RUN
 계획: `V2_1_IMPLEMENTATION_PLAN_2026-08-30.md`
 
 ```
-P0  canonical correctness / provenance / safety invariant   1개라도 실패 시 FAIL
-P1  robustness / product consistency                        원칙적으로 전부 PASS
-P2  diagnostics / presentation quality / experimental       실패 가능 · 명시 기록
+P0  hard gate                                   1개라도 실패 시 acceptance FAIL
+P1  PASS 또는 명시적 문서화된 WAIVER 필요          waiver 없는 FAIL → acceptance BLOCKED
+P2  non-gating diagnostic / quality              자동 차단하지 않음
+
+waiver 대장: docs/finalization/V2_1_P1_WAIVERS.md
+  test id · failure description · reason · known impact · scope of limitation
+  **skip을 waiver로 간주하지 않는다** (ADDENDUM OPEN-5)
 ```
 
 ---
@@ -49,7 +53,7 @@ P2  diagnostics / presentation quality / experimental       실패 가능 · 명
 | SAN-001 | P0 | instruction echo 검출 | `"요청에 따라 한 문장의…"` | 정상 caption으로 통과하지 않음 |
 | SAN-002 | P0 | empty caption | 공백/빈 문자열 | `EMPTY` |
 | SAN-003 | P1 | 외국어 이상 | 주변과 무관한 중국어 caption | `SUSPECT` 또는 정책 상태 |
-| SAN-004 | P1 | 반복 boilerplate | 동일 meta text 반복 | contamination 식별 |
+| SAN-004 | P1 | 반복 boilerplate | 영상 전체 exact normalized 출현 ≥8 | **SUSPECT만 부여** · 삭제 금지 (OPEN-7) |
 | SAN-005 | P0 | parse failure 구분 | 파싱 불가 | `PARSE_FAILED` ≠ `REJECTED` |
 | SAN-006 | P1 | 정상 caption 유지 | 객관적 caption | `VALID` |
 | SAN-007 | P0 | OCR isolation | OCR 단독 strong claim | 단독 근거 승격 금지 |
@@ -102,8 +106,8 @@ P2  diagnostics / presentation quality / experimental       실패 가능 · 명
 | CAN-001 | P0 | no overlap | overlap = 0 |
 | CAN-002 | P0 | no gap | gap = 0 |
 | CAN-003 | P0 | exactly-once assignment | 정확히 1 episode |
-| CAN-004 | P0 | starts at video start | start 일치 |
-| CAN-005 | P0 | ends at video end | end 일치 (§OPEN-2 정의 필요) |
+| CAN-004 | P0 | starts at canonical_video_start | `first_segment.start_sec` 일치 |
+| CAN-005 | P0 | ends at canonical_video_end | `last_segment.end_sec` 일치 (ADDENDUM OPEN-2) |
 | CAN-006 | P0 | monotonic order | 시간 순서 엄격 |
 | CAN-007 | P0 | positive duration | `end > start` |
 | CAN-008 | P0 | adjacent continuity | `end_i == start_{i+1}` |
@@ -292,7 +296,10 @@ Gate D  Research Boundary       M9 미실행 · official test 미개방 · BCS c
 ## 22. Final Acceptance Rule
 
 ```
-Gate A ∧ Gate B ∧ Gate C ∧ Gate D ∧ regression PASS ∧ tree clean
+Gate A ∧ Gate B ∧ Gate C ∧ Gate D
+∧ all P0 PASS
+∧ every P1 = PASS 또는 explicitly WAIVED
+∧ regression PASS ∧ tree clean
   → IMPLEMENTATION_COMPLETE
 ```
 
@@ -337,68 +344,49 @@ presentation work가 structural defect를 가린다.
 
 ---
 
-# OPEN DEFECTS — 구현 착수 전 해결 필요
+# OPEN DEFECTS
 
-release gate로 쓰려면 아래가 먼저 결정돼야 한다. 결정 가능하지 않은 P0는 gate를
-평가 불가능하게 만든다.
-
-## OPEN-1  segment 필드명이 기존 저장소와 다르다
+결정 이력: `V2_1_DECISION_ADDENDUM_2026-08-30.md`
 
 ```
-기존   idx · start · end            (work/<vid>/segments.json · common.load_segments)
-계획   segment_id · start_sec · end_sec · duration_sec
+OPEN-1  legacy segment schema 경계        CLOSED  v2.1 전용 namespace + 단일 ingest adapter
+OPEN-2  canonical video_end 정의          CLOSED  video_end := last segment.end_sec
+OPEN-3  GRD-004 결정 불가능               CLOSED  P1 강등 · GRD-010 P0 신설 (본문 반영)
+OPEN-4  DET-002 byte equality 불가능      CLOSED  boundary·episode 구조로 한정 (본문 반영)
+OPEN-5  P1 gating 지위                    CLOSED  P0 hard / P1 pass-or-waiver / P2 non-gating
+OPEN-6  BCS renderer 재사용 충돌          CLOSED  v2.1 renderer 신규 구현 · BCS 수정·추출 금지
+OPEN-7  반복 sanitation                   CLOSED  ≥8 → SUSPECT만 · 삭제 금지
+OPEN-8  일정                              OPEN    착수 시점 미정 · 이 문서는 착수 승인 아님
+OPEN-9  SUSPECT의 claim 승격 가능 여부      OPEN    **결정 필요** — 아래
 ```
 
-두 이름 체계가 공존하면 fixture가 갈라진다. v2.1은 `outputs/` 아래 자체 namespace를
-쓰고 **기존 `work/<vid>/segments.json`을 잠식하지 않는다**는 것과, 두 스키마 간
-매핑을 어디서 하는지를 명시해야 한다.
+## OPEN-9 — `SUSPECT`가 claim 근거로 쓰일 수 있는가 (신규)
 
-## OPEN-2  CAN-005 `video end`의 정의가 없다
+OPEN-7을 닫으면서 열렸다. BCS에서 3I7 오염 STT 29건이 제거돼 전파 0건이었는데,
+그중 `"다음 영상에서 만나요."`(x20)는 **반복 ≥8 외에 독립 근거가 없다**(실측:
+`is_subtitle_credit` False · `is_corrupted_caption` False · URL 정규식 미적중).
 
-`ffprobe` duration과 `n_segments × 5`가 반올림으로 어긋난다. 정의가 없으면 이 P0는
-간헐 실패한다. 둘 중 하나로 고정해야 한다.
+`≥8 → SUSPECT only`이면 이 문자열은 REJECTED가 아니다. **SUSPECT가 claim 근거로
+쓰이면 아웃트로 자막의 사건 승격이 되돌아온다.**
 
-```
-a  video_end := 마지막 segment의 end   (구조 내적 정의 · 권장)
-b  video_end := 컨테이너 duration      (허용 오차 명시 필요)
-```
-
-## OPEN-3  GRD-004 `unsupported event`는 P0로 둘 수 없다
-
-"evidence에 없는 구체 사건"의 판정은 **NLI가 필요**하다. 그런데 §17은 entailment
-자동 검증이 범위 밖이라고 못박았다. 결정 가능한 규칙 없이 P0에 두면 gate를 영원히
-막거나 조용히 약화된다.
+권고와 필요한 test는 ADDENDUM OPEN-9 참조. **승인 전이므로 아래 test는 아직 matrix
+본문에 넣지 않았다.**
 
 ```
-GRD-005 unsupported named entity   문자열 앵커로 결정 가능   → P0 유지
-GRD-010 claim without support ref  결정 가능                → P0 신설
-GRD-004 unsupported event          NLI 필요                → **P1로 강등** (본문 반영)
+SAN-011  P0  repeat ≥8 → SUSPECT · usable_for_claims false · 텍스트 보존
+GRD-011  P0  SUSPECT 단독 인용 dialogue claim → 승격 거부
+TRI-006  P0  3I7 "다음 영상에서 만나요." → canonical claim 미등장 (BCS 보장 회귀)
 ```
 
-## OPEN-4  DET-002 `byte equivalent`는 달성 불가능
+## OPEN-8 — 일정
 
-provenance에 run id·timestamp가 들어가면 파일 바이트는 매 실행 달라진다. 결정성의
-범위를 **boundary list와 episode 구조**로 한정해야 한다(본문 반영).
+DoD 20항목 · 테스트 약 150건. 현재 FINALIZATION이고 최종 보고서 baseline이 08-28에
+동결됐다. **구현 착수 시점은 별도 판단이며 이 문서는 착수 승인이 아니다.**
 
-## OPEN-5  P1의 gate 지위가 모호하다
-
-우선순위 정의는 "원칙적으로 전부 PASS"라고 하는데 Gate A~D는 P0만 참조한다.
-REG-003만 P1을 언급한다. **P1은 gating인가 아닌가**를 한 줄로 정해야 한다.
-
-## OPEN-6  renderer 재사용 유혹과 Gate D 충돌
-
-`src/bcs_present.py` · `scripts/bcs_hwpx.py`가 이미 동작한다. v2.1 renderer가
-그것을 수정하면 REG-005(BCS core diff 없음)를 깬다. **v2.1 renderer는 신규 코드**임을
-명시해야 한다(공용 로직이 필요하면 BCS에서 꺼내지 말고 새로 쓴다).
-
-## OPEN-7  SAN-004 반복 boilerplate가 SAN-010과 충돌할 수 있다
-
-BCS 실측에서 `is_corrupted_caption`의 반복 규칙을 STT에 적용했더니 **실제 발화 11건이
-삭제**됐다("나 잡았어!!! 나 잡았어!!!"). 반복 판정은 **영상 전체 완전일치 출현 ≥ 8회**
-라는 측정된 규칙으로 한정해야 한다(패널 18편: 실제 발화 최다 5회 · 오염 9·20·22회).
-
-## OPEN-8  일정
-
-DoD 20항목 · 테스트 약 150건이다. 현재 프로젝트는 FINALIZATION이고 최종 보고서
-baseline이 08-28에 동결됐다. **구현 착수 시점은 별도 판단이며, 이 문서는 착수 승인이
-아니다.**
+```
+v2.1 architecture specification   FROZEN
+v2.1 implementation plan          DOCUMENTED
+v2.1 acceptance/test matrix       DOCUMENTED
+v2.1 implementation               NOT STARTED
+implementation authorization      NOT GRANTED
+```
