@@ -171,8 +171,16 @@ malformed · refusal/meta-response · OCR 노이즈 · 반복 텍스트.
 상태.
 
 ```
-VALID · SUSPECT · REJECTED · EMPTY · PARSE_FAILED
+상태            preserved   usable_for_claims
+VALID              true          true
+SUSPECT            true          false      ← 보존하되 claim 근거 아님
+REJECTED           true          false
+EMPTY               -            false
+PARSE_FAILED        -            false
 ```
+
+`usable_for_claims`는 **코드가 결정한다** — LLM이 판단·변경하지 않는다.
+`Preservation is not permission to claim.` (ADDENDUM OPEN-9)
 
 OCR은 **존재만으로 episode claim의 근거가 되지 않는다.** 부가 context ·
 표시 문구 존재 여부 · 다른 modality와 결합된 보조 evidence로만 쓴다.
@@ -277,6 +285,14 @@ outside-episode evidence 사용.
 
 ```
 PASS · PASS_WITH_LIMITATION · FAIL_UNSUPPORTED · FAIL_REFERENCE
+FAIL_INELIGIBLE_SUPPORT      ref는 실재하나 claim 근거가 될 수 없다 (OPEN-9)
+```
+
+```
+eligible_support_refs := refs where usable_for_claims == true
+모든 accepted claim은 eligible_support_ref_count >= 1
+VALID + SUSPECT 동시 인용을 자동 PASS로 처리하지 않는다 —
+VALID만으로 claim이 독립적으로 성립해야 한다
 ```
 
 presentation layer가 실패한 summary를 고쳐 통과처럼 보이게 하지 않는다.

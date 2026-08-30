@@ -4,7 +4,7 @@
 대상   V2_1_IMPLEMENTATION_PLAN_2026-08-30.md · V2_1_ACCEPTANCE_MATRIX_2026-08-30.md
 상태   OPEN-1 · 2 · 5 · 6 · 7  CLOSED
        OPEN-3 · 4 는 앞서 본문 반영 완료
-       OPEN-9 신규 — 결정 필요
+       OPEN-9  CLOSED (2026-08-30 · 아래)
 ```
 
 ---
@@ -168,61 +168,157 @@ adoption에도 쓰지 않는다.
 
 ---
 
-## OPEN-9 — `SUSPECT`가 claim으로 승격되는가  **결정 필요 (신규)**
+## OPEN-9 — SUSPECT Evidence Claim Eligibility  **CLOSED**
 
-OPEN-7을 닫으면서 열린 구멍이다.
+### 문제
 
-BCS에서 3I7의 오염 STT 29건이 제거돼 **서술 전파 0건**이었다. 그 29건의 근거를 다시
-보면 두 갈래다.
-
-```
-"마포구청 인터넷 방송국 홈페이지"  x9    URL/방송국 패턴  → 독립 근거 있음 → REJECTED 유지
-"다음 영상에서 만나요."           x20   독립 근거 없음
-```
-
-실측 확인.
+OPEN-7 이후 반복 ≥8은 `SUSPECT`일 뿐 `REJECTED`가 아니다. 그런데 실측에서
+**반복이 유일한 contamination signal인 사례가 존재**한다.
 
 ```
-"다음 영상에서 만나요."
-  is_subtitle_credit    False      (크레딧 패턴은 "한글자막 by …" 완전일치만)
-  is_corrupted_caption  False      (한자·가나 없음 · 구 반복 없음)
-  URL/방송국 정규식      미적중
+3I7       "다음 영상에서 만나요."  x20
+softyeon  동종 반복 contamination  x22
 ```
 
-즉 이 문자열의 유일한 신호가 **반복 ≥8**이었다. OPEN-7 이후 이것은 `REJECTED`가
-아니라 `SUSPECT`가 된다. softyeon `"다음 영상에서 만나요."` x22도 같다.
-
-**따라서 `SUSPECT`가 claim 근거로 쓰일 수 있으면, 이번에 없앤 아웃트로 자막의
-사건 승격이 되돌아온다.**
-
-### 권고
+실측 확인 — 다른 결정적 규칙에 하나도 적중하지 않는다.
 
 ```
-SUSPECT  →  usable_for_claims = false
-            텍스트는 보존하고 표시도 가능하나 claim 근거로 쓰지 않는다
-REJECTED →  독립 근거가 있을 때만. 여전히 텍스트는 삭제하지 않는다
+is_subtitle_credit    False    크레딧 패턴은 "한글자막 by …" 완전일치만 잡는다
+is_corrupted_caption  False    한자·가나 없음 · 구 반복 없음
+URL/방송국 정규식      미적중
 ```
 
-이러면 두 요구가 동시에 성립한다.
+`SUSPECT`를 정상 claim support로 허용하면 OPEN-7이 보존한 오염이 다시 사건
+서술로 승격된다.
+
+### 결정 — 보존 상태와 claim eligibility를 분리한다
 
 ```
-OPEN-7 요구   반복만으로 evidence를 삭제하지 않는다      → 삭제 안 함 (상태만 부여)
-BCS 실측 보장  오염 STT가 사건 서술로 승격되지 않는다     → SUSPECT는 claim 불가
+상태            preserved   usable_for_claims
+VALID              true          true
+SUSPECT            true          false
+REJECTED           true          false
+EMPTY               -            false
+PARSE_FAILED        -            false
 ```
 
-### 필요한 test
-
 ```
-SAN-011  P0   repeat ≥ 8 문자열
-              → status SUSPECT · usable_for_claims false
-              → 텍스트는 artifact에 보존됨
-GRD-011  P0   SUSPECT evidence만 인용한 dialogue claim
-              → 승격 거부 (FAIL)
-TRI-006  P0   3I7 "다음 영상에서 만나요."
-              → canonical claim에 등장하지 않음   (BCS 실측 보장 회귀)
+SUSPECT ≠ deleted
+SUSPECT ≠ valid claim support
 ```
 
-**미결이다. 승인 전에는 matrix에 반영하지 않았다.**
+원문은 provenance·진단을 위해 보존하고 UI/debug에 표시할 수 있으나, canonical
+episode claim을 지지하는 evidence reference로 쓰지 않는다.
+
+### Grounding semantics
+
+```
+eligible_support_refs := refs where usable_for_claims == true
+```
+
+```
+SUSPECT refs만으로 지지되는 claim    → grounding FAIL
+REJECTED refs만으로 지지되는 claim   → grounding FAIL
+```
+
+**`VALID + SUSPECT` 동시 인용을 자동 PASS로 처리하지 않는다.**
+
+```
+허용    VALID evidence만으로도 그 claim이 독립적으로 성립한다
+        → SUSPECT는 auxiliary/contextual reference로 보존 가능 · 성립 근거로 계산하지 않음
+금지    SUSPECT ref가 있어야 claim이 참이 되는 경우
+        → PASS 불가
+```
+
+이 단서가 없으면 SUSPECT를 VALID 옆에 붙여 우회 사용하는 통로가 생긴다.
+
+### 왜 바로 REJECTED로 만들지 않는가
+
+반복은 강한 신호일 수 있으나 항상 오염이 아니다 — 감정적 반복 발화 · 구호 · 후렴 ·
+반복 안내 · 동일한 실제 대화가 존재한다.
+
+`REJECTED`에는 **독립적인 결정적 근거**가 필요하다.
+
+```
+instruction echo pattern · known producer boilerplate · subtitle-credit pattern
+URL/station boilerplate · malformed producer response · 기타 명시된 결정적 오염 규칙
+```
+
+**반복 횟수는 독립적인 rejection ground가 아니다.**
+
+### SAN-004 / SAN-010 / OPEN-9 관계
+
+```
+SAN-004  영상 전체 exact normalized 출현 ≥8
+         → SUSPECT · 텍스트 보존 · usable_for_claims false
+SAN-010  자연스러운 강조·대화 반복
+         → 반복 자체를 이유로 삭제하지 않음
+```
+
+SAN-010은 SAN-004의 claim eligibility 정책을 무효화하지 않는다. 자연 발화라고
+판단할 추가 결정적 근거가 없으면 **보존하되 보수적으로 claim support에서 제외**한다.
+정보 삭제가 아니라 **claim 승격 차단**이다.
+
+### Evidence Timeline contract
+
+```
+evidence_ref · status · usable_for_claims
+```
+
+`usable_for_claims`는 downstream LLM이 판단하거나 바꾸는 필드가 아니다. sanitation
+결과에서 **코드가 결정한다.** 입력 역할을 분리한다.
+
+```
+claim-generation evidence set   usable_for_claims == true 만
+diagnostic/context evidence set  SUSPECT 포함 보존 evidence
+```
+
+### OCR 정책과 같은 방향
+
+> evidence가 존재하거나 보존된다는 사실은 그것이 canonical factual claim을 단독으로
+> 지지할 수 있다는 뜻이 아니다.
+
+evidence lifecycle 3단계를 구분한다.
+
+```
+preserved → available for inspection/context → eligible for factual claim support
+```
+
+### 추가 invariant
+
+```
+모든 accepted grounded claim에 대해   eligible_support_ref_count >= 1
+기본 contract                        eligible_support_ref.status == VALID
+```
+
+다른 claim-eligible 상태를 도입하려면 **명시적 schema 변경**이 필요하다.
+
+### 신설 failure class
+
+```
+FAIL_INELIGIBLE_SUPPORT
+```
+
+`FAIL_REFERENCE`를 재사용하지 않는다 — "ref가 없다/깨졌다"와 "ref는 실재하나
+정책상 claim 근거가 될 수 없다"는 다른 실패이고, 회귀 원인 추적에서 차이가 크다.
+
+### Architecture status
+
+OPEN-9는 boundary architecture 변경이 아니다. canonical partition ·
+`fixed_window_v1` · BoundaryProvider · Highlight 분리 · M9 · official test ·
+BCS freeze · provider adoption status를 **바꾸지 않는다.**
+
+sanitation → grounding 사이에 누락돼 있던 **claim eligibility contract를 명문화하는
+correction**이며, frozen architecture의 normative contract correction으로 기록한다.
+
+### 한 줄 규칙
+
+> **Preservation is not permission to claim.**
+
+```
+SUSPECT evidence is preserved and inspectable,
+but it cannot independently support a canonical factual claim.
+```
 
 ---
 

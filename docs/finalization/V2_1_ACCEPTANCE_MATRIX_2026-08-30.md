@@ -59,7 +59,8 @@ waiver 대장: docs/finalization/V2_1_P1_WAIVERS.md
 | SAN-007 | P0 | OCR isolation | OCR 단독 strong claim | 단독 근거 승격 금지 |
 | SAN-008 | P1 | 정상 ASR 유지 | 정상 대화 STT | downstream 사용 가능 |
 | SAN-009 | P1 | 오염 STT | 무의미/오염 STT | 정상 대화와 동일 취급 금지 |
-| SAN-010 | P0 | 실제 발화 보존 | 흥분한 반복 발화 | `USABLE` 유지 (BCS 실측 근거) |
+| SAN-010 | P0 | 실제 발화 보존 | 흥분한 반복 발화 | 반복만을 이유로 삭제 금지 (BCS 실측) |
+| SAN-011 | P0 | 반복 suspect eligibility | exact normalized 출현 ≥8 | `SUSPECT` · `usable_for_claims=false` · 원문 보존 · 삭제 없음 |
 
 ## 5. Evidence Timeline
 
@@ -160,6 +161,8 @@ waiver 대장: docs/finalization/V2_1_P1_WAIVERS.md
 | GRD-008 | P0 | validation status persisted | canonical JSON에 기록 |
 | GRD-009 | P0 | failure not hidden | PASS처럼 표현 금지 |
 | GRD-010 | P0 | claim without support ref | 무조건 FAIL (결정 가능) |
+| GRD-011 | P0 | SUSPECT-only dialogue claim | `FAIL_INELIGIBLE_SUPPORT` (≠ FAIL_REFERENCE) |
+| GRD-012 | P0 | VALID+SUSPECT 동시 인용 | VALID만으로 성립해야 PASS · 자동 PASS 금지 |
 
 ## 12. aar_canonical.json
 
@@ -262,6 +265,7 @@ waiver 대장: docs/finalization/V2_1_P1_WAIVERS.md
 | TRI-003 | P1 | 외국어 caption 이상 | sanitation state 반영 |
 | TRI-004 | P1 | black-screen transition | diagnostic 가능 |
 | TRI-005 | P0 | sparse evidence | narrative hallucination 금지 |
+| TRI-006 | P0 | 3I7 `"다음 영상에서 만나요."` | 보존 · `SUSPECT` · eligible support로 쓰인 accepted claim 0건 |
 
 ## 20. Non-regression / Repository Gate
 
@@ -357,26 +361,20 @@ OPEN-5  P1 gating 지위                    CLOSED  P0 hard / P1 pass-or-waiver 
 OPEN-6  BCS renderer 재사용 충돌          CLOSED  v2.1 renderer 신규 구현 · BCS 수정·추출 금지
 OPEN-7  반복 sanitation                   CLOSED  ≥8 → SUSPECT만 · 삭제 금지
 OPEN-8  일정                              OPEN    착수 시점 미정 · 이 문서는 착수 승인 아님
-OPEN-9  SUSPECT의 claim 승격 가능 여부      OPEN    **결정 필요** — 아래
+OPEN-9  SUSPECT의 claim 승격 가능 여부      CLOSED  보존≠승격 · FAIL_INELIGIBLE_SUPPORT 신설
 ```
 
-## OPEN-9 — `SUSPECT`가 claim 근거로 쓰일 수 있는가 (신규)
-
-OPEN-7을 닫으면서 열렸다. BCS에서 3I7 오염 STT 29건이 제거돼 전파 0건이었는데,
-그중 `"다음 영상에서 만나요."`(x20)는 **반복 ≥8 외에 독립 근거가 없다**(실측:
-`is_subtitle_credit` False · `is_corrupted_caption` False · URL 정규식 미적중).
-
-`≥8 → SUSPECT only`이면 이 문자열은 REJECTED가 아니다. **SUSPECT가 claim 근거로
-쓰이면 아웃트로 자막의 사건 승격이 되돌아온다.**
-
-권고와 필요한 test는 ADDENDUM OPEN-9 참조. **승인 전이므로 아래 test는 아직 matrix
-본문에 넣지 않았다.**
+## OPEN-9 — CLOSED
 
 ```
-SAN-011  P0  repeat ≥8 → SUSPECT · usable_for_claims false · 텍스트 보존
-GRD-011  P0  SUSPECT 단독 인용 dialogue claim → 승격 거부
-TRI-006  P0  3I7 "다음 영상에서 만나요." → canonical claim 미등장 (BCS 보장 회귀)
+VALID     preserved · usable_for_claims true
+SUSPECT   preserved · usable_for_claims false     ← 삭제 아님 · claim 근거 아님
+REJECTED  preserved · usable_for_claims false     독립 근거 필요
 ```
+
+`SUSPECT`만으로 지지되는 claim은 `FAIL_INELIGIBLE_SUPPORT`.
+`VALID + SUSPECT` 동시 인용은 **VALID만으로 성립할 때만** PASS.
+반영 test: SAN-011 · GRD-011 · GRD-012 · TRI-006. 상세는 ADDENDUM OPEN-9.
 
 ## OPEN-8 — 일정
 
