@@ -83,7 +83,7 @@ BLOCKER      없음
 B-01  Episode 구조 · content 스키마 · 코드 파생      deterministic   COMPLETE
 B-03  prompt builder + version/hash                   deterministic   COMPLETE
 B-02a LLM adapter contract (fake generator 주입)      deterministic   COMPLETE
-B-02b 실제 모델 invocation (lab GPU)                 model-dependent  승인 대기
+B-02b 실제 모델 invocation (lab GPU)                 model-dependent  COMPLETE
 B-04  content 병합 · failure isolation                deterministic   COMPLETE
 B-05  support/provenance 확정 바인딩                   deterministic   COMPLETE
 B-06  grounding validator                             deterministic   COMPLETE
@@ -524,3 +524,82 @@ official test · M9 · 새 GT
 
 **모델 실험이 아니라 구현 integration 검증이다.** 끝나면 LLM-006·007·010을
 `CONTRACT PASS → PASS`로 승격한다.
+
+
+---
+
+## B-02b 실제 모델 invocation — **COMPLETE (2026-08-31)**
+
+```
+서버      kixlab2 · RTX 4090 24564 MiB · driver 595.84
+env       /ssd/daeseok/envs/prj  (transformers 5.14.1 · torch 2.13.0+cu130)
+model     Qwen/Qwen2.5-7B-Instruct · llm_4bit=false · do_sample=False
+          max_new_tokens=512 · 단일 호출 · 배치 없음
+동기화     git archive HEAD | ssh … tar -x   (push 없음)
+산출물     runs/v2_1/b02b_integration_run2.json
+          runs/v2_1/b02b_raw/{run1,run2}_{S1,S3,S4}.raw
+```
+
+OOM 없음. 4bit 전환 없음. 모델 변경 없음. 프롬프트 변경 없음.
+
+### run 1 — 세 호출 전부 PARSE_CONTRACT_FAILURE
+
+모델은 **완전한 JSON을 코드펜스로 감쌌다.** 파서가 그 펜스를 `not_json_object`로
+거절했다.
+
+```
+```json
+{ "summary": "…", "stt_cites": [] }
+```
+```
+
+이건 이 프로젝트가 세 번 겪은 **"표기를 계약으로 착각"**과 같은 부류다
+(v2 canary 맨 배열 · BCS `"seg#55"`). 프롬프트가 아니라 파서를 고쳤다 —
+결과를 보고 프롬프트를 만지면 그 순간 prompt tuning 실험이 된다.
+
+받아들이는 범위는 좁게 못 박았다(A-04 · 5 tests).
+
+```
+출력 전체가 펜스 하나로 감싸인 경우만 벗긴다
+벗긴 뒤에도 완전한 JSON이어야 한다 — 깨졌으면 실패 (구조 fallback 아님)
+펜스 밖 설명문은 받지 않는다 — 어디까지가 출력인지 알 수 없다
+```
+
+### run 2 — 세 경로 전부 통과
+
+```
+S3  LLM-006  VALID_PARSE  구조 유지  raw 146ch  dialogue_note None  cites []
+S4  LLM-007  VALID_PARSE  구조 유지  raw 213ch  dialogue_note "선택"  cites 10개
+S1  LLM-010  VALID_PARSE  구조 유지  raw 140ch  dialogue_note "선택"  cites [8, 10]
+```
+
+`invoke → raw persist → parse → merge`가 세 경로에서 모두 성립했고, 모델이 파생
+필드를 보내지 않아 `ignored_fields`는 전부 비었다.
+
+**run1과 run2의 raw는 바이트 동일하다**(sha256 일치). greedy decoding이 결정적이었고
+두 실행의 차이는 파서뿐이라는 뜻이다.
+
+### 발견 — 프롬프트 예시값 복사 (미조치)
+
+`dialogue_note`에 **`"선택"`**이 들어왔다. 프롬프트 출력 예시
+`{"summary": "한 문장", "dialogue_note": "선택", …}`의 자리표시자를 모델이 그대로
+베낀 것이다. 이 프로젝트에서 3B를 기각한 사유(예시 문장 복사 오염)와 같은 종류다.
+
+**이번에 고치지 않는다.** 프롬프트 수정은 별도 결정 사건이고, B-02b는 integration
+검증이지 prompt 개선이 아니다. 실제 문서를 만들기 전에는 닫아야 할 결함으로 기록한다.
+
+### 사고 기록 — run 1 산출물을 지웠다
+
+재동기화 때 `rm -rf`로 서버 작업 트리를 지우면서 run 1의 결과 JSON도 함께 지웠다.
+raw는 work 디렉터리에 남아 있어 회수했고, run1·run2 raw가 바이트 동일해 손실된
+정보는 상태 요약뿐이다. **다음부터 산출물은 작업 트리 밖에 쓰거나 회수 후 동기화한다.**
+
+### P1 승격
+
+```
+LLM-006  CONTRACT PASS → PASS
+LLM-007  CONTRACT PASS → PASS
+LLM-010  CONTRACT PASS → PASS
+```
+
+Gate B P1: **6 PASS · 1 WAIVED(GRD-004)**.

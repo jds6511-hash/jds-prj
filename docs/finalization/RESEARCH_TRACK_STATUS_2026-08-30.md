@@ -22,6 +22,9 @@ v2.1 architecture        FROZEN        v2.1 planning         COMPLETE
 v2.1 acceptance matrix   COMPLETE      Gate A tickets        READY
 v2.1 implementation      IN PROGRESS   implementation auth   GRANTED 2026-08-30
 Gate A                   COMPLETE      11/11 티켓 · P0 51/51 · P1 12/12
+Gate B                   IN PROGRESS   P0 전부 green · P1 6 PASS + 1 WAIVED
+                                       B-02b 실모델 integration 완료 (Qwen2.5-7B)
+                                       남은 것: B-09 acceptance 집계
 연구 경계 가드            REG-005~009 · REF-003 기계 검증 (합성 위반 포함)
 NEXT                     Gate B(내용·근거) 착수 여부는 별도 판단
                          IMPLEMENTATION_COMPLETE는 Gate B·C·D까지 통과해야 한다

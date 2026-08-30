@@ -1,0 +1,146 @@
+{
+  "purpose": "B-02b integration — contract 확인. 성능 평가가 아니다.",
+  "commit": "875ce27",
+  "started_utc": "2026-08-30T15:04:34.241178+00:00",
+  "model_id": "Qwen/Qwen2.5-7B-Instruct",
+  "quantization": "none (llm_4bit=false)",
+  "dry_run": false,
+  "hf_home": "/ssd/daeseok/cache",
+  "gpu": {
+    "nvidia_smi": "NVIDIA GeForce RTX 4090, 595.84, 24564 MiB"
+  },
+  "cases": [
+    {
+      "scenario": "S3",
+      "span": [
+        0,
+        11
+      ],
+      "acceptance_id": "LLM-006",
+      "episode_id": "EP01",
+      "prompt_version": "episode_content_v1",
+      "prompt_hash": "933a1cf4276907655f2ad9f9b754d4e1624320b91d735a076a641d1cfd2d7529",
+      "prompt_chars": 717,
+      "claim_cites": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "source": "visual",
+      "content_status": "VALID_PARSE",
+      "raw_ref": "llm:000000",
+      "raw_chars": 146,
+      "summary": "등산객이 산길을 오르며 물을 마시고, 바위에 앉아 쉬기도 하며 능선과 정상을 바라보며 사진을 찍고, 지도를 확인한 후 정상까지 오르다가 구름을 감상한 뒤 하산을 시작합니다.",
+      "dialogue_note": null,
+      "stt_cites": [],
+      "ignored_fields": [],
+      "reason": null,
+      "error": null,
+      "error_type": null,
+      "episode_structure_intact": true
+    },
+    {
+      "scenario": "S4",
+      "span": [
+        0,
+        11
+      ],
+      "acceptance_id": "LLM-007",
+      "episode_id": "EP01",
+      "prompt_version": "episode_content_v1",
+      "prompt_hash": "933a1cf4276907655f2ad9f9b754d4e1624320b91d735a076a641d1cfd2d7529",
+      "prompt_chars": 628,
+      "claim_cites": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "source": "stt",
+      "content_status": "VALID_PARSE",
+      "raw_ref": "llm:000000",
+      "raw_chars": 213,
+      "summary": "그룹원들은 어제의 계획을 따랐고, 길을 변경하며 진행 중이었으며, 쉼터에서 잠시 휴식을 취하고 사진을 찍었다. 또한, 바람이 세게 불고 있음을 언급하며, 내려갈 때는 다른 길을 선택하기로 했다.",
+      "dialogue_note": "선택",
+      "stt_cites": [
+        0,
+        1,
+        2,
+        3,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "ignored_fields": [],
+      "reason": null,
+      "error": null,
+      "error_type": null,
+      "episode_structure_intact": true
+    },
+    {
+      "scenario": "S1",
+      "span": [
+        6,
+        11
+      ],
+      "acceptance_id": "LLM-010",
+      "episode_id": "EP01",
+      "prompt_version": "episode_content_v1",
+      "prompt_hash": "933a1cf4276907655f2ad9f9b754d4e1624320b91d735a076a641d1cfd2d7529",
+      "prompt_chars": 620,
+      "claim_cites": [
+        6,
+        7,
+        8,
+        8,
+        9,
+        9,
+        10,
+        10,
+        11
+      ],
+      "source": "stt",
+      "content_status": "VALID_PARSE",
+      "raw_ref": "llm:000006",
+      "raw_chars": 140,
+      "summary": "두 여성이 사진을 찍고, 웃으며 걷고, 돗자리를 펴서 간식을 먹고, 해변을 가기 위해 준비를 하고 있습니다.",
+      "dialogue_note": "선택",
+      "stt_cites": [
+        8,
+        10
+      ],
+      "ignored_fields": [],
+      "reason": null,
+      "error": null,
+      "error_type": null,
+      "episode_structure_intact": true
+    }
+  ],
+  "generation": {
+    "model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "do_sample": false,
+    "max_new_tokens": 512
+  },
+  "status": "COMPLETE",
+  "finished_utc": "2026-08-30T15:04:53.124111+00:00"
+}
