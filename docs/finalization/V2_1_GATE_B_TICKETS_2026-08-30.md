@@ -85,7 +85,7 @@ B-03  prompt builder + version/hash                   deterministic   COMPLETE
 B-02  LLM invocation adapter (A-03 raw 경유)          model-dependent  P1 확정 후
 B-04  content 병합 · failure isolation                deterministic   COMPLETE
 B-05  support/provenance 확정 바인딩                   deterministic   COMPLETE
-B-06  grounding validator                             deterministic
+B-06  grounding validator                             deterministic   COMPLETE
 B-07  aar_canonical 스키마 · 직렬화                    deterministic
 B-08  Gate B fixtures + failure injection             deterministic
 B-09  acceptance 매핑 · 집계                          deterministic
@@ -244,3 +244,60 @@ provenance도 자격과 무관하게 **구간에 실제로 있던 근거 전부*
 처음에는 B-04가 인용을 정규화·정렬·중복 제거했다. 그러면 `original_cite`가
 사라져 B-05가 볼 사실이 없다. **B-04는 모델이 쓴 그대로 보존**하고 표기 해석은
 B-05가 한다. `EpisodeContent.stt_cites`의 타입도 그에 맞췄다.
+
+
+---
+
+## B-06 grounding validator  **COMPLETE**
+
+```
+green    GRD-001 · 002 · 003 · 005 · 006 · 008 · 009 · 010 · 011 · 012   10/10 P0
+P1       GRD-004 미구현 유지 (의미 함의) · GRD-007은 partial support 정책
+산출물   src/v2_1_grounding.py · tests/test_v2_1_grounding.py (35 tests)
+```
+
+### 상태 어휘
+
+```
+PASS · NOT_APPLICABLE
+FAIL_NO_SUPPORT · FAIL_REFERENCE · FAIL_OUTSIDE_EPISODE
+FAIL_INELIGIBLE_SUPPORT · FAIL_UNSUPPORTED
+```
+
+다섯 가지 참조 문제를 서로 다른 사유로 적는다.
+
+```
+unreadable_cite         표기가 참조가 아니다
+unknown_segment         그런 구간이 없다
+no_evidence_at_segment  구간은 있으나 그 채널에 근거가 없다
+outside_episode         구간 밖을 가리킨다
+ineligible_support      존재하지만 claim 근거가 될 수 없다
+```
+
+### GRD-012 — 통과 조건은 인용 개수가 아니다
+
+자격 없는 인용은 **eligible이 0일 때만** 실패 사유가 된다. VALID이 따로 있으면
+claim은 그 VALID으로 서고 SUSPECT 인용은 **진단으로 남는다**(사실은 지우지 않는다).
+반대로 SUSPECT를 VALID 옆에 붙였다고 통과가 되지도 않는다 — 조건은 `eligible >= 1`이다.
+
+첫 구현은 SUSPECT 인용 하나만으로 전체를 FAIL시켜 GRD-012와 어긋났다. 테스트가 잡았다.
+
+### GRD-005 — 문자열 앵커의 한계를 명시한다
+
+```
+검사한다   숫자 · 따옴표 안 문자열 · 라틴 문자 토큰
+안 한다    따옴표 없는 한국어 고유명사 일반
+```
+
+결정 가능한 것만 P0로 본다. 나머지는 GRD-004(P1)의 영역이고 여기서 흉내내지 않는다.
+
+### short-circuit 하지 않는다
+
+첫 실패에서 멈추지 않고 결정 가능한 위반을 전부 `reasons[]`에 적은 뒤 상태 하나를
+고른다. 상태 선택 순서는 고정이라 인용 순서를 바꿔도 결과가 같다.
+
+### 실패는 숨기지 않는다
+
+```
+구조 유지 · summary 유지 · dialogue만 제거 · grounding_status는 FAIL로 보존
+```
