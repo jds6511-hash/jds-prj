@@ -87,23 +87,66 @@ green    RAW-001 · RAW-002 · RAW-003 · RAW-004     전부 PASS
 
 ---
 
-## A-04 parse contract layer
+## A-04 parse contract layer  **COMPLETE**
 
 ```
-green    SCH-004 · SCH-005 · SCH-007 · SCH-008 · SCH-009
+green    SCH-004 · SCH-005 · SCH-007 · SCH-008 · SCH-009     전부 PASS
 크기     M
+산출물   src/v2_1_parse.py · tests/test_v2_1_parse.py (46 tests)
 ```
 
 ```
-RAW → NORMALIZE → PARSE → (SEMANTIC VALIDATION은 A-05 이후)
+RAW → NORMALIZE → PARSE → RESOLVE → (SEMANTIC VALIDATION은 A-05 이후)
 정규화   55 · "55" · "seg#55"  → 동일 canonical segment reference
-분류     MODEL_OUTPUT_MISSING · PARSE_CONTRACT_FAILURE
-         SEMANTIC_VALIDATION_FAILURE · GROUNDING_FAILURE
 금지     parse 단계에서 sanitation 판단
+금지     구조 fallback — 깨진 JSON을 문장으로 건져 올리지 않는다
 ```
 
 이 프로젝트 최악 사고 셋이 전부 표기를 계약으로 착각한 것이다
 (v2 canary 맨 배열 · BCS `"seg#55"` · 깨진 JSON 폴백).
+
+### parse 계층 status — 넷으로 고정
+
+```
+MODEL_FAILURE            producer 호출 자체가 실패했다
+PARSE_CONTRACT_FAILURE   raw는 있지만 약속된 구조로 해석되지 않는다
+EMPTY                    parse는 됐지만 semantic payload가 비어 있다
+VALID_PARSE              형식적으로 정상 — 내용의 진위·오염은 아직 판단하지 않는다
+```
+
+SPEC §12의 taxonomy와의 관계를 명시한다. **SPEC은 FROZEN이므로 고치지 않는다.**
+
+```
+SPEC §12                        A-04
+MODEL_OUTPUT_MISSING       ⊂    MODEL_FAILURE      (호출 실패까지 포함하는 상위 이름)
+PARSE_CONTRACT_FAILURE     =    PARSE_CONTRACT_FAILURE
+SEMANTIC_VALIDATION_FAILURE     A-05 소관 — parse 계층이 내지 않는다
+GROUNDING_FAILURE               Gate B 소관 — parse 계층이 내지 않는다
+(신설)                          EMPTY · VALID_PARSE   SCH-005가 요구하는 구분
+```
+
+`MODEL_FAILURE`는 **호출자가 알려줄 때만** 생긴다. parse 계층이 payload 내용을 보고
+추론하지 않는다 — 빈 문자열은 `EMPTY`이지 호출 실패가 아니다.
+
+A-03과 어휘를 잇는다.
+
+```
+RawStore PARSE_OK       → VALID_PARSE
+RawStore PARSE_FAILED   → PARSE_CONTRACT_FAILURE
+```
+
+### reference 정규화는 존재를 만들지 않는다
+
+```
+표현 정규화   55 · "55" · " seg#55 " · "SEG # 55"   → 55
+resolve      canonical segment registry(A-01)에 실재해야 한다
+"seg#999999"  문법은 맞지만 실재하지 않는다 → PARSE_CONTRACT_FAILURE
+              reason = unresolved_reference
+금지         clamp · 최근접 매칭 · 없는 segment 생성
+```
+
+문법 통과를 parse 성공으로 흘려보내지 않는다. 표기를 받아들이는 것과 존재를
+지어내는 것은 다르다.
 
 ---
 
@@ -296,8 +339,8 @@ v2.1 Gate A ticket breakdown      DOCUMENTED  ← 이 문서
 v2.1 implementation               IN PROGRESS
 implementation authorization      GRANTED 2026-08-30
 A-01                              COMPLETE   commit 7f5d0f9
-A-03                              COMPLETE
-NEXT                              A-04  parse contract layer
+A-03 · A-04                       COMPLETE
+NEXT                              A-10  합성 fixture → A-07 → A-08 → A-09
 ```
 
 착수 승인은 이 문서가 아니라 `V2_1_IMPLEMENTATION_AUTHORIZATION_2026-08-30.md`에
