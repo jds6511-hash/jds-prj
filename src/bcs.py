@@ -145,21 +145,55 @@ def _first_sentence(t: str) -> str:
     return "" if common.is_corrupted_caption(t) else t
 
 
-def parse_content(raw: str) -> dict:
-    """JSON을 우선 보되 **맨 문장도 받는다** — v3·v4는 형식 하나로 무효가 났다.
+def _cite(x):
+    """모델은 `238`·`"238"`·`"seg#238"`을 섞어 쓴다. **표기이지 계약이 아니다.**
 
-    표기를 받아들이는 것이지 구조를 푸는 게 아니다. span·근거는 코드가 갖는다.
+    2026-08-29 첫 실행에서 `"seg#55"` 형태를 못 읽어 `no_stt_cite`로 14건을
+    버렸다 — 모델이 아니라 파서 결함이었다(v2 canary의 맨 배열 사고와 같은 부류).
+    """
+    n = H._as_int(x)
+    if n is not None:
+        return n
+    m = re.fullmatch(r"\s*(?:seg\s*#?\s*)?(\d+)\s*", str(x), re.IGNORECASE)
+    return int(m.group(1)) if m else None
+
+
+_SUMMARY_KEY = re.compile(r'"summary"\s*:\s*"([^"]{1,400})"')
+
+
+def parse_content(raw: str) -> dict:
+    """JSON을 우선 보되 표기를 받아들인다. 구조는 코드가 갖는다.
+
+    `parse_mode`를 남겨 무엇으로 읽었는지 사후에 가릴 수 있게 한다.
+
+    ```
+    json              정상 파싱
+    salvaged_summary  JSON이 깨졌지만 summary 값만 온전할 때 그 값만 꺼낸다
+    bare              JSON이 아닌 문장 하나
+    ```
+
+    **없는 것을 지어내지 않는다** — 어느 경로로도 못 읽으면 빈 값이고,
+    빈 요약은 문서를 무효로 만든다.
     """
     d = H._obj(raw)
     if isinstance(d, dict) and str(d.get("summary", "")).strip():
         cites = d.get("stt_cites")
         return {"summary": _first_sentence(str(d["summary"])),
                 "dialogue_note": _first_sentence(str(d.get("dialogue_note", ""))),
-                "stt_cites": sorted({i for i in (H._as_int(x) for x in cites)
+                "stt_cites": sorted({i for i in (_cite(x) for x in cites)
                                      if i is not None})
-                if isinstance(cites, list) else []}
+                if isinstance(cites, list) else [],
+                "parse_mode": "json"}
+    t = (raw or "").strip()
+    m = _SUMMARY_KEY.search(t)
+    if m:
+        return {"summary": _first_sentence(m.group(1)), "dialogue_note": "",
+                "stt_cites": [], "parse_mode": "salvaged_summary"}
+    if t.startswith("{") or '"summary"' in t:
+        return {"summary": "", "dialogue_note": "", "stt_cites": [],
+                "parse_mode": "unparsable"}
     return {"summary": _first_sentence(raw), "dialogue_note": "",
-            "stt_cites": []}
+            "stt_cites": [], "parse_mode": "bare"}
 
 
 def verify_content(content: dict, episode: dict, segments: list) -> dict:

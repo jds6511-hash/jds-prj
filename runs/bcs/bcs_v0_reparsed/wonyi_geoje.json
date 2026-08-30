@@ -1,0 +1,1140 @@
+{
+  "video_id": "wonyi_geoje",
+  "schema": "bcs_prototype_v0",
+  "run_kind": "bcs_v0_reparsed",
+  "n_segments": 327,
+  "commit": "5dc503074768db182445e2e28a8828083e155b91",
+  "stt_status_counts": {
+    "USABLE": 315,
+    "EMPTY": 12
+  },
+  "spec": "docs/finalization/BCS_PROTOTYPE_SPEC_2026-08-29.md",
+  "chunk_diag": [
+    {
+      "lo": 0,
+      "hi": 59,
+      "n": 4,
+      "boundaries": [
+        0,
+        26,
+        44,
+        58
+      ],
+      "status": "OK"
+    },
+    {
+      "lo": 55,
+      "hi": 114,
+      "n": 3,
+      "boundaries": [
+        55,
+        64,
+        91
+      ],
+      "status": "OK"
+    },
+    {
+      "lo": 110,
+      "hi": 169,
+      "n": 2,
+      "boundaries": [
+        110,
+        169
+      ],
+      "status": "OK"
+    },
+    {
+      "lo": 165,
+      "hi": 224,
+      "n": 8,
+      "boundaries": [
+        165,
+        177,
+        188,
+        199,
+        204,
+        210,
+        217,
+        223
+      ],
+      "status": "OK"
+    },
+    {
+      "lo": 220,
+      "hi": 279,
+      "n": 10,
+      "boundaries": [
+        220,
+        227,
+        229,
+        238,
+        249,
+        256,
+        261,
+        266,
+        271,
+        278
+      ],
+      "status": "OK"
+    },
+    {
+      "lo": 275,
+      "hi": 326,
+      "n": 5,
+      "boundaries": [
+        275,
+        281,
+        291,
+        317,
+        326
+      ],
+      "status": "OK"
+    }
+  ],
+  "overview": {
+    "source": "deterministic",
+    "n_episodes": 32,
+    "spans": [
+      [
+        0,
+        25
+      ],
+      [
+        26,
+        43
+      ],
+      [
+        44,
+        54
+      ],
+      [
+        55,
+        57
+      ],
+      [
+        58,
+        63
+      ],
+      [
+        64,
+        90
+      ],
+      [
+        91,
+        109
+      ],
+      [
+        110,
+        164
+      ],
+      [
+        165,
+        168
+      ],
+      [
+        169,
+        176
+      ],
+      [
+        177,
+        187
+      ],
+      [
+        188,
+        198
+      ],
+      [
+        199,
+        203
+      ],
+      [
+        204,
+        209
+      ],
+      [
+        210,
+        216
+      ],
+      [
+        217,
+        219
+      ],
+      [
+        220,
+        222
+      ],
+      [
+        223,
+        226
+      ],
+      [
+        227,
+        228
+      ],
+      [
+        229,
+        237
+      ],
+      [
+        238,
+        248
+      ],
+      [
+        249,
+        255
+      ],
+      [
+        256,
+        260
+      ],
+      [
+        261,
+        265
+      ],
+      [
+        266,
+        270
+      ],
+      [
+        271,
+        274
+      ],
+      [
+        275,
+        277
+      ],
+      [
+        278,
+        280
+      ],
+      [
+        281,
+        290
+      ],
+      [
+        291,
+        316
+      ],
+      [
+        317,
+        325
+      ],
+      [
+        326,
+        326
+      ]
+    ]
+  },
+  "provenance": {
+    "role": "report",
+    "model_loaded": true,
+    "requested_model": "Qwen/Qwen2.5-7B-Instruct",
+    "requested_4bit": false,
+    "max_new_tokens": 16384,
+    "do_sample": false,
+    "effective_model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "effective_model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "effective_dtype": "torch.bfloat16",
+    "effective_quantized": false,
+    "attn_implementation": "sdpa",
+    "prompt_sha256": {
+      "system": "cf54f0ed85146176eb94a9aa99db0e68787af7878c8b76609a964d4926de6f24",
+      "event_rules": "7e23fc3a529d486005a97e891f1c28461089fc2ccc9ee504c4c27a0cd14985f3",
+      "build_map_prompt": "2bbcbc195f1b11e769acda7fe7babed20ed7f19fe99d6f71f08dbd1b43041510",
+      "build_reduce_prompt": "95f5c2c2c17eb4cf8ff8a43b93ca4c5c7075ddafe00911387201e6e433f9baf4",
+      "build_event_prompt": "791b4eed0ab6f93cae8df41a91e3bd8f93a8ce36e82de70ad922a778013bdf90"
+    },
+    "env": {
+      "git_head": "41875218a1e5c2778fa5daecdca86a9e70855112",
+      "git_dirty": true,
+      "python": "3.12.13",
+      "generated_at": "2026-08-30T13:45:36",
+      "torch": "2.13.0+cu130",
+      "cuda": "13.0",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "transformers": "5.14.1"
+    },
+    "quantization_mismatch": false,
+    "schema_version": 2,
+    "config_report_model": "Qwen/Qwen2.5-7B-Instruct",
+    "config_llm_4bit": false,
+    "config_map_chunk_size": 60,
+    "config_map_chunk_overlap": 5,
+    "config_report_max_new_tokens": 16384
+  },
+  "lineage": {
+    "kind": "reparse_only",
+    "structure_regenerated": false,
+    "llm_called": false,
+    "source_run_kind": "bcs_v0",
+    "source_path": "runs/bcs/bcs_v0/wonyi_geoje.json",
+    "frozen_fields": [
+      "episode_id",
+      "start_seg",
+      "end_seg",
+      "support_span",
+      "anchor_cites"
+    ]
+  },
+  "episodes": [
+    {
+      "episode_id": "EP01",
+      "start_seg": 0,
+      "end_seg": 25,
+      "support_span": {
+        "start_seg": 0,
+        "end_seg": 25
+      },
+      "anchor_cites": [
+        0,
+        12,
+        25
+      ],
+      "summary": "여성들은 거제를 방문하여 거리를 걷고 대화를 나누며, 거제의 삶과 여행 경험을 공유합니다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP02",
+      "start_seg": 26,
+      "end_seg": 43,
+      "support_span": {
+        "start_seg": 26,
+        "end_seg": 43
+      },
+      "anchor_cites": [
+        26,
+        34,
+        43
+      ],
+      "summary": "두 여성이 거리를 걷다가 교차로를 지나며 대화를 나눕니다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP03",
+      "start_seg": 44,
+      "end_seg": 54,
+      "support_span": {
+        "start_seg": 44,
+        "end_seg": 54
+      },
+      "anchor_cites": [
+        44,
+        49,
+        54
+      ],
+      "summary": "두 여성이 거리에서 대화를 나누며 거제 사람들을 언급하고, 마지막으로 버스를 타려는 계획을 공유한다.",
+      "dialogue_note": "거제 사람들이 이런 사람 보면 무슨 일 할까요? / 이상한 거 하나 거제 들어왔다 굴러 들어왔다 / 나 혼자 들어가겠니? 거제까지 왔는데? / 이거 안 탄다고 엑스 해줘야 돼 아니 엑스하면 진짜 가? / 왜냐면 또 이거 저희 때문에 문 열고 가면 기름값 아까워 / 탈 때 할머니분들이 이렇게 1, 2, 3, 4 줄 서서 이렇게 앉아 계셔가지고",
+      "stt_cites": [
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54
+      ],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP04",
+      "start_seg": 55,
+      "end_seg": 57,
+      "support_span": {
+        "start_seg": 55,
+        "end_seg": 57
+      },
+      "anchor_cites": [
+        55,
+        56,
+        57
+      ],
+      "summary": "버스 안에서 두 여성들이 앉아 있으며, 한 여성은 할머니들에게 줄을 맞추어 앉으라고 조언하고, 다른 여성은 버스에서 대화를 나누며 시간을 보내고 있습니다.",
+      "dialogue_note": "탈 때 할머니분들이 이렇게 1, 2, 3, 4 줄 서서 이렇게 앉아 계셔가지고 그리고 그냥 버스에서는 그냥 말 걸어도 돼요 왜냐면 저도 버스 타고 가는데 심심해",
+      "stt_cites": [
+        55,
+        56,
+        57
+      ],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP05",
+      "start_seg": 58,
+      "end_seg": 63,
+      "support_span": {
+        "start_seg": 58,
+        "end_seg": 63
+      },
+      "anchor_cites": [
+        58,
+        60,
+        63
+      ],
+      "summary": "두 여성은 버스 안에서 대화를 나누며 거제 여행에 대한 이야기를 합니다.",
+      "dialogue_note": "도포의 위치, 전자나무, 거제 버스의 조용함, 저녁 식사 계획에 대한 이야기를 나눕니다. [seg#58, seg#59, seg#60, seg#61, seg#62, seg#63]",
+      "stt_cites": [
+        58,
+        59,
+        60,
+        61,
+        62,
+        63
+      ],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP06",
+      "start_seg": 64,
+      "end_seg": 90,
+      "support_span": {
+        "start_seg": 64,
+        "end_seg": 90
+      },
+      "anchor_cites": [
+        64,
+        77,
+        90
+      ],
+      "summary": "두 여성이 버스에서부터 해변까지 여행하며 대화를 나누고 있습니다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP07",
+      "start_seg": 91,
+      "end_seg": 109,
+      "support_span": {
+        "start_seg": 91,
+        "end_seg": 109
+      },
+      "anchor_cites": [
+        91,
+        100,
+        109
+      ],
+      "summary": "여성 A가 여성 B에게 물어보는 모습입니다. 여성 B는 검은색 트레이닝복을 입고 앉아 있으며, 여성 C와 D는 각각 분홍색 모자와 티셔츠를 착용하고 있습니다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP08",
+      "start_seg": 110,
+      "end_seg": 164,
+      "support_span": {
+        "start_seg": 110,
+        "end_seg": 164
+      },
+      "anchor_cites": [
+        110,
+        137,
+        164
+      ],
+      "summary": "여성들이 낚시와 관련된 활동을 하며 대화를 나눕니다. 특히, 물고기를 잡아먹는 모습과 낚시를 즐기는 모습이 관찰됩니다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP09",
+      "start_seg": 165,
+      "end_seg": 168,
+      "support_span": {
+        "start_seg": 165,
+        "end_seg": 168
+      },
+      "anchor_cites": [
+        165,
+        166,
+        168
+      ],
+      "summary": "여성은 바다를 바라보며 다양한 모습을 보였고, 마지막으로는 해변에서 웃으며 선크림에 대해 이야기하고 있습니다.",
+      "dialogue_note": "피키님은 진짜 뜨거워요, 히야케돔에 히야케돔에 선크림 선크림, 야 거짓 선크림 바르는 거 아니야 (seg#167, seg#168)",
+      "stt_cites": [
+        167,
+        168
+      ],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP10",
+      "start_seg": 169,
+      "end_seg": 176,
+      "support_span": {
+        "start_seg": 169,
+        "end_seg": 176
+      },
+      "anchor_cites": [
+        169,
+        172,
+        176
+      ],
+      "summary": "여성은 바다를 바라보며 선크림을 바르려고 합니다. 그녀는 여러 가지 모자와 옷을 입고, 바다와 선박들을 배경으로 다양한 포즈를 취합니다.",
+      "dialogue_note": "",
+      "stt_cites": [
+        169,
+        171,
+        172,
+        173,
+        174,
+        175,
+        176
+      ],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP11",
+      "start_seg": 177,
+      "end_seg": 187,
+      "support_span": {
+        "start_seg": 177,
+        "end_seg": 187
+      },
+      "anchor_cites": [
+        177,
+        182,
+        187
+      ],
+      "summary": "여성들이 해변에서 대화를 나누며 라면을 끓여먹기로 결정합니다.",
+      "dialogue_note": "대충 이런 꽃게 같은 거 작은 거 라면에 넣어주면 맛있어요 / 시원하게 한 번 젖히고 라면 끓여 먹읍시다 / 친구들끼리 사실 바다에 수영하러 오는 날도 있고 수영하는 목적이 없이 그냥 바다 구경하러 왔다가도 사실 빠집니다 재밌게 가위바위보를 하던지",
+      "stt_cites": [
+        179,
+        180,
+        184,
+        185,
+        186,
+        187
+      ],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP12",
+      "start_seg": 188,
+      "end_seg": 198,
+      "support_span": {
+        "start_seg": 188,
+        "end_seg": 198
+      },
+      "anchor_cites": [
+        188,
+        193,
+        198
+      ],
+      "summary": "두 여성은 해변에서 수영하기 위한 방법을 논의하며 대화를 나눕니다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP13",
+      "start_seg": 199,
+      "end_seg": 203,
+      "support_span": {
+        "start_seg": 199,
+        "end_seg": 203
+      },
+      "anchor_cites": [
+        199,
+        201,
+        203
+      ],
+      "summary": "여성은 해변에서 서있고, 남성이 물속에 있다.",
+      "dialogue_note": "언니! 별로 안 차가워! 아니 별로 안 차가운 게 문제가 아니라 언니 이거 그냥 방송용이에요?",
+      "stt_cites": [
+        200,
+        201,
+        202
+      ],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP14",
+      "start_seg": 204,
+      "end_seg": 209,
+      "support_span": {
+        "start_seg": 204,
+        "end_seg": 209
+      },
+      "anchor_cites": [
+        204,
+        206,
+        209
+      ],
+      "summary": "여성들이 물 속으로 들어가는 과정을 거치며 대화를 나눕니다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP15",
+      "start_seg": 210,
+      "end_seg": 216,
+      "support_span": {
+        "start_seg": 210,
+        "end_seg": 216
+      },
+      "anchor_cites": [
+        210,
+        213,
+        216
+      ],
+      "summary": "여성과 남성이 바다에서 놀고 있으며, 여성은 여러 차례 큰 소리를 내고 있다.",
+      "dialogue_note": "",
+      "stt_cites": [
+        210,
+        211,
+        212,
+        213,
+        214,
+        215,
+        216
+      ],
+      "parse_mode": "json",
+      "dropped": "cite_not_usable_stt"
+    },
+    {
+      "episode_id": "EP16",
+      "start_seg": 217,
+      "end_seg": 219,
+      "support_span": {
+        "start_seg": 217,
+        "end_seg": 219
+      },
+      "anchor_cites": [
+        217,
+        218,
+        219
+      ],
+      "summary": "여성들이 해변에서 수영을 하다가 일어난 일",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP17",
+      "start_seg": 220,
+      "end_seg": 222,
+      "support_span": {
+        "start_seg": 220,
+        "end_seg": 222
+      },
+      "anchor_cites": [
+        220,
+        221,
+        222
+      ],
+      "summary": "소년이 모래에서 돌을 집고 야호를 외치고, 두 여성과 두 사람이 해변에서 대화하고 야호를 외치는 장면이 연속된다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP18",
+      "start_seg": 223,
+      "end_seg": 226,
+      "support_span": {
+        "start_seg": 223,
+        "end_seg": 226
+      },
+      "anchor_cites": [
+        223,
+        224,
+        226
+      ],
+      "summary": "여성들은 해변에서 걸으며 대화를 나눕니다.",
+      "dialogue_note": "원래 그리고 이렇게 하잖아요, 물 짜면서 걸어가면 당할래요 집까지 걸어가는 길, 물 짜면서 걸어가면 배고프지? 이제 이러고 먹으면 이 라면이 꿀맛인 거야",
+      "stt_cites": [
+        223,
+        225,
+        226
+      ],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP19",
+      "start_seg": 227,
+      "end_seg": 228,
+      "support_span": {
+        "start_seg": 227,
+        "end_seg": 228
+      },
+      "anchor_cites": [
+        227,
+        228
+      ],
+      "summary": "두 여성이 해변에서 라면을 먹으며 쉬고 있습니다.",
+      "dialogue_note": "자, 우리 결혼 언니 신발 주세요, seg#227",
+      "stt_cites": [
+        227
+      ],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP20",
+      "start_seg": 229,
+      "end_seg": 237,
+      "support_span": {
+        "start_seg": 229,
+        "end_seg": 237
+      },
+      "anchor_cites": [
+        229,
+        233,
+        237
+      ],
+      "summary": "두 여성이 해변에서 라면을 먹고 있으며, 재료는 집에서 쉽게 구할 수 있다고 이야기합니다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": "no_stt_cite"
+    },
+    {
+      "episode_id": "EP21",
+      "start_seg": 238,
+      "end_seg": 248,
+      "support_span": {
+        "start_seg": 238,
+        "end_seg": 248
+      },
+      "anchor_cites": [
+        238,
+        243,
+        248
+      ],
+      "summary": "두 여성은 식당에서 대화하며 통닭과 기타 음식을 가져갈 수 있는 계획을 세웁니다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "salvaged_summary",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP22",
+      "start_seg": 249,
+      "end_seg": 255,
+      "support_span": {
+        "start_seg": 249,
+        "end_seg": 255
+      },
+      "anchor_cites": [
+        249,
+        252,
+        255
+      ],
+      "summary": "여성들이 식당이나 야외에서 대화를 나누며 음식을 주고받고 있습니다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP23",
+      "start_seg": 256,
+      "end_seg": 260,
+      "support_span": {
+        "start_seg": 256,
+        "end_seg": 260
+      },
+      "anchor_cites": [
+        256,
+        258,
+        260
+      ],
+      "summary": "두 여성은 해변에서 식사를 하면서 치킨과 관련된 대화를 나눕니다.",
+      "dialogue_note": "덕연이 딸이라고 하니까 치킨 한 마리도 먹을 수 있다는 대화가 있습니다. [seg#256, seg#257, seg#258]",
+      "stt_cites": [
+        256,
+        257,
+        258
+      ],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP24",
+      "start_seg": 261,
+      "end_seg": 265,
+      "support_span": {
+        "start_seg": 261,
+        "end_seg": 265
+      },
+      "anchor_cites": [
+        261,
+        263,
+        265
+      ],
+      "summary": "두 여성은 해변에서 식사를 하고 있으며, 한 여성은 면을 먹고 있고 다른 여성은 스프를 권하고 있습니다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP25",
+      "start_seg": 266,
+      "end_seg": 270,
+      "support_span": {
+        "start_seg": 266,
+        "end_seg": 270
+      },
+      "anchor_cites": [
+        266,
+        268,
+        270
+      ],
+      "summary": "여성들은 해변에서 휴식을 취하며 커피를 마시고, 라면을 먹으며 대화를 나누고 있다.",
+      "dialogue_note": "라면 먹고 어르신들은 소주 한 병 딱 하고, 가능하죠, 우린?, 먹자, 먹자 저희도 이제 어른인 것처럼 소주 한 번 까볼까요?",
+      "stt_cites": [
+        267,
+        268,
+        269,
+        270
+      ],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP26",
+      "start_seg": 271,
+      "end_seg": 274,
+      "support_span": {
+        "start_seg": 271,
+        "end_seg": 274
+      },
+      "anchor_cites": [
+        271,
+        272,
+        274
+      ],
+      "summary": "두 여성은 해변에서 대화를 나누며 소주에 대한 맛을 논하고 있습니다.",
+      "dialogue_note": "저희는 예쁘고 귀여운 예쁘고 귀여운 게 있어요? 그런 술을 가져왔어요! 첫 PPL! 감사합니다!",
+      "stt_cites": [
+        273,
+        274
+      ],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP27",
+      "start_seg": 275,
+      "end_seg": 277,
+      "support_span": {
+        "start_seg": 275,
+        "end_seg": 277
+      },
+      "anchor_cites": [
+        275,
+        276,
+        277
+      ],
+      "summary": "두 여성은 해변에서 휴식을 취하며, 한 여성은 분홍색 모자를 쓰고 빨간색 레드벨벳을 마시고 있다. 마지막으로 세 여성은 해변에서 식사를 하고 있다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP28",
+      "start_seg": 278,
+      "end_seg": 280,
+      "support_span": {
+        "start_seg": 278,
+        "end_seg": 280
+      },
+      "anchor_cites": [
+        278,
+        279,
+        280
+      ],
+      "summary": "여성 A와 B는 모래 위에 텐트를 설치하고 있으며, 여성 C는 테이블 위에 놓인 음식을 주시하고 있습니다. 여성 A가 여성 B에게 요리를 나누며 미안하다고 말하고, 여성 B는 웃으며 응답합니다.",
+      "dialogue_note": "아 진짜? 그게 아니라 지금 딱 좋아요 타이밍 김밥하고 계란 해가지고 - seg#279",
+      "stt_cites": [
+        279
+      ],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP29",
+      "start_seg": 281,
+      "end_seg": 290,
+      "support_span": {
+        "start_seg": 281,
+        "end_seg": 290
+      },
+      "anchor_cites": [
+        281,
+        285,
+        290
+      ],
+      "summary": "여성들이 해변에서 대화하며 음료를 마시고 있습니다.",
+      "dialogue_note": "우리 치킨에는 맥주 치맥 해야지, 맛있어, 맛있어, 이거는 상큼, 달달한 레몬 향이래요, 너무 잘 어울려요, 갸루들은 건배, 간파이 이렇게 하면",
+      "stt_cites": [
+        284,
+        286,
+        287,
+        288,
+        289,
+        290
+      ],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP30",
+      "start_seg": 291,
+      "end_seg": 316,
+      "support_span": {
+        "start_seg": 291,
+        "end_seg": 316
+      },
+      "anchor_cites": [
+        291,
+        303,
+        316
+      ],
+      "summary": "두 여성은 해변에서 대화를 나누며 휴식을 취하고 있습니다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP31",
+      "start_seg": 317,
+      "end_seg": 325,
+      "support_span": {
+        "start_seg": 317,
+        "end_seg": 325
+      },
+      "anchor_cites": [
+        317,
+        321,
+        325
+      ],
+      "summary": "두 여성은 해변에서 대화를 나누며 여행 계획을 논의하고 있습니다.",
+      "dialogue_note": "내일 시내 보여드릴게요, 진짜 시장 시절 코스부터 시내 코스까지, 그럼 내일 기대하겠습니다 거세야호",
+      "stt_cites": [
+        320,
+        321,
+        322,
+        323
+      ],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP32",
+      "start_seg": 326,
+      "end_seg": 326,
+      "support_span": {
+        "start_seg": 326,
+        "end_seg": 326
+      },
+      "anchor_cites": [
+        326
+      ],
+      "summary": "노란색 글씨가 '원이의 빠리를 찾아서'라고 쓰여 있습니다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    }
+  ],
+  "raw": {
+    "boundary": [
+      {
+        "lo": 0,
+        "hi": 59,
+        "raw": "[\"0\", \"26\", \"44\", \"58\"]"
+      },
+      {
+        "lo": 55,
+        "hi": 114,
+        "raw": "[\"55\", \"64\", \"91\"]"
+      },
+      {
+        "lo": 110,
+        "hi": 169,
+        "raw": "```json\n{\"atomic_start_segments\": [110, 169]}\n```"
+      },
+      {
+        "lo": 165,
+        "hi": 224,
+        "raw": "{\"atomic_start_segments\":[165,177,188,199,204,210,217,223]}"
+      },
+      {
+        "lo": 220,
+        "hi": 279,
+        "raw": "[\"220\", \"227\", \"229\", \"238\", \"249\", \"256\", \"261\", \"266\", \"271\", \"278\"]"
+      },
+      {
+        "lo": 275,
+        "hi": 326,
+        "raw": "[\"275\", \"281\", \"291\", \"317\", \"326\"]"
+      }
+    ],
+    "content": [
+      {
+        "episode_id": "EP01",
+        "raw": "{\n    \"summary\": \"여성들은 거제를 방문하여 거리를 걷고 대화를 나누며, 거제의 삶과 여행 경험을 공유합니다.\",\n    \"dialogue_note\": \"\",\n    \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP02",
+        "raw": "{\n    \"summary\": \"두 여성이 거리를 걷다가 교차로를 지나며 대화를 나눕니다.\",\n    \"dialogue_note\": \"\",\n    \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP03",
+        "raw": "{\n    \"summary\": \"두 여성이 거리에서 대화를 나누며 거제 사람들을 언급하고, 마지막으로 버스를 타려는 계획을 공유한다.\",\n    \"dialogue_note\": \"거제 사람들이 이런 사람 보면 무슨 일 할까요? / 이상한 거 하나 거제 들어왔다 굴러 들어왔다 / 나 혼자 들어가겠니? 거제까지 왔는데? / 이거 안 탄다고 엑스 해줘야 돼 아니 엑스하면 진짜 가? / 왜냐면 또 이거 저희 때문에 문 열고 가면 기름값 아까워 / 탈 때 할머니분들이 이렇게 1, 2, 3, 4 줄 서서 이렇게 앉아 계셔가지고\",\n    \"stt_cites\": [\"seg#44\", \"seg#45\", \"seg#46\", \"seg#47\", \"seg#48\", \"seg#49\", \"seg#50\", \"seg#51\", \"seg#52\", \"seg#53\", \"seg#54\"]\n}"
+      },
+      {
+        "episode_id": "EP04",
+        "raw": "{\n    \"summary\": \"버스 안에서 두 여성들이 앉아 있으며, 한 여성은 할머니들에게 줄을 맞추어 앉으라고 조언하고, 다른 여성은 버스에서 대화를 나누며 시간을 보내고 있습니다.\",\n    \"dialogue_note\": \"탈 때 할머니분들이 이렇게 1, 2, 3, 4 줄 서서 이렇게 앉아 계셔가지고 그리고 그냥 버스에서는 그냥 말 걸어도 돼요 왜냐면 저도 버스 타고 가는데 심심해\",\n    \"stt_cites\": [\"seg#55\", \"seg#56\", \"seg#57\"]\n}"
+      },
+      {
+        "episode_id": "EP05",
+        "raw": "{\n  \"summary\": \"두 여성은 버스 안에서 대화를 나누며 거제 여행에 대한 이야기를 합니다.\",\n  \"dialogue_note\": \"도포의 위치, 전자나무, 거제 버스의 조용함, 저녁 식사 계획에 대한 이야기를 나눕니다. [seg#58, seg#59, seg#60, seg#61, seg#62, seg#63]\",\n  \"stt_cites\": [58, 59, 60, 61, 62, 63]\n}"
+      },
+      {
+        "episode_id": "EP06",
+        "raw": "{\n    \"summary\": \"두 여성이 버스에서부터 해변까지 여행하며 대화를 나누고 있습니다.\",\n    \"dialogue_note\": \"\",\n    \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP07",
+        "raw": "{\n    \"summary\": \"여성 A가 여성 B에게 물어보는 모습입니다. 여성 B는 검은색 트레이닝복을 입고 앉아 있으며, 여성 C와 D는 각각 분홍색 모자와 티셔츠를 착용하고 있습니다.\",\n    \"dialogue_note\": \"\",\n    \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP08",
+        "raw": "```json\n{\"summary\": \"여성들이 낚시와 관련된 활동을 하며 대화를 나눕니다. 특히, 물고기를 잡아먹는 모습과 낚시를 즐기는 모습이 관찰됩니다.\",\n \"dialogue_note\": \"\", \n \"stt_cites\": []}\n```"
+      },
+      {
+        "episode_id": "EP09",
+        "raw": "{\n    \"summary\": \"여성은 바다를 바라보며 다양한 모습을 보였고, 마지막으로는 해변에서 웃으며 선크림에 대해 이야기하고 있습니다.\",\n    \"dialogue_note\": \"피키님은 진짜 뜨거워요, 히야케돔에 히야케돔에 선크림 선크림, 야 거짓 선크림 바르는 거 아니야 (seg#167, seg#168)\",\n    \"stt_cites\": [\"seg#167\", \"seg#168\"]\n}"
+      },
+      {
+        "episode_id": "EP10",
+        "raw": "{\n    \"summary\": \"여성은 바다를 바라보며 선크림을 바르려고 합니다. 그녀는 여러 가지 모자와 옷을 입고, 바다와 선박들을 배경으로 다양한 포즈를 취합니다.\",\n    \"dialogue_note\": \"난 파라파라 낮추고 있어야겠다, 물고기 물고기 오이데 야 10km가 다 도망간다, 오이데 오이데 오이데 오이데 오이데, 한, 둘, 셋, 한, 둘, 셋 오오오오오오 오오오오 아니 아니 아! 떨어졌어! 떨어졌어! 잡았다 잡았다 진짜 잡았어 나 잡았어!!!\",\n    \"stt_cites\": [\"seg#169\", \"seg#171\", \"seg#172\", \"seg#173\", \"seg#174\", \"seg#175\", \"seg#176\"]\n}"
+      },
+      {
+        "episode_id": "EP11",
+        "raw": "{\n  \"summary\": \"여성들이 해변에서 대화를 나누며 라면을 끓여먹기로 결정합니다.\",\n  \"dialogue_note\": \"대충 이런 꽃게 같은 거 작은 거 라면에 넣어주면 맛있어요 / 시원하게 한 번 젖히고 라면 끓여 먹읍시다 / 친구들끼리 사실 바다에 수영하러 오는 날도 있고 수영하는 목적이 없이 그냥 바다 구경하러 왔다가도 사실 빠집니다 재밌게 가위바위보를 하던지\",\n  \"stt_cites\": [\"seg#179\", \"seg#180\", \"seg#184\", \"seg#185\", \"seg#186\", \"seg#187\"]\n}"
+      },
+      {
+        "episode_id": "EP12",
+        "raw": "{\n  \"summary\": \"두 여성은 해변에서 수영하기 위한 방법을 논의하며 대화를 나눕니다.\",\n  \"dialogue_note\": \"\",\n  \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP13",
+        "raw": "{\n    \"summary\": \"여성은 해변에서 서있고, 남성이 물속에 있다.\",\n    \"dialogue_note\": \"언니! 별로 안 차가워! 아니 별로 안 차가운 게 문제가 아니라 언니 이거 그냥 방송용이에요?\",\n    \"stt_cites\": [\"seg#200\", \"seg#201\", \"seg#202\"]\n}"
+      },
+      {
+        "episode_id": "EP14",
+        "raw": "{\n    \"summary\": \"여성들이 물 속으로 들어가는 과정을 거치며 대화를 나눕니다.\",\n    \"dialogue_note\": \"\",\n    \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP15",
+        "raw": "{\n    \"summary\": \"여성과 남성이 바다에서 놀고 있으며, 여성은 여러 차례 큰 소리를 내고 있다.\",\n    \"dialogue_note\": \"나 지금 살복지야 으아악! 아아악! 아아아악! 아, 뭐하니. 나... 으아아아아악!\",\n    \"stt_cites\": [\"seg#210\", \"seg#211\", \"seg#212\", \"seg#213\", \"seg#214\", \"seg#215\", \"seg#216\"]\n}"
+      },
+      {
+        "episode_id": "EP16",
+        "raw": "{\n    \"summary\": \"여성들이 해변에서 수영을 하다가 일어난 일\",\n    \"dialogue_note\": \"\",\n    \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP17",
+        "raw": "{\n    \"summary\": \"소년이 모래에서 돌을 집고 야호를 외치고, 두 여성과 두 사람이 해변에서 대화하고 야호를 외치는 장면이 연속된다.\",\n    \"dialogue_note\": \"\",\n    \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP18",
+        "raw": "{\n    \"summary\": \"여성들은 해변에서 걸으며 대화를 나눕니다.\",\n    \"dialogue_note\": \"원래 그리고 이렇게 하잖아요, 물 짜면서 걸어가면 당할래요 집까지 걸어가는 길, 물 짜면서 걸어가면 배고프지? 이제 이러고 먹으면 이 라면이 꿀맛인 거야\",\n    \"stt_cites\": [\"seg#223\", \"seg#225\", \"seg#226\"]\n}"
+      },
+      {
+        "episode_id": "EP19",
+        "raw": "{\n    \"summary\": \"두 여성이 해변에서 라면을 먹으며 쉬고 있습니다.\",\n    \"dialogue_note\": \"자, 우리 결혼 언니 신발 주세요, seg#227\",\n    \"stt_cites\": [\"seg#227\"]\n}"
+      },
+      {
+        "episode_id": "EP20",
+        "raw": "{\n  \"summary\": \"두 여성이 해변에서 라면을 먹고 있으며, 재료는 집에서 쉽게 구할 수 있다고 이야기합니다.\",\n  \"dialogue_note\": \"라면을 먹고, 재료는 집에서 구할 수 있다는 내용을 이야기함. \\n[stt_cites: seg#231, seg#232, seg#233, seg#234]\"\n}"
+      },
+      {
+        "episode_id": "EP21",
+        "raw": "{\n    \"summary\": \"두 여성은 식당에서 대화하며 통닭과 기타 음식을 가져갈 수 있는 계획을 세웁니다.\",\n    \"dialogue_note\": \"stt_cites\": [\"seg#238\", \"seg#241\", \"seg#242\", \"seg#243\", \"seg#244\", \"seg#245\", \"seg#246\", \"seg#247\"]\n}"
+      },
+      {
+        "episode_id": "EP22",
+        "raw": "{\"summary\": \"여성들이 식당이나 야외에서 대화를 나누며 음식을 주고받고 있습니다.\",\n \"dialogue_note\": \"\", \n \"stt_cites\": []}"
+      },
+      {
+        "episode_id": "EP23",
+        "raw": "{\n    \"summary\": \"두 여성은 해변에서 식사를 하면서 치킨과 관련된 대화를 나눕니다.\",\n    \"dialogue_note\": \"덕연이 딸이라고 하니까 치킨 한 마리도 먹을 수 있다는 대화가 있습니다. [seg#256, seg#257, seg#258]\",\n    \"stt_cites\": [256, 257, 258]\n}"
+      },
+      {
+        "episode_id": "EP24",
+        "raw": "{\n    \"summary\": \"두 여성은 해변에서 식사를 하고 있으며, 한 여성은 면을 먹고 있고 다른 여성은 스프를 권하고 있습니다.\",\n    \"dialogue_note\": \"\",\n    \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP25",
+        "raw": "{\n    \"summary\": \"여성들은 해변에서 휴식을 취하며 커피를 마시고, 라면을 먹으며 대화를 나누고 있다.\",\n    \"dialogue_note\": \"라면 먹고 어르신들은 소주 한 병 딱 하고, 가능하죠, 우린?, 먹자, 먹자 저희도 이제 어른인 것처럼 소주 한 번 까볼까요?\",\n    \"stt_cites\": [\"seg#267\", \"seg#268\", \"seg#269\", \"seg#270\"]\n}"
+      },
+      {
+        "episode_id": "EP26",
+        "raw": "{\n    \"summary\": \"두 여성은 해변에서 대화를 나누며 소주에 대한 맛을 논하고 있습니다.\",\n    \"dialogue_note\": \"저희는 예쁘고 귀여운 예쁘고 귀여운 게 있어요? 그런 술을 가져왔어요! 첫 PPL! 감사합니다!\",\n    \"stt_cites\": [\"seg#273\", \"seg#274\"]\n}"
+      },
+      {
+        "episode_id": "EP27",
+        "raw": "{\n    \"summary\": \"두 여성은 해변에서 휴식을 취하며, 한 여성은 분홍색 모자를 쓰고 빨간색 레드벨벳을 마시고 있다. 마지막으로 세 여성은 해변에서 식사를 하고 있다.\",\n    \"dialogue_note\": \"\",\n    \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP28",
+        "raw": "{\n    \"summary\": \"여성 A와 B는 모래 위에 텐트를 설치하고 있으며, 여성 C는 테이블 위에 놓인 음식을 주시하고 있습니다. 여성 A가 여성 B에게 요리를 나누며 미안하다고 말하고, 여성 B는 웃으며 응답합니다.\",\n    \"dialogue_note\": \"아 진짜? 그게 아니라 지금 딱 좋아요 타이밍 김밥하고 계란 해가지고 - seg#279\",\n    \"stt_cites\": [\"seg#279\"]\n}"
+      },
+      {
+        "episode_id": "EP29",
+        "raw": "{\n    \"summary\": \"여성들이 해변에서 대화하며 음료를 마시고 있습니다.\",\n    \"dialogue_note\": \"우리 치킨에는 맥주 치맥 해야지, 맛있어, 맛있어, 이거는 상큼, 달달한 레몬 향이래요, 너무 잘 어울려요, 갸루들은 건배, 간파이 이렇게 하면\",\n    \"stt_cites\": [\"seg#284\", \"seg#286\", \"seg#287\", \"seg#288\", \"seg#289\", \"seg#290\"]\n}"
+      },
+      {
+        "episode_id": "EP30",
+        "raw": "{\n    \"summary\": \"두 여성은 해변에서 대화를 나누며 휴식을 취하고 있습니다.\",\n    \"dialogue_note\": \"\",\n    \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP31",
+        "raw": "{\n  \"summary\": \"두 여성은 해변에서 대화를 나누며 여행 계획을 논의하고 있습니다.\",\n  \"dialogue_note\": \"내일 시내 보여드릴게요, 진짜 시장 시절 코스부터 시내 코스까지, 그럼 내일 기대하겠습니다 거세야호\",\n  \"stt_cites\": [\"seg#320\", \"seg#321\", \"seg#322\", \"seg#323\"]\n}"
+      },
+      {
+        "episode_id": "EP32",
+        "raw": "{\"summary\": \"노란색 글씨가 '원이의 빠리를 찾아서'라고 쓰여 있습니다.\",\n \"dialogue_note\": \"\"}"
+      }
+    ]
+  },
+  "prototype_status": "OK",
+  "validation": {
+    "passed": true,
+    "failures": []
+  }
+}

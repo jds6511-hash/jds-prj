@@ -12,6 +12,7 @@
 
 채점하지 않는다 — GT·C1/C2/C3·Event Recall 없음. 라벨은 은퇴했다.
 """
+import json
 import sys
 from pathlib import Path
 
@@ -159,6 +160,34 @@ def test_요약은_JSON이_아니어도_받는다():
     assert d["summary"] == "산길을 오른다."
     assert d["dialogue_note"] == "쉬기로 한다."
     assert d["stt_cites"] == [3]
+    assert d["parse_mode"] == "json"
+
+
+@pytest.mark.parametrize("cites", [
+    [55, 56], ["55", "56"], ["seg#55", "seg#56"], ["seg #55", "SEG#56"],
+])
+def test_cite_표기를_받아들인다(cites):
+    """모델은 `"seg#55"`로 낸다. 첫 실행에서 이걸 못 읽어 14건을 오탐으로 버렸다."""
+    d = B.parse_content(json.dumps({"summary": "s", "dialogue_note": "n",
+                                    "stt_cites": cites}, ensure_ascii=False))
+    assert d["stt_cites"] == [55, 56]
+
+
+def test_깨진_JSON에서_요약만_건진다():
+    """EP21 실제 출력 — `dialogue_note` 값이 통째로 빠져 JSON이 깨졌다."""
+    raw = ('{ "summary": "두 여성은 식당에서 대화한다.",'
+           ' "dialogue_note": "stt_cites": ["seg#238"] }')
+    d = B.parse_content(raw)
+    assert d["summary"] == "두 여성은 식당에서 대화한다."
+    assert d["parse_mode"] == "salvaged_summary"
+    assert d["dialogue_note"] == "" and d["stt_cites"] == []
+
+
+def test_JSON_잔해를_요약으로_삼지_않는다():
+    """맨문장 폴백이 JSON 원문을 통째로 요약에 넣었다 — 내 결함이었다."""
+    d = B.parse_content('{"dialogue_note": "stt_cites": ["seg#1"]}')
+    assert d["summary"] == ""
+    assert d["parse_mode"] == "unparsable"
 
 
 # ── citation 검증 — 이 층에 이빨을 준다 ─────────────────────────────────

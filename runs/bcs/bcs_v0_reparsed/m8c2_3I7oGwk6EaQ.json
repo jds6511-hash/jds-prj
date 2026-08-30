@@ -1,0 +1,640 @@
+{
+  "video_id": "m8c2_3I7oGwk6EaQ",
+  "schema": "bcs_prototype_v0",
+  "run_kind": "bcs_v0_reparsed",
+  "n_segments": 173,
+  "commit": "5dc503074768db182445e2e28a8828083e155b91",
+  "stt_status_counts": {
+    "EMPTY": 140,
+    "USABLE": 4,
+    "REPEATED_CONTAMINATION": 20,
+    "OVERLAY_OR_URL": 9
+  },
+  "spec": "docs/finalization/BCS_PROTOTYPE_SPEC_2026-08-29.md",
+  "chunk_diag": [
+    {
+      "lo": 0,
+      "hi": 59,
+      "n": 7,
+      "boundaries": [
+        0,
+        4,
+        7,
+        26,
+        30,
+        41,
+        50
+      ],
+      "status": "OK"
+    },
+    {
+      "lo": 55,
+      "hi": 114,
+      "n": 3,
+      "boundaries": [
+        55,
+        64,
+        91
+      ],
+      "status": "OK"
+    },
+    {
+      "lo": 110,
+      "hi": 169,
+      "n": 5,
+      "boundaries": [
+        110,
+        116,
+        118,
+        135,
+        145
+      ],
+      "status": "OK"
+    },
+    {
+      "lo": 165,
+      "hi": 172,
+      "n": 3,
+      "boundaries": [
+        165,
+        168,
+        170
+      ],
+      "status": "OK"
+    }
+  ],
+  "overview": {
+    "source": "deterministic",
+    "n_episodes": 18,
+    "spans": [
+      [
+        0,
+        3
+      ],
+      [
+        4,
+        6
+      ],
+      [
+        7,
+        25
+      ],
+      [
+        26,
+        29
+      ],
+      [
+        30,
+        40
+      ],
+      [
+        41,
+        49
+      ],
+      [
+        50,
+        54
+      ],
+      [
+        55,
+        63
+      ],
+      [
+        64,
+        90
+      ],
+      [
+        91,
+        109
+      ],
+      [
+        110,
+        115
+      ],
+      [
+        116,
+        117
+      ],
+      [
+        118,
+        134
+      ],
+      [
+        135,
+        144
+      ],
+      [
+        145,
+        164
+      ],
+      [
+        165,
+        167
+      ],
+      [
+        168,
+        169
+      ],
+      [
+        170,
+        172
+      ]
+    ]
+  },
+  "provenance": {
+    "role": "report",
+    "model_loaded": true,
+    "requested_model": "Qwen/Qwen2.5-7B-Instruct",
+    "requested_4bit": false,
+    "max_new_tokens": 16384,
+    "do_sample": false,
+    "effective_model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "effective_model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "effective_dtype": "torch.bfloat16",
+    "effective_quantized": false,
+    "attn_implementation": "sdpa",
+    "prompt_sha256": {
+      "system": "cf54f0ed85146176eb94a9aa99db0e68787af7878c8b76609a964d4926de6f24",
+      "event_rules": "7e23fc3a529d486005a97e891f1c28461089fc2ccc9ee504c4c27a0cd14985f3",
+      "build_map_prompt": "2bbcbc195f1b11e769acda7fe7babed20ed7f19fe99d6f71f08dbd1b43041510",
+      "build_reduce_prompt": "95f5c2c2c17eb4cf8ff8a43b93ca4c5c7075ddafe00911387201e6e433f9baf4",
+      "build_event_prompt": "791b4eed0ab6f93cae8df41a91e3bd8f93a8ce36e82de70ad922a778013bdf90"
+    },
+    "env": {
+      "git_head": "41875218a1e5c2778fa5daecdca86a9e70855112",
+      "git_dirty": true,
+      "python": "3.12.13",
+      "generated_at": "2026-08-30T13:43:34",
+      "torch": "2.13.0+cu130",
+      "cuda": "13.0",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "transformers": "5.14.1"
+    },
+    "quantization_mismatch": false,
+    "schema_version": 2,
+    "config_report_model": "Qwen/Qwen2.5-7B-Instruct",
+    "config_llm_4bit": false,
+    "config_map_chunk_size": 60,
+    "config_map_chunk_overlap": 5,
+    "config_report_max_new_tokens": 16384
+  },
+  "lineage": {
+    "kind": "reparse_only",
+    "structure_regenerated": false,
+    "llm_called": false,
+    "source_run_kind": "bcs_v0",
+    "source_path": "runs/bcs/bcs_v0/m8c2_3I7oGwk6EaQ.json",
+    "frozen_fields": [
+      "episode_id",
+      "start_seg",
+      "end_seg",
+      "support_span",
+      "anchor_cites"
+    ]
+  },
+  "episodes": [
+    {
+      "episode_id": "EP01",
+      "start_seg": 0,
+      "end_seg": 3,
+      "support_span": {
+        "start_seg": 0,
+        "end_seg": 3
+      },
+      "anchor_cites": [
+        0,
+        1,
+        3
+      ],
+      "summary": "화면은 차례로 어두운 밤 풍경, 저녁녘 풍경, 숲속 계곡, 산의 모습을 보여준다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP02",
+      "start_seg": 4,
+      "end_seg": 6,
+      "support_span": {
+        "start_seg": 4,
+        "end_seg": 6
+      },
+      "anchor_cites": [
+        4,
+        5,
+        6
+      ],
+      "summary": "남성은 바위 위에서 하늘을 바라보며 산길과 자연을 감상하고 있다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP03",
+      "start_seg": 7,
+      "end_seg": 25,
+      "support_span": {
+        "start_seg": 7,
+        "end_seg": 25
+      },
+      "anchor_cites": [
+        7,
+        16,
+        25
+      ],
+      "summary": "남성은 바위 위에서 서있다가 푸른색 바위와 나무 뿌리가 있는 터널을 지나, 흙탕이 있는 바닥에서 작업하는 사람을 보고, 어두운 숲속에서 등불을 들고 걷는 사람을 본 후, 어두운 숲속에서 작은 동물이 움직이는 것을 목격하고, 흙으로 만든 벽과 작은 돌에 새겨진 글씨를 발견한다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP04",
+      "start_seg": 26,
+      "end_seg": 29,
+      "support_span": {
+        "start_seg": 26,
+        "end_seg": 29
+      },
+      "anchor_cites": [
+        26,
+        27,
+        29
+      ],
+      "summary": "숲에서 밤에 조명이 비춰지고, ‘만복대로’로 이동할 수 있는 경로가 보인다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP05",
+      "start_seg": 30,
+      "end_seg": 40,
+      "support_span": {
+        "start_seg": 30,
+        "end_seg": 40
+      },
+      "anchor_cites": [
+        30,
+        35,
+        40
+      ],
+      "summary": "사람들은 늦은 일출 후 산으로 가는 길을 걷고 있으며, 숲속의 푸른 나무들과 식물들이 보입니다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP06",
+      "start_seg": 41,
+      "end_seg": 49,
+      "support_span": {
+        "start_seg": 41,
+        "end_seg": 49
+      },
+      "anchor_cites": [
+        41,
+        45,
+        49
+      ],
+      "summary": "여성은 산길을 걸으며, 바위 위에는 ‘만복대’라는 글자가 쓰여 있습니다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP07",
+      "start_seg": 50,
+      "end_seg": 54,
+      "support_span": {
+        "start_seg": 50,
+        "end_seg": 54
+      },
+      "anchor_cites": [
+        50,
+        52,
+        54
+      ],
+      "summary": "산길을 따라 걷는 사람을 볼 수 있으며, 그는 산 위에서 푸른 하늘과 구름을 바라보고 있습니다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP08",
+      "start_seg": 55,
+      "end_seg": 63,
+      "support_span": {
+        "start_seg": 55,
+        "end_seg": 63
+      },
+      "anchor_cites": [
+        55,
+        59,
+        63
+      ],
+      "summary": "산길을 따라 나무와 식물들이 가득한 자연 경관이 연속적으로 보여진다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP09",
+      "start_seg": 64,
+      "end_seg": 90,
+      "support_span": {
+        "start_seg": 64,
+        "end_seg": 90
+      },
+      "anchor_cites": [
+        64,
+        77,
+        90
+      ],
+      "summary": "등산객들이 산을 오르내리며 휴식을 취하고 있습니다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP10",
+      "start_seg": 91,
+      "end_seg": 109,
+      "support_span": {
+        "start_seg": 91,
+        "end_seg": 109
+      },
+      "anchor_cites": [
+        91,
+        100,
+        109
+      ],
+      "summary": "남성과 여성은 산책로를 따라 걷다가 비가 오기 전까지 자연 환경을 즐깁니다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP11",
+      "start_seg": 110,
+      "end_seg": 115,
+      "support_span": {
+        "start_seg": 110,
+        "end_seg": 115
+      },
+      "anchor_cites": [
+        110,
+        112,
+        115
+      ],
+      "summary": "사람이 세걸산 숲속을 걷다가 비가 오자마자 빗속에서 길을 따라 계속 걷습니다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP12",
+      "start_seg": 116,
+      "end_seg": 117,
+      "support_span": {
+        "start_seg": 116,
+        "end_seg": 117
+      },
+      "anchor_cites": [
+        116,
+        117
+      ],
+      "summary": "숲속에서 두 표지판이 있으며, 한 사람이 숲속길을 걷고 있습니다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP13",
+      "start_seg": 118,
+      "end_seg": 134,
+      "support_span": {
+        "start_seg": 118,
+        "end_seg": 134
+      },
+      "anchor_cites": [
+        118,
+        126,
+        134
+      ],
+      "summary": "남성이 숲속 산책길을 걷다가 작은 계곡을 지나 평원으로 이동합니다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP14",
+      "start_seg": 135,
+      "end_seg": 144,
+      "support_span": {
+        "start_seg": 135,
+        "end_seg": 144
+      },
+      "anchor_cites": [
+        135,
+        139,
+        144
+      ],
+      "summary": "남성은 푸른 하늘 아래 풀밭에서 산책을 하고 있습니다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP15",
+      "start_seg": 145,
+      "end_seg": 164,
+      "support_span": {
+        "start_seg": 145,
+        "end_seg": 164
+      },
+      "anchor_cites": [
+        145,
+        154,
+        164
+      ],
+      "summary": "금발 여성이 등산복을 입고 계단을 오르다가 나무로 만든 발코니에서 바래봉이라는 큰 돌을 발견하고, 나무로 만든 작은 집을 보는 장면이 연속으로 나타난다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP16",
+      "start_seg": 165,
+      "end_seg": 167,
+      "support_span": {
+        "start_seg": 165,
+        "end_seg": 167
+      },
+      "anchor_cites": [
+        165,
+        166,
+        167
+      ],
+      "summary": "녹색 식물과 나무가 많은 언덕과 푸른 바구니가 있는 길이 보여진다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP17",
+      "start_seg": 168,
+      "end_seg": 169,
+      "support_span": {
+        "start_seg": 168,
+        "end_seg": 169
+      },
+      "anchor_cites": [
+        168,
+        169
+      ],
+      "summary": "녹색 식물이 가득한 길과 푸른색 차량, 금속 구조의 검은색 물체가 있는 장면이 보인다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    },
+    {
+      "episode_id": "EP18",
+      "start_seg": 170,
+      "end_seg": 172,
+      "support_span": {
+        "start_seg": 170,
+        "end_seg": 172
+      },
+      "anchor_cites": [
+        170,
+        171,
+        172
+      ],
+      "summary": "도로와 도시의 전경이 보였다가 화면이 검게 변했습니다.",
+      "dialogue_note": "",
+      "stt_cites": [],
+      "parse_mode": "json",
+      "dropped": null
+    }
+  ],
+  "raw": {
+    "boundary": [
+      {
+        "lo": 0,
+        "hi": 59,
+        "raw": "{\"atomic_start_segments\":[0,4,7,26,30,41,50]}"
+      },
+      {
+        "lo": 55,
+        "hi": 114,
+        "raw": "```json\n{\"atomic_start_segments\": [55, 64, 91]}\n```"
+      },
+      {
+        "lo": 110,
+        "hi": 169,
+        "raw": "[\"110\", \"116\", \"118\", \"135\", \"145\"]"
+      },
+      {
+        "lo": 165,
+        "hi": 172,
+        "raw": "{\"atomic_start_segments\":[165,168,170]}"
+      }
+    ],
+    "content": [
+      {
+        "episode_id": "EP01",
+        "raw": "{\"summary\": \"화면은 차례로 어두운 밤 풍경, 저녁녘 풍경, 숲속 계곡, 산의 모습을 보여준다.\",\n \"dialogue_note\": \"\", \n \"stt_cites\": []}"
+      },
+      {
+        "episode_id": "EP02",
+        "raw": "{\"summary\": \"남성은 바위 위에서 하늘을 바라보며 산길과 자연을 감상하고 있다.\",\n \"dialogue_note\": \"\", \n \"stt_cites\": []}"
+      },
+      {
+        "episode_id": "EP03",
+        "raw": "{\n    \"summary\": \"남성은 바위 위에서 서있다가 푸른색 바위와 나무 뿌리가 있는 터널을 지나, 흙탕이 있는 바닥에서 작업하는 사람을 보고, 어두운 숲속에서 등불을 들고 걷는 사람을 본 후, 어두운 숲속에서 작은 동물이 움직이는 것을 목격하고, 흙으로 만든 벽과 작은 돌에 새겨진 글씨를 발견한다.\",\n    \"dialogue_note\": \"\",\n    \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP04",
+        "raw": "{\"summary\": \"숲에서 밤에 조명이 비춰지고, ‘만복대로’로 이동할 수 있는 경로가 보인다.\",\n \"dialogue_note\": \"\",\n \"stt_cites\": []}"
+      },
+      {
+        "episode_id": "EP05",
+        "raw": "{\n    \"summary\": \"사람들은 늦은 일출 후 산으로 가는 길을 걷고 있으며, 숲속의 푸른 나무들과 식물들이 보입니다.\",\n    \"dialogue_note\": \"\",\n    \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP06",
+        "raw": "{\n    \"summary\": \"여성은 산길을 걸으며, 바위 위에는 ‘만복대’라는 글자가 쓰여 있습니다.\",\n    \"dialogue_note\": \"\",\n    \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP07",
+        "raw": "{\n    \"summary\": \"산길을 따라 걷는 사람을 볼 수 있으며, 그는 산 위에서 푸른 하늘과 구름을 바라보고 있습니다.\",\n    \"dialogue_note\": \"\",\n    \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP08",
+        "raw": "{\n  \"summary\": \"산길을 따라 나무와 식물들이 가득한 자연 경관이 연속적으로 보여진다.\",\n  \"dialogue_note\": \"\",\n  \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP09",
+        "raw": "{\n    \"summary\": \"등산객들이 산을 오르내리며 휴식을 취하고 있습니다.\",\n    \"dialogue_note\": \"\",\n    \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP10",
+        "raw": "{\n    \"summary\": \"남성과 여성은 산책로를 따라 걷다가 비가 오기 전까지 자연 환경을 즐깁니다.\",\n    \"dialogue_note\": \"\",\n    \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP11",
+        "raw": "{\n    \"summary\": \"사람이 세걸산 숲속을 걷다가 비가 오자마자 빗속에서 길을 따라 계속 걷습니다.\",\n    \"dialogue_note\": \"\",\n    \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP12",
+        "raw": "{\n    \"summary\": \"숲속에서 두 표지판이 있으며, 한 사람이 숲속길을 걷고 있습니다.\",\n    \"dialogue_note\": \"\",\n    \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP13",
+        "raw": "{\n    \"summary\": \"남성이 숲속 산책길을 걷다가 작은 계곡을 지나 평원으로 이동합니다.\",\n    \"dialogue_note\": \"\",\n    \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP14",
+        "raw": "{\n  \"summary\": \"남성은 푸른 하늘 아래 풀밭에서 산책을 하고 있습니다.\",\n  \"dialogue_note\": \"\",\n  \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP15",
+        "raw": "{\n    \"summary\": \"금발 여성이 등산복을 입고 계단을 오르다가 나무로 만든 발코니에서 바래봉이라는 큰 돌을 발견하고, 나무로 만든 작은 집을 보는 장면이 연속으로 나타난다.\",\n    \"dialogue_note\": \"\",\n    \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP16",
+        "raw": "{\n    \"summary\": \"녹색 식물과 나무가 많은 언덕과 푸른 바구니가 있는 길이 보여진다.\",\n    \"dialogue_note\": \"\",\n    \"stt_cites\": []\n}"
+      },
+      {
+        "episode_id": "EP17",
+        "raw": "{\"summary\": \"녹색 식물이 가득한 길과 푸른색 차량, 금속 구조의 검은색 물체가 있는 장면이 보인다.\",\n \"dialogue_note\": \"\"}"
+      },
+      {
+        "episode_id": "EP18",
+        "raw": "{\"summary\": \"도로와 도시의 전경이 보였다가 화면이 검게 변했습니다.\",\n \"dialogue_note\": \"\", \n \"stt_cites\": []}"
+      }
+    ]
+  },
+  "prototype_status": "OK",
+  "validation": {
+    "passed": true,
+    "failures": []
+  }
+}
