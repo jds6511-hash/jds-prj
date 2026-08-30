@@ -150,12 +150,16 @@ resolve      canonical segment registry(A-01)에 실재해야 한다
 
 ---
 
-## A-05 sanitation + claim eligibility
+## A-05 sanitation + claim eligibility  **COMPLETE**
 
 ```
-green    SAN-001 · SAN-002 · SAN-005 · SAN-007 · SAN-010 · SAN-011
+green    SAN-001 · SAN-002 · SAN-005 · SAN-007 · SAN-010 · SAN-011   전부 PASS
 크기     L
 근거     ADDENDUM OPEN-7 · OPEN-9
+산출물   src/v2_1_sanitation.py · tests/test_v2_1_sanitation.py (35 tests)
+결정     subtitle credit은 common.is_subtitle_credit 재사용(규칙 단일 출처)
+         overlay·foreign 정규식은 v2.1에 다시 선언 — 동결된 BCS에 의존하지 않는다
+         is_corrupted_caption은 쓰지 않는다 — 반복을 rejection에 접어 넣는다
 ```
 
 ```
@@ -342,8 +346,8 @@ v2.1 Gate A ticket breakdown      DOCUMENTED  ← 이 문서
 v2.1 implementation               IN PROGRESS
 implementation authorization      GRANTED 2026-08-30
 A-01                              COMPLETE   commit 7f5d0f9
-A-03 · A-04 · A-10                COMPLETE
-NEXT                              A-05 → A-07 → A-08 → A-09
+A-03 · A-04 · A-10 · A-05         COMPLETE
+NEXT                              A-07 → A-08 → A-09
 ```
 
 착수 승인은 이 문서가 아니라 `V2_1_IMPLEMENTATION_AUTHORIZATION_2026-08-30.md`에
