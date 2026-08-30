@@ -30,6 +30,35 @@ import common                                                       # noqa: E402
 import m8_hier as H                                                 # noqa: E402
 
 CHUNKS = {"chunk3": (110, 169), "chunk5": (220, 279)}
+
+
+def compat_shims() -> list:
+    """**순수 kwarg 별칭이다. 계산을 바꾸지 않는다.**
+
+    transformers 5.x는 `create_causal_mask`의 인자를 `inputs_embeds`로 개명했고
+    EXAONE-3.5의 vendored `modeling_exaone.py`는 옛 이름 `input_embeds`로 부른다
+    (transformers 5.14.1 · 네이티브 지원은 exaone4/4.5뿐).
+
+    HF 캐시의 파일을 고치면 git 밖에서 실행본이 달라진다(2026-08-17 사고 3건).
+    대신 여기서 별칭만 붙인다. **모델을 로드하기 전에 불러야 한다** — vendored
+    모듈이 import 시점에 함수를 이름으로 가져가기 때문이다.
+    """
+    import inspect
+    import transformers.masking_utils as mu
+    orig = mu.create_causal_mask
+    if "input_embeds" in inspect.signature(orig).parameters:
+        return []
+
+    def shim(*args, **kw):
+        if "input_embeds" in kw and "inputs_embeds" not in kw:
+            kw["inputs_embeds"] = kw.pop("input_embeds")
+        return orig(*args, **kw)
+
+    shim.__wrapped__ = orig
+    mu.create_causal_mask = shim
+    return ["create_causal_mask: input_embeds -> inputs_embeds (별칭만)"]
+
+
 QWEN_FULL = ROOT / "runs/m8_hier/m8_hier_prototype_geoje/wonyi_geoje.json"
 QWEN_CAP = ROOT / "runs/m8_hier/m8_hier_boundary_ablation/wonyi_geoje.json"
 OUT = ROOT / "runs/model_diag/geoje_boundary_degeneracy.json"
@@ -141,6 +170,7 @@ def main() -> int:
             "full": H.build_atomic_boundary_prompt(ch),
             "caption_only": H.build_atomic_boundary_prompt(ch, caption_only=True)}
 
+    shims = compat_shims()          # **모델 로드 전에** 붙인다
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
     mx = cfg.get("report_max_new_tokens", 2048)
@@ -178,7 +208,8 @@ def main() -> int:
         "effective_model_id": getattr(mdl_b.config, "_name_or_path", None),
         "effective_revision": getattr(mdl_b.config, "_commit_hash", None),
         "dtype": str(mdl_b.dtype), "tokenizer": type(tok_b).__name__,
-        "chat_template": bool(tok_b.chat_template)}
+        "chat_template": bool(tok_b.chat_template),
+        "compat_shims": shims}
     flush()
     for cond in ("full", "caption_only"):
         for name, (lo, hi) in CHUNKS.items():

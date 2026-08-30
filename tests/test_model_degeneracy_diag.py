@@ -53,3 +53,19 @@ def test_위치_안정성():
     o = D.overlap([1, 2, 3], [2, 3, 4])
     assert (o["shared"], o["a_only"], o["b_only"]) == (2, 1, 1)
     assert o["jaccard"] == 0.5
+
+
+def test_shim은_별칭일_뿐_계산을_바꾸지_않는다():
+    """HF 캐시 파일을 고치는 대신 git-tracked 별칭을 쓴다."""
+    import transformers.masking_utils as mu
+    orig = mu.create_causal_mask
+    try:
+        seen = {}
+        mu.create_causal_mask = lambda *a, **k: seen.update(k) or "R"
+        added = D.compat_shims()
+        assert added and "input_embeds" in added[0]
+        assert mu.create_causal_mask(input_embeds=1, config=2) == "R"
+        assert seen == {"inputs_embeds": 1, "config": 2}
+        assert mu.create_causal_mask(inputs_embeds=3) == "R"
+    finally:
+        mu.create_causal_mask = orig
