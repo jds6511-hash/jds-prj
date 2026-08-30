@@ -143,6 +143,44 @@ def test_sch_006_unknown_optional_field_is_preserved(registry):
     assert result.value["camera_move"] == "pan"
 
 
+# ── 코드펜스는 표기다 (2026-08-31 B-02b 실측) ────────────────────────────
+FENCE = "```"
+
+
+def test_fenced_json_is_notation_not_a_contract_break(registry):
+    """Qwen2.5-7B이 세 호출 전부 코드펜스로 감쌌다. JSON 자체는 완전했다."""
+    payload = FENCE + 'json\n{"summary": "등산객이 산길을 오른다."}\n' + FENCE
+    result = parse_json_payload(payload, registry)
+    assert result.status == VALID_PARSE
+    assert result.value["summary"] == "등산객이 산길을 오른다."
+
+
+def test_bare_fence_without_a_language_tag_is_accepted(registry):
+    payload = FENCE + '\n{"summary": "요약"}\n' + FENCE
+    assert parse_json_payload(payload, registry).status == VALID_PARSE
+
+
+def test_fence_tolerance_does_not_salvage_broken_json(registry):
+    """펜스를 벗겨도 안이 깨졌으면 실패다 — 구조 fallback이 아니다."""
+    payload = FENCE + 'json\n{"summary": "잘린\n' + FENCE
+    result = parse_json_payload(payload, registry)
+    assert result.status == PARSE_CONTRACT_FAILURE
+    assert result.value is None
+
+
+def test_fence_tolerance_does_not_accept_prose_around_json(registry):
+    """설명문이 붙은 것은 표기가 아니다 — 어디까지가 출력인지 알 수 없다."""
+    result = parse_json_payload('다음은 결과입니다.\n{"summary": "요약"}', registry)
+    assert result.status == PARSE_CONTRACT_FAILURE
+
+
+def test_fenced_reference_list_is_also_accepted(registry):
+    payload = FENCE + "json\n[0, 7, 12]\n" + FENCE
+    result = parse_reference_list(payload, "atomic_start_segments", registry)
+    assert result.status == VALID_PARSE
+    assert result.value == [0, 7, 12]
+
+
 # ── SCH-005 EMPTY ≠ PARSE_FAILED ─────────────────────────────────────────
 @pytest.mark.parametrize("raw", ["", "   ", "\n\t "])
 def test_sch_005_blank_output_is_empty_not_a_failure(registry, raw):

@@ -40,6 +40,12 @@ _STORE_STATUS = {"PARSE_OK": VALID_PARSE, "PARSE_FAILED": PARSE_CONTRACT_FAILURE
 
 _REF = re.compile(r"\s*(?:seg\s*#?\s*)?(\d+)\s*\Z", re.IGNORECASE)
 
+#: 출력 전체가 코드펜스 하나로 감싸인 경우. 2026-08-31 B-02b에서
+#: Qwen2.5-7B-Instruct가 세 호출 전부 이 형태로 답했다. **표기이지 계약이 아니다** —
+#: 펜스를 거절하면 완전한 JSON을 결함으로 버리게 된다(seg#55 · 맨 배열과 같은 부류).
+#: 펜스 밖에 설명문이 붙은 것은 받지 않는다. 어디까지가 출력인지 알 수 없기 때문이다.
+_FENCED = re.compile(r"\A\s*```[A-Za-z0-9_-]*\s*\n(?P<body>.*?)\n?\s*```\s*\Z", re.S)
+
 
 @dataclass(frozen=True, slots=True)
 class ParseResult:
@@ -118,6 +124,12 @@ def _is_blank(raw: Any) -> bool:
     return raw is None or not str(raw).strip()
 
 
+def _unfence(raw: str) -> str:
+    """출력 전체를 감싼 코드펜스만 벗긴다. 안의 내용은 건드리지 않는다."""
+    match = _FENCED.match(raw)
+    return match.group("body") if match else raw
+
+
 def _has_content(obj: Mapping[str, Any]) -> bool:
     for value in obj.values():
         if isinstance(value, str):
@@ -158,7 +170,7 @@ def parse_json_payload(
     if _is_blank(raw):
         return ParseResult(status=EMPTY, reason="blank_output")
     try:
-        obj = json.loads(raw)
+        obj = json.loads(_unfence(raw))
     except (json.JSONDecodeError, ValueError):
         return _fail("not_json_object")
     if not isinstance(obj, dict):
@@ -194,7 +206,7 @@ def parse_reference_list(
     if _is_blank(raw):
         return ParseResult(status=EMPTY, reason="blank_output")
     try:
-        obj = json.loads(raw)
+        obj = json.loads(_unfence(raw))
     except (json.JSONDecodeError, ValueError):
         return _fail("not_json_object")
 
