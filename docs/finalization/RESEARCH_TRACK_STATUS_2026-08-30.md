@@ -21,8 +21,8 @@ NEXT RESEARCH CANDIDATE  deterministic change-point (C)   C0 COMPLETE / MIXED_SI
 v2.1 architecture        FROZEN        v2.1 planning         COMPLETE
 v2.1 acceptance matrix   COMPLETE      Gate A tickets        READY
 v2.1 implementation      IN PROGRESS   implementation auth   GRANTED 2026-08-30
-Gate A                   IN PROGRESS   A-01                  COMPLETE 7f5d0f9
-NEXT TICKET              A-03 raw store — raw-before-parse
+Gate A                   IN PROGRESS   A-01 · A-03           COMPLETE
+NEXT TICKET              A-04 parse contract layer
 FINAL REPORT / PRESENTATION FINALIZATION   보류 (종료 아님)
 Dual-stream 전면 (D)     불필요
 모델 추가 비교           불필요

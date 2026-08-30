@@ -65,11 +65,15 @@ manifest.json   video id · run id · analysis_mode · config hash · code git h
 
 ---
 
-## A-03 raw artifact store — raw-before-parse
+## A-03 raw artifact store — raw-before-parse  **COMPLETE**
 
 ```
-green    RAW-001 · RAW-002 · RAW-003 · RAW-004
+green    RAW-001 · RAW-002 · RAW-003 · RAW-004     전부 PASS
+         RAW-005 · RAW-006 (P1) 도 함께 PASS
 크기     M
+산출물   src/v2_1_raw_store.py · tests/test_v2_1_raw_store.py (21 tests)
+경계     run id·저장 위치는 호출자가 준다 — run layout은 A-02에 남겼다
+         (소스 스캔 테스트가 A-02 책임 침범을 막는다)
 ```
 
 ```
@@ -292,7 +296,8 @@ v2.1 Gate A ticket breakdown      DOCUMENTED  ← 이 문서
 v2.1 implementation               IN PROGRESS
 implementation authorization      GRANTED 2026-08-30
 A-01                              COMPLETE   commit 7f5d0f9
-NEXT                              A-03
+A-03                              COMPLETE
+NEXT                              A-04  parse contract layer
 ```
 
 착수 승인은 이 문서가 아니라 `V2_1_IMPLEMENTATION_AUTHORIZATION_2026-08-30.md`에
