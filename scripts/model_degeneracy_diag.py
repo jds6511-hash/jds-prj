@@ -156,6 +156,10 @@ def main() -> int:
     ap.add_argument("--model", required=True)
     ap.add_argument("--commit", default=None)
     ap.add_argument("--out", default=str(OUT))
+    # 기본 off — 비교 모델이 네이티브 지원되면 패치 없이 돈다. EXAONE-3.5는
+    # 이 둘이 필요했고 2차 불일치에서 종결했다(AMENDMENT_2026-08-30).
+    ap.add_argument("--compat-shim", action="store_true")
+    ap.add_argument("--trust-remote-code", action="store_true")
     a = ap.parse_args()
     cfg = common.load_config(str(ROOT / a.config))
 
@@ -170,15 +174,16 @@ def main() -> int:
             "full": H.build_atomic_boundary_prompt(ch),
             "caption_only": H.build_atomic_boundary_prompt(ch, caption_only=True)}
 
-    shims = compat_shims()          # **모델 로드 전에** 붙인다
+    shims = compat_shims() if a.compat_shim else []   # **모델 로드 전에** 붙인다
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
     mx = cfg.get("report_max_new_tokens", 2048)
 
     def load(name):
-        tok = AutoTokenizer.from_pretrained(name, trust_remote_code=True)
+        trc = a.trust_remote_code
+        tok = AutoTokenizer.from_pretrained(name, trust_remote_code=trc)
         mdl = AutoModelForCausalLM.from_pretrained(
-            name, dtype=torch.bfloat16, device_map="auto", trust_remote_code=True)
+            name, dtype=torch.bfloat16, device_map="auto", trust_remote_code=trc)
         return tok, mdl
 
     def gen(tok, mdl, prompt):
@@ -209,7 +214,7 @@ def main() -> int:
         "effective_revision": getattr(mdl_b.config, "_commit_hash", None),
         "dtype": str(mdl_b.dtype), "tokenizer": type(tok_b).__name__,
         "chat_template": bool(tok_b.chat_template),
-        "compat_shims": shims}
+        "compat_shims": shims, "trust_remote_code": a.trust_remote_code}
     flush()
     for cond in ("full", "caption_only"):
         for name, (lo, hi) in CHUNKS.items():

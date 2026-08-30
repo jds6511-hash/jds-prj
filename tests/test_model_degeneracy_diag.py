@@ -69,3 +69,12 @@ def test_shim은_별칭일_뿐_계산을_바꾸지_않는다():
         assert mu.create_causal_mask(inputs_embeds=3) == "R"
     finally:
         mu.create_causal_mask = orig
+
+
+def test_shim과_remote_code는_기본_off다():
+    """네이티브 지원 모델은 패치 없이 돈다 — 산출물에서 확인 가능해야 한다."""
+    src = (ROOT / "scripts" / "model_degeneracy_diag.py").read_text(encoding="utf-8")
+    assert '"--compat-shim", action="store_true"' in src
+    assert '"--trust-remote-code", action="store_true"' in src
+    assert "compat_shims() if a.compat_shim else []" in src
+    assert "trust_remote_code=True" not in src
