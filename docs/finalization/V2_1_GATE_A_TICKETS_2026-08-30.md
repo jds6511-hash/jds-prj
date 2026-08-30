@@ -256,11 +256,14 @@ unassigned segment. hard gate이므로 실패 시 canonical artifact 생성을 �
 
 ---
 
-## A-10 합성 fixture
+## A-10 합성 fixture  **COMPLETE**
 
 ```
 green    A-05 · A-08 · A-09의 입력을 제공
 크기     M
+산출물   tests/v2_1_fixtures.py · tests/test_v2_1_fixtures.py (19 tests)
+순서     A-05보다 먼저 만든다 — sanitation이 자기 테스트 안에 fixture를
+         임시로 만들어 중복시키는 것을 막는다
 ```
 
 ```
@@ -339,8 +342,8 @@ v2.1 Gate A ticket breakdown      DOCUMENTED  ← 이 문서
 v2.1 implementation               IN PROGRESS
 implementation authorization      GRANTED 2026-08-30
 A-01                              COMPLETE   commit 7f5d0f9
-A-03 · A-04                       COMPLETE
-NEXT                              A-10  합성 fixture → A-07 → A-08 → A-09
+A-03 · A-04 · A-10                COMPLETE
+NEXT                              A-05 → A-07 → A-08 → A-09
 ```
 
 착수 승인은 이 문서가 아니라 `V2_1_IMPLEMENTATION_AUTHORIZATION_2026-08-30.md`에
