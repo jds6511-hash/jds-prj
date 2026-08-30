@@ -155,23 +155,25 @@ def test_valid_payload_becomes_content(episodes, registry):
     assert result.content_status == VALID_PARSE
     assert result.content.summary == "두 사람이 해변에서 짐을 챙긴다."
     assert result.content.dialogue_note == "다음 장소를 정한다."
-    assert result.content.stt_cites == (8, 9)
+    assert result.content.stt_cites == (8, "seg#9")
 
 
-def test_cite_notation_is_normalized_and_sorted(episodes, registry):
+def test_cites_are_kept_exactly_as_the_model_wrote_them(episodes, registry):
+    """정규화도 중복 제거도 하지 않는다 — 해석은 B-05 소관이다."""
     result = merge_content(
         episodes[2],
         _parsed(registry, {"summary": "요약", "stt_cites": ["seg#11", 8, "8"]}),
     )
-    assert result.content.stt_cites == (8, 11)
+    assert result.content.stt_cites == ("seg#11", 8, "8")
 
 
-def test_unreadable_cites_are_dropped_not_invented(episodes, registry):
+def test_unreadable_cites_are_kept_for_the_binding_layer(episodes, registry):
+    """여기서 버리면 '모델이 무엇을 냈는가'를 사후에 못 본다."""
     result = merge_content(
         episodes[2],
         _parsed(registry, {"summary": "요약", "stt_cites": ["없음", None, 9]}),
     )
-    assert result.content.stt_cites == (9,)
+    assert result.content.stt_cites == ("없음", None, 9)
 
 
 def test_absent_optional_fields_stay_absent(episodes, registry):

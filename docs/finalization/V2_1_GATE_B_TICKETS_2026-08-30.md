@@ -84,7 +84,7 @@ B-01  Episode 구조 · content 스키마 · 코드 파생      deterministic   
 B-03  prompt builder + version/hash                   deterministic   COMPLETE
 B-02  LLM invocation adapter (A-03 raw 경유)          model-dependent  P1 확정 후
 B-04  content 병합 · failure isolation                deterministic   COMPLETE
-B-05  support/provenance 확정 바인딩                   deterministic
+B-05  support/provenance 확정 바인딩                   deterministic   COMPLETE
 B-06  grounding validator                             deterministic
 B-07  aar_canonical 스키마 · 직렬화                    deterministic
 B-08  Gate B fixtures + failure injection             deterministic
@@ -197,3 +197,50 @@ placeholder 문구     소스 스캔으로 금지
 
 grounding을 시작하지 않았다. `usable_for_claims`·`FAIL_*`·named entity·timeline이
 소스에 있으면 테스트가 실패한다. B-05·B-06 소관이다.
+
+
+---
+
+## B-05 support/provenance 바인딩  **COMPLETE**
+
+```
+green    LLM-004 · LLM-005의 최종 바인딩 · B-06의 입력
+산출물   src/v2_1_binding.py · tests/test_v2_1_binding.py (22 tests)
+invariant 조회 사실은 모두 보존하고, 판정은 하나도 하지 않는다
+```
+
+```
+B-05   이 cite가 실제로 무엇을 가리키는가
+B-06   그 결과로 이 claim을 통과시킬 수 있는가
+```
+
+### cite 하나당 남기는 사실
+
+```
+original_cite        모델이 쓴 표기 그대로
+canonical_ref        해석된 번호 (없으면 None)
+resolution_status    RESOLVED · UNKNOWN_SEGMENT · UNREADABLE
+segment_id · inside_episode
+sanitation_status · usable_for_claims · source_type
+```
+
+`inside_episode=False`는 **사실이지 판정이 아니다.** 인용을 영상 전체에서 조회하는
+이유가 그것이다 — 구간 밖을 가리켰다는 것도 기록돼야 B-06이 구분할 수 있다.
+
+구간은 있는데 그 채널에 근거가 없는 경우(`sanitation_status=None`)와 구간 자체가
+없는 경우(`UNKNOWN_SEGMENT`)를 다른 사실로 적는다.
+
+### 제거하지 않는다
+
+자격 없는 인용도, 읽히지 않는 표기도, 중복도 그대로 남는다. 지우면 B-06이
+"인용이 없었다"와 "SUSPECT를 실제로 인용했다"를 구분하지 못하고,
+`FAIL_INELIGIBLE_SUPPORT`가 다시 참조 실패와 섞인다(OPEN-9).
+
+provenance도 자격과 무관하게 **구간에 실제로 있던 근거 전부**를 적는다.
+무엇을 근거로 삼았는지가 아니라 무엇이 있었는지가 provenance다.
+
+### B-04 정정 — 정규화 지점을 옮겼다
+
+처음에는 B-04가 인용을 정규화·정렬·중복 제거했다. 그러면 `original_cite`가
+사라져 B-05가 볼 사실이 없다. **B-04는 모델이 쓴 그대로 보존**하고 표기 해석은
+B-05가 한다. `EpisodeContent.stt_cites`의 타입도 그에 맞췄다.

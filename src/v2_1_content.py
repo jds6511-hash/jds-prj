@@ -22,12 +22,7 @@ from dataclasses import dataclass
 from typing import Sequence
 
 from v2_1_episode import DERIVED_FIELDS, EpisodeContent
-from v2_1_parse import (
-    PARSE_CONTRACT_FAILURE,
-    PARSE_STATUSES,
-    VALID_PARSE,
-    normalize_segment_ref,
-)
+from v2_1_parse import PARSE_CONTRACT_FAILURE, PARSE_STATUSES, VALID_PARSE
 
 #: A-04와 같은 어휘를 쓴다. 두 벌을 만들지 않는다.
 CONTENT_STATUSES = PARSE_STATUSES
@@ -46,12 +41,15 @@ class EpisodeResult:
     ignored_fields: tuple[str, ...] = ()
 
 
-def _cites(values) -> tuple[int, ...]:
-    """표기를 정규화하고 읽히지 않는 것은 버린다. 없는 것을 만들지 않는다."""
+def _cites(values) -> tuple:
+    """모델이 쓴 그대로 보존한다. **정규화도 중복 제거도 하지 않는다.**
+
+    표기 해석과 조회는 B-05가 한다. 여기서 접어 버리면 `original_cite`가 사라져
+    "모델이 무엇을 냈는가"를 사후에 못 본다.
+    """
     if not isinstance(values, (list, tuple)):
         return ()
-    found = {n for n in (normalize_segment_ref(v) for v in values) if n is not None}
-    return tuple(sorted(found))
+    return tuple(values)
 
 
 def merge_content(episode, outcome) -> EpisodeResult:

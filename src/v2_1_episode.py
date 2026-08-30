@@ -51,7 +51,8 @@ class EpisodeContent:
 
     summary: str
     dialogue_note: str | None = None
-    stt_cites: tuple[int, ...] = ()
+    #: 모델이 쓴 표기 그대로. 해석·조회는 B-05가 한다.
+    stt_cites: tuple = ()
 
     def __post_init__(self) -> None:
         if not str(self.summary).strip():
