@@ -3,7 +3,8 @@
 ```
 대상    Gate A = SCH · RAW · SAN · EVT · BPI · FW · CAN 의 P0 전부
 성격    작업 분해 문서
-아님    구현 착수 승인   (implementation authorization NOT GRANTED)
+승인    implementation authorization GRANTED 2026-08-30
+        (V2_1_IMPLEMENTATION_AUTHORIZATION_2026-08-30.md)
 ```
 
 ```
@@ -28,12 +29,13 @@ A-01 ─┬─ A-03 ─┬─ A-04 ─┬─ A-05 ─── A-06 ─┐
 
 ---
 
-## A-01 canonical segment schema + ingest adapter
+## A-01 canonical segment schema + ingest adapter  **COMPLETE — 7f5d0f9**
 
 ```
-green    SCH-001 · SCH-002 · SCH-003
+green    SCH-001 · SCH-002 · SCH-003     전부 PASS
 크기     S
 근거     ADDENDUM OPEN-1
+산출물   src/v2_1_segments.py · tests/test_v2_1_segments.py (16 tests)
 ```
 
 ```
@@ -287,9 +289,11 @@ v2.1 implementation plan          DOCUMENTED
 v2.1 acceptance/test matrix       DOCUMENTED
 v2.1 decision addendum            DOCUMENTED (OPEN-1·2·5·6·7·9 CLOSED)
 v2.1 Gate A ticket breakdown      DOCUMENTED  ← 이 문서
-v2.1 implementation               NOT STARTED
-implementation authorization      NOT GRANTED
+v2.1 implementation               IN PROGRESS
+implementation authorization      GRANTED 2026-08-30
+A-01                              COMPLETE   commit 7f5d0f9
+NEXT                              A-03
 ```
 
-**이 문서는 착수 승인이 아니다.** 별도 implementation-start decision 전에는
-source implementation을 시작하지 않는다.
+착수 승인은 이 문서가 아니라 `V2_1_IMPLEMENTATION_AUTHORIZATION_2026-08-30.md`에
+기록된 2026-08-30 사용자 승인 사건이다. 이 문서는 작업 분해로 남는다.

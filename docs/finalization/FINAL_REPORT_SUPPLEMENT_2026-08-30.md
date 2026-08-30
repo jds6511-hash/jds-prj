@@ -282,7 +282,9 @@ C0       peak가 의미 있는 변화에 대응하는가 (GT 없음)
 
 ---
 
-## S7. v2.1 설계 — 구현하지 않았다
+## S7. v2.1 설계 — 이 보충 절 작성 시점에는 구현하지 않았다
+
+작성 시점 상태.
 
 ```
 v2.1 architecture specification   FROZEN
@@ -292,6 +294,18 @@ v2.1 Gate A ticket breakdown      READY (11 티켓)
 v2.1 implementation               DEFERRED
 implementation authorization      NOT GRANTED
 ```
+
+**이후 같은 날 해제됐다.** 사용자 명시 승인으로 구현이 시작됐고 A-01이 커밋됐다
+(`7f5d0f9`). 위 블록은 지우지 않고 작성 시점 기록으로 남긴다.
+
+```
+implementation authorization      GRANTED 2026-08-30
+v2.1 implementation               IN PROGRESS   Gate A · A-01 COMPLETE
+```
+
+사건 기록: `V2_1_IMPLEMENTATION_AUTHORIZATION_2026-08-30.md`.
+**이 승인은 아래 S8의 금지 목록을 하나도 바꾸지 않는다** — Gate A는 LLM·GPU를
+쓰지 않는 로컬 결정적 코드다.
 
 중심 원칙 둘.
 

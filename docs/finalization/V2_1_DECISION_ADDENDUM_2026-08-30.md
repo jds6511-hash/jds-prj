@@ -6,6 +6,7 @@
        OPEN-3 · 4 는 앞서 본문 반영 완료
        OPEN-9  CLOSED (2026-08-30 · 아래)
        OPEN-8  CLOSED — DEFER UNTIL FINALIZATION DELIVERABLES COMPLETE
+               → 2026-08-30 사용자 명시 승인으로 해제 (AUTHORIZED / IN PROGRESS)
 ```
 
 ---
@@ -339,11 +340,17 @@ SAN-010  자연스러운 강조·반복 발화 보존 · 반복만으로 evidenc
 
 ---
 
-## OPEN-8 — Implementation Start Timing  **CLOSED**
+## OPEN-8 — Implementation Start Timing  **CLOSED → 이후 승인으로 해제**
 
 ```
-v2.1 implementation start = DEFERRED
+Original decision (2026-08-30)   v2.1 implementation start = DEFERRED
+Subsequent authorization         2026-08-30 사용자 명시 승인
+Result                           DEFERRED → AUTHORIZED / IN PROGRESS
 ```
+
+아래 원래 결정은 **당시 판단의 역사 기록으로 남긴다.** 착수 조건 1·2(보고서·발표
+자료 확정)는 충족된 것이 아니라 **우선순위가 명시적으로 변경**된 것이다.
+사건 기록: `V2_1_IMPLEMENTATION_AUTHORIZATION_2026-08-30.md`.
 
 ### A-01 착수 조건
 
@@ -399,13 +406,13 @@ sequencing 결정이다. 진입 비용은 이미 충분히 낮췄다 — A-01부
 v2.1 architecture specification   FROZEN
 v2.1 implementation plan          DOCUMENTED
 v2.1 acceptance/test matrix       DOCUMENTED
-v2.1 implementation               NOT STARTED
-implementation authorization      NOT GRANTED
+v2.1 implementation               IN PROGRESS
+implementation authorization      GRANTED 2026-08-30
 ```
 
-Gate A가 LLM/GPU 없이 실행 가능하다는 사실은 **구현 순서상의 장점일 뿐 착수 승인이
-아니다.** 별도의 implementation-start decision 전에는 source implementation을
-시작하지 않는다.
+작성 시점에는 `NOT STARTED / NOT GRANTED`였다. 2026-08-30 사용자 승인으로 해제됐고,
+그 전까지 "별도 implementation-start decision이 필요하다"는 요건은 **그 사건으로
+충족됐다.**
 
 ```
 push  NO   ·   M9  HOLD/NO   ·   official test  CLOSED/NO

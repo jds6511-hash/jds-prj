@@ -186,9 +186,13 @@ def test_공식_판정이_바뀌지_않았다(facts):
     assert s["push"] == "NO"
 
 
-def test_v2_1은_구현되지_않았다(facts, doc):
-    assert facts["status"]["v2_1_implementation"].startswith("DEFERRED")
-    assert "implementation authorization      NOT GRANTED" in doc
+def test_v2_1_착수_상태가_이력과_함께_기록된다(facts, doc):
+    """작성 시점 DEFERRED를 지우지 않고, 같은 날 승인으로 해제된 것을 덧붙인다."""
+    st = facts["status"]["v2_1_implementation"]
+    assert st.startswith("DEFERRED") and "AUTHORIZED" in st and "7f5d0f9" in st
+    assert "implementation authorization      NOT GRANTED" in doc     # 작성 시점 기록
+    assert "implementation authorization      GRANTED 2026-08-30" in doc
+    assert "V2_1_IMPLEMENTATION_AUTHORIZATION_2026-08-30.md" in doc
 
 
 def test_change_point는_채택되지_않았다(facts, doc):

@@ -360,7 +360,7 @@ OPEN-4  DET-002 byte equality 불가능      CLOSED  boundary·episode 구조로
 OPEN-5  P1 gating 지위                    CLOSED  P0 hard / P1 pass-or-waiver / P2 non-gating
 OPEN-6  BCS renderer 재사용 충돌          CLOSED  v2.1 renderer 신규 구현 · BCS 수정·추출 금지
 OPEN-7  반복 sanitation                   CLOSED  ≥8 → SUSPECT만 · 삭제 금지
-OPEN-8  착수 시점                          CLOSED  DEFER UNTIL FINALIZATION DELIVERABLES COMPLETE
+OPEN-8  착수 시점                          CLOSED  DEFER → 2026-08-30 승인으로 해제 · IN PROGRESS
 OPEN-9  SUSPECT의 claim 승격 가능 여부      CLOSED  보존≠승격 · FAIL_INELIGIBLE_SUPPORT 신설
 ```
 
@@ -376,10 +376,10 @@ REJECTED  preserved · usable_for_claims false     독립 근거 필요
 `VALID + SUSPECT` 동시 인용은 **VALID만으로 성립할 때만** PASS.
 반영 test: SAN-011 · GRD-011 · GRD-012 · TRI-006. 상세는 ADDENDUM OPEN-9.
 
-## OPEN-8 — CLOSED
+## OPEN-8 — CLOSED → 2026-08-30 승인으로 해제
 
 ```
-v2.1 implementation start = DEFERRED
+Original decision   v2.1 implementation start = DEFERRED
 A-01 착수 조건   보고서 본문·보충 절 확정 · 발표 자료 확정
                 추가 코드 근거 불필요 확인 · 별도 implementation authorization
 그 전까지        source implementation NO · Gate A execution NO
@@ -393,7 +393,9 @@ v2.1 architecture specification   FROZEN
 v2.1 implementation plan          DOCUMENTED
 v2.1 acceptance/test matrix       DOCUMENTED
 v2.1 Gate A ticket breakdown      READY
-v2.1 implementation               DEFERRED
-implementation authorization      NOT GRANTED
-NEXT PRIORITY                     FINAL REPORT / PRESENTATION FINALIZATION
+v2.1 implementation               IN PROGRESS
+implementation authorization      GRANTED 2026-08-30
+A-01                              COMPLETE   commit 7f5d0f9
+NEXT TICKET                       A-03
+FINAL REPORT / PRESENTATION       보류 (종료 아님)
 ```

@@ -20,8 +20,10 @@ NEXT RESEARCH CANDIDATE  deterministic change-point (C)   C0 COMPLETE / MIXED_SI
 
 v2.1 architecture        FROZEN        v2.1 planning         COMPLETE
 v2.1 acceptance matrix   COMPLETE      Gate A tickets        READY
-v2.1 implementation      DEFERRED      implementation auth   NOT GRANTED
-NEXT PRIORITY            FINAL REPORT / PRESENTATION FINALIZATION
+v2.1 implementation      IN PROGRESS   implementation auth   GRANTED 2026-08-30
+Gate A                   IN PROGRESS   A-01                  COMPLETE 7f5d0f9
+NEXT TICKET              A-03 raw store — raw-before-parse
+FINAL REPORT / PRESENTATION FINALIZATION   보류 (종료 아님)
 Dual-stream 전면 (D)     불필요
 모델 추가 비교           불필요
 
@@ -186,6 +188,7 @@ REPORT_FORMAT_REFERENCE_2026-08-30                       사람 작성 형식 �
 V2_1_ARCHITECTURE_SPEC / IMPLEMENTATION_PLAN             v2.1 설계·계획
 V2_1_ACCEPTANCE_MATRIX / DECISION_ADDENDUM               수용 기준 · 결정 이력
 V2_1_GATE_A_TICKETS / P1_WAIVERS                         티켓 · waiver 대장
+V2_1_IMPLEMENTATION_AUTHORIZATION_2026-08-30              착수 승인 사건 기록
 FINAL_REPORT_SUPPLEMENT_2026-08-30                       baseline companion addendum
 RESEARCH_TRACK_STATUS_2026-08-30                         이 문서
 ```
