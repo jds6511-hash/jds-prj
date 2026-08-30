@@ -81,8 +81,8 @@ BLOCKER      없음
 
 ```
 B-01  Episode 구조 · content 스키마 · 코드 파생      deterministic   COMPLETE
-B-02  LLM invocation adapter (A-03 raw 경유)          model-dependent
-B-03  prompt builder + version/hash                   deterministic
+B-03  prompt builder + version/hash                   deterministic   COMPLETE
+B-02  LLM invocation adapter (A-03 raw 경유)          model-dependent  P1 확정 후
 B-04  content 병합 · failure isolation                deterministic
 B-05  support/provenance 확정 바인딩                   deterministic
 B-06  grounding validator                             deterministic
@@ -114,3 +114,46 @@ green    LLM-001 · LLM-002 · LLM-003 · LLM-004 · LLM-005
 
 `anchors`는 m8_hier와 같은 규칙(시작·중간·끝 · 최대 3)이지만 그 모듈을 import하지
 않는다 — v2.1이 legacy 파이프라인에 의존을 만들지 않는다.
+
+
+---
+
+## B-03 episode prompt builder + version/hash  **COMPLETE**
+
+```
+green    LLM-002 (출력 계약) · B-02의 선행 조건 中 prompt version
+산출물   src/v2_1_prompt.py · tests/test_v2_1_prompt.py (23 tests)
+```
+
+### 근거는 목록이 아니라 블록으로 가른다
+
+```
+[근거]   usable_for_claims == true
+[참고]   preserved == true AND usable_for_claims == false   기본값: 넣지 않는다
+```
+
+같은 목록에 `usable=false` 플래그만 붙이면 옆문으로 인용된다 — OPEN-9가 막으려던
+것이 정확히 그것이다. 참고 블록은 opt-in이고, 들어갈 때도 "사실 주장의 근거로 쓸
+수 없다"를 블록 머리에 적는다.
+
+근거 블록이 비면 **프롬프트를 만들지 않는다.** 근거 없이 요약을 시키는 것이 환각의
+입구다.
+
+### prompt_hash는 계약의 지문이다
+
+```
+해시 입력   CONTRACT 사전 하나 (sort_keys 직렬화)
+해시 비입력 에피소드 내용 · backend · 모델 이름 · run id · 실행 시각
+```
+
+테스트가 해시를 직접 재현해 입력을 못 박는다. 소스에서 단어를 찾는 방식은
+`timeline`이 `time`에 걸려 쓸 수 없었고, 애초에 기능 검증이 아니었다.
+
+### B-02 선행 조건 현황
+
+```
+prompt version        확보 (episode_content_v1 · contract_hash)
+raw persistence       확보 (A-03 · source_type=llm)
+failure classification 확보 (A-04)
+model config          미확정  ← P1. B-02 착수 전 hard gate
+```
