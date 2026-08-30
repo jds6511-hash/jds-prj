@@ -1,0 +1,372 @@
+{
+  "purpose": "C0 관찰 — caption-text embedding 변화 신호",
+  "spec": "docs/finalization/V2_1_ARCHITECTURE_SPEC_2026-08-30.md",
+  "not_done": [
+    "threshold",
+    "optimal_cutoff",
+    "minimum_gap",
+    "smoothing_tuning",
+    "provider_adoption",
+    "GT_대조"
+  ],
+  "embedding_model": "nlpai-lab/KURE-v1",
+  "windows": [
+    {
+      "video_id": "wonyi_geoje",
+      "window": "chunk3",
+      "lo": 110,
+      "hi": 169,
+      "distance": {
+        "mean": 0.3137,
+        "min": 0.0884,
+        "max": 0.6798,
+        "p50": 0.2982,
+        "p90": 0.4742
+      },
+      "n_local_peaks": 10,
+      "peaks": [
+        {
+          "seg": 117,
+          "distance": 0.6798,
+          "pct_rank": 0.997,
+          "appearance_only_diff": false,
+          "caption_prev": "두 여성이 푸른색 배경 앞에서 앉아 있습니다. 왼쪽의 여성이 검은색 후드를 입고 있으며, 오른쪽의 여성이 분홍색 모자와 티셔츠",
+          "caption_here": "네, 알겠습니다. 다음은 주어진 요청에 따라 한 문장의 한국어로 객관적인 묘사입니다.\n\n네, 알겠습니다. 다음은 주어진 요청에"
+        },
+        {
+          "seg": 135,
+          "distance": 0.481,
+          "pct_rank": 0.923,
+          "appearance_only_diff": false,
+          "caption_prev": "화면에는 한 줄기 분홍색의 거미줄이 검은색의 낚시대에 매달려 있습니다. 배경에는 푸른 하늘과 흐릿한 나무들이 보입니다.",
+          "caption_here": "두 여성이 야외에서 대화를 나누고 있습니다. 왼쪽의 여성이 분홍색 모자를 쓰고 있으며, 오른쪽의 여성이 검은색 헤어스타일입니다"
+        },
+        {
+          "seg": 132,
+          "distance": 0.4734,
+          "pct_rank": 0.92,
+          "appearance_only_diff": false,
+          "caption_prev": "두 여성이 야외에서 대화를 나누고 있습니다. 한 여성은 분홍색 모자와 푸른색 상의를 입고 있으며, 다른 여성은 검은색 트랙스u",
+          "caption_here": "화면에는 흰색 장갑, 플라스틱 봉包, 박스, 투명한 펜슬, 그리고 작은 물체들이 바닥에 놓여 있습니다. 배경은 흰색 바탕으로,"
+        },
+        {
+          "seg": 160,
+          "distance": 0.4545,
+          "pct_rank": 0.914,
+          "appearance_only_diff": false,
+          "caption_prev": "여성은 어두운 색상의 상의를 입고 있으며, 그녀는 어린 소년에게 손을 뻗고 있다. 그녀의 손에는 작은 풍선이 달려 있고, 그녀",
+          "caption_here": "화면에는 한 여성이 바다를 바라보며 손에 휴대폰을 들고 있는 모습이 보입니다. 그녀는 검은색 상의와 하얀색 바지를 입고 있으며"
+        },
+        {
+          "seg": 154,
+          "distance": 0.4253,
+          "pct_rank": 0.902,
+          "appearance_only_diff": false,
+          "caption_prev": "화면에는 흰색 장갑을 끼고 있는 손이 보입니다. 이 손은 바닥에 놓인 여러 가지 물건들을 다루고 있습니다. 바닥에는 파란색 플",
+          "caption_here": "화면에는 한 여성이 검은색 긴 머리를 가진 여성으로, 검은색 점퍼를 입고 있습니다. 그녀는 바다와 해변을 배경으로 하여 서 있"
+        },
+        {
+          "seg": 144,
+          "distance": 0.4044,
+          "pct_rank": 0.868,
+          "appearance_only_diff": false,
+          "caption_prev": "해안가에 정박한 어선들이 보이는 바다 풍경입니다. 바다에는 여러 개의 어선이 있으며, 그 중 하나는 노란색과 흰색의 플라스틱 ",
+          "caption_here": "두 여성이 바다를 바라보며 대화를 나누고 있습니다. 한 여성은 분홍색 모자를 쓰고 있으며, 다른 여성은 검은색 의상을 입고 있"
+        },
+        {
+          "seg": 151,
+          "distance": 0.403,
+          "pct_rank": 0.865,
+          "appearance_only_diff": false,
+          "caption_prev": "여성 A가 여성 B에게 물건을 주며 대화를 나누고 있습니다. 배경에는 바다와 선박들이 보입니다.",
+          "caption_here": "여성은 검은색 운동복을 입고 바닥에 앉아 있으며, 손에 흰색 장갑을 끼고 있습니다. 그녀는 바닥에 있는 여러 가지 물건들을 정"
+        },
+        {
+          "seg": 140,
+          "distance": 0.3498,
+          "pct_rank": 0.745,
+          "appearance_only_diff": false,
+          "caption_prev": "화면에는 두 명의 여성이 앉아 있는 모습이 보입니다. 왼쪽 여성은 푸른색 반팔티셔츠를 입고 있으며, 오른쪽 여성은 검은색 상의",
+          "caption_here": "두 여성이 해변에서 대화를 나누고 있습니다. 한 여성은 분홍색 모자와 푸른색 상의를 입고 있으며, 다른 여성은 검은색 긴 머리"
+        },
+        {
+          "seg": 163,
+          "distance": 0.3377,
+          "pct_rank": 0.706,
+          "appearance_only_diff": false,
+          "caption_prev": "여성은 분홍색 모자와 푸른색 상의를 입고 있으며, 긴 금발을 묶고 있습니다. 그녀는 바다와 산이 있는 해안가에서 포즈를 취하고",
+          "caption_here": "여성은 검은색 운동복을 입고 있으며, 흰색 손목 밴드를 착용하고 있습니다. 그녀는 머리를 가리키며 헤어질을 잡고 있고, 뒷모습"
+        },
+        {
+          "seg": 126,
+          "distance": 0.2998,
+          "pct_rank": 0.558,
+          "appearance_only_diff": false,
+          "caption_prev": "두 사람이 해변에서 바다를 바라보고 있다. 한 사람은 검은색 점퍼를 입고 있고, 다른 사람은 분홍색 모자를 쓴다. 배경에는 산",
+          "caption_here": "여성은 분홍색 모자와 푸른색 상의를 입고 있으며, 배경에는 산과 바다가 보입니다. 여성의 주변에는 여러 개의 안내판이 설치되어"
+        }
+      ],
+      "llm_boundaries": {
+        "qwen_full": {
+          "n": 5,
+          "n_in_window": 5,
+          "median_pct_rank": 0.745,
+          "on_local_peak": 1,
+          "on_local_peak_share": 0.2
+        },
+        "qwen_caption_only": {
+          "n": 2,
+          "n_in_window": 2,
+          "median_pct_rank": 0.695,
+          "on_local_peak": 0,
+          "on_local_peak_share": 0.0
+        },
+        "kanana_full": {
+          "n": 6,
+          "n_in_window": 6,
+          "median_pct_rank": 0.627,
+          "on_local_peak": 0,
+          "on_local_peak_share": 0.0
+        },
+        "kanana_caption_only": {
+          "n": 57,
+          "n_in_window": 57,
+          "median_pct_rank": 0.54,
+          "on_local_peak": 9,
+          "on_local_peak_share": 0.158
+        }
+      }
+    },
+    {
+      "video_id": "wonyi_geoje",
+      "window": "chunk5",
+      "lo": 220,
+      "hi": 279,
+      "distance": {
+        "mean": 0.2815,
+        "min": 0.0964,
+        "max": 0.5922,
+        "p50": 0.283,
+        "p90": 0.3859
+      },
+      "n_local_peaks": 12,
+      "peaks": [
+        {
+          "seg": 259,
+          "distance": 0.5922,
+          "pct_rank": 0.985,
+          "appearance_only_diff": false,
+          "caption_prev": "두 사람이 해변에서 대화를 나누고 있다. 한 사람은 파란색 티셔츠와 검은색 트레이닝복을 입고 있으며, 다른 사람은 분홍색 모자",
+          "caption_here": "여성은 휴대용 가스레인지 위에 놓인 노란색 그릇에 소스를 넣고 있습니다. 그녀는 검은색 옷을 입고 있으며, 손에는 백색 패키지"
+        },
+        {
+          "seg": 221,
+          "distance": 0.5218,
+          "pct_rank": 0.96,
+          "appearance_only_diff": false,
+          "caption_prev": "한 소년은 모래 위에서 작은 돌을 집어 들고 있는 모습이다. 그는 검은색 티셔츠와 검은색 바지를 입고 있으며, 발에는 갑옷을 ",
+          "caption_here": "두 여성이 모래 해변에 서 있습니다. 왼쪽에는 바다가 있고, 오른쪽에는 여러 건물들이 보입니다. 여성들은 서로를 바라보며 대화"
+        },
+        {
+          "seg": 237,
+          "distance": 0.4886,
+          "pct_rank": 0.929,
+          "appearance_only_diff": false,
+          "caption_prev": "여성은 푸른색 머리를 가진 여성이 창가에 서 있으며, 그녀의 뒷모습만 보입니다. 그녀는 카페나 식당 같은 실내 환경에서 서 있",
+          "caption_here": "화면에는 어두운 색상의 의상을 입은 사람의 뒷모습만 보입니다. 이 사람은 바닥에 앉아 있으며, 주변에는 여러 가게나 상점의 내"
+        },
+        {
+          "seg": 264,
+          "distance": 0.4222,
+          "pct_rank": 0.893,
+          "appearance_only_diff": false,
+          "caption_prev": "여성 A가 냄비에서 면을 집어 먹는 모습이며, 여성 B는 그녀에게 컵을 건네주고 있다. 배경에는 바다와 풍경이 보인다.",
+          "caption_here": "여성은 푸른색 반팔티셔츠를 입고 있으며, 금발 머리를 가지고 있습니다. 그녀는 바다와 나무가 있는 풍경 앞에 앉아 있고, 손에"
+        },
+        {
+          "seg": 232,
+          "distance": 0.373,
+          "pct_rank": 0.804,
+          "appearance_only_diff": false,
+          "caption_prev": "여성은 바다를 바라보며 앉아 있고, 분위기는 편안하고 평온해 보입니다. 그녀는 분홍색 모자와 초록색 상의를 입고 있으며, 머리",
+          "caption_here": "여성 A가 휴대용 가스레인지 위에 놓인 노란색 그릇에 물을 주입하고 있습니다. 여성 B는 바닥에 앉아 있으며, 그녀의 옆에는 "
+        },
+        {
+          "seg": 277,
+          "distance": 0.368,
+          "pct_rank": 0.788,
+          "appearance_only_diff": false,
+          "caption_prev": "여성은 푸른색 상의를 입고 분홍색 모자와 반바지를 입고 있으며, 바닥에 앉아 있다. 그녀는 분홍색 모자를 쓴 손에 빨간색 레드",
+          "caption_here": "여성 A는 분홍색 앞치마를 입고 있으며, 그녀의 앞에는 테이블 위에 다양한 음식들이 놓여 있습니다. 그녀가 손을 내밀고 있는 "
+        },
+        {
+          "seg": 255,
+          "distance": 0.3503,
+          "pct_rank": 0.752,
+          "appearance_only_diff": false,
+          "caption_prev": "여성은 검은색 티셔츠를 입고 있으며, 턱시드를 걸치고 있습니다. 그녀는 손에 작은 접시를 들고 있고, 그 안에는 음식이 들어 ",
+          "caption_here": "화면에는 두 명의 여성이 있습니다. 한 여성은 분홍색 모자와 푸른색 상의를 입고 앉아 있으며, 바닥에는 파란색 천이 깔려 있고"
+        },
+        {
+          "seg": 270,
+          "distance": 0.3415,
+          "pct_rank": 0.718,
+          "appearance_only_diff": false,
+          "caption_prev": "두 여성이 해변에서 식사를 하고 있습니다. 왼쪽의 여성이 검은색 티셔츠를 입고 있으며, 오른쪽의 여성이 푸른색 상의를 입고 있",
+          "caption_here": "여성은 분홍색 모자와 초록색 상의를 입고 있으며, 손가락으로 'V'자를 만들고 있다. 그녀는 바다와 산이 있는 해변에서 앉아 "
+        },
+        {
+          "seg": 244,
+          "distance": 0.3323,
+          "pct_rank": 0.681,
+          "appearance_only_diff": false,
+          "caption_prev": "화면에는 한 여성이 보이며, 그녀는 푸른색 스웨터를 입고 있습니다. 배경은 실내 공간으로, 여러 테이블과 의자들이 놓여 있고,",
+          "caption_here": "화면에는 한 여성이 파란색 상의를 입고 서 있는 모습이 보입니다. 그녀는 앞을 바라보지 않고, 뒷모습만 보여줍니다. 주변에는 "
+        },
+        {
+          "seg": 228,
+          "distance": 0.3033,
+          "pct_rank": 0.567,
+          "appearance_only_diff": false,
+          "caption_prev": "두 여성이 해변에서 손을 잡고 걷고 있습니다. 왼쪽의 여성이 검은색 티셔츠를 입고 있으며, 오른쪽의 여성이 분홍색 모자와 반바",
+          "caption_here": "두 여성이 해변에서 앉아 있으며, 한 여성이 물병을 들고 다른 여성이 휴대용 냄비 위에 커다란 끓는 물을 보이고 있습니다. 배"
+        }
+      ],
+      "llm_boundaries": {
+        "qwen_full": {
+          "n": 42,
+          "n_in_window": 42,
+          "median_pct_rank": 0.514,
+          "on_local_peak": 9,
+          "on_local_peak_share": 0.214
+        },
+        "qwen_caption_only": {
+          "n": 10,
+          "n_in_window": 10,
+          "median_pct_rank": 0.44,
+          "on_local_peak": 0,
+          "on_local_peak_share": 0.0
+        },
+        "kanana_full": {
+          "n": 5,
+          "n_in_window": 5,
+          "median_pct_rank": 0.325,
+          "on_local_peak": 1,
+          "on_local_peak_share": 0.2
+        },
+        "kanana_caption_only": {
+          "n": 40,
+          "n_in_window": 40,
+          "median_pct_rank": 0.506,
+          "on_local_peak": 7,
+          "on_local_peak_share": 0.175
+        }
+      }
+    },
+    {
+      "video_id": "m8c2_3I7oGwk6EaQ",
+      "window": "seg000_059",
+      "lo": 0,
+      "hi": 59,
+      "distance": {
+        "mean": 0.3053,
+        "min": 0.0,
+        "max": 0.5591,
+        "p50": 0.3242,
+        "p90": 0.4752
+      },
+      "n_local_peaks": 13,
+      "peaks": [
+        {
+          "seg": 31,
+          "distance": 0.5591,
+          "pct_rank": 0.983,
+          "appearance_only_diff": false,
+          "caption_prev": "한 시간 정도 늦게 일출이 시작된 후, 사람들은 산으로 가는 길을 걷기 시작했다.",
+          "caption_here": "화면에는 푸른 하늘과 구름이 보이며, 아래에는 나무와 식물들이 있습니다. 조명은 자연광으로, 밤이 되었을 때처럼 어두운 분위기"
+        },
+        {
+          "seg": 44,
+          "distance": 0.531,
+          "pct_rank": 0.977,
+          "appearance_only_diff": false,
+          "caption_prev": "화면은 완전히 검은색으로 가득 차 있으며, 아무런 정보나 내용도 보이지 않습니다.",
+          "caption_here": "화면에는 한 바위가 있습니다. 바위 위에는 한글로 '만복대'라고 쓰여 있습니다. 바위 주변은 바위와 돌로 이루어져 있으며, 바"
+        },
+        {
+          "seg": 10,
+          "distance": 0.4963,
+          "pct_rank": 0.953,
+          "appearance_only_diff": false,
+          "caption_prev": "화면에는 한 사람이 손가락으로 뿌리와 나뭇잎 사이를 가리키는 모습이 보입니다. 이 사람은 검은색 장갑을 착용하고 있으며, 흙탕",
+          "caption_here": "화면은 완전히 검은색으로 가득 차 있으며, 아무것도 보이지 않습니다."
+        },
+        {
+          "seg": 15,
+          "distance": 0.4848,
+          "pct_rank": 0.936,
+          "appearance_only_diff": false,
+          "caption_prev": "화면에는 여러 개의 표시판이 보입니다. 가장 위쪽의 표시판은 '당동마을'으로 가는 거리를 3.8km라고 표시하고 있습니다. 아",
+          "caption_here": "화면에는 어두운 밤의 숲속에서 한 명의 사람이 등불을 들고 서 있는 모습이 보입니다. 이 사람은 어둠 속에서 혼자서 걸어가고 "
+        },
+        {
+          "seg": 1,
+          "distance": 0.4781,
+          "pct_rank": 0.93,
+          "appearance_only_diff": false,
+          "caption_prev": "화면에는 어두운 밤의 풍경이 보입니다. 바닥에는 작은 초록색 식물들이 있고, 그 위에는 흙과 돌이 있습니다. 조명은 매우 어두",
+          "caption_here": "夕阳西下，天空被染成了温暖的橙红色。远处的山峦在薄雾中若隐若现，显得格外宁静而神秘。"
+        },
+        {
+          "seg": 5,
+          "distance": 0.4055,
+          "pct_rank": 0.82,
+          "appearance_only_diff": false,
+          "caption_prev": "한 남성이 바위 위에 앉아 하늘을 바라보고 있다. 그는 검은 모자를 쓰고 있으며, 어깨에는 백팩을 매고 있다. 배경은 푸른 하",
+          "caption_here": "산 아래쪽으로 향하는 산길이 보이며, 그 뒤로 푸르른 하늘에 밝은 구름과 산이 보입니다. 산길 양쪽에는 많은 나무와 식물들이 "
+        },
+        {
+          "seg": 51,
+          "distance": 0.4009,
+          "pct_rank": 0.808,
+          "appearance_only_diff": false,
+          "caption_prev": "산 아래에는 푸른색으로 가득 차 있는 산이 보이고, 그 위에는 희미한 구름이 날아다니고 있습니다.",
+          "caption_here": "화면에는 두 개의 표지판이 보입니다. 상단의 표지판에는 '성삼재 5.3km'와 'Seongsamjae Pass'라는 글자가 쓰"
+        },
+        {
+          "seg": 58,
+          "distance": 0.3942,
+          "pct_rank": 0.785,
+          "appearance_only_diff": false,
+          "caption_prev": "산길이 편안하게 이어져 있으며, 뒤로는 푸르른 하늘과 구름이 보입니다. 산 아래에는 희미한 햇살이 비치며, 바위와 나무들이 가",
+          "caption_here": "화면에는 한 명의 사람이 나무 위에 앉아 있는 모습이 보입니다. 이 사람은 푸른색 상의와 검은색 바지를 입고 있으며, 머리는 "
+        },
+        {
+          "seg": 34,
+          "distance": 0.3822,
+          "pct_rank": 0.767,
+          "appearance_only_diff": false,
+          "caption_prev": "NIGHT SCENE OF FOREST WITH DARK AND HIDDEN DETAILS",
+          "caption_here": "화면에는 숲속길이 보이며, 나무 위에 붉은색으로 된 표시판이 걸려 있습니다. 주변은 푸르른 식물과 나무로 가득 차 있으며, 조"
+        },
+        {
+          "seg": 55,
+          "distance": 0.381,
+          "pct_rank": 0.762,
+          "appearance_only_diff": false,
+          "caption_prev": "화면에는 한 남성이 검은색 반바지를 입고 있으며, 그의 발목에는 검은색 스포츠 스okies가 착용되어 있습니다. 그는 푸른 하",
+          "caption_here": "산 아래에는 푸른 하늘과 구름이 가득 차 있으며, 산 위에는 녹색의 숲이 펼쳐져 있습니다."
+        }
+      ],
+      "llm_boundaries": {
+        "bcs_qwen_caption_only": {
+          "n": 8,
+          "n_in_window": 7,
+          "median_pct_rank": 0.698,
+          "on_local_peak": 1,
+          "on_local_peak_share": 0.143
+        }
+      }
+    }
+  ]
+}
