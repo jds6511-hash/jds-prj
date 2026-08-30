@@ -79,6 +79,9 @@ def main() -> int:
     ap.add_argument("--config", default="config_server.yaml")
     ap.add_argument("--video-id", required=True)
     ap.add_argument("--out", default=str(RUNDIR))
+    # 서버 사본은 `git archive`로 동기화하므로 서버 저장소의 HEAD는 실행본과
+    # 다르다(실측: 서버 4187521 vs 실행본 51feff1). 실행본 SHA를 명시로 받는다.
+    ap.add_argument("--commit", default=None)
     a = ap.parse_args()
     cfg = common.load_config(str(ROOT / a.config))
 
@@ -98,12 +101,14 @@ def main() -> int:
     p = out / f"{a.video_id}.json"
     assert "report.json" not in p.name, "공식 산출물 경로에 쓰지 않는다"
 
-    try:
-        sha = subprocess.run(["git", "rev-parse", "HEAD"], cwd=str(ROOT),
-                             capture_output=True, text=True,
-                             check=True).stdout.strip()
-    except (subprocess.SubprocessError, OSError):
-        sha = "unknown"
+    sha = a.commit
+    if not sha:
+        try:
+            sha = subprocess.run(["git", "rev-parse", "HEAD"], cwd=str(ROOT),
+                                 capture_output=True, text=True,
+                                 check=True).stdout.strip()
+        except (subprocess.SubprocessError, OSError):
+            sha = "unknown"
 
     base = {"video_id": a.video_id, "schema": H.SCHEMA, "run_kind": RUN_KIND,
             "arm": "caption_only", "n_segments": len(segs), "commit": sha,
