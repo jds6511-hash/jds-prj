@@ -1,0 +1,41 @@
+{
+  "generated": "2026-08-30",
+  "note": "v2.1 구현 착수 시점의 연구 경계 기준선. 갱신은 별도 승인 사건이다.",
+  "bcs_protected": {
+    "src/bcs.py": "06c6d7bc86823c9630e9819c9185dea6a7e9a2590b536869d6d1e83e553827ef",
+    "src/bcs_present.py": "88eb8fab024d568e51f74ffe6cc4f5513438e55d09210ddb6f2bc93d1c928245",
+    "scripts/bcs_prototype.py": "1cd72db5833a9b53d949eac417bad93c517aa139b1146389e599c0ca04e1aee0",
+    "scripts/bcs_reparse.py": "f2701f171b7e067fa18b76556f68721acfbb70f386eb2371b3d157314fdaaac3",
+    "scripts/bcs_hwpx.py": "0ee56e8b10364444f2cfeaba7223c98447ea730db912c2cdf11883e8541bf487"
+  },
+  "official_test": {
+    "results/eval_test.json": "280cc9eec1584bf6cf29ae4b62ed9739d3020bd3bb87768b1dc150a8742bcb71",
+    "results/eval_test_kure.json": "af39b083ce37c85e045189a446bbf20fdfadcecb56d403a8f9b0326a9336a1e8",
+    "data/queries/queries.jsonl": "87c85ff29b22bcd5b3e611b5424b9323461a32bfde43bb5a2864cc5e9c597bc2"
+  },
+  "human_gt": {
+    "label_kit/event_inventory/aggregate_gt_hash.json": "6065f41372f7ceb0825ea6909c600516368d4bcac36c4abe3685334e15197ed4",
+    "label_kit/event_inventory/baekmansonghee_jirisan.draft.json": "c33a2c0fb3788cdb3ad20111abe16879ded606a175f5d8768c780a8c2efc94ab",
+    "label_kit/event_inventory/FROZEN_baekmansonghee_jirisan.json": "d494721c022939640148e202a4cbe1b53aedb575a98acf5fd965a1178c8d09e1",
+    "label_kit/event_inventory/FROZEN_gwaktube_soviet_apartment.json": "1b310ec9a5933abc11d63a7cc2472657602c8be77d44e5455202e5443793c6a9",
+    "label_kit/event_inventory/FROZEN_jissi_farm.json": "ea8aa20dab136581e21f2e30e37fbbf1773a1cae14f49c1e75fb955d1a445154",
+    "label_kit/event_inventory/FROZEN_kbs_banff.json": "421c1ac89f3a60dfbe80ece11938b457287e24c3583103599692437216155eac",
+    "label_kit/event_inventory/FROZEN_kheritage_grave_excavation.json": "192248b2da609dc6736fe23e36345317441d0e00efa253622fa8a022e99b0668",
+    "label_kit/event_inventory/FROZEN_m8c2_3I7oGwk6EaQ.json": "335b2213aa37eb8da4aeb0c2a6fcd0e197e594962f63b192a9f33ad41bbe32d3",
+    "label_kit/event_inventory/FROZEN_m8c2_cIxG7OHYMPU.json": "6c4914593fdca68f052c8e03815e2f4eec004776635f25e501c4dbfef3c04e74",
+    "label_kit/event_inventory/FROZEN_softyeon_ceramics.json": "5e26e02b3b92a8194b1f0a94bbdceb5902af565529276d6eeb8e1a44757510f6",
+    "label_kit/event_inventory/FROZEN_wonyi_geoje.json": "9f01812458de35702f76a5585fbc1cabf8130efd281de23de1bdc4f38a19a12f",
+    "label_kit/event_inventory/FROZEN_wonyi_gyeongju.json": "f2f0283bb82a4dbace5345cbe75b0b6a5abe56337ce73b456735bf7ff8294e4b",
+    "label_kit/event_inventory/jissi_farm.draft.json": "76c46d62d9344d15afeb1946ae2768d3732bd7e3aaec665fc3077d5b5dbf3fd6",
+    "label_kit/event_inventory/kbs_banff.draft.json": "b8c68dcb5f8379b42bf4124fa558af76fef9d4baeec98c817a755575788e13ab",
+    "label_kit/event_inventory/m8c2_3I7oGwk6EaQ.draft.json": "32e8033320d327f466eca1e0fe2d5daa707bee5bb11ebe1321168f5877b43b8c",
+    "label_kit/event_inventory/m8c2_cIxG7OHYMPU.draft.json": "17ec5ce6691dedf42eb4d4907820b8a2a1c537809f01cce19d553ce73711620f",
+    "label_kit/event_inventory/softyeon_ceramics.draft.json": "45e82817d17701a72bc8c3ac5c690110fb290f38acd04969626fde070a7a9bd9",
+    "label_kit/event_inventory/wonyi_geoje.draft.json": "dca5faeec84135b9d94a0fb6d56158d4715b13682037efc60d120c1f6a0c60e1",
+    "label_kit/event_inventory/wonyi_gyeongju.draft.json": "8ebc0883b5aa0d44861d3cb5d3b4eed337614d6696b7c22e40bc33004c708250"
+  },
+  "gyeongju_artifacts": [
+    "results/m8_redesign_r1/report_dev_wonyi_gyeongju.json",
+    "results/m8_redesign_r2/report_dev_wonyi_gyeongju.json"
+  ]
+}

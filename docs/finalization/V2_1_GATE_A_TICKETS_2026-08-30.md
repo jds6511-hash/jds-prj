@@ -305,12 +305,33 @@ S4 no caption (ASR only)       S8 OCR-only assertion
 
 ---
 
-## A-11 research boundary guards
+## A-11 research boundary guards  **COMPLETE**
 
 ```
-green    REG-005 · REG-006 · REG-007 · REG-008 · REG-009 (소스·트리 스캔)
+green    REG-005 ~ REG-009 · REF-003     전부 PASS
 크기     S
+산출물   src/v2_1_guards.py · tests/test_v2_1_guards.py (27 tests)
+         docs/finalization/v2_1_research_boundary_baseline_2026-08-30.json
 ```
+
+가드마다 **실제 트리 통과**와 **합성 위반 검출**을 둘 다 잰다. 통과만 보면
+아무것도 안 하는 가드도 초록이다.
+
+```
+REG-005  BCS 5파일 수정·삭제 → FAIL. 줄바꿈만 바뀐 것은 FAIL 아님
+REG-006  eval_test.json 재작성·삭제 → FAIL
+REG-007  runs/·results/·artifacts/의 m9 산출물 → FAIL. src/m9_*.py는 코드지 흔적 아님
+REG-008  새 라벨 파일·기존 라벨 수정 → FAIL
+REG-009  default provider 변경 · config·산출물의 change-point 표기 → FAIL
+REF-003  기준선에 없던 gyeongju 산출물 → FAIL
+```
+
+**REF-003은 "있으면 실패"가 아니다.** gyeongju는 dev 세트에 있어
+`results/m8_redesign_r{1,2}/report_dev_wonyi_gyeongju.json`이 이미 정상 M8
+산출물로 존재한다. 기준선에 없던 것이 새로 생길 때만 실패한다.
+
+기준선 갱신은 별도 승인 사건이다. 기준선이 낡으면 가드가 통과해도 의미가 없으므로
+`build_baseline(ROOT) == baseline` 자체를 테스트한다.
 
 ```
 BCS protected paths 무변경         src/bcs*.py · scripts/bcs_*.py
@@ -385,10 +406,11 @@ v2.1 Gate A ticket breakdown      DOCUMENTED  ← 이 문서
 v2.1 implementation               IN PROGRESS
 implementation authorization      GRANTED 2026-08-30
 A-01                              COMPLETE   commit 7f5d0f9
-A-01·A-03·A-04·A-05·A-06·A-07·A-08·A-09·A-10   COMPLETE
+A-01·A-03~A-11 (A-02 제외)         COMPLETE  — 10/11 티켓
 matrix §24 첫 묶음                 11/11 PASS
 EVT-001~004 · 007 · 008           6/6 PASS
-NEXT                              A-02 run layout · A-11 research guards
+REG-005~009 · REF-003             7/7 PASS
+NEXT                              A-02 run layout + manifest → Gate A 전체 집계
 ```
 
 착수 승인은 이 문서가 아니라 `V2_1_IMPLEMENTATION_AUTHORIZATION_2026-08-30.md`에
