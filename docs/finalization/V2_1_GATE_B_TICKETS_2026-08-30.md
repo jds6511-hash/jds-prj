@@ -86,7 +86,7 @@ B-02  LLM invocation adapter (A-03 raw 경유)          model-dependent  P1 확�
 B-04  content 병합 · failure isolation                deterministic   COMPLETE
 B-05  support/provenance 확정 바인딩                   deterministic   COMPLETE
 B-06  grounding validator                             deterministic   COMPLETE
-B-07  aar_canonical 스키마 · 직렬화                    deterministic
+B-07  aar_canonical 스키마 · 직렬화                    deterministic   COMPLETE
 B-08  Gate B fixtures + failure injection             deterministic
 B-09  acceptance 매핑 · 집계                          deterministic
 ```
@@ -301,3 +301,47 @@ claim은 그 VALID으로 서고 SUSPECT 인용은 **진단으로 남는다**(사
 ```
 구조 유지 · summary 유지 · dialogue만 제거 · grounding_status는 FAIL로 보존
 ```
+
+
+---
+
+## B-07 aar_canonical 스키마 + 직렬화  **COMPLETE**
+
+```
+green    AAR-001 ~ AAR-006 (P0) · AAR-007 (P1)
+산출물   src/v2_1_aar.py · tests/test_v2_1_aar.py (34 tests)
+```
+
+### 정본은 표현 없이 선다
+
+```
+schema · video_id · run_id · segment_count
+episodes[]  구조 · content_status · summary · dialogue_note
+            provenance · grounding_status · grounding_reasons[]
+quality_notes  결정적 집계만 (SPEC §15)
+```
+
+`highlights` · `synthesis` · `rendered` · `highlight_group` 같은 표현 어휘는
+문서 최상위에서도, episode 안에서도 거부한다. **표현 계층이 무엇을 묶든 canonical
+episode 목록은 고정점이다**(AAR-005).
+
+### AAR-002는 Gate A 검증기를 재사용한다
+
+겹침·빈틈·exactly-once 판정을 다시 구현하지 않고 `validate_partition`을 부른다.
+소스 스캔이 그 재사용을 강제한다 — 두 벌이 되면 언젠가 갈라진다.
+
+### 재실행 동일성은 구조에 대한 것이다
+
+```
+structural_signature   episode_id · start/end_seg · start/end_sec
+포함하지 않는다        run_id · summary · 판정 · 직렬화 바이트
+```
+
+run id가 달라 파일이 달라지는 것은 위반이 아니다. 경계가 움직이면 signature가
+바뀌고, 문장만 바뀌면 그대로다.
+
+### 직렬화기는 재판정하지 않는다
+
+grounding 실패를 누락하거나 통과처럼 정규화하면 GRD-009 위반이다. 실패 사유
+배열까지 그대로 싣고 왕복에서도 보존한다. `validate_grounding`·`anchors_in`이
+소스에 있으면 테스트가 실패한다.
