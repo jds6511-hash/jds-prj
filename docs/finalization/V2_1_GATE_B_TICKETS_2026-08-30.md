@@ -82,7 +82,8 @@ BLOCKER      없음
 ```
 B-01  Episode 구조 · content 스키마 · 코드 파생      deterministic   COMPLETE
 B-03  prompt builder + version/hash                   deterministic   COMPLETE
-B-02  LLM invocation adapter (A-03 raw 경유)          model-dependent  P1 확정 후
+B-02a LLM adapter contract (fake generator 주입)      deterministic   COMPLETE
+B-02b 실제 모델 invocation (lab GPU)                 model-dependent  승인 대기
 B-04  content 병합 · failure isolation                deterministic   COMPLETE
 B-05  support/provenance 확정 바인딩                   deterministic   COMPLETE
 B-06  grounding validator                             deterministic   COMPLETE
@@ -437,3 +438,89 @@ S1에서 한 번 고친 결함(같은 문장 12회 → 채널 전체가 반복 �
 
 재발 방지 테스트를 **문자열 유일성이 아니라 usable 근거 존재**로 다시 썼다 —
 S1의 boilerplate 8건은 의도된 설계(SAN-010 vs SAN-011)라 유일성으로는 잴 수 없다.
+
+
+---
+
+## MODEL-DECISION — **CLOSED (2026-08-30)**
+
+```
+provider   transformers
+model      Qwen/Qwen2.5-7B-Instruct
+```
+
+근거.
+
+```
+저장소의 실제 report_model과 일치 (config.yaml)
+src/llm.py에 transformers 경로가 이미 있다
+ollama provider는 이 저장소에 구현돼 있지 않다
+BCS v0가 쓴 content model과도 같다
+추가 비교 없이 단일 runtime configuration을 고정할 수 있다
+```
+
+**이 결정은 "Qwen2.5가 Qwen3보다 낫다"가 아니다.** 현재 저장소에서 Gate B를 구현
+가능한 단일 runtime을 고정한 것뿐이므로 추가 모델 비교 금지와 충돌하지 않는다.
+
+### FROZEN SPEC §22와의 compatibility mapping
+
+```
+SPEC §22          content: {provider: ollama, model: qwen3:8b, temperature: 0}
+구현              transformers · Qwen/Qwen2.5-7B-Instruct · do_sample=False
+```
+
+**SPEC 본문은 고치지 않는다.** deviation을 여기에 기록한다.
+
+`temperature: 0`은 ollama 표기다. transformers에서 같은 의도를 내는 것은 greedy
+decoding, 즉 `do_sample=False`다. **이름을 억지로 맞추지 않는다** — `temperature=0`
+이라고 적어 두고 실제로는 다른 것을 하는 편이 더 나쁘다. `GenerationConfig`는
+`do_sample`·`max_new_tokens`만 담고 `temperature` 키를 두지 않는다(테스트로 고정).
+
+---
+
+## B-02a LLM adapter contract  **COMPLETE**
+
+```
+산출물   src/v2_1_llm_adapter.py · tests/test_v2_1_llm_adapter.py (27 tests)
+성격     로컬·결정적. 모델을 올리지 않는다
+```
+
+```
+generator 예외        MODEL_FAILURE            raw 없음
+깨진 raw              PARSE_CONTRACT_FAILURE   raw 보존
+빈 출력               EMPTY                    raw 보존
+정상 summary          VALID_PARSE              raw 보존
+```
+
+**호출 실패에는 raw를 만들지 않는다.** 저장할 것이 없기 때문이다 — 빈 파일을 남기면
+"모델이 빈 응답을 줬다"와 구분되지 않는다.
+
+raw는 구간의 시작 segment 번호로 키를 잡는다(구간은 겹치지 않으므로 유일). A-03
+store를 그대로 쓰고 두 번째 store를 만들지 않는다 — 소스 스캔이 강제한다.
+provenance는 raw meta에 남는다: `producer=Qwen/Qwen2.5-7B-Instruct`,
+`producer_version=do_sample=False max_new_tokens=512`.
+
+모델을 올리는 코드(`transformers`·`torch`·`from_pretrained`·`cuda`)가 소스에 있으면
+테스트가 실패한다. 그것은 B-02b다.
+
+---
+
+## B-02b 실제 모델 invocation — 승인 대기
+
+```
+provider   transformers
+model      Qwen/Qwen2.5-7B-Instruct
+환경       lab GPU server (로컬 6GB로는 7B 실행 불가 — config.yaml 실측 주석)
+데이터     Gate B synthetic fixture (S1 · S3 · S4)
+```
+
+하지 않는 것.
+
+```
+Qwen3 비교 · Kanana 비교 · prompt 후보 비교 · temperature sweep
+generation parameter tuning · 성능 ranking · C0 재실험
+official test · M9 · 새 GT
+```
+
+**모델 실험이 아니라 구현 integration 검증이다.** 끝나면 LLM-006·007·010을
+`CONTRACT PASS → PASS`로 승격한다.
