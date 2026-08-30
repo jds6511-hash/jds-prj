@@ -44,10 +44,25 @@ def test_s1_is_exactly_60_seconds():
     assert {seg.duration_sec for seg in s.segments} == {5.0}
 
 
-def test_s1_captions_are_distinct():
-    """같은 캡션을 12번 두면 캡션 채널 전체가 반복 판정에 걸려 기준선이 퇴화한다."""
-    caption = scenario("S1").caption
-    assert len(set(caption.values())) == len(caption)
+@pytest.mark.parametrize("name", ["S1", "S3", "S4"])
+def test_normal_scenarios_keep_usable_evidence(name):
+    """정상 시나리오는 sanitation 후에도 근거가 남아야 한다.
+
+    같은 문장을 12번 두면 채널 전체가 반복 판정(>=8)에 걸려 usable 근거가 0이 된다.
+    S1에서 한 번 겪고 고쳤는데 S3·S4에 같은 결함이 남아 있었다.
+
+    S1의 boilerplate 8건은 의도된 설계다(SAN-010 vs SAN-011). 그래서 문자열
+    유일성이 아니라 **usable이 남는가**로 잰다.
+    """
+    from v2_1_sanitation import classify_channel
+
+    s = scenario(name)
+    for source_type, channel in (("asr", s.asr), ("vlm", s.caption)):
+        if not channel:
+            continue
+        judged = classify_channel(channel, source_type)
+        usable = [j for j in judged.values() if j.usable_for_claims]
+        assert usable, "%s %s 채널에 usable 근거가 없다" % (name, source_type)
 
 
 def test_s2_has_a_short_tail_only():

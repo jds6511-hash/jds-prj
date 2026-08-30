@@ -72,7 +72,7 @@ parse 실패로 재분류하지 않는다.
 
 ```
 BLOCKER      없음
-결정 대기     P1 모델 확정 (B-02 착수 전)
+결정 대기     MODEL-DECISION (B-02 착수 전) — acceptance priority P1과 다른 사안이다
 ```
 
 ---
@@ -91,7 +91,7 @@ B-08  Gate B fixtures + failure injection             deterministic   COMPLETE
 B-09  acceptance 매핑 · 집계                          deterministic
 ```
 
-**B-02만 모델을 쓴다.** 착수 전에 model config · prompt version · raw persistence ·
+**B-02만 모델을 쓴다.** (아래 MODEL-DECISION은 acceptance P1과 무관한 이름이다.) 착수 전에 model config · prompt version · raw persistence ·
 failure classification 넷이 고정돼 있어야 한다.
 
 ---
@@ -393,3 +393,47 @@ segments → raw store → sanitation → timeline → episodes
 문서를 손으로 고쳐 `grounding_status`를 PASS로 바꾸면 **형식 검증만으로는 잡히지
 않는다.** 원본 판정과 대조해야 드러난다. 그 사실 자체를 테스트로 남겼다 —
 `validate_aar`가 만능이라는 오해를 막는다.
+
+
+---
+
+## Gate B P1 정리 (2026-08-30)
+
+matrix 기준 Gate B의 P1은 **7개**다. 이전 보고에서 "P1 3/3"이라고 적은 것은 근거
+없는 수치였다 — 정정한다.
+
+```
+LLM-006  no ASR case          CONTRACT PASS / B-02 integration pending
+LLM-007  no caption case      CONTRACT PASS / B-02 integration pending
+LLM-010  rich dialogue        CONTRACT PASS / B-02 integration pending
+LLM-008  empty evidence       PASS
+GRD-004  unsupported event    WAIVED   (V2_1_P1_WAIVERS.md)
+GRD-007  partial support      PASS
+AAR-007  serialization roundtrip  PASS
+```
+
+### CONTRACT PASS를 PASS와 구분하는 이유
+
+지금 확인할 수 있는 것은 **그 입력을 모델에게 올바르게 전달할 수 있다**까지다.
+B-02가 없으므로 실제 호출 뒤 `summary`가 raw store → parse → merge를 거쳐 돌아오는
+것은 검증할 수 없다. 특히 `LLM-010`을 "프롬프트에 대화가 들어갔다"만으로 닫으면
+표현이 과해진다.
+
+B-02 이후 같은 S1·S3·S4 fixture를 adapter integration test에 태워 확인하고 그때
+`PASS`로 승격한다.
+
+```
+S3 caption-only   정상 summary 또는 명시적 content failure
+S4 ASR-only       정상 summary 또는 명시적 content failure
+S1 rich dialogue  dialogue evidence를 포함한 실제 invocation
+```
+
+산출물: `tests/test_v2_1_llm_p1_contract.py` (13 tests)
+
+### A-10 fixture 정정 — S3 · S4도 퇴화해 있었다
+
+S1에서 한 번 고친 결함(같은 문장 12회 → 채널 전체가 반복 판정에 걸려 usable 근거
+0)이 S3·S4에 그대로 남아 있었다. `LLM-006`·`LLM-007`을 쓰려는 순간 드러났다.
+
+재발 방지 테스트를 **문자열 유일성이 아니라 usable 근거 존재**로 다시 썼다 —
+S1의 boilerplate 8건은 의도된 설계(SAN-010 vs SAN-011)라 유일성으로는 잴 수 없다.

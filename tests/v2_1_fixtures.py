@@ -108,12 +108,28 @@ def _s2() -> Scenario:
 
 
 def _s3() -> Scenario:
-    caption = {i: "산길을 오르는 사람이 보입니다." for i in range(12)}
+    caption = {
+        i: "산길에서 %s 있습니다." % phrase
+        for i, phrase in enumerate(
+            ["오르막을 걷고", "표지판을 보고", "물을 마시고", "바위에 앉아",
+             "능선을 바라보고", "사진을 찍고", "지도를 펴고", "배낭을 고쳐 메고",
+             "계단을 오르고", "정상석 앞에 서", "구름을 내려다보고", "하산을 시작하고"]
+        )
+    }
     return Scenario("S3", "no STT · caption only (3I7류)", _segments(12), {}, caption)
 
 
 def _s4() -> Scenario:
-    asr = {i: "그래서 어제 말한 대로 했어." for i in range(12)}
+    asr = {
+        i: line
+        for i, line in enumerate(
+            ["그래서 어제 말한 대로 했어.", "생각보다 오래 걸리더라.",
+             "이쪽 길이 더 빠를 것 같은데.", "잠깐 쉬었다 가자.",
+             "물 남았어?", "거의 다 온 것 같아.", "여기서 사진 찍자.",
+             "바람이 세네.", "내려갈 때는 저쪽으로 가자.", "발밑 조심해.",
+             "이제 좀 살 것 같다.", "다 왔다."]
+        )
+    }
     return Scenario("S4", "no caption · ASR only", _segments(12), asr, {})
 
 
