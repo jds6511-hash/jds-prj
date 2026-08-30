@@ -201,11 +201,14 @@ usable_for_claims를 downstream이 읽을 수 있게 보존
 
 ---
 
-## A-07 BoundaryProvider interface + registry
+## A-07 BoundaryProvider interface + registry  **COMPLETE**
 
 ```
-green    BPI-001 · BPI-002 · BPI-003 · BPI-004 · BPI-005
+green    BPI-001 ~ BPI-005     전부 PASS
 크기     S
+산출물   src/v2_1_boundary.py · tests/test_v2_1_boundary.py (18 tests)
+범위     provider 선택·identity·config provenance·fallback 금지까지만
+         알고리즘은 A-08. registry는 default 이름만 고정한다
 ```
 
 ```python
@@ -222,12 +225,14 @@ default  fixed_window_v1 (명시적)
 
 ---
 
-## A-08 fixed_window_v1
+## A-08 fixed_window_v1  **COMPLETE**
 
 ```
-green    FW-001 ~ FW-009
+green    FW-001 ~ FW-009 · FW-010(P1)     전부 PASS
 크기     M
 의존     A-07 · A-10
+산출물   src/v2_1_fixed_window.py · tests/test_v2_1_fixed_window.py (22 tests)
+창       60초 (SPEC). segment 귀속 규칙은 "시작 시각이 어느 창인가" 하나뿐
 ```
 
 ```
@@ -240,13 +245,16 @@ zero duration → 명시적 FAIL
 
 ---
 
-## A-09 canonical partition validator
+## A-09 canonical partition validator  **COMPLETE**
 
 ```
-green    CAN-001 ~ CAN-013
+green    CAN-001 ~ CAN-013     전부 PASS
 크기     M
 의존     A-08 · A-10
 근거     ADDENDUM OPEN-2
+산출물   src/v2_1_partition.py · tests/test_v2_1_partition.py (24 tests)
+독립     빌더를 import하지 않는다 — 소스 스캔으로 강제
+         (같은 helper를 공유하면 공통 버그에서 둘이 함께 통과한다)
 ```
 
 ```
@@ -316,6 +324,22 @@ CAN-001 · CAN-002 · CAN-003 · CAN-010 · CAN-011
 RAW-002 · SAN-001 · BPI-005
 ```
 
+**2026-08-30 집계: 11/11 PASS.** 대응 테스트는 각 티켓 산출물에 있다.
+
+```
+RAW-002   test_v2_1_raw_store.py::test_raw_002_raw_survives_parse_failure
+SAN-001   test_v2_1_sanitation.py::test_san_001_instruction_echo_does_not_pass_as_valid
+BPI-005   test_v2_1_boundary.py::test_bpi_005_provider_failure_is_not_replaced
+          test_v2_1_boundary.py::test_bpi_005_unknown_provider_does_not_fall_back
+FW-001    test_v2_1_fixed_window.py::test_fw_001_identical_input_gives_identical_partition
+FW-006    test_v2_1_fixed_window.py::test_fw_006_exact_sixty_seconds_is_one_window
+FW-007    test_v2_1_fixed_window.py::test_fw_007_partial_tail_is_included
+CAN-001~003  test_v2_1_partition.py::test_can_001_to_003_a_correct_partition_passes
+             test_v2_1_partition.py::test_can_003_every_segment_is_assigned_exactly_once
+CAN-010   test_v2_1_partition.py::test_can_010_overlap_injection_fails
+CAN-011   test_v2_1_partition.py::test_can_011_gap_injection_fails
+```
+
 (`SAN-001`은 A-05가 필요하므로 첫 묶음에 넣으려면 A-05를 A-10 앞으로 당긴다.)
 
 ---
@@ -346,8 +370,9 @@ v2.1 Gate A ticket breakdown      DOCUMENTED  ← 이 문서
 v2.1 implementation               IN PROGRESS
 implementation authorization      GRANTED 2026-08-30
 A-01                              COMPLETE   commit 7f5d0f9
-A-03 · A-04 · A-10 · A-05         COMPLETE
-NEXT                              A-07 → A-08 → A-09
+A-01·A-03·A-04·A-05·A-07·A-08·A-09·A-10   COMPLETE
+matrix §24 첫 묶음                 11/11 PASS
+NEXT                              A-06 evidence timeline → A-02 → A-11
 ```
 
 착수 승인은 이 문서가 아니라 `V2_1_IMPLEMENTATION_AUTHORIZATION_2026-08-30.md`에
