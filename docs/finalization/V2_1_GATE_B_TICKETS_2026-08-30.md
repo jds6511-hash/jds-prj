@@ -83,7 +83,7 @@ BLOCKER      없음
 B-01  Episode 구조 · content 스키마 · 코드 파생      deterministic   COMPLETE
 B-03  prompt builder + version/hash                   deterministic   COMPLETE
 B-02  LLM invocation adapter (A-03 raw 경유)          model-dependent  P1 확정 후
-B-04  content 병합 · failure isolation                deterministic
+B-04  content 병합 · failure isolation                deterministic   COMPLETE
 B-05  support/provenance 확정 바인딩                   deterministic
 B-06  grounding validator                             deterministic
 B-07  aar_canonical 스키마 · 직렬화                    deterministic
@@ -157,3 +157,43 @@ raw persistence       확보 (A-03 · source_type=llm)
 failure classification 확보 (A-04)
 model config          미확정  ← P1. B-02 착수 전 hard gate
 ```
+
+
+---
+
+## B-04 content 병합 + failure isolation  **COMPLETE**
+
+```
+green    LLM-009 (model failure isolation)
+산출물   src/v2_1_content.py · tests/test_v2_1_content.py (22 tests)
+```
+
+### 셋을 분리했다
+
+```
+episode structure   언제나 유지 — 모델이 죽어도 id·시간·소속·순서가 남는다
+content state       MODEL_FAILURE · PARSE_CONTRACT_FAILURE · EMPTY · VALID_PARSE
+content payload     summary (+ 선택 dialogue_note · stt_cites)
+```
+
+`CONTENT_STATUSES is PARSE_STATUSES` — A-04와 다른 어휘를 만들지 않는다(테스트로 고정).
+
+### 실패를 내용으로 위장하지 않는다
+
+```
+어떤 실패에도        content is None · status != VALID_PARSE
+필드 누락            PARSE_CONTRACT_FAILURE · reason=missing_summary
+                    (구조는 왔는데 약속한 필드가 없다 — 빈 출력과 다르다)
+placeholder 문구     소스 스캔으로 금지
+```
+
+### 모델이 파생 필드를 덮지 못한다
+
+`episode_id`·`support_span`·`source` 등을 모델이 보내와도 무시하고 `ignored_fields`에
+기록한다. **조용히 버리지 않는다** — 기록이 없으면 프롬프트가 새는 것을 못 본다.
+모르는 필드(`camera_move`)는 파생 필드가 아니므로 hijack으로 세지 않는다(SCH-006).
+
+### 하지 않은 것
+
+grounding을 시작하지 않았다. `usable_for_claims`·`FAIL_*`·named entity·timeline이
+소스에 있으면 테스트가 실패한다. B-05·B-06 소관이다.
