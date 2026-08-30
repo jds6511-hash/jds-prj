@@ -8,6 +8,7 @@ from pathlib import Path
 
 import pytest
 
+from v2_1_scan import code_only
 from v2_1_fixtures import (
     BOILERPLATE,
     CANONICAL_PARTITION,
@@ -132,41 +133,14 @@ def test_corrupt_partitions_differ_from_the_canonical_one():
 
 
 # ── 경계 ─────────────────────────────────────────────────────────────────
-def _code_only(path):
-    """주석·docstring을 뺀 코드 토큰만 잇는다 — 산문이 스캔에 걸리면 안 된다."""
-    import tokenize
-
-    kept = []
-    with open(path, "rb") as handle:
-        for token in tokenize.tokenize(handle.readline):
-            if token.type in (tokenize.COMMENT, tokenize.NL, tokenize.NEWLINE):
-                continue
-            if token.type == tokenize.STRING:
-                stripped = token.line.strip()
-                if stripped.startswith(('"' * 3, "'" * 3)):
-                    continue
-            kept.append(token.string)
-    return " ".join(kept)
-
-
 def test_fixtures_do_not_read_real_pipeline_artifacts():
     """`work/`·`runs/`에 의존하면 인덱스 재생성마다 Gate A가 흔들린다."""
-    code = _code_only(SRC)
+    code = code_only(SRC)
     for forbidden in ("work/", "runs/", "segments.json", "open", "read_text"):
         assert forbidden not in code, "실제 산출물에 의존한다: " + forbidden
 
 
 def test_fixtures_do_not_import_pipeline_modules():
-    code = _code_only(SRC)
+    code = code_only(SRC)
     for forbidden in ("common", "m5_search", "m6_evaluate", "bcs"):
         assert forbidden not in code, "fixture가 파이프라인을 끌어온다: " + forbidden
-
-
-def test_the_code_scan_has_teeth(tmp_path):
-    """스캔이 산문은 무시하되 실제 코드는 잡는지 확인한다."""
-    good = tmp_path / "good.py"
-    good.write_text('"' * 3 + "work/ 이야기." + '"' * 3 + "\nx = 1\n", encoding="utf-8")
-    assert "work/" not in _code_only(good)
-    bad = tmp_path / "bad.py"
-    bad.write_text('p = "work/segments.json"\n', encoding="utf-8")
-    assert "work/" in _code_only(bad)

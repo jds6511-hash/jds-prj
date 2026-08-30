@@ -49,11 +49,15 @@ adapter 밖에서 idx/start/end를 소비하면 contract violation
 
 ---
 
-## A-02 run layout + manifest
+## A-02 run layout + manifest  **COMPLETE**
 
 ```
-green    (Gate A 직접 없음 · RPT-008 · RAW-006의 선행)
+green    RPT-008 interlock · RAW-006 run 분리     PASS
 크기     S
+산출물   src/v2_1_run.py · tests/test_v2_1_run.py (30 tests)
+경로     <root>/<video_id>/<run_id>/manifest.json + 7개 디렉터리
+거부     기존 run_id 재사용 · 미선언 analysis_mode · 빈 provenance 필드
+인터록   analysis_mode != report → RenderRefused. 보정 경로 없음(소스 스캔)
 ```
 
 ```
@@ -380,13 +384,31 @@ CAN-011   test_v2_1_partition.py::test_can_011_gap_injection_fails
 
 ---
 
-## Gate A 완료 조건
+## Gate A 완료 조건 — **2026-08-30 충족**
 
 ```
-위 11개 티켓의 P0 test 전부 PASS
-기존 regression 무회귀 (현재 2,521 passed / 1 skipped)
-tree clean
-LLM·GPU 미사용
+위 11개 티켓의 P0 test 전부 PASS       11/11 티켓 COMPLETE
+기존 regression 무회귀                 2,521 → 2,911 passed / 1 skipped
+tree clean                            OK
+LLM·GPU 미사용                         OK
+```
+
+집계는 `tests/test_v2_1_gate_a.py`가 지도로 들고 있다. acceptance ID → 대응 테스트를
+적고, 그 테스트가 실제로 존재하는지와 **matrix의 Gate A P0·P1이 지도에서 빠지지
+않았는지**를 matrix 원문에서 다시 읽어 검사한다.
+
+```
+Gate A P0    51/51    (matrix 50 + 신설 EVT-008)
+Gate A P1    12/12
+인접 잠금     RPT-008 · REG-005~009 · REF-003
+매핑 노드 실행 108 passed
+```
+
+```
+REG-001  기존 regression 무회귀    PASS
+REG-002  신규 v2.1 P0 suite       PASS
+REG-003  P1 suite                 PASS · waiver 없음
+REG-004  tree clean               PASS
 ```
 
 Gate A 통과는 **canonical core가 섰다**는 뜻일 뿐이다. Gate B(내용·근거) ·

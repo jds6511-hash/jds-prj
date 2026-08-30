@@ -135,6 +135,14 @@ def test_json_array_is_not_a_payload_object(registry):
     assert result.status == PARSE_CONTRACT_FAILURE
 
 
+def test_sch_006_unknown_optional_field_is_preserved(registry):
+    """모르는 필드를 버리면 나중에 그 필드를 쓰는 계층이 조용히 굶는다."""
+    payload = json.dumps({"summary": "요약", "camera_move": "pan"})
+    result = parse_json_payload(payload, registry)
+    assert result.status == VALID_PARSE
+    assert result.value["camera_move"] == "pan"
+
+
 # ── SCH-005 EMPTY ≠ PARSE_FAILED ─────────────────────────────────────────
 @pytest.mark.parametrize("raw", ["", "   ", "\n\t "])
 def test_sch_005_blank_output_is_empty_not_a_failure(registry, raw):
