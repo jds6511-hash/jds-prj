@@ -196,3 +196,23 @@ src/bcs.py                           sanitation · 경계 · 내용 · 검증 ·
 ```
 
 첫 실행 원본을 지우지 않는다 — 결함이 무엇이었는지 대조할 수 있어야 한다.
+
+---
+
+## 적용 범위 — 2026-08-30 좁혀졌다
+
+cross-model diagnostic(`MODEL_DEGENERACY_DIAG_RESULT_2026-08-30.md`)에서 Kanana는
+**caption-only 조건에서 붕괴**했다(chunk3 연속 52개 · 허용 60구간 중 57개 열거).
+Qwen과 정반대 방향이다.
+
+```
+철회   "caption-only boundary가 안정적이다"라는 일반화
+```
+
+> **BCS v0는 Qwen2.5-7B-Instruct와 해당 두 영상 조건에서 유효 문서를 생성한
+> frozen product prototype이다. 후속 cross-model diagnostic에서는 caption-only
+> boundary selection의 안정성이 다른 모델로 일반화되지 않았으므로, 해당 boundary
+> mechanism을 일반적인 사건 검출 방법으로 주장하지 않는다.**
+
+ablation 실측 자체는 유효하다 — 같은 모델·같은 영상에서 채널만 뺐고 조각화가
+사라졌다. 바뀌는 것은 일반화 범위이지 관측이 아니다.

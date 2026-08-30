@@ -148,6 +148,11 @@ greedy(`do_sample=False`)라 같은 조건에서 결정적이지만, **반복 �
 
 ## 6. 이것이 Dual-stream에 주는 함의
 
+> **2026-08-30 추기.** cross-model diagnostic에서 Kanana는 **caption-only에서
+> 붕괴**했다(`MODEL_DEGENERACY_DIAG_RESULT_2026-08-30.md`). 아래 §6의 A는
+> **Qwen에서 관측된 것**이며 다른 모델로 일반화되지 않는다. D는 하지 않기로,
+> C는 다음 후보로 승격됐다(`RESEARCH_TRACK_STATUS_2026-08-30.md`).
+
 Dual-stream의 전제 — **대화의 의미와 사건의 시간 경계를 분리한다** — 는 지지를 받는다.
 자막을 경계 입력에서 빼자 조각화가 사라졌고 서술에 필요한 자막은 서술 pass에 그대로
 남길 수 있다.
