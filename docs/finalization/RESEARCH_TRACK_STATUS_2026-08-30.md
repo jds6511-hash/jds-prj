@@ -16,7 +16,12 @@ BCS v0 core             FROZEN
 BCS HWPX                제품 prototype으로 유지
 caption-only 일반화      철회
 
-NEXT RESEARCH CANDIDATE  deterministic change-point (C)
+NEXT RESEARCH CANDIDATE  deterministic change-point (C)   C0 COMPLETE / MIXED_SIGNAL
+
+v2.1 architecture        FROZEN        v2.1 planning         COMPLETE
+v2.1 acceptance matrix   COMPLETE      Gate A tickets        READY
+v2.1 implementation      DEFERRED      implementation auth   NOT GRANTED
+NEXT PRIORITY            FINAL REPORT / PRESENTATION FINALIZATION
 Dual-stream 전면 (D)     불필요
 모델 추가 비교           불필요
 
@@ -121,7 +126,8 @@ LLM이 찍었던 경계 (Qwen full / Qwen caption-only / Kanana 양쪽 — 이�
 그것이 확인된 뒤에야 outcome-independent rule을 동결하고 Episode generator로
 승격시킨다.
 
-**아직 실행 승인 전이다.** GPU 불필요(기존 `emb_cap.npy` 사용).
+**C0 완료 — `MIXED_SIGNAL`**(`C0_BOUNDARY_SIGNAL_OBSERVATION_2026-08-30.md`).
+임계·최소간격·smoothing을 정하지 않았고 provider를 채택하지 않았다.
 
 ---
 
@@ -152,9 +158,17 @@ Kanana chunk3     6 / run 1            57 / run 52
 `FINAL_REPORT_BASELINE_2026-08-28.md`(ea44f2f)는 08-28 동결본이고 이 트랙들보다
 앞선다. caption-only 일반화 주장이 없어 **모순은 없다.**
 
-다만 08-29~30의 네 트랙(ablation · BCS v0 · HWPX · model diagnostic)이 반영돼
-있지 않다. 반영은 **동결본 수정이 아니라 보충 절 추가**로 해야 하며, 별도 승인
-사건이다.
+08-29~30의 다섯 트랙(ablation · BCS v0 · HWPX · model diagnostic · C0)과 v2.1 설계는
+**companion addendum**으로 추가했다 — `FINAL_REPORT_SUPPLEMENT_2026-08-30.md`.
+
+baseline 자신의 규칙을 따른 것이다.
+
+```
+revision_rule: STEP B 결과는 addendum 또는 revision으로 별도 추가한다.
+               이 baseline의 본문을 다시 쓰지 않는다.
+```
+
+**동결본은 한 글자도 고치지 않았다.**
 
 ---
 
@@ -167,5 +181,11 @@ BCS_CORE_FREEZE_2026-08-29                               동결 + 정본/표현 
 MODEL_DEGENERACY_DIAG_PREREG_2026-08-29                  사전등록
 MODEL_DIAG_PREREG_AMENDMENT_2026-08-30                   비교 모델 교체 (실행 전)
 MODEL_DEGENERACY_DIAG_RESULT_2026-08-30                  Case 4
+C0_BOUNDARY_SIGNAL_OBSERVATION_2026-08-30                MIXED_SIGNAL
+REPORT_FORMAT_REFERENCE_2026-08-30                       사람 작성 형식 참조 (GT 아님)
+V2_1_ARCHITECTURE_SPEC / IMPLEMENTATION_PLAN             v2.1 설계·계획
+V2_1_ACCEPTANCE_MATRIX / DECISION_ADDENDUM               수용 기준 · 결정 이력
+V2_1_GATE_A_TICKETS / P1_WAIVERS                         티켓 · waiver 대장
+FINAL_REPORT_SUPPLEMENT_2026-08-30                       baseline companion addendum
 RESEARCH_TRACK_STATUS_2026-08-30                         이 문서
 ```

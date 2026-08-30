@@ -1,0 +1,323 @@
+{
+  "schema_version": "final_report_supplement_facts_v1",
+  "purpose": "08-28 baseline companion addendum의 수치가 실제 artifact와 같은지 검증",
+  "relation_to_baseline": "companion addendum · baseline 본문 미수정 (baseline revision_rule 준수)",
+  "new_experiment_run": 5,
+  "new_metric_computed": 0,
+  "recomputed_official_metrics": 0,
+  "frozen_artifacts_modified": 0,
+  "status": {
+    "official_M8": "evaluation COMPLETE · acceptance FAIL (불변)",
+    "M9": "HOLD · 미실행",
+    "official_test": "UNOPENED",
+    "M8_C2_labels": "RETIRED_FROM_FUTURE_EVALUATION",
+    "bcs_v0": "FROZEN",
+    "v2_1_implementation": "DEFERRED · authorization NOT GRANTED",
+    "caption_change_point": "CANDIDATE · 미채택",
+    "push": "NO"
+  },
+  "forbidden_wording": [
+    "M8 실패가 해결됐다",
+    "BCS가 M8을 대체한다",
+    "caption-only가 안정적이다",
+    "change-point가 검증됐다",
+    "boundary detection이 해결됐다",
+    "v2.1이 구현됐다",
+    "검색 성능이 개선됐다",
+    "사람 작성 보고서를 기준으로 평가했다",
+    "Kanana가 더 낫다",
+    "일반적인 사건 검출 방법이다"
+  ],
+  "facts": [
+    {
+      "fact_id": "ablation_atomic_full",
+      "value": 66,
+      "source_path": "runs/m8_hier/m8_hier_boundary_ablation/compare_wonyi_geoje.json",
+      "note": "full input Atomic 수"
+    },
+    {
+      "fact_id": "ablation_atomic_caponly",
+      "value": 32,
+      "source_path": "runs/m8_hier/m8_hier_boundary_ablation/compare_wonyi_geoje.json",
+      "note": "caption-only Atomic 수"
+    },
+    {
+      "fact_id": "ablation_1seg_full",
+      "value": 25,
+      "source_path": "runs/m8_hier/m8_hier_boundary_ablation/compare_wonyi_geoje.json",
+      "note": "full 1구간 사건"
+    },
+    {
+      "fact_id": "ablation_1seg_caponly",
+      "value": 1,
+      "source_path": "runs/m8_hier/m8_hier_boundary_ablation/compare_wonyi_geoje.json",
+      "note": "caption-only 1구간 사건"
+    },
+    {
+      "fact_id": "ablation_median_full",
+      "value": 2,
+      "source_path": "runs/m8_hier/m8_hier_boundary_ablation/compare_wonyi_geoje.json",
+      "note": "full 길이 중앙값"
+    },
+    {
+      "fact_id": "ablation_median_caponly",
+      "value": 7,
+      "source_path": "runs/m8_hier/m8_hier_boundary_ablation/compare_wonyi_geoje.json",
+      "note": "caption-only 길이 중앙값"
+    },
+    {
+      "fact_id": "ablation_consecutive_run_full",
+      "value": 26,
+      "source_path": "runs/m8_hier/m8_hier_boundary_ablation/compare_wonyi_geoje.json",
+      "note": "full 최장 연속 정수 run"
+    },
+    {
+      "fact_id": "ablation_consecutive_runs_caponly",
+      "value": 0,
+      "source_path": "runs/m8_hier/m8_hier_boundary_ablation/compare_wonyi_geoje.json",
+      "note": "caption-only 연속 정수 군집 수"
+    },
+    {
+      "fact_id": "ablation_shared_boundaries",
+      "value": 16,
+      "source_path": "runs/m8_hier/m8_hier_boundary_ablation/compare_wonyi_geoje.json",
+      "note": "두 실행 공통 경계"
+    },
+    {
+      "fact_id": "bcs_3i7_episodes",
+      "value": 18,
+      "source_path": "runs/bcs/bcs_v0_reparsed/m8c2_3I7oGwk6EaQ.json",
+      "note": "3I7 Episode 수"
+    },
+    {
+      "fact_id": "bcs_geoje_episodes",
+      "value": 32,
+      "source_path": "runs/bcs/bcs_v0_reparsed/wonyi_geoje.json",
+      "note": "geoje Episode 수"
+    },
+    {
+      "fact_id": "bcs_3i7_status",
+      "value": "OK",
+      "source_path": "runs/bcs/bcs_v0_reparsed/m8c2_3I7oGwk6EaQ.json",
+      "note": "3I7 prototype_status"
+    },
+    {
+      "fact_id": "bcs_geoje_status",
+      "value": "OK",
+      "source_path": "runs/bcs/bcs_v0_reparsed/wonyi_geoje.json",
+      "note": "geoje prototype_status"
+    },
+    {
+      "fact_id": "bcs_3i7_stt_excluded",
+      "value": 29,
+      "source_path": "runs/bcs/bcs_v0_reparsed/m8c2_3I7oGwk6EaQ.json",
+      "note": "3I7 오염 판정 제외 발화"
+    },
+    {
+      "fact_id": "bcs_3i7_dialogue_notes",
+      "value": 0,
+      "source_path": "runs/bcs/bcs_v0_reparsed/m8c2_3I7oGwk6EaQ.json",
+      "note": "3I7 dialogue_note 수"
+    },
+    {
+      "fact_id": "bcs_geoje_dialogue_notes",
+      "value": 14,
+      "source_path": "runs/bcs/bcs_v0_reparsed/wonyi_geoje.json",
+      "note": "geoje dialogue_note 수"
+    },
+    {
+      "fact_id": "bcs_geoje_dropped_claims",
+      "value": 2,
+      "source_path": "runs/bcs/bcs_v0_reparsed/wonyi_geoje.json",
+      "note": "geoje 근거 미달 폐기"
+    },
+    {
+      "fact_id": "diag_current_full_chunk5_bnd",
+      "value": 42,
+      "source_path": "runs/model_diag/geoje_boundary_degeneracy.json",
+      "note": "current/full/chunk5 경계 수"
+    },
+    {
+      "fact_id": "diag_current_full_chunk5_run1",
+      "value": 26,
+      "source_path": "runs/model_diag/geoje_boundary_degeneracy.json",
+      "note": "current/full/chunk5 최장 연속 정수"
+    },
+    {
+      "fact_id": "diag_comparison_caption_only_chunk3_bnd",
+      "value": 57,
+      "source_path": "runs/model_diag/geoje_boundary_degeneracy.json",
+      "note": "comparison/caption_only/chunk3 경계 수"
+    },
+    {
+      "fact_id": "diag_comparison_caption_only_chunk3_run1",
+      "value": 52,
+      "source_path": "runs/model_diag/geoje_boundary_degeneracy.json",
+      "note": "comparison/caption_only/chunk3 최장 연속 정수"
+    },
+    {
+      "fact_id": "diag_comparison_caption_only_chunk5_bnd",
+      "value": 40,
+      "source_path": "runs/model_diag/geoje_boundary_degeneracy.json",
+      "note": "comparison/caption_only/chunk5 경계 수"
+    },
+    {
+      "fact_id": "diag_comparison_caption_only_chunk5_run1",
+      "value": 23,
+      "source_path": "runs/model_diag/geoje_boundary_degeneracy.json",
+      "note": "comparison/caption_only/chunk5 최장 연속 정수"
+    },
+    {
+      "fact_id": "diag_current_full_chunk3_bnd",
+      "value": 5,
+      "source_path": "runs/model_diag/geoje_boundary_degeneracy.json",
+      "note": "current/full/chunk3 경계 수"
+    },
+    {
+      "fact_id": "diag_current_full_chunk3_run1",
+      "value": 1,
+      "source_path": "runs/model_diag/geoje_boundary_degeneracy.json",
+      "note": "current/full/chunk3 최장 연속 정수"
+    },
+    {
+      "fact_id": "diag_comparison_full_chunk3_bnd",
+      "value": 6,
+      "source_path": "runs/model_diag/geoje_boundary_degeneracy.json",
+      "note": "comparison/full/chunk3 경계 수"
+    },
+    {
+      "fact_id": "diag_comparison_full_chunk3_run1",
+      "value": 1,
+      "source_path": "runs/model_diag/geoje_boundary_degeneracy.json",
+      "note": "comparison/full/chunk3 최장 연속 정수"
+    },
+    {
+      "fact_id": "diag_comparison_full_chunk5_bnd",
+      "value": 5,
+      "source_path": "runs/model_diag/geoje_boundary_degeneracy.json",
+      "note": "comparison/full/chunk5 경계 수"
+    },
+    {
+      "fact_id": "diag_comparison_full_chunk5_run1",
+      "value": 1,
+      "source_path": "runs/model_diag/geoje_boundary_degeneracy.json",
+      "note": "comparison/full/chunk5 최장 연속 정수"
+    },
+    {
+      "fact_id": "diag_current_caption_only_chunk3_bnd",
+      "value": 2,
+      "source_path": "runs/model_diag/geoje_boundary_degeneracy.json",
+      "note": "current/caption_only/chunk3 경계 수"
+    },
+    {
+      "fact_id": "diag_current_caption_only_chunk3_run1",
+      "value": 1,
+      "source_path": "runs/model_diag/geoje_boundary_degeneracy.json",
+      "note": "current/caption_only/chunk3 최장 연속 정수"
+    },
+    {
+      "fact_id": "diag_current_caption_only_chunk5_bnd",
+      "value": 10,
+      "source_path": "runs/model_diag/geoje_boundary_degeneracy.json",
+      "note": "current/caption_only/chunk5 경계 수"
+    },
+    {
+      "fact_id": "diag_current_caption_only_chunk5_run1",
+      "value": 1,
+      "source_path": "runs/model_diag/geoje_boundary_degeneracy.json",
+      "note": "current/caption_only/chunk5 최장 연속 정수"
+    },
+    {
+      "fact_id": "diag_all_parse_ok",
+      "value": [
+        "PARSE_OK"
+      ],
+      "source_path": "runs/model_diag/geoje_boundary_degeneracy.json",
+      "note": "모든 arm parse 상태"
+    },
+    {
+      "fact_id": "diag_max_jaccard",
+      "value": 0.1905,
+      "source_path": "runs/model_diag/geoje_boundary_degeneracy.json",
+      "note": "위치 안정성 최대 Jaccard"
+    },
+    {
+      "fact_id": "diag_comparison_model",
+      "value": "kakaocorp/kanana-1.5-8b-instruct-2505",
+      "source_path": "runs/model_diag/geoje_boundary_degeneracy.json",
+      "note": "비교 모델"
+    },
+    {
+      "fact_id": "diag_compat_shims",
+      "value": [],
+      "source_path": "runs/model_diag/geoje_boundary_degeneracy.json",
+      "note": "적용된 호환 패치"
+    },
+    {
+      "fact_id": "c0_wonyi_geoje_chunk3_mean",
+      "value": 0.3137,
+      "source_path": "runs/c0/c0_boundary_signal.json",
+      "note": "wonyi_geoje_chunk3 인접거리 평균"
+    },
+    {
+      "fact_id": "c0_wonyi_geoje_chunk3_p90",
+      "value": 0.4742,
+      "source_path": "runs/c0/c0_boundary_signal.json",
+      "note": "wonyi_geoje_chunk3 인접거리 p90"
+    },
+    {
+      "fact_id": "c0_wonyi_geoje_chunk3_peaks",
+      "value": 10,
+      "source_path": "runs/c0/c0_boundary_signal.json",
+      "note": "wonyi_geoje_chunk3 국소 peak 수"
+    },
+    {
+      "fact_id": "c0_wonyi_geoje_chunk5_mean",
+      "value": 0.2815,
+      "source_path": "runs/c0/c0_boundary_signal.json",
+      "note": "wonyi_geoje_chunk5 인접거리 평균"
+    },
+    {
+      "fact_id": "c0_wonyi_geoje_chunk5_p90",
+      "value": 0.3859,
+      "source_path": "runs/c0/c0_boundary_signal.json",
+      "note": "wonyi_geoje_chunk5 인접거리 p90"
+    },
+    {
+      "fact_id": "c0_wonyi_geoje_chunk5_peaks",
+      "value": 12,
+      "source_path": "runs/c0/c0_boundary_signal.json",
+      "note": "wonyi_geoje_chunk5 국소 peak 수"
+    },
+    {
+      "fact_id": "c0_3I7oGwk6EaQ_seg000_059_mean",
+      "value": 0.3053,
+      "source_path": "runs/c0/c0_boundary_signal.json",
+      "note": "3I7oGwk6EaQ_seg000_059 인접거리 평균"
+    },
+    {
+      "fact_id": "c0_3I7oGwk6EaQ_seg000_059_p90",
+      "value": 0.4752,
+      "source_path": "runs/c0/c0_boundary_signal.json",
+      "note": "3I7oGwk6EaQ_seg000_059 인접거리 p90"
+    },
+    {
+      "fact_id": "c0_3I7oGwk6EaQ_seg000_059_peaks",
+      "value": 13,
+      "source_path": "runs/c0/c0_boundary_signal.json",
+      "note": "3I7oGwk6EaQ_seg000_059 국소 peak 수"
+    },
+    {
+      "fact_id": "c0_max_peak_hit_share",
+      "value": 0.214,
+      "source_path": "runs/c0/c0_boundary_signal.json",
+      "note": "LLM 경계의 peak 적중 최대"
+    },
+    {
+      "fact_id": "c0_embedding_model",
+      "value": "nlpai-lab/KURE-v1",
+      "source_path": "runs/c0/c0_boundary_signal.json",
+      "note": "임베딩 모델"
+    }
+  ]
+}

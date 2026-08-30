@@ -5,6 +5,7 @@
 상태   OPEN-1 · 2 · 5 · 6 · 7  CLOSED
        OPEN-3 · 4 는 앞서 본문 반영 완료
        OPEN-9  CLOSED (2026-08-30 · 아래)
+       OPEN-8  CLOSED — DEFER UNTIL FINALIZATION DELIVERABLES COMPLETE
 ```
 
 ---
@@ -335,6 +336,60 @@ SCH-009  PARSE_CONTRACT_FAILURE는 sanitation/content failure와 독립 class
 RPT-008  analysis_mode != report → final report renderer가 렌더 거부
 SAN-010  자연스러운 강조·반복 발화 보존 · 반복만으로 evidence 삭제 금지
 ```
+
+---
+
+## OPEN-8 — Implementation Start Timing  **CLOSED**
+
+```
+v2.1 implementation start = DEFERRED
+```
+
+### A-01 착수 조건
+
+```
+1  최종 보고서 본문·보충 절 확정
+2  발표 자료가 필요하다면 발표 자료 확정
+3  FINALIZATION deliverable에 추가 코드 근거가 필요하지 않음을 확인
+4  별도 implementation authorization 명시
+```
+
+### 그 전까지
+
+```
+source implementation   NO
+Gate A execution        NO
+ticket 수정             문서 결함 수정에 한해서만 허용
+새 실험 · 튜닝 · GT 생성  NO
+```
+
+### 근거
+
+지금 병목은 compute가 아니라 **주의력과 변경 관리**다. Gate A가 LLM/GPU 없이
+저비용인 것은 맞지만, v2.1은 이미 spec·plan·matrix·addendum·tickets까지 닫혀 있어
+**A-01을 지금 시작해도 최종 보고서의 핵심 결론을 강화하지 않는다.**
+
+반대로 구현을 열면 코드 diff · 새 테스트 결과 · 구현 중 발견되는 contract
+correction이 생기고, 그것이 **08-28 baseline을 다시 건드릴 유인**이 된다.
+
+지금 Gate A를 PASS해도 보고서에서 말할 수 있는 것은 "canonical core software
+contract가 구현됐다"뿐이다.
+
+```
+M8 FAIL        불변
+M9             HOLD
+provider 채택   없음
+성능 개선 입증   없음
+```
+
+그런데 finalization 전에 새 코드를 여는 것은 **"어디까지가 연구 결과이고 어디부터가
+후속 설계인가"의 경계를 흐린다.**
+
+### 이것은 우선순위 강등이 아니다
+
+sequencing 결정이다. 진입 비용은 이미 충분히 낮췄다 — A-01부터 11개 티켓 · 의존
+순서 · P0 gate가 정리돼 있어 finalization 이후에는 **연구 판단을 다시 하지 않고
+바로 구현으로 전환**할 수 있다.
 
 ---
 
