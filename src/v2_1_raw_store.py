@@ -7,7 +7,7 @@ invocation → raw atomic write → parse → parsed artifact
 ```
 
 parse는 raw를 소비할 뿐 고치지 않는다. parse가 실패해도 raw는 그대로 남고,
-어느 modality의 어느 segment에서 나온 출력인지 역추적할 수 있다.
+어느 source_type의 어느 segment에서 나온 출력인지 역추적할 수 있다.
 
 2026-08-29에 파서 결함 둘로 dialogue_note 14건이 잘못 버려지고 raw JSON이 요약
 필드에 실려 들어갔다. 저장된 raw가 있었기 때문에 GPU 없이 재파싱으로 복구할 수
@@ -26,15 +26,19 @@ from pathlib import Path
 from typing import Any, Callable, Iterator
 
 
-MODALITIES = ("asr", "vlm", "ocr", "llm")
+SOURCE_TYPES = ("asr", "vlm", "ocr", "llm")
+
+#: evidence modality — 사람이 관측한 채널. Evidence Timeline(A-06)은 **이것만** 쓴다.
+#: `llm`은 downstream producer이지 evidence modality가 아니다. 축이 다르다.
+EVIDENCE_MODALITIES = ("asr", "vlm", "ocr")
 
 
 class RawStoreError(RuntimeError):
     """raw store 계약 위반."""
 
 
-class UnknownModalityError(RawStoreError):
-    """선언되지 않은 modality. 확장은 계약 변경이므로 티켓이 필요하다."""
+class UnknownSourceTypeError(RawStoreError):
+    """선언되지 않은 source_type. 확장은 계약 변경이므로 티켓이 필요하다."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -44,7 +48,7 @@ class RawRecord:
     run_id: str
     video_id: str
     segment_id: int
-    modality: str
+    source_type: str
     producer: str
     producer_version: str
     raw_path: Path
@@ -89,8 +93,8 @@ class RawStore:
     `root` 아래 구조만 이 모듈이 소유한다.
 
     ```
-    <root>/<modality>/seg<segment_id:06d>.raw        payload 바이트 그대로
-    <root>/<modality>/seg<segment_id:06d>.meta.json  추적 정보
+    <root>/<source_type>/seg<segment_id:06d>.raw        payload 바이트 그대로
+    <root>/<source_type>/seg<segment_id:06d>.meta.json  추적 정보
     ```
     """
 
@@ -104,32 +108,33 @@ class RawStore:
         self.video_id = video_id
 
     # ── 경로 ─────────────────────────────────────────────────────────────
-    def _check_modality(self, modality: str) -> None:
-        if modality not in MODALITIES:
-            raise UnknownModalityError(
-                "unknown modality %r (declared: %s)" % (modality, ", ".join(MODALITIES))
+    def _check_source_type(self, source_type: str) -> None:
+        if source_type not in SOURCE_TYPES:
+            raise UnknownSourceTypeError(
+                "unknown source_type %r (declared: %s)"
+                % (source_type, ", ".join(SOURCE_TYPES))
             )
 
-    def _stem(self, modality: str, segment_id: int) -> Path:
-        self._check_modality(modality)
+    def _stem(self, source_type: str, segment_id: int) -> Path:
+        self._check_source_type(source_type)
         if isinstance(segment_id, bool) or not isinstance(segment_id, int):
             raise RawStoreError("segment_id must be an int")
         if segment_id < 0:
             raise RawStoreError("segment_id must be >= 0")
-        return self.root / modality / ("seg%06d" % segment_id)
+        return self.root / source_type / ("seg%06d" % segment_id)
 
     # ── 쓰기 ─────────────────────────────────────────────────────────────
     def store(
         self,
         *,
         segment_id: int,
-        modality: str,
+        source_type: str,
         producer: str,
         producer_version: str,
         payload: str | bytes,
     ) -> RawRecord:
         """raw payload를 원자적으로 저장한다. 덮어쓰기는 거부한다."""
-        stem = self._stem(modality, segment_id)
+        stem = self._stem(source_type, segment_id)
         if not str(producer).strip():
             raise RawStoreError("producer is required")
         if not str(producer_version).strip():
@@ -150,7 +155,7 @@ class RawStore:
             "run_id": self.run_id,
             "video_id": self.video_id,
             "segment_id": segment_id,
-            "modality": modality,
+            "source_type": source_type,
             "producer": producer,
             "producer_version": producer_version,
             "raw_bytes": len(data),
@@ -163,7 +168,7 @@ class RawStore:
             run_id=self.run_id,
             video_id=self.video_id,
             segment_id=segment_id,
-            modality=modality,
+            source_type=source_type,
             producer=producer,
             producer_version=producer_version,
             raw_path=raw_path,
@@ -171,17 +176,17 @@ class RawStore:
         )
 
     # ── 읽기 ─────────────────────────────────────────────────────────────
-    def load(self, modality: str, segment_id: int) -> RawRecord:
-        stem = self._stem(modality, segment_id)
+    def load(self, source_type: str, segment_id: int) -> RawRecord:
+        stem = self._stem(source_type, segment_id)
         meta_path = stem.with_suffix(".meta.json")
         if not meta_path.is_file():
-            raise RawStoreError("no raw artifact for %s seg#%s" % (modality, segment_id))
+            raise RawStoreError("no raw artifact for %s seg#%s" % (source_type, segment_id))
         meta = json.loads(meta_path.read_text(encoding="utf-8"))
         return RawRecord(
             run_id=meta["run_id"],
             video_id=meta["video_id"],
             segment_id=meta["segment_id"],
-            modality=meta["modality"],
+            source_type=meta["source_type"],
             producer=meta["producer"],
             producer_version=meta["producer_version"],
             raw_path=stem.with_suffix(".raw"),
@@ -189,14 +194,14 @@ class RawStore:
         )
 
     def records(self) -> Iterator[RawRecord]:
-        """저장 순서가 아니라 modality·segment_id 순으로 낸다."""
-        for modality in MODALITIES:
-            directory = self.root / modality
+        """저장 순서가 아니라 source_type·segment_id 순으로 낸다."""
+        for source_type in SOURCE_TYPES:
+            directory = self.root / source_type
             if not directory.is_dir():
                 continue
             for meta_path in sorted(directory.glob("seg*.meta.json")):
                 segment_id = int(meta_path.name[3:9])
-                yield self.load(modality, segment_id)
+                yield self.load(source_type, segment_id)
 
     # ── 저장 후 파싱 ─────────────────────────────────────────────────────
     def store_then_parse(
@@ -204,7 +209,7 @@ class RawStore:
         parse_fn: Callable[[str], Any],
         *,
         segment_id: int,
-        modality: str,
+        source_type: str,
         producer: str,
         producer_version: str,
         payload: str,
@@ -216,7 +221,7 @@ class RawStore:
         """
         record = self.store(
             segment_id=segment_id,
-            modality=modality,
+            source_type=source_type,
             producer=producer,
             producer_version=producer_version,
             payload=payload,

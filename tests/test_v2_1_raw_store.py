@@ -8,7 +8,7 @@ acceptance 넷.
 ```
 raw가 parse 전에 실제로 durable하게 저장되는가
 parse 실패 후에도 원본 그대로 남는가
-source modality와 segment_id를 역추적할 수 있는가
+source_type과 segment_id를 역추적할 수 있는가
 parser가 raw artifact를 덮어쓰거나 정상화하지 않는가
 ```
 
@@ -21,9 +21,11 @@ from pathlib import Path
 import pytest
 
 from v2_1_raw_store import (
+    EVIDENCE_MODALITIES,
+    SOURCE_TYPES,
     RawStore,
     RawStoreError,
-    UnknownModalityError,
+    UnknownSourceTypeError,
 )
 
 MALFORMED = '{"episodes": [ {"summary": "잘린 JSON'
@@ -37,7 +39,7 @@ def store(tmp_path):
 
 def _put(store, **kw):
     kw.setdefault("segment_id", 55)
-    kw.setdefault("modality", "vlm")
+    kw.setdefault("source_type", "vlm")
     kw.setdefault("producer", "Qwen2.5-VL-3B")
     kw.setdefault("producer_version", "4bit-P0")
     kw.setdefault("payload", "seg#55 화면: 두 여성이 해변에 앉아 있습니다.")
@@ -58,7 +60,7 @@ def test_raw_001_raw_is_on_disk_before_parse_runs(store):
     outcome = store.store_then_parse(
         parse,
         segment_id=55,
-        modality="vlm",
+        source_type="vlm",
         producer="Qwen2.5-VL-3B",
         producer_version="4bit-P0",
         payload="seg#55 화면: 두 여성이 해변에 앉아 있습니다.",
@@ -87,7 +89,7 @@ def test_raw_002_raw_survives_parse_failure(store):
         raise ValueError("Expecting ',' delimiter")
 
     outcome = store.store_then_parse(
-        parse, segment_id=7, modality="llm", producer="Qwen2.5-7B-Instruct",
+        parse, segment_id=7, source_type="llm", producer="Qwen2.5-7B-Instruct",
         producer_version="bf16", payload=MALFORMED,
     )
     assert outcome.status == "PARSE_FAILED"
@@ -101,7 +103,7 @@ def test_raw_002_failure_is_not_silently_swallowed(store):
         raise ValueError("boom")
 
     outcome = store.store_then_parse(
-        parse, segment_id=7, modality="llm", producer="p", producer_version="v",
+        parse, segment_id=7, source_type="llm", producer="p", producer_version="v",
         payload=MALFORMED,
     )
     assert outcome.error and outcome.error_type == "ValueError"
@@ -110,24 +112,25 @@ def test_raw_002_failure_is_not_silently_swallowed(store):
 
 def test_raw_002_empty_payload_is_not_a_parse_failure(store):
     """빈 출력과 파싱 실패는 다르다 (SCH-005의 선행)."""
-    record = _put(store, segment_id=8, modality="asr", payload="")
+    record = _put(store, segment_id=8, source_type="asr", payload="")
     assert record.read_bytes() == b""
     assert store.load("asr", 8).read_text() == ""
 
 
-# ── RAW-003 modality identifiable ────────────────────────────────────────
-def test_raw_003_modality_is_recorded_and_traceable(store):
-    for modality in ("asr", "vlm", "ocr", "llm"):
-        _put(store, segment_id=1, modality=modality, payload="payload-" + modality)
-    for modality in ("asr", "vlm", "ocr", "llm"):
-        record = store.load(modality, 1)
-        assert record.modality == modality
-        assert record.read_text() == "payload-" + modality
+# ── RAW-003 source type identifiable ─────────────────────────────────────
+def test_raw_003_source_type_is_recorded_and_traceable(store):
+    for source_type in ("asr", "vlm", "ocr", "llm"):
+        _put(store, segment_id=1, source_type=source_type,
+             payload="payload-" + source_type)
+    for source_type in ("asr", "vlm", "ocr", "llm"):
+        record = store.load(source_type, 1)
+        assert record.source_type == source_type
+        assert record.read_text() == "payload-" + source_type
 
 
-def test_raw_003_unknown_modality_is_rejected(store):
-    with pytest.raises(UnknownModalityError):
-        _put(store, modality="subtitle")
+def test_raw_003_unknown_source_type_is_rejected(store):
+    with pytest.raises(UnknownSourceTypeError):
+        _put(store, source_type="subtitle")
 
 
 # ── RAW-004 segment provenance ───────────────────────────────────────────
@@ -146,7 +149,7 @@ def test_raw_004_provenance_survives_a_fresh_store_object(tmp_path):
     assert record.video_id == "wonyi_geoje"
     assert record.run_id == "run-001"
     assert record.segment_id == 55
-    assert record.modality == "vlm"
+    assert record.source_type == "vlm"
 
 
 def test_raw_004_missing_record_is_an_explicit_error(store):
@@ -198,16 +201,16 @@ def test_parser_cannot_normalize_the_raw_artifact(store):
     payload = '  {"a": 1}\r\n\r\n  '
 
     store.store_then_parse(
-        json.loads, segment_id=3, modality="llm", producer="p",
+        json.loads, segment_id=3, source_type="llm", producer="p",
         producer_version="v", payload=payload,
     )
     assert store.load("llm", 3).read_bytes() == payload.encode("utf-8")
 
 
 def test_raw_bytes_are_unchanged_by_a_failed_parse(store):
-    before = _put(store, segment_id=9, modality="llm", payload=MALFORMED).read_bytes()
+    before = _put(store, segment_id=9, source_type="llm", payload=MALFORMED).read_bytes()
     store.store_then_parse(
-        json.loads, segment_id=10, modality="llm", producer="p",
+        json.loads, segment_id=10, source_type="llm", producer="p",
         producer_version="v", payload=MALFORMED,
     )
     assert store.load("llm", 9).read_bytes() == before
@@ -230,3 +233,12 @@ def test_a03_does_not_implement_a02_run_layout():
 def test_a03_does_not_touch_legacy_segment_schema():
     src = SRC.read_text(encoding="utf-8")
     assert not re.search(r"""\[\s*["'](?:idx|start|end)["']\s*\]""", src)
+
+
+def test_llm_is_a_producer_not_an_evidence_modality():
+    """축이 다르다 — Evidence Timeline(A-06)이 source_type을 통째로 재사용하면
+    LLM 출력이 evidence처럼 섞인다. 그것을 막는 것이 EVIDENCE_MODALITIES다."""
+    assert "llm" in SOURCE_TYPES
+    assert "llm" not in EVIDENCE_MODALITIES
+    assert set(EVIDENCE_MODALITIES) < set(SOURCE_TYPES)
+    assert EVIDENCE_MODALITIES == ("asr", "vlm", "ocr")
