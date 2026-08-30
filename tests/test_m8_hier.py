@@ -556,3 +556,72 @@ def test_narrate도_호출직후_저장한다():
     i_parse = src.index("H.parse_narration(r)")
     assert i_raw < i_parse
     assert "ckpt_path" in src
+
+
+# ── caption-only ablation (2026-08-29 사전등록) ─────────────────────────
+# 사전등록: docs/finalization/M8_HIER_BOUNDARY_ABLATION_PREREG_2026-08-29.md
+# 조작은 **입력 한 줄의 형식뿐**이다. 규칙·파서·청킹은 동결한다.
+SUBSEGS = [{"idx": i, "start": i * 5, "end": i * 5 + 5,
+            "subtitle": f"발화 {i}", "caption": f"장면 {i}"} for i in range(0, 60)]
+
+
+def test_기본값은_자막을_그대로_넣는다():
+    """기존 경로 불변 — 플래그 없이 부르면 이전과 같다."""
+    p = H.build_atomic_boundary_prompt(SUBSEGS[:5])
+    assert p == H.build_atomic_boundary_prompt(SUBSEGS[:5], caption_only=False)
+    assert "발화 3" in p and "자막:" in p
+
+
+def test_caption_only는_자막을_제거한다():
+    p = H.build_atomic_boundary_prompt(SUBSEGS[:5], caption_only=True)
+    assert "자막:" not in p
+    for i in range(5):
+        assert f"발화 {i}" not in p
+        assert f"장면 {i}" in p
+
+
+def test_caption_only도_경계_규칙과_범위_지시는_동일하다():
+    """조작은 입력 채널이다. 규칙을 고치면 무엇을 잰 것인지 말할 수 없다."""
+    full = H.build_atomic_boundary_prompt(SUBSEGS[:5])
+    cap = H.build_atomic_boundary_prompt(SUBSEGS[:5], caption_only=True)
+    assert H._ATOMIC_BOUNDARY_RULES in full
+    assert H._ATOMIC_BOUNDARY_RULES in cap
+    assert "고를 수 있는 구간 번호는 0부터 4까지다." in cap
+
+
+def test_caption_only_머리말은_자막을_약속하지_않는다():
+    """입력에 없는 필드를 머리말이 약속하면 별개의 교란이 된다."""
+    cap = H.build_atomic_boundary_prompt(SUBSEGS[:5], caption_only=True)
+    head = cap.split(H._ATOMIC_BOUNDARY_RULES)[0]
+    assert "자막" not in head
+
+
+def test_caption_only는_서술_프롬프트에_영향을_주지_않는다():
+    """조작 대상은 경계 pass뿐이다."""
+    assert "자막:" in H.build_describe_prompt(SUBSEGS[:5])
+    assert "자막:" in H.build_narration_prompt(SUBSEGS[:5])
+
+
+def test_ablation_스크립트는_경계_pass만_돈다():
+    src = (ROOT / "scripts" / "m8_hier_boundary_ablation.py").read_text(
+        encoding="utf-8")
+    for bad in ("build_describe_prompt", "build_major_boundary_prompt",
+                "build_narration_prompt", "build_major_spans"):
+        assert bad not in src, bad
+    assert "caption_only=True" in src
+
+
+def test_ablation_스크립트는_기존_산출물에_쓰지_않는다():
+    src = (ROOT / "scripts" / "m8_hier_boundary_ablation.py").read_text(
+        encoding="utf-8")
+    assert "m8_hier_boundary_ablation" in src
+    assert "m8_hier_prototype_geoje" not in src
+    assert "report.json" in src        # 공식 경로 차단 assert가 살아 있다
+
+
+def test_ablation_스크립트는_raw를_parse보다_먼저_저장한다():
+    """2026-08-29 사고 2건 — 실패가 저장보다 앞에 오면 원인을 못 밝힌다."""
+    src = (ROOT / "scripts" / "m8_hier_boundary_ablation.py").read_text(
+        encoding="utf-8")
+    body = src.split("def run(")[1]
+    assert body.index("save(") < body.index("parse_boundaries")

@@ -52,9 +52,17 @@ def _obj(raw: str):
     return d if isinstance(d, dict) else None
 
 
-def _fmt_seg(s: dict) -> str:
+def _fmt_seg(s: dict, caption_only: bool = False) -> str:
+    """`caption_only`는 2026-08-29 사전등록 ablation의 **조작 그 자체**다.
+
+    자막 입력이 과도한 경계 생성에 기여하는지를 같은 영상 안에서 보려고 자막
+    필드만 뺀다. 기본값은 OFF — 기존 경로는 바뀌지 않는다.
+    """
+    cap = (s.get('caption') or '').strip()
+    if caption_only:
+        return f"seg#{s['idx']} 화면: {cap}"
     return (f"seg#{s['idx']} 자막: {(s.get('subtitle') or '').strip() or '(없음)'} "
-            f"| 화면: {(s.get('caption') or '').strip()}")
+            f"| 화면: {cap}")
 
 
 # ── PASS 1: Atomic 경계 선택 ────────────────────────────────────────────
@@ -79,13 +87,18 @@ _ATOMIC_BOUNDARY_RULES = """
 """
 
 
-def build_atomic_boundary_prompt(chunk: list) -> str:
-    """구간 원문만 준다. 정답 사건 수·GT·기존 M8 결과를 넣지 않는다."""
+def build_atomic_boundary_prompt(chunk: list, caption_only: bool = False) -> str:
+    """구간 원문만 준다. 정답 사건 수·GT·기존 M8 결과를 넣지 않는다.
+
+    `caption_only`에서는 머리말도 함께 바뀐다 — 입력에 없는 자막을 머리말이
+    약속하면 없는 필드를 찾는 별개의 교란이 생긴다. 규칙 본문은 동결이다.
+    """
     lo, hi = chunk[0]["idx"], chunk[-1]["idx"]
-    return (f"{_SYSTEM}\n\n아래는 영상의 seg#{lo}부터 seg#{hi}까지 구간별 자막·"
-            f"화면 설명이다.\n{_ATOMIC_BOUNDARY_RULES}\n"
+    what = "화면 설명" if caption_only else "자막·화면 설명"
+    return (f"{_SYSTEM}\n\n아래는 영상의 seg#{lo}부터 seg#{hi}까지 구간별 {what}"
+            f"이다.\n{_ATOMIC_BOUNDARY_RULES}\n"
             f"고를 수 있는 구간 번호는 {lo}부터 {hi}까지다.\n입력:\n"
-            + "\n".join(_fmt_seg(s) for s in chunk))
+            + "\n".join(_fmt_seg(s, caption_only) for s in chunk))
 
 
 def _as_int(x):
