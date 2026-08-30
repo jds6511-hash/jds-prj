@@ -184,12 +184,27 @@ OCR        기본 UNKNOWN · usable_for_claims false
 
 ---
 
-## A-06 evidence timeline
+## A-06 evidence timeline  **COMPLETE**
 
 ```
-green    EVT-001 · EVT-002 · EVT-003 · EVT-004 · EVT-007
+green    EVT-001 · EVT-002 · EVT-003 · EVT-004 · EVT-007 · EVT-008   전부 PASS
 크기     M
+산출물   src/v2_1_timeline.py · tests/test_v2_1_timeline.py (24 tests)
+역할     옮기는 계층이다 — eligibility를 다시 계산하지 않는다
+         입력 판정과 timeline ref의 status·preserved·usable_for_claims를 직접 대조
 ```
+
+### EVT-008 (신설 · P0)
+
+```
+LLM source_type record supplied to timeline builder
+  → reject by contract
+  → never appears as evidence modality
+```
+
+matrix 본문에는 없던 항목이다. A-03이 의도적으로 만든
+`SOURCE_TYPES ⊃ EVIDENCE_MODALITIES` 경계를 **실제 소비 계층에서** 검증한다.
+`llm`은 raw store의 저장 키이지 근거 채널이 아니다.
 
 ```
 segment_id · start_sec · end_sec · asr_refs[] · caption_refs[] · ocr_refs[] · status
@@ -370,9 +385,10 @@ v2.1 Gate A ticket breakdown      DOCUMENTED  ← 이 문서
 v2.1 implementation               IN PROGRESS
 implementation authorization      GRANTED 2026-08-30
 A-01                              COMPLETE   commit 7f5d0f9
-A-01·A-03·A-04·A-05·A-07·A-08·A-09·A-10   COMPLETE
+A-01·A-03·A-04·A-05·A-06·A-07·A-08·A-09·A-10   COMPLETE
 matrix §24 첫 묶음                 11/11 PASS
-NEXT                              A-06 evidence timeline → A-02 → A-11
+EVT-001~004 · 007 · 008           6/6 PASS
+NEXT                              A-02 run layout · A-11 research guards
 ```
 
 착수 승인은 이 문서가 아니라 `V2_1_IMPLEMENTATION_AUTHORIZATION_2026-08-30.md`에

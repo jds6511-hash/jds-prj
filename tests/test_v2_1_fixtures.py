@@ -43,6 +43,12 @@ def test_s1_is_exactly_60_seconds():
     assert {seg.duration_sec for seg in s.segments} == {5.0}
 
 
+def test_s1_captions_are_distinct():
+    """같은 캡션을 12번 두면 캡션 채널 전체가 반복 판정에 걸려 기준선이 퇴화한다."""
+    caption = scenario("S1").caption
+    assert len(set(caption.values())) == len(caption)
+
+
 def test_s2_has_a_short_tail_only():
     s = scenario("S2")
     assert s.duration_sec == 62.0

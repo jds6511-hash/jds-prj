@@ -21,9 +21,9 @@ NEXT RESEARCH CANDIDATE  deterministic change-point (C)   C0 COMPLETE / MIXED_SI
 v2.1 architecture        FROZEN        v2.1 planning         COMPLETE
 v2.1 acceptance matrix   COMPLETE      Gate A tickets        READY
 v2.1 implementation      IN PROGRESS   implementation auth   GRANTED 2026-08-30
-Gate A                   IN PROGRESS   8/11 티켓 COMPLETE · 첫 묶음 11/11 PASS
-남은 티켓                 A-06 evidence timeline · A-02 run layout · A-11 guards
-NEXT TICKET              A-06 evidence timeline
+Gate A                   IN PROGRESS   9/11 티켓 COMPLETE · 첫 묶음 11/11 PASS
+남은 티켓                 A-02 run layout · A-11 research guards
+NEXT TICKET              A-02 또는 A-11
 FINAL REPORT / PRESENTATION FINALIZATION   보류 (종료 아님)
 Dual-stream 전면 (D)     불필요
 모델 추가 비교           불필요
