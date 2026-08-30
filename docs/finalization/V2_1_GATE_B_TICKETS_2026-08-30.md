@@ -87,7 +87,7 @@ B-04  content 병합 · failure isolation                deterministic   COMPLET
 B-05  support/provenance 확정 바인딩                   deterministic   COMPLETE
 B-06  grounding validator                             deterministic   COMPLETE
 B-07  aar_canonical 스키마 · 직렬화                    deterministic   COMPLETE
-B-08  Gate B fixtures + failure injection             deterministic
+B-08  Gate B fixtures + failure injection             deterministic   COMPLETE
 B-09  acceptance 매핑 · 집계                          deterministic
 ```
 
@@ -345,3 +345,51 @@ run id가 달라 파일이 달라지는 것은 위반이 아니다. 경계가 �
 grounding 실패를 누락하거나 통과처럼 정규화하면 GRD-009 위반이다. 실패 사유
 배열까지 그대로 싣고 왕복에서도 보존한다. `validate_grounding`·`anchors_in`이
 소스에 있으면 테스트가 실패한다.
+
+
+---
+
+## B-08 Gate B fixtures + failure injection  **COMPLETE**
+
+```
+산출물   tests/v2_1_gate_b.py (공용 파이프라인) · tests/test_v2_1_failure_injection.py
+         28 tests
+```
+
+단위 테스트는 자기 계층 안에서만 본다. 여기서는 **사슬 전체를 통과시킨 뒤** 결함이
+어디서 잡히는지 본다 — 계층 사이의 틈으로 새는 결함은 이 방식으로만 보인다.
+
+```
+segments → raw store → sanitation → timeline → episodes
+        → content → binding → grounding → aar_canonical
+```
+
+모델 출력 자리에는 payload 사전·문자열·주입된 실패를 넣는다. LLM은 부르지 않는다.
+
+### 고정한 주입 9종
+
+```
+1  모델 실패가 구조를 지우는가              구조·id·경계 유지 · summary는 None
+2  parse 실패가 EMPTY로 위장되는가          PARSE_CONTRACT_FAILURE로 남는다
+3  모델의 파생 필드가 채택되는가            무시 + ignored_fields에 기록
+4  SUSPECT만으로 통과하는가                 FAIL_INELIGIBLE_SUPPORT
+5  VALID 옆 SUSPECT가 필수 근거가 되는가    VALID만 남겨도 PASS · SUSPECT만 남기면 FAIL
+6  없는 참조가 다른 segment로 보정되는가    segment_id=None 유지 · FAIL_REFERENCE
+7  직렬화가 실패를 통과로 정규화하는가      상태·사유가 원본과 일치
+8  표현 필드가 정본에 섞이는가              최상위·episode 안 모두 거부
+9  partition 일부가 빠지는가                누락·겹침·빈틈 전부 거부
+```
+
+주입 목록과 테스트의 대응을 `_COVERAGE` 지도로 들고, 지도가 어긋나면 먼저 깨진다.
+
+### 주입 5의 설계
+
+"VALID이 있으니 통과"가 맞는지 확인하려면 **SUSPECT를 빼도 통과하는지** 봐야 한다.
+그래서 같은 claim을 `[9]`(VALID만)과 `[6]`(SUSPECT만)으로 두 번 돌려 전자는 PASS,
+후자는 FAIL인 것을 함께 잰다.
+
+### 주입 7의 한계를 적는다
+
+문서를 손으로 고쳐 `grounding_status`를 PASS로 바꾸면 **형식 검증만으로는 잡히지
+않는다.** 원본 판정과 대조해야 드러난다. 그 사실 자체를 테스트로 남겼다 —
+`validate_aar`가 만능이라는 오해를 막는다.
