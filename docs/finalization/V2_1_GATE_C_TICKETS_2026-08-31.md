@@ -376,3 +376,96 @@ population rule                canonical episode summary들의 결정적 조합�
 
 renderer 간 identity consistency는 C-06 · C-07에서 다시 확인한다. C-03은 그것을
 **가능하게 하는 lineage contract**를 닫는 단계다.
+
+---
+
+## C-04 Global Synthesis contract  **COMPLETE**
+
+```
+산출물   src/v2_1_synthesis.py
+         tests/test_v2_1_synthesis.py (23 tests)
+```
+
+```python
+build_synthesis(presented, lineage) -> GlobalSynthesis
+validate_synthesis(synthesis, presented) -> list[str]
+```
+
+**LLM을 부르지 않는다.** 여기서 생성을 다시 열면 Gate B에서 만든 grounding 경계를
+표현 단계에서 되돌린다. 하는 일은 canonical에 남은 summary의 결정적 재배열·구조화
+뿐이고, 모델 관련 식별자(`transformers · ollama · generator · prompt · model ·
+invoke`)가 소스에 없다는 것을 AST로 검사한다.
+
+### dialogue를 아예 쓰지 않는다
+
+GLS-006의 가장 확실한 형태다. **통과한 dialogue조차 입력으로 쓰지 않는다.**
+
+```
+쓰면            "어떤 dialogue는 되고 어떤 것은 안 되는가"가 표현 계층의 판단이 된다
+안 쓰면          grounding이 제거한 dialogue가 종합에 섞일 경로 자체가 없다
+```
+
+### 자격
+
+```
+usable   grounding_status가 FAIL로 시작하지 않고
+         content_status == VALID_PARSE 이고
+         summary가 비어 있지 않다
+```
+
+실패한 episode는 `excluded_episode_ids`에 남는다 — 버리지 않고, 제외됐다는 사실을
+기록한다.
+
+### 결정적 roll-up
+
+```
+overview     usable summary를 canonical 시간순으로 잇는다
+analysis     lineage 한 줄당 "H01 (EP01 · EP02): <summary> / <summary>"
+             연결어·인과·평가를 만들지 않는다 — 구조화만 한다
+conclusion   "확인된 구간 N개를 시간순으로 정리하면 처음은 «…», 마지막은 «…»다."
+```
+
+`analysis`가 새 claim을 만들기 가장 쉬운 자리다. 그래서 문장을 합성하지 않고
+**출처 표시 + 기존 summary 나열**로 고정했다.
+
+### 상태 (GLS-007)
+
+```
+SUFFICIENT            제외된 episode 없음
+LIMITED               일부만 usable
+NO_RELIABLE_CONTENT   usable 0 — overview·analysis 비우고 결론을 적지 않는다
+                      "근거가 확인된 구간이 없어 결론을 적지 않는다."
+```
+
+### GLS-004 — 완전 검증을 주장하지 않는다
+
+```
+항상 함께 싣는다   limitation = "semantic entailment not automatically verified"
+금지               fully grounded · fully verified · entailment verified
+                   fact checked · 완전 검증 · 전부 검증
+```
+
+만들지 않는 것에 더해, 들어오면 `validate_synthesis`가 보고한다.
+
+### 주입 시험 8종
+
+```
+FAIL episode를 종합에 포함        RED
+dialogue를 종합에 사용            RED
+source 없이 종합문 생성 허용       RED
+보증 문구 검사 제거               RED
+limitation 생략                  RED
+근거 0인데 구체 결론 생성          RED
+canonical 순서 대신 입력 순서      RED
+자격 검사 없이 source 승인         RED
+```
+
+두 항목(`source 없이 …` · `근거 0인데 …`)은 **처음에 GREEN이었다.** 테스트가 실패
+사유를 특정하지 않아 다른 검사에 가려졌던 것이다. 코드가 아니라 **테스트를 좁혀**
+다시 RED로 만들었다.
+
+### 향후 LLM 도입은 별도 결정
+
+deterministic synthesis가 사람이 읽기에 너무 기계적이라는 문제가 생기면 그때
+**별도 티켓 · 별도 prompt contract · 별도 containment contract**로 세운다. Gate C
+안에 몰래 넣지 않는다.
