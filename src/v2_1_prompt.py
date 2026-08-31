@@ -28,7 +28,7 @@ import hashlib
 import json
 from dataclasses import dataclass
 
-PROMPT_VERSION = "episode_content_v1"
+PROMPT_VERSION = "episode_content_v2"
 
 _CLAIM_HEADER = "[근거]"
 _CONTEXT_HEADER = "[참고]"
@@ -49,6 +49,10 @@ CONTRACT = {
         "format": "JSON",
         "required": ["summary"],
         "optional": ["dialogue_note", "stt_cites"],
+        # 값 예시를 두지 않는다. 2026-08-31 B-02b에서 모델이 예시의 자리표시자
+        # "선택"을 dialogue_note 값으로 그대로 베꼈다(OPEN-10). 선택 항목은
+        # 비워 두는 것이 아니라 **키 자체를 넣지 않는 것**으로 표현한다.
+        "omit_when_absent": ["dialogue_note", "stt_cites"],
     },
     "evidence_blocks": {
         "claim": "usable_for_claims == true",
@@ -140,9 +144,11 @@ def build_episode_prompt(episode, timeline, store, include_context_only: bool = 
         ]
     parts += [
         "",
-        "출력은 JSON 하나다.",
-        '{"summary": "한 문장", "dialogue_note": "선택", "stt_cites": [구간 번호]}',
-        "summary만 필수다. dialogue_note와 stt_cites는 없으면 비운다.",
+        "출력은 JSON 객체 하나다. 다른 말을 덧붙이지 않는다.",
+        "쓸 수 있는 키는 셋뿐이다.",
+        "- summary: 필수. 한 문장.",
+        "- dialogue_note: 인용할 발화가 있을 때만. 없으면 키를 넣지 않는다.",
+        "- stt_cites: 인용한 구간 번호의 배열. 없으면 키를 넣지 않는다.",
     ]
     return PromptBundle(
         prompt_version=PROMPT_VERSION,

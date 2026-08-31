@@ -58,7 +58,8 @@ def stocked(tmp_path):
 
 # ── version / hash ───────────────────────────────────────────────────────
 def test_prompt_version_is_declared():
-    assert PROMPT_VERSION == "episode_content_v1"
+    """v1 → v2: OPEN-10 자리표시자 제거로 계약이 바뀌었다."""
+    assert PROMPT_VERSION == "episode_content_v2"
 
 
 def test_hash_is_stable_across_calls():
@@ -122,6 +123,31 @@ def test_llm_002_prompt_does_not_ask_for_derived_fields(stocked):
                    "end_sec", "segment_ids", "title", "key_actions", "actors",
                    "importance", "uncertainty_note"):
         assert banned not in text, "모델에게 파생 필드를 요구한다: " + banned
+
+
+# ── OPEN-10 자리표시자 복사 (2026-08-31 B-02b 실측) ──────────────────────
+def test_open_10_no_copyable_literal_placeholder(stocked):
+    """모델이 예시의 자리표시자를 그대로 베꼈다 — dialogue_note = "선택".
+
+    복사할 문자열을 아예 두지 않는다. 키 이름과 설명만 남긴다.
+    """
+    store, timeline, episodes = stocked
+    text = build_episode_prompt(episodes[0], timeline, store).text
+    assert not re.search(r'"(?:summary|dialogue_note)"\s*:\s*"[^"]+"', text)
+
+
+def test_open_10_optional_fields_are_omitted_not_filled(stocked):
+    """빈 값을 넣으라고 하면 빈 값 자체가 내용처럼 남는다."""
+    store, timeline, episodes = stocked
+    text = build_episode_prompt(episodes[0], timeline, store).text
+    assert "넣지 않는다" in text
+
+
+def test_open_10_the_three_keys_are_still_named(stocked):
+    store, timeline, episodes = stocked
+    text = build_episode_prompt(episodes[0], timeline, store).text
+    for key in ("summary", "dialogue_note", "stt_cites"):
+        assert key in text
 
 
 def test_llm_002_prompt_states_the_output_shape(stocked):
