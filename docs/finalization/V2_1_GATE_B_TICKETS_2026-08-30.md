@@ -89,7 +89,7 @@ B-05  support/provenance 확정 바인딩                   deterministic   COMP
 B-06  grounding validator                             deterministic   COMPLETE
 B-07  aar_canonical 스키마 · 직렬화                    deterministic   COMPLETE
 B-08  Gate B fixtures + failure injection             deterministic   COMPLETE
-B-09  acceptance 매핑 · 집계                          deterministic
+B-09  acceptance 매핑 · 집계                          deterministic   COMPLETE
 ```
 
 **B-02만 모델을 쓴다.** (아래 MODEL-DECISION은 acceptance P1과 무관한 이름이다.) 착수 전에 model config · prompt version · raw persistence ·
@@ -603,3 +603,83 @@ LLM-010  CONTRACT PASS → PASS
 ```
 
 Gate B P1: **6 PASS · 1 WAIVED(GRD-004)**.
+
+
+---
+
+## B-09 Gate B 집계 — **두 층으로 나눈 판정**
+
+```
+산출물   tests/test_v2_1_gate_b_acceptance.py (37 tests)
+```
+
+### 층 1 — matrix acceptance
+
+```
+Gate B P0    22/22   전부 테스트로 덮임
+Gate B P1     7      6 PASS + 1 WAIVED (GRD-004)
+regression   무회귀 · tree clean · P1 waiver 규칙 만족
+
+MATRIX ACCEPTANCE = PASS
+```
+
+지도는 matrix 원문을 다시 읽어 P0·P1이 빠지지 않았는지 검사하고, waiver로 닫은
+항목은 **테스트가 없어야 하며 대장에 등록돼 있어야** 통과한다. skip은 waiver가
+아니다.
+
+`LLM-006 · 007 · 010`은 테스트만이 아니라 **B-02b 실행 산출물**로도 확인한다 —
+`runs/v2_1/b02b_integration_run2.json`의 세 case가 `VALID_PARSE`이고 구조가
+유지됐는지, 결정된 모델·decoding으로 돌았는지, 모델 비교 흔적이 없는지를 본다.
+
+### 층 2 — closure
+
+```
+GATE B CLOSURE = BLOCKED
+사유   OPEN-10  prompt example placeholder leakage
+```
+
+**테스트가 전부 green인데 알려진 결함을 안고 완료를 선언하지 않는다.** 두 층을
+같은 것으로 취급하면 "green이니 끝"이라는 잘못된 종결이 남는다.
+
+---
+
+## OPEN-10 — Prompt example placeholder leakage  **OPEN**
+
+```
+관측     dialogue_note = "선택"                  (B-02b run 2 · S1 · S4)
+원인     출력 예시의 placeholder literal을 모델이 그대로 복사
+         {"summary": "한 문장", "dialogue_note": "선택", "stt_cites": [구간 번호]}
+위험     실제 dialogue 근거가 없는 구간에도 가짜 dialogue_note가 canonical content로
+         남을 수 있다
+분류     implementation defect
+         모델 비교 아님 · prompt 품질 튜닝 아님
+전례     3B를 기각했던 "예시 문장 복사 오염"과 같은 종류
+증거     runs/v2_1/b02b_integration_run2.json · runs/v2_1/b02b_raw/run2_S{1,4}.raw
+```
+
+**GRD-004 waiver로 덮지 않는다.** 그 waiver는 일반적인 semantic entailment 한계에
+대한 것이고, 이것은 우리가 프롬프트에 직접 넣어 둔 문자열이 복사되는 **재현 가능한
+producer-side contamination**이다. 범위를 넓혀 먹이면 waiver가 너무 많은 것을 덮는다.
+
+### 수정 원칙 — prompt tuning 실험이 아니다
+
+```
+한다     재현된 literal placeholder leakage 제거만
+         (예시에서 자연어 자리표시자 제거 · optional field를 생략 가능 구조로 표현)
+         같은 S1 · S3 · S4 세 건 재실행으로 오염이 사라졌는지 확인
+안 한다   prompt 후보 비교 · 문장 품질 평가 · generation 파라미터 조정
+         모델 비교 · 새 fixture · official test
+```
+
+`prompt_hash`가 바뀌므로 그 사실도 기록한다.
+
+---
+
+## 실행 절차 결함 (software acceptance 아님)
+
+```
+사고    재동기화 rm -rf가 서버 작업 트리 안의 run 1 결과 JSON을 함께 지웠다
+영향    raw는 work 디렉터리에서 회수 · run1·run2 raw가 바이트 동일해 손실은 상태 요약뿐
+분류    execution-procedure defect
+규칙    산출물은 checkout 트리 밖에 쓰거나, 동기화 전에 회수 완료를 확인한다
+```
