@@ -7,9 +7,10 @@ matrix P0   22   전부 테스트로 덮인다
 matrix P1    7   6 PASS + 1 WAIVED (GRD-004)
 ```
 
-**matrix 통과와 Gate B 완료 선언은 다르다.** 이 파일은 앞의 것만 검증한다. 뒤의
-것은 미해결 결함(OPEN-10 placeholder leakage)이 남아 있어 `CLOSURE BLOCKED`이고,
-그 사실도 여기서 문서와 대조해 고정한다.
+**matrix 통과와 Gate B 완료 선언은 다르다.** 두 층 모두 문서와 대조해 고정한다.
+closure는 2026-08-31에 `BLOCKED`(OPEN-10)에서 `COMPLETE`로 바뀌었고, **푼 근거와
+막았던 기록이 둘 다 남아 있는지**까지 검사한다. 잔여 결함 OPEN-11은 non-blocking
+으로 등록되며 waiver로 덮이지 않아야 한다.
 
 지도가 코드·문서와 어긋나면 여기서 먼저 깨진다.
 """
@@ -172,11 +173,41 @@ def test_matrix_acceptance_is_recorded_as_pass():
     assert "MATRIX ACCEPTANCE = PASS" in tickets
 
 
-def test_gate_b_closure_is_blocked_by_a_known_defect():
-    """테스트가 전부 green인데 알려진 결함을 안고 완료 선언하면 안 된다."""
+def test_gate_b_closure_is_recorded_as_complete():
+    tickets = TICKETS.read_text(encoding="utf-8")
+    assert "GATE B CLOSURE = COMPLETE" in tickets
+    assert "OPEN-10 — Prompt example placeholder leakage  **CLOSED" in tickets
+
+
+def test_the_earlier_blocked_verdict_is_not_erased():
+    """판정을 바꿀 때 앞의 판정을 지우면 왜 막혔는지가 사라진다."""
     tickets = TICKETS.read_text(encoding="utf-8")
     assert "GATE B CLOSURE = BLOCKED" in tickets
-    assert "OPEN-10" in tickets
+    assert "2026-08-31 이전" in tickets
+
+
+def test_open_11_is_registered_as_a_known_non_blocking_defect():
+    """닫으면서 남은 결함을 참고사항으로 낮추지 않는다."""
+    tickets = TICKETS.read_text(encoding="utf-8")
+    assert "OPEN-11" in tickets
+    assert "NON-BLOCKING" in tickets
+    assert "runs/v2_1/b02b_integration_run3.json" in tickets
+
+
+def test_open_11_is_not_folded_into_the_grd_004_waiver():
+    register = WAIVERS.read_text(encoding="utf-8")
+    assert "OPEN-11" not in register
+
+
+def test_gate_c_must_not_consume_pre_grounding_content():
+    """OPEN-11이 non-blocking인 전제는 grounding을 지나야 밖으로 나간다는 것이다.
+
+    Gate C가 B-06 이전 content를 주워 가면 그 전제가 깨진다. 요구를 문서에
+    고정해 두고, Gate C 착수 때 실제 interlock으로 구현한다.
+    """
+    tickets = TICKETS.read_text(encoding="utf-8")
+    assert "presentation input에 재등장 금지" in tickets
+    assert "pre-grounding" in tickets
 
 
 def test_open_10_is_not_folded_into_the_grd_004_waiver():
@@ -191,7 +222,11 @@ def test_open_10_is_not_folded_into_the_grd_004_waiver():
 
 
 def test_the_defect_is_reproducible_from_the_stored_run():
-    """주장이 아니라 산출물로 남아 있어야 한다."""
+    """주장이 아니라 산출물로 남아 있어야 한다.
+
+    OPEN-10을 닫아도 **결함이 있었다는 증거는 지우지 않는다** — run 2 산출물이
+    사라지면 "고쳤다"를 검증할 방법이 없다(대조는 open10 follow-up이 한다).
+    """
     report = json.loads(INTEGRATION.read_text(encoding="utf-8"))
     notes = [c["dialogue_note"] for c in report["cases"]]
     assert "선택" in notes, "결함 증거가 산출물에 없다"

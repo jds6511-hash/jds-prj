@@ -22,12 +22,16 @@ v2.1 architecture        FROZEN        v2.1 planning         COMPLETE
 v2.1 acceptance matrix   COMPLETE      Gate A tickets        READY
 v2.1 implementation      IN PROGRESS   implementation auth   GRANTED 2026-08-30
 Gate A                   COMPLETE      11/11 티켓 · P0 51/51 · P1 12/12
-Gate B                   MATRIX ACCEPTANCE = PASS   P0 22/22 · P1 6 PASS + 1 WAIVED
-                         CLOSURE = BLOCKED          OPEN-10 placeholder leakage
+Gate B                   COMPLETE  (2026-08-31)
+                         MATRIX ACCEPTANCE = PASS   P0 22/22 · P1 6 PASS + 1 WAIVED
+                         CLOSURE = COMPLETE         OPEN-10 CLOSED
                          B-02b 실모델 integration 완료 (Qwen2.5-7B · 결정적 출력)
+OPEN-11                  OPEN · NON-BLOCKING  producer optional-field confusion
+                         containment 검증됨 (grounding이 canonical 승격 차단)
+                         Gate C는 pre-grounding content 소비 금지 interlock 필수
 연구 경계 가드            REG-005~009 · REF-003 기계 검증 (합성 위반 포함)
-NEXT                     Gate B(내용·근거) 착수 여부는 별도 판단
-                         IMPLEMENTATION_COMPLETE는 Gate B·C·D까지 통과해야 한다
+Gate C                   READY TO START   (정본 ↔ 표현 분리)
+NEXT                     Gate C 착수 · IMPLEMENTATION_COMPLETE는 C·D까지 통과해야 한다
 FINAL REPORT / PRESENTATION FINALIZATION   보류 (종료 아님)
 Dual-stream 전면 (D)     불필요
 모델 추가 비교           불필요

@@ -633,17 +633,26 @@ MATRIX ACCEPTANCE = PASS
 
 ### 층 2 — closure
 
+판정을 두 번 했다. **앞의 판정을 지우지 않는다** — 무엇이 왜 막혔다가 왜 풀렸는지가
+기록으로 남아야 한다.
+
 ```
-GATE B CLOSURE = BLOCKED
-사유   OPEN-10  prompt example placeholder leakage
+2026-08-31 이전   GATE B CLOSURE = BLOCKED
+                  사유   OPEN-10  prompt example placeholder leakage
+
+2026-08-31        GATE B CLOSURE = COMPLETE
+                  근거   OPEN-10 CLOSED (run 3에서 정의된 결함 제거 확인)
+                  잔여   OPEN-11 producer optional-field confusion · NON-BLOCKING
 ```
 
 **테스트가 전부 green인데 알려진 결함을 안고 완료를 선언하지 않는다.** 두 층을
-같은 것으로 취급하면 "green이니 끝"이라는 잘못된 종결이 남는다.
+같은 것으로 취급하면 "green이니 끝"이라는 잘못된 종결이 남는다. BLOCKED를 푼 것은
+테스트가 green이어서가 아니라 **결함이 canonical에 도달하지 않음을 산출물로
+확인했기 때문**이다.
 
 ---
 
-## OPEN-10 — Prompt example placeholder leakage  **수정 완료 · 판정 대기**
+## OPEN-10 — Prompt example placeholder leakage  **CLOSED (2026-08-31)**
 
 ```
 관측     dialogue_note = "선택"                  (B-02b run 2 · S1 · S4)
@@ -736,15 +745,77 @@ S1   FAIL_UNSUPPORTED    dialogue 제거 · summary 유지
 
 검증: `tests/test_v2_1_open10_followup.py` (12 tests · 저장된 산출물만 사용)
 
-### 판정은 사용자에게 넘긴다
+### 판정 — 사용자 결정 (2026-08-31) · 관점 A
+
+두 관점을 놓고 사용자가 **A**를 택했다.
 
 ```
 관점 A   OPEN-10의 정의된 결함은 제거됐고 새 오염은 canonical에 도달하지 않는다
-         → OPEN-10 CLOSED · 필드 혼동은 OPEN-11로 관찰 등록 · Gate B closure 가능
+         → OPEN-10 CLOSED · 필드 혼동은 OPEN-11로 관찰 등록 · Gate B closure   [채택]
 
 관점 B   같은 producer-side contamination이 재발했으므로 원인이 남아 있다
-         → CLOSURE 계속 BLOCKED · 프롬프트 최소 수정 1회 추가 승인
+         → CLOSURE 계속 BLOCKED · 프롬프트 최소 수정 1회 추가 승인            [기각]
 ```
 
-**자동으로 A를 택하지 않는다.** 프롬프트를 반복 수정하기 시작하면 prompt tuning
-실험이 되고, 그 경계는 사용자가 유보한 판단이다.
+근거는 Gate B의 실패 기준이 **"모델 출력이 항상 깨끗한가"가 아니라 "잘못된 출력이
+canonical 사실로 승격되는가"**라는 것이다.
+
+```
+run 2   producer contamination → grounding이 못 잡음 → canonical 오염 가능   BLOCKER
+run 3   producer contamination → grounding이 잡음 → dialogue 제거
+                                → summary · structure 유지                   containment works
+```
+
+**종료 조건 때문에도 A다.** "필드 혼동이 전혀 없어질 때까지"를 목표로 삼으면 Gate B가
+contract 검증에서 prompt-quality optimization으로 변질된다. 그 경계는 이 트랙에서
+반복해 지켜 온 것이다.
+
+---
+
+## OPEN-11 — Producer optional-field confusion  **OPEN · NON-BLOCKING**
+
+OPEN-10을 닫으면서 함께 관찰된 것을 **참고사항으로 낮추지 않고** 별도 항목으로
+등록한다. 원인은 남아 있고, 다만 Gate B 계약을 깨지 않을 뿐이다.
+
+```
+observed
+  dialogue_note에 cite-like 문자열 생성
+    S4  "[0, 1, 2, …]"
+    S1  "['seg#8', 'seg#10']"
+  ASR이 없는 S3에서도 stt_cites 12개 — 지어낸 인용
+
+current containment
+  grounding validator가 canonical 승격을 차단한다
+    S3  NOT_APPLICABLE · S4  FAIL_NO_SUPPORT · S1  FAIL_UNSUPPORTED
+  summary와 canonical structure는 보존된다
+
+Gate B impact
+  NON-BLOCKING · containment contract verified
+  증거  runs/v2_1/b02b_integration_run3.json · b02b_raw/run3_S{1,3,4}.raw
+        tests/test_v2_1_open10_followup.py
+
+future constraint
+  실제 presentation / report 경로는 pre-grounding EpisodeContent를 직접 소비하면 안 된다
+  grounded canonical artifact만 소비해야 한다
+  실제 문서 생성 품질을 확정하기 전에 OPEN-11을 재검토한다
+```
+
+**GRD-004 waiver로 덮지 않는다.** OPEN-10과 같은 이유다 — 그 waiver는 semantic
+entailment 한계에 대한 것이고 이것은 producer-side 재현 결함이다. waiver 대장에
+넣으면 waiver가 너무 많은 것을 덮는다.
+
+### Gate C가 반드시 걸어야 할 interlock
+
+OPEN-11이 non-blocking인 것은 **grounding을 지나야만 내용이 밖으로 나간다**는
+전제 위에서다. Gate C에서 renderer나 highlight builder가 B-06 이전의
+`dialogue_note`를 다시 주워 가면 **Gate B에서 막은 오염이 presentation 층에서
+부활한다.**
+
+```
+Gate C 요구 (P0 성격)
+  grounding FAIL · NOT_APPLICABLE로 제거된 dialogue는
+  presentation input에 재등장 금지
+  presentation은 canonical artifact만 소비 (pre-grounding 구조 접근 금지)
+```
+
+Gate C의 원래 목적(정본과 표현의 분리 · 공통 canonical source)과 같은 방향이다.
