@@ -643,7 +643,7 @@ GATE B CLOSURE = BLOCKED
 
 ---
 
-## OPEN-10 — Prompt example placeholder leakage  **OPEN**
+## OPEN-10 — Prompt example placeholder leakage  **수정 완료 · 판정 대기**
 
 ```
 관측     dialogue_note = "선택"                  (B-02b run 2 · S1 · S4)
@@ -683,3 +683,68 @@ producer-side contamination**이다. 범위를 넓혀 먹이면 waiver가 너무
 분류    execution-procedure defect
 규칙    산출물은 checkout 트리 밖에 쓰거나, 동기화 전에 회수 완료를 확인한다
 ```
+
+
+---
+
+## OPEN-10 수정 후 재실행 (run 3 · 2026-08-31)
+
+```
+prompt     episode_content_v1 → v2 · contract_hash beaa322ea0200d3d
+조건       동일 — Qwen/Qwen2.5-7B-Instruct · do_sample=False · max_new_tokens=512
+           llm_4bit=false · 같은 S1 · S3 · S4 · 새 fixture 없음
+산출물     runs/v2_1/b02b_integration_run3.json · b02b_raw/run3_S{1,3,4}.raw
+           (이번에는 checkout 트리 밖 /ssd/daeseok/b02b_out 에 쓰고 회수했다)
+```
+
+### 지정한 acceptance — 충족
+
+```
+S1 · S3 · S4 에서 "선택" leakage 없음      OK  (raw 원문에도 없음)
+VALID_PARSE 유지                          OK  세 건 전부
+canonical episode 구조 불변                OK  intact=True
+같은 model · do_sample · max_new_tokens    OK
+raw-before-parse 유지                      OK  raw_ref 세 건 모두 존재
+ignored_fields 비어 있음                   OK  파생 필드 hijack 없음
+```
+
+### 그러나 같은 부류가 다른 모양으로 나타났다
+
+```
+run 2   dialogue_note = "선택"                     예시 자리표시자 복사
+run 3   dialogue_note = "[0, 1, 2, …]"   (S4)      인용 목록을 note에 넣음
+        dialogue_note = "['seg#8', 'seg#10']" (S1)
+        S3는 ASR이 아예 없는데 stt_cites 12개       지어낸 인용
+```
+
+두 선택 항목을 모델이 혼동한다. **프롬프트 문구를 더 고치는 것은 이번 승인 범위
+밖**이라 여기서 멈추고 사실만 기록한다.
+
+### 결정적으로 다른 점 — canonical 오염 여부
+
+저장된 run 3 raw를 파이프라인 뒤쪽에 그대로 태워 확인했다(모델·GPU 미사용).
+
+```
+S3   NOT_APPLICABLE      dialogue 없음 · summary 유지
+S4   FAIL_NO_SUPPORT     dialogue 제거 · summary 유지
+S1   FAIL_UNSUPPORTED    dialogue 제거 · summary 유지
+```
+
+**세 경로 모두 오염이 canonical content에 남지 않는다.** 반면 run 2의 `"선택"`은
+앵커가 없어 grounding을 **통과했을 것**이다(`anchors_in("선택") == set()`).
+그것이 OPEN-10이 중요했던 이유이고, 지금 상태가 run 2보다 엄밀히 나은 이유다.
+
+검증: `tests/test_v2_1_open10_followup.py` (12 tests · 저장된 산출물만 사용)
+
+### 판정은 사용자에게 넘긴다
+
+```
+관점 A   OPEN-10의 정의된 결함은 제거됐고 새 오염은 canonical에 도달하지 않는다
+         → OPEN-10 CLOSED · 필드 혼동은 OPEN-11로 관찰 등록 · Gate B closure 가능
+
+관점 B   같은 producer-side contamination이 재발했으므로 원인이 남아 있다
+         → CLOSURE 계속 BLOCKED · 프롬프트 최소 수정 1회 추가 승인
+```
+
+**자동으로 A를 택하지 않는다.** 프롬프트를 반복 수정하기 시작하면 prompt tuning
+실험이 되고, 그 경계는 사용자가 유보한 판단이다.
