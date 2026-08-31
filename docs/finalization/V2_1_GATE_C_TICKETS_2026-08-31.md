@@ -79,9 +79,10 @@ docs/finalization/REPORT_FORMAT_REFERENCE_2026-08-30.md    존재
 ```
 C-01  Presentation input contract      RPT-001 · RPT-005 · OPEN-11 interlock   COMPLETE
 C-02  Highlight Builder core           HLT-002 · 003 · 004 · 005 · 006 · 007   COMPLETE
-C-03  Highlight provenance             HLT-001 · RPT-002
+C-03  Highlight provenance             HLT-001 · RPT-002   COMPLETE
 C-04  Global Synthesis contract        GLS-001 ~ 007
 C-05  Presentation schema              REF-001 · 002 · 005 · 006
+                                       + SPEC §4 Highlight.summary compatibility mapping
 C-06  Preview / Markdown renderer      RPT-001 · RPT-003 · RPT-008 + RPT-004 integration
 C-07  HWPX renderer                    RPT-003 · RPT-004
 C-08  Failure / fallback               RPT-006 · RPT-007 · HLT-008
@@ -292,3 +293,86 @@ provenance 직렬화         C-03
 
 `Highlight`에는 SPEC §4의 `summary` 필드를 두지 않았다. 문구 생성 주체가 정해지기
 전에 필드만 만들면 누가 채우는지가 흐려진다 — C-03 · C-04에서 정한다.
+
+---
+
+## C-03 Highlight lineage  **COMPLETE**
+
+```
+산출물   src/v2_1_lineage.py
+         tests/test_v2_1_lineage.py (21 tests)
+```
+
+```python
+build_lineage(presented, highlights) -> tuple[HighlightLineage, ...]
+validate_lineage(records, presented) -> list[str]
+serialize_lineage / load_lineage        schema  highlight_lineage_v2_1
+```
+
+**문장을 만들지 않는다.** summary · dialogue · claim · analysis 어느 것도 여기서
+생기지 않고, 필드 자체가 없다는 것을 테스트가 지킨다.
+
+### lineage는 grouping에서 파생한다
+
+label이나 display_range에서 역추론하지 않는다. 표현을 손볼 때마다 provenance가
+따라 움직이면 안 되기 때문이다. 비연속 묶음이 그 차이를 드러낸다.
+
+```
+grouping    EP01 + EP03
+display     [EP01.start , EP03.end]   ← 이 범위 안에 EP02가 들어 있다
+lineage     ("EP01", "EP03")          ← 역추론했다면 EP02가 섞인다
+```
+
+### 겹쳐도 각각 남는다
+
+```
+H01 = EP01 + EP02      H02 = EP02 + EP03
+EP02는 두 lineage에 각각 명시적으로 기록된다 (공유 참조 하나로 접지 않는다)
+```
+
+### RPT-002 — 표현을 바꿔도 identity는 그대로다
+
+```
+highlight 순서 교체    canonical identity 불변 · 같은 episode의 source record 동일
+label 전면 교체        source_episode_ids · sources · canonical_span 전부 동일
+```
+
+`SourceEpisode`는 canonical identity(`episode_id · start_seg · end_seg · start_sec ·
+end_sec`)만 담는다. 내용은 담지 않는다.
+
+### 상류 식별자는 provenance가 될 수 없다
+
+`llm:000001` · `raw:asr:3` · `seg#3` · `"3"` 을 source로 넣으면 거부한다. 정본
+episode로 해석되지 않는 것은 출처가 아니다.
+
+### 주입 시험 7종
+
+```
+grouping 대신 시간 범위로 역추론    RED
+없는 episode를 조용히 건너뜀        RED
+빈 lineage 허용                    RED
+source 순서를 정렬                 RED
+validate가 아무것도 안 봄           RED
+직렬화가 sources를 버림             RED
+lineage에 label 필드 추가           RED
+```
+
+### SPEC §4 `Highlight.summary` — compatibility mapping
+
+스펙에 필드가 있다는 것이 C-03이 그것을 생성해야 한다는 뜻은 아니다. **schema
+ownership과 content-generation ownership을 가른다.**
+
+```
+final presentation schema      존재한다
+C-02 · C-03                    생성하지 않는다 (필드 자체를 두지 않았다)
+C-05                           필드의 존재·optional 여부를 스키마로 확정
+population rule                canonical episode summary들의 결정적 조합에서 시작
+금지                           source_episode_ids 없는 독립 claim 생성
+                               여기서 새 LLM 생성을 넣으면 Gate C가 별도 grounding
+                               문제를 다시 만든다 — 필요하다고 판단되면 별도 contract
+```
+
+### RPT-002의 나머지
+
+renderer 간 identity consistency는 C-06 · C-07에서 다시 확인한다. C-03은 그것을
+**가능하게 하는 lineage contract**를 닫는 단계다.
