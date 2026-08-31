@@ -78,15 +78,31 @@ docs/finalization/REPORT_FORMAT_REFERENCE_2026-08-30.md    존재
 
 ```
 C-01  Presentation input contract      RPT-001 · RPT-005 · OPEN-11 interlock   COMPLETE
-C-02  Highlight Builder core           HLT-002 · 003 · 004 · 005 · 006 · 007
+C-02  Highlight Builder core           HLT-002 · 003 · 004 · 005 · 006 · 007   COMPLETE
 C-03  Highlight provenance             HLT-001 · RPT-002
 C-04  Global Synthesis contract        GLS-001 ~ 007
-C-05  Presentation schema              REF-001 · 002 · 005 · 006 · RPT-004
-C-06  Preview / Markdown renderer      RPT-001 · RPT-003 · RPT-008
+C-05  Presentation schema              REF-001 · 002 · 005 · 006
+C-06  Preview / Markdown renderer      RPT-001 · RPT-003 · RPT-008 + RPT-004 integration
 C-07  HWPX renderer                    RPT-003 · RPT-004
 C-08  Failure / fallback               RPT-006 · RPT-007 · HLT-008
-C-09  OPEN-11 regression               matrix ID 없음 — closure 조건
+C-09  OPEN-11 end-to-end regression    matrix ID 없음 — closure 조건
 C-10  Gate C acceptance mapping        29건 집계 (REF-003 · 004는 기존 가드 인용)
+                                       RPT-004 최종 PASS는 여기서 집계한다
+```
+
+### ownership 정정 (2026-08-31 · 사용자)
+
+```
+RPT-004   C-05에서 닫지 않는다 — "MD와 HWPX의 formatting 차이 허용"은 renderer 간
+          성질이라 두 renderer가 실재해야 확인된다
+          C-06 · C-07에서 integration coverage · C-10에서 최종 PASS
+RPT-003   C-06 · C-07 양쪽에서 확인한다 — renderer-side boundary 생성 금지는
+          Markdown만 지켜서 되는 규칙이 아니다
+          acceptance ID 하나에 테스트 둘이 붙는 것은 정상이다
+RPT-001   C-01에서 architecture contract로 닫고, C-06에서 renderer integration
+          regression으로 다시 본다
+REF-003
+REF-004   C-10에서 재구현하지 않는다 — A-11 가드가 해당 ID를 명시적으로 덮는다
 ```
 
 구현 순서는 위 순서 그대로다. **C-01을 먼저 잠그지 않으면** 이후 builder·renderer가
@@ -192,3 +208,87 @@ schema 검사 제거            GREEN  → 중복이라 판단하고 제거 (위
 highlight 생성 · label · 섹션 매핑 · 렌더링 · fallback 정책
 RPT-008 analysis_mode interlock — C-06 renderer 소관 (A-02에 구현돼 있다)
 ```
+
+---
+
+## C-02 Highlight Builder core  **COMPLETE**
+
+```
+산출물   src/v2_1_highlight.py
+         tests/test_v2_1_highlight.py (22 tests)
+```
+
+```python
+build_highlights(presented: PresentationInput, specs) -> tuple[Highlight, ...]
+```
+
+입력은 `PresentationInput` **하나뿐**이다. C-01이 이미 pre-grounding 접근과 제거된
+dialogue 재등장을 막았으므로, 타입만 강제하면 그 안전성이 상속된다. **그래서
+C-02는 OPEN-11을 다시 검사하지 않는다.**
+
+### 두 구조는 규칙이 다르다
+
+```
+canonical    overlap 0 · gap 0 · exactly once · 시간순
+highlight    중첩 허용 · 같은 episode 다중 참여 · 개수 자유
+```
+
+이 모듈은 **A-09 partition 검증기를 부르지 않는다.** highlight의 중첩을 canonical
+기준으로 재면 v2.1 설계가 무너진다(SPEC §2). 검증한 실제 형태는 이것이다.
+
+```
+canonical   EP01 [0,3]   EP02 [4,7]   EP03 [8,11]
+highlight   H01 = EP01+EP02           H02 = EP02+EP03      →  시간 중첩 · 정상
+```
+
+### 정본 불변을 기능으로 잰다
+
+소스에 mutation 함수가 없다는 스캔이 아니라, **builder 실행 전후의 정본 지문을
+대조**한다.
+
+```
+(episode_id · start_seg · end_seg · start_sec · end_sec) 전건 동일
+episode 목록의 순서·개수 동일
+frozen dataclass이므로 경계 쓰기 시도 자체가 예외
+```
+
+### HLT-004 — 개수는 입력을 따른다
+
+숫자 9를 소스에서 찾는 방식으로 막지 않았다. 기능으로 확인한다.
+
+```
+episode 3개 구성 → highlight 3   |  episode 4개 구성 → highlight 4
+전체를 하나로 묶기 → 1           |  묶음 없음 → 0
+같은 episode로 12개 → 12         ← 상한을 두면 여기서 걸린다
+```
+
+소스 스캔(`target_count` 류 식별자 부재)은 **보조 가드로만** 둔다.
+
+### segment_refs는 구성원의 것만이다
+
+연속하지 않은 묶음(EP01+EP03)에서 사이의 EP02 구간을 highlight가 자기 것으로
+주장하지 않는다. display_range는 최소 시작 ~ 최대 끝이지만, segment 소유는 별개다.
+
+### 주입 시험 7종
+
+```
+중복 episode 검사 제거            RED
+PresentationInput 타입 검사 제거   RED
+없는 episode를 조용히 건너뜀       RED
+gap까지 segment로 주장            RED
+빈 묶음 허용                      RED
+9행 상한 도입                     RED
+display_range를 canonical 폭으로   RED
+```
+
+### 하지 않은 것
+
+```
+label · summary 생성      묶음을 만들 뿐, 문구는 만들지 않는다 (label은 받은 문자열 그대로)
+grouping 정책             무엇을 묶을지는 호출자가 준다 — 자동 grouping은 이 티켓 범위 밖
+provenance 직렬화         C-03
+렌더링 · 서식             C-05 이후
+```
+
+`Highlight`에는 SPEC §4의 `summary` 필드를 두지 않았다. 문구 생성 주체가 정해지기
+전에 필드만 만들면 누가 채우는지가 흐려진다 — C-03 · C-04에서 정한다.
