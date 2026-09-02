@@ -85,7 +85,7 @@ C-05  Presentation schema              REF-001 · 002 · 005 · 006   COMPLETE
                                        + SPEC §4 Highlight.summary compatibility mapping
 C-06  Preview / Markdown renderer      RPT-001 · RPT-003 · RPT-008 + RPT-004 integration   COMPLETE
 C-07  HWPX renderer                    RPT-003 · RPT-004   COMPLETE
-C-08  Failure / fallback               RPT-006 · RPT-007 · HLT-008
+C-08  Failure / fallback               RPT-006 · RPT-007 · HLT-008   COMPLETE
 C-09  OPEN-11 end-to-end regression    matrix ID 없음 — closure 조건
 C-10  Gate C acceptance mapping        29건 집계 (REF-003 · 004는 기존 가드 인용)
                                        RPT-004 최종 PASS는 여기서 집계한다
@@ -871,3 +871,97 @@ limitation 삭제             RED      BCS renderer import           RED
 ```
 fallback   HWPX 생성 실패 시 무엇을 보존하고 무엇으로 대체하는지는 C-08(RPT-006/007)
 ```
+
+---
+
+## C-08 Failure / fallback  **COMPLETE**
+
+```
+산출물   src/v2_1_render_fallback.py
+         tests/test_v2_1_render_fallback.py (23 tests)
+         tests/v2_1_render_probe.py  — 산출물에서 의미만 뽑는 공용 probe (C-07과 공용)
+```
+
+```python
+render_with_fallback(manifest, highlights, synthesis, primary="hwpx") -> RenderOutcome
+```
+
+### 한 줄 계약
+
+```
+표현 실패   같은 semantic_view를 더 단순한 형식으로 직렬화한다     허용 (RPT-006)
+구조 실패   새 구조를 만들어 살리지 않는다. 명시적으로 멈춘다      금지 (RPT-007)
+약한 내용   구조·출처는 살고 내용만 빈다                         실패가 아니다 (HLT-008)
+```
+
+### fallback은 한 방향으로만 흐른다
+
+```
+canonical → PresentationInput → Highlights → Synthesis → semantic_view → renderer
+                                                                            ↓
+                                                                  표현 fallback ← 여기만
+```
+
+거슬러 올라가는 함수(`build_highlights` · `build_episodes` · `build_lineage` ·
+`build_presentation` · `build_synthesis` · `window_spans` · `FixedWindowV1`)를
+이름으로도 부르지 않는지 AST로 확인한다.
+
+### 상태 어휘를 뭉치지 않는다
+
+```
+StructuralFailure              구조 무효 — renderer를 **한 번도 부르지 않는다**
+PRIMARY                        정한 형식으로 성공
+PRESENTATION_FALLBACK_USED     표현만 내려갔다 (primary_error 기록)
+PRESENTATION_FALLBACK_FAILED   전부 실패 — 성공으로 위장하지 않는다
+```
+
+`STRUCTURAL_INVALID`과 `PRIMARY_RENDER_FAILED`가 같은 상태가 되면 "보여줘야 하니
+알아서 고쳤다"가 생긴다. 구조 실패에서 renderer 호출 수가 **0인지**까지 검사한다.
+
+### 인터록은 fallback으로 우회되지 않는다
+
+`analysis_mode != report`에서 `RenderRefused`는 **그대로 올라간다.** 사슬 뒤에
+preview가 있다고 해서 그리로 내려가지 않는다.
+
+### 사슬
+
+```
+hwpx → markdown → preview
+markdown → preview
+preview → (없음)
+```
+
+내려가도 의미는 같아야 한다 — fallback 산출물의 semantic projection이 primary가
+받았던 것과 같은지 대조한다. 입력 fingerprint(시간·출처·요약·종합 출처·한계)도
+전후 동일해야 한다.
+
+### HLT-008 — 약한 내용의 정의
+
+```
+H01   source_episode_ids = (EP01, EP02)
+      summary = None · summary_status = NO_RELIABLE_CONTENT
+```
+
+이것은 **정상 표현 객체다.** 삭제·병합·새 요약 생성 전부 금지이고, 출처는 그대로
+문서에 남는다. highlight가 0개인 문서도 정상이며, 그때도 "확인할 수 없습니다" 같은
+문장을 만들지 않는다.
+
+### 주입 시험 9종
+
+```
+구조 실패에도 fallback 적용        RED      fallback 사용을 PRIMARY로 표기   RED
+구조 실패를 표현 실패로 뭉침        RED      약한 highlight를 걸러냄          RED
+인터록을 fallback으로 우회         RED      primary 실패 후 upstream 재조회   RED
+실패한 형식 기록을 버림            RED      알 수 없는 형식을 조용히 무시     RED
+전부 실패했는데 성공으로 보고       RED
+```
+
+### 여기서 해결되지 않은 것 — HWPX 호환성
+
+```
+확인됨    ZIP · 패키지 배치 · 본문 XML 구조 검증
+미확인    실제 한글(HWP)에서의 열림
+```
+
+C-08은 **HWPX 호환성을 해결하지 않는다.** fallback이 있다는 것과 HWPX가 열린다는
+것은 다른 문제다. 제출 전 수동 open 확인이 필요하고, C-10에 limitation으로 남긴다.
