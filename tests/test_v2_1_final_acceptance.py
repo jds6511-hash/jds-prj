@@ -10,12 +10,12 @@ Gate A ∧ Gate B ∧ Gate C ∧ Gate D
   → IMPLEMENTATION_COMPLETE
 ```
 
-네 Gate는 닫혔지만 **matrix 166건 중 23건이 어느 지도에도 없다**(P0 13건). 그래서
+네 Gate는 닫혔지만 **matrix 166건 중 14건이 어느 지도에도 없다**(P0 8건). 그래서
 `IMPLEMENTATION_COMPLETE = NO`다. 이 파일은 그 사실을 기계로 다시 계산해, 문서가
 앞서 나가지 못하게 막는다.
 
-E-01a로 ERR 10건, E-02로 DET 7건이 지도에 들어왔다(40 → 30 → 23 · P0 26 → 18 → 13).
-나머지 네 family는 그대로 열려 있다.
+E-01a로 ERR 10건, E-02로 DET 7건, E-03으로 CP 9건이 지도에 들어왔다
+(40 → 30 → 23 → 14 · P0 26 → 18 → 13 → 8). 나머지 세 family는 그대로 열려 있다.
 """
 import re
 import subprocess
@@ -41,6 +41,8 @@ MAPS = (
     "tests/test_v2_1_err_acceptance.py",
     # E-02에서 7/7이 된 뒤 들어왔다.
     "tests/test_v2_1_det_acceptance.py",
+    # E-03에서 9/9가 된 뒤 들어왔다(P0 5 · P1 2 · P2 2).
+    "tests/test_v2_1_cp_acceptance.py",
 )
 
 #: 지도 밖에서 별도 문서로 닫힌 것.
@@ -66,7 +68,7 @@ def _unmapped():
 
 
 # ── 계산이 문서와 맞는가 ─────────────────────────────────────────────────
-@pytest.mark.parametrize("family,size", [("ERR", 10), ("DET", 7)])
+@pytest.mark.parametrize("family,size", [("ERR", 10), ("DET", 7), ("CP", 9)])
 def test_a_closed_family_is_fully_mapped(family, size):
     """family 전체가 지도에 있다 — 부분 매핑이면 이 테스트가 깨진다."""
     rows = _matrix_rows()
@@ -87,8 +89,8 @@ def test_there_is_a_real_coverage_gap():
     assert unmapped, "gap이 없어졌다면 최종 판정을 다시 해야 한다"
     rows = _matrix_rows()
     families = {i.split("-")[0] for i in unmapped}
-    assert families == {"CP", "GEO", "TRI", "REG"}
-    assert sum(1 for i in unmapped if rows[i] == "P0") == 13
+    assert families == {"GEO", "TRI", "REG"}
+    assert sum(1 for i in unmapped if rows[i] == "P0") == 8
 
 
 def test_the_report_records_the_same_numbers():
@@ -101,7 +103,7 @@ def test_the_report_records_the_same_numbers():
     assert re.search(r"P0 %d" % sum(1 for i in unmapped if rows[i] == "P0"), text)
 
 
-@pytest.mark.parametrize("family", ["CP", "GEO", "TRI", "REG"])
+@pytest.mark.parametrize("family", ["GEO", "TRI", "REG"])
 def test_every_uncovered_family_keeps_its_row(family):
     """family 글자가 문서 어딘가에 있는 것으로는 부족하다 — 표의 행을 본다."""
     rows = _matrix_rows()
