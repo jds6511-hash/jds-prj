@@ -239,8 +239,9 @@ def test_gls_007_all_sources_usable_is_sufficient(presented):
 def test_gls_007_no_reliable_content_produces_no_concrete_conclusion(tmp_path):
     presented = _presented(tmp_path, UNSUPPORTED)
     synthesis = _synthesis(presented)
-    if synthesis.source_episode_ids:
-        pytest.skip("이 fixture에서 전건 실패가 재현되지 않았다")
+    # 전건 실패가 재현되지 않으면 **실패시킨다.** skip으로 넘기면 계약이 조용히
+    # 사라진다(P1 WAIVER 대장: "skip을 waiver로 간주하지 않는다").
+    assert synthesis.source_episode_ids == (),         "fixture가 전건 실패를 재현하지 못했다 — 이 계약을 잴 수 없다"
     assert synthesis.synthesis_status == NO_RELIABLE_CONTENT
     assert synthesis.analysis == ()
     for episode in presented.episodes:

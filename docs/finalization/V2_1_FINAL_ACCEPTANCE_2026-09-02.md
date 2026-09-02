@@ -29,29 +29,39 @@ E-01 · E-01a  ERR 실패 의미론      CLOSED     PROVEN 10/10 (P0 8 · P1 2) 
 E-02          DET 결정성           CLOSED     PROVEN 7/7  (P0 5 · P1 2) · UNPROVEN 0
 E-03          CP 비채택 안전장치     CLOSED     PROVEN 9/9  (P0 5 · P1 2 · P2 2) · UNPROVEN 0
 E-04          GEO dataset regression CLOSED     PROVEN 4/4  (P0 2 · P1 2) · UNPROVEN 0
+E-05          REG 저장소 게이트       CLOSED     PROVEN 4/4  (P0 3 · P1 1) · UNPROVEN 0
 
 REG-010                          PASS_BY_AUTHORIZED_SUPERSESSION
-regression                       3,758 passed / 1 skipped
+regression                       3,803 passed / 1 skipped / 2 xfailed
 tree                             clean (실측)
 ```
 
 ---
 
-## 2. 막는 것 — matrix 14건이 어느 지도에도 없다
+## 2. 막는 것 — TRI-005 하나가 남았다
 
 ```
-matrix 총계   166      지도에 있음  152      지도에 없음  14  (그중 P0 8)
+matrix 총계   166      지도에 있음  156      지도에 없음  10  (그중 P0 5)
 ```
 
 ```
-family  건수   P0  P1  P2   내용
-GEO       4     2   2   -   instruction echo caption 구분·무영향
-TRI       6     3   3   -   오염·희소 근거에서 서사 환각 금지
-REG       4     3   1   -   REG-001 회귀 · 002 P0 suite · 003 P1 suite · 004 tree
+family  건수   P0  P1  P2   상태
+GEO       4     2   2   -   4/4 PROVEN · 편입 준비됨
+TRI       6     3   3   -   5/6 PROVEN · TRI-005(P0)만 미해결
 ```
 
-§19(GEO+TRI)는 **GEO 4/4 · TRI 5/6**이다. `TRI-005`가 implementation-gap으로 남아
-있어 절 전체를 아직 넣지 않았다 — 부분 매핑을 집계에 넣지 않는 원칙이다.
+미매핑 10건은 **§19 Dataset Regression 하나**이고, 그 절이 열려 있는 이유도 하나다.
+
+```
+TRI-005   sparse evidence → narrative hallucination 금지
+          status = OPEN · classification = IMPLEMENTATION_GAP · DECISION = C
+          근거 있는 counterexample이 실측으로 존재한다
+          상세: V2_1_TRI_005_REMEDIATION_TICKET_2026-09-02.md
+```
+
+GEO 4/4와 TRI 5/6은 증거가 완비돼 있으나 **부분 family를 숫자 줄이기에 쓰지 않는다.**
+TRI-005 remediation 후 §19 10건을 한 번에 넣으면 미매핑은 0이 된다.
+
 상세는 `V2_1_E04_GEO_TRI_AUDIT_2026-09-02.md`.
 
 ERR 10건은 E-01a, DET 7건은 E-02, CP 9건은 E-03에서 지도에 들어왔다
@@ -88,7 +98,7 @@ E-01  ERR   실패 의미론 10건 매핑        (P0 8)   CLOSED (E-01 + E-01a)
 E-02  DET   결정성 7건 매핑              (P0 5)   CLOSED
 E-03  CP    change-point 계약 9건 매핑    (P0 5 · P2 2는 진단)   CLOSED
 E-04  TRI · GEO  오염·echo 10건 매핑      (P0 5)   GEO CLOSED · TRI 5/6
-E-05  REG-001 ~ 004 매핑 + 전체 재집계
+E-05  REG-001 ~ 004 매핑 + 전체 재집계                    CLOSED
 ```
 
 각 티켓은 **새 동작 구현이 아니라 기존 증거의 귀속**이다. 증거가 없는 ID가 나오면
@@ -107,7 +117,8 @@ E-05  REG-001 ~ 004 매핑 + 전체 재집계
 KNOWN-LIMITATION-C09     grounding FAIL이 그 구간의 보존된 요약을 표현에서 가린다
                          정본에는 남는다. containment 실패가 아니라 recall trade-off.
 KNOWN-GUARD-LIMITATION   A-11 REG-007은 파일 이름만 본다. Gate D가 경로 검사를 덧댔다.
-TRI-005 미해결            summary 안의 발명된 서사를 거부하는 기제가 없다.
+TRI-005 P0 OPEN           summary 안의 발명된 서사를 거부하는 기제가 없다.
+                         DECISION C — 기준 축소(A)·P0 waiver(B) 모두 거부했다.
                          근거 있는 dialogue만 게이트된다(FAIL_UNSUPPORTED 등).
                          선언된 한계: semantic entailment not automatically verified.
 ```

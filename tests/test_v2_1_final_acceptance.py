@@ -10,12 +10,15 @@ Gate A ∧ Gate B ∧ Gate C ∧ Gate D
   → IMPLEMENTATION_COMPLETE
 ```
 
-네 Gate는 닫혔지만 **matrix 166건 중 14건이 어느 지도에도 없다**(P0 8건). 그래서
+네 Gate는 닫혔지만 **matrix 166건 중 10건이 어느 지도에도 없다**(P0 5건). 그래서
 `IMPLEMENTATION_COMPLETE = NO`다. 이 파일은 그 사실을 기계로 다시 계산해, 문서가
 앞서 나가지 못하게 막는다.
 
-E-01a로 ERR 10건, E-02로 DET 7건, E-03으로 CP 9건이 지도에 들어왔다
-(40 → 30 → 23 → 14 · P0 26 → 18 → 13 → 8). 나머지 세 family는 그대로 열려 있다.
+E-01a로 ERR 10건, E-02로 DET 7건, E-03으로 CP 9건, E-05로 REG-001~004가 지도에
+들어왔다(40 → 30 → 23 → 14 → 10 · P0 26 → 18 → 13 → 8 → 5).
+
+남은 10건은 **§19 Dataset Regression 하나**다. GEO 4/4 · TRI 5/6이고 `TRI-005`가
+implementation gap(DECISION C)으로 열려 있어 절 전체를 보류했다.
 """
 import re
 import subprocess
@@ -43,6 +46,8 @@ MAPS = (
     "tests/test_v2_1_det_acceptance.py",
     # E-03에서 9/9가 된 뒤 들어왔다(P0 5 · P1 2 · P2 2).
     "tests/test_v2_1_cp_acceptance.py",
+    # E-05. REG-001~004. (005~010은 Gate A · Gate D · addendum 소관)
+    "tests/test_v2_1_reg_acceptance.py",
 )
 
 #: 지도 밖에서 별도 문서로 닫힌 것.
@@ -89,8 +94,8 @@ def test_there_is_a_real_coverage_gap():
     assert unmapped, "gap이 없어졌다면 최종 판정을 다시 해야 한다"
     rows = _matrix_rows()
     families = {i.split("-")[0] for i in unmapped}
-    assert families == {"GEO", "TRI", "REG"}
-    assert sum(1 for i in unmapped if rows[i] == "P0") == 8
+    assert families == {"GEO", "TRI"}
+    assert sum(1 for i in unmapped if rows[i] == "P0") == 5
 
 
 def test_the_report_records_the_same_numbers():
@@ -103,7 +108,7 @@ def test_the_report_records_the_same_numbers():
     assert re.search(r"P0 %d" % sum(1 for i in unmapped if rows[i] == "P0"), text)
 
 
-@pytest.mark.parametrize("family", ["GEO", "TRI", "REG"])
+@pytest.mark.parametrize("family", ["GEO", "TRI"])
 def test_every_uncovered_family_keeps_its_row(family):
     """family 글자가 문서 어딘가에 있는 것으로는 부족하다 — 표의 행을 본다."""
     rows = _matrix_rows()
