@@ -197,7 +197,8 @@ NLI/entailment 도입 결정   없음 (decision-open)
 ## 6. 다음 단계
 
 ```
-1  remediation 사전등록  C1 · C2 · C3 비교 + sparse 정의 + 실패 시 동작 확정
+1  remediation 사전등록  완료 — V2_1_TRI_005_REMEDIATION_PREREG_2026-09-02.md
+                       C3 primary · C1 v1 미적용 · C2 제외 · SPARSE_V1 = eligible == 1
 2  사용자 승인
 3  구현 + 위 fixture RED → GREEN + xfail marker 제거
 4  §19(GEO 4 + TRI 6) 한 번에 final tally 편입

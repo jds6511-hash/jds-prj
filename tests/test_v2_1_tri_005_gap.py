@@ -33,6 +33,7 @@ from v2_1_grounding import (
 
 ROOT = Path(__file__).resolve().parents[1]
 TICKET = ROOT / "docs/finalization/V2_1_TRI_005_REMEDIATION_TICKET_2026-09-02.md"
+PREREG = ROOT / "docs/finalization/V2_1_TRI_005_REMEDIATION_PREREG_2026-09-02.md"
 
 TWO = ((0, 5), (6, 11))
 
@@ -140,6 +141,23 @@ def test_the_ticket_records_decision_c_and_rejects_a_and_b():
     assert "A  REJECTED" in text and "B  REJECTED" in text
     assert "status = OPEN" in text
     assert "severity = P0" in text
+
+
+def test_the_preregistration_fixes_the_design_before_implementation():
+    """사전등록이 C3 primary · C1 미적용 · C2 제외와 sparse 정의를 고정한다."""
+    text = PREREG.read_text(encoding="utf-8")
+    assert "PRIMARY       C3" in text
+    assert "EXCLUDED      C2" in text
+    assert "SPARSE_V1(episode) :=" in text
+    assert 'e.usable_for_claims]) == 1' in text
+    assert "구현 승인은 아직 없다" in text
+
+
+def test_the_preregistration_does_not_claim_general_entailment():
+    """closure 문구가 일반 semantic entailment 해결을 주장하지 않는다."""
+    text = PREREG.read_text(encoding="utf-8")
+    assert "This does not establish general semantic entailment verification" in text
+    assert "does not revoke the GRD-004 waiver" in text
 
 
 def test_the_ticket_quotes_both_counterexamples_verbatim():
