@@ -80,7 +80,7 @@ docs/finalization/REPORT_FORMAT_REFERENCE_2026-08-30.md    존재
 C-01  Presentation input contract      RPT-001 · RPT-005 · OPEN-11 interlock   COMPLETE
 C-02  Highlight Builder core           HLT-002 · 003 · 004 · 005 · 006 · 007   COMPLETE
 C-03  Highlight provenance             HLT-001 · RPT-002   COMPLETE
-C-04  Global Synthesis contract        GLS-001 ~ 007
+C-04  Global Synthesis contract        GLS-001 ~ 007   COMPLETE
 C-05  Presentation schema              REF-001 · 002 · 005 · 006   COMPLETE
                                        + SPEC §4 Highlight.summary compatibility mapping
 C-06  Preview / Markdown renderer      RPT-001 · RPT-003 · RPT-008 + RPT-004 integration   COMPLETE
