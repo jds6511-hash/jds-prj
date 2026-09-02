@@ -30,8 +30,15 @@ OPEN-11                  OPEN · NON-BLOCKING  producer optional-field confusion
                          containment 검증됨 (grounding이 canonical 승격 차단)
                          Gate C는 pre-grounding content 소비 금지 interlock 필수
 연구 경계 가드            REG-005~009 · REF-003 기계 검증 (합성 위반 포함)
-Gate C                   READY TO START   (정본 ↔ 표현 분리)
-NEXT                     Gate C 착수 · IMPLEMENTATION_COMPLETE는 C·D까지 통과해야 한다
+Gate C                   COMPLETE  (2026-09-02)  정본 ↔ 표현 분리
+                         MATRIX ACCEPTANCE = PASS   P0 19/19 · P1 10/10 · waiver 0
+                         CLOSURE = COMPLETE         C-01 ~ C-10 · OPEN-11/12 CLOSED
+미검증                    HWPX 한글 실제 open (구조·XML 검증까지만)
+미조치                    grounding FAIL이 그 구간 요약을 표현에서 가린다
+                         (정본에는 보존 · KNOWN-LIMITATION-C09)
+미해결                    REG-010(push = NO) deviation — final acceptance에서 해결
+NEXT                     Gate D 연구 경계 최종 검증
+                         IMPLEMENTATION_COMPLETE는 Gate D까지 통과해야 한다
 FINAL REPORT / PRESENTATION FINALIZATION   보류 (종료 아님)
 Dual-stream 전면 (D)     불필요
 모델 추가 비교           불필요

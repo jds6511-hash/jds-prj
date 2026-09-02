@@ -87,7 +87,7 @@ C-06  Preview / Markdown renderer      RPT-001 · RPT-003 · RPT-008 + RPT-004 i
 C-07  HWPX renderer                    RPT-003 · RPT-004   COMPLETE
 C-08  Failure / fallback               RPT-006 · RPT-007 · HLT-008   COMPLETE
 C-09  OPEN-11 end-to-end regression    matrix ID 없음 — closure 조건   COMPLETE
-C-10  Gate C acceptance mapping        29건 집계 (REF-003 · 004는 기존 가드 인용)
+C-10  Gate C acceptance mapping        29건 집계 (REF-003 · 004는 기존 가드 인용)   COMPLETE
                                        RPT-004 최종 PASS는 여기서 집계한다
 ```
 
@@ -1074,3 +1074,136 @@ dialogue 품질 개선 · stt_cites hallucination 자체 제거
 ```
 
 이 파일이 모델 모듈을 import하지 않는다는 것을 AST로 확인한다.
+
+---
+
+## C-10 Gate C 집계  **COMPLETE**
+
+```
+산출물   tests/test_v2_1_gate_c_acceptance.py (68 tests)
+production 변경   없음 — 집계 티켓이다
+```
+
+C-10에서 production 코드를 고쳐야 할 일이 나오면 그것은 "C-10 수정"이 아니라 **해당
+C-0x 티켓 reopen**이다. 이번에는 그런 일이 없었다.
+
+### 판정
+
+```
+GATE C MATRIX ACCEPTANCE = PASS
+
+HLT  8/8 PASS        REF  6/6 PASS
+GLS  7/7 PASS        RPT  8/8 PASS
+
+P0   19/19 PASS      P1   10/10 PASS
+WAIVED 0             SKIPPED MAPPED ITEMS 0
+
+GATE C CLOSURE = COMPLETE
+C-01 ~ C-10 완료 · OPEN-11 CLOSED · OPEN-12 CLOSED
+```
+
+### 함의하지 않는 것
+
+```
+IMPLEMENTATION_COMPLETE = NO
+```
+
+frozen matrix에서 구현 완료는 `Gate A AND Gate B AND Gate C AND Gate D AND 모든 P0
+AND P1(PASS 또는 명시적 waiver) AND regression AND tree clean`일 때만 선언된다.
+따라서 **C-10의 성공 결과는 `Gate C COMPLETE`까지다.**
+
+```
+Gate D 완료          아님
+IMPLEMENTATION_COMPLETE  아님
+M9 승인              아님
+official test 승인    아님
+semantic boundary provider 채택   아님
+```
+
+### 소유권 확정
+
+```
+HLT-001                C-03
+HLT-002 ~ 007          C-02
+HLT-008                C-08
+REF-001 · 002 · 005 · 006   C-05
+REF-003 · 004          A-11 기존 가드 재사용 (새 테스트를 복제하지 않는다)
+GLS-001 ~ 007          C-04
+RPT-001                C-01 contract + C-06 integration
+RPT-002                C-03 + C-06/C-07 integration
+RPT-003                C-06 + C-07
+RPT-004                C-06 ↔ C-07 semantic projection integration
+RPT-005                C-01
+RPT-006 · 007          C-08
+RPT-008                C-06/C-07 공용 인터록
+```
+
+**한 ID에 테스트가 여럿 붙는 것은 정상이다** — `RPT-003 · 004`는 Markdown과 HWPX
+양쪽에서 증명된다. 반대로 테스트 하나가 green이라고 비슷해 보이는 ID를 함께 PASS로
+적지 않았다. 집계 테스트는 **각 ID가 자기만의 증거를 최소 하나 갖는지**까지 본다.
+
+### REF-004는 전용 테스트가 없다 — 세 갈래로 덮인다
+
+```
+REG-009   기본 provider 변경·채택 마커를 금지 (A-11 가드)
+BPI-004   기본 provider가 fixed_window_v1 (A-07)
+FW        창 크기가 코드 상수 60초 (A-08)
+REF-005   형식 참조에서 행 수를 읽는 경로가 없다 (C-05)
+```
+
+즉 **경계는 형식 참조가 아니라 코드가 정하고, 그 사실이 세 계층에서 각각 잠겨 있다.**
+전용 테스트를 억지로 만들지 않고 이 매핑을 근거로 집계한다.
+
+### Known limitations
+
+acceptance 실패도 waiver도 아니다. **따로 남긴다.**
+
+```
+release/manual verification limitation
+HWPX package structure and body XML validated; actual Hancom open not yet verified.
+이 환경에 한글이 없다. 제출 전 수동 open 확인이 필요하다.
+matrix의 RPT 항목에는 "한글에서 실제로 열림"이라는 acceptance 조건이 없으므로
+RPT-004 waiver로 만들지 않는다.
+```
+
+```
+KNOWN-LIMITATION-C09
+
+A producer-hallucinated dialogue claim can cause episode grounding FAIL,
+which conservatively excludes that episode's otherwise preserved summary
+from presentation eligibility.
+
+The summary remains preserved in aar_canonical.
+This is a presentation recall/quality trade-off, not a containment failure.
+```
+
+현재 정책을 그대로 적으면 이렇다.
+
+```
+canonical preservation   성공
+unsafe presentation use  차단
+presentation recall      일부 손실 가능
+```
+
+이것을 "summary grounding을 dialogue grounding과 분리하자"로 바꾸면 **새로운 grounding
+semantics**가 되어 Gate B·C를 다시 열게 된다. C-10에서 손대지 않았다.
+
+### 최종 acceptance 때 해결해야 할 deviation — REG-010
+
+```
+frozen matrix   REG-010 | P0 | push | NO 유지
+실제            2026-08-31 사용자 승인 이후 origin/master로 여러 차례 push
+```
+
+**이것을 조용히 PASS 처리하지 않는다.** Gate C의 문제는 아니지만, 전체 final
+acceptance 시점에 **후속 승인이 그 frozen rule을 어떻게 supersede했는지**를
+deviation / addendum 증거로 명시해 해결해야 한다. 여기서는 미해결 항목으로 표시만 한다.
+
+### 다음
+
+```
+Gate D    연구 경계 최종 검증 (새 알고리즘 아님)
+          M9 미실행 · official test 미개방 · BCS core 무변경 · 새 human GT 없음
+          추가 모델 비교 없음 · change-point 미채택 · C0 tuning 없음
+전체      REG-010 deviation 해결 후에만 final acceptance 판정
+```
