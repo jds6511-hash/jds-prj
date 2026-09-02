@@ -86,7 +86,7 @@ C-05  Presentation schema              REF-001 · 002 · 005 · 006   COMPLETE
 C-06  Preview / Markdown renderer      RPT-001 · RPT-003 · RPT-008 + RPT-004 integration   COMPLETE
 C-07  HWPX renderer                    RPT-003 · RPT-004   COMPLETE
 C-08  Failure / fallback               RPT-006 · RPT-007 · HLT-008   COMPLETE
-C-09  OPEN-11 end-to-end regression    matrix ID 없음 — closure 조건
+C-09  OPEN-11 end-to-end regression    matrix ID 없음 — closure 조건   COMPLETE
 C-10  Gate C acceptance mapping        29건 집계 (REF-003 · 004는 기존 가드 인용)
                                        RPT-004 최종 PASS는 여기서 집계한다
 ```
@@ -965,3 +965,112 @@ H01   source_episode_ids = (EP01, EP02)
 
 C-08은 **HWPX 호환성을 해결하지 않는다.** fallback이 있다는 것과 HWPX가 열린다는
 것은 다른 문제다. 제출 전 수동 open 확인이 필요하고, C-10에 limitation으로 남긴다.
+
+---
+
+## C-09 OPEN-11 end-to-end 회귀  **COMPLETE**
+
+```
+산출물   tests/test_v2_1_open11_e2e.py (28 tests)
+새 코드  없음 — 회귀 티켓이다
+```
+
+적대적 content를 **실제로 전 구간에 태운다.** 소스 스캔으로 닫지 않는다.
+
+```
+적대적 EpisodeContent → B-05 → B-06 → B-07 → C-01 → C-02/03 → C-04 → C-05
+                                                       → C-06 → C-07 → C-08
+```
+
+검사는 8단계로 나눠 본다 — `canonical · presentation_input · highlight_summary ·
+synthesis · markdown · preview · hwpx · fallback`. 문서 전체 문자열 검색 하나로
+끝내면 다른 절에 가려진다(C-06에서 실제로 겪었다).
+
+### 적대적 케이스 5종
+
+```
+A  grounding FAIL       dialogue_note = "['seg#8', 'seg#10']"   run 3에서 실제로 나온 형태
+B  근거 없는 발화        dialogue_note = "선택" · ASR 없는 영상    run 2 형태(OPEN-10)
+C  지어낸 인용          ASR 없는 영상에 stt_cites = [1, 2, 3]
+D  통과한 dialogue      PASS인 진짜 발화
+E  전 구간 오염         쓸 수 있는 내용이 하나도 없는 문서
+```
+
+`D`가 중요하다. **통과한 dialogue조차 표현으로 넘어가지 않는다** — "어떤 dialogue는
+되고 어떤 것은 안 되는가"를 표현 계층이 판단하기 시작하면 그 판단이 곧 우회로다.
+
+### 손으로 고친 정본도 막힌다
+
+정본에 dialogue를 다시 심어 C-01에 넣으면 거부된다. 구조 가드(닿을 수 없다)와
+행동 증거(적대적 입력도 되살아나지 않는다)를 함께 확인한다.
+
+### 과잉 containment도 실패로 잡는다
+
+```
+episode 삭제                    RED
+NOT_APPLICABLE 요약까지 제거     RED
+빈 문서를 만들어 채우기          RED
+```
+
+내용이 없어도 구간·출처는 문서에 남는다. `E`에서 `EP01 · EP02`와
+`NO_RELIABLE_CONTENT`가 그대로 보이는지 확인한다.
+
+### 주입 시험
+
+처음 돌렸을 때 **4종이 GREEN이었다.** 테스트가 그 경로를 실제로 태우지 않았기
+때문이다 — dialogue가 이미 None이라 "dialogue를 쓰는" 변이가 무해했다. 케이스
+D · E와 정본 조작 경로를 추가한 뒤 전부 RED가 됐다.
+
+```
+실패한 dialogue를 그대로 보존        RED
+C-01 interlock 제거                RED   ← 처음 GREEN
+synthesis가 dialogue를 사용          RED   ← 처음 GREEN
+highlight summary가 dialogue를 사용  RED
+모델 cite 표기를 provenance로        RED
+fallback이 빈 값을 복구             RED   ← 처음 GREEN
+FAIL episode를 정본에서 삭제         RED
+NOT_APPLICABLE 요약까지 제거         RED
+```
+
+`renderer가 상류 필드를 읽음`은 변이 자체가 무해했다 — `PresentationHighlight`에
+`dialogue_note` 필드가 **없어서** 읽을 것이 없다. 구조로 막힌 것이고, 필드 부재는
+C-06이 검사한다.
+
+### 관측 — FAIL은 그 구간의 요약도 표현에서 잃게 한다
+
+Case B에서 드러났다. **바꾸지 않고 사실로 고정했다.**
+
+```
+producer가 발화를 지어냄
+→ grounding FAIL
+→ OPEN-12 자격(PASS · NOT_APPLICABLE)에서 탈락
+→ 그 구간의 멀쩡한 요약도 문서에서 사라진다  (정본에는 남아 있다)
+```
+
+즉 **dialogue 하나의 오염이 그 구간의 요약까지 가린다.** containment로서는 안전한
+방향이지만, 보고서 내용이 얇아지는 비용이 있다. 자격 정책을 "실패한 것은 dialogue
+뿐이니 요약은 살린다"로 바꿀지는 **별도 판단**이므로 여기서 손대지 않았다.
+
+### OPEN-11 closure
+
+```
+OPEN-11 CLOSED — containment verified.
+
+Producer optional-field confusion remains a possible upstream defect.
+Closure does not claim producer correctness.
+
+End-to-end regression demonstrates that dialogue removed by grounding
+FAIL or NOT_APPLICABLE cannot enter aar_canonical presentation content,
+highlight/global synthesis, Preview/Markdown/HWPX, or presentation fallback.
+
+Canonical episode structure and eligible summaries remain preserved.
+```
+
+### 하지 않은 것
+
+```
+prompt 수정 · 새 placeholder 규칙 · 모델 재실행 · 새 모델 실험
+dialogue 품질 개선 · stt_cites hallucination 자체 제거
+```
+
+이 파일이 모델 모듈을 import하지 않는다는 것을 AST로 확인한다.
