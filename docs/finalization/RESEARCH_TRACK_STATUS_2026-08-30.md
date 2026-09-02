@@ -44,8 +44,14 @@ Gate D                   COMPLETE  (2026-09-02)  연구 경계 최종 검증
                          change-point 미채택 · C0 tuning 없음
 발견                      A-11 REG-007은 파일 이름만 본다 (디렉터리 M9를 놓친다)
                          A-11을 고치지 않고 Gate D에서 경로 검사를 덧댔다
-NEXT                     REG-010 authorization addendum 확정 후 final acceptance
-                         IMPLEMENTATION_COMPLETE는 아직 NO
+REG-010                  PASS_BY_AUTHORIZED_SUPERSESSION (waiver 아님)
+                         addendum V2_1_REG_010_AUTHORIZATION_ADDENDUM_2026-09-02.md
+                         허용 범위 authorized_supersession_ids = {REG-010}
+FINAL ACCEPTANCE         IMPLEMENTATION_COMPLETE = NO
+                         matrix 166건 중 40건이 어느 지도에도 없다 (P0 26)
+                         CP 9 · DET 7 · ERR 10 · GEO 4 · TRI 6 · REG 4
+NEXT                     E-01~E-05 미매핑 family 귀속 후 재집계
+                         (새 동작 구현이 아니라 기존 증거의 귀속이다)
 FINAL REPORT / PRESENTATION FINALIZATION   보류 (종료 아님)
 Dual-stream 전면 (D)     불필요
 모델 추가 비교           불필요
