@@ -25,28 +25,33 @@ Gate B  Grounded Content         COMPLETE   P0 22/22 · P1 6 PASS + 1 WAIVED(GRD
 Gate C  Presentation Separation  COMPLETE   P0 19/19 · P1 10/10 · waiver 0
 Gate D  Research Boundary        COMPLETE   7/7
 
+E-01 · E-01a  ERR 실패 의미론      CLOSED     PROVEN 10/10 (P0 8 · P1 2) · UNPROVEN 0
+
 REG-010                          PASS_BY_AUTHORIZED_SUPERSESSION
-regression                       3,555 passed / 1 skipped
+regression                       3,608 passed / 1 skipped
 tree                             clean (실측)
 ```
 
 ---
 
-## 2. 막는 것 — matrix 40건이 어느 지도에도 없다
+## 2. 막는 것 — matrix 30건이 어느 지도에도 없다
 
 ```
-matrix 총계   166      지도에 있음  126      지도에 없음  40  (그중 P0 26)
+matrix 총계   166      지도에 있음  136      지도에 없음  30  (그중 P0 18)
 ```
 
 ```
 family  건수   P0  P1  P2   내용
 CP        9     5   2   2   change-point provider (미채택 상태의 계약)
 DET       7     5   2   -   결정성 (재실행 · 다른 LLM/VLM/OCR에서 경계 동일)
-ERR      10     8   2   -   실패 의미론 (hard fail · silent fallback 금지)
 GEO       4     2   2   -   instruction echo caption 구분·무영향
 TRI       6     3   3   -   오염·희소 근거에서 서사 환각 금지
 REG       4     3   1   -   REG-001 회귀 · 002 P0 suite · 003 P1 suite · 004 tree
 ```
+
+ERR 10건은 E-01a에서 지도에 들어왔다(40 → 30 · P0 26 → 18). **부분 매핑 상태로는
+넣지 않았다** — E-01 시점의 PROVEN 7 · UNPROVEN 3은 집계에 반영되지 않았고, 세 건이
+전용 증거로 닫힌 뒤에 한 번에 들어왔다.
 
 이 항목들의 **동작이 없다는 뜻이 아니다.** Gate A~C 테스트가 상당 부분을 이미
 덮고 있을 가능성이 크다. 그러나 **어느 테스트가 어느 ID를 닫는지 매핑된 적이 없다.**
@@ -72,7 +77,7 @@ REG-010 EFFECTIVE STATUS  PASS_BY_AUTHORIZED_SUPERSESSION
 ## 4. 남은 일
 
 ```
-E-01  ERR   실패 의미론 10건 매핑        (P0 8)
+E-01  ERR   실패 의미론 10건 매핑        (P0 8)   CLOSED (E-01 + E-01a)
 E-02  DET   결정성 7건 매핑              (P0 5)
 E-03  CP    change-point 계약 9건 매핑    (P0 5 · P2 2는 진단)
 E-04  TRI · GEO  오염·echo 10건 매핑      (P0 5)

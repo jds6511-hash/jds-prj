@@ -10,9 +10,12 @@ Gate A ∧ Gate B ∧ Gate C ∧ Gate D
   → IMPLEMENTATION_COMPLETE
 ```
 
-네 Gate는 닫혔지만 **matrix 166건 중 40건이 어느 지도에도 없다**(P0 26건). 그래서
+네 Gate는 닫혔지만 **matrix 166건 중 30건이 어느 지도에도 없다**(P0 18건). 그래서
 `IMPLEMENTATION_COMPLETE = NO`다. 이 파일은 그 사실을 기계로 다시 계산해, 문서가
 앞서 나가지 못하게 막는다.
+
+E-01a로 ERR 10건이 10/0으로 닫혀 지도에 들어왔다(40 → 30 · P0 26 → 18). 나머지
+다섯 family는 그대로 열려 있다.
 """
 import re
 import subprocess
@@ -34,6 +37,8 @@ MAPS = (
     "tests/test_v2_1_gate_a.py",
     "tests/test_v2_1_gate_b_acceptance.py",
     "tests/test_v2_1_gate_c_acceptance.py",
+    # E-01a에서 10/0이 된 뒤 들어왔다. 부분 매핑 상태로는 넣지 않았다.
+    "tests/test_v2_1_err_acceptance.py",
 )
 
 #: 지도 밖에서 별도 문서로 닫힌 것.
@@ -59,6 +64,14 @@ def _unmapped():
 
 
 # ── 계산이 문서와 맞는가 ─────────────────────────────────────────────────
+def test_err_is_fully_mapped():
+    """ERR 10건 전부 지도에 있다 — 부분 매핑이면 이 테스트가 깨진다."""
+    rows = _matrix_rows()
+    err = {i for i in rows if i.startswith("ERR-")}
+    assert len(err) == 10
+    assert err <= _mapped()
+
+
 def test_the_matrix_size_is_stable():
     rows = _matrix_rows()
     assert len(rows) == 166
@@ -71,8 +84,8 @@ def test_there_is_a_real_coverage_gap():
     assert unmapped, "gap이 없어졌다면 최종 판정을 다시 해야 한다"
     rows = _matrix_rows()
     families = {i.split("-")[0] for i in unmapped}
-    assert families == {"CP", "DET", "ERR", "GEO", "TRI", "REG"}
-    assert sum(1 for i in unmapped if rows[i] == "P0") == 26
+    assert families == {"CP", "DET", "GEO", "TRI", "REG"}
+    assert sum(1 for i in unmapped if rows[i] == "P0") == 18
 
 
 def test_the_report_records_the_same_numbers():
@@ -85,7 +98,7 @@ def test_the_report_records_the_same_numbers():
     assert re.search(r"P0 %d" % sum(1 for i in unmapped if rows[i] == "P0"), text)
 
 
-@pytest.mark.parametrize("family", ["CP", "DET", "ERR", "GEO", "TRI", "REG"])
+@pytest.mark.parametrize("family", ["CP", "DET", "GEO", "TRI", "REG"])
 def test_every_uncovered_family_keeps_its_row(family):
     """family 글자가 문서 어딘가에 있는 것으로는 부족하다 — 표의 행을 본다."""
     rows = _matrix_rows()

@@ -1,15 +1,16 @@
-"""E-01 ERR 감사 — 실패 의미론 10건의 증거 귀속.
+"""E-01 · E-01a ERR 감사 — 실패 의미론 10건의 증거 귀속.
 
 새 동작을 만들지 않는다. **기존 테스트가 각 failure contract를 실제로 증명하는지**
 역추적한 결과를 고정한다.
 
 ```
-PROVEN     7   (P0 6 · P1 1)
-UNPROVEN   3   ERR-006 · ERR-009 · ERR-010
+E-01    PROVEN 7 · UNPROVEN 3 (ERR-006 · 009 · 010)   ERR = NOT CLOSED
+E-01a   그 세 건을 그 결함 입력으로 재는 테스트 추가     ERR = CLOSED
+        PROVEN 10 (P0 8 · P1 2) · UNPROVEN 0
 ```
 
-이름이 비슷한 테스트를 연결해 닫지 않았다. 세 건은 **부분 증거만 있다** — 그
-사실을 지우지 않고 UNPROVEN으로 남긴다. 상세는
+E-01a도 production 동작을 바꾸지 않았다 — `evidence-gap`이었으므로 검사만 늘렸다.
+원 판정을 지우지 않는다. 상세는
 `docs/finalization/V2_1_E01_ERR_AUDIT_2026-09-02.md`.
 """
 import re
@@ -59,21 +60,31 @@ ERR_PROVEN = {
     ],
 }
 
-#: 부분 증거만 있는 것. **닫지 않는다.**
-ERR_UNPROVEN = {
+#: E-01a에서 닫힌 셋. 부분 증거는 **지우지 않고** 새 증거를 앞에 둔다 — 무엇이
+#: 부족했고 무엇으로 닫혔는지가 같은 자리에 남아야 한다.
+ERR_CLOSED_BY_E01A = {
     "ERR-006": [
+        "test_v2_1_err_evidence.py::test_err_006_a_builder_failure_leaves_the_canonical_untouched",
         "test_v2_1_highlight.py::test_an_unknown_episode_is_refused",
         "test_v2_1_highlight.py::test_hlt_003_canonical_structure_is_unchanged",
     ],
     "ERR-009": [
+        "test_v2_1_err_evidence.py::test_err_009_all_evidence_absent_keeps_structure_and_invents_nothing",
         "test_v2_1_llm_p1_contract.py::test_an_episode_with_no_usable_evidence_is_still_refused",
     ],
     "ERR-010": [
+        "test_v2_1_err_evidence.py::test_err_010_an_instruction_echo_peak_does_not_move_the_fixed_window",
         "test_v2_1_fixed_window.py::test_fw_002_to_005_boundaries_ignore_every_content_channel",
         "test_v2_1_sanitation.py::test_san_001_instruction_echo_does_not_pass_as_valid",
         "test_v2_1_sanitation.py::test_s6_echo_and_foreign_caption_are_flagged_differently",
     ],
 }
+
+ERR_PROVEN.update(ERR_CLOSED_BY_E01A)
+
+#: 아직 증거가 없는 것. E-01a로 비었다 — **dict을 지우지 않는다.** 다시 열리면
+#: 여기로 돌아오고, 아래 테스트가 그 상태를 그대로 검사한다.
+ERR_UNPROVEN = {}
 
 
 #: 각 ID의 계약 핵심어. 증거 목록에 이 단어를 담은 테스트가 반드시 있어야 한다.
@@ -86,6 +97,10 @@ REQUIRED_KEYWORD = {
     "ERR-005": "structure",
     "ERR-007": "hwpx",
     "ERR-008": "provider",
+    # E-01a — 계약을 재는 테스트가 그 실패 경로에 있어야 한다.
+    "ERR-006": "canonical_untouched",
+    "ERR-009": "absent",
+    "ERR-010": "echo",
 }
 
 
@@ -116,9 +131,21 @@ def test_proven_and_unproven_do_not_overlap():
     assert not set(ERR_PROVEN) & set(ERR_UNPROVEN)
 
 
-def test_the_tally_is_seven_and_three():
-    assert len(ERR_PROVEN) == 7
-    assert len(ERR_UNPROVEN) == 3
+def test_the_tally_is_ten_and_zero():
+    """E-01a 이후. 여기가 10/0이 아니면 최종 집계에 넣을 수 없다."""
+    assert len(ERR_PROVEN) == 10
+    assert ERR_UNPROVEN == {}
+    rows = _matrix_err()
+    assert sum(1 for i in ERR_PROVEN if rows[i] == "P0") == 8
+    assert sum(1 for i in ERR_PROVEN if rows[i] == "P1") == 2
+
+
+def test_the_three_gaps_were_closed_by_new_evidence():
+    """기존 테스트 이름을 바꿔 단 것이 아니라 새 증거로 닫혔다."""
+    for acceptance_id, nodes in ERR_CLOSED_BY_E01A.items():
+        added = [n for n in nodes if n.startswith("test_v2_1_err_evidence.py::")]
+        assert len(added) == 1, acceptance_id
+        assert _defined(added[0]), added
 
 
 # ── 증거가 실재하는가 ────────────────────────────────────────────────────
@@ -128,11 +155,11 @@ def test_every_proven_id_has_existing_evidence(acceptance_id):
     assert not missing, "%s: %r" % (acceptance_id, missing)
 
 
-@pytest.mark.parametrize("acceptance_id", sorted(ERR_UNPROVEN))
-def test_partial_evidence_also_has_to_exist(acceptance_id):
-    """부분 증거라도 실재해야 한다 — 없는 테스트를 근거로 적지 않는다."""
-    missing = [node for node in ERR_UNPROVEN[acceptance_id] if not _defined(node)]
-    assert not missing, "%s: %r" % (acceptance_id, missing)
+def test_any_remaining_partial_evidence_still_has_to_exist():
+    """UNPROVEN이 다시 생기면 그 부분 증거도 실재해야 한다."""
+    for acceptance_id, nodes in ERR_UNPROVEN.items():
+        missing = [node for node in nodes if not _defined(node)]
+        assert not missing, "%s: %r" % (acceptance_id, missing)
 
 
 @pytest.mark.parametrize("acceptance_id", sorted(REQUIRED_KEYWORD))
@@ -169,10 +196,10 @@ def test_the_audit_declares_err_not_closed():
     assert "PROVEN 7" in text and "UNPROVEN 3" in text
 
 
-def test_each_unproven_item_is_classified():
-    """증거 공백인가 구현 공백인가 — 둘을 섞지 않는다."""
+def test_each_closed_gap_stays_classified():
+    """증거 공백인가 구현 공백인가 — 닫힌 뒤에도 그 구분을 지우지 않는다."""
     text = AUDIT.read_text(encoding="utf-8")
-    for acceptance_id in ERR_UNPROVEN:
+    for acceptance_id in ERR_CLOSED_BY_E01A:
         # 절 제목으로 자른다 — 머리말의 첫 등장으로 자르면 엉뚱한 절을 본다.
         heading = "### %s" % acceptance_id
         assert heading in text, acceptance_id
@@ -194,8 +221,8 @@ def test_the_missing_evidence_is_described_inside_its_own_section():
         assert phrase in section, (acceptance_id, phrase)
 
 
-def test_err_is_not_wired_into_the_final_tally_yet():
-    """부분 매핑을 전체 집계에 넣어 gap을 줄이지 않는다."""
+def test_err_is_wired_into_the_final_tally():
+    """10/0이 됐으므로 이제 집계에 들어간다 — 부분 매핑으로는 넣지 않았다."""
     final = (ROOT / "tests/test_v2_1_final_acceptance.py").read_text(
         encoding="utf-8")
-    assert "test_v2_1_err_acceptance.py" not in final
+    assert "tests/test_v2_1_err_acceptance.py" in final
