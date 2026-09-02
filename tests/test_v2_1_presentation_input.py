@@ -23,9 +23,11 @@ from v2_1_gate_b import run_pipeline
 from v2_1_grounding import FAIL_NO_SUPPORT, NOT_APPLICABLE, PASS
 from v2_1_presentation_input import (
     FORBIDDEN_UPSTREAM,
+    PRESENTATION_SUMMARY_STATUSES,
     PresentationEpisode,
     PresentationInputError,
     presentation_input,
+    summary_eligible_for_presentation,
 )
 
 MODULE = Path(__file__).resolve().parents[1] / "src/v2_1_presentation_input.py"
@@ -185,3 +187,52 @@ def test_the_forbidden_list_covers_every_pre_grounding_module():
         "v2_1_content", "v2_1_binding", "v2_1_raw_store", "v2_1_parse",
         "v2_1_timeline",
     }
+
+
+# ── OPEN-12 표현 자격 predicate ──────────────────────────────────────────
+def _episode(grounding_status, summary="구간 요약.", content_status="VALID_PARSE"):
+    return PresentationEpisode(
+        episode_id="EP01", start_seg=0, end_seg=1, start_sec=0.0, end_sec=10.0,
+        source="stt", content_status=content_status, summary=summary,
+        dialogue_note=None, grounding_status=grounding_status,
+        anchor_cites=(), provenance=(),
+    )
+
+
+def test_open_12_pass_summary_is_presentation_eligible():
+    assert summary_eligible_for_presentation(_episode(PASS))
+
+
+def test_open_12_not_applicable_summary_is_presentation_eligible():
+    """dialogue가 없다는 이유로 보고서 문장이 사라지면 안 된다."""
+    assert summary_eligible_for_presentation(_episode(NOT_APPLICABLE))
+
+
+def test_open_12_failed_summary_is_not_eligible():
+    for status in (FAIL_NO_SUPPORT, "FAIL_REFERENCE", "FAIL_UNSUPPORTED"):
+        assert not summary_eligible_for_presentation(_episode(status))
+
+
+def test_open_12_an_unknown_status_is_not_eligible():
+    """allowlist다 — 새 상태가 생기면 기본값은 '쓰지 않음'이다."""
+    for status in ("PENDING", "UNKNOWN", "SKIPPED", ""):
+        assert not summary_eligible_for_presentation(_episode(status))
+
+
+def test_open_12_an_empty_summary_is_not_eligible():
+    for summary in (None, "", "   "):
+        assert not summary_eligible_for_presentation(_episode(PASS, summary))
+
+
+def test_open_12_a_broken_content_status_is_not_eligible():
+    assert not summary_eligible_for_presentation(
+        _episode(PASS, content_status="PARSE_CONTRACT_FAILURE")
+    )
+
+
+def test_open_12_eligibility_does_not_promote_not_applicable_to_pass():
+    """자격이 같다고 판정이 같아진 것은 아니다 — 상태는 그대로 남는다."""
+    episode = _episode(NOT_APPLICABLE)
+    assert episode.grounding_status == NOT_APPLICABLE
+    assert NOT_APPLICABLE in PRESENTATION_SUMMARY_STATUSES
+    assert PASS != NOT_APPLICABLE

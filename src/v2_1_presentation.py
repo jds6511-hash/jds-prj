@@ -27,7 +27,10 @@ import json
 from dataclasses import dataclass
 
 from v2_1_lineage import LineageError, build_lineage
-from v2_1_presentation_input import PresentationInput
+from v2_1_presentation_input import (
+    PresentationInput,
+    summary_eligible_for_presentation,
+)
 
 PRESENTATION_SCHEMA = "presentation_highlights_v2_1"
 
@@ -71,15 +74,12 @@ class PresentationHighlight:
 
 
 def _eligible_for_summary(episode) -> bool:
-    """문장에 쓸 수 있는 episode인가.
+    """문장에 쓸 수 있는 episode인가 — C-04와 같은 predicate를 쓴다(OPEN-12).
 
-    grounding을 통과한 것만 쓴다 — 표현 계층은 자격을 다시 판정하지 않는다.
+    한때 여기만 `PASS`를 요구했다. 그러면 **dialogue가 없다는 이유로** 보고서
+    문장이 사라진다 — grounding이 `NOT_APPLICABLE`이 되기 때문이다.
     """
-    return (
-        episode.content_status == "VALID_PARSE"
-        and episode.grounding_status == "PASS"
-        and bool(episode.summary and episode.summary.strip())
-    )
+    return summary_eligible_for_presentation(episode)
 
 
 def build_presentation(presented, highlights) -> tuple[PresentationHighlight, ...]:

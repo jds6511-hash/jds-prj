@@ -18,7 +18,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from v2_1_presentation_input import PresentationInput
+from v2_1_presentation_input import (
+    PresentationInput,
+    summary_eligible_for_presentation,
+)
 
 SUFFICIENT = "SUFFICIENT"
 LIMITED = "LIMITED"
@@ -58,16 +61,13 @@ class GlobalSynthesis:
 
 
 def _usable(episode) -> bool:
-    """종합에 쓸 수 있는 episode인가.
+    """종합에 쓸 수 있는 episode인가 — 표현 자격은 C-01이 소유한다(OPEN-12).
 
-    grounding이 실패한 것은 제외한다. 통과·해당없음이면 summary는 정본에 남은
-    내용이므로 쓴다 — 대신 dialogue는 어느 쪽에서도 쓰지 않는다.
+    여기서 조건식을 다시 쓰지 않는다. 예전에는 "FAIL이 아니면 통과"였는데, 그러면
+    새 상태가 생겼을 때 자동으로 통과해 버린다. dialogue는 자격과 무관하게 어느
+    쪽에서도 쓰지 않는다.
     """
-    return (
-        not episode.grounding_status.startswith("FAIL")
-        and episode.content_status == "VALID_PARSE"
-        and bool(episode.summary and episode.summary.strip())
-    )
+    return summary_eligible_for_presentation(episode)
 
 
 def build_synthesis(presented, lineage) -> GlobalSynthesis:

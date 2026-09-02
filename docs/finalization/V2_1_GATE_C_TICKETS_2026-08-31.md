@@ -589,4 +589,82 @@ C-05 highlight summary  PASS 만          → NOT_APPLICABLE 구간은 제외된
 실제로 C-05 테스트를 처음 쓸 때 이 상황이 그대로 나왔고, 인용이 자격을 갖추도록
 fixture의 발화를 구간마다 다르게 준 뒤에야 `AVAILABLE`이 나왔다.
 
-지시된 기준 그대로 구현했고 **바꾸지 않았다.** 두 기준을 맞출지는 별도 판단이다.
+지시된 기준 그대로 구현했고 그때는 바꾸지 않았다. **이후 사용자 판단으로
+`OPEN-12`에서 두 기준을 `{PASS, NOT_APPLICABLE}` allowlist로 통일했다** — 아래 절 참조.
+
+---
+
+## OPEN-12 — Presentation summary eligibility  **CLOSED (2026-09-02)**
+
+```
+Problem
+C-04는 "FAIL이 아님", C-05는 "PASS만"을 자격으로 썼다. 기준이 갈라져 있었고,
+dialogue가 없는 정상 구간(NOT_APPLICABLE)이 highlight summary에서 사라졌다.
+
+Decision
+summary is presentation-eligible iff
+    content_status == VALID_PARSE
+    AND summary exists
+    AND grounding_status ∈ {PASS, NOT_APPLICABLE}
+
+PASS and NOT_APPLICABLE remain semantically distinct.
+This rule controls presentation eligibility only.
+```
+
+### 왜 갈라졌나 — 부작용이었지 정책이 아니었다
+
+```
+dialogue 없음  →  grounding = NOT_APPLICABLE  →  C-05가 제외  →  문장 없음
+```
+
+즉 **대화가 없다는 이유로 보고서 문장이 사라졌다.** 이것은 표현 정책이 아니라
+grounding 상태의 의미가 잘못 옮겨진 결과다.
+
+```
+PASS             grounding 검사가 적용됐고 통과했다
+NOT_APPLICABLE   그 검사의 적용 대상이 아니다 (검증할 dialogue claim이 없다)
+```
+
+**둘은 계속 구분된다.** 자격을 같이 준 것이 판정을 같게 만든 것은 아니고, 상태는
+정본 그대로 provenance에 남는다. `summary를 썼다 = grounding PASS다`로 읽으면 안 된다.
+
+### C-04도 함께 좁혔다
+
+`!= FAIL`은 **새 상태가 생기면 자동으로 통과**한다. `PENDING · UNKNOWN · SKIPPED`가
+추가되는 순간 조용히 종합문에 섞인다. allowlist로 바꿔 기본값을 "쓰지 않음"으로 뒀다.
+
+### 정의는 한 곳에만 둔다
+
+```
+소유   src/v2_1_presentation_input.py
+       PRESENTATION_SUMMARY_STATUSES · summary_eligible_for_presentation()
+소비   v2_1_synthesis (C-04) · v2_1_presentation (C-05)
+```
+
+두 소비자 중 하나가 소유하면 다시 갈라진다. 표현 계층 입구(C-01)가 "표현이 무엇을
+볼 수 있는가"의 주인이므로 거기에 뒀다.
+
+### 주입 시험 6종
+
+```
+predicate를 PASS 전용으로 되돌림       RED
+allowlist 대신 "FAIL 아님"             RED
+content_status 검사 제거               RED
+빈 summary도 자격 인정                 RED
+C-05가 predicate를 우회해 PASS 전용     RED
+C-04가 predicate를 우회해 "FAIL 아님"   RED
+```
+
+마지막 둘이 중요하다 — **소비자가 공통 규칙을 우회해 자기 조건식으로 돌아가는 것**이
+OPEN-12를 만든 원인이고, 그 복귀가 실제로 RED가 되는지 확인했다.
+
+### 테스트
+
+```
+PASS + summary              양쪽 사용        ✓
+NOT_APPLICABLE + summary    양쪽 사용        ✓
+FAIL_* + summary            양쪽 제외        ✓
+알 수 없는 상태 + summary    양쪽 제외        ✓
+빈 summary · 깨진 parse      양쪽 제외        ✓
+대화 없는 영상 전체           문장 생성됨      ✓ (이전에는 전부 NO_RELIABLE_CONTENT)
+```

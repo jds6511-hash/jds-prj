@@ -303,3 +303,23 @@ def test_the_module_calls_no_model():
             names.add(node.module)
     assert not names & {"transformers", "ollama", "generator", "prompt", "model",
                         "invoke", "v2_1_llm_adapter", "v2_1_prompt"}
+
+
+# ── OPEN-12 자격 통일 ────────────────────────────────────────────────────
+def test_open_12_dialogue_free_episodes_still_produce_a_summary(tmp_path):
+    """대화가 없는 정상 영상에서 highlight 문장이 사라지면 안 된다.
+
+    요약만 있는 구간은 grounding이 `NOT_APPLICABLE`이다. 한때 C-05가 `PASS`만
+    허용해서 이런 영상 전체가 `NO_RELIABLE_CONTENT`가 됐다.
+    """
+    presented = presentation_input(
+        run_pipeline(tmp_path, ({"summary": "창고 문을 연다."},
+                                {"summary": "상자를 옮긴다."},
+                                {"summary": "불을 끄고 나간다."}),
+                     spans=THREE).document
+    )
+    assert all(e.grounding_status == "NOT_APPLICABLE" for e in presented.episodes)
+    record = _build(presented, (("EP01", "EP02"),))[0]
+    assert record.summary_status == SUMMARY_AVAILABLE
+    assert record.summary_source_episode_ids == ("EP01", "EP02")
+    assert validate_presentation((record,), presented) == []

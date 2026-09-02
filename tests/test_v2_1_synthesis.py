@@ -19,7 +19,11 @@ import pytest
 from v2_1_gate_b import run_pipeline
 from v2_1_highlight import HighlightSpec, build_highlights
 from v2_1_lineage import build_lineage
-from v2_1_presentation_input import FORBIDDEN_UPSTREAM, presentation_input
+from v2_1_presentation_input import (
+    FORBIDDEN_UPSTREAM,
+    PresentationInput,
+    presentation_input,
+)
 from v2_1_synthesis import (
     ASSURANCE_PHRASES,
     LIMITATION,
@@ -293,3 +297,30 @@ def test_the_module_does_not_import_pre_grounding_layers():
         elif isinstance(node, ast.ImportFrom) and node.module:
             imported.add(node.module)
     assert not imported & set(FORBIDDEN_UPSTREAM), sorted(imported)
+
+
+# ── OPEN-12 자격 통일 ────────────────────────────────────────────────────
+def test_open_12_dialogue_free_episodes_are_synthesised(tmp_path):
+    presented = _presented(tmp_path, GOOD)
+    assert all(e.grounding_status == "NOT_APPLICABLE" for e in presented.episodes)
+    assert _synthesis(presented).synthesis_status == SUFFICIENT
+
+
+def test_open_12_an_unknown_grounding_status_is_not_synthesised(tmp_path):
+    """allowlist가 아니라 'FAIL이 아니면 통과'였다면 새 상태가 그냥 들어온다."""
+    presented = _presented(tmp_path, GOOD)
+    fabricated = PresentationInput(
+        schema=presented.schema, video_id=presented.video_id,
+        run_id=presented.run_id,
+        episodes=tuple(
+            episode.__class__(
+                **{**{f: getattr(episode, f)
+                      for f in episode.__dataclass_fields__},
+                   "grounding_status": "PENDING"}
+            )
+            for episode in presented.episodes
+        ),
+    )
+    synthesis = build_synthesis(fabricated, ())
+    assert synthesis.synthesis_status == NO_RELIABLE_CONTENT
+    assert synthesis.source_episode_ids == ()

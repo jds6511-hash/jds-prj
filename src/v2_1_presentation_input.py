@@ -23,7 +23,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from v2_1_aar import validate_aar
-from v2_1_grounding import PASS
+from v2_1_grounding import NOT_APPLICABLE, PASS
 
 #: 표현 계층이 import해서는 안 되는 grounding 이전 모듈.
 FORBIDDEN_UPSTREAM = (
@@ -33,6 +33,11 @@ FORBIDDEN_UPSTREAM = (
     "v2_1_parse",
     "v2_1_timeline",
 )
+
+
+#: summary를 표현에 쓸 수 있는 grounding 상태. **allowlist다** — 새 상태가
+#: 생기면 기본값은 "쓰지 않음"이어야 한다("FAIL이 아니면 통과"는 그 반대다).
+PRESENTATION_SUMMARY_STATUSES = (PASS, NOT_APPLICABLE)
 
 
 class PresentationInputError(RuntimeError):
@@ -69,6 +74,30 @@ class PresentationInput:
             if episode.episode_id == episode_id:
                 return episode
         raise KeyError(episode_id)
+
+
+def summary_eligible_for_presentation(episode) -> bool:
+    """이 episode의 summary를 표현 계층이 쓸 수 있는가.
+
+    **한 곳에서만 정의한다** — global synthesis(C-04)와 highlight summary(C-05)가
+    각자 조건식을 쓰면 다시 갈라진다(OPEN-12가 그렇게 생겼다).
+
+    `NOT_APPLICABLE`을 포함하는 것은 그것을 `PASS`로 승격시키는 뜻이 **아니다.**
+
+    ```
+    PASS             grounding 검사가 적용됐고 통과했다
+    NOT_APPLICABLE   그 검사의 적용 대상이 아니다 (검증할 dialogue claim이 없다)
+    ```
+
+    둘은 계속 구분되고 provenance에 그대로 남는다. 다만 dialogue가 없다는 이유로
+    보고서 문장이 사라지는 것은 표현 정책이 아니라 부작용이므로, **표현 자격**에
+    한해서만 둘을 같이 취급한다.
+    """
+    return (
+        episode.content_status == "VALID_PARSE"
+        and episode.grounding_status in PRESENTATION_SUMMARY_STATUSES
+        and bool(episode.summary and episode.summary.strip())
+    )
 
 
 def _episode(raw: dict) -> PresentationEpisode:
