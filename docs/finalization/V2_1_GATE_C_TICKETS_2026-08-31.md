@@ -81,7 +81,7 @@ C-01  Presentation input contract      RPT-001 · RPT-005 · OPEN-11 interlock  
 C-02  Highlight Builder core           HLT-002 · 003 · 004 · 005 · 006 · 007   COMPLETE
 C-03  Highlight provenance             HLT-001 · RPT-002   COMPLETE
 C-04  Global Synthesis contract        GLS-001 ~ 007
-C-05  Presentation schema              REF-001 · 002 · 005 · 006
+C-05  Presentation schema              REF-001 · 002 · 005 · 006   COMPLETE
                                        + SPEC §4 Highlight.summary compatibility mapping
 C-06  Preview / Markdown renderer      RPT-001 · RPT-003 · RPT-008 + RPT-004 integration
 C-07  HWPX renderer                    RPT-003 · RPT-004
@@ -469,3 +469,124 @@ canonical 순서 대신 입력 순서      RED
 deterministic synthesis가 사람이 읽기에 너무 기계적이라는 문제가 생기면 그때
 **별도 티켓 · 별도 prompt contract · 별도 containment contract**로 세운다. Gate C
 안에 몰래 넣지 않는다.
+
+---
+
+## C-05 Presentation schema  **COMPLETE**
+
+```
+산출물   src/v2_1_presentation.py
+         tests/test_v2_1_presentation.py (26 tests)
+스키마   presentation_highlights_v2_1
+```
+
+```python
+build_presentation(presented, highlights) -> tuple[PresentationHighlight, ...]
+validate_presentation(records, presented, format_reference=None) -> list[str]
+serialize_presentation(records) -> str
+```
+
+lineage는 여기서 다시 만들지 않는다 — C-03의 `build_lineage`를 그대로 부른다.
+호출자가 손댄 lineage를 끼워 넣을 자리를 두지 않기 위해서다.
+
+### 두 lineage를 가른다
+
+```
+source_episode_ids            이 highlight가 무엇으로 구성됐는가
+summary_source_episode_ids    그중 무엇이 문장에 쓰였는가
+excluded_summary_episode_ids  쓰이지 않은 것 — 지우지 않는다
+```
+
+셋의 합집합이 항상 일치해야 하고, 어긋나면 검증기가 보고한다.
+
+### summary는 조합이다 — 검증도 조합으로 한다
+
+```
+허용   기존 summary A  +  기존 summary B   →  "A / B"
+금지   A + B  →  새 인과·평가·의도 문장
+```
+
+검증 방식이 핵심이다. 금지어 목록을 훑지 않고 **정확히 재구성되는지**로 판단한다.
+
+```python
+record.summary == " / ".join(사용된 source summary)
+```
+
+그래서 연결어를 하나 끼워 넣는 것만으로도 검증기가 걸린다. 구분자를 `" 이후 "`로
+바꾸는 주입이 RED인 이유다.
+
+### 중복은 제거하지 않는다
+
+```
+EP01 "문을 연다."   EP02 "문을 연다."   →   "문을 연다. / 문을 연다."
+```
+
+자동으로 하나를 지우면 **표현 계층이 의미 동일성을 판정하기 시작한다.** 보기 좋게
+합치는 것은 나중에 별도 presentation-quality 규칙으로 다룬다.
+
+### 근거가 없으면 자리표시자를 만들지 않는다
+
+```
+source_episode_ids            비어 있지 않음
+summary_source_episode_ids    비어 있음
+→ summary = None · summary_status = NO_RELIABLE_CONTENT
+```
+
+`"요약 없음"` · `"내용 확인 필요"` 같은 문장을 넣지 않는다 — canonical fact처럼
+보이기 때문이다. OPEN-10에서 배운 것과 같은 부류다.
+
+### 형식 참조의 신분 (REF-001 · 002)
+
+```python
+FORMAT_REFERENCE = {"author": "user", "role": "format_reference",
+                    "is_ground_truth": False, "document": "…"}
+```
+
+직렬화된 산출물에 함께 실린다. 내용의 evidence가 아니라 **formatting provenance**다.
+`is_ground_truth`를 뒤집으면 검증기가 보고한다.
+
+### REF-005 · REF-006
+
+```
+REF-005   highlight 1개 · 3개 · 12개가 모두 같은 스키마로 직렬화된다
+          FORMAT_REFERENCE에 행 수 필드가 없고, row_count 류 식별자도 없다
+REF-006   가져오는 것은 절 이름 5개뿐
+          "개요 · 주요 사건 및 내용 · 핵심 내용 분석 · 결론 · 근거 및 생성 정보"
+          사람 보고서의 문장·고유명("연습생 시절" · "쪽샘" 등)이 생성물과 소스
+          어디에도 없다는 것을 참조 문서를 실제로 읽어 대조한다
+```
+
+### 주입 시험 10종
+
+```
+failed episode summary를 문장에 포함     RED
+summary_source 없이 문장 생성            RED   ← 처음 GREEN
+출처 없는 독립 문장 삽입 허용             RED
+canonical 순서 대신 묶음 입력 순서        RED
+excluded를 lineage에서 삭제              RED
+형식 참조 행 수를 highlight 수로 사용     RED
+사람 보고서 문장을 생성물에 복사          RED
+연결어를 새로 끼워 넣음                   RED
+중복 summary를 자동 제거                 RED
+GT 아님 표시를 뒤집음                     RED
+```
+
+`summary_source 없이 …`는 처음 GREEN이었다 — lineage 일관성 검사가 먼저 걸려서
+가려졌다. C-04와 같은 부류의 결함이라 **테스트를 좁혀** 다시 RED로 만들었다.
+
+### 관측 — 자격 기준이 C-04와 다르다
+
+지시대로 C-05는 `grounding_status == PASS`만 문장에 쓴다. C-04는 `FAIL이 아님`
+(즉 `NOT_APPLICABLE` 포함)을 쓴다. **두 기준이 다르다는 사실을 기록해 둔다.**
+
+```
+C-04 global synthesis   FAIL 아님        → NOT_APPLICABLE 구간의 summary도 쓴다
+C-05 highlight summary  PASS 만          → NOT_APPLICABLE 구간은 제외된다
+```
+
+실측 영향은 작지 않다. **dialogue가 없는 구간은 grounding이 `NOT_APPLICABLE`**이므로,
+요약만 있는 영상에서는 highlight summary가 전부 `NO_RELIABLE_CONTENT`가 된다.
+실제로 C-05 테스트를 처음 쓸 때 이 상황이 그대로 나왔고, 인용이 자격을 갖추도록
+fixture의 발화를 구간마다 다르게 준 뒤에야 `AVAILABLE`이 나왔다.
+
+지시된 기준 그대로 구현했고 **바꾸지 않았다.** 두 기준을 맞출지는 별도 판단이다.
