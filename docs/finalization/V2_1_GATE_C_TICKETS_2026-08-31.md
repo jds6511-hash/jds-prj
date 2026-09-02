@@ -84,7 +84,7 @@ C-04  Global Synthesis contract        GLS-001 ~ 007
 C-05  Presentation schema              REF-001 · 002 · 005 · 006   COMPLETE
                                        + SPEC §4 Highlight.summary compatibility mapping
 C-06  Preview / Markdown renderer      RPT-001 · RPT-003 · RPT-008 + RPT-004 integration   COMPLETE
-C-07  HWPX renderer                    RPT-003 · RPT-004
+C-07  HWPX renderer                    RPT-003 · RPT-004   COMPLETE
 C-08  Failure / fallback               RPT-006 · RPT-007 · HLT-008
 C-09  OPEN-11 end-to-end regression    matrix ID 없음 — closure 조건
 C-10  Gate C acceptance mapping        29건 집계 (REF-003 · 004는 기존 가드 인용)
@@ -767,3 +767,107 @@ acceptance 집계        C-10
 ```
 
 `hwpx` · `fallback` 식별자가 소스에 없다는 것을 토큰 스캔으로 확인한다.
+
+---
+
+## C-07 HWPX renderer  **COMPLETE**
+
+```
+산출물   src/v2_1_render_hwpx.py
+         tests/test_v2_1_render_hwpx.py (23 tests)
+```
+
+```python
+render_hwpx(manifest, highlights, synthesis) -> bytes
+write_hwpx(path, manifest, highlights, synthesis)
+hwpx_text(payload) -> str        패키지 안의 본문을 읽는다 (검증용)
+```
+
+**새 의미 계층이 아니라 같은 `semantic_view`의 두 번째 serializer다.** C-06과 같은
+인자만 받고, 정본 episode·timeline·binding·raw는 받지 않는다.
+
+### C-06에서 공유 계약을 꺼냈다
+
+```
+LABELS          시간 · 요약 · 구성 구간 · 요약 출처 · 종합 출처 구간 · 한계
+format_clock    초 → mm:ss 표기
+summary_cell    요약 부재를 어떻게 적는가
+semantic_view   두 출력이 공통으로 담는 의미
+```
+
+서식은 renderer마다 달라도 되지만 **"무엇을 적었는가"를 읽는 이름까지 갈라지면
+두 출력을 대조할 수 없다.** 부재 표기(`(NO_RELIABLE_CONTENT)`)를 공유하는 것도
+같은 이유다 — 같은 부재가 문서마다 다르게 읽히면 안 된다.
+
+### 검사는 패키지를 열어서 한다
+
+함수 반환값이 아니라 `Contents/section0.xml`에서 실제 문단을 읽어 확인한다.
+
+```
+mimetype                  application/hwp+zip · ZIP_STORED
+META-INF/container.xml
+version.xml
+Contents/header.xml
+Contents/section0.xml     <hp:p><hp:run><hp:t>…
+```
+
+### RPT-003 — C-06과 같은 tamper 시험
+
+```
+확정값   H01.start_sec = 100.0 · end_sec = 150.0
+실제     EP01의 구간 시작은 0.0
+문서에    01:40 – 02:30 이 적혀야 한다.  00:00이 나오면 경계를 재구성한 것이다.
+```
+
+보조로 `min` · `max` · `sorted` 호출 부재를 AST로 확인한다.
+
+### RPT-004 — 문자열 동일이 아니라 semantic projection 동일
+
+```
+projection(markdown) == projection(hwpx)
+
+담는 것   highlight별 (시간 · 요약 · 구성 구간 · 요약 출처) · 종합 출처 · 한계
+버리는 것 heading · bullet · 상자 글리프 · 줄바꿈 · 등장 횟수
+```
+
+`###`는 Markdown에만, `┌`는 HWPX에만 있다 — 서식은 실제로 다르다. 한쪽에서
+highlight를 하나 빼면 projection이 달라져 RED다.
+
+### 블록 단위로 본다 (C-06의 교훈)
+
+문서 전체에서 `EP01`이 한 번 보이는 것으로는 부족하다. **id의 첫 등장부터 label
+줄까지를 블록으로 잘라** 블록마다 자기 lineage가 있는지 본다. 종합 분석 절이 같은
+id를 다시 적기 때문에, 첫 등장만 블록 시작으로 보고 label 없는 줄에서 닫는다.
+
+### BCS 동결을 구조로 잡았다
+
+```
+허용 import   __future__ · re · zipfile · io · xml.sax.saxutils
+              v2_1_render · v2_1_run
+금지          bcs* · m8* · legacy* · pre-grounding 5종
+```
+
+허용 목록을 상한으로 검사한다 — "고치지 않았다"보다 강하게, **새 코드가 BCS
+구현에 의존하지 않는다**까지 본다. A-11 가드도 통과(`ok = True`).
+
+### 주입 시험 10종
+
+```
+시간을 재계산                RED      Markdown과 다른 lineage 출력   RED
+블록에서 lineage 삭제        RED      interlock 우회                RED
+요약 없음에 설명문 생성       RED      highlight 하나 누락            RED
+종합 분석을 축약             RED      의미 주장 덧붙임               RED
+limitation 삭제             RED      BCS renderer import           RED
+```
+
+### 검증되지 않은 것 — 한글에서의 열림
+
+패키지 배치는 OWPML을 따라 작성했으나 **이 환경에는 한글이 없어 실제 열림 여부를
+확인하지 못했다.** 구조 검사(zip 구성 · mimetype 저장 방식 · 본문 XML)까지가
+여기서 할 수 있는 전부다. C-10 집계에 한계로 남긴다.
+
+### 하지 않은 것
+
+```
+fallback   HWPX 생성 실패 시 무엇을 보존하고 무엇으로 대체하는지는 C-08(RPT-006/007)
+```

@@ -26,12 +26,27 @@ from v2_1_presentation import (
 from v2_1_run import require_report_mode
 
 
+#: 출력 label 어휘. **한 곳에서만 정의한다** — 서식은 renderer마다 달라도 되지만
+#: "무엇을 적었는가"를 읽는 이름까지 갈라지면 두 출력을 대조할 수 없다.
+LABELS = {
+    "time": "시간",
+    "summary": "요약",
+    "sources": "구성 구간",
+    "summary_sources": "요약 출처",
+    "synthesis_sources": "종합 출처 구간",
+    "limitation": "한계",
+}
+
+
 class RenderError(RuntimeError):
     """렌더 입력 계약 위반. 보정하지 않고 멈춘다."""
 
 
-def _clock(seconds: float) -> str:
-    """초를 mm:ss로 적는다. 값을 바꾸지 않는다 — 표기만 한다."""
+def format_clock(seconds: float) -> str:
+    """초를 mm:ss로 적는다. 값을 바꾸지 않는다 — 표기만 한다.
+
+    HWPX renderer(C-07)도 같은 표기를 써야 하므로 공개한다.
+    """
     total = int(seconds)
     return "%02d:%02d" % (total // 60, total % 60)
 
@@ -56,8 +71,11 @@ def _check(highlights, synthesis) -> None:
                               % label)
 
 
-def _summary_cell(record) -> str:
-    """요약이 없으면 상태를 적는다. 문장을 지어내지 않는다."""
+def summary_cell(record) -> str:
+    """요약이 없으면 상태를 적는다. 문장을 지어내지 않는다.
+
+    이 규칙이 renderer마다 갈라지면 같은 부재가 다르게 읽힌다.
+    """
     return record.summary if record.summary is not None else (
         "(%s)" % SUMMARY_NO_RELIABLE_CONTENT
     )
@@ -96,15 +114,16 @@ def render_preview(manifest, highlights, synthesis) -> str:
     for record, source in zip(view["highlights"], highlights):
         lines.append(" | ".join((
             record["highlight_id"],
-            "%s–%s" % (_clock(record["start_sec"]), _clock(record["end_sec"])),
+            "%s–%s" % (format_clock(record["start_sec"]), format_clock(record["end_sec"])),
             record["label"] or "-",
-            _summary_cell(source),
+            summary_cell(source),
             " · ".join(record["source_episode_ids"]),
         )))
     lines += [
         "",
-        "종합 출처 구간: %s" % (" · ".join(view["synthesis_sources"]) or "-"),
-        view["limitation"],
+        "%s: %s" % (LABELS["synthesis_sources"],
+                    " · ".join(view["synthesis_sources"]) or "-"),
+        "%s: %s" % (LABELS["limitation"], view["limitation"]),
     ]
     return "\n".join(lines)
 
@@ -132,12 +151,13 @@ def render_markdown(manifest, highlights, synthesis) -> str:
             "",
             "### %s%s" % (record["highlight_id"],
                           " %s" % record["label"] if record["label"] else ""),
-            "- 시간: %s–%s" % (_clock(record["start_sec"]),
-                              _clock(record["end_sec"])),
-            "- 요약: %s" % _summary_cell(source),
-            "- 구성 구간: %s" % " · ".join(record["source_episode_ids"]),
-            "- 요약 출처: %s" % (" · ".join(record["summary_source_episode_ids"])
-                               or "-"),
+            "- %s: %s–%s" % (LABELS["time"], format_clock(record["start_sec"]),
+                             format_clock(record["end_sec"])),
+            "- %s: %s" % (LABELS["summary"], summary_cell(source)),
+            "- %s: %s" % (LABELS["sources"],
+                          " · ".join(record["source_episode_ids"])),
+            "- %s: %s" % (LABELS["summary_sources"],
+                          " · ".join(record["summary_source_episode_ids"]) or "-"),
         ]
     parts += ["", "## %s" % SECTION_NAMES[2], ""]
     parts += list(view["analysis"]) or ["(%s)" % SUMMARY_NO_RELIABLE_CONTENT]
@@ -149,7 +169,8 @@ def render_markdown(manifest, highlights, synthesis) -> str:
         "",
         "## %s" % SECTION_NAMES[4],
         "",
-        "- 종합 출처 구간: %s" % (" · ".join(view["synthesis_sources"]) or "-"),
-        "- 한계: %s" % view["limitation"],
+        "- %s: %s" % (LABELS["synthesis_sources"],
+                      " · ".join(view["synthesis_sources"]) or "-"),
+        "- %s: %s" % (LABELS["limitation"], view["limitation"]),
     ]
     return "\n".join(parts)
