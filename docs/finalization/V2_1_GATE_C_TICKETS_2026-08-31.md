@@ -83,7 +83,7 @@ C-03  Highlight provenance             HLT-001 · RPT-002   COMPLETE
 C-04  Global Synthesis contract        GLS-001 ~ 007
 C-05  Presentation schema              REF-001 · 002 · 005 · 006   COMPLETE
                                        + SPEC §4 Highlight.summary compatibility mapping
-C-06  Preview / Markdown renderer      RPT-001 · RPT-003 · RPT-008 + RPT-004 integration
+C-06  Preview / Markdown renderer      RPT-001 · RPT-003 · RPT-008 + RPT-004 integration   COMPLETE
 C-07  HWPX renderer                    RPT-003 · RPT-004
 C-08  Failure / fallback               RPT-006 · RPT-007 · HLT-008
 C-09  OPEN-11 end-to-end regression    matrix ID 없음 — closure 조건
@@ -668,3 +668,102 @@ FAIL_* + summary            양쪽 제외        ✓
 빈 summary · 깨진 parse      양쪽 제외        ✓
 대화 없는 영상 전체           문장 생성됨      ✓ (이전에는 전부 NO_RELIABLE_CONTENT)
 ```
+
+---
+
+## C-06 Preview / Markdown renderer  **COMPLETE**
+
+```
+산출물   src/v2_1_render.py
+         tests/test_v2_1_render.py (26 tests)
+```
+
+```python
+semantic_view(highlights, synthesis) -> dict      두 출력이 공통으로 담는 의미
+render_preview(manifest, highlights, synthesis) -> str
+render_markdown(manifest, highlights, synthesis) -> str    report 모드 전용
+```
+
+### 규칙을 지키는 대신, 지킬 수밖에 없게 만들었다
+
+renderer는 **정본 episode를 인자로 받지 않는다.**
+
+```
+받지 않으면    경계를 다시 계산할 수 없다        (RPT-003)
+              dialogue_note를 찾아 출력할 수 없다 (OPEN-11)
+              grounding을 재판정할 수 없다
+```
+
+약속이 아니라 입력에 그것이 없다. 보조로 `min`·`max` 호출 부재를 AST로 확인한다.
+
+### RPT-003 — 값이 이상해도 고쳐 주지 않는다
+
+주입 시험이 이 계약의 정의다.
+
+```
+PresentationHighlight.start_sec = 100.0  (실제 구간 시작 20.0)
+renderer가 20을 다시 계산하면            RED
+renderer가 100을 그대로 표시하면          PASS
+```
+
+`_clock()`은 초를 `mm:ss`로 적기만 한다 — 표기이지 계산이 아니다.
+
+### RPT-008 — A-02 계약을 그대로 쓴다
+
+```
+render_markdown   require_report_mode(manifest)  → 위반이면 RenderRefused
+render_preview    preview 모드에서도 허용 (그것이 preview다)
+금지              preview → report 자동 승격 · manifest rewrite · fallback
+```
+
+거부 후 manifest가 그대로인지도 검사한다.
+
+### RPT-004 — 서식은 다르고 의미는 같다
+
+```
+같아야 함   highlight identity · source lineage · summary · 종합 출처 · limitation
+달라도 됨   heading · bullet · 표 여부 · 간격 · 등장 횟수
+```
+
+Markdown은 분석 절에서 highlight id를 한 번 더 적는다. 그래서 비교를 **등장 횟수가
+아니라 집합**으로 한다. 최종 PASS는 C-07의 HWPX가 생긴 뒤 C-10에서 집계한다.
+
+### 문장을 만들지 않는다
+
+```
+허용   "시간:" · "요약:" · "구성 구간:" 같은 고정 UI 문구
+금지   "중요한 전환점이다" 류의 내용 주장
+       요약이 없을 때 "요약 없음 — 내용 확인 필요" 같은 문장
+       → 상태 토큰 (NO_RELIABLE_CONTENT) 을 적는다
+```
+
+### 주입 시험 10종
+
+```
+renderer가 시간을 재계산            RED
+preview → report 자동 승격          RED
+어긋난 summary 상태를 보정           RED
+lineage 불일치 통과                 RED
+limitation을 출력에서 뺌            RED
+요약 없음에 문장을 지어냄            RED
+renderer가 의미 주장을 덧붙임        RED
+종합 절을 요약해서 다시 씀           RED
+preview가 행별 lineage를 뺌         RED   ← 처음 GREEN
+알 수 없는 summary 상태를 통과       RED
+```
+
+`preview가 행별 lineage를 뺌`이 처음 GREEN이었다. 종합 절이 모든 구간 id를 한 번씩
+적기 때문에 **문서 전체 검사만으로는 행별 출처가 빠져도 통과**했다. 행 단위로 보는
+테스트를 추가해 RED로 만들었다. C-04 · C-05에 이어 세 번째 같은 부류다 — 문서 전역
+문자열 검사는 약하다.
+
+### 하지 않은 것
+
+```
+HWPX                 C-07
+presentation fallback C-08
+OPEN-11 end-to-end    C-09
+acceptance 집계        C-10
+```
+
+`hwpx` · `fallback` 식별자가 소스에 없다는 것을 토큰 스캔으로 확인한다.
