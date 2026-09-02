@@ -28,9 +28,10 @@ Gate D  Research Boundary        COMPLETE   7/7
 E-01 · E-01a  ERR 실패 의미론      CLOSED     PROVEN 10/10 (P0 8 · P1 2) · UNPROVEN 0
 E-02          DET 결정성           CLOSED     PROVEN 7/7  (P0 5 · P1 2) · UNPROVEN 0
 E-03          CP 비채택 안전장치     CLOSED     PROVEN 9/9  (P0 5 · P1 2 · P2 2) · UNPROVEN 0
+E-04          GEO dataset regression CLOSED     PROVEN 4/4  (P0 2 · P1 2) · UNPROVEN 0
 
 REG-010                          PASS_BY_AUTHORIZED_SUPERSESSION
-regression                       3,709 passed / 1 skipped
+regression                       3,758 passed / 1 skipped
 tree                             clean (실측)
 ```
 
@@ -48,6 +49,10 @@ GEO       4     2   2   -   instruction echo caption 구분·무영향
 TRI       6     3   3   -   오염·희소 근거에서 서사 환각 금지
 REG       4     3   1   -   REG-001 회귀 · 002 P0 suite · 003 P1 suite · 004 tree
 ```
+
+§19(GEO+TRI)는 **GEO 4/4 · TRI 5/6**이다. `TRI-005`가 implementation-gap으로 남아
+있어 절 전체를 아직 넣지 않았다 — 부분 매핑을 집계에 넣지 않는 원칙이다.
+상세는 `V2_1_E04_GEO_TRI_AUDIT_2026-09-02.md`.
 
 ERR 10건은 E-01a, DET 7건은 E-02, CP 9건은 E-03에서 지도에 들어왔다
 (40 → 30 → 23 → 14 · P0 26 → 18 → 13 → 8).
@@ -82,7 +87,7 @@ REG-010 EFFECTIVE STATUS  PASS_BY_AUTHORIZED_SUPERSESSION
 E-01  ERR   실패 의미론 10건 매핑        (P0 8)   CLOSED (E-01 + E-01a)
 E-02  DET   결정성 7건 매핑              (P0 5)   CLOSED
 E-03  CP    change-point 계약 9건 매핑    (P0 5 · P2 2는 진단)   CLOSED
-E-04  TRI · GEO  오염·echo 10건 매핑      (P0 5)
+E-04  TRI · GEO  오염·echo 10건 매핑      (P0 5)   GEO CLOSED · TRI 5/6
 E-05  REG-001 ~ 004 매핑 + 전체 재집계
 ```
 
@@ -102,6 +107,9 @@ E-05  REG-001 ~ 004 매핑 + 전체 재집계
 KNOWN-LIMITATION-C09     grounding FAIL이 그 구간의 보존된 요약을 표현에서 가린다
                          정본에는 남는다. containment 실패가 아니라 recall trade-off.
 KNOWN-GUARD-LIMITATION   A-11 REG-007은 파일 이름만 본다. Gate D가 경로 검사를 덧댔다.
+TRI-005 미해결            summary 안의 발명된 서사를 거부하는 기제가 없다.
+                         근거 있는 dialogue만 게이트된다(FAIL_UNSUPPORTED 등).
+                         선언된 한계: semantic entailment not automatically verified.
 ```
 
 ---
