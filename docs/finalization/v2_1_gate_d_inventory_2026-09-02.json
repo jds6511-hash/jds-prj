@@ -1,0 +1,10 @@
+{
+  "c0_tuning_artifacts": {},
+  "generated": "2026-09-02",
+  "model_comparison_artifacts": {
+    "results/m8_redesign_r2/threeway.json": "82aa4e7bc1c66aea2a00b6a01fea860676b93636d940c9e6e789a2516814d205",
+    "runs/casestudy_caption_retrieval/cs_20260825/step7_target_vs_top1.json": "16e0b99b67a2be88756e1095793164a7199151645aa439986b034d7f7a852133",
+    "runs/m8_hier/m8_hier_boundary_ablation/compare_wonyi_geoje.json": "524a861e38a47d6948feebfa006f49e043267ec259d80e258ddb6d70d32003c1"
+  },
+  "note": "Gate D 기준 기록. 과거 산출물은 보존 대상이고, 여기 없던 것이 생기면 위반이다."
+}

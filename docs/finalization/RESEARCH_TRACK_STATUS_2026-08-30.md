@@ -37,8 +37,15 @@ Gate C                   COMPLETE  (2026-09-02)  정본 ↔ 표현 분리
 미조치                    grounding FAIL이 그 구간 요약을 표현에서 가린다
                          (정본에는 보존 · KNOWN-LIMITATION-C09)
 미해결                    REG-010(push = NO) deviation — final acceptance에서 해결
-NEXT                     Gate D 연구 경계 최종 검증
-                         IMPLEMENTATION_COMPLETE는 Gate D까지 통과해야 한다
+Gate D                   COMPLETE  (2026-09-02)  연구 경계 최종 검증
+                         RESEARCH BOUNDARY = PASS   7/7
+                         M9 미실행 · official test 미개방 · BCS core 무변경
+                         새 human GT 없음 · 추가 모델 비교 없음
+                         change-point 미채택 · C0 tuning 없음
+발견                      A-11 REG-007은 파일 이름만 본다 (디렉터리 M9를 놓친다)
+                         A-11을 고치지 않고 Gate D에서 경로 검사를 덧댔다
+NEXT                     REG-010 authorization addendum 확정 후 final acceptance
+                         IMPLEMENTATION_COMPLETE는 아직 NO
 FINAL REPORT / PRESENTATION FINALIZATION   보류 (종료 아님)
 Dual-stream 전면 (D)     불필요
 모델 추가 비교           불필요
