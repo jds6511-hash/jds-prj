@@ -39,6 +39,7 @@ import json
 import shutil
 import subprocess
 import sys
+import threading
 import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -317,21 +318,32 @@ def s2_raw(directory: Path, run: Path, video_id: str, run_id: str, generate,
     episodes = _load_episodes(run, segments, timeline)
     registry = SegmentRegistry(segments)
     records = []
+    counters = {"llm_calls": 0, "prompt_refusals": 0, "llm_failures": 0,
+                "retries": 0}
     for index, episode in enumerate(episodes):
+        episode_started = time.time()
         try:
             bundle = build_episode_prompt(episode, timeline, store)
         except PromptError as error:
             # **episode 내용 실패다.** orchestrator 실패로 올리지 않는다(ERR-009).
+            counters["prompt_refusals"] += 1
             records.append({"episode_id": episode.episode_id, "raw": None,
                             "status": EMPTY, "reason": "no_usable_evidence",
-                            "detail": str(error)})
+                            "detail": str(error),
+                            "wall_seconds": round(time.time() - episode_started, 2)})
             continue
         try:
+            counters["llm_calls"] += 1
             raw = generate(bundle.text)
         except Exception as error:                       # noqa: BLE001
+            counters["llm_failures"] += 1
             kind = (ENVIRONMENT_BLOCKED
                     if "out of memory" in str(error).lower()
                     else ENVIRONMENT_FAILURE)
+            # **재시도하지 않는다.** 설정을 낮춰 다시 부르는 경로를 만들지 않는다.
+            (directory / "s2_partial.json").write_text(json.dumps(
+                {"counters": counters, "episodes": records}, ensure_ascii=False),
+                encoding="utf-8")
             raise StageError("S2", kind, "%s: %s" % (type(error).__name__, error))
         outcome = store.store_then_parse(
             lambda text: parse_json_payload(text, registry),
@@ -342,9 +354,12 @@ def s2_raw(directory: Path, run: Path, video_id: str, run_id: str, generate,
             "raw": str(store.load("llm", index).raw_path.relative_to(run)),
             "status": outcome.parsed.status,
             "prompt_cites": list(bundle.claim_cites),
+            "raw_chars": len(raw),
+            "wall_seconds": round(time.time() - episode_started, 2),
         })
     (directory / "raw_index.json").write_text(json.dumps({
         "generation": generation.as_dict(),
+        "counters": counters,
         "episodes": records,
     }, ensure_ascii=False), encoding="utf-8")
     return ["S2/raw_index.json"]
@@ -552,10 +567,94 @@ def environment() -> dict:
     return record
 
 
+class GpuPoll:
+    """실행 내내 VRAM·이용률을 적는다. 계측만 하고 실행에 개입하지 않는다."""
+
+    def __init__(self, path: Path, interval: float = 5.0):
+        self.path, self.interval = path, interval
+        self.samples = []
+        self._stop = threading.Event()
+        self._thread = threading.Thread(target=self._loop, daemon=True)
+
+    def _loop(self):
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        with self.path.open("w", encoding="utf-8") as handle:
+            while not self._stop.is_set():
+                out = subprocess.run(
+                    ["nvidia-smi",
+                     "--query-gpu=memory.used,memory.total,utilization.gpu",
+                     "--format=csv,noheader,nounits"],
+                    capture_output=True, text=True)
+                if out.returncode == 0 and out.stdout.strip():
+                    used, total, util = [
+                        int(x) for x in out.stdout.strip().splitlines()[0].split(", ")]
+                    sample = {"t": round(time.time(), 1), "used_mib": used,
+                              "total_mib": total, "util_pct": util}
+                    self.samples.append(sample)
+                    handle.write(json.dumps(sample) + "\n")
+                    handle.flush()
+                self._stop.wait(self.interval)
+
+    def __enter__(self):
+        self._thread.start()
+        return self
+
+    def __exit__(self, *_):
+        self._stop.set()
+        self._thread.join(timeout=self.interval * 2)
+
+    def summary(self) -> dict:
+        used = [s["used_mib"] for s in self.samples]
+        if not used:
+            return {"samples": 0, "note": "측정 실패 — 값을 추정해 적지 않는다"}
+        ordered = sorted(used)
+        return {"samples": len(used), "interval_sec": self.interval,
+                "peak_mib": max(used), "median_mib": ordered[len(ordered) // 2],
+                "p95_mib": ordered[max(int(len(ordered) * 0.95) - 1, 0)],
+                "total_mib": self.samples[0]["total_mib"],
+                "util_peak_pct": max(s["util_pct"] for s in self.samples)}
+
+
+def distributions(run: Path) -> dict:
+    """산출물에서 분포를 센다. 판정하지 않는다."""
+    def counts(values):
+        table = {}
+        for value in values:
+            table[value] = table.get(value, 0) + 1
+        return table
+
+    index = json.loads((run / "S2/raw_index.json").read_text(encoding="utf-8"))
+    document = json.loads(
+        (run / "S5/aar_canonical.json").read_text(encoding="utf-8"))
+    episodes = document["episodes"]
+    per_episode = [record.get("wall_seconds") for record in index["episodes"]
+                   if record.get("wall_seconds") is not None]
+    return {
+        "expected_episodes": len(index["episodes"]),
+        "canonical_episodes": len(episodes),
+        "counters": index.get("counters", {}),
+        "parse_status": counts(record["status"] for record in index["episodes"]),
+        "content_status": counts(e["content_status"] for e in episodes),
+        "grounding_status": counts(e["grounding_status"] for e in episodes),
+        "summary_mode": counts(e["summary_mode"] for e in episodes),
+        "raw_outputs_present": sum(
+            1 for record in index["episodes"]
+            if record["raw"] and (run / record["raw"]).is_file()),
+        "episode_wall_seconds": {
+            "n": len(per_episode),
+            "total": round(sum(per_episode), 1),
+            "min": min(per_episode) if per_episode else None,
+            "max": max(per_episode) if per_episode else None,
+            "mean": round(sum(per_episode) / len(per_episode), 2) if per_episode else None,
+        },
+    }
+
+
 def orchestrate(run: Path, segments_path: Path, config_path: Path, *,
                 video_id: str, run_id: str, generate, generation: GenerationConfig,
                 producer_version: str, window_sec: float | None = None,
-                model_provenance: dict | None = None) -> dict:
+                model_provenance: dict | None = None,
+                poll_gpu: bool = False) -> dict:
     run.mkdir(parents=True, exist_ok=True)
     print_ = fingerprint(config_path, generation.model_id)
 
@@ -572,9 +671,17 @@ def orchestrate(run: Path, segments_path: Path, config_path: Path, *,
     }
 
     manifests, upstream = {}, None
-    for stage in STAGES:
-        manifests[stage] = run_stage(run, stage, print_, upstream, bodies[stage])
-        upstream = artifact_hash(run, stage)
+    poll = GpuPoll(run / "gpu_poll.jsonl") if poll_gpu else None
+    try:
+        if poll:
+            poll.__enter__()
+        for stage in STAGES:
+            manifests[stage] = run_stage(run, stage, print_, upstream,
+                                         bodies[stage])
+            upstream = artifact_hash(run, stage)
+    finally:
+        if poll:
+            poll.__exit__(None, None, None)
 
     summary = {
         "video_id": video_id,
@@ -584,6 +691,8 @@ def orchestrate(run: Path, segments_path: Path, config_path: Path, *,
         "model_provenance": model_provenance or {"note": "unavailable"},
         "generation": generation.as_dict(),
         "stages": manifests,
+        "gpu": poll.summary() if poll else {"samples": 0, "note": "폴링 없음"},
+        "distributions": distributions(run),
         "finished_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
     }
     (run / "run_manifest.json").write_text(
@@ -614,12 +723,26 @@ def transformers_provider(generation: GenerationConfig, *, llm_4bit: bool = Fals
         raise StageError("S2", ENVIRONMENT_FAILURE,
                          "모델 로드 실패: %s" % error) from None
 
+    # 로드 **직후** 실제 값에서 읽는다. 얻지 못하면 unavailable로 두고 꾸미지 않는다.
+    def _snapshot(obj) -> str:
+        for attr in ("_commit_hash", "_name_or_path"):
+            value = getattr(obj, attr, None)
+            if value and "snapshots" in str(value):
+                return Path(str(value)).parts[-1]
+            if attr == "_commit_hash" and value:
+                return str(value)
+        return "unavailable"
+
     provenance = {
         "model_id": generation.model_id,
-        "resolved_revision": getattr(model.config, "_commit_hash", "unavailable"),
-        "tokenizer_revision": getattr(tokenizer, "name_or_path", "unavailable"),
+        "resolved_revision": _snapshot(model.config),
+        "model_local_path": str(getattr(model.config, "_name_or_path", "unavailable")),
+        "tokenizer_revision": _snapshot(tokenizer),
+        "tokenizer_local_path": str(getattr(tokenizer, "name_or_path", "unavailable")),
+        "torch_dtype": str(getattr(model, "dtype", "unavailable")),
         "llm_4bit": False,
         "do_sample": generation.do_sample,
+        "max_new_tokens": generation.max_new_tokens,
     }
 
     def generate(prompt: str) -> str:
@@ -647,20 +770,32 @@ def main(argv=None) -> int:
     parser.add_argument("--model-id", default="Qwen/Qwen2.5-7B-Instruct")
     parser.add_argument("--max-new-tokens", type=int, default=512)
     parser.add_argument("--window-sec", type=float, default=None)
+    parser.add_argument("--poll-gpu", action="store_true",
+                        help="5초 간격 VRAM·이용률 기록")
+    parser.add_argument("--clean", action="store_true",
+                        help="run 디렉터리를 비우고 처음부터 — 첫 실행은 이것으로 한다")
     args = parser.parse_args(argv)
+
+    run = Path(args.run_dir)
+    if args.clean and run.exists():
+        shutil.rmtree(run)
 
     generation = GenerationConfig(model_id=args.model_id, do_sample=False,
                                   max_new_tokens=args.max_new_tokens)
     generate, provenance = transformers_provider(generation)
     summary = orchestrate(
-        Path(args.run_dir), Path(args.segments), Path(args.config),
+        run, Path(args.segments), Path(args.config),
         video_id=args.video_id, run_id=args.run_id, generate=generate,
         generation=generation, producer_version=args.producer_version,
-        window_sec=args.window_sec, model_provenance=provenance)
-    print(json.dumps({stage: {"reused": m["reused"],
-                              "wall_seconds": m.get("wall_seconds")}
-                      for stage, m in summary["stages"].items()},
-                     ensure_ascii=False))
+        window_sec=args.window_sec, model_provenance=provenance,
+        poll_gpu=args.poll_gpu)
+    print(json.dumps({
+        "stages": {stage: {"reused": m["reused"],
+                           "wall_seconds": m.get("wall_seconds")}
+                   for stage, m in summary["stages"].items()},
+        "gpu": summary["gpu"],
+        "distributions": summary["distributions"],
+    }, ensure_ascii=False, indent=1))
     return 0
 
 
