@@ -1,0 +1,65 @@
+{
+ "submission_arm": "R1",
+ "submission_contract": "episode_content_v3_summary_only",
+ "prompt_hash": "a08e3c3c4988daa6639cf0316f8b5d81f466685590fb54400eeda7d6ab6610d7",
+ "input": {
+  "segments_sha256": "aa008317023c884a206c2ea8ce9f1de5db809c2638fca257f964a58df4799c92",
+  "segment_count": 485
+ },
+ "fingerprint": {
+  "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+  "code_revision": "f81be816c9903a66dec9d6a3a5aea73ec9d322c4",
+  "prompt_version": "episode_content_v3_summary_only",
+  "prompt_hash": "a08e3c3c4988daa6639cf0316f8b5d81f466685590fb54400eeda7d6ab6610d7",
+  "model_id": "Qwen/Qwen2.5-7B-Instruct"
+ },
+ "model_provenance": {
+  "model_id": "Qwen/Qwen2.5-7B-Instruct",
+  "resolved_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+  "model_local_path": "Qwen/Qwen2.5-7B-Instruct",
+  "tokenizer_revision": "unavailable",
+  "tokenizer_local_path": "Qwen/Qwen2.5-7B-Instruct",
+  "torch_dtype": "torch.bfloat16",
+  "llm_4bit": false,
+  "do_sample": false,
+  "max_new_tokens": 512
+ },
+ "generation": {
+  "model_id": "Qwen/Qwen2.5-7B-Instruct",
+  "do_sample": false,
+  "max_new_tokens": 512
+ },
+ "episodes": 41,
+ "presentation_eligible": 39,
+ "content_status": {
+  "VALID_PARSE": 39,
+  "PARSE_CONTRACT_FAILURE": 2
+ },
+ "parse_contract_failure": 2,
+ "unavailable_note": "2 episodes unavailable due to parse-contract failure",
+ "renderer": "A2' pure-Python OWPML (scripts/v2_1_hwpx_owpml.py)",
+ "structural_validator": "PASS",
+ "artifact": {
+  "hwpx": "runs\\v3_paired\\r1_v3\\report.hwpx",
+  "hwpx_sha256": "f874f643112704120cd3b043c3667b71ffd4f25105ca1fccf345b936d4e4a91d",
+  "hwpx_bytes": 15824
+ },
+ "hangul": {
+  "hancom_open": true,
+  "pdf_export": true,
+  "pdf_bytes": 134938,
+  "text_chars": 14496,
+  "box_glyphs": {
+   "■": 5,
+   "┌": 41,
+   "│": 205,
+   "└": 41
+  }
+ },
+ "default_contract_unchanged": true,
+ "not_claimed": [
+  "semantic entailment of the summaries is not automatically verified",
+  "GRD-004 remains P1 WAIVED",
+  "v3 is not the repository default contract"
+ ]
+}

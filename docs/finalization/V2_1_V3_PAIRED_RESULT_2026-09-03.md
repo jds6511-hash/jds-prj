@@ -130,5 +130,6 @@ v3를 기본 계약으로 승격했다      아니다 — 기본값은 여전히
 ```
 v2.1 IMPLEMENTATION_COMPLETE = YES   baseline 6e79ac3
 M9 HOLD · official test UNOPENED · GRD-004 P1 WAIVED
-SUBMISSION_READY                     사용자 판정 대기
+SUBMISSION_READY                     YES · 제출 arm = R1(v3)
+                                     상태 정본: V2_1_SUBMISSION_STATUS_2026-09-03.md
 ```
