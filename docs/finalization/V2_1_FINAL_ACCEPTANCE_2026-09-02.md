@@ -99,8 +99,40 @@ REG-010 EFFECTIVE STATUS  PASS_BY_AUTHORIZED_SUPERSESSION
 ## 5. 측정하지 않은 것 (통과로 적지 않는다)
 
 ```
-한글(HWP) 실제 열림       미검증 — HWPX 패키지 구조·본문 XML까지만 확인했다
-                         제출 전 수동 open 확인 필요 (matrix 항목이 요구하는 것은 아니다)
+한글(HWP) 실제 열림       측정했다 (2026-09-03) — 결과는 아래 결함 기록을 보라
+                         이 항목은 matrix acceptance가 요구하는 것이 아니다
+```
+
+```
+KNOWN OPERATIONAL DEFECT — src/v2_1_render_hwpx.py
+
+  생성물은 ZIP·XML로는 유효하지만 **완전한 HWPX 패키지가 아니다.**
+  한글에서 열리지 않는다.
+
+  실측 (한글 Office 2024 COM)
+      hand-built 산출물   open() = False
+      한글이 저장한 파일    open() = True
+
+  원인 (패키지 대조)
+      META-INF/container.xml이 rootfile로 지목한 Contents/content.hpf가 없다
+      META-INF/manifest.xml · settings.xml · container.rdf 없음
+      Contents/header.xml이 135 B 스텁 — fontface · charPr · paraPr · style 0
+      section0.xml은 그 정의를 전제로 참조한다
+
+  영향 범위
+      ZIP 무결성 · XML well-formedness · 본문 유니코드 보존은 전부 정상이다
+      깨지는 것은 **패키지 완결성**이고, 그래서 glyph 렌더링은 검증 단계에
+      도달조차 못 한다
+      acceptance 판정은 바뀌지 않는다 — matrix에 HWPX 실제 열림 항목이 없고
+      RPT-계열은 canonical 동일성·경계 생성 금지를 재는 계약이다
+
+  현재 우회
+      한글 COM 저장 경로(pyhwpx)로 만든 파일은 11파트로 열린다.
+      en dash · « » · 박스 문자가 저장본에 원문 그대로 남는다.
+      (cp949 TEXT 내보내기에서만 – → &#8211; · « → ≪ 로 바뀐다 — 문서 손상 아님)
+
+  후속
+      post-v2.1 트랙. baseline 6e79ac3의 판정을 소급 변경하지 않는다.
 ```
 
 ```
