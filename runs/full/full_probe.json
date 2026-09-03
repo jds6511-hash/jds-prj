@@ -1,0 +1,161 @@
+{
+ "video_id": "full_xekZO4n4QuE",
+ "url": "https://www.youtube.com/watch?v=xekZO4n4QuE",
+ "namespace": "full",
+ "started_at": "2026-09-03T12:05:51+0900",
+ "clip": {
+  "full": true,
+  "start": 0,
+  "duration": null,
+  "bytes": 842711863
+ },
+ "code_git_head": "be35249aafbeafc42d8fa24c84c253c1da80d089",
+ "steps": {
+  "M1": {
+   "seconds": 2.2,
+   "returncode": 0,
+   "tail": "M1 �Ϸ�: 485�� ���׸�Ʈ, duration=2424.1s �� work_full\\full_xekZO4n4QuE\\segments.json\n"
+  },
+  "M2": {
+   "seconds": 255.1,
+   "returncode": 0,
+   "tail": "M2 �Ϸ�: is_static ���� 0.0% (0/485)\n"
+  },
+  "M3": {
+   "seconds": 5905.6,
+   "returncode": 0,
+   "tail": "faster-whisper large-v3 (cuda/float16) ���� ��...\n�ڸ� Ŀ������: 296/485 (61.0%)\nM3 �Ϸ�: caption �� ���ڿ� 0��\n#######1 | 670/824 [00:03<00:00, 485.69it/s]\nLoading weights:  89%|########9 | 736/824 [00:03<00:00, 530.01it/s]\nLoading weights:  97%|#########6| 798/824 [00:03<00:00, 554.18it/s]\nLoading weights: 100%|##########| 824/824 [00:03<00:00, 244.68it/s]\nC:\\Users\\UserK\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python312\\site-packages\\bitsandbytes\\backends\\cuda\\ops.py:468: FutureWarning: _check_is_size will be removed in a future PyTorch release along with guard_size_oblivious.     Use _check(i >= 0) instead.\n  torch._check_is_size(blocksize)\n"
+  }
+ },
+ "provenance_entry": {
+  "source_url": "https://www.youtube.com/watch?v=xekZO4n4QuE",
+  "source_id": "xekZO4n4QuE",
+  "file_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc"
+ },
+ "config": {
+  "path": "C:\\Users\\UserK\\Desktop\\prj\\config_full.yaml",
+  "sha256": "8484cc99b871a2c0"
+ },
+ "models": {
+  "stt_model": "large-v3",
+  "caption_model": "Qwen/Qwen2.5-VL-3B-Instruct",
+  "vlm_4bit": true,
+  "vlm_max_new_tokens": 128,
+  "embed_model": "nlpai-lab/KURE-v1",
+  "seg_len_sec": 5
+ },
+ "gpu": {
+  "samples": 1221,
+  "interval_sec": 5.0,
+  "peak_mib": 5267,
+  "median_mib": 2851,
+  "p95_mib": 5235,
+  "total_mib": 6144,
+  "util_peak_pct": 100
+ },
+ "characterization": {
+  "n_segments": 485,
+  "duration_sec": 2424.133,
+  "provenance": {
+   "provenance_status": "recorded",
+   "source_url": "https://www.youtube.com/watch?v=xekZO4n4QuE",
+   "source_id": "xekZO4n4QuE",
+   "file_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+   "sha256_verified_at_m1": true
+  },
+  "subtitle_nonempty": 296,
+  "caption_nonempty": 485,
+  "caption_corrupted": [
+   168,
+   191
+  ],
+  "subtitle_credit": [],
+  "caption_chars_mean": 139.9,
+  "caption_quotes_screen_text": 44,
+  "stt_anomaly_proxies": {
+   "nonempty_count": 296,
+   "nonempty_ratio": 0.61,
+   "consecutive_duplicate_count": 12,
+   "consecutive_duplicate_ratio": 0.041,
+   "distinct_transcripts": 268,
+   "top_repeats": [
+    [
+     "고춧가루",
+     5
+    ],
+    [
+     "계란후라이",
+     4
+    ],
+    [
+     "소금과 후추를 넣고 끓여줍니다",
+     4
+    ],
+    [
+     "다진마늘",
+     3
+    ],
+    [
+     "이렇게",
+     3
+    ],
+    [
+     "후추",
+     3
+    ],
+    [
+     "고춧가루 고춧가루",
+     3
+    ],
+    [
+     "이생 pierws 시킬 드디어",
+     2
+    ],
+    [
+     "설탕 1큰술",
+     2
+    ],
+    [
+     "탈락",
+     2
+    ]
+   ],
+   "max_repeat_run_length": 2,
+   "canary_observed_strings": {
+    "오븐에 2분간 구워주세요": 0,
+    "크림치즈를 넣어주세요": 0
+   },
+   "caption_subtitle_token_jaccard_mean": 0.001,
+   "note": "diagnostic only — 사실 여부 판정이 아니다"
+  },
+  "samples": [
+   {
+    "idx": 0,
+    "subtitle": "",
+    "caption": "화면에는 한 여성이 흰색 체크 무늬 잠옷을 입고 있는 모습이 보입니다. 그녀는 주방에서 요리를 하고 있으며, 앞치마를 끼고 있습니다. 주방은 깨끗하고 깔끔하게 정돈되어 있으며, 다양한 조리 도구와 식기들이 잘 정리되어 있습니다. 주변에는 식물도 보이며, 조명은 밝게 비추고 있어 전체적인 분위기가 따뜻하고 아늑해 보입니다."
+   },
+   {
+    "idx": 1,
+    "subtitle": "",
+    "caption": "여성은 흰색 블라우스를 입고 있으며, 손에는 갈색 지갑을 들고 있다. 배경에는 다양한 색상의 버튼들이 진열되어 있는 것으로 보인다. 여성의 팔은 가볍게 움직이고 있으며, 손가락으로 무엇인가를 만지고 있다. 배경에는 여러 가지 다른 제품들이 진열되어 있는 것처럼 보인다."
+   },
+   {
+    "idx": 2,
+    "subtitle": "",
+    "caption": "화면에는 여러 개의 만화 캐릭터가 있는 책들이 보입니다. 각각의 캐릭터들은 다양한 의상을 입고 있으며, 배경은 밝은 색상으로 이루어져 있습니다. 한 쪽에는 빨간 드레스를 입은 여성 캐릭터가 있고, 다른 쪽에는 분홍색 드레스를 입은 여성 캐릭터가 보입니다. 또한, 각 캐릭터 아래에는 그들의 의상이 나란히 배열되어 있습니다."
+   },
+   {
+    "idx": 3,
+    "subtitle": "",
+    "caption": "화면에는 주황색 봉包가 보이고, 그 위에는 한국어와 영어로 'Hello'라는 글자가 적혀 있습니다. 황금빛 바탕으로 '안녕하세요'라는 문구도 보입니다. 배경은 희미하게 보이는 것으로, 상품의 뒷면 부분임을 알 수 있습니다."
+   },
+   {
+    "idx": 4,
+    "subtitle": "아이스크림 완성! 자막에 사용하여 수정된 아이스크림을uxe Jonathan",
+    "caption": "화면에는 한 손이 제품의 브랜드 이름을 가리키는 모습이 보입니다. 배경은 희미하게 다른 상품들이 보이며, 화면 하단에는 한글 자막이 나타나 있습니다."
+   }
+  ]
+ },
+ "total_seconds": 6162.9,
+ "finished_at": "2026-09-03T13:50:52+0900"
+}

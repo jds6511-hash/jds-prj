@@ -234,6 +234,11 @@
       "source_url": "https://www.youtube.com/watch?v=xekZO4n4QuE",
       "source_id": "xekZO4n4QuE#600-780",
       "file_sha256": "c7c26b276bebbbc4746e3d02a75571ecf838721904cc48f9e7e417cbb4255927"
+    },
+    "full_xekZO4n4QuE": {
+      "source_url": "https://www.youtube.com/watch?v=xekZO4n4QuE",
+      "source_id": "xekZO4n4QuE",
+      "file_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc"
     }
   },
   "legacy_exempt": {
