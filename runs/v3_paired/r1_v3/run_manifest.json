@@ -1,0 +1,231 @@
+{
+ "video_id": "full_xekZO4n4QuE",
+ "run_id": "v3paired-r1-20260903",
+ "fingerprint": {
+  "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+  "code_revision": "f81be816c9903a66dec9d6a3a5aea73ec9d322c4",
+  "prompt_version": "episode_content_v3_summary_only",
+  "prompt_hash": "a08e3c3c4988daa6639cf0316f8b5d81f466685590fb54400eeda7d6ab6610d7",
+  "model_id": "Qwen/Qwen2.5-7B-Instruct"
+ },
+ "environment": {
+  "python": "3.12.13",
+  "git_head": "f81be816c9903a66dec9d6a3a5aea73ec9d322c4",
+  "torch": "2.13.0+cu130",
+  "transformers": "5.14.1",
+  "cuda": "13.0",
+  "gpu": "NVIDIA GeForce RTX 4090"
+ },
+ "model_provenance": {
+  "model_id": "Qwen/Qwen2.5-7B-Instruct",
+  "resolved_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+  "model_local_path": "Qwen/Qwen2.5-7B-Instruct",
+  "tokenizer_revision": "unavailable",
+  "tokenizer_local_path": "Qwen/Qwen2.5-7B-Instruct",
+  "torch_dtype": "torch.bfloat16",
+  "llm_4bit": false,
+  "do_sample": false,
+  "max_new_tokens": 512
+ },
+ "generation": {
+  "model_id": "Qwen/Qwen2.5-7B-Instruct",
+  "do_sample": false,
+  "max_new_tokens": 512
+ },
+ "stages": {
+  "S0": {
+   "stage": "S0",
+   "fingerprint": {
+    "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+    "code_revision": "f81be816c9903a66dec9d6a3a5aea73ec9d322c4",
+    "prompt_version": "episode_content_v3_summary_only",
+    "prompt_hash": "a08e3c3c4988daa6639cf0316f8b5d81f466685590fb54400eeda7d6ab6610d7",
+    "model_id": "Qwen/Qwen2.5-7B-Instruct"
+   },
+   "upstream_artifact_hash": null,
+   "outputs": {
+    "S0/ingest.json": "c50214c8390ebfc3204485992165f8d8e8a72dc166564762f355be9cbd84542f"
+   },
+   "stage_complete": true,
+   "reused": false,
+   "wall_seconds": 5.55,
+   "finished_at": "2026-09-03T18:15:58+0900"
+  },
+  "S1": {
+   "stage": "S1",
+   "fingerprint": {
+    "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+    "code_revision": "f81be816c9903a66dec9d6a3a5aea73ec9d322c4",
+    "prompt_version": "episode_content_v3_summary_only",
+    "prompt_hash": "a08e3c3c4988daa6639cf0316f8b5d81f466685590fb54400eeda7d6ab6610d7",
+    "model_id": "Qwen/Qwen2.5-7B-Instruct"
+   },
+   "upstream_artifact_hash": "0b114093fd14a1fe4f89f1b2b797d547d2383d86fc7425ef4326820e8af5d869",
+   "outputs": {
+    "S1/episodes.json": "49bb3de0725eedcf8563d2606ff8843ca5acbb6c9beb7e7d31f5e39713e6b563"
+   },
+   "stage_complete": true,
+   "reused": false,
+   "wall_seconds": 0.02,
+   "finished_at": "2026-09-03T18:15:58+0900"
+  },
+  "S2": {
+   "stage": "S2",
+   "fingerprint": {
+    "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+    "code_revision": "f81be816c9903a66dec9d6a3a5aea73ec9d322c4",
+    "prompt_version": "episode_content_v3_summary_only",
+    "prompt_hash": "a08e3c3c4988daa6639cf0316f8b5d81f466685590fb54400eeda7d6ab6610d7",
+    "model_id": "Qwen/Qwen2.5-7B-Instruct"
+   },
+   "upstream_artifact_hash": "5742e8623aeecbf5328da25984c8db546743067920e8e1e7aaafba418759c230",
+   "outputs": {
+    "S2/raw_index.json": "1bbc19c38830314bf8210bcd6228a40723938844b61cb5730a098548ecb15256"
+   },
+   "stage_complete": true,
+   "reused": false,
+   "wall_seconds": 63.58,
+   "finished_at": "2026-09-03T18:17:01+0900"
+  },
+  "S3": {
+   "stage": "S3",
+   "fingerprint": {
+    "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+    "code_revision": "f81be816c9903a66dec9d6a3a5aea73ec9d322c4",
+    "prompt_version": "episode_content_v3_summary_only",
+    "prompt_hash": "a08e3c3c4988daa6639cf0316f8b5d81f466685590fb54400eeda7d6ab6610d7",
+    "model_id": "Qwen/Qwen2.5-7B-Instruct"
+   },
+   "upstream_artifact_hash": "2570fe0289ade7576b214b7a954495dc191e85b6053c2896c0d1b64ba742aeb1",
+   "outputs": {
+    "S3/content.json": "52228113cf82f9ddc113f2d3d47c4516605addfa75e966b85140bb0fa0f0904a"
+   },
+   "stage_complete": true,
+   "reused": false,
+   "wall_seconds": 0.03,
+   "finished_at": "2026-09-03T18:17:01+0900"
+  },
+  "S4": {
+   "stage": "S4",
+   "fingerprint": {
+    "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+    "code_revision": "f81be816c9903a66dec9d6a3a5aea73ec9d322c4",
+    "prompt_version": "episode_content_v3_summary_only",
+    "prompt_hash": "a08e3c3c4988daa6639cf0316f8b5d81f466685590fb54400eeda7d6ab6610d7",
+    "model_id": "Qwen/Qwen2.5-7B-Instruct"
+   },
+   "upstream_artifact_hash": "55b7d1f277d9129feec78684f0ceaeb47c269bade2bf34c0f42210ba5539ffb4",
+   "outputs": {
+    "S4/grounded.json": "b918e3c2a258ff76030cfb689e493304723eafea407e16478d328f83931ba94b"
+   },
+   "stage_complete": true,
+   "reused": false,
+   "wall_seconds": 0.03,
+   "finished_at": "2026-09-03T18:17:01+0900"
+  },
+  "S5": {
+   "stage": "S5",
+   "fingerprint": {
+    "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+    "code_revision": "f81be816c9903a66dec9d6a3a5aea73ec9d322c4",
+    "prompt_version": "episode_content_v3_summary_only",
+    "prompt_hash": "a08e3c3c4988daa6639cf0316f8b5d81f466685590fb54400eeda7d6ab6610d7",
+    "model_id": "Qwen/Qwen2.5-7B-Instruct"
+   },
+   "upstream_artifact_hash": "98ba1d6873c189dd1a12a2b884810dfcea13e36208152e653236037bf4bdaad5",
+   "outputs": {
+    "S5/aar_canonical.json": "4bf5edd27a0030e1046bc6db39ae96dd12133e509cb9ca38ada97f11249454e8"
+   },
+   "stage_complete": true,
+   "reused": false,
+   "wall_seconds": 0.02,
+   "finished_at": "2026-09-03T18:17:01+0900"
+  },
+  "S6": {
+   "stage": "S6",
+   "fingerprint": {
+    "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+    "code_revision": "f81be816c9903a66dec9d6a3a5aea73ec9d322c4",
+    "prompt_version": "episode_content_v3_summary_only",
+    "prompt_hash": "a08e3c3c4988daa6639cf0316f8b5d81f466685590fb54400eeda7d6ab6610d7",
+    "model_id": "Qwen/Qwen2.5-7B-Instruct"
+   },
+   "upstream_artifact_hash": "63b7e9cfe6f0ea33e1589a8a84197caed9d91a68b297514e344837b87b82b092",
+   "outputs": {
+    "S6/presentation.json": "69747d6e9a2de9e4479c436b67bf79607d98e1f048985f59bfc8c53abefdd970"
+   },
+   "stage_complete": true,
+   "reused": false,
+   "wall_seconds": 0.0,
+   "finished_at": "2026-09-03T18:17:01+0900"
+  },
+  "S7": {
+   "stage": "S7",
+   "fingerprint": {
+    "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+    "code_revision": "f81be816c9903a66dec9d6a3a5aea73ec9d322c4",
+    "prompt_version": "episode_content_v3_summary_only",
+    "prompt_hash": "a08e3c3c4988daa6639cf0316f8b5d81f466685590fb54400eeda7d6ab6610d7",
+    "model_id": "Qwen/Qwen2.5-7B-Instruct"
+   },
+   "upstream_artifact_hash": "660f92bd00cc071d75b8c3ca26c4a014988c7e35f6c1c20a742aa65854a7ec64",
+   "outputs": {
+    "S7/report.hwpx": "f874f643112704120cd3b043c3667b71ffd4f25105ca1fccf345b936d4e4a91d",
+    "S7/report.md": "6486c0eef5d045e6a5991eb730268f8d1cbb4375183260a400e537b321ba9047"
+   },
+   "stage_complete": true,
+   "reused": false,
+   "wall_seconds": 0.01,
+   "finished_at": "2026-09-03T18:17:01+0900"
+  }
+ },
+ "gpu": {
+  "samples": 14,
+  "interval_sec": 5.0,
+  "peak_mib": 15799,
+  "median_mib": 15799,
+  "p95_mib": 15799,
+  "total_mib": 24564,
+  "util_peak_pct": 96
+ },
+ "distributions": {
+  "expected_episodes": 41,
+  "canonical_episodes": 41,
+  "counters": {
+   "llm_calls": 41,
+   "prompt_refusals": 0,
+   "llm_failures": 0,
+   "retries": 0
+  },
+  "parse_status": {
+   "VALID_PARSE": 39,
+   "PARSE_CONTRACT_FAILURE": 2
+  },
+  "content_status": {
+   "VALID_PARSE": 39,
+   "PARSE_CONTRACT_FAILURE": 2
+  },
+  "grounding_status": {
+   "NOT_APPLICABLE": 41
+  },
+  "summary_mode": {
+   "MODEL_ABSTRACTIVE": 41
+  },
+  "presentation": {
+   "episodes": 41,
+   "eligible": 39,
+   "excluded_by_dialogue_grounding": 0,
+   "excluded_episode_ids": [],
+   "dialogue_note_present": 0
+  },
+  "raw_outputs_present": 41,
+  "episode_wall_seconds": {
+   "n": 41,
+   "total": 63.6,
+   "min": 0.88,
+   "max": 3.5,
+   "mean": 1.55
+  }
+ },
+ "finished_at": "2026-09-03T18:17:01+0900"
+}

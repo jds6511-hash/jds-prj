@@ -1,0 +1,273 @@
+{
+ "video_id": "full_xekZO4n4QuE",
+ "run_id": "v3paired-r0-20260903",
+ "fingerprint": {
+  "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+  "code_revision": "f81be816c9903a66dec9d6a3a5aea73ec9d322c4",
+  "prompt_version": "episode_content_v2",
+  "prompt_hash": "beaa322ea0200d3d1f6cdccc2da7421f7bb79c2024186e3df1b8c918e12d2725",
+  "model_id": "Qwen/Qwen2.5-7B-Instruct"
+ },
+ "environment": {
+  "python": "3.12.13",
+  "git_head": "f81be816c9903a66dec9d6a3a5aea73ec9d322c4",
+  "torch": "2.13.0+cu130",
+  "transformers": "5.14.1",
+  "cuda": "13.0",
+  "gpu": "NVIDIA GeForce RTX 4090"
+ },
+ "model_provenance": {
+  "model_id": "Qwen/Qwen2.5-7B-Instruct",
+  "resolved_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+  "model_local_path": "Qwen/Qwen2.5-7B-Instruct",
+  "tokenizer_revision": "unavailable",
+  "tokenizer_local_path": "Qwen/Qwen2.5-7B-Instruct",
+  "torch_dtype": "torch.bfloat16",
+  "llm_4bit": false,
+  "do_sample": false,
+  "max_new_tokens": 512
+ },
+ "generation": {
+  "model_id": "Qwen/Qwen2.5-7B-Instruct",
+  "do_sample": false,
+  "max_new_tokens": 512
+ },
+ "stages": {
+  "S0": {
+   "stage": "S0",
+   "fingerprint": {
+    "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+    "code_revision": "f81be816c9903a66dec9d6a3a5aea73ec9d322c4",
+    "prompt_version": "episode_content_v2",
+    "prompt_hash": "beaa322ea0200d3d1f6cdccc2da7421f7bb79c2024186e3df1b8c918e12d2725",
+    "model_id": "Qwen/Qwen2.5-7B-Instruct"
+   },
+   "upstream_artifact_hash": null,
+   "outputs": {
+    "S0/ingest.json": "74ce3bfe9a16bf79208aef99dffc91e7dc8d6d51a947f5b02f556ebe2f158d09"
+   },
+   "stage_complete": true,
+   "reused": false,
+   "wall_seconds": 5.52,
+   "finished_at": "2026-09-03T18:13:41+0900"
+  },
+  "S1": {
+   "stage": "S1",
+   "fingerprint": {
+    "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+    "code_revision": "f81be816c9903a66dec9d6a3a5aea73ec9d322c4",
+    "prompt_version": "episode_content_v2",
+    "prompt_hash": "beaa322ea0200d3d1f6cdccc2da7421f7bb79c2024186e3df1b8c918e12d2725",
+    "model_id": "Qwen/Qwen2.5-7B-Instruct"
+   },
+   "upstream_artifact_hash": "9ea46b07ec8ce20e2ff23459b0f573c5899d57fe3496e5a643ada2aafcf33476",
+   "outputs": {
+    "S1/episodes.json": "49bb3de0725eedcf8563d2606ff8843ca5acbb6c9beb7e7d31f5e39713e6b563"
+   },
+   "stage_complete": true,
+   "reused": false,
+   "wall_seconds": 0.02,
+   "finished_at": "2026-09-03T18:13:41+0900"
+  },
+  "S2": {
+   "stage": "S2",
+   "fingerprint": {
+    "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+    "code_revision": "f81be816c9903a66dec9d6a3a5aea73ec9d322c4",
+    "prompt_version": "episode_content_v2",
+    "prompt_hash": "beaa322ea0200d3d1f6cdccc2da7421f7bb79c2024186e3df1b8c918e12d2725",
+    "model_id": "Qwen/Qwen2.5-7B-Instruct"
+   },
+   "upstream_artifact_hash": "5742e8623aeecbf5328da25984c8db546743067920e8e1e7aaafba418759c230",
+   "outputs": {
+    "S2/raw_index.json": "109b6f86c19d88ff0589deb706e46d72a5ec7c192881bafd6a66d296a10ea3fa"
+   },
+   "stage_complete": true,
+   "reused": false,
+   "wall_seconds": 120.99,
+   "finished_at": "2026-09-03T18:15:42+0900"
+  },
+  "S3": {
+   "stage": "S3",
+   "fingerprint": {
+    "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+    "code_revision": "f81be816c9903a66dec9d6a3a5aea73ec9d322c4",
+    "prompt_version": "episode_content_v2",
+    "prompt_hash": "beaa322ea0200d3d1f6cdccc2da7421f7bb79c2024186e3df1b8c918e12d2725",
+    "model_id": "Qwen/Qwen2.5-7B-Instruct"
+   },
+   "upstream_artifact_hash": "ca698f922e80bbb634a73fbcfbcc2b247448db4c29949f7e3240675357ebc8cd",
+   "outputs": {
+    "S3/content.json": "d349079e857fce26606f7ec3a242c910926f0e98e6415033e3397dec7d8e05b0"
+   },
+   "stage_complete": true,
+   "reused": false,
+   "wall_seconds": 0.03,
+   "finished_at": "2026-09-03T18:15:42+0900"
+  },
+  "S4": {
+   "stage": "S4",
+   "fingerprint": {
+    "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+    "code_revision": "f81be816c9903a66dec9d6a3a5aea73ec9d322c4",
+    "prompt_version": "episode_content_v2",
+    "prompt_hash": "beaa322ea0200d3d1f6cdccc2da7421f7bb79c2024186e3df1b8c918e12d2725",
+    "model_id": "Qwen/Qwen2.5-7B-Instruct"
+   },
+   "upstream_artifact_hash": "e374e25110b6a2570a951e365de5548b4e748bbbc724d7a4bb558d0f08e468a9",
+   "outputs": {
+    "S4/grounded.json": "8a39c1a15c5e2db533faf4e9464f72bcb9497532f1877003d3826701832da0ff"
+   },
+   "stage_complete": true,
+   "reused": false,
+   "wall_seconds": 0.04,
+   "finished_at": "2026-09-03T18:15:42+0900"
+  },
+  "S5": {
+   "stage": "S5",
+   "fingerprint": {
+    "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+    "code_revision": "f81be816c9903a66dec9d6a3a5aea73ec9d322c4",
+    "prompt_version": "episode_content_v2",
+    "prompt_hash": "beaa322ea0200d3d1f6cdccc2da7421f7bb79c2024186e3df1b8c918e12d2725",
+    "model_id": "Qwen/Qwen2.5-7B-Instruct"
+   },
+   "upstream_artifact_hash": "aeb1c30d57b8cffd629f8a0c393e3032299b074409373a9be493ad5f9b84df68",
+   "outputs": {
+    "S5/aar_canonical.json": "e026d611762d7bb9645dd028b0c64fb4c9b6d0109a9584d33ffaf6e742c9544d"
+   },
+   "stage_complete": true,
+   "reused": false,
+   "wall_seconds": 0.03,
+   "finished_at": "2026-09-03T18:15:42+0900"
+  },
+  "S6": {
+   "stage": "S6",
+   "fingerprint": {
+    "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+    "code_revision": "f81be816c9903a66dec9d6a3a5aea73ec9d322c4",
+    "prompt_version": "episode_content_v2",
+    "prompt_hash": "beaa322ea0200d3d1f6cdccc2da7421f7bb79c2024186e3df1b8c918e12d2725",
+    "model_id": "Qwen/Qwen2.5-7B-Instruct"
+   },
+   "upstream_artifact_hash": "b1f7cc0c8f98f1c4b6eadaeb2f4f6a9000addce3efd74ceb3abbace9fd27dd5f",
+   "outputs": {
+    "S6/presentation.json": "5a95ab33c322662351d7374a1a63549d3abde10f2a192ac0f9d356d67ccd4d31"
+   },
+   "stage_complete": true,
+   "reused": false,
+   "wall_seconds": 0.0,
+   "finished_at": "2026-09-03T18:15:42+0900"
+  },
+  "S7": {
+   "stage": "S7",
+   "fingerprint": {
+    "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+    "code_revision": "f81be816c9903a66dec9d6a3a5aea73ec9d322c4",
+    "prompt_version": "episode_content_v2",
+    "prompt_hash": "beaa322ea0200d3d1f6cdccc2da7421f7bb79c2024186e3df1b8c918e12d2725",
+    "model_id": "Qwen/Qwen2.5-7B-Instruct"
+   },
+   "upstream_artifact_hash": "90fb9e25fffc31d8e3599bdb9dd4933d3030cd7cce3b6712b6d2bf5b1e95c54b",
+   "outputs": {
+    "S7/report.hwpx": "651943f01d072ace5e18e5a098909b2281546dc93d925aebe6c5af3309e893c3",
+    "S7/report.md": "7aa1cd79600d47fa24b0f15a02f81c4fa41af982b8e10c838f24dfbef905e730"
+   },
+   "stage_complete": true,
+   "reused": false,
+   "wall_seconds": 0.01,
+   "finished_at": "2026-09-03T18:15:42+0900"
+  }
+ },
+ "gpu": {
+  "samples": 26,
+  "interval_sec": 5.0,
+  "peak_mib": 15941,
+  "median_mib": 15883,
+  "p95_mib": 15883,
+  "total_mib": 24564,
+  "util_peak_pct": 84
+ },
+ "distributions": {
+  "expected_episodes": 41,
+  "canonical_episodes": 41,
+  "counters": {
+   "llm_calls": 41,
+   "prompt_refusals": 0,
+   "llm_failures": 0,
+   "retries": 0
+  },
+  "parse_status": {
+   "VALID_PARSE": 40,
+   "PARSE_CONTRACT_FAILURE": 1
+  },
+  "content_status": {
+   "VALID_PARSE": 40,
+   "PARSE_CONTRACT_FAILURE": 1
+  },
+  "grounding_status": {
+   "FAIL_UNSUPPORTED": 22,
+   "FAIL_NO_SUPPORT": 12,
+   "FAIL_REFERENCE": 4,
+   "NOT_APPLICABLE": 3
+  },
+  "summary_mode": {
+   "MODEL_ABSTRACTIVE": 41
+  },
+  "presentation": {
+   "episodes": 41,
+   "eligible": 2,
+   "excluded_by_dialogue_grounding": 38,
+   "excluded_episode_ids": [
+    "EP01",
+    "EP02",
+    "EP03",
+    "EP04",
+    "EP05",
+    "EP06",
+    "EP07",
+    "EP08",
+    "EP09",
+    "EP10",
+    "EP11",
+    "EP12",
+    "EP13",
+    "EP14",
+    "EP15",
+    "EP16",
+    "EP17",
+    "EP18",
+    "EP20",
+    "EP21",
+    "EP22",
+    "EP23",
+    "EP24",
+    "EP25",
+    "EP26",
+    "EP27",
+    "EP28",
+    "EP30",
+    "EP31",
+    "EP32",
+    "EP33",
+    "EP34",
+    "EP35",
+    "EP36",
+    "EP37",
+    "EP38",
+    "EP39",
+    "EP40"
+   ],
+   "dialogue_note_present": 0
+  },
+  "raw_outputs_present": 41,
+  "episode_wall_seconds": {
+   "n": 41,
+   "total": 121.0,
+   "min": 1.28,
+   "max": 5.27,
+   "mean": 2.95
+  }
+ },
+ "finished_at": "2026-09-03T18:15:42+0900"
+}

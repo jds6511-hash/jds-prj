@@ -1,0 +1,373 @@
+{
+ "held_constant": {
+  "config_hash": true,
+  "code_revision": true,
+  "model_id": true
+ },
+ "changed": {
+  "prompt_version": [
+   "episode_content_v2",
+   "episode_content_v3_summary_only"
+  ],
+  "prompt_hash": [
+   "beaa322ea0200d3d1f6cdccc2da7421f7bb79c2024186e3df1b8c918e12d2725",
+   "a08e3c3c4988daa6639cf0316f8b5d81f466685590fb54400eeda7d6ab6610d7"
+  ]
+ },
+ "primary": {
+  "metric": "presentation_eligible_episode_count",
+  "r0": 2,
+  "r1": 39,
+  "episodes": 41
+ },
+ "mechanism": {
+  "dialogue_note_present": {
+   "r0": 0,
+   "r1": 0
+  },
+  "excluded_by_dialogue_grounding": {
+   "r0": 38,
+   "r1": 0
+  }
+ },
+ "mechanism_closure": true,
+ "secondary": {
+  "parse_status": {
+   "r0": {
+    "VALID_PARSE": 40,
+    "PARSE_CONTRACT_FAILURE": 1
+   },
+   "r1": {
+    "VALID_PARSE": 39,
+    "PARSE_CONTRACT_FAILURE": 2
+   }
+  },
+  "content_status": {
+   "r0": {
+    "VALID_PARSE": 40,
+    "PARSE_CONTRACT_FAILURE": 1
+   },
+   "r1": {
+    "VALID_PARSE": 39,
+    "PARSE_CONTRACT_FAILURE": 2
+   }
+  },
+  "grounding_status": {
+   "r0": {
+    "FAIL_UNSUPPORTED": 22,
+    "FAIL_NO_SUPPORT": 12,
+    "FAIL_REFERENCE": 4,
+    "NOT_APPLICABLE": 3
+   },
+   "r1": {
+    "NOT_APPLICABLE": 41
+   }
+  },
+  "summary_mode": {
+   "r0": {
+    "MODEL_ABSTRACTIVE": 41
+   },
+   "r1": {
+    "MODEL_ABSTRACTIVE": 41
+   }
+  },
+  "counters": {
+   "r0": {
+    "llm_calls": 41,
+    "prompt_refusals": 0,
+    "llm_failures": 0,
+    "retries": 0
+   },
+   "r1": {
+    "llm_calls": 41,
+    "prompt_refusals": 0,
+    "llm_failures": 0,
+    "retries": 0
+   }
+  },
+  "raw_outputs_present": {
+   "r0": 41,
+   "r1": 41
+  },
+  "canonical_episodes": {
+   "r0": 41,
+   "r1": 41
+  },
+  "episode_wall_seconds": {
+   "r0": {
+    "n": 41,
+    "total": 121.0,
+    "min": 1.28,
+    "max": 5.27,
+    "mean": 2.95
+   },
+   "r1": {
+    "n": 41,
+    "total": 63.6,
+    "min": 0.88,
+    "max": 3.5,
+    "mean": 1.55
+   }
+  }
+ },
+ "grounding_reasons": {
+  "r0": {
+   "no_evidence_at_segment": 8,
+   "no_support_ref": 12,
+   "unsupported_anchor": 329
+  },
+  "r1": {}
+ },
+ "nonempty_canonical_summary": {
+  "r0": 40,
+  "r1": 39
+ },
+ "gpu": {
+  "r0": {
+   "samples": 26,
+   "interval_sec": 5.0,
+   "peak_mib": 15941,
+   "median_mib": 15883,
+   "p95_mib": 15883,
+   "total_mib": 24564,
+   "util_peak_pct": 84
+  },
+  "r1": {
+   "samples": 14,
+   "interval_sec": 5.0,
+   "peak_mib": 15799,
+   "median_mib": 15799,
+   "p95_mib": 15799,
+   "total_mib": 24564,
+   "util_peak_pct": 96
+  }
+ },
+ "arms": {
+  "r0": {
+   "run_dir": "runs\\v3_paired\\r0_v2",
+   "fingerprint": {
+    "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+    "code_revision": "f81be816c9903a66dec9d6a3a5aea73ec9d322c4",
+    "prompt_version": "episode_content_v2",
+    "prompt_hash": "beaa322ea0200d3d1f6cdccc2da7421f7bb79c2024186e3df1b8c918e12d2725",
+    "model_id": "Qwen/Qwen2.5-7B-Instruct"
+   },
+   "generation": {
+    "model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "do_sample": false,
+    "max_new_tokens": 512
+   },
+   "model_provenance": {
+    "model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "resolved_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "model_local_path": "Qwen/Qwen2.5-7B-Instruct",
+    "tokenizer_revision": "unavailable",
+    "tokenizer_local_path": "Qwen/Qwen2.5-7B-Instruct",
+    "torch_dtype": "torch.bfloat16",
+    "llm_4bit": false,
+    "do_sample": false,
+    "max_new_tokens": 512
+   },
+   "gpu": {
+    "samples": 26,
+    "interval_sec": 5.0,
+    "peak_mib": 15941,
+    "median_mib": 15883,
+    "p95_mib": 15883,
+    "total_mib": 24564,
+    "util_peak_pct": 84
+   },
+   "distributions": {
+    "expected_episodes": 41,
+    "canonical_episodes": 41,
+    "counters": {
+     "llm_calls": 41,
+     "prompt_refusals": 0,
+     "llm_failures": 0,
+     "retries": 0
+    },
+    "parse_status": {
+     "VALID_PARSE": 40,
+     "PARSE_CONTRACT_FAILURE": 1
+    },
+    "content_status": {
+     "VALID_PARSE": 40,
+     "PARSE_CONTRACT_FAILURE": 1
+    },
+    "grounding_status": {
+     "FAIL_UNSUPPORTED": 22,
+     "FAIL_NO_SUPPORT": 12,
+     "FAIL_REFERENCE": 4,
+     "NOT_APPLICABLE": 3
+    },
+    "summary_mode": {
+     "MODEL_ABSTRACTIVE": 41
+    },
+    "presentation": {
+     "episodes": 41,
+     "eligible": 2,
+     "excluded_by_dialogue_grounding": 38,
+     "excluded_episode_ids": [
+      "EP01",
+      "EP02",
+      "EP03",
+      "EP04",
+      "EP05",
+      "EP06",
+      "EP07",
+      "EP08",
+      "EP09",
+      "EP10",
+      "EP11",
+      "EP12",
+      "EP13",
+      "EP14",
+      "EP15",
+      "EP16",
+      "EP17",
+      "EP18",
+      "EP20",
+      "EP21",
+      "EP22",
+      "EP23",
+      "EP24",
+      "EP25",
+      "EP26",
+      "EP27",
+      "EP28",
+      "EP30",
+      "EP31",
+      "EP32",
+      "EP33",
+      "EP34",
+      "EP35",
+      "EP36",
+      "EP37",
+      "EP38",
+      "EP39",
+      "EP40"
+     ],
+     "dialogue_note_present": 0
+    },
+    "raw_outputs_present": 41,
+    "episode_wall_seconds": {
+     "n": 41,
+     "total": 121.0,
+     "min": 1.28,
+     "max": 5.27,
+     "mean": 2.95
+    }
+   },
+   "prompt": {
+    "prompt_version": "episode_content_v2",
+    "prompt_hash": "beaa322ea0200d3d1f6cdccc2da7421f7bb79c2024186e3df1b8c918e12d2725"
+   },
+   "grounding_reasons": {
+    "no_evidence_at_segment": 8,
+    "no_support_ref": 12,
+    "unsupported_anchor": 329
+   },
+   "nonempty_canonical_summary": 40,
+   "stage_wall_seconds": {
+    "S0": 5.52,
+    "S1": 0.02,
+    "S2": 120.99,
+    "S3": 0.03,
+    "S4": 0.04,
+    "S5": 0.03,
+    "S6": 0.0,
+    "S7": 0.01
+   }
+  },
+  "r1": {
+   "run_dir": "runs\\v3_paired\\r1_v3",
+   "fingerprint": {
+    "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+    "code_revision": "f81be816c9903a66dec9d6a3a5aea73ec9d322c4",
+    "prompt_version": "episode_content_v3_summary_only",
+    "prompt_hash": "a08e3c3c4988daa6639cf0316f8b5d81f466685590fb54400eeda7d6ab6610d7",
+    "model_id": "Qwen/Qwen2.5-7B-Instruct"
+   },
+   "generation": {
+    "model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "do_sample": false,
+    "max_new_tokens": 512
+   },
+   "model_provenance": {
+    "model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "resolved_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "model_local_path": "Qwen/Qwen2.5-7B-Instruct",
+    "tokenizer_revision": "unavailable",
+    "tokenizer_local_path": "Qwen/Qwen2.5-7B-Instruct",
+    "torch_dtype": "torch.bfloat16",
+    "llm_4bit": false,
+    "do_sample": false,
+    "max_new_tokens": 512
+   },
+   "gpu": {
+    "samples": 14,
+    "interval_sec": 5.0,
+    "peak_mib": 15799,
+    "median_mib": 15799,
+    "p95_mib": 15799,
+    "total_mib": 24564,
+    "util_peak_pct": 96
+   },
+   "distributions": {
+    "expected_episodes": 41,
+    "canonical_episodes": 41,
+    "counters": {
+     "llm_calls": 41,
+     "prompt_refusals": 0,
+     "llm_failures": 0,
+     "retries": 0
+    },
+    "parse_status": {
+     "VALID_PARSE": 39,
+     "PARSE_CONTRACT_FAILURE": 2
+    },
+    "content_status": {
+     "VALID_PARSE": 39,
+     "PARSE_CONTRACT_FAILURE": 2
+    },
+    "grounding_status": {
+     "NOT_APPLICABLE": 41
+    },
+    "summary_mode": {
+     "MODEL_ABSTRACTIVE": 41
+    },
+    "presentation": {
+     "episodes": 41,
+     "eligible": 39,
+     "excluded_by_dialogue_grounding": 0,
+     "excluded_episode_ids": [],
+     "dialogue_note_present": 0
+    },
+    "raw_outputs_present": 41,
+    "episode_wall_seconds": {
+     "n": 41,
+     "total": 63.6,
+     "min": 0.88,
+     "max": 3.5,
+     "mean": 1.55
+    }
+   },
+   "prompt": {
+    "prompt_version": "episode_content_v3_summary_only",
+    "prompt_hash": "a08e3c3c4988daa6639cf0316f8b5d81f466685590fb54400eeda7d6ab6610d7"
+   },
+   "grounding_reasons": {},
+   "nonempty_canonical_summary": 39,
+   "stage_wall_seconds": {
+    "S0": 5.55,
+    "S1": 0.02,
+    "S2": 63.58,
+    "S3": 0.03,
+    "S4": 0.03,
+    "S5": 0.02,
+    "S6": 0.0,
+    "S7": 0.01
+   }
+  }
+ }
+}
