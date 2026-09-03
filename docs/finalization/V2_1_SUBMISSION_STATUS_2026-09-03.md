@@ -13,6 +13,20 @@ V3 SUMMARY-ONLY
   default promotion                NOT ADOPTED
 ```
 
+## 0. 두 상태를 구분해 보존한다
+
+```
+accepted v2 baseline        6e79ac3   태그 v2.1-accepted-baseline
+                                      v2.1 공식 판정의 기준점. 소급 변경 금지
+submission-ready state      HEAD      태그 submission-ready-2026-09-03
+                                      제출본을 만든 저장소 상태
+제출 artifact 생성 코드       f81be81   run_manifest.fingerprint.code_revision
+                                      (이후 커밋은 문서·검증 전용이며 산출물을 바꾸지 않았다)
+```
+
+제출 편의로 baseline이나 prompt hash를 소급 변경하지 않았다. 두 상태를 다른 이름으로
+남겨 "이 hwpx가 어느 상태의 산출물인가"를 나중에 다시 추측하지 않게 한다.
+
 ## 1. SUBMISSION_READY의 뜻은 좁다
 
 ```
