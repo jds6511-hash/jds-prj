@@ -28,6 +28,11 @@ AUDIT = ROOT / "docs/finalization/V2_1_E05_REG_AUDIT_2026-09-02.md"
 #: v2.1 구현 착수 커밋. `V2_1_IMPLEMENTATION_AUTHORIZATION_2026-08-30.md`가 가리킨다.
 V2_1_START = "7f5d0f9"
 
+#: v2.1 구현이 끝난 지점(accepted baseline). REG-001~002가 재는 것은 **그 구간**의
+#: 사실이다. post-v2.1 작업(HWPX 렌더러 경로·canary 등)이 쌓인다고 해서 그때의
+#: 판정이 달라지지 않는다 — 범위를 HEAD로 두면 역사가 뒤에 따라 바뀐다.
+V2_1_BASELINE = "6e79ac3"
+
 #: 지도 파일 전부. 노드 실재 검사는 이 합집합으로 한다.
 MAP_FILES = (
     "tests/test_v2_1_gate_a.py",
@@ -85,7 +90,7 @@ def _mapped_nodes():
 def test_reg_001_v2_1_did_not_touch_any_pre_existing_production_module():
     """v2.1은 production에서 **가산적**이었다. git으로 확인한다."""
     changed = [line for line in
-               _git("diff", "--name-only", "%s~1..HEAD" % V2_1_START,
+               _git("diff", "--name-only", "%s~1..%s" % (V2_1_START, V2_1_BASELINE),
                     "--", "src/", "scripts/").splitlines() if line.strip()]
     assert changed, "변경 목록이 비었다 — 기준 커밋이 틀렸을 수 있다"
     foreign = [path for path in changed if "v2_1" not in path
@@ -96,7 +101,7 @@ def test_reg_001_v2_1_did_not_touch_any_pre_existing_production_module():
 def test_reg_001_only_one_pre_existing_test_file_changed_and_it_was_strengthened():
     """기존 테스트 변경은 한 건이고, 원 기록을 지우지 않고 강화한 것이다."""
     changed = [line for line in
-               _git("diff", "--name-only", "%s~1..HEAD" % V2_1_START,
+               _git("diff", "--name-only", "%s~1..%s" % (V2_1_START, V2_1_BASELINE),
                     "--", "tests/").splitlines() if line.strip()]
     pre_existing = [path for path in changed if "v2_1" not in path]
     assert pre_existing == [ALLOWED_PREEXISTING_TEST_CHANGE], pre_existing
@@ -112,7 +117,7 @@ def test_reg_001_the_frozen_modules_are_still_frozen():
     """BCS core는 v2.1 전 구간에서 diff 0이어야 한다(REG-005와 같은 대상)."""
     from v2_1_guards import BCS_PROTECTED
 
-    changed = set(_git("diff", "--name-only", "%s~1..HEAD" % V2_1_START,
+    changed = set(_git("diff", "--name-only", "%s~1..%s" % (V2_1_START, V2_1_BASELINE),
                        "--", *BCS_PROTECTED).split())
     assert not changed, changed
 
@@ -122,7 +127,7 @@ def test_reg_001_the_search_pipeline_is_untouched():
     targets = ["src/m1_%s" % "ingest.py"] + [
         "src/m%d_*.py" % n for n in range(2, 8)]
     changed = [line for line in
-               _git("diff", "--name-only", "%s~1..HEAD" % V2_1_START,
+               _git("diff", "--name-only", "%s~1..%s" % (V2_1_START, V2_1_BASELINE),
                     "--", "src/", "config.yaml").splitlines()
                if re.match(r"src/m[1-7]_|config\.yaml", line)]
     assert not changed, changed

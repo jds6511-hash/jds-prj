@@ -1,0 +1,80 @@
+{
+ "video_id": "canary_xekZO4n4QuE_600_780",
+ "url": "https://www.youtube.com/watch?v=xekZO4n4QuE",
+ "clip": {
+  "start": 600,
+  "duration": 180,
+  "bytes": 100895213
+ },
+ "steps": {
+  "M1": {
+   "seconds": 0.5,
+   "returncode": 0,
+   "tail": "M1 �Ϸ�: 36�� ���׸�Ʈ, duration=180.0s �� work_canary\\canary_xekZO4n4QuE_600_780\\segments.json\n",
+   "gpu_after_mib": 0
+  },
+  "M2": {
+   "seconds": 23.3,
+   "returncode": 0,
+   "tail": "M2 �Ϸ�: is_static ���� 0.0% (0/36)\n",
+   "gpu_after_mib": 0
+  },
+  "M3": {
+   "seconds": 459.6,
+   "returncode": 0,
+   "tail": "faster-whisper large-v3 (cuda/float16) ���� ��...\n�ڸ� Ŀ������: 22/36 (61.1%)\nM3 �Ϸ�: caption �� ���ڿ� 0��\n########2| 764/824 [00:11<00:00, 185.75it/s]\nLoading weights:  95%|#########5| 786/824 [00:11<00:00, 194.31it/s]\nLoading weights:  98%|#########7| 806/824 [00:11<00:00, 192.36it/s]\nLoading weights: 100%|##########| 824/824 [00:11<00:00, 70.43it/s] \nC:\\Users\\UserK\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python312\\site-packages\\bitsandbytes\\backends\\cuda\\ops.py:468: FutureWarning: _check_is_size will be removed in a future PyTorch release along with guard_size_oblivious.     Use _check(i >= 0) instead.\n  torch._check_is_size(blocksize)\n",
+   "gpu_after_mib": 0
+  }
+ },
+ "provenance_entry": {
+  "source_url": "https://www.youtube.com/watch?v=xekZO4n4QuE",
+  "source_id": "xekZO4n4QuE#600-780",
+  "file_sha256": "c7c26b276bebbbc4746e3d02a75571ecf838721904cc48f9e7e417cbb4255927"
+ },
+ "gpu_before_mib": 0,
+ "characterization": {
+  "n_segments": 36,
+  "duration_sec": 180.0,
+  "provenance": {
+   "provenance_status": "recorded",
+   "source_url": "https://www.youtube.com/watch?v=xekZO4n4QuE",
+   "source_id": "xekZO4n4QuE#600-780",
+   "file_sha256": "c7c26b276bebbbc4746e3d02a75571ecf838721904cc48f9e7e417cbb4255927",
+   "sha256_verified_at_m1": true
+  },
+  "subtitle_nonempty": 22,
+  "caption_nonempty": 36,
+  "caption_corrupted": [],
+  "subtitle_credit": [],
+  "caption_chars_mean": 149.7,
+  "samples": [
+   {
+    "idx": 0,
+    "subtitle": "오븐에 2분간 구워주세요",
+    "caption": "화면에는 'EMBROIDERY FACTORY'라는 빨간색 배너가 있고, 그 아래에는 'Sewing Factory'라는 영어와 한글 자막이 있습니다. 배경은 검은색 벽으로, 벽 위에는 꽃 무늬가 있는 패치들이 걸려 있습니다. 바닥에는 여러 개의 흰색 스레드 기계들이 배치되어 있으며, 각기 다른 색상의 스레드가 담긴 커버들이 선반 위에 정리되어 있습니다."
+   },
+   {
+    "idx": 1,
+    "subtitle": "오븐에 2분간 구워주세요",
+    "caption": "여성의 손이 빨간색 태그를 들고 있으며, 그 위에는 'ISTJ'라는 글자가 적혀 있습니다. 배경은 여러 개의 같은 태그가 담긴 선반으로, 각각 다른 글자와 색상의 태그들이 가득 차 있습니다. 화면 하단에는 한글 자막이 나타나며, \"제 MBTI는요\"라고 쓰여 있습니다. 이어서 영어로 \"Here is my MBTI\"라고 번역되어 있습니다."
+   },
+   {
+    "idx": 2,
+    "subtitle": "크림치즈를 넣어주세요",
+    "caption": "화면에는 흰색 바탕에 파란색 디스플레이가 있는 스마트 자수 기계가 보입니다. 이 기계는 디즈니 로고와 함께 사용자에게 다양한 기능을 제공하는 화면을 가지고 있습니다. 화면 아래에는 '20%'라는 숫자와 함께 'An embroidery machine I covet every time I see it'이라는 영어 자막이 나타납니다. 배경은 다른 자수 기계들과 함께 작업대 위에 놓여 있으며, 조명은 밝아서 모든 부위를 잘"
+   },
+   {
+    "idx": 3,
+    "subtitle": "크림치즈를 반죽을 만들어줍니다 크림치즈를 반죽을 만들어줍니다",
+    "caption": "화면에는 핑크색 편지함이 있고, 그 옆에는 빨간색 펀치와 분홍색 펌프가 놓여 있습니다. 테이블 위에는 분홍색 펌프를 들고 있는 손이 보이며, 테이블 위에는 분홍색 펌프와 함께 여러 가지 수제품 제작 도구들이 놓여 있습니다. 배경은 밝은 색상으로, 조명이 잘 되어져 있습니다."
+   },
+   {
+    "idx": 4,
+    "subtitle": "",
+    "caption": "화면에는 한 여성이 서 있는 모습이 보입니다. 그녀는 흰색 상의와 짧은 바지를 입고 있으며, 어깨에 작은 가방을 매고 있습니다. 그녀는 앞에서 몇 가지 제품을 들여다보고 있습니다. 배경에는 다양한 색상의 물건들이 진열되어 있으며, 이들은 모두 뒷면에 번호가 적힌 봉투에 담겨 있습니다. 화면 하단에는 한글 자막이 나타나 있으며, \"최첨단 미싱(?)에 대해 아주 문외해요"
+   }
+  ]
+ },
+ "total_seconds": 483.4,
+ "projection_2424s_hours": 1.81
+}

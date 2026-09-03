@@ -229,6 +229,11 @@
       "acquired": "2026-08-27",
       "acquisition_tool": "yt-dlp 2026.08.19",
       "acquired_for": "M8_C2_PANEL deterministic selection (M8-C2-N8-v1)"
+    },
+    "canary_xekZO4n4QuE_600_780": {
+      "source_url": "https://www.youtube.com/watch?v=xekZO4n4QuE",
+      "source_id": "xekZO4n4QuE#600-780",
+      "file_sha256": "c7c26b276bebbbc4746e3d02a75571ecf838721904cc48f9e7e417cbb4255927"
     }
   },
   "legacy_exempt": {
