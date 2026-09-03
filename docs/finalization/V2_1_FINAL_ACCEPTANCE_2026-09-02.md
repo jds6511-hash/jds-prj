@@ -133,6 +133,8 @@ KNOWN OPERATIONAL DEFECT — src/v2_1_render_hwpx.py
 
   후속
       post-v2.1 트랙. baseline 6e79ac3의 판정을 소급 변경하지 않는다.
+      제출용 우회 경로는 scripts/v2_1_hwpx_via_hangul.py로 만들었다.
+      결과·잔여 결함: V2_1_HWPX_A1_RESULT_2026-09-03.md
 ```
 
 ```
