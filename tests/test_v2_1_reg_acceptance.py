@@ -28,8 +28,8 @@ REG_PROVEN = {
     "REG-002": [
         "test_v2_1_reg_evidence.py::test_reg_002_every_mapped_node_exists",
         "test_v2_1_reg_evidence.py::test_reg_002_no_p0_is_closed_by_a_skip_or_an_xfail",
-        "test_v2_1_reg_evidence.py::test_reg_002_the_only_markers_are_the_recorded_tri_005_xfails",
-        "test_v2_1_reg_evidence.py::test_reg_002_the_p0_coverage_gap_is_exactly_the_recorded_one",
+        "test_v2_1_reg_evidence.py::test_reg_002_the_former_marker_file_carries_no_marker_any_more",
+        "test_v2_1_reg_evidence.py::test_reg_002_no_p0_is_left_unmapped",
         "test_v2_1_reg_evidence.py::test_reg_002_the_wired_map_list_matches_the_tally",
     ],
     "REG-003": [

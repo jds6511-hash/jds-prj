@@ -41,16 +41,8 @@ MAP_FILES = (
 )
 
 #: **집계에 실제로 편입된** 지도. `tests/test_v2_1_final_acceptance.py::MAPS`와 같아야
-#: 한다 — §19는 TRI-005 때문에 아직 여기 없다.
-WIRED_MAP_FILES = (
-    "tests/test_v2_1_gate_a.py",
-    "tests/test_v2_1_gate_b_acceptance.py",
-    "tests/test_v2_1_gate_c_acceptance.py",
-    "tests/test_v2_1_err_acceptance.py",
-    "tests/test_v2_1_det_acceptance.py",
-    "tests/test_v2_1_cp_acceptance.py",
-    "tests/test_v2_1_reg_acceptance.py",
-)
+#: 한다 — TRI-005 closure로 §19까지 들어와 이제 둘이 같다.
+WIRED_MAP_FILES = MAP_FILES
 
 #: 이 파일 자신은 marker 문자열을 데이터로 들고 있다 — 자기 검사에서 제외한다.
 SELF = "tests/test_v2_1_reg_evidence.py"
@@ -58,8 +50,10 @@ SELF = "tests/test_v2_1_reg_evidence.py"
 #: v2.1 작업 중 변경이 허용된 기존 테스트. 하나뿐이고 사유가 있다.
 ALLOWED_PREEXISTING_TEST_CHANGE = "tests/test_final_report_supplement.py"
 
-#: v2.1 테스트에서 xfail/skip이 허용된 유일한 파일. TRI-005 gap 고정용이다.
-ALLOWED_MARKER_FILE = "tests/test_v2_1_tri_005_gap.py"
+#: 한때 xfail이 허용된 유일한 파일이었다(TRI-005 gap 고정용). C3 remediation으로
+#: XPASS가 잡히면서 marker를 제거했고, 지금은 **어느 v2.1 테스트에도 marker가
+#: 없다.** 예외 자리를 비워 두지 않고 계약을 0건으로 올린다.
+FORMER_MARKER_FILE = "tests/test_v2_1_tri_005_gap.py"
 
 
 def _git(*args) -> str:
@@ -154,7 +148,7 @@ def test_reg_002_no_p0_is_closed_by_a_skip_or_an_xfail():
     offenders = []
     for path in sorted((ROOT / "tests").glob("test_v2_1_*.py")):
         relative = "tests/%s" % path.name
-        if relative in (ALLOWED_MARKER_FILE, SELF):
+        if relative == SELF:
             continue
         text = path.read_text(encoding="utf-8")
         for marker in ("pytest.mark.skip", "pytest.mark.xfail", "pytest.skip("):
@@ -163,19 +157,18 @@ def test_reg_002_no_p0_is_closed_by_a_skip_or_an_xfail():
     assert not offenders, offenders
 
 
-def test_reg_002_the_only_markers_are_the_recorded_tri_005_xfails():
-    """예외 하나를 명시한다 — strict이고 사유가 붙어 있어야 한다."""
-    text = (ROOT / ALLOWED_MARKER_FILE).read_text(encoding="utf-8")
-    markers = re.findall(r"@pytest\.mark\.xfail\(([^)]*)\)", text)
-    assert len(markers) == 2, markers
-    for marker in markers:
-        assert "strict=True" in marker
-        assert "TRI-005" in marker
+def test_reg_002_the_former_marker_file_carries_no_marker_any_more():
+    """TRI-005 xfail 2건은 remediation과 함께 제거됐다 — XPASS로 닫지 않았다."""
+    text = (ROOT / FORMER_MARKER_FILE).read_text(encoding="utf-8")
+    assert "pytest.mark.xfail" not in text
     assert "pytest.mark.skip" not in text
+    # 계약은 사라지지 않았다. 같은 counterexample을 평범한 테스트로 잰다.
+    assert "def test_tri_005_an_unsupported_continuation_must_not_be_accepted" in text
+    assert "def test_tri_005_an_unsupported_quantity_must_not_be_accepted" in text
 
 
-def test_reg_002_the_p0_coverage_gap_is_exactly_the_recorded_one():
-    """P0 미매핑이 기록과 다르면 REG-002를 다시 판정해야 한다."""
+def test_reg_002_no_p0_is_left_unmapped():
+    """P0 미매핑이 남아 있으면 REG-002를 다시 판정해야 한다."""
     rows = _matrix_rows()
     mapped_ids = set()
     for relative in WIRED_MAP_FILES:
@@ -184,8 +177,8 @@ def test_reg_002_the_p0_coverage_gap_is_exactly_the_recorded_one():
     mapped_ids |= {"REG-010"}
     unmapped_p0 = {i for i, p in rows.items()
                    if p == "P0" and i not in mapped_ids}
-    assert unmapped_p0 == {"GEO-002", "GEO-003",
-                           "TRI-002", "TRI-005", "TRI-006"}
+    assert unmapped_p0 == set()
+    assert sum(1 for p in rows.values() if p == "P0") == 123
 
 
 def test_reg_002_the_wired_map_list_matches_the_tally():

@@ -7,16 +7,20 @@ E-04 감사(귀속)   PROVEN 2    GEO-003(P0) · TRI-006(P0)
                  evidence-gap 7 · implementation-gap 1 (TRI-005)
 
 E-04 보강        GEO 4/4 CLOSED
-                 TRI 5/6 — **TRI-005 미해결**
+                 TRI 5/6 — TRI-005는 implementation-gap으로 남았다
+
+TRI-005 remediation  C3 (2026-09-03) — TRI 6/6 CLOSED
 ```
 
-`TRI-005`(sparse evidence → narrative hallucination 금지)는 증거 공백이 아니다.
-**summary 안의 발명된 서사를 거부하는 기제가 없다** — 그것이 v2.1의 명시된 한계
-(`semantic entailment not automatically verified`)다. 실측으로 확인했고, 감사 문서에
-적었다. 새 계약을 만들지 않았으므로 여기서 닫지 않는다.
+`TRI-005`(sparse evidence → narrative hallucination 금지)는 증거 공백이 아니었다.
+**summary 안의 발명된 서사를 거부하는 기제가 없었다.** 그래서 증거를 늘려 닫지 않고
+DECISION C로 남겼고, 사전등록을 거쳐 C3로 구현했다 — sparse 구간에서는 모델 요약에
+정본 권한을 주지 않고 자격 있는 근거 원문을 정본으로 세운다.
 
-따라서 **§19 Dataset Regression은 아직 final tally에 넣지 않는다.** GEO는 4/4지만
-같은 절의 TRI가 열려 있고, 부분 매핑을 집계에 넣지 않는 원칙을 유지한다.
+기준을 좁혀 닫지 않았다(A 거부). P0 waiver로 넘기지도 않았다(B 거부). 같은
+counterexample이 그대로 회귀 테스트로 남아 있다.
+
+이제 §19 Dataset Regression 10건이 전부 닫혔으므로 final tally에 편입한다.
 """
 import re
 from pathlib import Path
@@ -78,12 +82,24 @@ CLOSED_BY_EVIDENCE = {
     ],
 }
 
-PROVEN = {**PROVEN_BY_ATTRIBUTION, **CLOSED_BY_EVIDENCE}
-
-#: 닫지 않은 것. **구현 공백이므로 증거를 늘려 닫을 수 없다.**
-UNPROVEN = {
-    "TRI-005": "implementation-gap",
+#: implementation-gap이라 증거로 닫을 수 없었고, 구현으로 닫은 것.
+CLOSED_BY_REMEDIATION = {
+    "TRI-005": [
+        "test_v2_1_tri_005_gap.py::test_tri_005_an_unsupported_continuation_must_not_be_accepted",
+        "test_v2_1_tri_005_gap.py::test_tri_005_an_unsupported_quantity_must_not_be_accepted",
+        "test_v2_1_sparse_summary.py::test_t1_t2_invention_never_reaches_the_canonical_summary",
+        "test_v2_1_sparse_summary.py::test_t3_valid_sparse_content_is_not_over_isolated",
+        "test_v2_1_sparse_summary.py::test_t4_only_the_eligible_evidence_gets_summary_authority",
+        "test_v2_1_sparse_summary.py::test_t5_zero_eligible_evidence_never_enters_safe_mode",
+        "test_v2_1_sparse_summary.py::test_t6_canonical_structure_is_untouched_by_safe_mode",
+        "test_v2_1_sparse_summary.py::test_t7_the_sparse_summary_is_deterministic_across_reruns",
+    ],
 }
+
+PROVEN = {**PROVEN_BY_ATTRIBUTION, **CLOSED_BY_EVIDENCE, **CLOSED_BY_REMEDIATION}
+
+#: 닫지 않은 것. 비어 있다.
+UNPROVEN = {}
 
 REQUIRED_KEYWORD = {
     "GEO-001": "rich_stt_actually_becomes",
@@ -94,6 +110,7 @@ REQUIRED_KEYWORD = {
     "TRI-002": "contaminated_stt_cannot_support",
     "TRI-003": "foreign_caption_state_reaches_the_timeline",
     "TRI-004": "black_screen_transition_is_observable",
+    "TRI-005": "invention_never_reaches_the_canonical_summary",
     "TRI-006": "preserved_suspect_and_never_sole_support",
 }
 
@@ -129,13 +146,13 @@ def test_the_p0_split_matches_the_matrix():
     assert p0 == {"GEO-002", "GEO-003", "TRI-002", "TRI-005", "TRI-006"}
 
 
-def test_geo_is_closed_and_tri_is_not():
+def test_both_families_are_closed():
     rows = _matrix_rows()
     geo = {i for i in rows if i.startswith("GEO-")}
     tri = {i for i in rows if i.startswith("TRI-")}
     assert geo <= set(PROVEN)
-    assert tri & set(UNPROVEN) == {"TRI-005"}
-    assert len(tri & set(PROVEN)) == 5
+    assert tri <= set(PROVEN)
+    assert UNPROVEN == {}
 
 
 # ── 증거 실재 ────────────────────────────────────────────────────────────
@@ -168,9 +185,11 @@ def test_no_proven_id_rests_only_on_a_shared_test():
 # ── 계약을 뭉치지 않았는가 ───────────────────────────────────────────────
 def test_tri_005_is_not_closed_by_the_err_009_test():
     """`all evidence absent`와 `sparse evidence`는 다른 계약이다."""
-    assert "TRI-005" in UNPROVEN
     for nodes in PROVEN.values():
         assert not any("err_009" in node for node in nodes)
+    # 대신 "eligible 0은 safe mode에 들어오지 않는다"를 따로 잰다.
+    assert any("zero_eligible_evidence_never_enters_safe_mode" in node
+               for node in PROVEN["TRI-005"])
 
 
 def test_tri_001_is_not_closed_by_the_err_009_test():
@@ -193,9 +212,9 @@ def test_geo_002_has_both_arms():
                for node in PROVEN["GEO-002"])
 
 
-# ── TRI-005를 조용히 닫지 않는다 ─────────────────────────────────────────
-def test_tri_005_is_classified_as_an_implementation_gap():
-    assert UNPROVEN["TRI-005"] == "implementation-gap"
+# ── TRI-005를 조용히 닫지 않았다 ─────────────────────────────────────────
+def test_tri_005_stays_classified_as_an_implementation_gap_in_the_audit():
+    """분류는 역사다. 구현으로 닫았다고 감사 기록을 고쳐 쓰지 않는다."""
     text = AUDIT.read_text(encoding="utf-8")
     section = text.split("### TRI-005", 1)[1].split("### ", 1)[0]
     assert "implementation-gap" in section
@@ -261,8 +280,18 @@ def test_the_fixture_provenance_is_recorded():
     assert "V2_1_IMPLEMENTATION_PLAN" in text
 
 
-def test_section_19_is_not_wired_into_the_final_tally_yet():
-    """GEO가 4/4여도 같은 절의 TRI가 열려 있으므로 집계에 넣지 않는다."""
+def test_section_19_is_wired_into_the_final_tally():
+    """10건이 전부 닫혔으므로 이제 한 번에 편입한다 — 부분 매핑은 넣지 않았다."""
     final = (ROOT / "tests/test_v2_1_final_acceptance.py").read_text(
         encoding="utf-8")
-    assert "tests/test_v2_1_geo_tri_acceptance.py" not in final
+    assert "tests/test_v2_1_geo_tri_acceptance.py" in final
+    assert len(PROVEN) == 10
+
+
+def test_the_remediation_is_recorded_where_it_can_be_audited():
+    """구현으로 닫은 항목은 사전등록·closure 문서를 가리켜야 한다."""
+    closure = (ROOT / "docs/finalization/"
+               "V2_1_TRI_005_CLOSURE_2026-09-03.md").read_text(encoding="utf-8")
+    assert "TRI-005 CLOSED" in closure
+    assert "This does not establish general semantic entailment verification"         in closure
+    assert "does not revoke the GRD-004 waiver" in closure

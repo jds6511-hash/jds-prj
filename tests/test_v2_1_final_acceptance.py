@@ -1,4 +1,4 @@
-"""전체 final acceptance 집계 — 아직 선언하지 않는다.
+"""전체 final acceptance 집계.
 
 frozen matrix의 최종 규칙은 이것이다.
 
@@ -10,15 +10,15 @@ Gate A ∧ Gate B ∧ Gate C ∧ Gate D
   → IMPLEMENTATION_COMPLETE
 ```
 
-네 Gate는 닫혔지만 **matrix 166건 중 10건이 어느 지도에도 없다**(P0 5건). 그래서
-`IMPLEMENTATION_COMPLETE = NO`다. 이 파일은 그 사실을 기계로 다시 계산해, 문서가
-앞서 나가지 못하게 막는다.
+matrix 166건이 전부 지도에 있다. 이 파일은 그 사실을 문서가 아니라 **기계로 다시
+계산**해, 보고서가 앞서 나가지 못하게 막는다.
 
-E-01a로 ERR 10건, E-02로 DET 7건, E-03으로 CP 9건, E-05로 REG-001~004가 지도에
-들어왔다(40 → 30 → 23 → 14 → 10 · P0 26 → 18 → 13 → 8 → 5).
+E-01a로 ERR 10건, E-02로 DET 7건, E-03으로 CP 9건, E-05로 REG-001~004,
+TRI-005 remediation(C3) 후 §19 10건이 지도에 들어왔다
+(40 → 30 → 23 → 14 → 10 → 0 · P0 26 → 18 → 13 → 8 → 5 → 0).
 
-남은 10건은 **§19 Dataset Regression 하나**다. GEO 4/4 · TRI 5/6이고 `TRI-005`가
-implementation gap(DECISION C)으로 열려 있어 절 전체를 보류했다.
+**부분 매핑을 숫자 줄이기에 쓰지 않았다** — family가 전부 닫힌 뒤에 한 번에 넣었다.
+`GRD-004`는 여전히 P1 WAIVED이고, TRI-005 closure가 그것을 PASS로 바꾸지 않는다.
 """
 import re
 import subprocess
@@ -48,6 +48,9 @@ MAPS = (
     "tests/test_v2_1_cp_acceptance.py",
     # E-05. REG-001~004. (005~010은 Gate A · Gate D · addendum 소관)
     "tests/test_v2_1_reg_acceptance.py",
+    # TRI-005 remediation(C3) 후 §19 10건이 한 번에 들어왔다. GEO 4/4였던
+    # 시점에도 같은 절의 TRI가 열려 있어 넣지 않았다.
+    "tests/test_v2_1_geo_tri_acceptance.py",
 )
 
 #: 지도 밖에서 별도 문서로 닫힌 것.
@@ -73,7 +76,8 @@ def _unmapped():
 
 
 # ── 계산이 문서와 맞는가 ─────────────────────────────────────────────────
-@pytest.mark.parametrize("family,size", [("ERR", 10), ("DET", 7), ("CP", 9)])
+@pytest.mark.parametrize("family,size", [("ERR", 10), ("DET", 7), ("CP", 9),
+                                        ("GEO", 4), ("TRI", 6)])
 def test_a_closed_family_is_fully_mapped(family, size):
     """family 전체가 지도에 있다 — 부분 매핑이면 이 테스트가 깨진다."""
     rows = _matrix_rows()
@@ -90,41 +94,45 @@ def test_the_matrix_size_is_stable():
 
 def test_there_is_a_real_coverage_gap():
     """gap이 사라지면 이 테스트가 먼저 깨져 재판정을 강제한다."""
-    unmapped = _unmapped()
-    assert unmapped, "gap이 없어졌다면 최종 판정을 다시 해야 한다"
-    rows = _matrix_rows()
-    families = {i.split("-")[0] for i in unmapped}
-    assert families == {"GEO", "TRI"}
-    assert sum(1 for i in unmapped if rows[i] == "P0") == 5
+    assert _unmapped() == set()
+    assert len(_mapped()) == 166
 
 
 def test_the_report_records_the_same_numbers():
     """숫자를 문서 어딘가에서 찾는 것으로는 부족하다 — 그 문장을 본다."""
     text = REPORT.read_text(encoding="utf-8")
-    rows = _matrix_rows()
-    unmapped = _unmapped()
     assert re.search(r"matrix 총계\s+166", text)
-    assert re.search(r"지도에 없음\s+%d\s" % len(unmapped), text)
-    assert re.search(r"P0 %d" % sum(1 for i in unmapped if rows[i] == "P0"), text)
-
-
-@pytest.mark.parametrize("family", ["GEO", "TRI"])
-def test_every_uncovered_family_keeps_its_row(family):
-    """family 글자가 문서 어딘가에 있는 것으로는 부족하다 — 표의 행을 본다."""
-    rows = _matrix_rows()
-    unmapped = _unmapped()
-    mine = [i for i in unmapped if i.startswith(family + "-")]
-    total = len(mine)
-    p0 = sum(1 for i in mine if rows[i] == "P0")
-    text = REPORT.read_text(encoding="utf-8")
-    assert re.search(r"^%s\s+%d\s+%d\s" % (family, total, p0), text, re.M), family
+    assert re.search(r"지도에 있음\s+166", text)
+    assert re.search(r"지도에 없음\s+0\s", text)
 
 
 # ── 판정 ─────────────────────────────────────────────────────────────────
-def test_implementation_complete_is_not_declared():
+def test_implementation_complete_is_declared_with_its_conditions():
     text = REPORT.read_text(encoding="utf-8")
-    assert "IMPLEMENTATION_COMPLETE = NO" in text
-    assert "IMPLEMENTATION_COMPLETE = YES" not in text
+    assert "IMPLEMENTATION_COMPLETE = YES" in text
+    assert "IMPLEMENTATION_COMPLETE = NO" not in text
+    # 선언은 규칙의 각 항을 실제로 채운 결과여야 한다.
+    for clause in ("Gate A", "Gate B", "Gate C", "Gate D", "all P0 PASS",
+                   "regression PASS", "tree clean"):
+        assert clause in text, clause
+
+
+def test_the_waiver_survives_the_declaration():
+    """TRI-005를 닫았다고 GRD-004가 자동 PASS가 되지 않는다."""
+    text = REPORT.read_text(encoding="utf-8")
+    assert "GRD-004" in text
+    assert re.search(r"GRD-004[^\n]*WAIVED", text)
+    waivers = (ROOT / "docs/finalization/V2_1_P1_WAIVERS.md").read_text(
+        encoding="utf-8")
+    assert "GRD-004" in waivers
+
+
+def test_tri_005_is_recorded_as_closed_by_implementation():
+    """기준 축소(A)나 waiver(B)로 닫지 않았다는 사실이 보고서에 남아야 한다."""
+    text = REPORT.read_text(encoding="utf-8")
+    assert "TRI-005" in text
+    assert "CLOSED" in text
+    assert "V2_1_TRI_005_CLOSURE_2026-09-03.md" in text
 
 
 def test_the_four_gates_are_recorded_as_complete():

@@ -24,6 +24,7 @@ from typing import Sequence
 from v2_1_grounding import GROUNDING_STATUSES, PASS
 from v2_1_parse import PARSE_STATUSES
 from v2_1_partition import validate_partition
+from v2_1_sparse_summary import SUMMARY_MODES
 
 SCHEMA = "aar_canonical_v2_1"
 
@@ -110,6 +111,7 @@ def build_aar_canonical(
                 "dialogue_note": episode.dialogue_note,
                 "provenance": list(episode.provenance),
                 "grounding_status": episode.grounding_status,
+                "summary_mode": episode.summary_mode,
                 "grounding_reasons": [
                     {"code": reason.code, "detail": reason.detail,
                      "cite": reason.cite}
@@ -177,6 +179,13 @@ def validate_aar(document: dict) -> ValidationResult:
         if episode.get("content_status") not in PARSE_STATUSES:
             failures.append("%s: unknown content_status %r"
                             % (label, episode.get("content_status")))
+        # `summary_mode`는 필수 키가 아니다 — 이 필드보다 먼저 만들어진 정본을
+        # 무효로 만들지 않기 위해서다. 다만 **있는데 모르는 값**이면 거절한다.
+        # 조용히 MODEL_ABSTRACTIVE로 떨어뜨리면 "모델 문장인가 근거 투영인가"가
+        # 사후에 갈리지 않는다(TRI-005).
+        if "summary_mode" in episode and episode["summary_mode"] not in SUMMARY_MODES:
+            failures.append("%s: unknown summary_mode %r"
+                            % (label, episode["summary_mode"]))
 
     spans = [(e["start_seg"], e["end_seg"]) for e in episodes
              if "start_seg" in e and "end_seg" in e]

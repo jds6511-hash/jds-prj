@@ -403,3 +403,15 @@ dialogue-heavy episode에서 dialogue가 항상 생성된다   matrix 원문은 
 검은 화면을 경계로 잡는다                    진단에서 관측 가능하다는 것뿐이다
 외국어 caption을 삭제한다                    보존하고 상태로 남긴다
 ```
+
+---
+
+## 후속 (2026-09-03)
+
+```
+TRI-005   CLOSED — C3 remediation
+          이 감사의 분류(implementation-gap)는 그대로 둔다. 그 판단이 맞았고,
+          증거를 늘려 닫지 않았다는 기록이기 때문이다.
+GEO/TRI   10/10 → §19 final tally 편입
+상세      V2_1_TRI_005_CLOSURE_2026-09-03.md
+```

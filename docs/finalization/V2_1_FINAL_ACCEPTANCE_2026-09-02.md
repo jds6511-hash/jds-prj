@@ -1,11 +1,11 @@
-# v2.1 최종 acceptance 집계 (2026-09-02)
+# v2.1 최종 acceptance 집계 (2026-09-02 · TRI-005 closure 반영 2026-09-03)
 
 ```
-IMPLEMENTATION_COMPLETE = NO
+IMPLEMENTATION_COMPLETE = YES
 ```
 
-**Gate 통과 ≠ 구현 완료.** 네 Gate는 닫혔지만 frozen matrix의 최종 규칙은 그것보다
-넓다.
+frozen matrix의 최종 규칙 각 항을 채운 결과다. **Gate 통과 ≠ 구현 완료**라는 원칙은
+그대로다 — 아래는 Gate 넷이 아니라 규칙 전체를 잰 것이다.
 
 ```
 Gate A ∧ Gate B ∧ Gate C ∧ Gate D
@@ -25,62 +25,67 @@ Gate B  Grounded Content         COMPLETE   P0 22/22 · P1 6 PASS + 1 WAIVED(GRD
 Gate C  Presentation Separation  COMPLETE   P0 19/19 · P1 10/10 · waiver 0
 Gate D  Research Boundary        COMPLETE   7/7
 
-E-01 · E-01a  ERR 실패 의미론      CLOSED     PROVEN 10/10 (P0 8 · P1 2) · UNPROVEN 0
-E-02          DET 결정성           CLOSED     PROVEN 7/7  (P0 5 · P1 2) · UNPROVEN 0
-E-03          CP 비채택 안전장치     CLOSED     PROVEN 9/9  (P0 5 · P1 2 · P2 2) · UNPROVEN 0
-E-04          GEO dataset regression CLOSED     PROVEN 4/4  (P0 2 · P1 2) · UNPROVEN 0
-E-05          REG 저장소 게이트       CLOSED     PROVEN 4/4  (P0 3 · P1 1) · UNPROVEN 0
+E-01 · E-01a  ERR 실패 의미론        CLOSED   PROVEN 10/10 (P0 8 · P1 2) · UNPROVEN 0
+E-02          DET 결정성             CLOSED   PROVEN 7/7  (P0 5 · P1 2) · UNPROVEN 0
+E-03          CP 비채택 안전장치       CLOSED   PROVEN 9/9  (P0 5 · P1 2 · P2 2) · UNPROVEN 0
+E-04          GEO/TRI dataset regression  CLOSED   PROVEN 10/10 (P0 5 · P1 5) · UNPROVEN 0
+E-05          REG 저장소 게이트         CLOSED   PROVEN 4/4  (P0 3 · P1 1) · UNPROVEN 0
 
 REG-010                          PASS_BY_AUTHORIZED_SUPERSESSION
-regression                       3,803 passed / 1 skipped / 2 xfailed
-tree                             clean (실측)
+GRD-004                          P1 · WAIVED (유효 · TRI-005 closure가 이것을 바꾸지 않는다)
+regression                       3,839 passed / 1 skipped / 0 xfailed
+tree clean                       git status --porcelain 전체 0
 ```
 
 ---
 
-## 2. 막는 것 — TRI-005 하나가 남았다
+## 2. 매핑 — 166/166
 
 ```
-matrix 총계   166      지도에 있음  156      지도에 없음  10  (그중 P0 5)
+matrix 총계   166      지도에 있음  166      지도에 없음  0
 ```
 
 ```
-family  건수   P0  P1  P2   상태
-GEO       4     2   2   -   4/4 PROVEN · 편입 준비됨
-TRI       6     3   3   -   5/6 PROVEN · TRI-005(P0)만 미해결
+family  건수   P0  P1  P2   편입 시점
+ERR      10     8   2   -   E-01a (10/10이 된 뒤)
+DET       7     5   2   -   E-02
+CP        9     5   2   2   E-03
+REG       4     3   1   -   E-05  (005~010은 Gate A · Gate D · addendum 소관)
+GEO       4     2   2   -   §19 — TRI-005 closure와 함께 한 번에
+TRI       6     3   3   -   §19 — 같은 시점
 ```
 
-미매핑 10건은 **§19 Dataset Regression 하나**이고, 그 절이 열려 있는 이유도 하나다.
-
-```
-TRI-005   sparse evidence → narrative hallucination 금지
-          status = OPEN · classification = IMPLEMENTATION_GAP · DECISION = C
-          근거 있는 counterexample이 실측으로 존재한다
-          상세: V2_1_TRI_005_REMEDIATION_TICKET_2026-09-02.md
-```
-
-GEO 4/4와 TRI 5/6은 증거가 완비돼 있으나 **부분 family를 숫자 줄이기에 쓰지 않는다.**
-TRI-005 remediation 후 §19 10건을 한 번에 넣으면 미매핑은 0이 된다.
-
-상세는 `V2_1_E04_GEO_TRI_AUDIT_2026-09-02.md`.
-
-ERR 10건은 E-01a, DET 7건은 E-02, CP 9건은 E-03에서 지도에 들어왔다
-(40 → 30 → 23 → 14 · P0 26 → 18 → 13 → 8).
-**부분 매핑 상태로는 넣지 않았다** — E-01 시점의 PROVEN 7 · UNPROVEN 3도, E-02 감사
-시점의 PROVEN 2 · UNPROVEN 5도 집계에 반영하지 않았고, family가 전부 닫힌 뒤에 한 번에
-들어왔다.
-
-이 항목들의 **동작이 없다는 뜻이 아니다.** Gate A~C 테스트가 상당 부분을 이미
-덮고 있을 가능성이 크다. 그러나 **어느 테스트가 어느 ID를 닫는지 매핑된 적이 없다.**
-Gate A·B·C에서 지켜 온 규칙이 그대로 적용된다.
-
-> 테스트 하나가 green이라고 비슷해 보이는 acceptance ID를 근거 없이 PASS로 적지 않는다.
-
-따라서 지금 상태에서 `all P0 PASS`를 주장할 수 없다.
+**부분 매핑을 숫자 줄이기에 쓰지 않았다.** GEO는 E-04 시점에 이미 4/4였지만 같은
+절의 TRI-005가 열려 있어 넣지 않았고, family가 전부 닫힌 뒤 §19 10건을 한 번에
+편입했다(40 → 30 → 23 → 14 → 10 → 0 · P0 26 → 18 → 13 → 8 → 5 → 0).
 
 ---
 
-## 3. REG-010은 PASS가 아니라 supersession으로 센다
+## 3. 마지막까지 막고 있던 것 — TRI-005
+
+```
+TRI-005   sparse evidence → narrative hallucination 금지        P0 · CLOSED (2026-09-03)
+          classification   IMPLEMENTATION_GAP (감사 기록 유지)
+          DECISION         C — 기준 축소(A)·P0 waiver(B) 모두 거부
+          해결             C3 · sparse 구간에서 모델 요약에 정본 권한을 주지 않는다
+          상세             V2_1_TRI_005_CLOSURE_2026-09-03.md
+                          V2_1_TRI_005_REMEDIATION_PREREG_2026-09-02.md
+```
+
+```
+근거 1건 "남성이 문을 연다."
+
+이전   summary "…물건을 훔친 뒤 달아난다."   grounding PASS   ← 발명이 정본에 남았다
+이후   summary "남성이 문을 연다."          summary_mode = SPARSE_EVIDENCE_DETERMINISTIC
+이후   근거 범위 안의 요약                   그대로 유지       ← 과잉 격리 없음
+```
+
+두 counterexample은 `xfail(strict=True)`로 잠겨 있었고, 구현과 함께 XPASS로 실패하면서
+marker를 제거하고 평범한 회귀 테스트가 됐다. **XPASS를 남긴 채 닫지 않았다.**
+
+---
+
+## 4. REG-010은 PASS가 아니라 supersession으로 센다
 
 ```
 REG-010 ORIGINAL          P0 · push = NO           frozen matrix 그대로
@@ -91,36 +96,27 @@ REG-010 EFFECTIVE STATUS  PASS_BY_AUTHORIZED_SUPERSESSION
 
 ---
 
-## 4. 남은 일
-
-```
-E-01  ERR   실패 의미론 10건 매핑        (P0 8)   CLOSED (E-01 + E-01a)
-E-02  DET   결정성 7건 매핑              (P0 5)   CLOSED
-E-03  CP    change-point 계약 9건 매핑    (P0 5 · P2 2는 진단)   CLOSED
-E-04  TRI · GEO  오염·echo 10건 매핑      (P0 5)   GEO CLOSED · TRI 5/6
-E-05  REG-001 ~ 004 매핑 + 전체 재집계                    CLOSED
-```
-
-각 티켓은 **새 동작 구현이 아니라 기존 증거의 귀속**이다. 증거가 없는 ID가 나오면
-그때는 해당 계약이 실제로 미구현이라는 뜻이므로 별도 티켓으로 올린다.
-
----
-
 ## 5. 측정하지 않은 것 (통과로 적지 않는다)
 
 ```
 한글(HWP) 실제 열림       미검증 — HWPX 패키지 구조·본문 XML까지만 확인했다
-                         제출 전 수동 open 확인 필요
+                         제출 전 수동 open 확인 필요 (matrix 항목이 요구하는 것은 아니다)
+```
+
+```
+skip 1건                 tests/test_publication_safety.py::
+                         test_publishable_sources_are_actually_tracked
+                         대상 파일이 이 작업 트리에 없을 때만 skip
+                         v2.1 acceptance 매핑 테스트가 아니다 — P0·P1을 skip으로 닫은 것이 없다
 ```
 
 ```
 KNOWN-LIMITATION-C09     grounding FAIL이 그 구간의 보존된 요약을 표현에서 가린다
                          정본에는 남는다. containment 실패가 아니라 recall trade-off.
 KNOWN-GUARD-LIMITATION   A-11 REG-007은 파일 이름만 본다. Gate D가 경로 검사를 덧댔다.
-TRI-005 P0 OPEN           summary 안의 발명된 서사를 거부하는 기제가 없다.
-                         DECISION C — 기준 축소(A)·P0 waiver(B) 모두 거부했다.
-                         근거 있는 dialogue만 게이트된다(FAIL_UNSUPPORTED 등).
-                         선언된 한계: semantic entailment not automatically verified.
+GRD-004 (P1 · WAIVED)    일반 semantic entailment는 자동 검증되지 않는다.
+                         TRI-005 closure는 **좁은 sparse 상태**만 막는다 —
+                         eligible 2+ 구간에는 이 한계가 그대로 남는다.
 ```
 
 ---
@@ -134,4 +130,6 @@ official test 개방 아님
 성능 개선 아님
 change-point 채택 아님
 general event detector 성립 아님
+general semantic entailment 해결 아님
+GRD-004 waiver 해제 아님
 ```

@@ -1,27 +1,26 @@
-"""TRI-005 implementation gap — counterexample을 회귀 fixture로 고정한다.
+"""TRI-005 counterexample — 회귀 fixture (CLOSED · 2026-09-03).
 
 ```
-DECISION = C   implementation gap으로 유지 · 별도 remediation 사전등록 필요
-A  REJECTED    실패한 P0의 기준을 사후에 좁히지 않는다
-B  REJECTED    실제 counterexample을 P0 waiver로 넘기지 않는다
+DECISION = C   기준을 좁히지도(A) waiver로 넘기지도(B) 않았다
+remediation    C3 — sparse 구간에서 모델 요약의 정본 권한을 0으로 만든다
 ```
 
 두 counterexample은 **어떤 해결책을 택하더라도 RED → GREEN을 만들어야 하는** 회귀
-fixture다. 실패 양상이 다르므로 하나로 합치지 않는다.
+fixture였다. 실패 양상이 다르므로 하나로 합치지 않는다.
 
 ```
 UNSUPPORTED_CONTINUATION  근거에 없는 후속 사건·행위·결과
 UNSUPPORTED_NUMBER        근거에 없는 수량
 ```
 
-계약 테스트는 `xfail(strict=True)`다. remediation이 들어오면 XPASS가 실패로 잡히고,
-그때 marker를 제거하며 티켓을 닫아야 한다 — **조용히 지나갈 수 없다.**
+두 테스트는 `xfail(strict=True)`였고, C3가 들어오면서 XPASS로 실패했다. 그 시점에
+marker를 제거하고 **평범한 회귀 테스트로 승격**했다 — XPASS를 남긴 채 닫지 않는다.
 
-상세: `docs/finalization/V2_1_TRI_005_REMEDIATION_TICKET_2026-09-02.md`
+계약 자체를 재는 것은 `test_v2_1_sparse_summary.py`다. 이 파일은 **사건**을 잠근다.
+
+상세: `docs/finalization/V2_1_TRI_005_REMEDIATION_PREREG_2026-09-02.md`
 """
 from pathlib import Path
-
-import pytest
 
 from v2_1_gate_b import run_pipeline
 from v2_1_grounding import (
@@ -30,6 +29,7 @@ from v2_1_grounding import (
     FAIL_UNSUPPORTED,
     PASS,
 )
+from v2_1_sparse_summary import SPARSE_EVIDENCE_DETERMINISTIC
 
 ROOT = Path(__file__).resolve().parents[1]
 TICKET = ROOT / "docs/finalization/V2_1_TRI_005_REMEDIATION_TICKET_2026-09-02.md"
@@ -83,6 +83,7 @@ def test_a_summary_within_the_evidence_passes(tmp_path):
     assert episode["grounding_status"] == PASS
     assert episode["summary"] == SUPPORTED
     assert episode["dialogue_note"] == ACCEPTED_DIALOGUE
+    assert episode["summary_mode"] == SPARSE_EVIDENCE_DETERMINISTIC
 
 
 # ── 지금 이미 막히는 것 (remediation 이후에도 참이어야 한다) ─────────────
@@ -108,23 +109,36 @@ def test_contaminated_support_is_already_rejected(tmp_path):
     assert pipeline.grounding[1].status == FAIL_INELIGIBLE_SUPPORT
 
 
-# ── 아직 막히지 않는 것 — remediation 목표 ───────────────────────────────
-@pytest.mark.xfail(strict=True, reason="TRI-005 implementation gap · DECISION C")
+# ── remediation으로 닫힌 것 (C3 · 2026-09-03) ────────────────────────────
 def test_tri_005_an_unsupported_continuation_must_not_be_accepted(tmp_path):
     """근거에 없는 후속 사건을 단 요약이 accepted 상태로 남아서는 안 된다."""
     _, episode = _episode(tmp_path, UNSUPPORTED_CONTINUATION)
     accepted = (episode["grounding_status"] == PASS
                 and episode["summary"] == UNSUPPORTED_CONTINUATION)
     assert not accepted
+    # "지어낸 문장이 그대로가 아니다"로는 부족하다 — 발명된 사건 자체가 없어야 한다.
+    for invented in ("건물", "훔친", "달아난다"):
+        assert invented not in episode["summary"], invented
+    assert episode["summary"] == SUPPORTED
+    assert episode["summary_mode"] == SPARSE_EVIDENCE_DETERMINISTIC
 
 
-@pytest.mark.xfail(strict=True, reason="TRI-005 implementation gap · DECISION C")
 def test_tri_005_an_unsupported_quantity_must_not_be_accepted(tmp_path):
     """근거에 없는 수량을 넣은 요약이 accepted 상태로 남아서는 안 된다."""
     _, episode = _episode(tmp_path, UNSUPPORTED_NUMBER)
     accepted = (episode["grounding_status"] == PASS
                 and episode["summary"] == UNSUPPORTED_NUMBER)
     assert not accepted
+    assert "3개" not in episode["summary"]
+    assert episode["summary"] == SUPPORTED
+    assert episode["summary_mode"] == SPARSE_EVIDENCE_DETERMINISTIC
+
+
+def test_the_raw_model_output_is_still_preserved(tmp_path):
+    """정본 권한만 뺏는다 — 모델이 무엇을 냈는지는 raw store에 그대로 남는다."""
+    pipeline, _ = _episode(tmp_path, UNSUPPORTED_CONTINUATION)
+    raw = pipeline.store.load("llm", 1).read_text()
+    assert UNSUPPORTED_CONTINUATION in raw
 
 
 def test_the_two_failure_modes_are_kept_separate():
@@ -184,11 +198,13 @@ def test_the_ticket_links_the_grd_004_waiver():
     assert "semantic entailment not automatically verified" in text
 
 
-def test_the_gap_is_not_closed_anywhere():
-    """어딘가에서 TRI-005를 PROVEN으로 적으면 여기서 깨진다."""
+def test_the_closure_is_recorded_where_it_can_be_audited():
+    """구현으로 닫혔다는 사실과 그 한계가 함께 기록돼 있어야 한다."""
     acceptance = (ROOT / "tests/test_v2_1_geo_tri_acceptance.py").read_text(
         encoding="utf-8")
-    assert '"TRI-005": "implementation-gap"' in acceptance
-    report = (ROOT / "docs/finalization/V2_1_FINAL_ACCEPTANCE_2026-09-02.md"
-              ).read_text(encoding="utf-8")
-    assert "IMPLEMENTATION_COMPLETE = NO" in report
+    assert '"TRI-005": [' in acceptance
+    assert "CLOSED_BY_REMEDIATION" in acceptance
+    closure = (ROOT / "docs/finalization/V2_1_TRI_005_CLOSURE_2026-09-03.md"
+               ).read_text(encoding="utf-8")
+    assert "TRI-005   P0 · CLOSED" in closure
+    assert "GRD-004" in closure

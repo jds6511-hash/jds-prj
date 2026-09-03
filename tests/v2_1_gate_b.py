@@ -21,6 +21,7 @@ from v2_1_grounding import apply_grounding, validate_grounding
 from v2_1_parse import SegmentRegistry, parse_json_payload
 from v2_1_raw_store import RawStore
 from v2_1_sanitation import classify_channel
+from v2_1_sparse_summary import apply_sparse_summary
 from v2_1_timeline import build_timeline
 
 DEFAULT_SPANS = ((0, 5), (6, 11))
@@ -76,7 +77,10 @@ def run_pipeline(tmp_path, payloads, *, name="S1", spans=DEFAULT_SPANS,
         results.append(result)
         bindings.append(binding)
         grounding.append(verdict)
-        grounded.append(apply_grounding(binding, verdict))
+        # sparse safe mode는 판정 **뒤**에 온다. grounding이 이 결정을 하지
+        # 않는다 — 여기서 바뀌는 것은 문장의 출처뿐이다(TRI-005 · C3).
+        grounded.append(apply_sparse_summary(
+            apply_grounding(binding, verdict), episode, timeline, store))
 
     document = build_aar_canonical(video_id=name, run_id=run_id,
                                    segments=s.segments, grounded=grounded,

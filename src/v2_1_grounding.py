@@ -93,6 +93,11 @@ class GroundedEpisode:
     provenance: tuple
     grounding_status: str
     grounding_reasons: tuple[Reason, ...]
+    #: 이 문장이 어디서 왔는가 — provenance이지 판정이 아니다(TRI-005 · C3).
+    #: 기본값은 모델 생성이다. sparse safe mode만 이 값을 바꾸며, 그 어휘의 주인은
+    #: `v2_1_sparse_summary`다. 여기서 그 모듈을 import하지 않는 것은 판정 계층이
+    #: 후속 계층에 의존하지 않게 하기 위해서다(값 일치는 테스트로 잠근다).
+    summary_mode: str = "MODEL_ABSTRACTIVE"
 
 
 def anchors_in(text: str) -> set[str]:

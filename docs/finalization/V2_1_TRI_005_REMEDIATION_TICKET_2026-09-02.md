@@ -1,5 +1,10 @@
 # TRI-005 remediation ticket — sparse evidence narrative hallucination (2026-09-02)
 
+> **2026-09-03 CLOSED.** 아래는 **접수 시점의 기록**이다(상태·counterexample·비교 대상).
+> 고쳐 쓰지 않는다. 현재 상태와 실제 해결 내용은
+> `V2_1_TRI_005_CLOSURE_2026-09-03.md`, 설계 고정은
+> `V2_1_TRI_005_REMEDIATION_PREREG_2026-09-02.md`에 있다.
+
 ```
 TRI-005
 severity = P0
