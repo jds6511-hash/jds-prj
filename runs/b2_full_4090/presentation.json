@@ -1,0 +1,710 @@
+{
+ "groups": [
+  [
+   "EP01"
+  ],
+  [
+   "EP02"
+  ],
+  [
+   "EP03"
+  ],
+  [
+   "EP04"
+  ],
+  [
+   "EP05"
+  ],
+  [
+   "EP06"
+  ],
+  [
+   "EP07"
+  ],
+  [
+   "EP08"
+  ],
+  [
+   "EP09"
+  ],
+  [
+   "EP10"
+  ],
+  [
+   "EP11"
+  ],
+  [
+   "EP12"
+  ],
+  [
+   "EP13"
+  ],
+  [
+   "EP14"
+  ],
+  [
+   "EP15"
+  ],
+  [
+   "EP16"
+  ],
+  [
+   "EP17"
+  ],
+  [
+   "EP18"
+  ],
+  [
+   "EP19"
+  ],
+  [
+   "EP20"
+  ],
+  [
+   "EP21"
+  ],
+  [
+   "EP22"
+  ],
+  [
+   "EP23"
+  ],
+  [
+   "EP24"
+  ],
+  [
+   "EP25"
+  ],
+  [
+   "EP26"
+  ],
+  [
+   "EP27"
+  ],
+  [
+   "EP28"
+  ],
+  [
+   "EP29"
+  ],
+  [
+   "EP30"
+  ],
+  [
+   "EP31"
+  ],
+  [
+   "EP32"
+  ],
+  [
+   "EP33"
+  ],
+  [
+   "EP34"
+  ],
+  [
+   "EP35"
+  ],
+  [
+   "EP36"
+  ],
+  [
+   "EP37"
+  ],
+  [
+   "EP38"
+  ],
+  [
+   "EP39"
+  ],
+  [
+   "EP40"
+  ],
+  [
+   "EP41"
+  ]
+ ],
+ "highlights": [
+  {
+   "highlight_id": "H01",
+   "start_sec": 0.0,
+   "end_sec": 60.0,
+   "source_episode_ids": [
+    "EP01"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP01"
+   ]
+  },
+  {
+   "highlight_id": "H02",
+   "start_sec": 60.0,
+   "end_sec": 120.0,
+   "source_episode_ids": [
+    "EP02"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP02"
+   ]
+  },
+  {
+   "highlight_id": "H03",
+   "start_sec": 120.0,
+   "end_sec": 180.0,
+   "source_episode_ids": [
+    "EP03"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP03"
+   ]
+  },
+  {
+   "highlight_id": "H04",
+   "start_sec": 180.0,
+   "end_sec": 240.0,
+   "source_episode_ids": [
+    "EP04"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP04"
+   ]
+  },
+  {
+   "highlight_id": "H05",
+   "start_sec": 240.0,
+   "end_sec": 300.0,
+   "source_episode_ids": [
+    "EP05"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP05"
+   ]
+  },
+  {
+   "highlight_id": "H06",
+   "start_sec": 300.0,
+   "end_sec": 360.0,
+   "source_episode_ids": [
+    "EP06"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP06"
+   ]
+  },
+  {
+   "highlight_id": "H07",
+   "start_sec": 360.0,
+   "end_sec": 420.0,
+   "source_episode_ids": [
+    "EP07"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP07"
+   ]
+  },
+  {
+   "highlight_id": "H08",
+   "start_sec": 420.0,
+   "end_sec": 480.0,
+   "source_episode_ids": [
+    "EP08"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP08"
+   ]
+  },
+  {
+   "highlight_id": "H09",
+   "start_sec": 480.0,
+   "end_sec": 540.0,
+   "source_episode_ids": [
+    "EP09"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP09"
+   ]
+  },
+  {
+   "highlight_id": "H10",
+   "start_sec": 540.0,
+   "end_sec": 600.0,
+   "source_episode_ids": [
+    "EP10"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP10"
+   ]
+  },
+  {
+   "highlight_id": "H11",
+   "start_sec": 600.0,
+   "end_sec": 660.0,
+   "source_episode_ids": [
+    "EP11"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP11"
+   ]
+  },
+  {
+   "highlight_id": "H12",
+   "start_sec": 660.0,
+   "end_sec": 720.0,
+   "source_episode_ids": [
+    "EP12"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP12"
+   ]
+  },
+  {
+   "highlight_id": "H13",
+   "start_sec": 720.0,
+   "end_sec": 780.0,
+   "source_episode_ids": [
+    "EP13"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP13"
+   ]
+  },
+  {
+   "highlight_id": "H14",
+   "start_sec": 780.0,
+   "end_sec": 840.0,
+   "source_episode_ids": [
+    "EP14"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP14"
+   ]
+  },
+  {
+   "highlight_id": "H15",
+   "start_sec": 840.0,
+   "end_sec": 900.0,
+   "source_episode_ids": [
+    "EP15"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP15"
+   ]
+  },
+  {
+   "highlight_id": "H16",
+   "start_sec": 900.0,
+   "end_sec": 960.0,
+   "source_episode_ids": [
+    "EP16"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP16"
+   ]
+  },
+  {
+   "highlight_id": "H17",
+   "start_sec": 960.0,
+   "end_sec": 1020.0,
+   "source_episode_ids": [
+    "EP17"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP17"
+   ]
+  },
+  {
+   "highlight_id": "H18",
+   "start_sec": 1020.0,
+   "end_sec": 1080.0,
+   "source_episode_ids": [
+    "EP18"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP18"
+   ]
+  },
+  {
+   "highlight_id": "H19",
+   "start_sec": 1080.0,
+   "end_sec": 1140.0,
+   "source_episode_ids": [
+    "EP19"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP19"
+   ]
+  },
+  {
+   "highlight_id": "H20",
+   "start_sec": 1140.0,
+   "end_sec": 1200.0,
+   "source_episode_ids": [
+    "EP20"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP20"
+   ]
+  },
+  {
+   "highlight_id": "H21",
+   "start_sec": 1200.0,
+   "end_sec": 1260.0,
+   "source_episode_ids": [
+    "EP21"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP21"
+   ]
+  },
+  {
+   "highlight_id": "H22",
+   "start_sec": 1260.0,
+   "end_sec": 1320.0,
+   "source_episode_ids": [
+    "EP22"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP22"
+   ]
+  },
+  {
+   "highlight_id": "H23",
+   "start_sec": 1320.0,
+   "end_sec": 1380.0,
+   "source_episode_ids": [
+    "EP23"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP23"
+   ]
+  },
+  {
+   "highlight_id": "H24",
+   "start_sec": 1380.0,
+   "end_sec": 1440.0,
+   "source_episode_ids": [
+    "EP24"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP24"
+   ]
+  },
+  {
+   "highlight_id": "H25",
+   "start_sec": 1440.0,
+   "end_sec": 1500.0,
+   "source_episode_ids": [
+    "EP25"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP25"
+   ]
+  },
+  {
+   "highlight_id": "H26",
+   "start_sec": 1500.0,
+   "end_sec": 1560.0,
+   "source_episode_ids": [
+    "EP26"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP26"
+   ]
+  },
+  {
+   "highlight_id": "H27",
+   "start_sec": 1560.0,
+   "end_sec": 1620.0,
+   "source_episode_ids": [
+    "EP27"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP27"
+   ]
+  },
+  {
+   "highlight_id": "H28",
+   "start_sec": 1620.0,
+   "end_sec": 1680.0,
+   "source_episode_ids": [
+    "EP28"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP28"
+   ]
+  },
+  {
+   "highlight_id": "H29",
+   "start_sec": 1680.0,
+   "end_sec": 1740.0,
+   "source_episode_ids": [
+    "EP29"
+   ],
+   "summary": "여성은 주방에서 다양한 재료를 준비하고 요리를 하는 모습을 보여준다.",
+   "summary_status": "AVAILABLE",
+   "summary_source_episode_ids": [
+    "EP29"
+   ],
+   "excluded_summary_episode_ids": []
+  },
+  {
+   "highlight_id": "H30",
+   "start_sec": 1740.0,
+   "end_sec": 1800.0,
+   "source_episode_ids": [
+    "EP30"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP30"
+   ]
+  },
+  {
+   "highlight_id": "H31",
+   "start_sec": 1800.0,
+   "end_sec": 1860.0,
+   "source_episode_ids": [
+    "EP31"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP31"
+   ]
+  },
+  {
+   "highlight_id": "H32",
+   "start_sec": 1860.0,
+   "end_sec": 1920.0,
+   "source_episode_ids": [
+    "EP32"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP32"
+   ]
+  },
+  {
+   "highlight_id": "H33",
+   "start_sec": 1920.0,
+   "end_sec": 1980.0,
+   "source_episode_ids": [
+    "EP33"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP33"
+   ]
+  },
+  {
+   "highlight_id": "H34",
+   "start_sec": 1980.0,
+   "end_sec": 2040.0,
+   "source_episode_ids": [
+    "EP34"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP34"
+   ]
+  },
+  {
+   "highlight_id": "H35",
+   "start_sec": 2040.0,
+   "end_sec": 2100.0,
+   "source_episode_ids": [
+    "EP35"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP35"
+   ]
+  },
+  {
+   "highlight_id": "H36",
+   "start_sec": 2100.0,
+   "end_sec": 2160.0,
+   "source_episode_ids": [
+    "EP36"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP36"
+   ]
+  },
+  {
+   "highlight_id": "H37",
+   "start_sec": 2160.0,
+   "end_sec": 2220.0,
+   "source_episode_ids": [
+    "EP37"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP37"
+   ]
+  },
+  {
+   "highlight_id": "H38",
+   "start_sec": 2220.0,
+   "end_sec": 2280.0,
+   "source_episode_ids": [
+    "EP38"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP38"
+   ]
+  },
+  {
+   "highlight_id": "H39",
+   "start_sec": 2280.0,
+   "end_sec": 2340.0,
+   "source_episode_ids": [
+    "EP39"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP39"
+   ]
+  },
+  {
+   "highlight_id": "H40",
+   "start_sec": 2340.0,
+   "end_sec": 2400.0,
+   "source_episode_ids": [
+    "EP40"
+   ],
+   "summary": null,
+   "summary_status": "NO_RELIABLE_CONTENT",
+   "summary_source_episode_ids": [],
+   "excluded_summary_episode_ids": [
+    "EP40"
+   ]
+  },
+  {
+   "highlight_id": "H41",
+   "start_sec": 2400.0,
+   "end_sec": 2424.133,
+   "source_episode_ids": [
+    "EP41"
+   ],
+   "summary": "여성은 테이블에 앉아 케이크와 과일을 먹으며, 마지막으로 녹색 케이크 슬라이스를 들고 있습니다.",
+   "summary_status": "AVAILABLE",
+   "summary_source_episode_ids": [
+    "EP41"
+   ],
+   "excluded_summary_episode_ids": []
+  }
+ ],
+ "synthesis": {
+  "conclusion": "확인된 구간 2개를 시간순으로 정리하면 처음은 «여성은 주방에서 다양한 재료를 준비하고 요리를 하는 모습을 보여준다.», 마지막은 «여성은 테이블에 앉아 케이크와 과일을 먹으며, 마지막으로 녹색 케이크 슬라이스를 들고 있습니다.»다.",
+  "source_episode_ids": [
+   "EP29",
+   "EP41"
+  ]
+ }
+}

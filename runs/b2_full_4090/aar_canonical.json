@@ -1,0 +1,3614 @@
+{
+ "schema": "aar_canonical_v2_1",
+ "video_id": "full_xekZO4n4QuE",
+ "run_id": "b2-4090-20260903",
+ "segment_count": 485,
+ "episodes": [
+  {
+   "episode_id": "EP01",
+   "start_seg": 0,
+   "end_seg": 11,
+   "start_sec": 0.0,
+   "end_sec": 60.0,
+   "support_span": {
+    "start_seg": 0,
+    "end_seg": 11
+   },
+   "anchor_cites": [
+    0,
+    5,
+    11
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "여성은 주방에서 요리를 준비하며, 다양한 재료와 도구들을 사용하고 있습니다. 특히, 아이스크림을 만들고, 카레를 볶는 과정을 보여줍니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "vlm:000000",
+    "vlm:000001",
+    "vlm:000002",
+    "vlm:000003",
+    "asr:000004",
+    "vlm:000004",
+    "asr:000005",
+    "vlm:000005",
+    "asr:000006",
+    "vlm:000006",
+    "vlm:000007",
+    "asr:000008",
+    "vlm:000008",
+    "asr:000009",
+    "vlm:000009",
+    "vlm:000010",
+    "asr:000011",
+    "vlm:000011"
+   ],
+   "grounding_status": "FAIL_UNSUPPORTED",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "unsupported_anchor",
+     "detail": "'4' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'5' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'8' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'9' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#4' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#5' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#8' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#9' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP02",
+   "start_seg": 12,
+   "end_seg": 23,
+   "start_sec": 60.0,
+   "end_sec": 120.0,
+   "support_span": {
+    "start_seg": 12,
+    "end_seg": 23
+   },
+   "anchor_cites": [
+    12,
+    17,
+    23
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "주인공은 양파를 썰고, 카레우don을 조각내며, 밀가루를 섞고, 소고기와 양파를 섞는 등 다양한 요리를 준비하고 있습니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "asr:000012",
+    "vlm:000012",
+    "asr:000013",
+    "vlm:000013",
+    "asr:000014",
+    "vlm:000014",
+    "asr:000015",
+    "vlm:000015",
+    "vlm:000016",
+    "vlm:000017",
+    "vlm:000018",
+    "vlm:000019",
+    "vlm:000020",
+    "asr:000021",
+    "vlm:000021",
+    "asr:000022",
+    "vlm:000022",
+    "vlm:000023"
+   ],
+   "grounding_status": "FAIL_NO_SUPPORT",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "no_support_ref",
+     "detail": "dialogue claim has no cite",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP03",
+   "start_seg": 24,
+   "end_seg": 35,
+   "start_sec": 120.0,
+   "end_sec": 180.0,
+   "support_span": {
+    "start_seg": 24,
+    "end_seg": 35
+   },
+   "anchor_cites": [
+    24,
+    29,
+    35
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "여성은 계란후라이를 만들며, 여러 가지 재료와 양념을 섞어 요리를 준비하고 있습니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "asr:000024",
+    "vlm:000024",
+    "asr:000025",
+    "vlm:000025",
+    "asr:000026",
+    "vlm:000026",
+    "asr:000027",
+    "vlm:000027",
+    "asr:000028",
+    "vlm:000028",
+    "asr:000029",
+    "vlm:000029",
+    "asr:000030",
+    "vlm:000030",
+    "vlm:000031",
+    "asr:000032",
+    "vlm:000032",
+    "asr:000033",
+    "vlm:000033",
+    "asr:000034",
+    "vlm:000034",
+    "asr:000035",
+    "vlm:000035"
+   ],
+   "grounding_status": "FAIL_UNSUPPORTED",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "unsupported_anchor",
+     "detail": "'24' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'25' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'26' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'27' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'28' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'30' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'33' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'34' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'35' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP04",
+   "start_seg": 36,
+   "end_seg": 47,
+   "start_sec": 180.0,
+   "end_sec": 240.0,
+   "support_span": {
+    "start_seg": 36,
+    "end_seg": 47
+   },
+   "anchor_cites": [
+    36,
+    41,
+    47
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "여성은 양념을 준비하며 밥을 넣고, 다양한 양념재료를 섞는 과정을 보여준다.",
+   "dialogue_note": null,
+   "provenance": [
+    "asr:000036",
+    "vlm:000036",
+    "asr:000037",
+    "vlm:000037",
+    "asr:000038",
+    "vlm:000038",
+    "asr:000039",
+    "vlm:000039",
+    "asr:000040",
+    "vlm:000040",
+    "asr:000041",
+    "vlm:000041",
+    "asr:000042",
+    "vlm:000042",
+    "asr:000043",
+    "vlm:000043",
+    "asr:000044",
+    "vlm:000044",
+    "asr:000045",
+    "vlm:000045",
+    "vlm:000046",
+    "asr:000047",
+    "vlm:000047"
+   ],
+   "grounding_status": "FAIL_UNSUPPORTED",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "unsupported_anchor",
+     "detail": "'36' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'37' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'38' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'40' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'41' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'42' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'43' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'44' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'45' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'47' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#36' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#37' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#38' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#40' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#41' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#42' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#43' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#44' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#45' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#47' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP05",
+   "start_seg": 48,
+   "end_seg": 59,
+   "start_sec": 240.0,
+   "end_sec": 300.0,
+   "support_span": {
+    "start_seg": 48,
+    "end_seg": 59
+   },
+   "anchor_cites": [
+    48,
+    53,
+    59
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "여성은 주방에서 다양한 요리를 준비하고 있으며, 여러 가지 소스와 양념을 사용하여 음식을 만듭니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "vlm:000048",
+    "vlm:000049",
+    "vlm:000050",
+    "vlm:000051",
+    "vlm:000052",
+    "vlm:000053",
+    "vlm:000054",
+    "vlm:000055",
+    "asr:000056",
+    "vlm:000056",
+    "asr:000057",
+    "vlm:000057",
+    "asr:000058",
+    "vlm:000058",
+    "vlm:000059"
+   ],
+   "grounding_status": "FAIL_UNSUPPORTED",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "unsupported_anchor",
+     "detail": "'56' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'57' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#56' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#57' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP06",
+   "start_seg": 60,
+   "end_seg": 71,
+   "start_sec": 300.0,
+   "end_sec": 360.0,
+   "support_span": {
+    "start_seg": 60,
+    "end_seg": 71
+   },
+   "anchor_cites": [
+    60,
+    65,
+    71
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "여성은 다양한 음식을 다루며, 특히 고추튀김과 스시를 만드는 과정을 보여준다.",
+   "dialogue_note": null,
+   "provenance": [
+    "vlm:000060",
+    "vlm:000061",
+    "asr:000062",
+    "vlm:000062",
+    "asr:000063",
+    "vlm:000063",
+    "asr:000064",
+    "vlm:000064",
+    "asr:000065",
+    "vlm:000065",
+    "asr:000066",
+    "vlm:000066",
+    "asr:000067",
+    "vlm:000067",
+    "asr:000068",
+    "vlm:000068",
+    "asr:000069",
+    "vlm:000069",
+    "asr:000070",
+    "vlm:000070",
+    "asr:000071",
+    "vlm:000071"
+   ],
+   "grounding_status": "FAIL_UNSUPPORTED",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "unsupported_anchor",
+     "detail": "'67' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'68' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'70' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'71' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#67' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#68' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#70' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#71' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP07",
+   "start_seg": 72,
+   "end_seg": 83,
+   "start_sec": 360.0,
+   "end_sec": 420.0,
+   "support_span": {
+    "start_seg": 72,
+    "end_seg": 83
+   },
+   "anchor_cites": [
+    72,
+    77,
+    83
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "여성들이 다양한 음식을 준비하며, 각 음식에 필요한 재료와 양념을 추가하고 있습니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "vlm:000072",
+    "vlm:000073",
+    "asr:000074",
+    "vlm:000074",
+    "asr:000075",
+    "vlm:000075",
+    "asr:000076",
+    "vlm:000076",
+    "asr:000077",
+    "vlm:000077",
+    "asr:000078",
+    "vlm:000078",
+    "asr:000079",
+    "vlm:000079",
+    "asr:000080",
+    "vlm:000080",
+    "vlm:000081",
+    "asr:000082",
+    "vlm:000082",
+    "asr:000083",
+    "vlm:000083"
+   ],
+   "grounding_status": "FAIL_NO_SUPPORT",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "no_support_ref",
+     "detail": "dialogue claim has no cite",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP08",
+   "start_seg": 84,
+   "end_seg": 95,
+   "start_sec": 420.0,
+   "end_sec": 480.0,
+   "support_span": {
+    "start_seg": 84,
+    "end_seg": 95
+   },
+   "anchor_cites": [
+    84,
+    89,
+    95
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "여성은 주방에서 다양한 음식을 준비하며, 칼을 사용해 토마토를 자르고, 계란을 빨간색 컵에 넣는다.",
+   "dialogue_note": null,
+   "provenance": [
+    "asr:000084",
+    "vlm:000084",
+    "vlm:000085",
+    "vlm:000086",
+    "vlm:000087",
+    "asr:000088",
+    "vlm:000088",
+    "vlm:000089",
+    "vlm:000090",
+    "asr:000091",
+    "vlm:000091",
+    "asr:000092",
+    "vlm:000092",
+    "asr:000093",
+    "vlm:000093",
+    "asr:000094",
+    "vlm:000094",
+    "asr:000095",
+    "vlm:000095"
+   ],
+   "grounding_status": "FAIL_NO_SUPPORT",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "no_support_ref",
+     "detail": "dialogue claim has no cite",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP09",
+   "start_seg": 96,
+   "end_seg": 107,
+   "start_sec": 480.0,
+   "end_sec": 540.0,
+   "support_span": {
+    "start_seg": 96,
+    "end_seg": 107
+   },
+   "anchor_cites": [
+    96,
+    101,
+    107
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "화면에는 다양한 요리가 차려져 있으며, 여성은 요리를 준비하고 있습니다. 마지막으로 그녀는 리본을 사용해 펀치백을 포장합니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "vlm:000096",
+    "vlm:000097",
+    "vlm:000098",
+    "asr:000099",
+    "vlm:000099",
+    "asr:000100",
+    "vlm:000100",
+    "vlm:000101",
+    "asr:000102",
+    "vlm:000102",
+    "asr:000103",
+    "vlm:000103",
+    "vlm:000104",
+    "vlm:000105",
+    "vlm:000106",
+    "vlm:000107"
+   ],
+   "grounding_status": "FAIL_UNSUPPORTED",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "unsupported_anchor",
+     "detail": "'100' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'99' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#100' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#99' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP10",
+   "start_seg": 108,
+   "end_seg": 119,
+   "start_sec": 540.0,
+   "end_sec": 600.0,
+   "support_span": {
+    "start_seg": 108,
+    "end_seg": 119
+   },
+   "anchor_cites": [
+    108,
+    113,
+    119
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "여성은 펀초트가 담긴 선물 상자를 열고 있으며, 그녀는 동대문에서 원단을 픽업하고 냉면집에서 냉면을 포장해오려는 계획을 설명합니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "vlm:000108",
+    "asr:000109",
+    "vlm:000109",
+    "asr:000110",
+    "vlm:000110",
+    "asr:000111",
+    "vlm:000111",
+    "asr:000112",
+    "vlm:000112",
+    "asr:000113",
+    "vlm:000113",
+    "asr:000114",
+    "vlm:000114",
+    "asr:000115",
+    "vlm:000115",
+    "asr:000116",
+    "vlm:000116",
+    "vlm:000117",
+    "vlm:000118",
+    "vlm:000119"
+   ],
+   "grounding_status": "FAIL_NO_SUPPORT",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "no_support_ref",
+     "detail": "dialogue claim has no cite",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP11",
+   "start_seg": 120,
+   "end_seg": 131,
+   "start_sec": 600.0,
+   "end_sec": 660.0,
+   "support_span": {
+    "start_seg": 120,
+    "end_seg": 131
+   },
+   "anchor_cites": [
+    120,
+    125,
+    131
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "화면에는 빨간색 배너와 Brother 브랜드의 수제 기계가 있으며, 다양한 재료와 도구들이 진열되어 있습니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "vlm:000120",
+    "asr:000121",
+    "vlm:000121",
+    "asr:000122",
+    "vlm:000122",
+    "asr:000123",
+    "vlm:000123",
+    "asr:000124",
+    "vlm:000124",
+    "vlm:000125",
+    "vlm:000126",
+    "asr:000127",
+    "vlm:000127",
+    "asr:000128",
+    "vlm:000128",
+    "asr:000129",
+    "vlm:000129",
+    "vlm:000130",
+    "asr:000131",
+    "vlm:000131"
+   ],
+   "grounding_status": "FAIL_REFERENCE",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "no_evidence_at_segment",
+     "detail": "segment exists but carries no speech evidence",
+     "cite": 125
+    },
+    {
+     "code": "no_evidence_at_segment",
+     "detail": "segment exists but carries no speech evidence",
+     "cite": 126
+    },
+    {
+     "code": "no_evidence_at_segment",
+     "detail": "segment exists but carries no speech evidence",
+     "cite": 130
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'121' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'122' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'123' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'124' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'125' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'126' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'127' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'128' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'129' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'130' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'131' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#121' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#122' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#123' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#124' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#125' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#126' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#127' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#128' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#129' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#130' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#131' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP12",
+   "start_seg": 132,
+   "end_seg": 143,
+   "start_sec": 660.0,
+   "end_sec": 720.0,
+   "support_span": {
+    "start_seg": 132,
+    "end_seg": 143
+   },
+   "anchor_cites": [
+    132,
+    137,
+    143
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "화면에서는 다양한 제품과 장소가 소개되지만, 주요 내용은 날씨와 시장 분위기, 그리고 음식점 광고 등으로 구성된다.",
+   "dialogue_note": null,
+   "provenance": [
+    "asr:000132",
+    "vlm:000132",
+    "asr:000133",
+    "vlm:000133",
+    "asr:000134",
+    "vlm:000134",
+    "asr:000135",
+    "vlm:000135",
+    "vlm:000136",
+    "vlm:000137",
+    "vlm:000138",
+    "vlm:000139",
+    "asr:000140",
+    "vlm:000140",
+    "vlm:000141",
+    "asr:000142",
+    "vlm:000142",
+    "asr:000143",
+    "vlm:000143"
+   ],
+   "grounding_status": "FAIL_REFERENCE",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "no_evidence_at_segment",
+     "detail": "segment exists but carries no speech evidence",
+     "cite": 141
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'134' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'135' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'140' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'141' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'142' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'143' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#134' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#135' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#140' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#141' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#142' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#143' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP13",
+   "start_seg": 144,
+   "end_seg": 155,
+   "start_sec": 720.0,
+   "end_sec": 780.0,
+   "support_span": {
+    "start_seg": 144,
+    "end_seg": 155
+   },
+   "anchor_cites": [
+    144,
+    149,
+    155
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "두 사람이 빵을 만드는 모습을 보여주고, 여성들이 다양한 상품들을 구매하며, 방산 종합시장에서 베이킹용품을 판매하는 장면이 연속적으로 보여집니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "asr:000144",
+    "vlm:000144",
+    "asr:000145",
+    "vlm:000145",
+    "vlm:000146",
+    "vlm:000147",
+    "vlm:000148",
+    "asr:000149",
+    "vlm:000149",
+    "asr:000150",
+    "vlm:000150",
+    "vlm:000151",
+    "vlm:000152",
+    "asr:000153",
+    "vlm:000153",
+    "asr:000154",
+    "vlm:000154",
+    "asr:000155",
+    "vlm:000155"
+   ],
+   "grounding_status": "FAIL_UNSUPPORTED",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "unsupported_anchor",
+     "detail": "'149' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'154' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'155' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#149' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#154' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#155' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP14",
+   "start_seg": 156,
+   "end_seg": 167,
+   "start_sec": 780.0,
+   "end_sec": 840.0,
+   "support_span": {
+    "start_seg": 156,
+    "end_seg": 167
+   },
+   "anchor_cites": [
+    156,
+    161,
+    167
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "다양한 상품들이 있는 시장과 가게에서 사람들이 제품을 살펴보고 선택하는 모습을 보여준다.",
+   "dialogue_note": null,
+   "provenance": [
+    "asr:000156",
+    "vlm:000156",
+    "asr:000157",
+    "vlm:000157",
+    "vlm:000158",
+    "asr:000159",
+    "vlm:000159",
+    "asr:000160",
+    "vlm:000160",
+    "asr:000161",
+    "vlm:000161",
+    "asr:000162",
+    "vlm:000162",
+    "asr:000163",
+    "vlm:000163",
+    "asr:000164",
+    "vlm:000164",
+    "asr:000165",
+    "vlm:000165",
+    "asr:000166",
+    "vlm:000166",
+    "asr:000167",
+    "vlm:000167"
+   ],
+   "grounding_status": "FAIL_UNSUPPORTED",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "unsupported_anchor",
+     "detail": "'156' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'159' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'160' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'161' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'162' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'163' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'164' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'165' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'166' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#156' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#159' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#160' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#161' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#162' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#163' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#164' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#165' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#166' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP15",
+   "start_seg": 168,
+   "end_seg": 179,
+   "start_sec": 840.0,
+   "end_sec": 900.0,
+   "support_span": {
+    "start_seg": 168,
+    "end_seg": 179
+   },
+   "anchor_cites": [
+    168,
+    173,
+    179
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "직원이 옷을 가져가라고 요청하고, 그는 원단 시장에서 일을 마치고 점심시간을 준비하며 반마리 치킨을 먹으러 가는 길에 있는 곳을 설명한다.",
+   "dialogue_note": null,
+   "provenance": [
+    "asr:000168",
+    "vlm:000168",
+    "asr:000169",
+    "vlm:000169",
+    "vlm:000170",
+    "vlm:000171",
+    "vlm:000172",
+    "asr:000173",
+    "vlm:000173",
+    "asr:000174",
+    "vlm:000174",
+    "vlm:000175",
+    "asr:000176",
+    "vlm:000176",
+    "asr:000177",
+    "vlm:000177",
+    "asr:000178",
+    "vlm:000178",
+    "vlm:000179"
+   ],
+   "grounding_status": "FAIL_UNSUPPORTED",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "unsupported_anchor",
+     "detail": "'177' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'178' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#177' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#178' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP16",
+   "start_seg": 180,
+   "end_seg": 191,
+   "start_sec": 900.0,
+   "end_sec": 960.0,
+   "support_span": {
+    "start_seg": 180,
+    "end_seg": 191
+   },
+   "anchor_cites": [
+    180,
+    185,
+    191
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "동대문 전기통닭 카페의 메뉴판과 내부 모습이 보여지고, 고객들이 다양한 음식을 즐기는 모습이 담겨 있다.",
+   "dialogue_note": null,
+   "provenance": [
+    "vlm:000180",
+    "vlm:000181",
+    "vlm:000182",
+    "vlm:000183",
+    "vlm:000184",
+    "asr:000185",
+    "vlm:000185",
+    "asr:000186",
+    "vlm:000186",
+    "asr:000187",
+    "vlm:000187",
+    "asr:000188",
+    "vlm:000188",
+    "asr:000189",
+    "vlm:000189",
+    "asr:000190",
+    "vlm:000190",
+    "vlm:000191"
+   ],
+   "grounding_status": "FAIL_UNSUPPORTED",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "unsupported_anchor",
+     "detail": "'185' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'186' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'188' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'189' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#185' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#186' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#188' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#189' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP17",
+   "start_seg": 192,
+   "end_seg": 203,
+   "start_sec": 960.0,
+   "end_sec": 1020.0,
+   "support_span": {
+    "start_seg": 192,
+    "end_seg": 203
+   },
+   "anchor_cites": [
+    192,
+    197,
+    203
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "주인공은 식사를 마친 후 쇼핑을 하러 가게 되며, 쇼핑 목록을 담은 바구니를 들고 다양한 상점들을 방문한다.",
+   "dialogue_note": null,
+   "provenance": [
+    "vlm:000192",
+    "vlm:000193",
+    "vlm:000194",
+    "vlm:000195",
+    "asr:000196",
+    "vlm:000196",
+    "asr:000197",
+    "vlm:000197",
+    "vlm:000198",
+    "vlm:000199",
+    "vlm:000200",
+    "vlm:000201",
+    "vlm:000202",
+    "vlm:000203"
+   ],
+   "grounding_status": "FAIL_NO_SUPPORT",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "no_support_ref",
+     "detail": "dialogue claim has no cite",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP18",
+   "start_seg": 204,
+   "end_seg": 215,
+   "start_sec": 1020.0,
+   "end_sec": 1080.0,
+   "support_span": {
+    "start_seg": 204,
+    "end_seg": 215
+   },
+   "anchor_cites": [
+    204,
+    209,
+    215
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "화면에는 빨간색 바구니와 털이 가득한 동물 장난감들이 있는 야외 장난감 판매장, 다양한 패키지와 상품들이 진열된 식료품점과 식품 가게, 그리고 다양한 애니메이션 캐릭터 피규어들이 진열된 가게 내부가 보입니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "vlm:000204",
+    "vlm:000205",
+    "vlm:000206",
+    "asr:000207",
+    "vlm:000207",
+    "asr:000208",
+    "vlm:000208",
+    "asr:000209",
+    "vlm:000209",
+    "asr:000210",
+    "vlm:000210",
+    "asr:000211",
+    "vlm:000211",
+    "vlm:000212",
+    "vlm:000213",
+    "vlm:000214",
+    "vlm:000215"
+   ],
+   "grounding_status": "FAIL_NO_SUPPORT",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "no_support_ref",
+     "detail": "dialogue claim has no cite",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP19",
+   "start_seg": 216,
+   "end_seg": 227,
+   "start_sec": 1080.0,
+   "end_sec": 1140.0,
+   "support_span": {
+    "start_seg": 216,
+    "end_seg": 227
+   },
+   "anchor_cites": [
+    216,
+    221,
+    227
+   ],
+   "source": "stt",
+   "content_status": "PARSE_CONTRACT_FAILURE",
+   "summary": null,
+   "dialogue_note": null,
+   "provenance": [
+    "vlm:000216",
+    "asr:000217",
+    "vlm:000217",
+    "vlm:000218",
+    "vlm:000219",
+    "vlm:000220",
+    "asr:000221",
+    "vlm:000221",
+    "asr:000222",
+    "vlm:000222",
+    "asr:000223",
+    "vlm:000223",
+    "asr:000224",
+    "vlm:000224",
+    "vlm:000225",
+    "asr:000226",
+    "vlm:000226",
+    "asr:000227",
+    "vlm:000227"
+   ],
+   "grounding_status": "NOT_APPLICABLE",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": []
+  },
+  {
+   "episode_id": "EP20",
+   "start_seg": 228,
+   "end_seg": 239,
+   "start_sec": 1140.0,
+   "end_sec": 1200.0,
+   "support_span": {
+    "start_seg": 228,
+    "end_seg": 239
+   },
+   "anchor_cites": [
+    228,
+    233,
+    239
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "화면에서는 다양한 장난감, 의류, 털레, 커피잔 등 다양한 물건들이 보이며, 마지막으로 떡볶이와 팥땅수를 주문하는 장면이 나옵니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "vlm:000228",
+    "vlm:000229",
+    "asr:000230",
+    "vlm:000230",
+    "asr:000231",
+    "vlm:000231",
+    "asr:000232",
+    "vlm:000232",
+    "asr:000233",
+    "vlm:000233",
+    "vlm:000234",
+    "vlm:000235",
+    "vlm:000236",
+    "asr:000237",
+    "vlm:000237",
+    "asr:000238",
+    "vlm:000238",
+    "asr:000239",
+    "vlm:000239"
+   ],
+   "grounding_status": "FAIL_NO_SUPPORT",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "no_support_ref",
+     "detail": "dialogue claim has no cite",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP21",
+   "start_seg": 240,
+   "end_seg": 251,
+   "start_sec": 1200.0,
+   "end_sec": 1260.0,
+   "support_span": {
+    "start_seg": 240,
+    "end_seg": 251
+   },
+   "anchor_cites": [
+    240,
+    245,
+    251
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "비디오에서 여성은 다양한 음식을 시식하며 맛있다고 평가하고, 떡볶이와 차돌박이 등을 주문한다.",
+   "dialogue_note": null,
+   "provenance": [
+    "asr:000240",
+    "vlm:000240",
+    "asr:000241",
+    "vlm:000241",
+    "asr:000242",
+    "vlm:000242",
+    "vlm:000243",
+    "asr:000244",
+    "vlm:000244",
+    "asr:000245",
+    "vlm:000245",
+    "vlm:000246",
+    "vlm:000247",
+    "asr:000248",
+    "vlm:000248",
+    "asr:000249",
+    "vlm:000249",
+    "vlm:000250",
+    "asr:000251",
+    "vlm:000251"
+   ],
+   "grounding_status": "FAIL_UNSUPPORTED",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "unsupported_anchor",
+     "detail": "'240' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'241' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'244' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'245' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'249' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'251' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#240' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#241' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#244' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#245' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#249' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#251' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP22",
+   "start_seg": 252,
+   "end_seg": 263,
+   "start_sec": 1260.0,
+   "end_sec": 1320.0,
+   "support_span": {
+    "start_seg": 252,
+    "end_seg": 263
+   },
+   "anchor_cites": [
+    252,
+    257,
+    263
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "사람들이 많은 터널을 걷고 있으며, 책과 반지, 젤리 등을 보여주는 장면들이 연속적으로 나타난다.",
+   "dialogue_note": null,
+   "provenance": [
+    "asr:000252",
+    "vlm:000252",
+    "asr:000253",
+    "vlm:000253",
+    "asr:000254",
+    "vlm:000254",
+    "asr:000255",
+    "vlm:000255",
+    "asr:000256",
+    "vlm:000256",
+    "asr:000257",
+    "vlm:000257",
+    "vlm:000258",
+    "vlm:000259",
+    "asr:000260",
+    "vlm:000260",
+    "asr:000261",
+    "vlm:000261",
+    "vlm:000262",
+    "vlm:000263"
+   ],
+   "grounding_status": "FAIL_UNSUPPORTED",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "unsupported_anchor",
+     "detail": "'252' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'255' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'256' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'260' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'261' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#252' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#255' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#256' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#260' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#261' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP23",
+   "start_seg": 264,
+   "end_seg": 275,
+   "start_sec": 1320.0,
+   "end_sec": 1380.0,
+   "support_span": {
+    "start_seg": 264,
+    "end_seg": 275
+   },
+   "anchor_cites": [
+    264,
+    269,
+    275
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "편의점과 상점들이 있는 거리에서 다양한 물건들을 판매하는 상점들이 보였으며, 냉커피, 맥주, 토스트 등을 주문하고 요리를 하는 모습이 보였다.",
+   "dialogue_note": null,
+   "provenance": [
+    "vlm:000264",
+    "vlm:000265",
+    "asr:000266",
+    "vlm:000266",
+    "vlm:000267",
+    "asr:000268",
+    "vlm:000268",
+    "vlm:000269",
+    "vlm:000270",
+    "asr:000271",
+    "vlm:000271",
+    "asr:000272",
+    "vlm:000272",
+    "asr:000273",
+    "vlm:000273",
+    "asr:000274",
+    "vlm:000274",
+    "asr:000275",
+    "vlm:000275"
+   ],
+   "grounding_status": "FAIL_UNSUPPORTED",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "unsupported_anchor",
+     "detail": "'266' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'268' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'271' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'273' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'274' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#266' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#268' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#271' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#273' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#274' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP24",
+   "start_seg": 276,
+   "end_seg": 287,
+   "start_sec": 1380.0,
+   "end_sec": 1440.0,
+   "support_span": {
+    "start_seg": 276,
+    "end_seg": 287
+   },
+   "anchor_cites": [
+    276,
+    281,
+    287
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "화면에는 냉면 가게와 관련된 다양한 정보가 있지만, 후반부에서는 고춧가루에 대한 언급이 계속됩니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "asr:000276",
+    "vlm:000276",
+    "vlm:000277",
+    "asr:000278",
+    "vlm:000278",
+    "asr:000279",
+    "vlm:000279",
+    "asr:000280",
+    "vlm:000280",
+    "vlm:000281",
+    "vlm:000282",
+    "vlm:000283",
+    "asr:000284",
+    "vlm:000284",
+    "asr:000285",
+    "vlm:000285",
+    "asr:000286",
+    "vlm:000286",
+    "asr:000287",
+    "vlm:000287"
+   ],
+   "grounding_status": "FAIL_UNSUPPORTED",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "unsupported_anchor",
+     "detail": "'276' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'279' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'280' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'284' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'285' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'286' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'287' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#276' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#279' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#280' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#284' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#285' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#286' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#287' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP25",
+   "start_seg": 288,
+   "end_seg": 299,
+   "start_sec": 1440.0,
+   "end_sec": 1500.0,
+   "support_span": {
+    "start_seg": 288,
+    "end_seg": 299
+   },
+   "anchor_cites": [
+    288,
+    293,
+    299
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "여성은 편의점에서 저렴한 와인과 기타 물건을 구매하며, 포장 문제와 과거 초등학교 시절에 팔았던 불량식품에 대한 이야기를 나눕니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "asr:000288",
+    "vlm:000288",
+    "asr:000289",
+    "vlm:000289",
+    "asr:000290",
+    "vlm:000290",
+    "asr:000291",
+    "vlm:000291",
+    "asr:000292",
+    "vlm:000292",
+    "asr:000293",
+    "vlm:000293",
+    "asr:000294",
+    "vlm:000294",
+    "asr:000295",
+    "vlm:000295",
+    "asr:000296",
+    "vlm:000296",
+    "asr:000297",
+    "vlm:000297",
+    "asr:000298",
+    "vlm:000298",
+    "asr:000299",
+    "vlm:000299"
+   ],
+   "grounding_status": "FAIL_UNSUPPORTED",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "unsupported_anchor",
+     "detail": "'288' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'289' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'290' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'291' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'292' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'293' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'294' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'295' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'296' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'297' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'298' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'299' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#288' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#289' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#290' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#291' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#292' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#293' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#294' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#295' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#296' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#297' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#298' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#299' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP26",
+   "start_seg": 300,
+   "end_seg": 311,
+   "start_sec": 1500.0,
+   "end_sec": 1560.0,
+   "support_span": {
+    "start_seg": 300,
+    "end_seg": 311
+   },
+   "anchor_cites": [
+    300,
+    305,
+    311
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "여성은 어린 시절의 추억을 회상하며 다양한 물건들을 만지고 있는 모습을 보여준다.",
+   "dialogue_note": null,
+   "provenance": [
+    "asr:000300",
+    "vlm:000300",
+    "asr:000301",
+    "vlm:000301",
+    "asr:000302",
+    "vlm:000302",
+    "asr:000303",
+    "vlm:000303",
+    "asr:000304",
+    "vlm:000304",
+    "asr:000305",
+    "vlm:000305",
+    "asr:000306",
+    "vlm:000306",
+    "asr:000307",
+    "vlm:000307",
+    "asr:000308",
+    "vlm:000308",
+    "asr:000309",
+    "vlm:000309",
+    "vlm:000310",
+    "asr:000311",
+    "vlm:000311"
+   ],
+   "grounding_status": "FAIL_REFERENCE",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "no_evidence_at_segment",
+     "detail": "segment exists but carries no speech evidence",
+     "cite": 310
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'300' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'301' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'302' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'303' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'304' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'305' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'306' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'307' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'308' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'309' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'310' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'311' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#300' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#301' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#302' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#303' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#304' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#305' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#306' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#307' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#308' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#309' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#310' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#311' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP27",
+   "start_seg": 312,
+   "end_seg": 323,
+   "start_sec": 1560.0,
+   "end_sec": 1620.0,
+   "support_span": {
+    "start_seg": 312,
+    "end_seg": 323
+   },
+   "anchor_cites": [
+    312,
+    317,
+    323
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "여성은 날카로운 장난감과 코팅이 강한 젤리를 조절하며, 냉면에 대한 추억을 공유합니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "asr:000312",
+    "vlm:000312",
+    "asr:000313",
+    "vlm:000313",
+    "asr:000314",
+    "vlm:000314",
+    "asr:000315",
+    "vlm:000315",
+    "asr:000316",
+    "vlm:000316",
+    "asr:000317",
+    "vlm:000317",
+    "vlm:000318",
+    "vlm:000319",
+    "asr:000320",
+    "vlm:000320",
+    "asr:000321",
+    "vlm:000321",
+    "asr:000322",
+    "vlm:000322",
+    "asr:000323",
+    "vlm:000323"
+   ],
+   "grounding_status": "FAIL_UNSUPPORTED",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "unsupported_anchor",
+     "detail": "'315' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'316' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'317' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'322' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'323' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#315' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#316' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#317' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#322' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#323' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP28",
+   "start_seg": 324,
+   "end_seg": 335,
+   "start_sec": 1620.0,
+   "end_sec": 1680.0,
+   "support_span": {
+    "start_seg": 324,
+    "end_seg": 335
+   },
+   "anchor_cites": [
+    324,
+    329,
+    335
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "여성은 냉동실에 육수를 넣고, 다음에는 청양고추를 수확하려고 합니다. 그 후 동료들과 어르신들의 식사 상황을 이야기하며, 결국 파전을 만들기로 결정합니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "asr:000324",
+    "vlm:000324",
+    "asr:000325",
+    "vlm:000325",
+    "vlm:000326",
+    "vlm:000327",
+    "vlm:000328",
+    "vlm:000329",
+    "asr:000330",
+    "vlm:000330",
+    "asr:000331",
+    "vlm:000331",
+    "asr:000332",
+    "vlm:000332",
+    "asr:000333",
+    "vlm:000333",
+    "asr:000334",
+    "vlm:000334",
+    "vlm:000335"
+   ],
+   "grounding_status": "FAIL_UNSUPPORTED",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "unsupported_anchor",
+     "detail": "'330' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'331' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'332' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'333' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#330' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#331' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#332' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#333' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP29",
+   "start_seg": 336,
+   "end_seg": 347,
+   "start_sec": 1680.0,
+   "end_sec": 1740.0,
+   "support_span": {
+    "start_seg": 336,
+    "end_seg": 347
+   },
+   "anchor_cites": [
+    336,
+    341,
+    347
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "여성은 주방에서 다양한 재료를 준비하고 요리를 하는 모습을 보여준다.",
+   "dialogue_note": null,
+   "provenance": [
+    "vlm:000336",
+    "asr:000337",
+    "vlm:000337",
+    "asr:000338",
+    "vlm:000338",
+    "asr:000339",
+    "vlm:000339",
+    "asr:000340",
+    "vlm:000340",
+    "asr:000341",
+    "vlm:000341",
+    "asr:000342",
+    "vlm:000342",
+    "asr:000343",
+    "vlm:000343",
+    "asr:000344",
+    "vlm:000344",
+    "asr:000345",
+    "vlm:000345",
+    "asr:000346",
+    "vlm:000346",
+    "asr:000347",
+    "vlm:000347"
+   ],
+   "grounding_status": "NOT_APPLICABLE",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": []
+  },
+  {
+   "episode_id": "EP30",
+   "start_seg": 348,
+   "end_seg": 359,
+   "start_sec": 1740.0,
+   "end_sec": 1800.0,
+   "support_span": {
+    "start_seg": 348,
+    "end_seg": 359
+   },
+   "anchor_cites": [
+    348,
+    353,
+    359
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "여성은 주방에서 다양한 음식을 준비하며 요리를 즐기고 있습니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "asr:000348",
+    "vlm:000348",
+    "vlm:000349",
+    "vlm:000350",
+    "vlm:000351",
+    "asr:000352",
+    "vlm:000352",
+    "asr:000353",
+    "vlm:000353",
+    "asr:000354",
+    "vlm:000354",
+    "asr:000355",
+    "vlm:000355",
+    "asr:000356",
+    "vlm:000356",
+    "asr:000357",
+    "vlm:000357",
+    "asr:000358",
+    "vlm:000358",
+    "asr:000359",
+    "vlm:000359"
+   ],
+   "grounding_status": "FAIL_UNSUPPORTED",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "unsupported_anchor",
+     "detail": "'352' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'353' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'354' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'356' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'357' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'358' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'359' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#352' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#353' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#354' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#356' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#357' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#358' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#359' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP31",
+   "start_seg": 360,
+   "end_seg": 371,
+   "start_sec": 1800.0,
+   "end_sec": 1860.0,
+   "support_span": {
+    "start_seg": 360,
+    "end_seg": 371
+   },
+   "anchor_cites": [
+    360,
+    365,
+    371
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "여성은 다양한 음식을 먹으며, 시간이 지남에 따라 음식이 변화하고 굽는 과정을 보여준다.",
+   "dialogue_note": null,
+   "provenance": [
+    "asr:000360",
+    "vlm:000360",
+    "asr:000361",
+    "vlm:000361",
+    "vlm:000362",
+    "asr:000363",
+    "vlm:000363",
+    "asr:000364",
+    "vlm:000364",
+    "asr:000365",
+    "vlm:000365",
+    "asr:000366",
+    "vlm:000366",
+    "vlm:000367",
+    "vlm:000368",
+    "vlm:000369",
+    "vlm:000370",
+    "vlm:000371"
+   ],
+   "grounding_status": "FAIL_REFERENCE",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "no_evidence_at_segment",
+     "detail": "segment exists but carries no speech evidence",
+     "cite": 367
+    },
+    {
+     "code": "no_evidence_at_segment",
+     "detail": "segment exists but carries no speech evidence",
+     "cite": 368
+    },
+    {
+     "code": "no_evidence_at_segment",
+     "detail": "segment exists but carries no speech evidence",
+     "cite": 370
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'363' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'364' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'365' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'366' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'367' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'368' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'370' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#363' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#364' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#365' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#366' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#367' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#368' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#370' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP32",
+   "start_seg": 372,
+   "end_seg": 383,
+   "start_sec": 1860.0,
+   "end_sec": 1920.0,
+   "support_span": {
+    "start_seg": 372,
+    "end_seg": 383
+   },
+   "anchor_cites": [
+    372,
+    377,
+    383
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "여성은 주방에서 다양한 음식 재료를 다루며 요리를 준비하고 있습니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "vlm:000372",
+    "vlm:000373",
+    "asr:000374",
+    "vlm:000374",
+    "asr:000375",
+    "vlm:000375",
+    "asr:000376",
+    "vlm:000376",
+    "asr:000377",
+    "vlm:000377",
+    "asr:000378",
+    "vlm:000378",
+    "asr:000379",
+    "vlm:000379",
+    "vlm:000380",
+    "vlm:000381",
+    "vlm:000382",
+    "vlm:000383"
+   ],
+   "grounding_status": "FAIL_NO_SUPPORT",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "no_support_ref",
+     "detail": "dialogue claim has no cite",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP33",
+   "start_seg": 384,
+   "end_seg": 395,
+   "start_sec": 1920.0,
+   "end_sec": 1980.0,
+   "support_span": {
+    "start_seg": 384,
+    "end_seg": 395
+   },
+   "anchor_cites": [
+    384,
+    389,
+    395
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "여성은 다음 주 대전 여행을 위해 성심당 케이크를 만들기 시작하며, 여러 요리 도구와 재료를 사용하여 계란을 조리하고 있습니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "asr:000384",
+    "vlm:000384",
+    "asr:000385",
+    "vlm:000385",
+    "asr:000386",
+    "vlm:000386",
+    "asr:000387",
+    "vlm:000387",
+    "asr:000388",
+    "vlm:000388",
+    "asr:000389",
+    "vlm:000389",
+    "vlm:000390",
+    "vlm:000391",
+    "vlm:000392",
+    "vlm:000393",
+    "vlm:000394",
+    "asr:000395",
+    "vlm:000395"
+   ],
+   "grounding_status": "FAIL_UNSUPPORTED",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "unsupported_anchor",
+     "detail": "'384' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'385' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'386' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'387' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'388' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#384' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#385' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#386' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#387' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#388' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP34",
+   "start_seg": 396,
+   "end_seg": 407,
+   "start_sec": 1980.0,
+   "end_sec": 2040.0,
+   "support_span": {
+    "start_seg": 396,
+    "end_seg": 407
+   },
+   "anchor_cites": [
+    396,
+    401,
+    407
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "여성은 주방에서 다양한 요리 과정을 진행하며, 전원 문제로 인해 여러 시도를 하고 있습니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "vlm:000396",
+    "asr:000397",
+    "vlm:000397",
+    "asr:000398",
+    "vlm:000398",
+    "asr:000399",
+    "vlm:000399",
+    "vlm:000400",
+    "vlm:000401",
+    "vlm:000402",
+    "vlm:000403",
+    "vlm:000404",
+    "vlm:000405",
+    "vlm:000406",
+    "vlm:000407"
+   ],
+   "grounding_status": "FAIL_UNSUPPORTED",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "unsupported_anchor",
+     "detail": "'397' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'398' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#397' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#398' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP35",
+   "start_seg": 408,
+   "end_seg": 419,
+   "start_sec": 2040.0,
+   "end_sec": 2100.0,
+   "support_span": {
+    "start_seg": 408,
+    "end_seg": 419
+   },
+   "anchor_cites": [
+    408,
+    413,
+    419
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "주방에서 다양한 요리 도구와 재료들이 놓여 있으며, 요리사들은 여러 가지 요리를 준비하고 있습니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "vlm:000408",
+    "vlm:000409",
+    "vlm:000410",
+    "vlm:000411",
+    "asr:000412",
+    "vlm:000412",
+    "vlm:000413",
+    "vlm:000414",
+    "vlm:000415",
+    "asr:000416",
+    "vlm:000416",
+    "asr:000417",
+    "vlm:000417",
+    "asr:000418",
+    "vlm:000418",
+    "asr:000419",
+    "vlm:000419"
+   ],
+   "grounding_status": "FAIL_NO_SUPPORT",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "no_support_ref",
+     "detail": "dialogue claim has no cite",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP36",
+   "start_seg": 420,
+   "end_seg": 431,
+   "start_sec": 2100.0,
+   "end_sec": 2160.0,
+   "support_span": {
+    "start_seg": 420,
+    "end_seg": 431
+   },
+   "anchor_cites": [
+    420,
+    425,
+    431
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "여성은 주방에서 다양한 요리 재료와 도구를 다루며, 케이크와 젤리 등을 준비하고 있습니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "asr:000420",
+    "vlm:000420",
+    "vlm:000421",
+    "vlm:000422",
+    "vlm:000423",
+    "asr:000424",
+    "vlm:000424",
+    "asr:000425",
+    "vlm:000425",
+    "asr:000426",
+    "vlm:000426",
+    "asr:000427",
+    "vlm:000427",
+    "asr:000428",
+    "vlm:000428",
+    "asr:000429",
+    "vlm:000429",
+    "vlm:000430",
+    "asr:000431",
+    "vlm:000431"
+   ],
+   "grounding_status": "FAIL_NO_SUPPORT",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "no_support_ref",
+     "detail": "dialogue claim has no cite",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP37",
+   "start_seg": 432,
+   "end_seg": 443,
+   "start_sec": 2160.0,
+   "end_sec": 2220.0,
+   "support_span": {
+    "start_seg": 432,
+    "end_seg": 443
+   },
+   "anchor_cites": [
+    432,
+    437,
+    443
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "여성은 여러 음식을 준비하며, 한입씩 먹는 모습을 보여준다.",
+   "dialogue_note": null,
+   "provenance": [
+    "asr:000432",
+    "vlm:000432",
+    "asr:000433",
+    "vlm:000433",
+    "asr:000434",
+    "vlm:000434",
+    "asr:000435",
+    "vlm:000435",
+    "asr:000436",
+    "vlm:000436",
+    "asr:000437",
+    "vlm:000437",
+    "vlm:000438",
+    "asr:000439",
+    "vlm:000439",
+    "asr:000440",
+    "vlm:000440",
+    "asr:000441",
+    "vlm:000441",
+    "asr:000442",
+    "vlm:000442",
+    "asr:000443",
+    "vlm:000443"
+   ],
+   "grounding_status": "FAIL_UNSUPPORTED",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "unsupported_anchor",
+     "detail": "'432' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'433' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'434' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'435' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'436' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'437' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'439' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'440' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'441' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'442' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#432' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#433' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#434' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#435' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#436' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#437' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#439' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#440' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#441' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#442' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP38",
+   "start_seg": 444,
+   "end_seg": 455,
+   "start_sec": 2220.0,
+   "end_sec": 2280.0,
+   "support_span": {
+    "start_seg": 444,
+    "end_seg": 455
+   },
+   "anchor_cites": [
+    444,
+    449,
+    455
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "영상은 요리 과정을 보여주며, 다양한 재료와 요리 도구들이 사용됩니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "asr:000444",
+    "vlm:000444",
+    "asr:000445",
+    "vlm:000445",
+    "asr:000446",
+    "vlm:000446",
+    "vlm:000447",
+    "vlm:000448",
+    "asr:000449",
+    "vlm:000449",
+    "asr:000450",
+    "vlm:000450",
+    "asr:000451",
+    "vlm:000451",
+    "vlm:000452",
+    "vlm:000453",
+    "vlm:000454",
+    "vlm:000455"
+   ],
+   "grounding_status": "FAIL_NO_SUPPORT",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "no_support_ref",
+     "detail": "dialogue claim has no cite",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP39",
+   "start_seg": 456,
+   "end_seg": 467,
+   "start_sec": 2280.0,
+   "end_sec": 2340.0,
+   "support_span": {
+    "start_seg": 456,
+    "end_seg": 467
+   },
+   "anchor_cites": [
+    456,
+    461,
+    467
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "여성은 토스트와 크림케이크를 만들고, 복숭아를 썰어 케이크 위에 올리며, 마지막으로 케이크를 먹는 장면을 보여준다.",
+   "dialogue_note": null,
+   "provenance": [
+    "vlm:000456",
+    "vlm:000457",
+    "asr:000458",
+    "vlm:000458",
+    "asr:000459",
+    "vlm:000459",
+    "vlm:000460",
+    "vlm:000461",
+    "asr:000462",
+    "vlm:000462",
+    "asr:000463",
+    "vlm:000463",
+    "vlm:000464",
+    "vlm:000465",
+    "asr:000466",
+    "vlm:000466",
+    "asr:000467",
+    "vlm:000467"
+   ],
+   "grounding_status": "FAIL_NO_SUPPORT",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "no_support_ref",
+     "detail": "dialogue claim has no cite",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP40",
+   "start_seg": 468,
+   "end_seg": 479,
+   "start_sec": 2340.0,
+   "end_sec": 2400.0,
+   "support_span": {
+    "start_seg": 468,
+    "end_seg": 479
+   },
+   "anchor_cites": [
+    468,
+    473,
+    479
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "화면에서는 다양한 종류의 케이크와 파이가 등장하며, 여성은 여러 차례 케이크를 먹고 있습니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "asr:000468",
+    "vlm:000468",
+    "vlm:000469",
+    "vlm:000470",
+    "vlm:000471",
+    "vlm:000472",
+    "vlm:000473",
+    "vlm:000474",
+    "asr:000475",
+    "vlm:000475",
+    "asr:000476",
+    "vlm:000476",
+    "asr:000477",
+    "vlm:000477",
+    "vlm:000478",
+    "vlm:000479"
+   ],
+   "grounding_status": "FAIL_UNSUPPORTED",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": [
+    {
+     "code": "unsupported_anchor",
+     "detail": "'475' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'476' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'477' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#475' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#476' does not appear in the cited evidence",
+     "cite": null
+    },
+    {
+     "code": "unsupported_anchor",
+     "detail": "'seg#477' does not appear in the cited evidence",
+     "cite": null
+    }
+   ]
+  },
+  {
+   "episode_id": "EP41",
+   "start_seg": 480,
+   "end_seg": 484,
+   "start_sec": 2400.0,
+   "end_sec": 2424.133,
+   "support_span": {
+    "start_seg": 480,
+    "end_seg": 484
+   },
+   "anchor_cites": [
+    480,
+    482,
+    484
+   ],
+   "source": "stt",
+   "content_status": "VALID_PARSE",
+   "summary": "여성은 테이블에 앉아 케이크와 과일을 먹으며, 마지막으로 녹색 케이크 슬라이스를 들고 있습니다.",
+   "dialogue_note": null,
+   "provenance": [
+    "vlm:000480",
+    "vlm:000481",
+    "vlm:000482",
+    "asr:000483",
+    "vlm:000483",
+    "vlm:000484"
+   ],
+   "grounding_status": "NOT_APPLICABLE",
+   "summary_mode": "MODEL_ABSTRACTIVE",
+   "grounding_reasons": []
+  }
+ ],
+ "quality_notes": {
+  "usable_stt_count": 294,
+  "excluded_stt_count": 2,
+  "rejected_claims": 38,
+  "ocr_available": false
+ },
+ "boundary": {
+  "provider_name": "fixed_window_v1",
+  "provider_version": "1",
+  "provider_config": {
+   "window_sec": 60.0
+  }
+ },
+ "prompt": {
+  "prompt_version": "episode_content_v2",
+  "prompt_hash": "beaa322ea0200d3d1f6cdccc2da7421f7bb79c2024186e3df1b8c918e12d2725"
+ }
+}
