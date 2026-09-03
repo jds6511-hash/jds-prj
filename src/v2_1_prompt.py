@@ -4,9 +4,12 @@
 그래야 backend를 바꿔도 prompt 계약이 흔들리지 않는다.
 
 ```
-필수 출력   summary
-선택 출력   dialogue_note · stt_cites
+v2 (기본)   필수 summary · 선택 dialogue_note · stt_cites
+v3          필수 summary — 선택 항목 없음 (post-v2.1 병행 계약)
 ```
+
+두 계약은 **동시에 존재한다.** v2를 제자리에서 고치지 않는 이유는, 고치면 이미 기록된
+`prompt_hash`가 무엇을 가리켰는지 사후에 알 수 없기 때문이다.
 
 근거는 자격으로 **블록을 나눈다.**
 
@@ -29,6 +32,8 @@ import json
 from dataclasses import dataclass
 
 PROMPT_VERSION = "episode_content_v2"
+#: post-v2.1. summary만 요구한다. v2를 **대체하지 않는다** — 병행 계약이다.
+PROMPT_VERSION_V3 = "episode_content_v3_summary_only"
 
 _CLAIM_HEADER = "[근거]"
 _CONTEXT_HEADER = "[참고]"
@@ -59,6 +64,53 @@ CONTRACT = {
         "context": "preserved == true and usable_for_claims == false",
     },
 }
+
+#: v3 계약. `dialogue_note`·`stt_cites`를 **생성 표면에서 없앤다.**
+#:
+#: 이유는 품질이 아니라 결합이다. 선택 항목 하나가 grounding에서 실패하면 C-09가
+#: 그 구간 요약을 표현에서 지운다(2026-09-03 실측 표현 회수율 2/41). 가드를 낮추는
+#: 대신 불필요하게 가드를 발동시키는 출력 표면을 없앤다.
+#:
+#: v2를 제자리에서 고치지 않는다 — 고치면 기존 prompt_hash의 의미가 바뀐다.
+CONTRACT_V3 = {
+    "version": PROMPT_VERSION_V3,
+    "system": CONTRACT["system"],
+    "task": CONTRACT["task"],
+    "rules": [
+        "근거 블록에 있는 것만 사실로 적는다.",
+        "참고 블록은 맥락일 뿐이며 사실 주장의 근거로 쓸 수 없다.",
+        "적을 것이 없으면 지어내지 않는다.",
+    ],
+    "output": {
+        "format": "JSON",
+        "required": ["summary"],
+        # 선택 항목이 없다. 빈 배열·null·"없음"으로 채우게 하지 않는다 —
+        # OPEN-10에서 배운 자리표시자 혼동이 그렇게 다시 들어온다.
+        "optional": [],
+        "omit_when_absent": [],
+    },
+    "evidence_blocks": dict(CONTRACT["evidence_blocks"]),
+}
+
+#: 출력 지시문. **계약 사전 안에 두지 않는다** — 두면 v2의 prompt_hash가 바뀐다.
+_TAIL = {
+    PROMPT_VERSION: [
+        "출력은 JSON 객체 하나다. 다른 말을 덧붙이지 않는다.",
+        "쓸 수 있는 키는 셋뿐이다.",
+        "- summary: 필수. 한 문장.",
+        "- dialogue_note: 인용할 발화가 있을 때만. 없으면 키를 넣지 않는다.",
+        "- stt_cites: 인용한 구간 번호의 배열. 없으면 키를 넣지 않는다.",
+    ],
+    PROMPT_VERSION_V3: [
+        "출력은 JSON 객체 하나다. 다른 말을 덧붙이지 않는다.",
+        "쓸 수 있는 키는 하나뿐이다.",
+        "- summary: 필수. 한 문장.",
+        "다른 키는 넣지 않는다.",
+    ],
+}
+
+#: 이름으로 계약을 고른다. 모르는 이름은 조용히 v2로 떨어지지 않는다.
+CONTRACTS = {"v2": CONTRACT, "v3": CONTRACT_V3}
 
 
 class PromptError(RuntimeError):
@@ -115,9 +167,24 @@ def _lines(refs, store) -> list[str]:
     return rendered
 
 
-def build_episode_prompt(episode, timeline, store, include_context_only: bool = False
-                         ) -> PromptBundle:
-    """한 구간의 프롬프트를 만든다. 근거가 없으면 만들지 않는다."""
+def resolve_contract(name: str) -> dict:
+    """이름으로 계약을 고른다. 모르는 이름은 실패다 — 기본값으로 떨어지지 않는다."""
+    if name not in CONTRACTS:
+        raise PromptError("unknown prompt contract %r (available: %s)"
+                          % (name, ", ".join(sorted(CONTRACTS))))
+    return CONTRACTS[name]
+
+
+def build_episode_prompt(episode, timeline, store, include_context_only: bool = False,
+                         *, contract: dict = CONTRACT) -> PromptBundle:
+    """한 구간의 프롬프트를 만든다. 근거가 없으면 만들지 않는다.
+
+    `contract`를 명시하지 않으면 **v2다.** 호출자가 모르는 채로 v3를 쓰는 일은
+    없어야 한다 — 계약 변경은 호출 지점에 드러나야 한다.
+    """
+    if contract["version"] not in _TAIL:
+        raise PromptError("no output instructions for contract %r"
+                          % contract["version"])
     claim, context = split_evidence(episode, timeline)
     if not claim:
         raise PromptError(
@@ -126,12 +193,12 @@ def build_episode_prompt(episode, timeline, store, include_context_only: bool = 
         )
 
     parts = [
-        CONTRACT["system"],
+        contract["system"],
         "",
-        CONTRACT["task"],
+        contract["task"],
         "대상 구간: seg#%d ~ seg#%d" % (episode.start_seg, episode.end_seg),
         "",
-        *["- " + rule for rule in CONTRACT["rules"]],
+        *["- " + rule for rule in contract["rules"]],
         "",
         _CLAIM_HEADER,
         *_lines(claim, store),
@@ -142,17 +209,10 @@ def build_episode_prompt(episode, timeline, store, include_context_only: bool = 
             _CONTEXT_HEADER + " 아래는 맥락일 뿐이며 사실 주장의 근거로 쓸 수 없다.",
             *_lines(context, store),
         ]
-    parts += [
-        "",
-        "출력은 JSON 객체 하나다. 다른 말을 덧붙이지 않는다.",
-        "쓸 수 있는 키는 셋뿐이다.",
-        "- summary: 필수. 한 문장.",
-        "- dialogue_note: 인용할 발화가 있을 때만. 없으면 키를 넣지 않는다.",
-        "- stt_cites: 인용한 구간 번호의 배열. 없으면 키를 넣지 않는다.",
-    ]
+    parts += ["", *_TAIL[contract["version"]]]
     return PromptBundle(
-        prompt_version=PROMPT_VERSION,
-        prompt_hash=contract_hash(),
+        prompt_version=contract["version"],
+        prompt_hash=contract_hash(contract),
         text="\n".join(parts),
         claim_cites=tuple(ref.segment_id for ref in claim),
         context_cites=tuple(ref.segment_id for ref in context),

@@ -101,14 +101,15 @@ def _config(tmp_path) -> Path:
 
 
 def _run(tmp_path, *, name="S1", payloads=NORMAL_PAYLOADS, asr=None,
-         caption=None, window_sec=30.0, generate=None, run_dir="run"):
+         caption=None, window_sec=30.0, generate=None, run_dir="run",
+         contract_name="v2"):
     segments = _segments_file(tmp_path, name, asr=asr, caption=caption)
     fake = generate or _Fake(payloads)
     summary = b2.orchestrate(
         tmp_path / run_dir, segments, _config(tmp_path),
         video_id=name, run_id="b2-test", generate=fake,
         generation=GENERATION, producer_version="b1-code-head",
-        window_sec=window_sec)
+        window_sec=window_sec, contract_name=contract_name)
     return summary, fake, tmp_path / run_dir
 
 

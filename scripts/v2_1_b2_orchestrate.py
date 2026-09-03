@@ -63,8 +63,10 @@ from v2_1_lineage import build_lineage                          # noqa: E402
 from v2_1_llm_adapter import GenerationConfig                   # noqa: E402
 from v2_1_parse import EMPTY, ParseResult, SegmentRegistry, parse_json_payload  # noqa: E402
 from v2_1_presentation import build_presentation                # noqa: E402
-from v2_1_presentation_input import presentation_input          # noqa: E402
-from v2_1_prompt import PROMPT_VERSION, PromptError, build_episode_prompt, contract_hash  # noqa: E402
+from v2_1_presentation_input import (                           # noqa: E402
+    presentation_input, summary_eligible_for_presentation)
+from v2_1_prompt import (CONTRACT, PromptError, build_episode_prompt,  # noqa: E402
+                         contract_hash, resolve_contract)
 from v2_1_raw_store import RawStore                             # noqa: E402
 from v2_1_render import render_markdown                         # noqa: E402
 from v2_1_sanitation import classify_channel                    # noqa: E402
@@ -114,12 +116,13 @@ def code_revision() -> str:
     return out.stdout.strip() or "unknown"
 
 
-def fingerprint(config_path: Path, model_id: str) -> Fingerprint:
+def fingerprint(config_path: Path, model_id: str,
+                contract: dict = CONTRACT) -> Fingerprint:
     return Fingerprint(
         config_hash=sha256_file(config_path),
         code_revision=code_revision(),
-        prompt_version=PROMPT_VERSION,
-        prompt_hash=contract_hash(),
+        prompt_version=contract["version"],
+        prompt_hash=contract_hash(contract),
         model_id=model_id,
     )
 
@@ -313,7 +316,7 @@ def s1_episodes(directory: Path, run: Path, video_id: str, run_id: str,
 
 
 def s2_raw(directory: Path, run: Path, video_id: str, run_id: str, generate,
-           generation: GenerationConfig):
+           generation: GenerationConfig, contract: dict = CONTRACT):
     _, segments, store, timeline = _load_world(run, video_id, run_id)
     episodes = _load_episodes(run, segments, timeline)
     registry = SegmentRegistry(segments)
@@ -323,7 +326,8 @@ def s2_raw(directory: Path, run: Path, video_id: str, run_id: str, generate,
     for index, episode in enumerate(episodes):
         episode_started = time.time()
         try:
-            bundle = build_episode_prompt(episode, timeline, store)
+            bundle = build_episode_prompt(episode, timeline, store,
+                                          contract=contract)
         except PromptError as error:
             # **episode 내용 실패다.** orchestrator 실패로 올리지 않는다(ERR-009).
             counters["prompt_refusals"] += 1
@@ -461,7 +465,8 @@ def _grounded_objects(run: Path):
         )
 
 
-def s5_aar(directory: Path, run: Path, video_id: str, run_id: str):
+def s5_aar(directory: Path, run: Path, video_id: str, run_id: str,
+           contract: dict = CONTRACT):
     _, segments, _, timeline = _load_world(run, video_id, run_id)
     boundary = json.loads((run / "S1/episodes.json").read_text(encoding="utf-8"))
     document = build_aar_canonical(
@@ -472,8 +477,8 @@ def s5_aar(directory: Path, run: Path, video_id: str, run_id: str):
         "provider_version": boundary["provider_version"],
         "provider_config": boundary["provider_config"],
     }
-    document["prompt"] = {"prompt_version": PROMPT_VERSION,
-                          "prompt_hash": contract_hash()}
+    document["prompt"] = {"prompt_version": contract["version"],
+                          "prompt_hash": contract_hash(contract)}
     verdict = validate_aar(document)
     if not verdict.ok:
         raise StageError("S5", "INVALID_CANONICAL", "; ".join(verdict.failures))
@@ -637,6 +642,7 @@ def distributions(run: Path) -> dict:
         "content_status": counts(e["content_status"] for e in episodes),
         "grounding_status": counts(e["grounding_status"] for e in episodes),
         "summary_mode": counts(e["summary_mode"] for e in episodes),
+        "presentation": _presentation_metrics(document),
         "raw_outputs_present": sum(
             1 for record in index["episodes"]
             if record["raw"] and (run / record["raw"]).is_file()),
@@ -650,22 +656,53 @@ def distributions(run: Path) -> dict:
     }
 
 
+def _presentation_metrics(document: dict) -> dict:
+    """primary metric과 mechanism metric.
+
+    자격 판정은 `summary_eligible_for_presentation` **하나만** 쓴다 — 조건식을 여기서
+    다시 쓰면 OPEN-12가 생긴 방식으로 정의가 갈라진다.
+
+    `excluded_by_dialogue_grounding`은 ②를 고른 이유를 직접 잰다. 정본에 쓸 수 있는
+    요약이 있는데 dialogue grounding 실패 때문에 표현에서 빠진 구간 수다. dialogue를
+    생성하지 않는 계약에서는 구조적으로 0이어야 한다.
+    """
+    episodes = presentation_input(document).episodes
+    eligible = [e for e in episodes if summary_eligible_for_presentation(e)]
+    excluded = [e for e in episodes
+                if not summary_eligible_for_presentation(e)
+                and e.content_status == "VALID_PARSE"
+                and bool(e.summary and e.summary.strip())
+                and e.grounding_status.startswith("FAIL")]
+    return {
+        "episodes": len(episodes),
+        "eligible": len(eligible),
+        "excluded_by_dialogue_grounding": len(excluded),
+        "excluded_episode_ids": [e.episode_id for e in excluded],
+        "dialogue_note_present": sum(
+            1 for e in document["episodes"]
+            if (e.get("dialogue_note") or "").strip()),
+    }
+
+
 def orchestrate(run: Path, segments_path: Path, config_path: Path, *,
                 video_id: str, run_id: str, generate, generation: GenerationConfig,
                 producer_version: str, window_sec: float | None = None,
                 model_provenance: dict | None = None,
-                poll_gpu: bool = False) -> dict:
+                poll_gpu: bool = False, contract_name: str = "v2") -> dict:
     run.mkdir(parents=True, exist_ok=True)
-    print_ = fingerprint(config_path, generation.model_id)
+    # 명시하지 않으면 v2다. v3는 호출 지점에서만 선택된다.
+    contract = resolve_contract(contract_name)
+    print_ = fingerprint(config_path, generation.model_id, contract)
 
     bodies = {
         "S0": lambda d: s0_ingest(d, run, segments_path, video_id, run_id,
                                   producer_version),
         "S1": lambda d: s1_episodes(d, run, video_id, run_id, window_sec),
-        "S2": lambda d: s2_raw(d, run, video_id, run_id, generate, generation),
+        "S2": lambda d: s2_raw(d, run, video_id, run_id, generate, generation,
+                               contract),
         "S3": lambda d: s3_content(d, run, video_id, run_id),
         "S4": lambda d: s4_grounding(d, run, video_id, run_id),
-        "S5": lambda d: s5_aar(d, run, video_id, run_id),
+        "S5": lambda d: s5_aar(d, run, video_id, run_id, contract),
         "S6": lambda d: s6_presentation(d, run),
         "S7": lambda d: s7_hwpx(d, run, config_path, video_id, run_id),
     }
@@ -772,6 +809,8 @@ def main(argv=None) -> int:
     parser.add_argument("--window-sec", type=float, default=None)
     parser.add_argument("--poll-gpu", action="store_true",
                         help="5초 간격 VRAM·이용률 기록")
+    parser.add_argument("--contract", choices=("v2", "v3"), default="v2",
+                        help="프롬프트 계약. v3 = summary-only (post-v2.1)")
     parser.add_argument("--clean", action="store_true",
                         help="run 디렉터리를 비우고 처음부터 — 첫 실행은 이것으로 한다")
     args = parser.parse_args(argv)
@@ -788,7 +827,7 @@ def main(argv=None) -> int:
         video_id=args.video_id, run_id=args.run_id, generate=generate,
         generation=generation, producer_version=args.producer_version,
         window_sec=args.window_sec, model_provenance=provenance,
-        poll_gpu=args.poll_gpu)
+        poll_gpu=args.poll_gpu, contract_name=args.contract)
     print(json.dumps({
         "stages": {stage: {"reused": m["reused"],
                            "wall_seconds": m.get("wall_seconds")}
