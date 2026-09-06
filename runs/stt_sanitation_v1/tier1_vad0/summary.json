@@ -1,0 +1,34 @@
+{
+ "track": "STT_VAD_ONLY_SHADOW_V1",
+ "tier": 1,
+ "shadow_vad0": true,
+ "rule": "existing VALID AND speech_overlap_ratio == 0 -> SUSPECT",
+ "code_revision": "1ed6d1aba749d5892a221e5ea104d45a46d16dc5",
+ "inputs": {
+  "segments_sha256": "aa008317023c884a206c2ea8ce9f1de5db809c2638fca257f964a58df4799c92",
+  "measurements_sha256": "59675339ab1fa64c1af6f38487db9573ecbaf56f6d821d646dc2763315b0be42",
+  "window_sec": 60.0
+ },
+ "segments": {
+  "n": 485,
+  "usable_for_claims_before": 294,
+  "usable_for_claims_after": 84,
+  "valid_to_shadow_suspect": 210
+ },
+ "episodes": {
+  "n": 41,
+  "partition_equal": true,
+  "new_err_009": 0,
+  "episodes_losing_all_asr": 21,
+  "eligible_before": 777,
+  "eligible_after": 567
+ },
+ "not_done": [
+  "summary 생성",
+  "aar 재작성",
+  "presentation 재생성",
+  "환각 제거율 계산",
+  "사람 라벨링",
+  "임계값 조정"
+ ]
+}

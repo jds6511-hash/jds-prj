@@ -1,0 +1,706 @@
+{
+ "spans": [
+  [
+   0,
+   11
+  ],
+  [
+   12,
+   23
+  ],
+  [
+   24,
+   35
+  ],
+  [
+   36,
+   47
+  ],
+  [
+   48,
+   59
+  ],
+  [
+   60,
+   71
+  ],
+  [
+   72,
+   83
+  ],
+  [
+   84,
+   95
+  ],
+  [
+   96,
+   107
+  ],
+  [
+   108,
+   119
+  ],
+  [
+   120,
+   131
+  ],
+  [
+   132,
+   143
+  ],
+  [
+   144,
+   155
+  ],
+  [
+   156,
+   167
+  ],
+  [
+   168,
+   179
+  ],
+  [
+   180,
+   191
+  ],
+  [
+   192,
+   203
+  ],
+  [
+   204,
+   215
+  ],
+  [
+   216,
+   227
+  ],
+  [
+   228,
+   239
+  ],
+  [
+   240,
+   251
+  ],
+  [
+   252,
+   263
+  ],
+  [
+   264,
+   275
+  ],
+  [
+   276,
+   287
+  ],
+  [
+   288,
+   299
+  ],
+  [
+   300,
+   311
+  ],
+  [
+   312,
+   323
+  ],
+  [
+   324,
+   335
+  ],
+  [
+   336,
+   347
+  ],
+  [
+   348,
+   359
+  ],
+  [
+   360,
+   371
+  ],
+  [
+   372,
+   383
+  ],
+  [
+   384,
+   395
+  ],
+  [
+   396,
+   407
+  ],
+  [
+   408,
+   419
+  ],
+  [
+   420,
+   431
+  ],
+  [
+   432,
+   443
+  ],
+  [
+   444,
+   455
+  ],
+  [
+   456,
+   467
+  ],
+  [
+   468,
+   479
+  ],
+  [
+   480,
+   484
+  ]
+ ],
+ "partition_equal": true,
+ "episodes": [
+  {
+   "episode_id": "EP01",
+   "start_seg": 0,
+   "end_seg": 11,
+   "original_eligible": 18,
+   "shadow_eligible": 12,
+   "original_asr_eligible": 6,
+   "shadow_asr_eligible": 0,
+   "lost_all_asr": true,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "visual"
+  },
+  {
+   "episode_id": "EP02",
+   "start_seg": 12,
+   "end_seg": 23,
+   "original_eligible": 18,
+   "shadow_eligible": 12,
+   "original_asr_eligible": 6,
+   "shadow_asr_eligible": 0,
+   "lost_all_asr": true,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "visual"
+  },
+  {
+   "episode_id": "EP03",
+   "start_seg": 24,
+   "end_seg": 35,
+   "original_eligible": 23,
+   "shadow_eligible": 12,
+   "original_asr_eligible": 11,
+   "shadow_asr_eligible": 0,
+   "lost_all_asr": true,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "visual"
+  },
+  {
+   "episode_id": "EP04",
+   "start_seg": 36,
+   "end_seg": 47,
+   "original_eligible": 23,
+   "shadow_eligible": 12,
+   "original_asr_eligible": 11,
+   "shadow_asr_eligible": 0,
+   "lost_all_asr": true,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "visual"
+  },
+  {
+   "episode_id": "EP05",
+   "start_seg": 48,
+   "end_seg": 59,
+   "original_eligible": 15,
+   "shadow_eligible": 12,
+   "original_asr_eligible": 3,
+   "shadow_asr_eligible": 0,
+   "lost_all_asr": true,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "visual"
+  },
+  {
+   "episode_id": "EP06",
+   "start_seg": 60,
+   "end_seg": 71,
+   "original_eligible": 22,
+   "shadow_eligible": 12,
+   "original_asr_eligible": 10,
+   "shadow_asr_eligible": 0,
+   "lost_all_asr": true,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "visual"
+  },
+  {
+   "episode_id": "EP07",
+   "start_seg": 72,
+   "end_seg": 83,
+   "original_eligible": 21,
+   "shadow_eligible": 12,
+   "original_asr_eligible": 9,
+   "shadow_asr_eligible": 0,
+   "lost_all_asr": true,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "visual"
+  },
+  {
+   "episode_id": "EP08",
+   "start_seg": 84,
+   "end_seg": 95,
+   "original_eligible": 19,
+   "shadow_eligible": 12,
+   "original_asr_eligible": 7,
+   "shadow_asr_eligible": 0,
+   "lost_all_asr": true,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "visual"
+  },
+  {
+   "episode_id": "EP09",
+   "start_seg": 96,
+   "end_seg": 107,
+   "original_eligible": 16,
+   "shadow_eligible": 14,
+   "original_asr_eligible": 4,
+   "shadow_asr_eligible": 2,
+   "lost_all_asr": false,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "stt"
+  },
+  {
+   "episode_id": "EP10",
+   "start_seg": 108,
+   "end_seg": 119,
+   "original_eligible": 20,
+   "shadow_eligible": 20,
+   "original_asr_eligible": 8,
+   "shadow_asr_eligible": 8,
+   "lost_all_asr": false,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "stt"
+  },
+  {
+   "episode_id": "EP11",
+   "start_seg": 120,
+   "end_seg": 131,
+   "original_eligible": 20,
+   "shadow_eligible": 12,
+   "original_asr_eligible": 8,
+   "shadow_asr_eligible": 0,
+   "lost_all_asr": true,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "visual"
+  },
+  {
+   "episode_id": "EP12",
+   "start_seg": 132,
+   "end_seg": 143,
+   "original_eligible": 19,
+   "shadow_eligible": 12,
+   "original_asr_eligible": 7,
+   "shadow_asr_eligible": 0,
+   "lost_all_asr": true,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "visual"
+  },
+  {
+   "episode_id": "EP13",
+   "start_seg": 144,
+   "end_seg": 155,
+   "original_eligible": 19,
+   "shadow_eligible": 17,
+   "original_asr_eligible": 7,
+   "shadow_asr_eligible": 5,
+   "lost_all_asr": false,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "stt"
+  },
+  {
+   "episode_id": "EP14",
+   "start_seg": 156,
+   "end_seg": 167,
+   "original_eligible": 23,
+   "shadow_eligible": 13,
+   "original_asr_eligible": 11,
+   "shadow_asr_eligible": 1,
+   "lost_all_asr": false,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "stt"
+  },
+  {
+   "episode_id": "EP15",
+   "start_seg": 168,
+   "end_seg": 179,
+   "original_eligible": 18,
+   "shadow_eligible": 14,
+   "original_asr_eligible": 7,
+   "shadow_asr_eligible": 3,
+   "lost_all_asr": false,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "stt"
+  },
+  {
+   "episode_id": "EP16",
+   "start_seg": 180,
+   "end_seg": 191,
+   "original_eligible": 17,
+   "shadow_eligible": 11,
+   "original_asr_eligible": 6,
+   "shadow_asr_eligible": 0,
+   "lost_all_asr": true,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "visual"
+  },
+  {
+   "episode_id": "EP17",
+   "start_seg": 192,
+   "end_seg": 203,
+   "original_eligible": 14,
+   "shadow_eligible": 13,
+   "original_asr_eligible": 2,
+   "shadow_asr_eligible": 1,
+   "lost_all_asr": false,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "stt"
+  },
+  {
+   "episode_id": "EP18",
+   "start_seg": 204,
+   "end_seg": 215,
+   "original_eligible": 15,
+   "shadow_eligible": 12,
+   "original_asr_eligible": 3,
+   "shadow_asr_eligible": 0,
+   "lost_all_asr": true,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "visual"
+  },
+  {
+   "episode_id": "EP19",
+   "start_seg": 216,
+   "end_seg": 227,
+   "original_eligible": 19,
+   "shadow_eligible": 12,
+   "original_asr_eligible": 7,
+   "shadow_asr_eligible": 0,
+   "lost_all_asr": true,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "visual"
+  },
+  {
+   "episode_id": "EP20",
+   "start_seg": 228,
+   "end_seg": 239,
+   "original_eligible": 19,
+   "shadow_eligible": 14,
+   "original_asr_eligible": 7,
+   "shadow_asr_eligible": 2,
+   "lost_all_asr": false,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "stt"
+  },
+  {
+   "episode_id": "EP21",
+   "start_seg": 240,
+   "end_seg": 251,
+   "original_eligible": 20,
+   "shadow_eligible": 12,
+   "original_asr_eligible": 8,
+   "shadow_asr_eligible": 0,
+   "lost_all_asr": true,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "visual"
+  },
+  {
+   "episode_id": "EP22",
+   "start_seg": 252,
+   "end_seg": 263,
+   "original_eligible": 20,
+   "shadow_eligible": 12,
+   "original_asr_eligible": 8,
+   "shadow_asr_eligible": 0,
+   "lost_all_asr": true,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "visual"
+  },
+  {
+   "episode_id": "EP23",
+   "start_seg": 264,
+   "end_seg": 275,
+   "original_eligible": 19,
+   "shadow_eligible": 12,
+   "original_asr_eligible": 7,
+   "shadow_asr_eligible": 0,
+   "lost_all_asr": true,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "visual"
+  },
+  {
+   "episode_id": "EP24",
+   "start_seg": 276,
+   "end_seg": 287,
+   "original_eligible": 20,
+   "shadow_eligible": 13,
+   "original_asr_eligible": 8,
+   "shadow_asr_eligible": 1,
+   "lost_all_asr": false,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "stt"
+  },
+  {
+   "episode_id": "EP25",
+   "start_seg": 288,
+   "end_seg": 299,
+   "original_eligible": 24,
+   "shadow_eligible": 24,
+   "original_asr_eligible": 12,
+   "shadow_asr_eligible": 12,
+   "lost_all_asr": false,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "stt"
+  },
+  {
+   "episode_id": "EP26",
+   "start_seg": 300,
+   "end_seg": 311,
+   "original_eligible": 23,
+   "shadow_eligible": 23,
+   "original_asr_eligible": 11,
+   "shadow_asr_eligible": 11,
+   "lost_all_asr": false,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "stt"
+  },
+  {
+   "episode_id": "EP27",
+   "start_seg": 312,
+   "end_seg": 323,
+   "original_eligible": 22,
+   "shadow_eligible": 22,
+   "original_asr_eligible": 10,
+   "shadow_asr_eligible": 10,
+   "lost_all_asr": false,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "stt"
+  },
+  {
+   "episode_id": "EP28",
+   "start_seg": 324,
+   "end_seg": 335,
+   "original_eligible": 19,
+   "shadow_eligible": 17,
+   "original_asr_eligible": 7,
+   "shadow_asr_eligible": 5,
+   "lost_all_asr": false,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "stt"
+  },
+  {
+   "episode_id": "EP29",
+   "start_seg": 336,
+   "end_seg": 347,
+   "original_eligible": 23,
+   "shadow_eligible": 12,
+   "original_asr_eligible": 11,
+   "shadow_asr_eligible": 0,
+   "lost_all_asr": true,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "visual"
+  },
+  {
+   "episode_id": "EP30",
+   "start_seg": 348,
+   "end_seg": 359,
+   "original_eligible": 21,
+   "shadow_eligible": 14,
+   "original_asr_eligible": 9,
+   "shadow_asr_eligible": 2,
+   "lost_all_asr": false,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "stt"
+  },
+  {
+   "episode_id": "EP31",
+   "start_seg": 360,
+   "end_seg": 371,
+   "original_eligible": 18,
+   "shadow_eligible": 12,
+   "original_asr_eligible": 6,
+   "shadow_asr_eligible": 0,
+   "lost_all_asr": true,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "visual"
+  },
+  {
+   "episode_id": "EP32",
+   "start_seg": 372,
+   "end_seg": 383,
+   "original_eligible": 18,
+   "shadow_eligible": 12,
+   "original_asr_eligible": 6,
+   "shadow_asr_eligible": 0,
+   "lost_all_asr": true,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "visual"
+  },
+  {
+   "episode_id": "EP33",
+   "start_seg": 384,
+   "end_seg": 395,
+   "original_eligible": 19,
+   "shadow_eligible": 19,
+   "original_asr_eligible": 7,
+   "shadow_asr_eligible": 7,
+   "lost_all_asr": false,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "stt"
+  },
+  {
+   "episode_id": "EP34",
+   "start_seg": 396,
+   "end_seg": 407,
+   "original_eligible": 15,
+   "shadow_eligible": 15,
+   "original_asr_eligible": 3,
+   "shadow_asr_eligible": 3,
+   "lost_all_asr": false,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "stt"
+  },
+  {
+   "episode_id": "EP35",
+   "start_seg": 408,
+   "end_seg": 419,
+   "original_eligible": 17,
+   "shadow_eligible": 15,
+   "original_asr_eligible": 5,
+   "shadow_asr_eligible": 3,
+   "lost_all_asr": false,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "stt"
+  },
+  {
+   "episode_id": "EP36",
+   "start_seg": 420,
+   "end_seg": 431,
+   "original_eligible": 20,
+   "shadow_eligible": 14,
+   "original_asr_eligible": 8,
+   "shadow_asr_eligible": 2,
+   "lost_all_asr": false,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "stt"
+  },
+  {
+   "episode_id": "EP37",
+   "start_seg": 432,
+   "end_seg": 443,
+   "original_eligible": 23,
+   "shadow_eligible": 13,
+   "original_asr_eligible": 11,
+   "shadow_asr_eligible": 1,
+   "lost_all_asr": false,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "stt"
+  },
+  {
+   "episode_id": "EP38",
+   "start_seg": 444,
+   "end_seg": 455,
+   "original_eligible": 18,
+   "shadow_eligible": 12,
+   "original_asr_eligible": 6,
+   "shadow_asr_eligible": 0,
+   "lost_all_asr": true,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "visual"
+  },
+  {
+   "episode_id": "EP39",
+   "start_seg": 456,
+   "end_seg": 467,
+   "original_eligible": 18,
+   "shadow_eligible": 15,
+   "original_asr_eligible": 6,
+   "shadow_asr_eligible": 3,
+   "lost_all_asr": false,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "stt"
+  },
+  {
+   "episode_id": "EP40",
+   "start_seg": 468,
+   "end_seg": 479,
+   "original_eligible": 16,
+   "shadow_eligible": 14,
+   "original_asr_eligible": 4,
+   "shadow_asr_eligible": 2,
+   "lost_all_asr": false,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "stt"
+  },
+  {
+   "episode_id": "EP41",
+   "start_seg": 480,
+   "end_seg": 484,
+   "original_eligible": 6,
+   "shadow_eligible": 5,
+   "original_asr_eligible": 1,
+   "shadow_asr_eligible": 0,
+   "lost_all_asr": true,
+   "lost_all_evidence": false,
+   "source_original": "stt",
+   "source_shadow": "visual"
+  }
+ ],
+ "new_err_009": 0,
+ "episodes_losing_all_asr": 21
+}
