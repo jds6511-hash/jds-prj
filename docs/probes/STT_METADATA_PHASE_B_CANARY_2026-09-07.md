@@ -138,7 +138,10 @@ scripts/stt_metadata_canary.py · tests/test_stt_metadata_canary.py (14건)
 
 ```
 제출본        FROZEN · 무변경
-Phase C       HOLD
-Phase D       HOLD (설계 재검토 필요 — §4)
+Phase C       CANCELLED under current design   (2026-09-07 결정)
+Phase D       기존 설계 폐기 — 전제(재전사 parity)가 반증됐다
+후속          (i) 선택 · `docs/preregistration/STT_VAD_ONLY_SHADOW_V1_2026-09-07.md`
+             (ii) N-run stability = DEFER · research-only (`WhisperDecodeStability_v1`)
+             (iii) transcript 교체 = HOLD
 M9            HOLD · official test UNOPENED
 ```
