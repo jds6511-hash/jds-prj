@@ -47,7 +47,7 @@
  "hangul": {
   "hancom_open": true,
   "pdf_export": true,
-  "pdf_bytes": 134938,
+  "pdf_bytes": 134937,
   "text_chars": 14496,
   "box_glyphs": {
    "■": 5,
@@ -56,6 +56,20 @@
    "└": 41
   }
  },
+ "companions": [
+  {
+   "name": "stt_transcript_full_xekZO4n4QuE.txt",
+   "kind": "stt_transcript",
+   "bytes": 25577,
+   "sha256": "26fc147e626fe42c2d7ebb9a2f06cf3347280aff70027b0e185f2cf7ffee025c"
+  },
+  {
+   "name": "stt_utterances_full_xekZO4n4QuE.txt",
+   "kind": "stt_transcript",
+   "bytes": 22697,
+   "sha256": "b2a4e14e0f5033ab614a6345a33ec8cdab8732d68492e9732bf5eabc4b27f772"
+  }
+ ],
  "default_contract_unchanged": true,
  "not_claimed": [
   "semantic entailment of the summaries is not automatically verified",

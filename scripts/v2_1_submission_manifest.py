@@ -68,7 +68,7 @@ def hangul_check(hwpx: Path, pdf: Path) -> dict:
     }
 
 
-def build(run: Path, pdf: Path) -> dict:
+def build(run: Path, pdf: Path, transcripts: list[Path] | None = None) -> dict:
     manifest = json.loads((run / "run_manifest.json").read_text(encoding="utf-8"))
     document = json.loads(
         _first(run, "S5/aar_canonical.json", "aar_canonical.json").read_text(
@@ -113,6 +113,12 @@ def build(run: Path, pdf: Path) -> dict:
             "hwpx_bytes": hwpx.stat().st_size,
         },
         "hangul": hangul_check(hwpx, pdf),
+        # 전사문은 보고서와 별개 파일이다. 요약이 아니라 원문이므로 따로 가리킨다.
+        "companions": [
+            {"name": path.name, "kind": "stt_transcript",
+             "bytes": path.stat().st_size, "sha256": sha256_file(path)}
+            for path in (transcripts or [])
+        ],
         "default_contract_unchanged": True,
         "not_claimed": [
             "semantic entailment of the summaries is not automatically verified",
@@ -128,11 +134,17 @@ def main(argv=None) -> int:
     parser.add_argument("--out", required=True)
     parser.add_argument("--pdf", default=None,
                         help="PDF export 경로 (기본: run 옆 submission.pdf)")
+    parser.add_argument("--transcript", action="append", default=[],
+                        help="동반 전사문 txt (여러 번 줄 수 있다)")
     args = parser.parse_args(argv)
 
     run = Path(args.run).resolve()
     pdf = Path(args.pdf).resolve() if args.pdf else run / "submission.pdf"
-    report = build(run, pdf)
+    transcripts = [Path(item).resolve() for item in args.transcript]
+    for path in transcripts:
+        if not path.is_file():
+            raise SubmissionCheckError("전사문이 없다: %s" % path)
+    report = build(run, pdf, transcripts)
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(report, ensure_ascii=False, indent=1),

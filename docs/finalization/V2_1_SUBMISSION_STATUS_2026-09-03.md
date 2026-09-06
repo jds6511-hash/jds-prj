@@ -83,8 +83,28 @@ pdf_export               PASS (134,938 B)
 artifact                 report.hwpx · 15,824 B · sha256 f874f64311270412…
 ```
 
-제출본 사본: `Desktop/v3_submission/` (hwpx · md · pdf · manifest). 사본의 HWPX
-sha256이 manifest 값과 일치하는 것을 확인했다.
+제출본 사본: `Desktop/v3_submission/` (hwpx · md · pdf · manifest · 전사문 2종).
+사본의 HWPX sha256이 manifest 값과 일치하는 것을 확인했다.
+
+## 3-1. 동반 파일 — STT 전사문 (보고서와 별도)
+
+보고서는 요약이고 전사문은 원문이다. 같은 파일에 섞지 않는다.
+
+```
+stt_transcript_full_xekZO4n4QuE.txt   구간 정렬 자막 · 485구간 중 발화 296구간
+                                      크레딧 환각 필터 적용분 = 파이프라인이 실제로 쓴 값
+                                      sha256 26fc147e626fe42c…
+stt_utterances_full_xekZO4n4QuE.txt   Whisper 발화 단위 원본 437건 · 필터 이전
+                                      sha256 b2a4e14e0f5033ab…
+생성                                   scripts/v2_1_stt_transcript.py
+```
+
+**텍스트를 고치지 않는다.** 앞뒤 공백만 떼고 내부 문자열은 그대로 쓴다 — 맞춤법·중복
+정리를 넣으면 전사문이 아니라 편집본이 되고 모델 입력이 무엇이었는지 알 수 없게 된다.
+`re.sub`·정규화 함수가 스크립트에 없다는 것을 테스트가 확인한다.
+
+전사문에는 STT 오류가 그대로 남아 있다(라틴 문자 삽입 · 인접 구간 겹침 등). B1
+anomaly proxy가 센 것과 같은 현상이며, 지우지 않는다.
 
 ## 4. 41 = 39 + 2 — 숨기지 않는다
 

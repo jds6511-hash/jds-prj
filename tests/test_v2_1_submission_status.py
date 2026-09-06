@@ -127,3 +127,22 @@ def test_the_manifest_states_what_it_does_not_claim():
     assert "entailment" in joined
     assert "grd-004" in joined
     assert "default" in joined
+
+
+def test_the_transcript_companions_are_recorded(tmp_path):
+    """전사문은 보고서와 별도 파일이고, manifest가 해시로 가리킨다."""
+    companions = _manifest()["companions"]
+    kinds = {item["kind"] for item in companions}
+    assert kinds == {"stt_transcript"}
+    assert len(companions) == 2
+    for item in companions:
+        assert len(item["sha256"]) == 64 and item["bytes"] > 0
+        local = ROOT / "runs/v3_paired" / item["name"]
+        if local.is_file():
+            assert hashlib.sha256(local.read_bytes()).hexdigest() == item["sha256"]
+
+
+def test_the_doc_separates_transcript_from_report():
+    text = _doc()
+    assert "STT 전사문 (보고서와 별도)" in text
+    assert "텍스트를 고치지 않는다" in text
