@@ -1,0 +1,1033 @@
+[
+ {
+  "id": 0,
+  "text": " 파 provolone",
+  "start": 0.0,
+  "end": 1.4,
+  "avg_logprob": -3.62415674328804,
+  "no_speech_prob": 0.313232421875,
+  "compression_ratio": 0.864406779661017,
+  "temperature": 1.0,
+  "seek": 0,
+  "words": [
+   {
+    "word": " 파",
+    "start": 0.0,
+    "end": 1.24,
+    "probability": 0.008148193359375
+   },
+   {
+    "word": " provolone",
+    "start": 1.24,
+    "end": 1.4,
+    "probability": 0.48128730058670044
+   }
+  ]
+ },
+ {
+  "id": 1,
+  "text": " 단팥",
+  "start": 8.1,
+  "end": 9.5,
+  "avg_logprob": -3.62415674328804,
+  "no_speech_prob": 0.313232421875,
+  "compression_ratio": 0.864406779661017,
+  "temperature": 1.0,
+  "seek": 0,
+  "words": [
+   {
+    "word": " 단팥",
+    "start": 8.1,
+    "end": 9.5,
+    "probability": 0.3321147362391154
+   }
+  ]
+ },
+ {
+  "id": 2,
+  "text": " 상추",
+  "start": 9.5,
+  "end": 10.58,
+  "avg_logprob": -3.62415674328804,
+  "no_speech_prob": 0.313232421875,
+  "compression_ratio": 0.864406779661017,
+  "temperature": 1.0,
+  "seek": 0,
+  "words": [
+   {
+    "word": " 상추",
+    "start": 9.5,
+    "end": 10.58,
+    "probability": 0.15282678604125977
+   }
+  ]
+ },
+ {
+  "id": 3,
+  "text": " 깻잎",
+  "start": 10.58,
+  "end": 10.700000000000001,
+  "avg_logprob": -3.62415674328804,
+  "no_speech_prob": 0.313232421875,
+  "compression_ratio": 0.864406779661017,
+  "temperature": 1.0,
+  "seek": 0,
+  "words": [
+   {
+    "word": " 깻잎",
+    "start": 10.58,
+    "end": 11.28,
+    "probability": 0.5746574401855469
+   }
+  ]
+ },
+ {
+  "id": 4,
+  "text": " 고추를 감사합니다",
+  "start": 23.860000000000003,
+  "end": 26.4,
+  "avg_logprob": -2.4466670853751045,
+  "no_speech_prob": 0.416015625,
+  "compression_ratio": 0.9358974358974359,
+  "temperature": 1.0,
+  "seek": 2228,
+  "words": [
+   {
+    "word": " 고추를",
+    "start": 23.860000000000003,
+    "end": 25.26,
+    "probability": 0.3167839050292969
+   },
+   {
+    "word": " 감사합니다",
+    "start": 25.26,
+    "end": 26.4,
+    "probability": 0.00012153387069702148
+   }
+  ]
+ },
+ {
+  "id": 5,
+  "text": " 두부",
+  "start": 28.700000000000003,
+  "end": 30.1,
+  "avg_logprob": -2.4466670853751045,
+  "no_speech_prob": 0.416015625,
+  "compression_ratio": 0.9358974358974359,
+  "temperature": 1.0,
+  "seek": 2228,
+  "words": [
+   {
+    "word": " 두부",
+    "start": 28.700000000000003,
+    "end": 30.1,
+    "probability": 0.17159026861190796
+   }
+  ]
+ },
+ {
+  "id": 6,
+  "text": " 양파",
+  "start": 33.86,
+  "end": 35.26,
+  "avg_logprob": -2.4466670853751045,
+  "no_speech_prob": 0.416015625,
+  "compression_ratio": 0.9358974358974359,
+  "temperature": 1.0,
+  "seek": 2228,
+  "words": [
+   {
+    "word": " 양파",
+    "start": 33.86,
+    "end": 35.26,
+    "probability": 0.20059776306152344
+   }
+  ]
+ },
+ {
+  "id": 7,
+  "text": " 삼겹살",
+  "start": 35.26,
+  "end": 35.34,
+  "avg_logprob": -2.4466670853751045,
+  "no_speech_prob": 0.416015625,
+  "compression_ratio": 0.9358974358974359,
+  "temperature": 1.0,
+  "seek": 2228,
+  "words": [
+   {
+    "word": " 삼겹살",
+    "start": 35.26,
+    "end": 35.34,
+    "probability": 0.6465051174163818
+   }
+  ]
+ },
+ {
+  "id": 8,
+  "text": " 고추",
+  "start": 43.0,
+  "end": 44.4,
+  "avg_logprob": -2.4466670853751045,
+  "no_speech_prob": 0.416015625,
+  "compression_ratio": 0.9358974358974359,
+  "temperature": 1.0,
+  "seek": 2228,
+  "words": [
+   {
+    "word": " 고추",
+    "start": 43.0,
+    "end": 44.4,
+    "probability": 0.31058502197265625
+   }
+  ]
+ },
+ {
+  "id": 9,
+  "text": " 참기름",
+  "start": 50.480000000000004,
+  "end": 51.88,
+  "avg_logprob": -2.4466670853751045,
+  "no_speech_prob": 0.416015625,
+  "compression_ratio": 0.9358974358974359,
+  "temperature": 1.0,
+  "seek": 2228,
+  "words": [
+   {
+    "word": " 참기름",
+    "start": 50.480000000000004,
+    "end": 51.88,
+    "probability": 0.5571111043294271
+   }
+  ]
+ },
+ {
+  "id": 10,
+  "text": " 고추",
+  "start": 51.88,
+  "end": 52.26,
+  "avg_logprob": -2.4466670853751045,
+  "no_speech_prob": 0.416015625,
+  "compression_ratio": 0.9358974358974359,
+  "temperature": 1.0,
+  "seek": 2228,
+  "words": [
+   {
+    "word": " 고추",
+    "start": 51.88,
+    "end": 52.26,
+    "probability": 0.307708740234375
+   }
+  ]
+ },
+ {
+  "id": 11,
+  "text": " 하루는 좀 다녀왔어요",
+  "start": 73.61999999999999,
+  "end": 75.72,
+  "avg_logprob": -0.933815062046051,
+  "no_speech_prob": 0.06201171875,
+  "compression_ratio": 2.3628318584070795,
+  "temperature": 0.4,
+  "seek": 6048,
+  "words": [
+   {
+    "word": " 하루는",
+    "start": 73.61999999999999,
+    "end": 75.02,
+    "probability": 0.05296921730041504
+   },
+   {
+    "word": " 좀",
+    "start": 75.02,
+    "end": 75.3,
+    "probability": 0.008544921875
+   },
+   {
+    "word": " 다녀왔어요",
+    "start": 75.3,
+    "end": 75.72,
+    "probability": 0.2812070846557617
+   }
+  ]
+ },
+ {
+  "id": 12,
+  "text": " 요즘은 정말 더운 날이 왔어요",
+  "start": 75.72,
+  "end": 75.74,
+  "avg_logprob": -0.933815062046051,
+  "no_speech_prob": 0.06201171875,
+  "compression_ratio": 2.3628318584070795,
+  "temperature": 0.4,
+  "seek": 6048,
+  "words": [
+   {
+    "word": " 요즘은",
+    "start": 75.72,
+    "end": 75.72,
+    "probability": 0.06183338165283203
+   },
+   {
+    "word": " 정말",
+    "start": 75.72,
+    "end": 75.72,
+    "probability": 0.00894927978515625
+   },
+   {
+    "word": " 더운",
+    "start": 75.72,
+    "end": 75.74,
+    "probability": 0.1172943115234375
+   },
+   {
+    "word": " 날이",
+    "start": 75.74,
+    "end": 75.74,
+    "probability": 0.5186767578125
+   },
+   {
+    "word": " 왔어요",
+    "start": 75.74,
+    "end": 75.74,
+    "probability": 0.4830322265625
+   }
+  ]
+ },
+ {
+  "id": 13,
+  "text": " 너무 좋았어요",
+  "start": 75.74,
+  "end": 77.64,
+  "avg_logprob": -0.933815062046051,
+  "no_speech_prob": 0.06201171875,
+  "compression_ratio": 2.3628318584070795,
+  "temperature": 0.4,
+  "seek": 6048,
+  "words": [
+   {
+    "word": " 너무",
+    "start": 75.74,
+    "end": 76.5,
+    "probability": 0.01380157470703125
+   },
+   {
+    "word": " 좋았어요",
+    "start": 76.5,
+    "end": 77.64,
+    "probability": 0.227294921875
+   }
+  ]
+ },
+ {
+  "id": 14,
+  "text": " 오늘 아침은",
+  "start": 77.64,
+  "end": 81.02,
+  "avg_logprob": -0.933815062046051,
+  "no_speech_prob": 0.06201171875,
+  "compression_ratio": 2.3628318584070795,
+  "temperature": 0.4,
+  "seek": 6048,
+  "words": [
+   {
+    "word": " 오늘",
+    "start": 77.64,
+    "end": 80.34,
+    "probability": 0.0213623046875
+   },
+   {
+    "word": " 아침은",
+    "start": 80.34,
+    "end": 81.02,
+    "probability": 0.1291961669921875
+   }
+  ]
+ },
+ {
+  "id": 15,
+  "text": " 청포도에서",
+  "start": 81.02,
+  "end": 81.52,
+  "avg_logprob": -0.933815062046051,
+  "no_speech_prob": 0.06201171875,
+  "compression_ratio": 2.3628318584070795,
+  "temperature": 0.4,
+  "seek": 6048,
+  "words": [
+   {
+    "word": " 청포도에서",
+    "start": 81.02,
+    "end": 81.52,
+    "probability": 0.37314834594726565
+   }
+  ]
+ },
+ {
+  "id": 16,
+  "text": " 청포도에서",
+  "start": 81.52,
+  "end": 81.62,
+  "avg_logprob": -0.933815062046051,
+  "no_speech_prob": 0.06201171875,
+  "compression_ratio": 2.3628318584070795,
+  "temperature": 0.4,
+  "seek": 6048,
+  "words": [
+   {
+    "word": " 청포도에서",
+    "start": 81.52,
+    "end": 81.62,
+    "probability": 0.5723846435546875
+   }
+  ]
+ },
+ {
+  "id": 17,
+  "text": " 청포도에서",
+  "start": 81.62,
+  "end": 81.84,
+  "avg_logprob": -0.933815062046051,
+  "no_speech_prob": 0.06201171875,
+  "compression_ratio": 2.3628318584070795,
+  "temperature": 0.4,
+  "seek": 6048,
+  "words": [
+   {
+    "word": " 청포도에서",
+    "start": 81.62,
+    "end": 81.84,
+    "probability": 0.665283203125
+   }
+  ]
+ },
+ {
+  "id": 18,
+  "text": " 청포도에서",
+  "start": 81.84,
+  "end": 83.62,
+  "avg_logprob": -0.933815062046051,
+  "no_speech_prob": 0.06201171875,
+  "compression_ratio": 2.3628318584070795,
+  "temperature": 0.4,
+  "seek": 6048,
+  "words": [
+   {
+    "word": " 청포도에서",
+    "start": 81.84,
+    "end": 83.62,
+    "probability": 0.767236328125
+   }
+  ]
+ },
+ {
+  "id": 19,
+  "text": " 청포도에서",
+  "start": 83.62,
+  "end": 84.64,
+  "avg_logprob": -0.933815062046051,
+  "no_speech_prob": 0.06201171875,
+  "compression_ratio": 2.3628318584070795,
+  "temperature": 0.4,
+  "seek": 6048,
+  "words": [
+   {
+    "word": " 청포도에서",
+    "start": 83.62,
+    "end": 84.64,
+    "probability": 0.8427734375
+   }
+  ]
+ },
+ {
+  "id": 20,
+  "text": " 청포도에서",
+  "start": 84.64,
+  "end": 85.66,
+  "avg_logprob": -0.933815062046051,
+  "no_speech_prob": 0.06201171875,
+  "compression_ratio": 2.3628318584070795,
+  "temperature": 0.4,
+  "seek": 6048,
+  "words": [
+   {
+    "word": " 청포도에서",
+    "start": 84.64,
+    "end": 85.66,
+    "probability": 0.8884765625
+   }
+  ]
+ },
+ {
+  "id": 21,
+  "text": " 청포도에서",
+  "start": 85.66,
+  "end": 86.48,
+  "avg_logprob": -0.933815062046051,
+  "no_speech_prob": 0.06201171875,
+  "compression_ratio": 2.3628318584070795,
+  "temperature": 0.4,
+  "seek": 6048,
+  "words": [
+   {
+    "word": " 청포도에서",
+    "start": 85.66,
+    "end": 86.48,
+    "probability": 0.9484375
+   }
+  ]
+ },
+ {
+  "id": 22,
+  "text": " 청포도에서",
+  "start": 88.94,
+  "end": 90.34,
+  "avg_logprob": -0.933815062046051,
+  "no_speech_prob": 0.06201171875,
+  "compression_ratio": 2.3628318584070795,
+  "temperature": 0.4,
+  "seek": 6048,
+  "words": [
+   {
+    "word": " 청포도에서",
+    "start": 88.94,
+    "end": 90.34,
+    "probability": 0.9564453125
+   }
+  ]
+ },
+ {
+  "id": 23,
+  "text": " 빔에 두개의 오리지널을 붙여줍니다.",
+  "start": 102.93999999999998,
+  "end": 108.8,
+  "avg_logprob": -1.5116513832328247,
+  "no_speech_prob": 0.298828125,
+  "compression_ratio": 2.268292682926829,
+  "temperature": 1.0,
+  "seek": 9844,
+  "words": [
+   {
+    "word": " 빔에",
+    "start": 102.93999999999998,
+    "end": 104.33999999999999,
+    "probability": 0.01093896230061849
+   },
+   {
+    "word": " 두개의",
+    "start": 104.33999999999999,
+    "end": 105.74,
+    "probability": 0.07336171468098958
+   },
+   {
+    "word": " 오리지널을",
+    "start": 105.74,
+    "end": 107.48,
+    "probability": 0.4350598653157552
+   },
+   {
+    "word": " 붙여줍니다.",
+    "start": 107.48,
+    "end": 108.8,
+    "probability": 0.33154296875
+   }
+  ]
+ },
+ {
+  "id": 24,
+  "text": " 마지막은 오리지널을 붙여줍니다.",
+  "start": 109.48,
+  "end": 111.48,
+  "avg_logprob": -1.5116513832328247,
+  "no_speech_prob": 0.298828125,
+  "compression_ratio": 2.268292682926829,
+  "temperature": 1.0,
+  "seek": 9844,
+  "words": [
+   {
+    "word": " 마지막은",
+    "start": 109.48,
+    "end": 109.74,
+    "probability": 0.030694961547851562
+   },
+   {
+    "word": " 오리지널을",
+    "start": 109.74,
+    "end": 110.86,
+    "probability": 0.6414362589518229
+   },
+   {
+    "word": " 붙여줍니다.",
+    "start": 110.86,
+    "end": 111.48,
+    "probability": 0.563629150390625
+   }
+  ]
+ },
+ {
+  "id": 25,
+  "text": " 안으로는 그냥 기어감으로 담아둡니다.",
+  "start": 115.14,
+  "end": 118.06,
+  "avg_logprob": -1.5116513832328247,
+  "no_speech_prob": 0.298828125,
+  "compression_ratio": 2.268292682926829,
+  "temperature": 1.0,
+  "seek": 9844,
+  "words": [
+   {
+    "word": " 안으로는",
+    "start": 115.14,
+    "end": 116.54,
+    "probability": 0.021666526794433594
+   },
+   {
+    "word": " 그냥",
+    "start": 116.54,
+    "end": 116.54,
+    "probability": 0.00428009033203125
+   },
+   {
+    "word": " 기어감으로",
+    "start": 116.54,
+    "end": 117.48,
+    "probability": 0.06275558471679688
+   },
+   {
+    "word": " 담아둡니다.",
+    "start": 117.48,
+    "end": 118.06,
+    "probability": 0.47385733468191965
+   }
+  ]
+ },
+ {
+  "id": 26,
+  "text": " 마지막으로 오리지널을 붙여줍니다.",
+  "start": 118.28,
+  "end": 120.36,
+  "avg_logprob": -1.5116513832328247,
+  "no_speech_prob": 0.298828125,
+  "compression_ratio": 2.268292682926829,
+  "temperature": 1.0,
+  "seek": 9844,
+  "words": [
+   {
+    "word": " 마지막으로",
+    "start": 118.28,
+    "end": 118.28,
+    "probability": 0.16808128356933594
+   },
+   {
+    "word": " 오리지널을",
+    "start": 118.28,
+    "end": 119.44,
+    "probability": 0.7537434895833334
+   },
+   {
+    "word": " 붙여줍니다.",
+    "start": 119.44,
+    "end": 120.36,
+    "probability": 0.71942138671875
+   }
+  ]
+ },
+ {
+  "id": 27,
+  "text": " 오리지널을 붙여줍니다.",
+  "start": 123.3,
+  "end": 124.6,
+  "avg_logprob": -1.5116513832328247,
+  "no_speech_prob": 0.298828125,
+  "compression_ratio": 2.268292682926829,
+  "temperature": 1.0,
+  "seek": 9844,
+  "words": [
+   {
+    "word": " 오리지널을",
+    "start": 123.3,
+    "end": 124.12,
+    "probability": 0.711700439453125
+   },
+   {
+    "word": " 붙여줍니다.",
+    "start": 124.12,
+    "end": 124.6,
+    "probability": 0.6514892578125
+   }
+  ]
+ },
+ {
+  "id": 28,
+  "text": " 마지막으로 오리지널을 붙여줍니다.",
+  "start": 125.14,
+  "end": 126.46,
+  "avg_logprob": -1.5116513832328247,
+  "no_speech_prob": 0.298828125,
+  "compression_ratio": 2.268292682926829,
+  "temperature": 1.0,
+  "seek": 9844,
+  "words": [
+   {
+    "word": " 마지막으로",
+    "start": 125.14,
+    "end": 125.16,
+    "probability": 0.3828125
+   },
+   {
+    "word": " 오리지널을",
+    "start": 125.16,
+    "end": 126.32,
+    "probability": 0.95263671875
+   },
+   {
+    "word": " 붙여줍니다.",
+    "start": 126.32,
+    "end": 126.46,
+    "probability": 0.9906005859375
+   }
+  ]
+ },
+ {
+  "id": 29,
+  "text": " 감사합니다.",
+  "start": 126.46,
+  "end": 127.26,
+  "avg_logprob": -0.9987160205841065,
+  "no_speech_prob": 0.1317138671875,
+  "compression_ratio": 0.9180327868852459,
+  "temperature": 0.2,
+  "seek": 12646,
+  "words": [
+   {
+    "word": " 감사합니다.",
+    "start": 126.46,
+    "end": 127.26,
+    "probability": 0.5029296875
+   }
+  ]
+ },
+ {
+  "id": 30,
+  "text": " 몇 개짜리 사진.",
+  "start": 127.52,
+  "end": 129.32,
+  "avg_logprob": -0.9987160205841065,
+  "no_speech_prob": 0.1317138671875,
+  "compression_ratio": 0.9180327868852459,
+  "temperature": 0.2,
+  "seek": 12646,
+  "words": [
+   {
+    "word": " 몇",
+    "start": 127.52,
+    "end": 128.46,
+    "probability": 0.0230712890625
+   },
+   {
+    "word": " 개짜리",
+    "start": 128.46,
+    "end": 129.06,
+    "probability": 0.8553466796875
+   },
+   {
+    "word": " 사진.",
+    "start": 129.06,
+    "end": 129.32,
+    "probability": 0.599609375
+   }
+  ]
+ },
+ {
+  "id": 31,
+  "text": " 진짜 맛있다.",
+  "start": 150.64000000000001,
+  "end": 153.04,
+  "avg_logprob": -0.9987160205841065,
+  "no_speech_prob": 0.1317138671875,
+  "compression_ratio": 0.9180327868852459,
+  "temperature": 0.2,
+  "seek": 12646,
+  "words": [
+   {
+    "word": " 진짜",
+    "start": 150.64000000000001,
+    "end": 151.84,
+    "probability": 0.63525390625
+   },
+   {
+    "word": " 맛있다.",
+    "start": 151.84,
+    "end": 153.04,
+    "probability": 0.91064453125
+   }
+  ]
+ },
+ {
+  "id": 32,
+  "text": " 돼지튀김",
+  "start": 166.84,
+  "end": 167.76,
+  "avg_logprob": -2.466769372263262,
+  "no_speech_prob": 0.1240234375,
+  "compression_ratio": 1.013157894736842,
+  "temperature": 1.0,
+  "seek": 15646,
+  "words": [
+   {
+    "word": " 돼지튀김",
+    "start": 166.84,
+    "end": 167.76,
+    "probability": 0.5191219329833985
+   }
+  ]
+ },
+ {
+  "id": 33,
+  "text": " 돼지튀김",
+  "start": 167.76,
+  "end": 168.22,
+  "avg_logprob": -2.466769372263262,
+  "no_speech_prob": 0.1240234375,
+  "compression_ratio": 1.013157894736842,
+  "temperature": 1.0,
+  "seek": 15646,
+  "words": [
+   {
+    "word": " 돼지튀김",
+    "start": 167.76,
+    "end": 168.22,
+    "probability": 0.5913556098937989
+   }
+  ]
+ },
+ {
+  "id": 34,
+  "text": " 끓이기 전에 좀 뜨겁게 사 봤어요 ㅎㅎ",
+  "start": 168.22,
+  "end": 170.88,
+  "avg_logprob": -2.466769372263262,
+  "no_speech_prob": 0.1240234375,
+  "compression_ratio": 1.013157894736842,
+  "temperature": 1.0,
+  "seek": 15646,
+  "words": [
+   {
+    "word": " 끓이기",
+    "start": 168.22,
+    "end": 168.68,
+    "probability": 0.4363236427307129
+   },
+   {
+    "word": " 전에",
+    "start": 168.68,
+    "end": 168.68,
+    "probability": 0.12347412109375
+   },
+   {
+    "word": " 좀",
+    "start": 168.68,
+    "end": 168.7,
+    "probability": 0.002166748046875
+   },
+   {
+    "word": " 뜨겁게",
+    "start": 168.7,
+    "end": 170.84,
+    "probability": 0.3658622105916341
+   },
+   {
+    "word": " 사",
+    "start": 170.84,
+    "end": 170.84,
+    "probability": 0.0032405853271484375
+   },
+   {
+    "word": " 봤어요",
+    "start": 170.84,
+    "end": 170.84,
+    "probability": 0.3861727714538574
+   },
+   {
+    "word": " ㅎㅎ",
+    "start": 170.84,
+    "end": 170.88,
+    "probability": 0.388427734375
+   }
+  ]
+ },
+ {
+  "id": 35,
+  "text": " 안녕하세요",
+  "start": 172.7,
+  "end": 173.38,
+  "avg_logprob": -0.4414062373913251,
+  "no_speech_prob": 0.218505859375,
+  "compression_ratio": 1.1608391608391608,
+  "temperature": 0.0,
+  "seek": 17250,
+  "words": [
+   {
+    "word": " 안녕하세요",
+    "start": 172.7,
+    "end": 173.38,
+    "probability": 0.1292724609375
+   }
+  ]
+ },
+ {
+  "id": 36,
+  "text": " 스테이크 띠즈도 있나요?",
+  "start": 174.38,
+  "end": 175.96,
+  "avg_logprob": -0.4414062373913251,
+  "no_speech_prob": 0.218505859375,
+  "compression_ratio": 1.1608391608391608,
+  "temperature": 0.0,
+  "seek": 17250,
+  "words": [
+   {
+    "word": " 스테이크",
+    "start": 174.38,
+    "end": 175.06,
+    "probability": 0.789630126953125
+   },
+   {
+    "word": " 띠즈도",
+    "start": 175.06,
+    "end": 175.56,
+    "probability": 0.7069091796875
+   },
+   {
+    "word": " 있나요?",
+    "start": 175.56,
+    "end": 175.96,
+    "probability": 0.961181640625
+   }
+  ]
+ },
+ {
+  "id": 37,
+  "text": " 가격은 여기 있으니까 보시고",
+  "start": 176.02,
+  "end": 177.54,
+  "avg_logprob": -0.4414062373913251,
+  "no_speech_prob": 0.218505859375,
+  "compression_ratio": 1.1608391608391608,
+  "temperature": 0.0,
+  "seek": 17250,
+  "words": [
+   {
+    "word": " 가격은",
+    "start": 176.02,
+    "end": 176.68,
+    "probability": 0.8896484375
+   },
+   {
+    "word": " 여기",
+    "start": 176.68,
+    "end": 176.76,
+    "probability": 0.82763671875
+   },
+   {
+    "word": " 있으니까",
+    "start": 176.76,
+    "end": 177.04,
+    "probability": 0.8466796875
+   },
+   {
+    "word": " 보시고",
+    "start": 177.04,
+    "end": 177.54,
+    "probability": 0.9638671875
+   }
+  ]
+ },
+ {
+  "id": 38,
+  "text": " 샘플 두께 이정도니까",
+  "start": 177.54,
+  "end": 178.54,
+  "avg_logprob": -0.4414062373913251,
+  "no_speech_prob": 0.218505859375,
+  "compression_ratio": 1.1608391608391608,
+  "temperature": 0.0,
+  "seek": 17250,
+  "words": [
+   {
+    "word": " 샘플",
+    "start": 177.54,
+    "end": 177.88,
+    "probability": 0.9430338541666666
+   },
+   {
+    "word": " 두께",
+    "start": 177.88,
+    "end": 178.1,
+    "probability": 0.5146484375
+   },
+   {
+    "word": " 이정도니까",
+    "start": 178.1,
+    "end": 178.54,
+    "probability": 0.761932373046875
+   }
+  ]
+ },
+ {
+  "id": 39,
+  "text": " 아 네",
+  "start": 178.54,
+  "end": 178.92,
+  "avg_logprob": -0.4414062373913251,
+  "no_speech_prob": 0.218505859375,
+  "compression_ratio": 1.1608391608391608,
+  "temperature": 0.0,
+  "seek": 17250,
+  "words": [
+   {
+    "word": " 아",
+    "start": 178.54,
+    "end": 178.82,
+    "probability": 0.019561767578125
+   },
+   {
+    "word": " 네",
+    "start": 178.82,
+    "end": 178.92,
+    "probability": 0.8466796875
+   }
+  ]
+ },
+ {
+  "id": 40,
+  "text": " 앉아보시고 그러시면 됩니다",
+  "start": 179.5,
+  "end": 179.98,
+  "avg_logprob": -0.4414062373913251,
+  "no_speech_prob": 0.218505859375,
+  "compression_ratio": 1.1608391608391608,
+  "temperature": 0.0,
+  "seek": 17250,
+  "words": [
+   {
+    "word": " 앉아보시고",
+    "start": 179.24,
+    "end": 179.58,
+    "probability": 0.838720703125
+   },
+   {
+    "word": " 그러시면",
+    "start": 179.58,
+    "end": 179.84,
+    "probability": 0.7059326171875
+   },
+   {
+    "word": " 됩니다",
+    "start": 179.84,
+    "end": 179.98,
+    "probability": 0.287841796875
+   }
+  ]
+ }
+]

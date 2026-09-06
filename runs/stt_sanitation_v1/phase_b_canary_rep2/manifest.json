@@ -1,0 +1,105 @@
+{
+ "phase": "B-canary",
+ "track": "STT_EVIDENCE_SANITATION_V1",
+ "range_sec": [
+  600,
+  780
+ ],
+ "source": "work_canary\\canary_xekZO4n4QuE_600_780",
+ "workspace": "work_sttv1\\canary_600_780_rep2",
+ "code_revision": "6624cb528d1df5a3c27d01873359e2f1083bad16",
+ "inputs": {
+  "audio_sha256": "cc5d975b1740a68066110ce803b785bb09cab008dc4dcdb2ec1847fcb2b6afc3",
+  "baseline_stt_cache_sha256": "e3361204a6c27cd720a63520b12d0c0bc98a0c6a3bf7621d8ec2be775beb9fa9"
+ },
+ "whisper": {
+  "faster_whisper_version": "1.2.1",
+  "device": "cuda",
+  "compute_type": "float16",
+  "dll_directories_added": [
+   "C:\\Users\\UserK\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python312\\site-packages\\nvidia\\cublas\\bin",
+   "C:\\Users\\UserK\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python312\\site-packages\\nvidia\\cudnn\\bin"
+  ],
+  "ladder_attempts": [],
+  "decoding_resolved": {
+   "model": "large-v3",
+   "language": "ko",
+   "beam_size": 5,
+   "best_of": 5,
+   "word_timestamps": true,
+   "condition_on_previous_text": false,
+   "hallucination_silence_threshold": 1.0,
+   "vad_filter": false,
+   "temperature": null
+  },
+  "language_detected": "ko",
+  "language_probability": 1.0,
+  "duration_sec": 180.0
+ },
+ "vad": {
+  "faster_whisper_version": "1.2.1",
+  "vad_model": "silero_vad_v6.onnx",
+  "vad_model_sha256": "4cbf549b8326f60f80f2536d9eefeb450a9abe83365a098031c89719f1be17d2",
+  "vad_params_resolved": {
+   "threshold": 0.5,
+   "neg_threshold": 0.35,
+   "min_speech_duration_ms": 0,
+   "max_speech_duration_s": null,
+   "min_silence_duration_ms": 2000,
+   "speech_pad_ms": 400
+  },
+  "max_speech_duration_s": "inf",
+  "sampling_rate": 16000,
+  "audio_seconds": 180.0,
+  "speech_chunks": 1
+ },
+ "parity": {
+  "count_baseline": 26,
+  "count_produced": 25,
+  "text_equal": false,
+  "first_mismatch": {
+   "index": 0,
+   "baseline": "오븐에 2분간 구워주세요",
+   "produced": "통깨"
+  },
+  "timestamp_max_abs_diff": 28.6
+ },
+ "metadata_health": {
+  "n": 25,
+  "missing": {},
+  "nonfinite": {}
+ },
+ "gates": {
+  "B-C1": true,
+  "B-C2": true,
+  "B-C3": true,
+  "B-C4": true,
+  "B-C5": false,
+  "B-C6": true,
+  "B-C7": true,
+  "B-C8": true
+ },
+ "gate_descriptions": {
+  "B-C1": "격리 namespace에만 쓴다",
+  "B-C2": "입력·모델·파라미터 provenance를 기록했다",
+  "B-C3": "metadata가 결측·비유한 값 없이 회수됐다",
+  "B-C4": "raw→merged lineage가 버려진 것까지 완결이다",
+  "B-C5": "baseline 전사와 production 동등 경로 결과가 일치한다",
+  "B-C6": "Phase A sidecar와 join이 완결이다",
+  "B-C7": "기존 판정·claim eligibility가 그대로다",
+  "B-C8": "제출 산출물이 그대로다"
+ },
+ "phase_c_recommendation": "HOLD",
+ "watched_digests": {
+  "work_full_segments": "aa008317023c884a206c2ea8ce9f1de5db809c2638fca257f964a58df4799c92",
+  "work_full_stt_cache": "59c98df1e0ea18e93623074a538b63b91794a8fca686e68a345c85dfc1c1a90d",
+  "canary_stt_cache": "e3361204a6c27cd720a63520b12d0c0bc98a0c6a3bf7621d8ec2be775beb9fa9",
+  "submission_manifest": "073942ee212a5b22a5bc9a588e3b5f8b7b45ada3bae9d7aa5139aedaee958cee"
+ },
+ "not_done": [
+  "aggregation 규칙 선정",
+  "임계값 선정",
+  "판정 변경",
+  "확정 인덱스 수정"
+ ]
+}

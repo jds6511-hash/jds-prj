@@ -1,0 +1,100 @@
+{
+ "unit": "raw whisper segment",
+ "by_overlap_bucket": {
+  "0": {
+   "n": 38,
+   "avg_logprob": {
+    "min": -3.6242,
+    "p10": -2.4668,
+    "median": -1.5117,
+    "p90": -0.9338,
+    "max": -0.4414
+   },
+   "no_speech_prob": {
+    "min": 0.062,
+    "p10": 0.062,
+    "median": 0.2185,
+    "p90": 0.416,
+    "max": 0.416
+   },
+   "compression_ratio": {
+    "min": 0.8644,
+    "p10": 0.918,
+    "median": 1.1608,
+    "p90": 2.3628,
+    "max": 2.3628
+   },
+   "latin_present": 1,
+   "repeated_2_or_more": 14
+  },
+  "(0, .25]": {
+   "n": 1,
+   "avg_logprob": {
+    "min": -0.4414,
+    "p10": -0.4414,
+    "median": -0.4414,
+    "p90": -0.4414,
+    "max": -0.4414
+   },
+   "no_speech_prob": {
+    "min": 0.2185,
+    "p10": 0.2185,
+    "median": 0.2185,
+    "p90": 0.2185,
+    "max": 0.2185
+   },
+   "compression_ratio": {
+    "min": 1.1608,
+    "p10": 1.1608,
+    "median": 1.1608,
+    "p90": 1.1608,
+    "max": 1.1608
+   },
+   "latin_present": 0,
+   "repeated_2_or_more": 0
+  },
+  "(.25, .50]": {
+   "n": 0,
+   "avg_logprob": null,
+   "no_speech_prob": null,
+   "compression_ratio": null,
+   "latin_present": 0,
+   "repeated_2_or_more": 0
+  },
+  "(.50, .75]": {
+   "n": 0,
+   "avg_logprob": null,
+   "no_speech_prob": null,
+   "compression_ratio": null,
+   "latin_present": 0,
+   "repeated_2_or_more": 0
+  },
+  "(.75, 1.0]": {
+   "n": 2,
+   "avg_logprob": {
+    "min": -0.4414,
+    "p10": -0.4414,
+    "median": -0.4414,
+    "p90": -0.4414,
+    "max": -0.4414
+   },
+   "no_speech_prob": {
+    "min": 0.2185,
+    "p10": 0.2185,
+    "median": 0.2185,
+    "p90": 0.2185,
+    "max": 0.2185
+   },
+   "compression_ratio": {
+    "min": 1.1608,
+    "p10": 1.1608,
+    "median": 1.1608,
+    "p90": 1.1608,
+    "max": 1.1608
+   },
+   "latin_present": 0,
+   "repeated_2_or_more": 0
+  }
+ },
+ "note": "diagnostic only — 이 표로 판정하지 않는다"
+}

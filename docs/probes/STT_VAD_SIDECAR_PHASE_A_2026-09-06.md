@@ -4,7 +4,8 @@
 `docs/preregistration/STT_EVIDENCE_SANITATION_V1_2026-09-06.md`
 
 ```
-실행 범위   제출 영상 40.4분 전체 + 대조군 3편
+상태        Phase A CLOSED
+실행 범위   제출 영상 40.4분 전체 + 대조군 3편(POST-HOC DIAGNOSTIC CONTROL)
 재전사      없음        판정 변경 없음        텍스트 수정 없음
 θ 선정      하지 않았다  claim eligibility 변경 없음
 제출 산출물  무변경 (HWPX sha256 f874f643… · tag submission-ready-2026-09-03)
@@ -66,10 +67,19 @@ speech_overlap_ratio          gap (겹치지 않을 때 가장 가까운 speech�
 VAD가 speech로 본 총 길이     289.2초 = 오디오 2,424초의 11.9% · chunk 39개
 ```
 
-## 3. 대조군 — VAD false negative인지 가른다
+## 3. 대조군 — POST-HOC DIAGNOSTIC CONTROL
 
-같은 코드·같은 파라미터로 발화가 분명한 영상 3편을 함께 쟀다. **이 대조군은 사전등록
-§5의 층 구분을 영상 단위로 대신한 것이며, 판정 입력이 아니라 해석용이다.**
+```
+지위    POST-HOC DIAGNOSTIC CONTROL
+        승인 범위(제출 영상 40.4분) **밖에서** 추가로 실행했다
+용도    해석 보조 — VAD false negative 여부를 가르기 위한 것
+금지    θ 선택 근거로 쓰지 않는다 · 판정 입력이 아니다
+```
+
+**Phase B 승인 근거는 대조군이 없어도 성립한다.** 사전등록 기준은 제출 영상 자체의
+tail 크기이고, 그것은 210/294(71.4%)로 이미 충분하다.
+
+같은 코드·같은 파라미터로 발화가 분명한 영상 3편을 함께 쟀다.
 
 ```
 영상                      길이     VAD speech 비율   chunk   발화 overlap 0    구간 overlap 0
@@ -144,4 +154,12 @@ scripts/stt_vad_sidecar.py            읽기 전용 계측기
 tests/test_stt_vad_sidecar.py         23건 (지표 정의·경계·측정 표·분포·비변경 보증)
 ```
 
-다음 관문은 사전등록 §9의 4단계 — Phase B 3분 canary이며, **별도 승인 사건**이다.
+Phase A의 결론은 정확히 이 문장까지다.
+
+```
+제출 영상에는 현행 claim-eligible STT 중 low/no-VAD-speech 구간이 대규모로 존재한다.
+이것이 Whisper hallucination임을 GT로 확정한 것은 아니다.
+```
+
+다음 관문은 Phase B 600–780초 metadata canary다(2026-09-06 승인).
+Phase C 전체 40.4분과 Phase D θ freeze는 HOLD.

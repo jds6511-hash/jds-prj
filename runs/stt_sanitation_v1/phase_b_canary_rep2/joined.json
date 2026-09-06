@@ -1,0 +1,252 @@
+[
+ {
+  "raw_whisper_segment_id": 0,
+  "speech_overlap_ratio": 0.0,
+  "nearest_speech_gap_sec": 175.1,
+  "latin_present": false,
+  "normalized_repeat_count": 1,
+  "avg_logprob": -1.9484928267342703,
+  "no_speech_prob": 0.3388671875,
+  "compression_ratio": 1.5434782608695652
+ },
+ {
+  "raw_whisper_segment_id": 1,
+  "speech_overlap_ratio": 0.0,
+  "nearest_speech_gap_sec": 174.79999999999998,
+  "latin_present": false,
+  "normalized_repeat_count": 1,
+  "avg_logprob": -1.9484928267342703,
+  "no_speech_prob": 0.3388671875,
+  "compression_ratio": 1.5434782608695652
+ },
+ {
+  "raw_whisper_segment_id": 2,
+  "speech_overlap_ratio": 0.0,
+  "nearest_speech_gap_sec": 167.26,
+  "latin_present": false,
+  "normalized_repeat_count": 3,
+  "avg_logprob": -1.9484928267342703,
+  "no_speech_prob": 0.3388671875,
+  "compression_ratio": 1.5434782608695652
+ },
+ {
+  "raw_whisper_segment_id": 3,
+  "speech_overlap_ratio": 0.0,
+  "nearest_speech_gap_sec": 165.2,
+  "latin_present": false,
+  "normalized_repeat_count": 1,
+  "avg_logprob": -1.9484928267342703,
+  "no_speech_prob": 0.3388671875,
+  "compression_ratio": 1.5434782608695652
+ },
+ {
+  "raw_whisper_segment_id": 4,
+  "speech_overlap_ratio": 0.0,
+  "nearest_speech_gap_sec": 164.64,
+  "latin_present": false,
+  "normalized_repeat_count": 3,
+  "avg_logprob": -1.9484928267342703,
+  "no_speech_prob": 0.3388671875,
+  "compression_ratio": 1.5434782608695652
+ },
+ {
+  "raw_whisper_segment_id": 5,
+  "speech_overlap_ratio": 0.0,
+  "nearest_speech_gap_sec": 148.35999999999999,
+  "latin_present": false,
+  "normalized_repeat_count": 3,
+  "avg_logprob": -1.9484928267342703,
+  "no_speech_prob": 0.3388671875,
+  "compression_ratio": 1.5434782608695652
+ },
+ {
+  "raw_whisper_segment_id": 6,
+  "speech_overlap_ratio": 0.0,
+  "nearest_speech_gap_sec": 136.92,
+  "latin_present": false,
+  "normalized_repeat_count": 1,
+  "avg_logprob": -1.6936057605574617,
+  "no_speech_prob": 0.40283203125,
+  "compression_ratio": 1.976878612716763
+ },
+ {
+  "raw_whisper_segment_id": 7,
+  "speech_overlap_ratio": 0.0,
+  "nearest_speech_gap_sec": 106.44,
+  "latin_present": false,
+  "normalized_repeat_count": 1,
+  "avg_logprob": -1.5795917887436717,
+  "no_speech_prob": 0.075927734375,
+  "compression_ratio": 0.9651162790697675
+ },
+ {
+  "raw_whisper_segment_id": 8,
+  "speech_overlap_ratio": 0.0,
+  "nearest_speech_gap_sec": 103.67999999999999,
+  "latin_present": false,
+  "normalized_repeat_count": 1,
+  "avg_logprob": -1.5795917887436717,
+  "no_speech_prob": 0.075927734375,
+  "compression_ratio": 0.9651162790697675
+ },
+ {
+  "raw_whisper_segment_id": 9,
+  "speech_overlap_ratio": 0.0,
+  "nearest_speech_gap_sec": 103.38,
+  "latin_present": false,
+  "normalized_repeat_count": 1,
+  "avg_logprob": -1.5795917887436717,
+  "no_speech_prob": 0.075927734375,
+  "compression_ratio": 0.9651162790697675
+ },
+ {
+  "raw_whisper_segment_id": 10,
+  "speech_overlap_ratio": 0.0,
+  "nearest_speech_gap_sec": 102.69999999999999,
+  "latin_present": false,
+  "normalized_repeat_count": 1,
+  "avg_logprob": -1.5795917887436717,
+  "no_speech_prob": 0.075927734375,
+  "compression_ratio": 0.9651162790697675
+ },
+ {
+  "raw_whisper_segment_id": 11,
+  "speech_overlap_ratio": 0.0,
+  "nearest_speech_gap_sec": 100.8,
+  "latin_present": false,
+  "normalized_repeat_count": 1,
+  "avg_logprob": -1.5795917887436717,
+  "no_speech_prob": 0.075927734375,
+  "compression_ratio": 0.9651162790697675
+ },
+ {
+  "raw_whisper_segment_id": 12,
+  "speech_overlap_ratio": 0.0,
+  "nearest_speech_gap_sec": 62.47999999999999,
+  "latin_present": false,
+  "normalized_repeat_count": 1,
+  "avg_logprob": -0.7201086891734082,
+  "no_speech_prob": 0.252197265625,
+  "compression_ratio": 1.008130081300813
+ },
+ {
+  "raw_whisper_segment_id": 13,
+  "speech_overlap_ratio": 0.0,
+  "nearest_speech_gap_sec": 61.739999999999995,
+  "latin_present": false,
+  "normalized_repeat_count": 1,
+  "avg_logprob": -0.7201086891734082,
+  "no_speech_prob": 0.252197265625,
+  "compression_ratio": 1.008130081300813
+ },
+ {
+  "raw_whisper_segment_id": 14,
+  "speech_overlap_ratio": 0.0,
+  "nearest_speech_gap_sec": 60.11999999999999,
+  "latin_present": false,
+  "normalized_repeat_count": 1,
+  "avg_logprob": -0.7201086891734082,
+  "no_speech_prob": 0.252197265625,
+  "compression_ratio": 1.008130081300813
+ },
+ {
+  "raw_whisper_segment_id": 15,
+  "speech_overlap_ratio": 0.0,
+  "nearest_speech_gap_sec": 54.75999999999999,
+  "latin_present": false,
+  "normalized_repeat_count": 1,
+  "avg_logprob": -0.7201086891734082,
+  "no_speech_prob": 0.252197265625,
+  "compression_ratio": 1.008130081300813
+ },
+ {
+  "raw_whisper_segment_id": 16,
+  "speech_overlap_ratio": 0.0,
+  "nearest_speech_gap_sec": 49.0,
+  "latin_present": false,
+  "normalized_repeat_count": 1,
+  "avg_logprob": -0.7201086891734082,
+  "no_speech_prob": 0.252197265625,
+  "compression_ratio": 1.008130081300813
+ },
+ {
+  "raw_whisper_segment_id": 17,
+  "speech_overlap_ratio": 0.0,
+  "nearest_speech_gap_sec": 25.25999999999999,
+  "latin_present": false,
+  "normalized_repeat_count": 1,
+  "avg_logprob": -1.209778603046171,
+  "no_speech_prob": 0.09686279296875,
+  "compression_ratio": 1.1962025316455696
+ },
+ {
+  "raw_whisper_segment_id": 18,
+  "speech_overlap_ratio": 0.0,
+  "nearest_speech_gap_sec": 10.97999999999999,
+  "latin_present": false,
+  "normalized_repeat_count": 1,
+  "avg_logprob": -1.209778603046171,
+  "no_speech_prob": 0.09686279296875,
+  "compression_ratio": 1.1962025316455696
+ },
+ {
+  "raw_whisper_segment_id": 19,
+  "speech_overlap_ratio": 0.0,
+  "nearest_speech_gap_sec": 4.939999999999998,
+  "latin_present": false,
+  "normalized_repeat_count": 1,
+  "avg_logprob": -0.4275841283110472,
+  "no_speech_prob": 0.24072265625,
+  "compression_ratio": 1.1608391608391608
+ },
+ {
+  "raw_whisper_segment_id": 20,
+  "speech_overlap_ratio": 0.0,
+  "nearest_speech_gap_sec": 2.359999999999985,
+  "latin_present": false,
+  "normalized_repeat_count": 1,
+  "avg_logprob": -0.4275841283110472,
+  "no_speech_prob": 0.24072265625,
+  "compression_ratio": 1.1608391608391608
+ },
+ {
+  "raw_whisper_segment_id": 21,
+  "speech_overlap_ratio": 0.0,
+  "nearest_speech_gap_sec": 0.799999999999983,
+  "latin_present": false,
+  "normalized_repeat_count": 1,
+  "avg_logprob": -0.4275841283110472,
+  "no_speech_prob": 0.24072265625,
+  "compression_ratio": 1.1608391608391608
+ },
+ {
+  "raw_whisper_segment_id": 22,
+  "speech_overlap_ratio": 0.2157,
+  "nearest_speech_gap_sec": 0.0,
+  "latin_present": false,
+  "normalized_repeat_count": 1,
+  "avg_logprob": -0.4275841283110472,
+  "no_speech_prob": 0.24072265625,
+  "compression_ratio": 1.1608391608391608
+ },
+ {
+  "raw_whisper_segment_id": 23,
+  "speech_overlap_ratio": 1.0,
+  "nearest_speech_gap_sec": 0.0,
+  "latin_present": false,
+  "normalized_repeat_count": 1,
+  "avg_logprob": -0.4275841283110472,
+  "no_speech_prob": 0.24072265625,
+  "compression_ratio": 1.1608391608391608
+ },
+ {
+  "raw_whisper_segment_id": 24,
+  "speech_overlap_ratio": 1.0,
+  "nearest_speech_gap_sec": 0.0,
+  "latin_present": false,
+  "normalized_repeat_count": 1,
+  "avg_logprob": -0.4275841283110472,
+  "no_speech_prob": 0.24072265625,
+  "compression_ratio": 1.1608391608391608
+ }
+]
