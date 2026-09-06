@@ -1,0 +1,40 @@
+{
+ "phase": "A",
+ "track": "STT_EVIDENCE_SANITATION_V1",
+ "work": "work\\itsub_viral_gadgets",
+ "code_revision": "621a252d3cbc7f1f0834e2191cb30c394fdfcf7d",
+ "inputs": {
+  "audio_sha256": "6e5aa754ae699566659c6e6e51e85788d63bab0d6e2755c29df0c6ba7e03d77a",
+  "segments_sha256": "c609e75261fd7267a140eb6dca7945a3ecf1b4f041ed11d47c0b6ad1db9d7180",
+  "stt_cache_sha256": "f0affa95362367c2c6ee5ad06e4bf7737bec60c2323b652cf25af241a0877019"
+ },
+ "vad": {
+  "faster_whisper_version": "1.2.1",
+  "vad_model": "silero_vad_v6.onnx",
+  "vad_model_sha256": "4cbf549b8326f60f80f2536d9eefeb450a9abe83365a098031c89719f1be17d2",
+  "vad_params_resolved": {
+   "threshold": 0.5,
+   "neg_threshold": 0.35,
+   "min_speech_duration_ms": 0,
+   "max_speech_duration_s": null,
+   "min_silence_duration_ms": 2000,
+   "speech_pad_ms": 400
+  },
+  "max_speech_duration_s": "inf",
+  "sampling_rate": 16000,
+  "audio_seconds": 954.53,
+  "speech_chunks": 10
+ },
+ "counts": {
+  "utterances": 428,
+  "segments": 191,
+  "usable_segments": 191
+ },
+ "not_done": [
+  "재전사",
+  "판정 변경",
+  "claim eligibility 변경",
+  "텍스트 수정",
+  "임계값 선정"
+ ]
+}

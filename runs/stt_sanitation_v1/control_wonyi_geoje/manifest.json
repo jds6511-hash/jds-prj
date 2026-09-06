@@ -1,0 +1,40 @@
+{
+ "phase": "A",
+ "track": "STT_EVIDENCE_SANITATION_V1",
+ "work": "work\\wonyi_geoje",
+ "code_revision": "621a252d3cbc7f1f0834e2191cb30c394fdfcf7d",
+ "inputs": {
+  "audio_sha256": "1f737333ccfecb38a6f220d782a96eb9d593ce6f0c2f8d51b0dda08aeb24af9b",
+  "segments_sha256": "90e7545bbd7a735d8231e25f9064b3d9b03b341e54ee94d9d2251305bf305df7",
+  "stt_cache_sha256": "23ca902c0dd037b28f0570eba58aca7b15bda4c83d9e85db32832dbc3460933d"
+ },
+ "vad": {
+  "faster_whisper_version": "1.2.1",
+  "vad_model": "silero_vad_v6.onnx",
+  "vad_model_sha256": "4cbf549b8326f60f80f2536d9eefeb450a9abe83365a098031c89719f1be17d2",
+  "vad_params_resolved": {
+   "threshold": 0.5,
+   "neg_threshold": 0.35,
+   "min_speech_duration_ms": 0,
+   "max_speech_duration_s": null,
+   "min_silence_duration_ms": 2000,
+   "speech_pad_ms": 400
+  },
+  "max_speech_duration_s": "inf",
+  "sampling_rate": 16000,
+  "audio_seconds": 1631.9,
+  "speech_chunks": 71
+ },
+ "counts": {
+  "utterances": 725,
+  "segments": 327,
+  "usable_segments": 315
+ },
+ "not_done": [
+  "재전사",
+  "판정 변경",
+  "claim eligibility 변경",
+  "텍스트 수정",
+  "임계값 선정"
+ ]
+}
