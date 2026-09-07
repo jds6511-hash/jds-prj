@@ -5,7 +5,8 @@
 
 | 상황 | 읽을 것 |
 |---|---|
-| 세션 재시작 | [작업현황_2026-08-25.md](작업현황_2026-08-25.md) — 가장 최신 스냅샷 |
+| 세션 재시작 | [작업현황_2026-09-03.md](작업현황_2026-09-03.md) — 가장 최신 스냅샷 |
+| 제출 상태 | [finalization/V2_1_FINAL_STATUS_2026-09-07.md](finalization/V2_1_FINAL_STATUS_2026-09-07.md) — R1-VAD0 arm CLOSED · rollback point |
 | 지금 무엇이 남았는지 | [finalization/M8_M9_DECISIONS_2026-08-26.md](finalization/M8_M9_DECISIONS_2026-08-26.md) — 확정된 방법론 결정과 미결 |
 | 설계·실측 근거를 찾을 때 | [DESIGN_SPEC.md](DESIGN_SPEC.md) — 수치의 최종 출처 |
 
@@ -83,6 +84,7 @@ JSON 산출물(`P2_*.json` · `P3_*.json`)은 같은 이름의 md와 짝이거�
 
 | 묶음 | 파일 |
 |---|---|
+| **제출 arm 확정** | [V2_1_FINAL_STATUS_2026-09-07](finalization/V2_1_FINAL_STATUS_2026-09-07.md)(닫힌 상태 · 두 artifact 해시) · [V2_1_SUBMISSION_VAD0_PROMOTION_2026-09-07](finalization/V2_1_SUBMISSION_VAD0_PROMOTION_2026-09-07.md)(Tier 2 S1 승격 근거) · [V2_1_SUBMISSION_STATUS_2026-09-03](finalization/V2_1_SUBMISSION_STATUS_2026-09-03.md)(rollback baseline 기록) |
 | **M8 · M9 완료 경로** | [M8_M9_PROTOCOL](finalization/M8_M9_PROTOCOL_2026-08-26.md) · [M8_M9_DECISIONS](finalization/M8_M9_DECISIONS_2026-08-26.md)(D1~D6 승인 기록) · [M8_생성배치_계획](finalization/M8_생성배치_계획_2026-08-26.md) · [AAR_SERVER_RUNBOOK](finalization/AAR_SERVER_RUNBOOK_2026-08-26.md) |
 | **C2 판정 패널** | [M8_C2_SOURCING_RULE](finalization/M8_C2_SOURCING_RULE_2026-08-27.md)(후보 조회 전 동결) · [M8_C2_PANEL_FREEZE](finalization/M8_C2_PANEL_FREEZE_2026-08-27.md) · `m8_c2_panel_manifest_*.json`(기계가 읽는 정본) |
 | **관문 집행 규격** | [M8_GATE_SPEC_FREEZE](finalization/M8_GATE_SPEC_FREEZE_2026-08-27.md) — C1 3-state·pre-merge 판정, C3 집계 MAX. **M8 산출물 0건 시점에 동결** |
