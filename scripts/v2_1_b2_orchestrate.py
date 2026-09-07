@@ -66,7 +66,7 @@ from v2_1_presentation import build_presentation                # noqa: E402
 from v2_1_presentation_input import (                           # noqa: E402
     presentation_input, summary_eligible_for_presentation)
 from v2_1_prompt import (CONTRACT, PromptError, build_episode_prompt,  # noqa: E402
-                         contract_hash, resolve_contract)
+                         contract_hash, resolve_contract, split_evidence)
 from v2_1_raw_store import RawStore                             # noqa: E402
 from v2_1_render import render_markdown                         # noqa: E402
 from v2_1_sanitation import classify_channel                    # noqa: E402
@@ -100,6 +100,8 @@ class Fingerprint:
     prompt_version: str
     prompt_hash: str
     model_id: str
+    #: 근거 자격 정책. arm이 서로의 stage를 재사용하지 못하게 지문에 넣는다.
+    evidence_policy: str = "control"
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -117,17 +119,34 @@ def code_revision() -> str:
 
 
 def fingerprint(config_path: Path, model_id: str,
-                contract: dict = CONTRACT) -> Fingerprint:
+                contract: dict = CONTRACT,
+                evidence_policy: str = "control") -> Fingerprint:
     return Fingerprint(
         config_hash=sha256_file(config_path),
         code_revision=code_revision(),
         prompt_version=contract["version"],
         prompt_hash=contract_hash(contract),
         model_id=model_id,
+        evidence_policy=evidence_policy,
     )
 
 
 # ── stage 실행기 ─────────────────────────────────────────────────────────
+def _shadow():
+    """Tier 1 shadow 모듈을 그대로 쓴다 — 규칙을 두 곳에 쓰지 않는다."""
+    import importlib.util
+
+    name = "stt_vad0_shadow"
+    if name in sys.modules:
+        return sys.modules[name]
+    spec = importlib.util.spec_from_file_location(
+        name, ROOT / "scripts/stt_vad0_shadow.py")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
 def _stage_dir(run: Path, stage: str) -> Path:
     return run / stage
 
@@ -243,6 +262,11 @@ def _load_world(run: Path, video_id: str, run_id: str):
     for source_type, channel in ingest["channels"].items():
         judged[source_type] = classify_channel(
             {int(k): v for k, v in channel.items()}, source_type)
+    # 근거 자격 정책은 **S0 산출물에 적혀 있다.** 실행 인자로 몰래 바뀌지 않는다.
+    policy = ingest.get("evidence_policy") or {"shadow_vad0": False}
+    if policy.get("shadow_vad0"):
+        overlaps = {int(k): v for k, v in policy["overlaps"].items()}
+        judged["asr"] = _shadow().shadow_judgements(judged["asr"], overlaps)
     timeline = build_timeline(segments, judged)
     return ingest, segments, store, timeline
 
@@ -256,7 +280,8 @@ def _load_episodes(run: Path, segments, timeline):
 
 # ── stage 본체 ───────────────────────────────────────────────────────────
 def s0_ingest(directory: Path, run: Path, segments_path: Path, video_id: str,
-              run_id: str, producer_version: str):
+              run_id: str, producer_version: str,
+              evidence_policy: dict | None = None):
     document = json.loads(segments_path.read_text(encoding="utf-8"))
     legacy = document["segments"]
     segments = legacy_segments_to_canonical(legacy)          # 계약 검증도 여기서 난다
@@ -289,6 +314,7 @@ def s0_ingest(directory: Path, run: Path, segments_path: Path, video_id: str,
         "legacy_segments": legacy,
         "channels": channels,
         "raw_index": index,
+        "evidence_policy": evidence_policy or {"shadow_vad0": False},
     }
     (directory / "ingest.json").write_text(
         json.dumps(payload, ensure_ascii=False), encoding="utf-8")
@@ -315,6 +341,20 @@ def s1_episodes(directory: Path, run: Path, video_id: str, run_id: str,
     return ["S1/episodes.json"]
 
 
+def _evidence_hash(episode, timeline, store) -> tuple[str, int]:
+    """이 episode에 실제로 들어간 claim 근거의 지문.
+
+    구간 번호·채널·원문을 그대로 넣는다. 근거 집합이 같으면 같은 값이 나오고,
+    하나라도 빠지면 달라진다 — arm 비교에서 "무엇이 달라졌는가"를 못 박는 값이다.
+    """
+    claim, _ = split_evidence(episode, timeline)
+    payload = "\n".join(
+        "%d|%s|%s" % (ref.segment_id, ref.source_type,
+                      store.load(ref.source_type, ref.segment_id).read_text())
+        for ref in claim)
+    return sha256_bytes(payload.encode("utf-8")), len(claim)
+
+
 def s2_raw(directory: Path, run: Path, video_id: str, run_id: str, generate,
            generation: GenerationConfig, contract: dict = CONTRACT):
     _, segments, store, timeline = _load_world(run, video_id, run_id)
@@ -336,6 +376,8 @@ def s2_raw(directory: Path, run: Path, video_id: str, run_id: str, generate,
                             "detail": str(error),
                             "wall_seconds": round(time.time() - episode_started, 2)})
             continue
+        evidence_digest, evidence_count = _evidence_hash(episode, timeline, store)
+        prompt_digest = sha256_bytes(bundle.text.encode("utf-8"))
         try:
             counters["llm_calls"] += 1
             raw = generate(bundle.text)
@@ -358,6 +400,10 @@ def s2_raw(directory: Path, run: Path, video_id: str, run_id: str, generate,
             "raw": str(store.load("llm", index).raw_path.relative_to(run)),
             "status": outcome.parsed.status,
             "prompt_cites": list(bundle.claim_cites),
+            # 두 arm 비교용. 계약·모델이 아니라 **근거 집합만** 달라졌음을 증명한다.
+            "eligible_evidence_hash": evidence_digest,
+            "rendered_prompt_hash": prompt_digest,
+            "eligible_evidence_count": evidence_count,
             "raw_chars": len(raw),
             "wall_seconds": round(time.time() - episode_started, 2),
         })
@@ -688,15 +734,19 @@ def orchestrate(run: Path, segments_path: Path, config_path: Path, *,
                 video_id: str, run_id: str, generate, generation: GenerationConfig,
                 producer_version: str, window_sec: float | None = None,
                 model_provenance: dict | None = None,
-                poll_gpu: bool = False, contract_name: str = "v2") -> dict:
+                poll_gpu: bool = False, contract_name: str = "v2",
+                evidence_policy: dict | None = None) -> dict:
     run.mkdir(parents=True, exist_ok=True)
+    evidence_policy = evidence_policy or {"shadow_vad0": False}
     # 명시하지 않으면 v2다. v3는 호출 지점에서만 선택된다.
     contract = resolve_contract(contract_name)
-    print_ = fingerprint(config_path, generation.model_id, contract)
+    print_ = fingerprint(
+        config_path, generation.model_id, contract,
+        "shadow_vad0" if evidence_policy.get("shadow_vad0") else "control")
 
     bodies = {
         "S0": lambda d: s0_ingest(d, run, segments_path, video_id, run_id,
-                                  producer_version),
+                                  producer_version, evidence_policy),
         "S1": lambda d: s1_episodes(d, run, video_id, run_id, window_sec),
         "S2": lambda d: s2_raw(d, run, video_id, run_id, generate, generation,
                                contract),
@@ -727,6 +777,8 @@ def orchestrate(run: Path, segments_path: Path, config_path: Path, *,
         "environment": environment(),
         "model_provenance": model_provenance or {"note": "unavailable"},
         "generation": generation.as_dict(),
+        "evidence_policy": {k: v for k, v in evidence_policy.items()
+                            if k != "overlaps"},
         "stages": manifests,
         "gpu": poll.summary() if poll else {"samples": 0, "note": "폴링 없음"},
         "distributions": distributions(run),
@@ -811,6 +863,10 @@ def main(argv=None) -> int:
                         help="5초 간격 VRAM·이용률 기록")
     parser.add_argument("--contract", choices=("v2", "v3"), default="v2",
                         help="프롬프트 계약. v3 = summary-only (post-v2.1)")
+    parser.add_argument("--shadow-vad0", action="store_true",
+                        help="VAD0 abstention을 켠다. --vad-measurements 필요")
+    parser.add_argument("--vad-measurements", default=None,
+                        help="Phase A measurements.json (구간별 overlap)")
     parser.add_argument("--clean", action="store_true",
                         help="run 디렉터리를 비우고 처음부터 — 첫 실행은 이것으로 한다")
     args = parser.parse_args(argv)
@@ -818,6 +874,20 @@ def main(argv=None) -> int:
     run = Path(args.run_dir)
     if args.clean and run.exists():
         shutil.rmtree(run)
+
+    policy = {"shadow_vad0": False}
+    if args.shadow_vad0:
+        if not args.vad_measurements:
+            parser.error("--shadow-vad0에는 --vad-measurements가 필요하다")
+        measurements_path = Path(args.vad_measurements)
+        measurements = json.loads(measurements_path.read_text(encoding="utf-8"))
+        policy = {
+            "shadow_vad0": True,
+            "rule": "existing VALID AND speech_overlap_ratio == 0 -> SUSPECT",
+            "measurements_sha256": sha256_file(measurements_path),
+            "overlaps": {str(row["segment_id"]): row["speech_overlap_ratio"]
+                         for row in measurements["segments"]},
+        }
 
     generation = GenerationConfig(model_id=args.model_id, do_sample=False,
                                   max_new_tokens=args.max_new_tokens)
@@ -827,7 +897,8 @@ def main(argv=None) -> int:
         video_id=args.video_id, run_id=args.run_id, generate=generate,
         generation=generation, producer_version=args.producer_version,
         window_sec=args.window_sec, model_provenance=provenance,
-        poll_gpu=args.poll_gpu, contract_name=args.contract)
+        poll_gpu=args.poll_gpu, contract_name=args.contract,
+        evidence_policy=policy)
     print(json.dumps({
         "stages": {stage: {"reused": m["reused"],
                            "wall_seconds": m.get("wall_seconds")}

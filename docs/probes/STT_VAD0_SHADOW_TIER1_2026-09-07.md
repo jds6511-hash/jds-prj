@@ -138,6 +138,6 @@ production 채택               HOLD
 ## 9. 산출물
 
 ```
-runs/stt_sanitation_v1/tier1_vad0/{summary,segments,episodes}.json
+runs/stt_sanitation_v1/tier1_vad0/{summary,segment_rows,episodes}.json
 scripts/stt_vad0_shadow.py · tests/test_stt_vad0_shadow.py (20건)
 ```

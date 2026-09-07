@@ -3,7 +3,7 @@
  "tier": 1,
  "shadow_vad0": true,
  "rule": "existing VALID AND speech_overlap_ratio == 0 -> SUSPECT",
- "code_revision": "1ed6d1aba749d5892a221e5ea104d45a46d16dc5",
+ "code_revision": "085ae4cd1bd60a78dfcabf97b06873ef6fb48105",
  "inputs": {
   "segments_sha256": "aa008317023c884a206c2ea8ce9f1de5db809c2638fca257f964a58df4799c92",
   "measurements_sha256": "59675339ab1fa64c1af6f38487db9573ecbaf56f6d821d646dc2763315b0be42",

@@ -275,7 +275,7 @@ def main(argv=None) -> int:
     }
     (out / "summary.json").write_text(
         json.dumps(summary, ensure_ascii=False, indent=1), encoding="utf-8")
-    (out / "segments.json").write_text(
+    (out / "segment_rows.json").write_text(
         json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
     if episodes is not None:
         (out / "episodes.json").write_text(
