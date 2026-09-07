@@ -1,0 +1,1043 @@
+{
+ "gates": {
+  "partition_equal": true,
+  "same_input": true,
+  "same_contract": true,
+  "same_model": true,
+  "policy_differs": true,
+  "no_evidence_growth": true,
+  "llm_calls_s0": 41,
+  "llm_calls_s1": 41,
+  "new_prompt_refusals": 0,
+  "llm_failures_s1": 0,
+  "presentation_eligible_s0": 39,
+  "presentation_eligible_s1": 40,
+  "presentation_non_regression": true,
+  "parse_failure_s0": 2,
+  "parse_failure_s1": 1,
+  "parse_non_regression": true
+ },
+ "summary_changed": 35,
+ "summary_same": 6,
+ "evidence_changed": 35,
+ "prompt_changed": 35,
+ "source_transition": {
+  "stt->visual": 21,
+  "stt->stt": 20
+ },
+ "grounding_s0": {
+  "NOT_APPLICABLE": 41
+ },
+ "grounding_s1": {
+  "NOT_APPLICABLE": 41
+ },
+ "presentation_s0": {
+  "episodes": 41,
+  "eligible": 39,
+  "excluded_by_dialogue_grounding": 0,
+  "excluded_episode_ids": [],
+  "dialogue_note_present": 0
+ },
+ "presentation_s1": {
+  "episodes": 41,
+  "eligible": 40,
+  "excluded_by_dialogue_grounding": 0,
+  "excluded_episode_ids": [],
+  "dialogue_note_present": 0
+ },
+ "carryover": {
+  "definition": "removed-ASR-only lexical carryover (evidence-dependence proxy · 환각 판정 아님)",
+  "totals": {
+   "s0": 17,
+   "s1": 5,
+   "episodes_with_removed_asr": 33
+  },
+  "episodes": [
+   {
+    "episode_id": "EP01",
+    "removed_only_tokens": 22,
+    "in_s0_summary": [
+     "사용하여",
+     "아이스크림",
+     "아이스크림을",
+     "준비"
+    ],
+    "in_s1_summary": [
+     "사용하여",
+     "준비"
+    ]
+   },
+   {
+    "episode_id": "EP02",
+    "removed_only_tokens": 7,
+    "in_s0_summary": [
+     "계란후라이",
+     "양파"
+    ],
+    "in_s1_summary": [
+     "양파"
+    ]
+   },
+   {
+    "episode_id": "EP03",
+    "removed_only_tokens": 13,
+    "in_s0_summary": [
+     "계란후라이"
+    ],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP04",
+    "removed_only_tokens": 26,
+    "in_s0_summary": [
+     "소금"
+    ],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP05",
+    "removed_only_tokens": 9,
+    "in_s0_summary": [],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP06",
+    "removed_only_tokens": 9,
+    "in_s0_summary": [
+     "고추튀김"
+    ],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP07",
+    "removed_only_tokens": 17,
+    "in_s0_summary": [
+     "양념을"
+    ],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP08",
+    "removed_only_tokens": 16,
+    "in_s0_summary": [],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP09",
+    "removed_only_tokens": 4,
+    "in_s0_summary": [
+     "소금과",
+     "후추를"
+    ],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP11",
+    "removed_only_tokens": 10,
+    "in_s0_summary": [],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP12",
+    "removed_only_tokens": 19,
+    "in_s0_summary": [
+     "날씨"
+    ],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP13",
+    "removed_only_tokens": 3,
+    "in_s0_summary": [],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP14",
+    "removed_only_tokens": 17,
+    "in_s0_summary": [],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP15",
+    "removed_only_tokens": 7,
+    "in_s0_summary": [],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP16",
+    "removed_only_tokens": 9,
+    "in_s0_summary": [],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP18",
+    "removed_only_tokens": 12,
+    "in_s0_summary": [],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP19",
+    "removed_only_tokens": 20,
+    "in_s0_summary": [],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP20",
+    "removed_only_tokens": 11,
+    "in_s0_summary": [],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP21",
+    "removed_only_tokens": 16,
+    "in_s0_summary": [
+     "차돌박이"
+    ],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP22",
+    "removed_only_tokens": 16,
+    "in_s0_summary": [
+     "사람"
+    ],
+    "in_s1_summary": [
+     "모습을",
+     "보여준다."
+    ]
+   },
+   {
+    "episode_id": "EP23",
+    "removed_only_tokens": 9,
+    "in_s0_summary": [],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP24",
+    "removed_only_tokens": 13,
+    "in_s0_summary": [],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP29",
+    "removed_only_tokens": 17,
+    "in_s0_summary": [],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP30",
+    "removed_only_tokens": 15,
+    "in_s0_summary": [],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP31",
+    "removed_only_tokens": 11,
+    "in_s0_summary": [],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP32",
+    "removed_only_tokens": 12,
+    "in_s0_summary": [],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP35",
+    "removed_only_tokens": 1,
+    "in_s0_summary": [],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP36",
+    "removed_only_tokens": 5,
+    "in_s0_summary": [],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP37",
+    "removed_only_tokens": 10,
+    "in_s0_summary": [
+     "그릇에",
+     "한입"
+    ],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP38",
+    "removed_only_tokens": 10,
+    "in_s0_summary": [],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP39",
+    "removed_only_tokens": 4,
+    "in_s0_summary": [],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP40",
+    "removed_only_tokens": 4,
+    "in_s0_summary": [],
+    "in_s1_summary": []
+   },
+   {
+    "episode_id": "EP41",
+    "removed_only_tokens": 3,
+    "in_s0_summary": [],
+    "in_s1_summary": []
+   }
+  ]
+ },
+ "episodes": [
+  {
+   "episode_id": "EP01",
+   "summary_same": false,
+   "summary_len_s0": 76,
+   "summary_len_s1": 71,
+   "summary_len_delta": -5,
+   "source_s0": "stt",
+   "source_s1": "visual",
+   "eligible_s0": 18,
+   "eligible_s1": 12,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP02",
+   "summary_same": false,
+   "summary_len_s0": 69,
+   "summary_len_s1": 84,
+   "summary_len_delta": 15,
+   "source_s0": "stt",
+   "source_s1": "visual",
+   "eligible_s0": 18,
+   "eligible_s1": 12,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP03",
+   "summary_same": false,
+   "summary_len_s0": 62,
+   "summary_len_s1": 57,
+   "summary_len_delta": -5,
+   "source_s0": "stt",
+   "source_s1": "visual",
+   "eligible_s0": 23,
+   "eligible_s1": 12,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP04",
+   "summary_same": false,
+   "summary_len_s0": 56,
+   "summary_len_s1": 63,
+   "summary_len_delta": 7,
+   "source_s0": "stt",
+   "source_s1": "visual",
+   "eligible_s0": 23,
+   "eligible_s1": 12,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP05",
+   "summary_same": false,
+   "summary_len_s0": 48,
+   "summary_len_s1": 62,
+   "summary_len_delta": 14,
+   "source_s0": "stt",
+   "source_s1": "visual",
+   "eligible_s0": 15,
+   "eligible_s1": 12,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP06",
+   "summary_same": false,
+   "summary_len_s0": 73,
+   "summary_len_s1": 36,
+   "summary_len_delta": -37,
+   "source_s0": "stt",
+   "source_s1": "visual",
+   "eligible_s0": 22,
+   "eligible_s1": 12,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP07",
+   "summary_same": false,
+   "summary_len_s0": 73,
+   "summary_len_s1": 44,
+   "summary_len_delta": -29,
+   "source_s0": "stt",
+   "source_s1": "visual",
+   "eligible_s0": 21,
+   "eligible_s1": 12,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP08",
+   "summary_same": false,
+   "summary_len_s0": 44,
+   "summary_len_s1": 44,
+   "summary_len_delta": 0,
+   "source_s0": "stt",
+   "source_s1": "visual",
+   "eligible_s0": 19,
+   "eligible_s1": 12,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP09",
+   "summary_same": false,
+   "summary_len_s0": 91,
+   "summary_len_s1": 67,
+   "summary_len_delta": -24,
+   "source_s0": "stt",
+   "source_s1": "stt",
+   "eligible_s0": 16,
+   "eligible_s1": 14,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP10",
+   "summary_same": true,
+   "summary_len_s0": 60,
+   "summary_len_s1": 60,
+   "summary_len_delta": 0,
+   "source_s0": "stt",
+   "source_s1": "stt",
+   "eligible_s0": 20,
+   "eligible_s1": 20,
+   "evidence_hash_same": true,
+   "prompt_hash_same": true,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP11",
+   "summary_same": false,
+   "summary_len_s0": 59,
+   "summary_len_s1": 69,
+   "summary_len_delta": 10,
+   "source_s0": "stt",
+   "source_s1": "visual",
+   "eligible_s0": 20,
+   "eligible_s1": 12,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP12",
+   "summary_same": false,
+   "summary_len_s0": 112,
+   "summary_len_s1": 45,
+   "summary_len_delta": -67,
+   "source_s0": "stt",
+   "source_s1": "visual",
+   "eligible_s0": 19,
+   "eligible_s1": 12,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP13",
+   "summary_same": false,
+   "summary_len_s0": 80,
+   "summary_len_s1": 91,
+   "summary_len_delta": 11,
+   "source_s0": "stt",
+   "source_s1": "stt",
+   "eligible_s0": 19,
+   "eligible_s1": 17,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP14",
+   "summary_same": false,
+   "summary_len_s0": 119,
+   "summary_len_s1": 53,
+   "summary_len_delta": -66,
+   "source_s0": "stt",
+   "source_s1": "stt",
+   "eligible_s0": 23,
+   "eligible_s1": 13,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP15",
+   "summary_same": false,
+   "summary_len_s0": 89,
+   "summary_len_s1": 83,
+   "summary_len_delta": -6,
+   "source_s0": "stt",
+   "source_s1": "stt",
+   "eligible_s0": 18,
+   "eligible_s1": 14,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP16",
+   "summary_same": false,
+   "summary_len_s0": 57,
+   "summary_len_s1": 47,
+   "summary_len_delta": -10,
+   "source_s0": "stt",
+   "source_s1": "visual",
+   "eligible_s0": 17,
+   "eligible_s1": 11,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP17",
+   "summary_same": false,
+   "summary_len_s0": 24,
+   "summary_len_s1": 0,
+   "summary_len_delta": -24,
+   "source_s0": "stt",
+   "source_s1": "stt",
+   "eligible_s0": 14,
+   "eligible_s1": 13,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "PARSE_CONTRACT_FAILURE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP18",
+   "summary_same": false,
+   "summary_len_s0": 67,
+   "summary_len_s1": 65,
+   "summary_len_delta": -2,
+   "source_s0": "stt",
+   "source_s1": "visual",
+   "eligible_s0": 15,
+   "eligible_s1": 12,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP19",
+   "summary_same": false,
+   "summary_len_s0": 49,
+   "summary_len_s1": 50,
+   "summary_len_delta": 1,
+   "source_s0": "stt",
+   "source_s1": "visual",
+   "eligible_s0": 19,
+   "eligible_s1": 12,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP20",
+   "summary_same": false,
+   "summary_len_s0": 72,
+   "summary_len_s1": 137,
+   "summary_len_delta": 65,
+   "source_s0": "stt",
+   "source_s1": "stt",
+   "eligible_s0": 19,
+   "eligible_s1": 14,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP21",
+   "summary_same": false,
+   "summary_len_s0": 64,
+   "summary_len_s1": 39,
+   "summary_len_delta": -25,
+   "source_s0": "stt",
+   "source_s1": "visual",
+   "eligible_s0": 20,
+   "eligible_s1": 12,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP22",
+   "summary_same": false,
+   "summary_len_s0": 53,
+   "summary_len_s1": 58,
+   "summary_len_delta": 5,
+   "source_s0": "stt",
+   "source_s1": "visual",
+   "eligible_s0": 20,
+   "eligible_s1": 12,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP23",
+   "summary_same": false,
+   "summary_len_s0": 105,
+   "summary_len_s1": 78,
+   "summary_len_delta": -27,
+   "source_s0": "stt",
+   "source_s1": "visual",
+   "eligible_s0": 19,
+   "eligible_s1": 12,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP24",
+   "summary_same": false,
+   "summary_len_s0": 80,
+   "summary_len_s1": 67,
+   "summary_len_delta": -13,
+   "source_s0": "stt",
+   "source_s1": "stt",
+   "eligible_s0": 20,
+   "eligible_s1": 13,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP25",
+   "summary_same": true,
+   "summary_len_s0": 98,
+   "summary_len_s1": 98,
+   "summary_len_delta": 0,
+   "source_s0": "stt",
+   "source_s1": "stt",
+   "eligible_s0": 24,
+   "eligible_s1": 24,
+   "evidence_hash_same": true,
+   "prompt_hash_same": true,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP26",
+   "summary_same": true,
+   "summary_len_s0": 54,
+   "summary_len_s1": 54,
+   "summary_len_delta": 0,
+   "source_s0": "stt",
+   "source_s1": "stt",
+   "eligible_s0": 23,
+   "eligible_s1": 23,
+   "evidence_hash_same": true,
+   "prompt_hash_same": true,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP27",
+   "summary_same": true,
+   "summary_len_s0": 48,
+   "summary_len_s1": 48,
+   "summary_len_delta": 0,
+   "source_s0": "stt",
+   "source_s1": "stt",
+   "eligible_s0": 22,
+   "eligible_s1": 22,
+   "evidence_hash_same": true,
+   "prompt_hash_same": true,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP28",
+   "summary_same": false,
+   "summary_len_s0": 85,
+   "summary_len_s1": 89,
+   "summary_len_delta": 4,
+   "source_s0": "stt",
+   "source_s1": "stt",
+   "eligible_s0": 19,
+   "eligible_s1": 17,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP29",
+   "summary_same": false,
+   "summary_len_s0": 53,
+   "summary_len_s1": 57,
+   "summary_len_delta": 4,
+   "source_s0": "stt",
+   "source_s1": "visual",
+   "eligible_s0": 23,
+   "eligible_s1": 12,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP30",
+   "summary_same": false,
+   "summary_len_s0": 35,
+   "summary_len_s1": 65,
+   "summary_len_delta": 30,
+   "source_s0": "stt",
+   "source_s1": "stt",
+   "eligible_s0": 21,
+   "eligible_s1": 14,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP31",
+   "summary_same": false,
+   "summary_len_s0": 63,
+   "summary_len_s1": 54,
+   "summary_len_delta": -9,
+   "source_s0": "stt",
+   "source_s1": "visual",
+   "eligible_s0": 18,
+   "eligible_s1": 12,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP32",
+   "summary_same": false,
+   "summary_len_s0": 38,
+   "summary_len_s1": 51,
+   "summary_len_delta": 13,
+   "source_s0": "stt",
+   "source_s1": "visual",
+   "eligible_s0": 18,
+   "eligible_s1": 12,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP33",
+   "summary_same": true,
+   "summary_len_s0": 76,
+   "summary_len_s1": 76,
+   "summary_len_delta": 0,
+   "source_s0": "stt",
+   "source_s1": "stt",
+   "eligible_s0": 19,
+   "eligible_s1": 19,
+   "evidence_hash_same": true,
+   "prompt_hash_same": true,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP34",
+   "summary_same": true,
+   "summary_len_s0": 88,
+   "summary_len_s1": 88,
+   "summary_len_delta": 0,
+   "source_s0": "stt",
+   "source_s1": "stt",
+   "eligible_s0": 15,
+   "eligible_s1": 15,
+   "evidence_hash_same": true,
+   "prompt_hash_same": true,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP35",
+   "summary_same": false,
+   "summary_len_s0": 0,
+   "summary_len_s1": 50,
+   "summary_len_delta": 50,
+   "source_s0": "stt",
+   "source_s1": "stt",
+   "eligible_s0": 17,
+   "eligible_s1": 15,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "PARSE_CONTRACT_FAILURE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP36",
+   "summary_same": false,
+   "summary_len_s0": 49,
+   "summary_len_s1": 49,
+   "summary_len_delta": 0,
+   "source_s0": "stt",
+   "source_s1": "stt",
+   "eligible_s0": 20,
+   "eligible_s1": 14,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP37",
+   "summary_same": false,
+   "summary_len_s0": 57,
+   "summary_len_s1": 86,
+   "summary_len_delta": 29,
+   "source_s0": "stt",
+   "source_s1": "stt",
+   "eligible_s0": 23,
+   "eligible_s1": 13,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP38",
+   "summary_same": false,
+   "summary_len_s0": 77,
+   "summary_len_s1": 55,
+   "summary_len_delta": -22,
+   "source_s0": "stt",
+   "source_s1": "visual",
+   "eligible_s0": 18,
+   "eligible_s1": 12,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP39",
+   "summary_same": false,
+   "summary_len_s0": 0,
+   "summary_len_s1": 68,
+   "summary_len_delta": 68,
+   "source_s0": "stt",
+   "source_s1": "stt",
+   "eligible_s0": 18,
+   "eligible_s1": 15,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "PARSE_CONTRACT_FAILURE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP40",
+   "summary_same": false,
+   "summary_len_s0": 61,
+   "summary_len_s1": 50,
+   "summary_len_delta": -11,
+   "source_s0": "stt",
+   "source_s1": "stt",
+   "eligible_s0": 16,
+   "eligible_s1": 14,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  },
+  {
+   "episode_id": "EP41",
+   "summary_same": false,
+   "summary_len_s0": 53,
+   "summary_len_s1": 54,
+   "summary_len_delta": 1,
+   "source_s0": "stt",
+   "source_s1": "visual",
+   "eligible_s0": 6,
+   "eligible_s1": 5,
+   "evidence_hash_same": false,
+   "prompt_hash_same": false,
+   "content_status_s0": "VALID_PARSE",
+   "content_status_s1": "VALID_PARSE",
+   "grounding_s0": "NOT_APPLICABLE",
+   "grounding_s1": "NOT_APPLICABLE"
+  }
+ ],
+ "arms": {
+  "s0": {
+   "run_dir": "runs\\vad0_paired\\s0_control",
+   "fingerprint": {
+    "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+    "code_revision": "3ee4341c0fd1f963255e092b1726ac25dceff0c8",
+    "prompt_version": "episode_content_v3_summary_only",
+    "prompt_hash": "a08e3c3c4988daa6639cf0316f8b5d81f466685590fb54400eeda7d6ab6610d7",
+    "model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "evidence_policy": "control"
+   },
+   "evidence_policy": {
+    "shadow_vad0": false
+   },
+   "counters": {
+    "llm_calls": 41,
+    "prompt_refusals": 0,
+    "llm_failures": 0,
+    "retries": 0
+   },
+   "prompt": {
+    "prompt_version": "episode_content_v3_summary_only",
+    "prompt_hash": "a08e3c3c4988daa6639cf0316f8b5d81f466685590fb54400eeda7d6ab6610d7"
+   }
+  },
+  "s1": {
+   "run_dir": "runs\\vad0_paired\\s1_shadow",
+   "fingerprint": {
+    "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+    "code_revision": "3ee4341c0fd1f963255e092b1726ac25dceff0c8",
+    "prompt_version": "episode_content_v3_summary_only",
+    "prompt_hash": "a08e3c3c4988daa6639cf0316f8b5d81f466685590fb54400eeda7d6ab6610d7",
+    "model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "evidence_policy": "shadow_vad0"
+   },
+   "evidence_policy": {
+    "shadow_vad0": true,
+    "rule": "existing VALID AND speech_overlap_ratio == 0 -> SUSPECT",
+    "measurements_sha256": "e1914741cf7a550fc654f4078d812a08f0bc20a06ee5ccb4bf829bdcfe3caa63"
+   },
+   "counters": {
+    "llm_calls": 41,
+    "prompt_refusals": 0,
+    "llm_failures": 0,
+    "retries": 0
+   },
+   "prompt": {
+    "prompt_version": "episode_content_v3_summary_only",
+    "prompt_hash": "a08e3c3c4988daa6639cf0316f8b5d81f466685590fb54400eeda7d6ab6610d7"
+   }
+  }
+ }
+}
