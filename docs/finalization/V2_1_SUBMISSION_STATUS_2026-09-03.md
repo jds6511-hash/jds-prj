@@ -1,5 +1,10 @@
 # 제출 상태 — arm 확정 · SUBMISSION_READY (2026-09-03)
 
+> 2026-09-07 갱신: 이 문서의 arm(hwpx sha `f874f643…`)은 이제 **rollback baseline**이다.
+> 현행 제출 arm은 `v3 + explicit VAD0`이며
+> `docs/finalization/V2_1_SUBMISSION_VAD0_PROMOTION_2026-09-07.md`가 그 상태를 적는다.
+> 이 문서 본문은 당시 판정 기록이므로 수치를 고치지 않는다.
+
 ```
 V2.1 IMPLEMENTATION_COMPLETE = YES      baseline 6e79ac3
 B2   OPERATIONAL_COMPLETE    = YES

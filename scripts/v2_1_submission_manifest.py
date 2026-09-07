@@ -68,7 +68,68 @@ def hangul_check(hwpx: Path, pdf: Path) -> dict:
     }
 
 
-def build(run: Path, pdf: Path, transcripts: list[Path] | None = None) -> dict:
+def policy_label(policy: dict) -> str:
+    """제출본이 어느 claim evidence 정책으로 만들어졌는지.
+
+    `shadow_vad0`을 켠 run은 **어느 측정으로 abstain했는지**를 같이 적어야 한다.
+    측정 provenance가 없으면 제출 provenance가 성립하지 않으므로 거부한다.
+    """
+    if not policy.get("shadow_vad0"):
+        return "RAW_STT_ALL_VALID"
+    if not policy.get("measurements_sha256"):
+        raise SubmissionCheckError(
+            "shadow_vad0 run인데 measurements_sha256이 없다 — "
+            "어느 측정으로 abstain했는지 적을 수 없다")
+    return "STT_VAD0"
+
+
+def vad_provenance(vad_manifest: dict) -> dict:
+    """Phase A manifest에서 그대로 옮긴다. 값을 손으로 적지 않는다."""
+    vad = dict(vad_manifest["vad"])
+    params = dict(vad["vad_params_resolved"])
+    # implicit default(None)를 제출본에 남기지 않는다 — 실효값으로 적는다.
+    if params.get("max_speech_duration_s") is None:
+        params["max_speech_duration_s"] = vad["max_speech_duration_s"]
+    return {
+        "phase_a_code_revision": vad_manifest["code_revision"],
+        "audio_sha256": vad_manifest["inputs"]["audio_sha256"],
+        "stt_cache_sha256": vad_manifest["inputs"]["stt_cache_sha256"],
+        "faster_whisper_version": vad["faster_whisper_version"],
+        "vad_model": vad["vad_model"],
+        "vad_model_sha256": vad["vad_model_sha256"],
+        "vad_params_resolved": params,
+        "sampling_rate": vad["sampling_rate"],
+        "speech_chunks": vad["speech_chunks"],
+    }
+
+
+def assert_promoted_from_paired(paired: dict, fingerprint: dict) -> None:
+    """제출 artifact가 **그 paired run의 것**인지 확인한다.
+
+    다른 실행의 산출물에 paired 수치를 붙이면 provenance가 거짓이 된다. 이 검사가
+    통과해야 "재실행하지 않고 승격했다"고 적을 수 있다.
+    """
+    if paired["arms"]["s1"]["fingerprint"] != fingerprint:
+        raise SubmissionCheckError(
+            "제출 run의 지문이 paired S1과 다르다 — 다른 실행의 산출물이다")
+
+
+def evidence_totals(paired: dict) -> dict:
+    """paired 결과에서 근거 수를 센다. abstention은 one-way여야 한다."""
+    original = sum(row.get("eligible_s0") or 0 for row in paired["episodes"])
+    selected = sum(row.get("eligible_s1") or 0 for row in paired["episodes"])
+    if selected > original:
+        raise SubmissionCheckError(
+            "선택된 근거가 늘었다 (%d > %d) — abstention이 아니다"
+            % (selected, original))
+    return {"original_claim_evidence": original,
+            "selected_claim_evidence": selected}
+
+
+def build(run: Path, pdf: Path, transcripts: list[Path] | None = None,
+          *, arm: str = "R1", vad_manifest: Path | None = None,
+          paired_metrics: Path | None = None,
+          supersedes: Path | None = None) -> dict:
     manifest = json.loads((run / "run_manifest.json").read_text(encoding="utf-8"))
     document = json.loads(
         _first(run, "S5/aar_canonical.json", "aar_canonical.json").read_text(
@@ -87,8 +148,54 @@ def build(run: Path, pdf: Path, transcripts: list[Path] | None = None) -> dict:
     if failures:
         raise SubmissionCheckError("HWPX 구조 검증 실패: %r" % failures)
 
+    policy = manifest.get("evidence_policy") or {}
+    extra: dict = {"stt_evidence_policy": policy_label(policy)}
+    if policy.get("shadow_vad0"):
+        extra["stt_evidence_rule"] = policy["rule"]
+        extra["measurements_sha256"] = policy["measurements_sha256"]
+        extra["vad0_default_off"] = True
+    if vad_manifest is not None:
+        extra["vad"] = vad_provenance(
+            json.loads(vad_manifest.read_text(encoding="utf-8")))
+    if paired_metrics is not None:
+        paired = json.loads(paired_metrics.read_text(encoding="utf-8"))
+        gates = paired["gates"]
+        assert_promoted_from_paired(paired, manifest["fingerprint"])
+        extra["stt_evidence"] = evidence_totals(paired)
+        extra["paired_result"] = {
+            "metrics": str(paired_metrics.relative_to(ROOT))
+                       if paired_metrics.is_relative_to(ROOT)
+                       else str(paired_metrics),
+            "metrics_sha256": sha256_file(paired_metrics),
+            "commit": _commit_of(paired_metrics),
+            "presentation_eligible": {
+                "s0": gates["presentation_eligible_s0"],
+                "s1": gates["presentation_eligible_s1"]},
+            "parse_contract_failure": {"s0": gates["parse_failure_s0"],
+                                       "s1": gates["parse_failure_s1"]},
+            "non_regression_gates": {
+                "presentation_s1_ge_s0": gates["presentation_non_regression"],
+                "parse_s1_le_s0": gates["parse_non_regression"],
+                "no_evidence_growth": gates["no_evidence_growth"]},
+        }
+        # 이 스크립트는 생성을 하지 않는다. 지문 일치까지 확인했으므로
+        # 제출본은 paired 실행에서 나온 그 파일이다.
+        extra["regenerated_by_rerun"] = False
+    if supersedes is not None:
+        previous = json.loads(supersedes.read_text(encoding="utf-8"))
+        extra["supersedes"] = {
+            "manifest": str(supersedes.relative_to(ROOT))
+                        if supersedes.is_relative_to(ROOT) else str(supersedes),
+            "submission_arm": previous["submission_arm"],
+            "hwpx": previous["artifact"]["hwpx"],
+            "hwpx_sha256": previous["artifact"]["hwpx_sha256"],
+            "presentation_eligible": previous["presentation_eligible"],
+            "parse_contract_failure": previous["parse_contract_failure"],
+            "role": "rollback artifact — 보존한다. 삭제·덮어쓰기 금지",
+        }
+
     return {
-        "submission_arm": "R1",
+        "submission_arm": arm,
         "submission_contract": document["prompt"]["prompt_version"],
         "prompt_hash": document["prompt"]["prompt_hash"],
         "input": {
@@ -124,8 +231,24 @@ def build(run: Path, pdf: Path, transcripts: list[Path] | None = None) -> dict:
             "semantic entailment of the summaries is not automatically verified",
             "GRD-004 remains P1 WAIVED",
             "v3 is not the repository default contract",
-        ],
+        ] + (["the abstention layer is not a verified hallucination detector",
+              "the parse-failure change is a non-regression observation, "
+              "not a demonstrated improvement"]
+             if extra["stt_evidence_policy"] == "STT_VAD0" else []),
+        **extra,
     }
+
+
+def _commit_of(path: Path) -> str:
+    """그 artifact를 기록한 commit. 손으로 적지 않는다."""
+    import subprocess
+    result = subprocess.run(
+        ["git", "-C", str(ROOT), "log", "-1", "--format=%H", "--", str(path)],
+        capture_output=True, text=True, check=True)
+    commit = result.stdout.strip()
+    if not commit:
+        raise SubmissionCheckError("%s 를 기록한 commit이 없다" % path)
+    return commit
 
 
 def main(argv=None) -> int:
@@ -136,6 +259,13 @@ def main(argv=None) -> int:
                         help="PDF export 경로 (기본: run 옆 submission.pdf)")
     parser.add_argument("--transcript", action="append", default=[],
                         help="동반 전사문 txt (여러 번 줄 수 있다)")
+    parser.add_argument("--arm", default="R1", help="제출 arm 이름표")
+    parser.add_argument("--vad-manifest", default=None,
+                        help="Phase A VAD manifest (VAD0 제출본일 때)")
+    parser.add_argument("--paired-metrics", default=None,
+                        help="Tier 2 paired 결과 (근거 수·비퇴행 게이트 출처)")
+    parser.add_argument("--supersedes", default=None,
+                        help="이 제출본이 대체하는 이전 manifest (rollback)")
     args = parser.parse_args(argv)
 
     run = Path(args.run).resolve()
@@ -144,14 +274,22 @@ def main(argv=None) -> int:
     for path in transcripts:
         if not path.is_file():
             raise SubmissionCheckError("전사문이 없다: %s" % path)
-    report = build(run, pdf, transcripts)
+    optional = {name: Path(value).resolve() if value else None
+                for name, value in (("vad_manifest", args.vad_manifest),
+                                    ("paired_metrics", args.paired_metrics),
+                                    ("supersedes", args.supersedes))}
+    for name, path in optional.items():
+        if path is not None and not path.is_file():
+            raise SubmissionCheckError("%s 가 없다: %s" % (name, path))
+    report = build(run, pdf, transcripts, arm=args.arm, **optional)
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(report, ensure_ascii=False, indent=1),
                    encoding="utf-8")
     print(json.dumps({k: report[k] for k in (
-        "submission_contract", "prompt_hash", "episodes",
-        "presentation_eligible", "parse_contract_failure", "hangul")},
+        "submission_arm", "submission_contract", "stt_evidence_policy",
+        "prompt_hash", "episodes", "presentation_eligible",
+        "parse_contract_failure", "hangul")},
         ensure_ascii=False, indent=1))
     return 0
 
