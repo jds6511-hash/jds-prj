@@ -33,6 +33,7 @@ LABELS = {
     "summary": "요약",
     "sources": "구성 구간",
     "summary_sources": "요약 출처",
+    "status": "상태",
     "synthesis_sources": "종합 출처 구간",
     "limitation": "한계",
 }
@@ -96,6 +97,7 @@ def semantic_view(highlights, synthesis) -> dict:
                 "source_episode_ids": list(record.source_episode_ids),
                 "summary_source_episode_ids":
                     list(record.summary_source_episode_ids),
+                "summary_status_reasons": list(record.summary_status_reasons),
             }
             for record in highlights
         ],
@@ -159,6 +161,11 @@ def render_markdown(manifest, highlights, synthesis) -> str:
             "- %s: %s" % (LABELS["summary_sources"],
                           " · ".join(record["summary_source_episode_ids"]) or "-"),
         ]
+        # 쓰이지 않은 구간이 있으면 사유를 적는다 — 요약이 남아 있어도 마찬가지다.
+        # 코드뿐이고 서술을 만들지 않는다.
+        if record["summary_status_reasons"]:
+            parts.append("- %s: %s" % (LABELS["status"],
+                                       " · ".join(record["summary_status_reasons"])))
     parts += ["", "## %s" % SECTION_NAMES[2], ""]
     parts += list(view["analysis"]) or ["(%s)" % SUMMARY_NO_RELIABLE_CONTENT]
     parts += [

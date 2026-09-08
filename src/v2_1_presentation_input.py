@@ -24,6 +24,7 @@ from dataclasses import dataclass
 
 from v2_1_aar import validate_aar
 from v2_1_grounding import NOT_APPLICABLE, PASS
+from v2_1_output_quality import blocks_presentation, evaluate_summary
 
 #: 표현 계층이 import해서는 안 되는 grounding 이전 모듈.
 FORBIDDEN_UPSTREAM = (
@@ -97,7 +98,26 @@ def summary_eligible_for_presentation(episode) -> bool:
         episode.content_status == "VALID_PARSE"
         and episode.grounding_status in PRESENTATION_SUMMARY_STATUSES
         and bool(episode.summary and episode.summary.strip())
+        and not blocks_presentation(evaluate_summary(episode.summary))
     )
+
+
+def exclusion_reasons(episode) -> tuple[str, ...]:
+    """왜 이 episode의 summary를 표현에 쓰지 못하는가 — 사유 코드다.
+
+    문장을 지어내지 않는다. 층을 순서대로 보고 **먼저 막은 층만** 적는다 —
+    parse가 실패한 구간에 grounding·품질 사유를 겹쳐 적으면 원인이 흐려진다.
+    """
+    if episode.content_status != "VALID_PARSE":
+        return (episode.content_status,)
+    if episode.grounding_status not in PRESENTATION_SUMMARY_STATUSES:
+        return ("GROUNDING_%s" % episode.grounding_status,)
+    if not (episode.summary and episode.summary.strip()):
+        return ("EMPTY_SUMMARY",)
+    verdict = evaluate_summary(episode.summary)
+    if blocks_presentation(verdict):
+        return verdict.reasons
+    return ()
 
 
 def _episode(raw: dict) -> PresentationEpisode:

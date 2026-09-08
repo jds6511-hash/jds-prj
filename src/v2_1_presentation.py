@@ -29,6 +29,7 @@ from dataclasses import dataclass
 from v2_1_lineage import LineageError, build_lineage
 from v2_1_presentation_input import (
     PresentationInput,
+    exclusion_reasons,
     summary_eligible_for_presentation,
 )
 
@@ -54,6 +55,11 @@ FORMAT_REFERENCE = {
 SECTION_NAMES = ("개요", "주요 사건 및 내용", "핵심 내용 분석", "결론",
                  "근거 및 생성 정보")
 
+#: presentation grouping 창. **presentation-format 상수다** — canonical
+#: window_sec의 파생값이 아니고, 이 영상 결과를 보고 조정하지 않는다.
+#: freeze 근거: docs/finalization/V2_1_OUTPUT_QUALITY_ADDENDUM_2026-09-08.md §5
+PRESENTATION_GROUP_WINDOW_SEC = 300
+
 
 class PresentationError(RuntimeError):
     """표현 객체 계약 위반."""
@@ -71,6 +77,9 @@ class PresentationHighlight:
     summary_status: str
     summary_source_episode_ids: tuple[str, ...]
     excluded_summary_episode_ids: tuple[str, ...]
+    #: 왜 쓰이지 않았는가 — `exclusion_reasons()`가 만든 코드뿐이다. 사람이 쓴
+    #: 서술을 넣으면 `validate_presentation`이 잡는다.
+    summary_status_reasons: tuple[str, ...] = ()
 
 
 def _eligible_for_summary(episode) -> bool:
@@ -80,6 +89,36 @@ def _eligible_for_summary(episode) -> bool:
     문장이 사라진다 — grounding이 `NOT_APPLICABLE`이 되기 때문이다.
     """
     return summary_eligible_for_presentation(episode)
+
+
+def presentation_groups(
+        presented, window_sec: float = PRESENTATION_GROUP_WINDOW_SEC
+) -> tuple[tuple[str, ...], ...]:
+    """canonical episode를 시간 bin으로 묶는다. **정본은 읽기만 한다.**
+
+    ```
+    anchor       0초
+    assignment   start_sec // window_sec
+    순서         canonical 시간순 · 빈 bin은 group을 만들지 않는다
+    ```
+
+    내용을 보지 않는다 — 새 boundary provider가 아니라 시간 bin 하나다.
+    """
+    if window_sec <= 0:
+        raise PresentationError("window_sec must be positive, got %r" % window_sec)
+    bins: dict[int, list] = {}
+    for episode in sorted(presented.episodes, key=lambda e: e.start_seg):
+        bins.setdefault(int(episode.start_sec // window_sec), []).append(
+            episode.episode_id)
+    return tuple(tuple(bins[key]) for key in sorted(bins))
+
+
+def _reasons(members) -> tuple[str, ...]:
+    """쓰이지 않은 member의 사유를 모은다. 중복은 합치고 순서는 결정적이다."""
+    collected = {reason for member in members
+                 if not _eligible_for_summary(member)
+                 for reason in exclusion_reasons(member)}
+    return tuple(sorted(collected))
 
 
 def build_presentation(presented, highlights) -> tuple[PresentationHighlight, ...]:
@@ -116,6 +155,7 @@ def build_presentation(presented, highlights) -> tuple[PresentationHighlight, ..
                             else SUMMARY_NO_RELIABLE_CONTENT),
             summary_source_episode_ids=tuple(e.episode_id for e in usable),
             excluded_summary_episode_ids=tuple(excluded),
+            summary_status_reasons=_reasons(members),
         ))
     return tuple(records)
 
@@ -139,6 +179,12 @@ def validate_presentation(records, presented, format_reference=None) -> list[str
         missing = [ref for ref in record.source_episode_ids if ref not in known]
         if missing:
             failures.append("%s: unknown source episode %r" % (label, missing))
+
+        # 사유는 **재계산으로 검증한다** — 사람이 쓴 서술이 들어오면 여기서 깨진다.
+        members = [known[ref] for ref in record.source_episode_ids if ref in known]
+        if record.summary_status_reasons != _reasons(members):
+            failures.append("%s: summary status reasons are not derived from "
+                            "the canonical episodes" % label)
 
         if set(record.summary_source_episode_ids) | set(
                 record.excluded_summary_episode_ids) != set(
@@ -194,6 +240,7 @@ def serialize_presentation(records) -> str:
                     list(record.summary_source_episode_ids),
                 "excluded_summary_episode_ids":
                     list(record.excluded_summary_episode_ids),
+                "summary_status_reasons": list(record.summary_status_reasons),
             }
             for record in records
         ],

@@ -42,7 +42,7 @@ ASSURANCE_PHRASES = (
     "전부 검증",
 )
 
-_NO_CONTENT_CONCLUSION = "근거가 확인된 구간이 없어 결론을 적지 않는다."
+_NO_CONTENT_CONCLUSION = "요약이 제공된 구간이 없어 결론을 적지 않는다."
 
 
 class SynthesisError(RuntimeError):
@@ -95,16 +95,20 @@ def build_synthesis(presented, lineage) -> GlobalSynthesis:
         kept = [by_id[ref] for ref in record.source_episode_ids if ref in by_id]
         if not kept:
             continue
-        analysis.append("%s (%s): %s" % (
+        # **요약 문장을 다시 인쇄하지 않는다.** 같은 문장이 §주요 사건에 이미
+        # 있으므로, 여기서는 highlight 구조와 lineage만 적는다(P1-3).
+        analysis.append("%s (%s): 구성 %d구간 · 요약 출처 %d구간" % (
             record.highlight_id,
             " · ".join(episode.episode_id for episode in kept),
-            " / ".join(episode.summary for episode in kept),
+            len(record.source_episode_ids), len(kept),
         ))
 
     return GlobalSynthesis(
         overview=" ".join(episode.summary for episode in usable),
         analysis=tuple(analysis),
-        conclusion="확인된 구간 %d개를 시간순으로 정리하면 처음은 «%s», 마지막은 «%s»다."
+        # "확인된"은 사실 검증을 마쳤다는 인상을 준다 — 한계 문구와 모순이므로
+        # 실제 상태("요약이 제공된")로 적는다(P2-2).
+        conclusion="요약이 제공된 구간 %d개를 시간순으로 정리하면 처음은 «%s», 마지막은 «%s»다."
                    % (len(usable), usable[0].summary, usable[-1].summary),
         source_episode_ids=tuple(episode.episode_id for episode in usable),
         excluded_episode_ids=tuple(excluded),

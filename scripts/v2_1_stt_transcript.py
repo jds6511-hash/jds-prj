@@ -35,13 +35,22 @@ def sha256_file(path: Path) -> str:
 
 
 def _clock(seconds: float, decimals: int = 0) -> str:
-    total = int(seconds)
-    hours, rest = divmod(total, 3600)
+    """초를 시계 표기로 적는다. 값을 바꾸지 않는다 — 표기만 한다.
+
+    소수 1자리를 붙일 때는 **먼저 반올림한 뒤 자리올림을 반영한다.** 예전에는
+    정수부를 잘라 두고 소수부만 반올림해서 45.98이 `00:00:45.10`으로 나왔다.
+    """
+    if not decimals:
+        total = int(seconds)
+        hours, rest = divmod(total, 3600)
+        minutes, secs = divmod(rest, 60)
+        return "%02d:%02d:%02d" % (hours, minutes, secs)
+    tenths = int(round(seconds * 10 ** decimals))
+    scale = 10 ** decimals
+    whole, fraction = divmod(tenths, scale)
+    hours, rest = divmod(whole, 3600)
     minutes, secs = divmod(rest, 60)
-    stamp = "%02d:%02d:%02d" % (hours, minutes, secs)
-    if decimals:
-        stamp += ".%d" % int(round((seconds - total) * 10))
-    return stamp
+    return "%02d:%02d:%02d.%0*d" % (hours, minutes, secs, decimals, fraction)
 
 
 def render(work: Path, *, source: str = "segments") -> str:
@@ -57,7 +66,7 @@ def render(work: Path, *, source: str = "segments") -> str:
     model = cache.get("meta", {}).get("model", "unavailable")
 
     head = [
-        "STT 전사문 — 편집하지 않은 원문",
+        "자동 생성 STT 원문 — 미검증 · 편집하지 않음",
         "",
         "video_id       %s" % document.get("video_id", work.name),
         "STT 모델       %s (lang %s · beam %s)" % (

@@ -95,8 +95,13 @@ def _lines(manifest, view, highlights) -> list[str]:
                           " · ".join(record["source_episode_ids"])),
             "%s%s: %s" % (_MID, LABELS["summary_sources"],
                           " · ".join(record["summary_source_episode_ids"]) or "-"),
-            _BOTTOM,
         ]
+        # 사유가 있으면 적는다 — C-06과 같은 조건·같은 값이다.
+        if record["summary_status_reasons"]:
+            lines.append("%s%s: %s" % (
+                _MID, LABELS["status"],
+                " · ".join(record["summary_status_reasons"])))
+        lines += [_BOTTOM]
     lines += ["", "■ 핵심 내용 분석"]
     lines += list(view["analysis"]) or ["—"]
     lines += [

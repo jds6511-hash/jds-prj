@@ -10,6 +10,7 @@ source utterances   Whisper 발화 단위 원본 (필터 이전)
 """
 import importlib.util
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -129,3 +130,63 @@ def test_it_never_reads_the_caption_channel(world):
     """전사문 파일에 캡션이 섞이면 무엇이 발화였는지 알 수 없다."""
     text = stt.render(world, source="segments")
     assert "화면 설명" not in text
+
+
+# ── P2-3 timestamp 표기 (2026-09-08) ────────────────────────────────────
+def test_the_clock_carries_instead_of_printing_a_tenth_of_ten():
+    """45.98초는 `00:00:45.10`이 아니라 `00:00:46.0`이다 — 표기 버그였다."""
+    assert stt._clock(45.98, 1) == "00:00:46.0"
+    assert stt._clock(59.98, 1) == "00:01:00.0"
+    assert stt._clock(3599.98, 1) == "01:00:00.0"
+
+
+def test_the_clock_still_truncates_without_decimals():
+    assert stt._clock(45.98) == "00:00:45"
+    assert stt._clock(0.0) == "00:00:00"
+
+
+def test_no_rendered_stamp_has_a_two_digit_tenth(world):
+    body = stt.render(world, source="utterances")
+    for line in body.splitlines():
+        for stamp in re.findall(r"\d{2}:\d{2}:\d{2}\.\d+", line):
+            assert len(stamp.split(".")[1]) == 1
+
+
+def test_the_upstream_order_is_preserved_not_sorted(world):
+    """Whisper 출력의 순서 역전은 진단 대상이다 — 정렬해 숨기지 않는다."""
+    source = (ROOT / "scripts/v2_1_stt_transcript.py").read_text(encoding="utf-8")
+    body = source[source.index("utterances = cache"):]
+    assert "sorted(" not in body
+    assert ".sort(" not in body
+
+
+def test_the_header_marks_the_text_as_machine_generated_and_unverified(world):
+    """"정확한 전사문"으로 읽히면 안 된다 — 성격을 제목에서 밝힌다(§9)."""
+    for source in ("segments", "utterances"):
+        text = stt.render(world, source=source)
+        head = text.splitlines()[0]
+        assert "자동 생성" in head and "미검증" in head
+        assert "정확한 전사문" not in text
+
+
+def test_anomalous_utterance_text_is_exported_verbatim(tmp_path):
+    """이상하게 보이는 원문도 그대로 나간다 — 여기서 sanitize하면 계약 위반이다."""
+    anomalies = ["자막에 사용하여 수정된 아이스크림을uxe Jonathan",
+                 "grinder 액젓", "그럼 찹쌀떡 ASL", "ś"]
+    work = tmp_path / "work" / "V2"
+    work.mkdir(parents=True)
+    (work / "segments.json").write_text(json.dumps(
+        {"video_id": "V2", "duration_sec": 20.0, "n_segments": 1,
+         "segments": [{"idx": 0, "start": 0, "end": 5,
+                       "subtitle": anomalies[0], "caption": ""}]},
+        ensure_ascii=False), encoding="utf-8")
+    (work / "stt_cache.json").write_text(json.dumps(
+        {"meta": {"model": "large-v3", "lang": "ko", "beam_size": 5},
+         "utterances": [{"text": text, "t0": index * 2.0, "t1": index * 2.0 + 1.5}
+                        for index, text in enumerate(anomalies)]},
+        ensure_ascii=False), encoding="utf-8")
+
+    body = stt.render(work, source="utterances")
+    for text in anomalies:
+        assert text in body
+    assert stt.render(work, source="segments").count(anomalies[0]) == 1

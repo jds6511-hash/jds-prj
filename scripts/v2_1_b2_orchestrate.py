@@ -62,7 +62,10 @@ from v2_1_highlight import HighlightSpec, build_highlights       # noqa: E402
 from v2_1_lineage import build_lineage                          # noqa: E402
 from v2_1_llm_adapter import GenerationConfig                   # noqa: E402
 from v2_1_parse import EMPTY, ParseResult, SegmentRegistry, parse_json_payload  # noqa: E402
-from v2_1_presentation import build_presentation                # noqa: E402
+from v2_1_presentation import (                                 # noqa: E402
+    build_presentation,
+    presentation_groups,
+)
 from v2_1_presentation_input import (                           # noqa: E402
     presentation_input, summary_eligible_for_presentation)
 from v2_1_prompt import (CONTRACT, PromptError, build_episode_prompt,  # noqa: E402
@@ -537,7 +540,9 @@ def s6_presentation(directory: Path, run: Path):
     document = json.loads(
         (run / "S5/aar_canonical.json").read_text(encoding="utf-8"))
     presented = presentation_input(document)
-    groups = [(episode.episode_id,) for episode in presented.episodes]
+    # presentation은 상위 사건 단위로 묶는다(300초 bin · addendum §5). canonical
+    # episode는 그대로다 — 여기서 쪼개거나 합치지 않는다.
+    groups = list(presentation_groups(presented))
     highlights = build_highlights(presented, [HighlightSpec(g) for g in groups])
     lineage = build_lineage(presented, highlights)
     synthesis = build_synthesis(presented, lineage)

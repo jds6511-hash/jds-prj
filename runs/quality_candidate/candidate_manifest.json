@@ -1,0 +1,515 @@
+{
+ "source_run": "C:\\Users\\UserK\\Desktop\\prj\\runs\\vad0_paired\\s1_shadow",
+ "source_run_fingerprint": {
+  "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+  "code_revision": "3ee4341c0fd1f963255e092b1726ac25dceff0c8",
+  "prompt_version": "episode_content_v3_summary_only",
+  "prompt_hash": "a08e3c3c4988daa6639cf0316f8b5d81f466685590fb54400eeda7d6ab6610d7",
+  "model_id": "Qwen/Qwen2.5-7B-Instruct",
+  "evidence_policy": "shadow_vad0"
+ },
+ "source_content_hash": "54f77a0a7faaa94a3eb9f7bafa68aada8e32e26dd80e33d4027dd5a932cf8151",
+ "canonical_partition_hash": "a52a0bdf00d49972e60d1119b3a828e5905aa70e9cd42067a301fdd3e2c19931",
+ "canonical_episodes": 41,
+ "llm_rerun": false,
+ "quality_policy_version": "output_quality_v1",
+ "quality_policy_hash": "2f99bc0fe02c445d31fc041f8a660b03ef2f9a84ebef63ebde948f94218a92eb",
+ "presentation_group_window_sec": 300,
+ "presentation_groups": [
+  [
+   "EP01",
+   "EP02",
+   "EP03",
+   "EP04",
+   "EP05"
+  ],
+  [
+   "EP06",
+   "EP07",
+   "EP08",
+   "EP09",
+   "EP10"
+  ],
+  [
+   "EP11",
+   "EP12",
+   "EP13",
+   "EP14",
+   "EP15"
+  ],
+  [
+   "EP16",
+   "EP17",
+   "EP18",
+   "EP19",
+   "EP20"
+  ],
+  [
+   "EP21",
+   "EP22",
+   "EP23",
+   "EP24",
+   "EP25"
+  ],
+  [
+   "EP26",
+   "EP27",
+   "EP28",
+   "EP29",
+   "EP30"
+  ],
+  [
+   "EP31",
+   "EP32",
+   "EP33",
+   "EP34",
+   "EP35"
+  ],
+  [
+   "EP36",
+   "EP37",
+   "EP38",
+   "EP39",
+   "EP40"
+  ],
+  [
+   "EP41"
+  ]
+ ],
+ "presentation_group_count": 9,
+ "presentation_eligible": 39,
+ "quality_status_counts": {
+  "PASS": 38,
+  "SUSPECT": 1,
+  "FAIL": 2
+ },
+ "quality_excluded": [
+  {
+   "episode_id": "EP13",
+   "content_status": "VALID_PARSE",
+   "quality_status": "FAIL",
+   "quality_reasons": [
+    "OUTPUT_LANGUAGE_DRIFT"
+   ],
+   "eligible": false,
+   "exclusion_reasons": [
+    "OUTPUT_LANGUAGE_DRIFT"
+   ],
+   "longest_foreign_run": 33
+  },
+  {
+   "episode_id": "EP17",
+   "content_status": "PARSE_CONTRACT_FAILURE",
+   "quality_status": "FAIL",
+   "quality_reasons": [
+    "OUTPUT_LANGUAGE_CONTRACT_FAILURE"
+   ],
+   "eligible": false,
+   "exclusion_reasons": [
+    "PARSE_CONTRACT_FAILURE"
+   ],
+   "longest_foreign_run": null
+  }
+ ],
+ "episodes": [
+  {
+   "episode_id": "EP01",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP02",
+   "content_status": "VALID_PARSE",
+   "quality_status": "SUSPECT",
+   "quality_reasons": [
+    "OUTPUT_BROKEN_MIXED_SCRIPT"
+   ],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP03",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP04",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP05",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP06",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP07",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP08",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP09",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP10",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP11",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP12",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP13",
+   "content_status": "VALID_PARSE",
+   "quality_status": "FAIL",
+   "quality_reasons": [
+    "OUTPUT_LANGUAGE_DRIFT"
+   ],
+   "eligible": false,
+   "exclusion_reasons": [
+    "OUTPUT_LANGUAGE_DRIFT"
+   ],
+   "longest_foreign_run": 33
+  },
+  {
+   "episode_id": "EP14",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP15",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP16",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP17",
+   "content_status": "PARSE_CONTRACT_FAILURE",
+   "quality_status": "FAIL",
+   "quality_reasons": [
+    "OUTPUT_LANGUAGE_CONTRACT_FAILURE"
+   ],
+   "eligible": false,
+   "exclusion_reasons": [
+    "PARSE_CONTRACT_FAILURE"
+   ],
+   "longest_foreign_run": null
+  },
+  {
+   "episode_id": "EP18",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP19",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP20",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP21",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP22",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP23",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP24",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP25",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP26",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP27",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP28",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP29",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP30",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP31",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP32",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP33",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP34",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP35",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP36",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP37",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP38",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP39",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP40",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  },
+  {
+   "episode_id": "EP41",
+   "content_status": "VALID_PARSE",
+   "quality_status": "PASS",
+   "quality_reasons": [],
+   "eligible": true,
+   "exclusion_reasons": [],
+   "longest_foreign_run": 0
+  }
+ ],
+ "artifact": {
+  "hwpx": "runs\\quality_candidate\\S7\\report.hwpx",
+  "hwpx_sha256": "8ef856451fa2bf391e51d0824c0eb26457317976b82bd87a8e7a4fc2863e4f2c",
+  "hwpx_bytes": 10168,
+  "md_sha256": "c3a09062caf051758c571bb4a0d2980332aa0b0142099b1e53a911a8c2658ba9",
+  "presentation_sha256": "caac22771bb11e68209ba3248fe70c07080d0dd63b75c96602d0539068a7ff00"
+ },
+ "structural_validator": "PASS",
+ "hangul": {
+  "hancom_open": true,
+  "pdf_export": true,
+  "pdf_bytes": 115181,
+  "text_chars": 7887,
+  "box_glyphs": {
+   "■": 5,
+   "┌": 9,
+   "│": 47,
+   "└": 9
+  }
+ }
+}
