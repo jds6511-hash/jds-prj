@@ -78,7 +78,7 @@ def test_wvr_f03_an_unregistered_cap_is_refused():
             events.assert_allowed(value)
     assert events.assert_allowed(4096) is None
     with pytest.raises(events.EventError):
-        events.tokens_for("V2")
+        events.tokens_for("V9")          # 등록되지 않은 사건 (V2는 이후 등록됐다)
 
 
 def test_wvr_f04_the_artifacts_do_not_share_a_name():

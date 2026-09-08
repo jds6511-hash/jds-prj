@@ -1,0 +1,25 @@
+=== D1_highest_change S0 (2026. 09. 09. (수) 01:11:02 KST) ===
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7735.30it/s]
+event=V2 window=W11 arm=S0 status=OK frames=90 tokens=7235 events=45
+  collapsed=3 unique_sig=2 degenerate=False valid=True reasons=[]
+=== D1_highest_change S1 (2026. 09. 09. (수) 01:12:46 KST) ===
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7927.66it/s]
+event=V2 window=W11 arm=S1 status=OK frames=45 tokens=3847 events=18
+  collapsed=14 unique_sig=14 degenerate=False valid=True reasons=[]
+=== D2_median_change S0 (2026. 09. 09. (수) 01:13:34 KST) ===
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 9178.23it/s]
+event=V2 window=W02 arm=S0 status=OK frames=90 tokens=7216 events=60
+  collapsed=23 unique_sig=22 degenerate=False valid=True reasons=[]
+=== D2_median_change S1 (2026. 09. 09. (수) 01:15:30 KST) ===
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 8041.97it/s]
+event=V2 window=W02 arm=S1 status=OK frames=45 tokens=3837 events=22
+  collapsed=22 unique_sig=14 degenerate=False valid=True reasons=[]
+=== D3_lowest_change S0 (2026. 09. 09. (수) 01:16:23 KST) ===
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:  89%|████████▉ | 669/750 [00:00<00:00, 6687.87it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7203.03it/s]
+event=V2 window=W05 arm=S0 status=OK frames=90 tokens=7235 events=36
+  collapsed=8 unique_sig=6 degenerate=False valid=True reasons=[]
+=== D3_lowest_change S1 (2026. 09. 09. (수) 01:17:43 KST) ===
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 8064.34it/s]
+event=V2 window=W05 arm=S1 status=OK frames=45 tokens=3847 events=23
+  collapsed=13 unique_sig=7 degenerate=False valid=True reasons=[]
+ALL_DONE

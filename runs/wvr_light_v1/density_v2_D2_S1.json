@@ -1,0 +1,708 @@
+{
+ "schema": "wvr_density_stage2_v2",
+ "stage": "PAIRED_OUTPUT_SENSITIVITY",
+ "prereg": "docs/preregistration/WVR_SAMPLING_SEMANTIC_DENSITY_V1_2026-09-08.md",
+ "window": {
+  "window_id": "W02",
+  "start_sec": 30.0,
+  "end_sec": 210.0,
+  "label": "D2_median_change",
+  "stage1_score": 1115.5522
+ },
+ "arm": "S1",
+ "requested": {
+  "fps": 0.25,
+  "frames": 45,
+  "frame_size": [
+   512,
+   288
+  ],
+  "model_id": "Qwen/Qwen3-VL-8B-Instruct",
+  "model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "dtype": "bfloat16",
+  "attn_implementation": "sdpa",
+  "quantization": null,
+  "device": "cuda:0",
+  "device_map": null,
+  "do_sample": false,
+  "num_beams": 1,
+  "max_new_tokens": 4096,
+  "repetition_penalty": 1.0,
+  "do_sample_frames": false,
+  "do_resize": false
+ },
+ "event": "V2",
+ "prompt_contract": "SAMPLING_DIAG_PROMPT_V2",
+ "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+ "is_production_contract": false,
+ "output_language": "en",
+ "timestamps_first_last": [
+  32.0,
+  208.0
+ ],
+ "event_extraction_approved": false,
+ "semantic_verdict_allowed": false,
+ "code_git_head": "336b7b6834ecad05f7ba63fda9610424163fc62b",
+ "metrics": {
+  "load_wall_sec": 3.6,
+  "video_process_wall_sec": 5.57,
+  "delivered_frame_count": 45,
+  "frame_size": [
+   512,
+   288
+  ],
+  "frame_times_first_last": [
+   32.0,
+   208.0
+  ],
+  "input_token_count": 3837,
+  "video_token_count": 3312,
+  "infer_wall_sec": 36.26,
+  "generated_token_count": 1019,
+  "peak_vram_allocated_mib": 17911.3,
+  "peak_vram_reserved_mib": 18300.0,
+  "total_wall_sec": 47.45
+ },
+ "stage_status": {
+  "MODEL_LOAD": "OK",
+  "VIDEO_PROCESS": "OK",
+  "INFERENCE": "OK"
+ },
+ "allocator_observed": {
+  "backend": "native",
+  "env": "",
+  "segment_count": 268,
+  "expandable_segments_observed": false,
+  "expandable_flags_head": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ]
+ },
+ "frame_indices_first_last": [
+  960,
+  6240
+ ],
+ "raw_output": "{\"events\": [{\"start_sec\": 30.0, \"end_sec\": 40.0, \"actor\": \"person\", \"action\": \"handling\", \"object_or_state\": \"potatoes in a strainer\"}, {\"start_sec\": 40.0, \"end_sec\": 48.0, \"actor\": \"person\", \"action\": \"pouring\", \"object_or_state\": \"oil into a pan\"}, {\"start_sec\": 48.0, \"end_sec\": 56.0, \"actor\": \"person\", \"action\": \"chopping\", \"object_or_state\": \"onion on a cutting board\"}, {\"start_sec\": 56.0, \"end_sec\": 64.0, \"actor\": \"person\", \"action\": \"pouring\", \"object_or_state\": \"oil into a bowl\"}, {\"start_sec\": 64.0, \"end_sec\": 72.0, \"actor\": \"person\", \"action\": \"chopping\", \"object_or_state\": \"onion on a cutting board\"}, {\"start_sec\": 72.0, \"end_sec\": 80.0, \"actor\": \"person\", \"action\": \"chopping\", \"object_or_state\": \"carrot on a cutting board\"}, {\"start_sec\": 80.0, \"end_sec\": 88.0, \"actor\": \"person\", \"action\": \"mixing\", \"object_or_state\": \"ingredients in a bowl\"}, {\"start_sec\": 88.0, \"end_sec\": 96.0, \"actor\": \"person\", \"action\": \"adding\", \"object_or_state\": \"beef to a bowl\"}, {\"start_sec\": 96.0, \"end_sec\": 104.0, \"actor\": \"person\", \"action\": \"stirring\", \"object_or_state\": \"ingredients in a bowl\"}, {\"start_sec\": 104.0, \"end_sec\": 112.0, \"actor\": \"person\", \"action\": \"using\", \"object_or_state\": \"potato ricer\"}, {\"start_sec\": 112.0, \"end_sec\": 120.0, \"actor\": \"person\", \"action\": \"pouring\", \"object_or_state\": \"potato mash into a bowl\"}, {\"start_sec\": 120.0, \"end_sec\": 128.0, \"actor\": \"person\", \"action\": \"mixing\", \"object_or_state\": \"ingredients in a bowl\"}, {\"start_sec\": 128.0, \"end_sec\": 136.0, \"actor\": \"person\", \"action\": \"shaping\", \"object_or_state\": \"potato mixture into balls\"}, {\"start_sec\": 136.0, \"end_sec\": 144.0, \"actor\": \"person\", \"action\": \"coating\", \"object_or_state\": \"potato balls in egg\"}, {\"start_sec\": 144.0, \"end_sec\": 152.0, \"actor\": \"person\", \"action\": \"coating\", \"object_or_state\": \"potato balls in breadcrumbs\"}, {\"start_sec\": 152.0, \"end_sec\": 160.0, \"actor\": \"person\", \"action\": \"placing\", \"object_or_state\": \"potato balls on a plate\"}, {\"start_sec\": 160.0, \"end_sec\": 168.0, \"actor\": \"person\", \"action\": \"coating\", \"object_or_state\": \"potato balls in breadcrumbs\"}, {\"start_sec\": 168.0, \"end_sec\": 176.0, \"actor\": \"person\", \"action\": \"placing\", \"object_or_state\": \"potato balls on a plate\"}, {\"start_sec\": 176.0, \"end_sec\": 184.0, \"actor\": \"person\", \"action\": \"coating\", \"object_or_state\": \"potato balls in breadcrumbs\"}, {\"start_sec\": 184.0, \"end_sec\": 192.0, \"actor\": \"person\", \"action\": \"placing\", \"object_or_state\": \"potato balls on a plate\"}, {\"start_sec\": 192.0, \"end_sec\": 200.0, \"actor\": \"person\", \"action\": \"coating\", \"object_or_state\": \"potato balls in breadcrumbs\"}, {\"start_sec\": 200.0, \"end_sec\": 208.0, \"actor\": \"person\", \"action\": \"placing\", \"object_or_state\": \"potato balls on a plate\"}]}",
+ "parsed": {
+  "status": "OK",
+  "events": [
+   {
+    "index": 0,
+    "start_sec": 30.0,
+    "end_sec": 40.0,
+    "actor": "person",
+    "action": "handling",
+    "object_or_state": "potatoes in a strainer",
+    "inside_window": true
+   },
+   {
+    "index": 1,
+    "start_sec": 40.0,
+    "end_sec": 48.0,
+    "actor": "person",
+    "action": "pouring",
+    "object_or_state": "oil into a pan",
+    "inside_window": true
+   },
+   {
+    "index": 2,
+    "start_sec": 48.0,
+    "end_sec": 56.0,
+    "actor": "person",
+    "action": "chopping",
+    "object_or_state": "onion on a cutting board",
+    "inside_window": true
+   },
+   {
+    "index": 3,
+    "start_sec": 56.0,
+    "end_sec": 64.0,
+    "actor": "person",
+    "action": "pouring",
+    "object_or_state": "oil into a bowl",
+    "inside_window": true
+   },
+   {
+    "index": 4,
+    "start_sec": 64.0,
+    "end_sec": 72.0,
+    "actor": "person",
+    "action": "chopping",
+    "object_or_state": "onion on a cutting board",
+    "inside_window": true
+   },
+   {
+    "index": 5,
+    "start_sec": 72.0,
+    "end_sec": 80.0,
+    "actor": "person",
+    "action": "chopping",
+    "object_or_state": "carrot on a cutting board",
+    "inside_window": true
+   },
+   {
+    "index": 6,
+    "start_sec": 80.0,
+    "end_sec": 88.0,
+    "actor": "person",
+    "action": "mixing",
+    "object_or_state": "ingredients in a bowl",
+    "inside_window": true
+   },
+   {
+    "index": 7,
+    "start_sec": 88.0,
+    "end_sec": 96.0,
+    "actor": "person",
+    "action": "adding",
+    "object_or_state": "beef to a bowl",
+    "inside_window": true
+   },
+   {
+    "index": 8,
+    "start_sec": 96.0,
+    "end_sec": 104.0,
+    "actor": "person",
+    "action": "stirring",
+    "object_or_state": "ingredients in a bowl",
+    "inside_window": true
+   },
+   {
+    "index": 9,
+    "start_sec": 104.0,
+    "end_sec": 112.0,
+    "actor": "person",
+    "action": "using",
+    "object_or_state": "potato ricer",
+    "inside_window": true
+   },
+   {
+    "index": 10,
+    "start_sec": 112.0,
+    "end_sec": 120.0,
+    "actor": "person",
+    "action": "pouring",
+    "object_or_state": "potato mash into a bowl",
+    "inside_window": true
+   },
+   {
+    "index": 11,
+    "start_sec": 120.0,
+    "end_sec": 128.0,
+    "actor": "person",
+    "action": "mixing",
+    "object_or_state": "ingredients in a bowl",
+    "inside_window": true
+   },
+   {
+    "index": 12,
+    "start_sec": 128.0,
+    "end_sec": 136.0,
+    "actor": "person",
+    "action": "shaping",
+    "object_or_state": "potato mixture into balls",
+    "inside_window": true
+   },
+   {
+    "index": 13,
+    "start_sec": 136.0,
+    "end_sec": 144.0,
+    "actor": "person",
+    "action": "coating",
+    "object_or_state": "potato balls in egg",
+    "inside_window": true
+   },
+   {
+    "index": 14,
+    "start_sec": 144.0,
+    "end_sec": 152.0,
+    "actor": "person",
+    "action": "coating",
+    "object_or_state": "potato balls in breadcrumbs",
+    "inside_window": true
+   },
+   {
+    "index": 15,
+    "start_sec": 152.0,
+    "end_sec": 160.0,
+    "actor": "person",
+    "action": "placing",
+    "object_or_state": "potato balls on a plate",
+    "inside_window": true
+   },
+   {
+    "index": 16,
+    "start_sec": 160.0,
+    "end_sec": 168.0,
+    "actor": "person",
+    "action": "coating",
+    "object_or_state": "potato balls in breadcrumbs",
+    "inside_window": true
+   },
+   {
+    "index": 17,
+    "start_sec": 168.0,
+    "end_sec": 176.0,
+    "actor": "person",
+    "action": "placing",
+    "object_or_state": "potato balls on a plate",
+    "inside_window": true
+   },
+   {
+    "index": 18,
+    "start_sec": 176.0,
+    "end_sec": 184.0,
+    "actor": "person",
+    "action": "coating",
+    "object_or_state": "potato balls in breadcrumbs",
+    "inside_window": true
+   },
+   {
+    "index": 19,
+    "start_sec": 184.0,
+    "end_sec": 192.0,
+    "actor": "person",
+    "action": "placing",
+    "object_or_state": "potato balls on a plate",
+    "inside_window": true
+   },
+   {
+    "index": 20,
+    "start_sec": 192.0,
+    "end_sec": 200.0,
+    "actor": "person",
+    "action": "coating",
+    "object_or_state": "potato balls in breadcrumbs",
+    "inside_window": true
+   },
+   {
+    "index": 21,
+    "start_sec": 200.0,
+    "end_sec": 208.0,
+    "actor": "person",
+    "action": "placing",
+    "object_or_state": "potato balls on a plate",
+    "inside_window": true
+   }
+  ],
+  "collapsed": [
+   {
+    "index": 0,
+    "start_sec": 30.0,
+    "end_sec": 40.0,
+    "actor": "person",
+    "action": "handling",
+    "object_or_state": "potatoes in a strainer",
+    "signature": [
+     "person",
+     "handling",
+     "potatoes in a strainer"
+    ],
+    "source_indices": [
+     0
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 1,
+    "start_sec": 40.0,
+    "end_sec": 48.0,
+    "actor": "person",
+    "action": "pouring",
+    "object_or_state": "oil into a pan",
+    "signature": [
+     "person",
+     "pouring",
+     "oil into a pan"
+    ],
+    "source_indices": [
+     1
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 2,
+    "start_sec": 48.0,
+    "end_sec": 56.0,
+    "actor": "person",
+    "action": "chopping",
+    "object_or_state": "onion on a cutting board",
+    "signature": [
+     "person",
+     "chopping",
+     "onion on a cutting board"
+    ],
+    "source_indices": [
+     2
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 3,
+    "start_sec": 56.0,
+    "end_sec": 64.0,
+    "actor": "person",
+    "action": "pouring",
+    "object_or_state": "oil into a bowl",
+    "signature": [
+     "person",
+     "pouring",
+     "oil into a bowl"
+    ],
+    "source_indices": [
+     3
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 4,
+    "start_sec": 64.0,
+    "end_sec": 72.0,
+    "actor": "person",
+    "action": "chopping",
+    "object_or_state": "onion on a cutting board",
+    "signature": [
+     "person",
+     "chopping",
+     "onion on a cutting board"
+    ],
+    "source_indices": [
+     4
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 5,
+    "start_sec": 72.0,
+    "end_sec": 80.0,
+    "actor": "person",
+    "action": "chopping",
+    "object_or_state": "carrot on a cutting board",
+    "signature": [
+     "person",
+     "chopping",
+     "carrot on a cutting board"
+    ],
+    "source_indices": [
+     5
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 6,
+    "start_sec": 80.0,
+    "end_sec": 88.0,
+    "actor": "person",
+    "action": "mixing",
+    "object_or_state": "ingredients in a bowl",
+    "signature": [
+     "person",
+     "mixing",
+     "ingredients in a bowl"
+    ],
+    "source_indices": [
+     6
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 7,
+    "start_sec": 88.0,
+    "end_sec": 96.0,
+    "actor": "person",
+    "action": "adding",
+    "object_or_state": "beef to a bowl",
+    "signature": [
+     "person",
+     "adding",
+     "beef to a bowl"
+    ],
+    "source_indices": [
+     7
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 8,
+    "start_sec": 96.0,
+    "end_sec": 104.0,
+    "actor": "person",
+    "action": "stirring",
+    "object_or_state": "ingredients in a bowl",
+    "signature": [
+     "person",
+     "stirring",
+     "ingredients in a bowl"
+    ],
+    "source_indices": [
+     8
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 9,
+    "start_sec": 104.0,
+    "end_sec": 112.0,
+    "actor": "person",
+    "action": "using",
+    "object_or_state": "potato ricer",
+    "signature": [
+     "person",
+     "using",
+     "potato ricer"
+    ],
+    "source_indices": [
+     9
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 10,
+    "start_sec": 112.0,
+    "end_sec": 120.0,
+    "actor": "person",
+    "action": "pouring",
+    "object_or_state": "potato mash into a bowl",
+    "signature": [
+     "person",
+     "pouring",
+     "potato mash into a bowl"
+    ],
+    "source_indices": [
+     10
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 11,
+    "start_sec": 120.0,
+    "end_sec": 128.0,
+    "actor": "person",
+    "action": "mixing",
+    "object_or_state": "ingredients in a bowl",
+    "signature": [
+     "person",
+     "mixing",
+     "ingredients in a bowl"
+    ],
+    "source_indices": [
+     11
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 12,
+    "start_sec": 128.0,
+    "end_sec": 136.0,
+    "actor": "person",
+    "action": "shaping",
+    "object_or_state": "potato mixture into balls",
+    "signature": [
+     "person",
+     "shaping",
+     "potato mixture into balls"
+    ],
+    "source_indices": [
+     12
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 13,
+    "start_sec": 136.0,
+    "end_sec": 144.0,
+    "actor": "person",
+    "action": "coating",
+    "object_or_state": "potato balls in egg",
+    "signature": [
+     "person",
+     "coating",
+     "potato balls in egg"
+    ],
+    "source_indices": [
+     13
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 14,
+    "start_sec": 144.0,
+    "end_sec": 152.0,
+    "actor": "person",
+    "action": "coating",
+    "object_or_state": "potato balls in breadcrumbs",
+    "signature": [
+     "person",
+     "coating",
+     "potato balls in breadcrumbs"
+    ],
+    "source_indices": [
+     14
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 15,
+    "start_sec": 152.0,
+    "end_sec": 160.0,
+    "actor": "person",
+    "action": "placing",
+    "object_or_state": "potato balls on a plate",
+    "signature": [
+     "person",
+     "placing",
+     "potato balls on a plate"
+    ],
+    "source_indices": [
+     15
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 16,
+    "start_sec": 160.0,
+    "end_sec": 168.0,
+    "actor": "person",
+    "action": "coating",
+    "object_or_state": "potato balls in breadcrumbs",
+    "signature": [
+     "person",
+     "coating",
+     "potato balls in breadcrumbs"
+    ],
+    "source_indices": [
+     16
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 17,
+    "start_sec": 168.0,
+    "end_sec": 176.0,
+    "actor": "person",
+    "action": "placing",
+    "object_or_state": "potato balls on a plate",
+    "signature": [
+     "person",
+     "placing",
+     "potato balls on a plate"
+    ],
+    "source_indices": [
+     17
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 18,
+    "start_sec": 176.0,
+    "end_sec": 184.0,
+    "actor": "person",
+    "action": "coating",
+    "object_or_state": "potato balls in breadcrumbs",
+    "signature": [
+     "person",
+     "coating",
+     "potato balls in breadcrumbs"
+    ],
+    "source_indices": [
+     18
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 19,
+    "start_sec": 184.0,
+    "end_sec": 192.0,
+    "actor": "person",
+    "action": "placing",
+    "object_or_state": "potato balls on a plate",
+    "signature": [
+     "person",
+     "placing",
+     "potato balls on a plate"
+    ],
+    "source_indices": [
+     19
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 20,
+    "start_sec": 192.0,
+    "end_sec": 200.0,
+    "actor": "person",
+    "action": "coating",
+    "object_or_state": "potato balls in breadcrumbs",
+    "signature": [
+     "person",
+     "coating",
+     "potato balls in breadcrumbs"
+    ],
+    "source_indices": [
+     20
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 21,
+    "start_sec": 200.0,
+    "end_sec": 208.0,
+    "actor": "person",
+    "action": "placing",
+    "object_or_state": "potato balls on a plate",
+    "signature": [
+     "person",
+     "placing",
+     "potato balls on a plate"
+    ],
+    "source_indices": [
+     21
+    ],
+    "collapsed_count": 1
+   }
+  ],
+  "violations": [],
+  "language": {
+   "contract": "ENGLISH_ONLY",
+   "satisfied": true,
+   "hangul_chars": 0,
+   "cjk_chars": 0,
+   "latin_chars": 694
+  },
+  "reason": ""
+ },
+ "representation": {
+  "collapsed_event_count": 22,
+  "unique_signature_count": 14,
+  "max_collapsed_run": 1,
+  "degenerate": false,
+  "reason": ""
+ },
+ "arm_validity": {
+  "valid": true,
+  "reasons": [],
+  "language": {
+   "contract": "ENGLISH_ONLY",
+   "satisfied": true,
+   "hangul_chars": 0,
+   "cjk_chars": 0,
+   "latin_chars": 694
+  }
+ },
+ "arm_status": "OK",
+ "memory_stats": {
+  "allocated_bytes.all.peak": 18781356544,
+  "reserved_bytes.all.peak": 19188940800,
+  "requested_bytes.all.peak": 18766977962,
+  "active_bytes.all.peak": 18781356544,
+  "inactive_split_bytes.all.peak": 609897984,
+  "num_alloc_retries": 0,
+  "num_ooms": 0
+ }
+}

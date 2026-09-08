@@ -1,0 +1,574 @@
+{
+ "schema": "wvr_density_stage2_v2",
+ "stage": "PAIRED_OUTPUT_SENSITIVITY",
+ "prereg": "docs/preregistration/WVR_SAMPLING_SEMANTIC_DENSITY_V1_2026-09-08.md",
+ "window": {
+  "window_id": "W05",
+  "start_sec": 120.0,
+  "end_sec": 300.0,
+  "label": "D3_lowest_change",
+  "stage1_score": 816.3476
+ },
+ "arm": "S1",
+ "requested": {
+  "fps": 0.25,
+  "frames": 45,
+  "frame_size": [
+   512,
+   288
+  ],
+  "model_id": "Qwen/Qwen3-VL-8B-Instruct",
+  "model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "dtype": "bfloat16",
+  "attn_implementation": "sdpa",
+  "quantization": null,
+  "device": "cuda:0",
+  "device_map": null,
+  "do_sample": false,
+  "num_beams": 1,
+  "max_new_tokens": 4096,
+  "repetition_penalty": 1.0,
+  "do_sample_frames": false,
+  "do_resize": false
+ },
+ "event": "V2",
+ "prompt_contract": "SAMPLING_DIAG_PROMPT_V2",
+ "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+ "is_production_contract": false,
+ "output_language": "en",
+ "timestamps_first_last": [
+  120.0,
+  296.0
+ ],
+ "event_extraction_approved": false,
+ "semantic_verdict_allowed": false,
+ "code_git_head": "336b7b6834ecad05f7ba63fda9610424163fc62b",
+ "metrics": {
+  "load_wall_sec": 3.61,
+  "video_process_wall_sec": 5.62,
+  "delivered_frame_count": 45,
+  "frame_size": [
+   512,
+   288
+  ],
+  "frame_times_first_last": [
+   120.0,
+   296.0
+  ],
+  "input_token_count": 3847,
+  "video_token_count": 3312,
+  "infer_wall_sec": 37.85,
+  "generated_token_count": 1039,
+  "peak_vram_allocated_mib": 17913.3,
+  "peak_vram_reserved_mib": 18404.0,
+  "total_wall_sec": 49.11
+ },
+ "stage_status": {
+  "MODEL_LOAD": "OK",
+  "VIDEO_PROCESS": "OK",
+  "INFERENCE": "OK"
+ },
+ "allocator_observed": {
+  "backend": "native",
+  "env": "",
+  "segment_count": 268,
+  "expandable_segments_observed": false,
+  "expandable_flags_head": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ]
+ },
+ "frame_indices_first_last": [
+  3600,
+  8880
+ ],
+ "raw_output": "{\"events\": [{\"start_sec\": 120.0, \"end_sec\": 130.0, \"actor\": \"person\", \"action\": \"pressing\", \"object_or_state\": \"potato press\"}, {\"start_sec\": 130.0, \"end_sec\": 138.0, \"actor\": \"person\", \"action\": \"mixing\", \"object_or_state\": \"potato mixture\"}, {\"start_sec\": 138.0, \"end_sec\": 146.0, \"actor\": \"person\", \"action\": \"shaping\", \"object_or_state\": \"potato mixture\"}, {\"start_sec\": 146.0, \"end_sec\": 154.0, \"actor\": \"person\", \"action\": \"coating\", \"object_or_state\": \"potato mixture\"}, {\"start_sec\": 154.0, \"end_sec\": 162.0, \"actor\": \"person\", \"action\": \"dipping\", \"object_or_state\": \"potato mixture\"}, {\"start_sec\": 162.0, \"end_sec\": 170.0, \"actor\": \"person\", \"action\": \"coating\", \"object_or_state\": \"potato mixture\"}, {\"start_sec\": 170.0, \"end_sec\": 178.0, \"actor\": \"person\", \"action\": \"placing\", \"object_or_state\": \"potato mixture\"}, {\"start_sec\": 178.0, \"end_sec\": 186.0, \"actor\": \"person\", \"action\": \"coating\", \"object_or_state\": \"potato mixture\"}, {\"start_sec\": 186.0, \"end_sec\": 194.0, \"actor\": \"person\", \"action\": \"cooking\", \"object_or_state\": \"potato mixture\"}, {\"start_sec\": 194.0, \"end_sec\": 202.0, \"actor\": \"person\", \"action\": \"mixing\", \"object_or_state\": \"potato mixture\"}, {\"start_sec\": 202.0, \"end_sec\": 210.0, \"actor\": \"person\", \"action\": \"cooking\", \"object_or_state\": \"potato mixture\"}, {\"start_sec\": 210.0, \"end_sec\": 218.0, \"actor\": \"person\", \"action\": \"mixing\", \"object_or_state\": \"potato mixture\"}, {\"start_sec\": 218.0, \"end_sec\": 226.0, \"actor\": \"person\", \"action\": \"cooking\", \"object_or_state\": \"potato mixture\"}, {\"start_sec\": 226.0, \"end_sec\": 234.0, \"actor\": \"person\", \"action\": \"cooking\", \"object_or_state\": \"potato mixture\"}, {\"start_sec\": 234.0, \"end_sec\": 242.0, \"actor\": \"person\", \"action\": \"cooking\", \"object_or_state\": \"potato mixture\"}, {\"start_sec\": 242.0, \"end_sec\": 250.0, \"actor\": \"person\", \"action\": \"cooking\", \"object_or_state\": \"potato mixture\"}, {\"start_sec\": 250.0, \"end_sec\": 258.0, \"actor\": \"person\", \"action\": \"cooking\", \"object_or_state\": \"potato mixture\"}, {\"start_sec\": 258.0, \"end_sec\": 266.0, \"actor\": \"person\", \"action\": \"cooking\", \"object_or_state\": \"potato mixture\"}, {\"start_sec\": 266.0, \"end_sec\": 274.0, \"actor\": \"person\", \"action\": \"cooking\", \"object_or_state\": \"potato mixture\"}, {\"start_sec\": 274.0, \"end_sec\": 282.0, \"actor\": \"person\", \"action\": \"cooking\", \"object_or_state\": \"potato mixture\"}, {\"start_sec\": 282.0, \"end_sec\": 290.0, \"actor\": \"person\", \"action\": \"cooking\", \"object_or_state\": \"potato mixture\"}, {\"start_sec\": 290.0, \"end_sec\": 298.0, \"actor\": \"person\", \"action\": \"cooking\", \"object_or_state\": \"potato mixture\"}, {\"start_sec\": 298.0, \"end_sec\": 300.0, \"actor\": \"person\", \"action\": \"cooking\", \"object_or_state\": \"potato mixture\"}]}",
+ "parsed": {
+  "status": "OK",
+  "events": [
+   {
+    "index": 0,
+    "start_sec": 120.0,
+    "end_sec": 130.0,
+    "actor": "person",
+    "action": "pressing",
+    "object_or_state": "potato press",
+    "inside_window": true
+   },
+   {
+    "index": 1,
+    "start_sec": 130.0,
+    "end_sec": 138.0,
+    "actor": "person",
+    "action": "mixing",
+    "object_or_state": "potato mixture",
+    "inside_window": true
+   },
+   {
+    "index": 2,
+    "start_sec": 138.0,
+    "end_sec": 146.0,
+    "actor": "person",
+    "action": "shaping",
+    "object_or_state": "potato mixture",
+    "inside_window": true
+   },
+   {
+    "index": 3,
+    "start_sec": 146.0,
+    "end_sec": 154.0,
+    "actor": "person",
+    "action": "coating",
+    "object_or_state": "potato mixture",
+    "inside_window": true
+   },
+   {
+    "index": 4,
+    "start_sec": 154.0,
+    "end_sec": 162.0,
+    "actor": "person",
+    "action": "dipping",
+    "object_or_state": "potato mixture",
+    "inside_window": true
+   },
+   {
+    "index": 5,
+    "start_sec": 162.0,
+    "end_sec": 170.0,
+    "actor": "person",
+    "action": "coating",
+    "object_or_state": "potato mixture",
+    "inside_window": true
+   },
+   {
+    "index": 6,
+    "start_sec": 170.0,
+    "end_sec": 178.0,
+    "actor": "person",
+    "action": "placing",
+    "object_or_state": "potato mixture",
+    "inside_window": true
+   },
+   {
+    "index": 7,
+    "start_sec": 178.0,
+    "end_sec": 186.0,
+    "actor": "person",
+    "action": "coating",
+    "object_or_state": "potato mixture",
+    "inside_window": true
+   },
+   {
+    "index": 8,
+    "start_sec": 186.0,
+    "end_sec": 194.0,
+    "actor": "person",
+    "action": "cooking",
+    "object_or_state": "potato mixture",
+    "inside_window": true
+   },
+   {
+    "index": 9,
+    "start_sec": 194.0,
+    "end_sec": 202.0,
+    "actor": "person",
+    "action": "mixing",
+    "object_or_state": "potato mixture",
+    "inside_window": true
+   },
+   {
+    "index": 10,
+    "start_sec": 202.0,
+    "end_sec": 210.0,
+    "actor": "person",
+    "action": "cooking",
+    "object_or_state": "potato mixture",
+    "inside_window": true
+   },
+   {
+    "index": 11,
+    "start_sec": 210.0,
+    "end_sec": 218.0,
+    "actor": "person",
+    "action": "mixing",
+    "object_or_state": "potato mixture",
+    "inside_window": true
+   },
+   {
+    "index": 12,
+    "start_sec": 218.0,
+    "end_sec": 226.0,
+    "actor": "person",
+    "action": "cooking",
+    "object_or_state": "potato mixture",
+    "inside_window": true
+   },
+   {
+    "index": 13,
+    "start_sec": 226.0,
+    "end_sec": 234.0,
+    "actor": "person",
+    "action": "cooking",
+    "object_or_state": "potato mixture",
+    "inside_window": true
+   },
+   {
+    "index": 14,
+    "start_sec": 234.0,
+    "end_sec": 242.0,
+    "actor": "person",
+    "action": "cooking",
+    "object_or_state": "potato mixture",
+    "inside_window": true
+   },
+   {
+    "index": 15,
+    "start_sec": 242.0,
+    "end_sec": 250.0,
+    "actor": "person",
+    "action": "cooking",
+    "object_or_state": "potato mixture",
+    "inside_window": true
+   },
+   {
+    "index": 16,
+    "start_sec": 250.0,
+    "end_sec": 258.0,
+    "actor": "person",
+    "action": "cooking",
+    "object_or_state": "potato mixture",
+    "inside_window": true
+   },
+   {
+    "index": 17,
+    "start_sec": 258.0,
+    "end_sec": 266.0,
+    "actor": "person",
+    "action": "cooking",
+    "object_or_state": "potato mixture",
+    "inside_window": true
+   },
+   {
+    "index": 18,
+    "start_sec": 266.0,
+    "end_sec": 274.0,
+    "actor": "person",
+    "action": "cooking",
+    "object_or_state": "potato mixture",
+    "inside_window": true
+   },
+   {
+    "index": 19,
+    "start_sec": 274.0,
+    "end_sec": 282.0,
+    "actor": "person",
+    "action": "cooking",
+    "object_or_state": "potato mixture",
+    "inside_window": true
+   },
+   {
+    "index": 20,
+    "start_sec": 282.0,
+    "end_sec": 290.0,
+    "actor": "person",
+    "action": "cooking",
+    "object_or_state": "potato mixture",
+    "inside_window": true
+   },
+   {
+    "index": 21,
+    "start_sec": 290.0,
+    "end_sec": 298.0,
+    "actor": "person",
+    "action": "cooking",
+    "object_or_state": "potato mixture",
+    "inside_window": true
+   },
+   {
+    "index": 22,
+    "start_sec": 298.0,
+    "end_sec": 300.0,
+    "actor": "person",
+    "action": "cooking",
+    "object_or_state": "potato mixture",
+    "inside_window": true
+   }
+  ],
+  "collapsed": [
+   {
+    "index": 0,
+    "start_sec": 120.0,
+    "end_sec": 130.0,
+    "actor": "person",
+    "action": "pressing",
+    "object_or_state": "potato press",
+    "signature": [
+     "person",
+     "pressing",
+     "potato press"
+    ],
+    "source_indices": [
+     0
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 1,
+    "start_sec": 130.0,
+    "end_sec": 138.0,
+    "actor": "person",
+    "action": "mixing",
+    "object_or_state": "potato mixture",
+    "signature": [
+     "person",
+     "mixing",
+     "potato mixture"
+    ],
+    "source_indices": [
+     1
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 2,
+    "start_sec": 138.0,
+    "end_sec": 146.0,
+    "actor": "person",
+    "action": "shaping",
+    "object_or_state": "potato mixture",
+    "signature": [
+     "person",
+     "shaping",
+     "potato mixture"
+    ],
+    "source_indices": [
+     2
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 3,
+    "start_sec": 146.0,
+    "end_sec": 154.0,
+    "actor": "person",
+    "action": "coating",
+    "object_or_state": "potato mixture",
+    "signature": [
+     "person",
+     "coating",
+     "potato mixture"
+    ],
+    "source_indices": [
+     3
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 4,
+    "start_sec": 154.0,
+    "end_sec": 162.0,
+    "actor": "person",
+    "action": "dipping",
+    "object_or_state": "potato mixture",
+    "signature": [
+     "person",
+     "dipping",
+     "potato mixture"
+    ],
+    "source_indices": [
+     4
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 5,
+    "start_sec": 162.0,
+    "end_sec": 170.0,
+    "actor": "person",
+    "action": "coating",
+    "object_or_state": "potato mixture",
+    "signature": [
+     "person",
+     "coating",
+     "potato mixture"
+    ],
+    "source_indices": [
+     5
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 6,
+    "start_sec": 170.0,
+    "end_sec": 178.0,
+    "actor": "person",
+    "action": "placing",
+    "object_or_state": "potato mixture",
+    "signature": [
+     "person",
+     "placing",
+     "potato mixture"
+    ],
+    "source_indices": [
+     6
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 7,
+    "start_sec": 178.0,
+    "end_sec": 186.0,
+    "actor": "person",
+    "action": "coating",
+    "object_or_state": "potato mixture",
+    "signature": [
+     "person",
+     "coating",
+     "potato mixture"
+    ],
+    "source_indices": [
+     7
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 8,
+    "start_sec": 186.0,
+    "end_sec": 194.0,
+    "actor": "person",
+    "action": "cooking",
+    "object_or_state": "potato mixture",
+    "signature": [
+     "person",
+     "cooking",
+     "potato mixture"
+    ],
+    "source_indices": [
+     8
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 9,
+    "start_sec": 194.0,
+    "end_sec": 202.0,
+    "actor": "person",
+    "action": "mixing",
+    "object_or_state": "potato mixture",
+    "signature": [
+     "person",
+     "mixing",
+     "potato mixture"
+    ],
+    "source_indices": [
+     9
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 10,
+    "start_sec": 202.0,
+    "end_sec": 210.0,
+    "actor": "person",
+    "action": "cooking",
+    "object_or_state": "potato mixture",
+    "signature": [
+     "person",
+     "cooking",
+     "potato mixture"
+    ],
+    "source_indices": [
+     10
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 11,
+    "start_sec": 210.0,
+    "end_sec": 218.0,
+    "actor": "person",
+    "action": "mixing",
+    "object_or_state": "potato mixture",
+    "signature": [
+     "person",
+     "mixing",
+     "potato mixture"
+    ],
+    "source_indices": [
+     11
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 12,
+    "start_sec": 218.0,
+    "end_sec": 300.0,
+    "actor": "person",
+    "action": "cooking",
+    "object_or_state": "potato mixture",
+    "signature": [
+     "person",
+     "cooking",
+     "potato mixture"
+    ],
+    "source_indices": [
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     18,
+     19,
+     20,
+     21,
+     22
+    ],
+    "collapsed_count": 11
+   }
+  ],
+  "violations": [],
+  "language": {
+   "contract": "ENGLISH_ONLY",
+   "satisfied": true,
+   "hangul_chars": 0,
+   "cjk_chars": 0,
+   "latin_chars": 594
+  },
+  "reason": ""
+ },
+ "representation": {
+  "collapsed_event_count": 13,
+  "unique_signature_count": 7,
+  "max_collapsed_run": 11,
+  "degenerate": false,
+  "reason": ""
+ },
+ "arm_validity": {
+  "valid": true,
+  "reasons": [],
+  "language": {
+   "contract": "ENGLISH_ONLY",
+   "satisfied": true,
+   "hangul_chars": 0,
+   "cjk_chars": 0,
+   "latin_chars": 594
+  }
+ },
+ "arm_status": "OK",
+ "memory_stats": {
+  "allocated_bytes.all.peak": 18783485952,
+  "reserved_bytes.all.peak": 19297992704,
+  "requested_bytes.all.peak": 18769523262,
+  "active_bytes.all.peak": 18783485952,
+  "inactive_split_bytes.all.peak": 658432000,
+  "num_alloc_retries": 0,
+  "num_ooms": 0
+ }
+}
