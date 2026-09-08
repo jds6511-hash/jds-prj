@@ -170,15 +170,22 @@ def _device_free_mib() -> float:
     return round(free / 1024 ** 2, 1)
 
 
-def probe(video_path, out_path, *, video_meta):
-    """C01 1회 실행. 실패도 JSON으로 남긴다."""
+def probe(video_path, out_path, *, video_meta, sampling=None):
+    """C01 1회 실행. 실패도 JSON으로 남긴다.
+
+    `sampling`은 사전등록된 별도 사건에서만 넘긴다 —
+    `{"fps": …, "timestamps": (…)}`. 넘기지 않으면 C01 동결 표집이다.
+    """
     import torch
     import transformers
     from transformers import AutoProcessor, Qwen3VLForConditionalGeneration
     from transformers.video_utils import VideoMetadata
 
     chunk = approved_chunk(video_meta["duration_sec"])
+    fps = contract.CHUNK_FPS
     timestamps = contract.chunk_frames(chunk)
+    if sampling is not None:
+        fps, timestamps = sampling["fps"], tuple(sampling["timestamps"])
     prompt = build_prompt(chunk)
 
     record = {
@@ -193,7 +200,7 @@ def probe(video_path, out_path, *, video_meta):
             "dtype": contract.DTYPE, "quantization": contract.QUANTIZATION,
             "device": contract.DEVICE, "device_map": contract.DEVICE_MAP,
             "attn_implementation": contract.ATTN_IMPLEMENTATION,
-            "chunk_fps": contract.CHUNK_FPS,
+            "chunk_fps": fps,
             "frame_size": [contract.FRAME_WIDTH, contract.FRAME_HEIGHT],
             "do_sample_frames": contract.DO_SAMPLE_FRAMES,
             "do_resize": contract.DO_RESIZE,
