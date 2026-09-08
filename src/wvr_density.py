@@ -65,6 +65,15 @@ def assert_subset(keep, arm_timestamps) -> None:
                            % (len(keep), len(arm_timestamps)))
 
 
+def assert_contained(superset, subset) -> None:
+    """부분집합 관계만 본다(개수 일치는 요구하지 않는다) — Stage 2 창 안에서 쓴다."""
+    if not tuple(subset):
+        raise DensityError("부분집합이 비었다")
+    missing = [stamp for stamp in subset if stamp not in set(superset)]
+    if missing:
+        raise DensityError("상위 집합에 없는 시각이 있다: %r" % missing[:5])
+
+
 def neighbours(stamp: float, keep) -> tuple:
     """DROP 프레임의 직전·직후 KEEP 프레임."""
     before = [value for value in keep if value < stamp]
