@@ -1,5 +1,10 @@
 # 최종 상태 — R1-VAD0 제출 arm CLOSED (2026-09-07)
 
+> 2026-09-08 갱신: 이 arm(hwpx `4e10aaab…`)은 이제 **rollback baseline**이다.
+> 현행 제출 arm은 `R1-VAD0-QUALITY`(v3 + STT_VAD0 + output_quality_v1 + 300초 grouping)이며
+> `V2_1_SUBMISSION_QUALITY_PROMOTION_2026-09-08.md`가 그 상태를 적는다.
+> 이 문서 본문은 당시 판정 기록이므로 수치를 고치지 않는다.
+
 이 문서는 **닫힌 상태의 기록**이다. 수치를 고치지 않는다. 근거 문서:
 `V2_1_SUBMISSION_VAD0_PROMOTION_2026-09-07.md`(승격),
 `../probes/STT_VAD0_SHADOW_TIER2_2026-09-07.md`(paired 결과),

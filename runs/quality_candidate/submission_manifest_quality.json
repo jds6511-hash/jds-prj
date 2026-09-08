@@ -1,0 +1,239 @@
+{
+ "submission_arm": "R1-VAD0-QUALITY",
+ "submission_contract": "episode_content_v3_summary_only",
+ "prompt_hash": "a08e3c3c4988daa6639cf0316f8b5d81f466685590fb54400eeda7d6ab6610d7",
+ "stt_evidence_policy": "STT_VAD0",
+ "stt_evidence_rule": "existing VALID AND speech_overlap_ratio == 0 -> SUSPECT",
+ "measurements_sha256": "e1914741cf7a550fc654f4078d812a08f0bc20a06ee5ccb4bf829bdcfe3caa63",
+ "output_quality_policy": "output_quality_v1",
+ "output_quality_policy_hash": "2f99bc0fe02c445d31fc041f8a660b03ef2f9a84ebef63ebde948f94218a92eb",
+ "presentation_group_window_sec": 300,
+ "presentation_groups": [
+  [
+   "EP01",
+   "EP02",
+   "EP03",
+   "EP04",
+   "EP05"
+  ],
+  [
+   "EP06",
+   "EP07",
+   "EP08",
+   "EP09",
+   "EP10"
+  ],
+  [
+   "EP11",
+   "EP12",
+   "EP13",
+   "EP14",
+   "EP15"
+  ],
+  [
+   "EP16",
+   "EP17",
+   "EP18",
+   "EP19",
+   "EP20"
+  ],
+  [
+   "EP21",
+   "EP22",
+   "EP23",
+   "EP24",
+   "EP25"
+  ],
+  [
+   "EP26",
+   "EP27",
+   "EP28",
+   "EP29",
+   "EP30"
+  ],
+  [
+   "EP31",
+   "EP32",
+   "EP33",
+   "EP34",
+   "EP35"
+  ],
+  [
+   "EP36",
+   "EP37",
+   "EP38",
+   "EP39",
+   "EP40"
+  ],
+  [
+   "EP41"
+  ]
+ ],
+ "presentation_group_count": 9,
+ "input": {
+  "segments_sha256": "aa008317023c884a206c2ea8ce9f1de5db809c2638fca257f964a58df4799c92",
+  "segment_count": 485
+ },
+ "fingerprint": {
+  "config_hash": "bb0d2299aabab800ee71495478cb5df23676152f2b00cd93c78227dd4f32578d",
+  "code_revision": "3ee4341c0fd1f963255e092b1726ac25dceff0c8",
+  "prompt_version": "episode_content_v3_summary_only",
+  "prompt_hash": "a08e3c3c4988daa6639cf0316f8b5d81f466685590fb54400eeda7d6ab6610d7",
+  "model_id": "Qwen/Qwen2.5-7B-Instruct",
+  "evidence_policy": "shadow_vad0"
+ },
+ "model_provenance": {
+  "model_id": "Qwen/Qwen2.5-7B-Instruct",
+  "resolved_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+  "model_local_path": "Qwen/Qwen2.5-7B-Instruct",
+  "tokenizer_revision": "unavailable",
+  "tokenizer_local_path": "Qwen/Qwen2.5-7B-Instruct",
+  "torch_dtype": "torch.bfloat16",
+  "llm_4bit": false,
+  "do_sample": false,
+  "max_new_tokens": 512
+ },
+ "generation": {
+  "model_id": "Qwen/Qwen2.5-7B-Instruct",
+  "do_sample": false,
+  "max_new_tokens": 512
+ },
+ "vad": {
+  "phase_a_code_revision": "621a252d3cbc7f1f0834e2191cb30c394fdfcf7d",
+  "audio_sha256": "38ec13cfc31eee22eb217136caa2abdf7c597d6380c6f447a2c05c5476867647",
+  "stt_cache_sha256": "59c98df1e0ea18e93623074a538b63b91794a8fca686e68a345c85dfc1c1a90d",
+  "faster_whisper_version": "1.2.1",
+  "vad_model": "silero_vad_v6.onnx",
+  "vad_model_sha256": "4cbf549b8326f60f80f2536d9eefeb450a9abe83365a098031c89719f1be17d2",
+  "vad_params_resolved": {
+   "threshold": 0.5,
+   "neg_threshold": 0.35,
+   "min_speech_duration_ms": 0,
+   "max_speech_duration_s": "inf",
+   "min_silence_duration_ms": 2000,
+   "speech_pad_ms": 400
+  },
+  "sampling_rate": 16000,
+  "speech_chunks": 39
+ },
+ "stt_evidence": {
+  "original_claim_evidence": 777,
+  "selected_claim_evidence": 567
+ },
+ "paired_result": {
+  "metrics": "runs\\vad0_paired\\paired_metrics.json",
+  "metrics_sha256": "21da3619ff22ac2f6c3dd22f0d20b51dd5d11af0e90c42e83b7b021179eb3a1b",
+  "commit": "958276b06bcbf3983f00b9132edffba4185a8dcd",
+  "presentation_eligible": {
+   "s0": 39,
+   "s1": 40
+  },
+  "parse_contract_failure": {
+   "s0": 2,
+   "s1": 1
+  },
+  "non_regression_gates": {
+   "presentation_s1_ge_s0": true,
+   "parse_s1_le_s0": true,
+   "no_evidence_growth": true
+  }
+ },
+ "source_content_hash": "54f77a0a7faaa94a3eb9f7bafa68aada8e32e26dd80e33d4027dd5a932cf8151",
+ "canonical_partition_hash": "a52a0bdf00d49972e60d1119b3a828e5905aa70e9cd42067a301fdd3e2c19931",
+ "canonical_episodes": 41,
+ "presentation_eligible": 39,
+ "quality_status_counts": {
+  "PASS": 38,
+  "SUSPECT": 1,
+  "FAIL": 2
+ },
+ "excluded_summary_episodes": [
+  {
+   "episode_id": "EP13",
+   "reasons": [
+    "OUTPUT_LANGUAGE_DRIFT"
+   ]
+  },
+  {
+   "episode_id": "EP17",
+   "reasons": [
+    "PARSE_CONTRACT_FAILURE"
+   ]
+  }
+ ],
+ "unavailable_note": "2 episodes are not presented: EP13 (OUTPUT_LANGUAGE_DRIFT), EP17 (PARSE_CONTRACT_FAILURE)",
+ "renderer": "A2' pure-Python OWPML (scripts/v2_1_hwpx_owpml.py)",
+ "llm_rerun": false,
+ "regenerated_by_rerun": false,
+ "artifact": {
+  "hwpx": "runs\\quality_candidate\\S7\\report.hwpx",
+  "hwpx_sha256": "5732075871fd7902d52239cebced28f9489a0f558dac67c61f5d2ca994e9cd7b",
+  "hwpx_bytes": 10185,
+  "md_sha256": "d25e2fe9b1e51576a67c2829f85cf2c16ae34aa8e048443042c7a43934d9af12",
+  "presentation_sha256": "4de71722ec7acc31219d8894fe713d3863a4e84988c24f637a8fbdf635207d93"
+ },
+ "companions": [
+  {
+   "name": "stt_transcript_full_xekZO4n4QuE.txt",
+   "kind": "stt_transcript",
+   "bytes": 25577,
+   "sha256": "26fc147e626fe42c2d7ebb9a2f06cf3347280aff70027b0e185f2cf7ffee025c"
+  },
+  {
+   "name": "stt_utterances_full_xekZO4n4QuE.txt",
+   "kind": "stt_transcript",
+   "bytes": 22697,
+   "sha256": "b2a4e14e0f5033ab614a6345a33ec8cdab8732d68492e9732bf5eabc4b27f772"
+  }
+ ],
+ "default_contract_unchanged": true,
+ "vad0_default_off": true,
+ "supersedes": {
+  "submission_arm": "R1-VAD0",
+  "hwpx": "runs\\vad0_paired\\s1_shadow\\report.hwpx",
+  "hwpx_sha256": "4e10aaaba1d8a6e510c4749efc4a6e1bf5a5dbb5dba963403a84379bcd92ff90",
+  "presentation_eligible": 40,
+  "tag": "submission-vad0-2026-09-07",
+  "role": "rollback artifact — 보존한다. 삭제·덮어쓰기 금지"
+ },
+ "not_claimed": [
+  "semantic entailment of the summaries is not automatically verified",
+  "the abstention layer is not a verified hallucination detector",
+  "the output quality gate judges the output language contract, not factual correctness",
+  "GRD-004 remains P1 WAIVED",
+  "v3 is not the repository default contract"
+ ],
+ "structural_validator": "PASS",
+ "hangul": {
+  "hancom_open": true,
+  "pdf_export": true,
+  "pdf_bytes": 115382,
+  "text_chars": 7907,
+  "box_glyphs": {
+   "■": 5,
+   "┌": 9,
+   "│": 47,
+   "└": 9
+  }
+ },
+ "hwpx_sha256_verified": "5732075871fd7902d52239cebced28f9489a0f558dac67c61f5d2ca994e9cd7b",
+ "rollback_intact": {
+  "submission_vad0_2026_09_07": "4e10aaaba1d8a6e510c4749efc4a6e1bf5a5dbb5dba963403a84379bcd92ff90",
+  "checks": {
+   "submission_vad0_2026_09_07": {
+    "path": "runs\\vad0_paired\\s1_shadow\\report.hwpx",
+    "expected": "4e10aaaba1d8a6e510c4749efc4a6e1bf5a5dbb5dba963403a84379bcd92ff90",
+    "actual": "4e10aaaba1d8a6e510c4749efc4a6e1bf5a5dbb5dba963403a84379bcd92ff90",
+    "match": true
+   },
+   "submission_ready_2026_09_03": {
+    "path": "runs\\v3_paired\\r1_v3\\report.hwpx",
+    "expected": "f874f643112704120cd3b043c3667b71ffd4f25105ca1fccf345b936d4e4a91d",
+    "actual": "f874f643112704120cd3b043c3667b71ffd4f25105ca1fccf345b936d4e4a91d",
+    "match": true
+   }
+  },
+  "submission_ready_2026_09_03": "f874f643112704120cd3b043c3667b71ffd4f25105ca1fccf345b936d4e4a91d",
+  "intact": true
+ }
+}
