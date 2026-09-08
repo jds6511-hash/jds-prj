@@ -43,8 +43,9 @@ REQUIRED_METRICS = (
     "peak_vram_reserved_mib", "device_peak_used_mib",
     "requested_timestamps", "delivered_frame_count", "frame_size",
     "input_token_count", "video_token_count", "output_token_count",
-    "effective_video_duration_sec", "load_wall_sec", "infer_wall_sec",
-    "total_wall_sec", "oom", "offloaded_params",
+    "effective_video_duration_sec", "load_wall_sec", "video_process_wall_sec",
+    "infer_wall_sec", "total_wall_sec", "oom", "offloaded_params",
+    "baseline_vram_free_mib", "generated_token_count", "finish_reason",
 )
 
 
@@ -141,6 +142,34 @@ def _device_used_mib() -> float:
     return round((total - free) / 1024 ** 2, 1)
 
 
+def allocator_observation() -> dict:
+    """allocator가 실제로 적용됐는지 본다 — 환경변수 문자열만으로는 부족하다."""
+    import torch
+    segments = torch.cuda.memory_snapshot()
+    flags = [bool(segment.get("is_expandable")) for segment in segments]
+    return {"backend": torch.cuda.get_allocator_backend(),
+            "env": os.environ.get("PYTORCH_CUDA_ALLOC_CONF", ""),
+            "segment_count": len(segments),
+            "expandable_segments_observed": bool(flags) and all(flags),
+            "expandable_flags_head": flags[:8]}
+
+
+def memory_stats_subset() -> dict:
+    """실패 직전 단편화 진단용. 계측만 추가한다 — 실험 변수가 아니다."""
+    import torch
+    stats = torch.cuda.memory_stats()
+    keys = ("allocated_bytes.all.peak", "reserved_bytes.all.peak",
+            "requested_bytes.all.peak", "active_bytes.all.peak",
+            "inactive_split_bytes.all.peak", "num_alloc_retries", "num_ooms")
+    return {key: stats.get(key) for key in keys}
+
+
+def _device_free_mib() -> float:
+    import torch
+    free, _ = torch.cuda.mem_get_info()
+    return round(free / 1024 ** 2, 1)
+
+
 def probe(video_path, out_path, *, video_meta):
     """C01 1회 실행. 실패도 JSON으로 남긴다."""
     import torch
@@ -189,6 +218,7 @@ def probe(video_path, out_path, *, video_meta):
     try:
         torch.cuda.reset_peak_memory_stats()
         metrics["baseline_vram_mib"] = _device_used_mib()
+        metrics["baseline_vram_free_mib"] = _device_free_mib()
 
         load_started = time.time()
         processor = AutoProcessor.from_pretrained(
@@ -205,6 +235,7 @@ def probe(video_path, out_path, *, video_meta):
         metrics["offloaded_params"] = sum(
             1 for param in model.parameters() if param.device.type != "cuda")
         stage["MODEL_LOAD"] = "PASS"
+        record["allocator_observed"] = allocator_observation()
 
         record["resolved"] = {
             "torch": torch.__version__,
@@ -220,7 +251,9 @@ def probe(video_path, out_path, *, video_meta):
             "hf_home": os.environ.get("HF_HOME", ""),
         }
 
+        sample_started = time.time()
         frames, indices, times, rate = sample_frames(video_path, timestamps)
+        metrics["video_process_wall_sec"] = round(time.time() - sample_started, 2)
         metrics["delivered_frame_count"] = len(frames)
         metrics["frame_size"] = list(frames[0].size)
         metrics["frame_times_first_last"] = [times[0], times[-1]]
@@ -260,6 +293,14 @@ def probe(video_path, out_path, *, video_meta):
         metrics["infer_wall_sec"] = round(time.time() - infer_started, 2)
         new_tokens = generated[0][inputs["input_ids"].shape[-1]:]
         metrics["output_token_count"] = int(new_tokens.shape[-1])
+        metrics["generated_token_count"] = metrics["output_token_count"]
+        eos_ids = {int(model.generation_config.eos_token_id)} if isinstance(
+            model.generation_config.eos_token_id, int) else {
+            int(value) for value in
+            (model.generation_config.eos_token_id or [])}
+        hit_eos = bool(eos_ids & {int(token) for token in new_tokens[-1:]})
+        metrics["finish_reason"] = ("EOS" if hit_eos else "MAX_NEW_TOKENS")
+        metrics["generation_completed"] = True
         record["raw_output"] = processor.tokenizer.decode(
             new_tokens, skip_special_tokens=True)
         stage["10MIN_INFERENCE"] = "PASS"
@@ -271,6 +312,7 @@ def probe(video_path, out_path, *, video_meta):
             getattr(torch, "OutOfMemoryError", None),
             getattr(torch.cuda, "OutOfMemoryError", None)))
         metrics["oom"] = record["verdict"] == VERDICT_CAPACITY_FAIL
+        metrics["generation_completed"] = False
         record["error"] = {"type": type(error).__name__,
                            "message": str(error)[:2000]}
         for name in ("MODEL_LOAD", "VIDEO_PROCESS", "10MIN_INFERENCE"):
@@ -287,6 +329,8 @@ def probe(video_path, out_path, *, video_meta):
             metrics["peak_vram_reserved_mib"] = round(
                 _torch.cuda.max_memory_reserved() / 1024 ** 2, 1)
             metrics["device_peak_used_mib"] = _device_used_mib()
+            record["memory_stats"] = memory_stats_subset()
+            record["memory_summary"] = _torch.cuda.memory_summary()
         except Exception:
             pass
         metrics["total_wall_sec"] = round(time.time() - started, 2)
