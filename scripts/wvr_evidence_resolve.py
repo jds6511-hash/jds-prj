@@ -56,7 +56,7 @@ def load_v2(runs: Path, pair: str, arm: str) -> dict:
     record = json.loads(path.read_text(encoding="utf-8"))
     if record.get("event") != events.EVENT_V2:
         raise ResolveError("V2 산출물이 아니다: %s" % path.name)
-    if record.get("arm_status") != "ARM_VALID":
+    if not (record.get("arm_validity") or {}).get("valid"):
         raise ResolveError("무효 arm은 입력으로 쓰지 않는다: %s" % path.name)
     return record
 

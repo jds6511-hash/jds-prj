@@ -44,7 +44,10 @@ PASS로 돌아갈 수 없다(리뷰어 결정). 이 사건은 **깨진 조건의
 
 ```
 V2 출력      runs/wvr_light_v1/density_v2_D{1,2,3}_S{0,1}.json
-             arm_status == ARM_VALID인 것만 (아니면 실행 거부)
+             arm_validity.valid == true인 것만 (아니면 실행 거부)
+             [errata 2026-09-09 · 실행 전] 최초 표기 "arm_status == ARM_VALID"는
+             V2 산출물의 실제 필드명을 잘못 적은 것이다(실값은 arm_status "OK" ·
+             arm_validity.valid true). 게이트의 강도는 그대로이고 필드명만 정정했다.
 evidence     work_full/full_xekZO4n4QuE/segments.json
              sha256 aa008317023c884a206c2ea8ce9f1de5db809c2638fca257f964a58df4799c92
              485구간 · 5초 · 필드 caption · subtitle

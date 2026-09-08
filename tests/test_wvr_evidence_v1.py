@@ -249,7 +249,8 @@ def test_wvr_e22_the_resolver_never_loads_an_inference_stack():
 
 
 def test_wvr_e23_invalid_v2_arms_are_refused_as_input(tmp_path):
-    record = {"event": "V2", "arm_status": "ARM_INVALID",
+    record = {"event": "V2", "arm_status": "OK",
+              "arm_validity": {"valid": False, "reasons": ["TRUNCATED_AT_CAP"]},
               "parsed": {"collapsed": []}}
     (tmp_path / "density_v2_D1_S0.json").write_text(
         json.dumps(record), encoding="utf-8")
