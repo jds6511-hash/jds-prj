@@ -164,7 +164,16 @@ def test_wvr_d09_stage1_never_touches_a_model():
     for forbidden in ("Qwen3VLForConditionalGeneration", "AutoProcessor",
                       "generate(", "torch.cuda", "cuda:0"):
         assert forbidden not in source
-    assert "probe.sample_frames" in source        # 같은 프레임을 쓴다
+    # 문서 문구가 아니라 실제 호출을 본다 (자기 docstring에 걸리지 않게)
+    assert "probe.sample_frames(video_path, reference)" in source
+
+
+def test_the_frame_geometry_is_the_capacity_one():
+    """표집만 다르고 해상도는 capacity 사건과 같아야 한다."""
+    assert (contract.FRAME_WIDTH, contract.FRAME_HEIGHT) == (512, 288)
+    record = json.loads(B_PATH.read_text(encoding="utf-8"))
+    assert record["requested"]["frame_size"] == [contract.FRAME_WIDTH,
+                                                 contract.FRAME_HEIGHT]
 
 
 def test_wvr_d10_stage2_and_the_report_path_stay_closed():
