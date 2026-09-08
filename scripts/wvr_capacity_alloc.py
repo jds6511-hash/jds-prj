@@ -69,12 +69,22 @@ def preflight(arm: str, video: Path, idle: dict) -> dict:
         except Exception:
             return "UNKNOWN"
 
+    # 서버 실행 디렉터리에는 .git이 없다 — 그때는 호출자가 넘긴 값을 쓰고
+    # 출처를 함께 남긴다. 알 수 없으면 False가 아니라 None이다.
+    status = git("status", "--porcelain")
+    if status == "UNKNOWN":
+        env_clean = os.environ.get("WVR_TREE_CLEAN", "")
+        tree_clean = {"1": True, "0": False}.get(env_clean)
+        tree_source = "env" if env_clean else "unavailable"
+    else:
+        tree_clean, tree_source = status == "", "git"
+
     return {"arm": arm, "gpu_idle": idle,
             "video_sha256": probe._sha256(video),
             "model_snapshot": probe.contract.MODEL_REVISION,
             "git_head": os.environ.get("WVR_CODE_GIT_HEAD") or git("rev-parse",
                                                                    "HEAD"),
-            "tree_clean": git("status", "--porcelain") == "",
+            "tree_clean": tree_clean, "tree_clean_source": tree_source,
             "command": [sys.executable, *sys.argv],
             "cwd": os.getcwd(),
             "environment": {key: os.environ.get(key, "")
