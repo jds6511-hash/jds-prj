@@ -239,13 +239,17 @@ def test_wvr_e22_the_resolver_never_loads_an_inference_stack():
     for banned in ("import torch", "import transformers",
                    "from transformers"):
         assert banned not in source
-    assert "torch" not in sys.modules
-    sys.modules["torch"] = object()
+
+    # 다른 테스트 모듈이 torch를 올렸을 수도 있다 — 가드는 그 상태를 잡아야 한다
+    injected = "torch" not in sys.modules
+    if injected:
+        sys.modules["torch"] = object()
     try:
         with pytest.raises(resolver.ResolveError):
             resolver.assert_no_inference()
     finally:
-        del sys.modules["torch"]
+        if injected:
+            del sys.modules["torch"]
 
 
 def test_wvr_e23_invalid_v2_arms_are_refused_as_input(tmp_path):

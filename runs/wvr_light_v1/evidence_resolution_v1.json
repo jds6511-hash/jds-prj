@@ -1,0 +1,9153 @@
+{
+ "schema": "wvr_evidence_resolution_v1",
+ "event": "WVR_SAMPLING_SEMANTIC_DENSITY_EVIDENCE_RESOLUTION_V1",
+ "prereg": "docs/preregistration/WVR_EVIDENCE_RESOLUTION_V1_2026-09-09.md",
+ "code_git_head": "0a2bce8ecb3e4f491dea028cb5cefe2f20148de8",
+ "new_inference_allowed": false,
+ "semantic_sufficiency_claim_allowed": false,
+ "promotion_allowed": false,
+ "event_extraction_approved": false,
+ "inputs": {
+  "segments": "work_full/full_xekZO4n4QuE/segments.json",
+  "segments_sha256": "aa008317023c884a206c2ea8ce9f1de5db809c2638fca257f964a58df4799c92",
+  "segment_count": 485,
+  "video_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+  "canonical": "runs/vad0_paired/s1_shadow/S5/aar_canonical.json",
+  "canonical_run_id": "vad0-s1_shadow-20260907",
+  "canonical_boundary": {
+   "provider_name": "fixed_window_v1",
+   "provider_version": "1",
+   "provider_config": {
+    "window_sec": 60.0
+   }
+  },
+  "canonical_episode_count": 41,
+  "non_evidence_fields": [
+   "summary",
+   "dialogue_note"
+  ]
+ },
+ "lexicon": {
+  "name": "WVR_EVIDENCE_LEXICON_V1",
+  "hash": "450f5dac163ba236e1af090e1cabdac49f1282e74d8fd3bc6491b79add486b1b",
+  "source": "frozen V2 collapsed claims (density_v2_D{1,2,3}_S{0,1}.json)",
+  "collision_dropped": {
+   "볼": [
+    "bowl",
+    "balls"
+   ]
+  },
+  "action_entry_count": 25,
+  "object_entry_count": 53
+ },
+ "pre_freeze_viewed_seg_idx": [
+  60,
+  61,
+  62,
+  63
+ ],
+ "match_tolerances": [
+  4.0,
+  8.0
+ ],
+ "primary_tolerance_sec": 4.0,
+ "pairs": {
+  "D1": {
+   "window": {
+    "window_id": "W11",
+    "start_sec": 300.0,
+    "end_sec": 480.0,
+    "label": "D1_highest_change",
+    "stage1_score": 1411.2169
+   },
+   "reference_event_count": 3,
+   "arm_event_count": 14,
+   "per_tolerance": {
+    "tol_4.0": {
+     "candidate_count": 10,
+     "reviewer_coverage": {
+      "named_count": 4,
+      "found": [
+       {
+        "reference": [
+         312.0,
+         480.0
+        ],
+        "arm": [
+         380.0,
+         390.0
+        ]
+       },
+       {
+        "reference": [
+         312.0,
+         480.0
+        ],
+        "arm": [
+         420.0,
+         450.0
+        ]
+       },
+       {
+        "reference": [
+         312.0,
+         480.0
+        ],
+        "arm": [
+         450.0,
+         460.0
+        ]
+       },
+       {
+        "reference": [
+         312.0,
+         480.0
+        ],
+        "arm": [
+         470.0,
+         480.0
+        ]
+       }
+      ],
+      "missing": [],
+      "status": "COMPLETE"
+     }
+    },
+    "tol_8.0": {
+     "candidate_count": 11,
+     "reviewer_coverage": {
+      "named_count": 4,
+      "found": [
+       {
+        "reference": [
+         312.0,
+         480.0
+        ],
+        "arm": [
+         380.0,
+         390.0
+        ]
+       },
+       {
+        "reference": [
+         312.0,
+         480.0
+        ],
+        "arm": [
+         420.0,
+         450.0
+        ]
+       },
+       {
+        "reference": [
+         312.0,
+         480.0
+        ],
+        "arm": [
+         450.0,
+         460.0
+        ]
+       },
+       {
+        "reference": [
+         312.0,
+         480.0
+        ],
+        "arm": [
+         470.0,
+         480.0
+        ]
+       }
+      ],
+      "missing": [],
+      "status": "COMPLETE"
+     }
+    }
+   },
+   "reviewer_named_resolution": [
+    {
+     "named": [
+      [
+       312.0,
+       480.0
+      ],
+      [
+       380.0,
+       390.0
+      ]
+     ],
+     "status": "EXACT_IN_DETERMINISTIC_SET"
+    },
+    {
+     "named": [
+      [
+       312.0,
+       480.0
+      ],
+      [
+       420.0,
+       450.0
+      ]
+     ],
+     "status": "EXACT_IN_DETERMINISTIC_SET"
+    },
+    {
+     "named": [
+      [
+       312.0,
+       480.0
+      ],
+      [
+       450.0,
+       460.0
+      ]
+     ],
+     "status": "EXACT_IN_DETERMINISTIC_SET"
+    },
+    {
+     "named": [
+      [
+       312.0,
+       480.0
+      ],
+      [
+       470.0,
+       480.0
+      ]
+     ],
+     "status": "EXACT_IN_DETERMINISTIC_SET"
+    }
+   ],
+   "conflict_count": 10,
+   "resolution_counts": {
+    "REFERENCE_ONLY_SUPPORTED": 1,
+    "ARM_ONLY_SUPPORTED": 2,
+    "BOTH_SUPPORTED_AT_DIFFERENT_SEGMENTS": 0,
+    "NEITHER_RESOLVED": 7
+   },
+   "conflicts": [
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 0,
+      "start_sec": 300.0,
+      "end_sec": 308.0,
+      "actor": "a person",
+      "action": "eating",
+      "object_or_state": "a breaded food item with chopsticks",
+      "signature": [
+       "a person",
+       "eating",
+       "a breaded food item with chopsticks"
+      ],
+      "source_indices": [
+       0,
+       1
+      ],
+      "collapsed_count": 2
+     },
+     "arm": {
+      "index": 1,
+      "start_sec": 310.0,
+      "end_sec": 320.0,
+      "actor": "person",
+      "action": "drinking",
+      "object_or_state": "water from a glass",
+      "signature": [
+       "person",
+       "drinking",
+       "water from a glass"
+      ],
+      "source_indices": [
+       1
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      300.0,
+      320.0
+     ],
+     "evidence_segment_idx": [
+      60,
+      61,
+      62,
+      63
+     ],
+     "pre_freeze_viewed_idx": [
+      60,
+      61,
+      62,
+      63
+     ],
+     "episodes": [
+      {
+       "episode_id": "EP06",
+       "start_sec": 300.0,
+       "end_sec": 360.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "eating"
+      ],
+      "object_tokens": [
+       "breaded",
+       "chopsticks",
+       "food",
+       "item"
+      ],
+      "action_terms": [
+       "맛보",
+       "먹",
+       "시식",
+       "식사"
+      ],
+      "object_terms": [
+       "빵가루",
+       "요리",
+       "음식",
+       "젓가락",
+       "튀긴",
+       "튀김"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "drinking"
+      ],
+      "object_tokens": [
+       "glass",
+       "water"
+      ],
+      "action_terms": [
+       "마시",
+       "마신",
+       "음료"
+      ],
+      "object_terms": [
+       "물",
+       "유리컵",
+       "잔",
+       "컵"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": true,
+      "hits": [
+       {
+        "idx": 60,
+        "channel": "caption",
+        "action_matched": [
+         "식사"
+        ],
+        "object_matched": [
+         "음식"
+        ],
+        "shared_terms": [],
+        "independent": true,
+        "quote": "여성은 테이블에 놓인 음식을 손에 들고 있는 모습입니다. 그녀는 두 개의 음식을 꺼내려 하고 있으며, 그 중 하나를 손에 든 채로 바라보고 있습니다. 배경에는 창문으로 밖을 바라볼 수 있고, 식사를 하는 것처럼 보이는 다른 사람의 모습도 보입니다. 조명은 따뜻한 색조로, 실내 분위기를 잘 나타냅니다."
+       }
+      ],
+      "partial": [
+       {
+        "idx": 61,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "음식"
+        ]
+       },
+       {
+        "idx": 62,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "요리",
+         "젓가락"
+        ]
+       },
+       {
+        "idx": 63,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "요리"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": true,
+      "shared_term_only_hits": 0,
+      "segment_count": 4
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 61,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "물"
+        ]
+       },
+       {
+        "idx": 62,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "물"
+        ]
+       },
+       {
+        "idx": 62,
+        "channel": "subtitle",
+        "action_matched": [
+         "마시"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 63,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "컵"
+        ]
+       },
+       {
+        "idx": 63,
+        "channel": "subtitle",
+        "action_matched": [
+         "마시"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 4
+     },
+     "reference_verdict": "EVIDENCE_SUPPORTS",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_CONTRADICTS",
+     "arm_reasons": [],
+     "resolution": "REFERENCE_ONLY_SUPPORTED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 1,
+      "start_sec": 308.0,
+      "end_sec": 312.0,
+      "actor": "a person",
+      "action": "drinking",
+      "object_or_state": "a drink from a glass with a straw",
+      "signature": [
+       "a person",
+       "drinking",
+       "a drink from a glass with a straw"
+      ],
+      "source_indices": [
+       2
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 0,
+      "start_sec": 300.0,
+      "end_sec": 310.0,
+      "actor": "person",
+      "action": "eating",
+      "object_or_state": "fried food with chopsticks",
+      "signature": [
+       "person",
+       "eating",
+       "fried food with chopsticks"
+      ],
+      "source_indices": [
+       0
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      308.0,
+      310.0
+     ],
+     "evidence_segment_idx": [
+      61
+     ],
+     "pre_freeze_viewed_idx": [
+      61
+     ],
+     "episodes": [
+      {
+       "episode_id": "EP06",
+       "start_sec": 300.0,
+       "end_sec": 360.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "drinking"
+      ],
+      "object_tokens": [
+       "drink",
+       "glass",
+       "straw"
+      ],
+      "action_terms": [
+       "마시",
+       "마신",
+       "음료"
+      ],
+      "object_terms": [
+       "마실",
+       "빨대",
+       "유리컵",
+       "음료",
+       "잔",
+       "컵"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "eating"
+      ],
+      "object_tokens": [
+       "chopsticks",
+       "food",
+       "fried"
+      ],
+      "action_terms": [
+       "맛보",
+       "먹",
+       "시식",
+       "식사"
+      ],
+      "object_terms": [
+       "요리",
+       "음식",
+       "젓가락",
+       "튀긴",
+       "튀김"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 61,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "음식"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 2,
+      "start_sec": 312.0,
+      "end_sec": 480.0,
+      "actor": "a person",
+      "action": "eating",
+      "object_or_state": "a breaded food item with chopsticks",
+      "signature": [
+       "a person",
+       "eating",
+       "a breaded food item with chopsticks"
+      ],
+      "source_indices": [
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10,
+       11,
+       12,
+       13,
+       14,
+       15,
+       16,
+       17,
+       18,
+       19,
+       20,
+       21,
+       22,
+       23,
+       24,
+       25,
+       26,
+       27,
+       28,
+       29,
+       30,
+       31,
+       32,
+       33,
+       34,
+       35,
+       36,
+       37,
+       38,
+       39,
+       40,
+       41,
+       42,
+       43,
+       44
+      ],
+      "collapsed_count": 42
+     },
+     "arm": {
+      "index": 1,
+      "start_sec": 310.0,
+      "end_sec": 320.0,
+      "actor": "person",
+      "action": "drinking",
+      "object_or_state": "water from a glass",
+      "signature": [
+       "person",
+       "drinking",
+       "water from a glass"
+      ],
+      "source_indices": [
+       1
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      312.0,
+      320.0
+     ],
+     "evidence_segment_idx": [
+      62,
+      63
+     ],
+     "pre_freeze_viewed_idx": [
+      62,
+      63
+     ],
+     "episodes": [
+      {
+       "episode_id": "EP06",
+       "start_sec": 300.0,
+       "end_sec": 360.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "eating"
+      ],
+      "object_tokens": [
+       "breaded",
+       "chopsticks",
+       "food",
+       "item"
+      ],
+      "action_terms": [
+       "맛보",
+       "먹",
+       "시식",
+       "식사"
+      ],
+      "object_terms": [
+       "빵가루",
+       "요리",
+       "음식",
+       "젓가락",
+       "튀긴",
+       "튀김"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "drinking"
+      ],
+      "object_tokens": [
+       "glass",
+       "water"
+      ],
+      "action_terms": [
+       "마시",
+       "마신",
+       "음료"
+      ],
+      "object_terms": [
+       "물",
+       "유리컵",
+       "잔",
+       "컵"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 62,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "요리",
+         "젓가락"
+        ]
+       },
+       {
+        "idx": 63,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "요리"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 62,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "물"
+        ]
+       },
+       {
+        "idx": 62,
+        "channel": "subtitle",
+        "action_matched": [
+         "마시"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 63,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "컵"
+        ]
+       },
+       {
+        "idx": 63,
+        "channel": "subtitle",
+        "action_matched": [
+         "마시"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 2,
+      "start_sec": 312.0,
+      "end_sec": 480.0,
+      "actor": "a person",
+      "action": "eating",
+      "object_or_state": "a breaded food item with chopsticks",
+      "signature": [
+       "a person",
+       "eating",
+       "a breaded food item with chopsticks"
+      ],
+      "source_indices": [
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10,
+       11,
+       12,
+       13,
+       14,
+       15,
+       16,
+       17,
+       18,
+       19,
+       20,
+       21,
+       22,
+       23,
+       24,
+       25,
+       26,
+       27,
+       28,
+       29,
+       30,
+       31,
+       32,
+       33,
+       34,
+       35,
+       36,
+       37,
+       38,
+       39,
+       40,
+       41,
+       42,
+       43,
+       44
+      ],
+      "collapsed_count": 42
+     },
+     "arm": {
+      "index": 5,
+      "start_sec": 350.0,
+      "end_sec": 370.0,
+      "actor": "person",
+      "action": "preparing food",
+      "object_or_state": "gimbap with gloves",
+      "signature": [
+       "person",
+       "preparing food",
+       "gimbap with gloves"
+      ],
+      "source_indices": [
+       5,
+       6
+      ],
+      "collapsed_count": 2
+     },
+     "evidence_window": [
+      350.0,
+      370.0
+     ],
+     "evidence_segment_idx": [
+      70,
+      71,
+      72,
+      73
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP06",
+       "start_sec": 300.0,
+       "end_sec": 360.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      },
+      {
+       "episode_id": "EP07",
+       "start_sec": 360.0,
+       "end_sec": 420.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "eating"
+      ],
+      "object_tokens": [
+       "breaded",
+       "chopsticks",
+       "food",
+       "item"
+      ],
+      "action_terms": [
+       "맛보",
+       "먹",
+       "시식",
+       "식사"
+      ],
+      "object_terms": [
+       "빵가루",
+       "요리",
+       "음식",
+       "젓가락",
+       "튀긴",
+       "튀김"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "food",
+       "preparing"
+      ],
+      "object_tokens": [
+       "gimbap",
+       "gloves"
+      ],
+      "action_terms": [
+       "만들",
+       "손질",
+       "준비"
+      ],
+      "object_terms": [
+       "김",
+       "김밥",
+       "장갑"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 70,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "요리"
+        ]
+       },
+       {
+        "idx": 70,
+        "channel": "subtitle",
+        "action_matched": [],
+        "object_matched": [
+         "튀김"
+        ]
+       },
+       {
+        "idx": 71,
+        "channel": "subtitle",
+        "action_matched": [],
+        "object_matched": [
+         "튀김"
+        ]
+       },
+       {
+        "idx": 72,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "요리"
+        ]
+       },
+       {
+        "idx": 73,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "음식"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 4
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 70,
+        "channel": "subtitle",
+        "action_matched": [],
+        "object_matched": [
+         "김"
+        ]
+       },
+       {
+        "idx": 71,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "장갑"
+        ]
+       },
+       {
+        "idx": 71,
+        "channel": "subtitle",
+        "action_matched": [],
+        "object_matched": [
+         "김"
+        ]
+       },
+       {
+        "idx": 73,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "김",
+         "김밥"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 4
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT",
+      "REVIEWER_NAMED"
+     ],
+     "reference": {
+      "index": 2,
+      "start_sec": 312.0,
+      "end_sec": 480.0,
+      "actor": "a person",
+      "action": "eating",
+      "object_or_state": "a breaded food item with chopsticks",
+      "signature": [
+       "a person",
+       "eating",
+       "a breaded food item with chopsticks"
+      ],
+      "source_indices": [
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10,
+       11,
+       12,
+       13,
+       14,
+       15,
+       16,
+       17,
+       18,
+       19,
+       20,
+       21,
+       22,
+       23,
+       24,
+       25,
+       26,
+       27,
+       28,
+       29,
+       30,
+       31,
+       32,
+       33,
+       34,
+       35,
+       36,
+       37,
+       38,
+       39,
+       40,
+       41,
+       42,
+       43,
+       44
+      ],
+      "collapsed_count": 42
+     },
+     "arm": {
+      "index": 7,
+      "start_sec": 380.0,
+      "end_sec": 390.0,
+      "actor": "person",
+      "action": "cooking",
+      "object_or_state": "chicken with a torch",
+      "signature": [
+       "person",
+       "cooking",
+       "chicken with a torch"
+      ],
+      "source_indices": [
+       8
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      380.0,
+      390.0
+     ],
+     "evidence_segment_idx": [
+      76,
+      77
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP07",
+       "start_sec": 360.0,
+       "end_sec": 420.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "eating"
+      ],
+      "object_tokens": [
+       "breaded",
+       "chopsticks",
+       "food",
+       "item"
+      ],
+      "action_terms": [
+       "맛보",
+       "먹",
+       "시식",
+       "식사"
+      ],
+      "object_terms": [
+       "빵가루",
+       "요리",
+       "음식",
+       "젓가락",
+       "튀긴",
+       "튀김"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "cooking"
+      ],
+      "object_tokens": [
+       "chicken",
+       "torch"
+      ],
+      "action_terms": [
+       "구워",
+       "굽",
+       "끓",
+       "볶",
+       "요리",
+       "익히",
+       "조리",
+       "튀기"
+      ],
+      "object_terms": [
+       "닭",
+       "불꽃",
+       "치킨",
+       "토치",
+       "화염"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 77,
+        "channel": "caption",
+        "action_matched": [
+         "끓"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 2,
+      "start_sec": 312.0,
+      "end_sec": 480.0,
+      "actor": "a person",
+      "action": "eating",
+      "object_or_state": "a breaded food item with chopsticks",
+      "signature": [
+       "a person",
+       "eating",
+       "a breaded food item with chopsticks"
+      ],
+      "source_indices": [
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10,
+       11,
+       12,
+       13,
+       14,
+       15,
+       16,
+       17,
+       18,
+       19,
+       20,
+       21,
+       22,
+       23,
+       24,
+       25,
+       26,
+       27,
+       28,
+       29,
+       30,
+       31,
+       32,
+       33,
+       34,
+       35,
+       36,
+       37,
+       38,
+       39,
+       40,
+       41,
+       42,
+       43,
+       44
+      ],
+      "collapsed_count": 42
+     },
+     "arm": {
+      "index": 9,
+      "start_sec": 400.0,
+      "end_sec": 420.0,
+      "actor": "person",
+      "action": "holding",
+      "object_or_state": "pajama pants",
+      "signature": [
+       "person",
+       "holding",
+       "pajama pants"
+      ],
+      "source_indices": [
+       10,
+       11
+      ],
+      "collapsed_count": 2
+     },
+     "evidence_window": [
+      400.0,
+      420.0
+     ],
+     "evidence_segment_idx": [
+      80,
+      81,
+      82,
+      83
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP07",
+       "start_sec": 360.0,
+       "end_sec": 420.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "eating"
+      ],
+      "object_tokens": [
+       "breaded",
+       "chopsticks",
+       "food",
+       "item"
+      ],
+      "action_terms": [
+       "맛보",
+       "먹",
+       "시식",
+       "식사"
+      ],
+      "object_terms": [
+       "빵가루",
+       "요리",
+       "음식",
+       "젓가락",
+       "튀긴",
+       "튀김"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "holding"
+      ],
+      "object_tokens": [
+       "pajama",
+       "pants"
+      ],
+      "action_terms": [
+       "들고",
+       "잡",
+       "쥐"
+      ],
+      "object_terms": [
+       "바지",
+       "잠옷",
+       "파자마"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 4
+     },
+     "arm_support": {
+      "supported": true,
+      "hits": [
+       {
+        "idx": 82,
+        "channel": "caption",
+        "action_matched": [
+         "들고"
+        ],
+        "object_matched": [
+         "바지"
+        ],
+        "shared_terms": [],
+        "independent": true,
+        "quote": "여성은 노란색 반바지를 들고 있으며, 손가락에 반지가 달린다. 배경에는 테이블 위에 책상이나 가구가 보이며, 실내 분위기는 밝고 따뜻해 보인다."
+       }
+      ],
+      "partial": [
+       {
+        "idx": 80,
+        "channel": "caption",
+        "action_matched": [
+         "잡"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 83,
+        "channel": "caption",
+        "action_matched": [
+         "들고"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": true,
+      "shared_term_only_hits": 0,
+      "segment_count": 4
+     },
+     "reference_verdict": "EVIDENCE_CONTRADICTS",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_SUPPORTS",
+     "arm_reasons": [],
+     "resolution": "ARM_ONLY_SUPPORTED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT",
+      "REVIEWER_NAMED"
+     ],
+     "reference": {
+      "index": 2,
+      "start_sec": 312.0,
+      "end_sec": 480.0,
+      "actor": "a person",
+      "action": "eating",
+      "object_or_state": "a breaded food item with chopsticks",
+      "signature": [
+       "a person",
+       "eating",
+       "a breaded food item with chopsticks"
+      ],
+      "source_indices": [
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10,
+       11,
+       12,
+       13,
+       14,
+       15,
+       16,
+       17,
+       18,
+       19,
+       20,
+       21,
+       22,
+       23,
+       24,
+       25,
+       26,
+       27,
+       28,
+       29,
+       30,
+       31,
+       32,
+       33,
+       34,
+       35,
+       36,
+       37,
+       38,
+       39,
+       40,
+       41,
+       42,
+       43,
+       44
+      ],
+      "collapsed_count": 42
+     },
+     "arm": {
+      "index": 10,
+      "start_sec": 420.0,
+      "end_sec": 450.0,
+      "actor": "person",
+      "action": "sewing",
+      "object_or_state": "pajama pants with a sewing machine",
+      "signature": [
+       "person",
+       "sewing",
+       "pajama pants with a sewing machine"
+      ],
+      "source_indices": [
+       12,
+       13,
+       14
+      ],
+      "collapsed_count": 3
+     },
+     "evidence_window": [
+      420.0,
+      450.0
+     ],
+     "evidence_segment_idx": [
+      84,
+      85,
+      86,
+      87,
+      88,
+      89
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP08",
+       "start_sec": 420.0,
+       "end_sec": 480.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "eating"
+      ],
+      "object_tokens": [
+       "breaded",
+       "chopsticks",
+       "food",
+       "item"
+      ],
+      "action_terms": [
+       "맛보",
+       "먹",
+       "시식",
+       "식사"
+      ],
+      "object_terms": [
+       "빵가루",
+       "요리",
+       "음식",
+       "젓가락",
+       "튀긴",
+       "튀김"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "sewing"
+      ],
+      "object_tokens": [
+       "machine",
+       "pajama",
+       "pants",
+       "sewing"
+      ],
+      "action_terms": [
+       "미싱",
+       "바느질",
+       "재봉"
+      ],
+      "object_terms": [
+       "기계",
+       "미싱",
+       "바지",
+       "잠옷",
+       "재봉",
+       "재봉틀",
+       "틀",
+       "파자마"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 88,
+        "channel": "subtitle",
+        "action_matched": [
+         "먹"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 6
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 86,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "기계"
+        ]
+       },
+       {
+        "idx": 87,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "기계"
+        ]
+       },
+       {
+        "idx": 88,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "잠옷"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 6
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT",
+      "REVIEWER_NAMED"
+     ],
+     "reference": {
+      "index": 2,
+      "start_sec": 312.0,
+      "end_sec": 480.0,
+      "actor": "a person",
+      "action": "eating",
+      "object_or_state": "a breaded food item with chopsticks",
+      "signature": [
+       "a person",
+       "eating",
+       "a breaded food item with chopsticks"
+      ],
+      "source_indices": [
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10,
+       11,
+       12,
+       13,
+       14,
+       15,
+       16,
+       17,
+       18,
+       19,
+       20,
+       21,
+       22,
+       23,
+       24,
+       25,
+       26,
+       27,
+       28,
+       29,
+       30,
+       31,
+       32,
+       33,
+       34,
+       35,
+       36,
+       37,
+       38,
+       39,
+       40,
+       41,
+       42,
+       43,
+       44
+      ],
+      "collapsed_count": 42
+     },
+     "arm": {
+      "index": 11,
+      "start_sec": 450.0,
+      "end_sec": 460.0,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "tomato with a knife",
+      "signature": [
+       "person",
+       "chopping",
+       "tomato with a knife"
+      ],
+      "source_indices": [
+       15
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      450.0,
+      460.0
+     ],
+     "evidence_segment_idx": [
+      90,
+      91
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP08",
+       "start_sec": 420.0,
+       "end_sec": 480.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "eating"
+      ],
+      "object_tokens": [
+       "breaded",
+       "chopsticks",
+       "food",
+       "item"
+      ],
+      "action_terms": [
+       "맛보",
+       "먹",
+       "시식",
+       "식사"
+      ],
+      "object_terms": [
+       "빵가루",
+       "요리",
+       "음식",
+       "젓가락",
+       "튀긴",
+       "튀김"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "chopping"
+      ],
+      "object_tokens": [
+       "knife",
+       "tomato"
+      ],
+      "action_terms": [
+       "다지",
+       "썰",
+       "자르",
+       "절단",
+       "칼질"
+      ],
+      "object_terms": [
+       "칼",
+       "토마토"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 90,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "음식"
+        ]
+       },
+       {
+        "idx": 91,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "음식"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 2,
+      "start_sec": 312.0,
+      "end_sec": 480.0,
+      "actor": "a person",
+      "action": "eating",
+      "object_or_state": "a breaded food item with chopsticks",
+      "signature": [
+       "a person",
+       "eating",
+       "a breaded food item with chopsticks"
+      ],
+      "source_indices": [
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10,
+       11,
+       12,
+       13,
+       14,
+       15,
+       16,
+       17,
+       18,
+       19,
+       20,
+       21,
+       22,
+       23,
+       24,
+       25,
+       26,
+       27,
+       28,
+       29,
+       30,
+       31,
+       32,
+       33,
+       34,
+       35,
+       36,
+       37,
+       38,
+       39,
+       40,
+       41,
+       42,
+       43,
+       44
+      ],
+      "collapsed_count": 42
+     },
+     "arm": {
+      "index": 12,
+      "start_sec": 460.0,
+      "end_sec": 470.0,
+      "actor": "person",
+      "action": "mixing",
+      "object_or_state": "egg with a spoon",
+      "signature": [
+       "person",
+       "mixing",
+       "egg with a spoon"
+      ],
+      "source_indices": [
+       16
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      460.0,
+      470.0
+     ],
+     "evidence_segment_idx": [
+      92,
+      93
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP08",
+       "start_sec": 420.0,
+       "end_sec": 480.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "eating"
+      ],
+      "object_tokens": [
+       "breaded",
+       "chopsticks",
+       "food",
+       "item"
+      ],
+      "action_terms": [
+       "맛보",
+       "먹",
+       "시식",
+       "식사"
+      ],
+      "object_terms": [
+       "빵가루",
+       "요리",
+       "음식",
+       "젓가락",
+       "튀긴",
+       "튀김"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "mixing"
+      ],
+      "object_tokens": [
+       "egg",
+       "spoon"
+      ],
+      "action_terms": [
+       "반죽",
+       "버무리",
+       "섞",
+       "혼합"
+      ],
+      "object_terms": [
+       "계란",
+       "달걀",
+       "숟가락",
+       "스푼",
+       "에그"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 92,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "요리"
+        ]
+       },
+       {
+        "idx": 93,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "음식"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 93,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "계란"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT",
+      "REVIEWER_NAMED"
+     ],
+     "reference": {
+      "index": 2,
+      "start_sec": 312.0,
+      "end_sec": 480.0,
+      "actor": "a person",
+      "action": "eating",
+      "object_or_state": "a breaded food item with chopsticks",
+      "signature": [
+       "a person",
+       "eating",
+       "a breaded food item with chopsticks"
+      ],
+      "source_indices": [
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10,
+       11,
+       12,
+       13,
+       14,
+       15,
+       16,
+       17,
+       18,
+       19,
+       20,
+       21,
+       22,
+       23,
+       24,
+       25,
+       26,
+       27,
+       28,
+       29,
+       30,
+       31,
+       32,
+       33,
+       34,
+       35,
+       36,
+       37,
+       38,
+       39,
+       40,
+       41,
+       42,
+       43,
+       44
+      ],
+      "collapsed_count": 42
+     },
+     "arm": {
+      "index": 13,
+      "start_sec": 470.0,
+      "end_sec": 480.0,
+      "actor": "person",
+      "action": "cooking",
+      "object_or_state": "tomato and egg in a pan",
+      "signature": [
+       "person",
+       "cooking",
+       "tomato and egg in a pan"
+      ],
+      "source_indices": [
+       17
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      470.0,
+      480.0
+     ],
+     "evidence_segment_idx": [
+      94,
+      95
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP08",
+       "start_sec": 420.0,
+       "end_sec": 480.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "eating"
+      ],
+      "object_tokens": [
+       "breaded",
+       "chopsticks",
+       "food",
+       "item"
+      ],
+      "action_terms": [
+       "맛보",
+       "먹",
+       "시식",
+       "식사"
+      ],
+      "object_terms": [
+       "빵가루",
+       "요리",
+       "음식",
+       "젓가락",
+       "튀긴",
+       "튀김"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "cooking"
+      ],
+      "object_tokens": [
+       "egg",
+       "pan",
+       "tomato"
+      ],
+      "action_terms": [
+       "구워",
+       "굽",
+       "끓",
+       "볶",
+       "요리",
+       "익히",
+       "조리",
+       "튀기"
+      ],
+      "object_terms": [
+       "계란",
+       "달걀",
+       "에그",
+       "토마토",
+       "팬",
+       "프라이팬",
+       "후라이팬"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 94,
+        "channel": "caption",
+        "action_matched": [
+         "식사"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 95,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "요리",
+         "젓가락"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "arm_support": {
+      "supported": true,
+      "hits": [
+       {
+        "idx": 95,
+        "channel": "caption",
+        "action_matched": [
+         "요리",
+         "조리"
+        ],
+        "object_matched": [
+         "토마토",
+         "팬"
+        ],
+        "shared_terms": [],
+        "independent": true,
+        "quote": "여성은 흰색 셔츠를 입고 있으며, 손가락에 반지와 목걸이를 착용하고 있습니다. 그녀는 젓가락으로 요리를 집어 들고 있으며, 그 요리는 검정색 팬 안에 담겨 있습니다. 그녀의 앞에는 녹색 접시가 놓여 있고, 그 위에는 토마토와 다른 재료들이 담긴 검정색 팬이 놓여 있습니다. 배경에는 주방 가구와 다양한 조리 도구들이 보입니다."
+       }
+      ],
+      "partial": [
+       {
+        "idx": 94,
+        "channel": "subtitle",
+        "action_matched": [
+         "끓"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 95,
+        "channel": "subtitle",
+        "action_matched": [
+         "끓"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": true,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "reference_verdict": "EVIDENCE_CONTRADICTS",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_SUPPORTS",
+     "arm_reasons": [],
+     "resolution": "ARM_ONLY_SUPPORTED"
+    }
+   ]
+  },
+  "D2": {
+   "window": {
+    "window_id": "W02",
+    "start_sec": 30.0,
+    "end_sec": 210.0,
+    "label": "D2_median_change",
+    "stage1_score": 1115.5522
+   },
+   "reference_event_count": 23,
+   "arm_event_count": 22,
+   "per_tolerance": {
+    "tol_4.0": {
+     "candidate_count": 37,
+     "reviewer_coverage": {
+      "named_count": 4,
+      "found": [
+       {
+        "reference": [
+         96.0,
+         210.0
+        ],
+        "arm": [
+         104.0,
+         112.0
+        ]
+       },
+       {
+        "reference": [
+         96.0,
+         210.0
+        ],
+        "arm": [
+         112.0,
+         120.0
+        ]
+       }
+      ],
+      "missing": [
+       {
+        "reference": [
+         96.0,
+         210.0
+        ],
+        "arm": [
+         128.0,
+         136.0
+        ]
+       },
+       {
+        "reference": [
+         96.0,
+         210.0
+        ],
+        "arm": [
+         136.0,
+         152.0
+        ]
+       }
+      ],
+      "status": "SELECTOR_INCOMPLETE"
+     }
+    },
+    "tol_8.0": {
+     "candidate_count": 54,
+     "reviewer_coverage": {
+      "named_count": 4,
+      "found": [
+       {
+        "reference": [
+         96.0,
+         210.0
+        ],
+        "arm": [
+         104.0,
+         112.0
+        ]
+       },
+       {
+        "reference": [
+         96.0,
+         210.0
+        ],
+        "arm": [
+         112.0,
+         120.0
+        ]
+       }
+      ],
+      "missing": [
+       {
+        "reference": [
+         96.0,
+         210.0
+        ],
+        "arm": [
+         128.0,
+         136.0
+        ]
+       },
+       {
+        "reference": [
+         96.0,
+         210.0
+        ],
+        "arm": [
+         136.0,
+         152.0
+        ]
+       }
+      ],
+      "status": "SELECTOR_INCOMPLETE"
+     }
+    }
+   },
+   "reviewer_named_resolution": [
+    {
+     "named": [
+      [
+       96.0,
+       210.0
+      ],
+      [
+       104.0,
+       112.0
+      ]
+     ],
+     "status": "EXACT_IN_DETERMINISTIC_SET"
+    },
+    {
+     "named": [
+      [
+       96.0,
+       210.0
+      ],
+      [
+       112.0,
+       120.0
+      ]
+     ],
+     "status": "EXACT_IN_DETERMINISTIC_SET"
+    },
+    {
+     "named": [
+      [
+       96.0,
+       210.0
+      ],
+      [
+       128.0,
+       136.0
+      ]
+     ],
+     "status": "EXACT_ADDED",
+     "components": [
+      [
+       128.0,
+       136.0
+      ]
+     ]
+    },
+    {
+     "named": [
+      [
+       96.0,
+       210.0
+      ],
+      [
+       136.0,
+       152.0
+      ]
+     ],
+     "status": "DECOMPOSED",
+     "components": [
+      [
+       136.0,
+       144.0
+      ],
+      [
+       144.0,
+       152.0
+      ]
+     ]
+    }
+   ],
+   "conflict_count": 40,
+   "resolution_counts": {
+    "REFERENCE_ONLY_SUPPORTED": 2,
+    "ARM_ONLY_SUPPORTED": 8,
+    "BOTH_SUPPORTED_AT_DIFFERENT_SEGMENTS": 0,
+    "NEITHER_RESOLVED": 30
+   },
+   "conflicts": [
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 1,
+      "start_sec": 33.0,
+      "end_sec": 36.0,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "potatoes in steamer",
+      "signature": [
+       "person",
+       "placing",
+       "potatoes in steamer"
+      ],
+      "source_indices": [
+       1
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 1,
+      "start_sec": 40.0,
+      "end_sec": 48.0,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "oil into a pan",
+      "signature": [
+       "person",
+       "pouring",
+       "oil into a pan"
+      ],
+      "source_indices": [
+       1
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      33.0,
+      48.0
+     ],
+     "evidence_segment_idx": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP01",
+       "start_sec": 0.0,
+       "end_sec": 60.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "placing"
+      ],
+      "object_tokens": [
+       "potatoes",
+       "steamer"
+      ],
+      "action_terms": [
+       "놓",
+       "담",
+       "올리"
+      ],
+      "object_terms": [
+       "감자",
+       "스티머",
+       "찜기",
+       "찜통"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "pouring"
+      ],
+      "object_tokens": [
+       "oil",
+       "pan"
+      ],
+      "action_terms": [
+       "따르",
+       "부어",
+       "붓"
+      ],
+      "object_terms": [
+       "기름",
+       "오일",
+       "팬",
+       "프라이팬",
+       "후라이팬"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 6,
+        "channel": "caption",
+        "action_matched": [
+         "놓"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 7,
+        "channel": "caption",
+        "action_matched": [
+         "놓"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 8,
+        "channel": "caption",
+        "action_matched": [
+         "놓"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 9,
+        "channel": "caption",
+        "action_matched": [
+         "놓"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 4
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 4
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 2,
+      "start_sec": 36.0,
+      "end_sec": 39.0,
+      "actor": "person",
+      "action": "steaming",
+      "object_or_state": "potatoes",
+      "signature": [
+       "person",
+       "steaming",
+       "potatoes"
+      ],
+      "source_indices": [
+       2
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 1,
+      "start_sec": 40.0,
+      "end_sec": 48.0,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "oil into a pan",
+      "signature": [
+       "person",
+       "pouring",
+       "oil into a pan"
+      ],
+      "source_indices": [
+       1
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      36.0,
+      48.0
+     ],
+     "evidence_segment_idx": [
+      7,
+      8,
+      9
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP01",
+       "start_sec": 0.0,
+       "end_sec": 60.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "steaming"
+      ],
+      "object_tokens": [
+       "potatoes"
+      ],
+      "action_terms": [
+       "증기",
+       "찌",
+       "찜"
+      ],
+      "object_terms": [
+       "감자"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "pouring"
+      ],
+      "object_tokens": [
+       "oil",
+       "pan"
+      ],
+      "action_terms": [
+       "따르",
+       "부어",
+       "붓"
+      ],
+      "object_terms": [
+       "기름",
+       "오일",
+       "팬",
+       "프라이팬",
+       "후라이팬"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 3,
+      "start_sec": 39.0,
+      "end_sec": 42.0,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "breadcrumbs into bowl",
+      "signature": [
+       "person",
+       "pouring",
+       "breadcrumbs into bowl"
+      ],
+      "source_indices": [
+       3
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 0,
+      "start_sec": 30.0,
+      "end_sec": 40.0,
+      "actor": "person",
+      "action": "handling",
+      "object_or_state": "potatoes in a strainer",
+      "signature": [
+       "person",
+       "handling",
+       "potatoes in a strainer"
+      ],
+      "source_indices": [
+       0
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      39.0,
+      40.0
+     ],
+     "evidence_segment_idx": [
+      7
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP01",
+       "start_sec": 0.0,
+       "end_sec": 60.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "pouring"
+      ],
+      "object_tokens": [
+       "bowl",
+       "breadcrumbs"
+      ],
+      "action_terms": [
+       "따르",
+       "부어",
+       "붓"
+      ],
+      "object_terms": [
+       "그릇",
+       "대접",
+       "브레드크럼",
+       "빵가루"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "handling"
+      ],
+      "object_tokens": [
+       "potatoes",
+       "strainer"
+      ],
+      "action_terms": [
+       "다루",
+       "들고",
+       "손에"
+      ],
+      "object_terms": [
+       "감자",
+       "소쿠리",
+       "스트레이너",
+       "채반",
+       "체"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 7,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 4,
+      "start_sec": 42.0,
+      "end_sec": 45.0,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "onion",
+      "signature": [
+       "person",
+       "chopping",
+       "onion"
+      ],
+      "source_indices": [
+       4
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 0,
+      "start_sec": 30.0,
+      "end_sec": 40.0,
+      "actor": "person",
+      "action": "handling",
+      "object_or_state": "potatoes in a strainer",
+      "signature": [
+       "person",
+       "handling",
+       "potatoes in a strainer"
+      ],
+      "source_indices": [
+       0
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      30.0,
+      45.0
+     ],
+     "evidence_segment_idx": [
+      6,
+      7,
+      8
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP01",
+       "start_sec": 0.0,
+       "end_sec": 60.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "chopping"
+      ],
+      "object_tokens": [
+       "onion"
+      ],
+      "action_terms": [
+       "다지",
+       "썰",
+       "자르",
+       "절단",
+       "칼질"
+      ],
+      "object_terms": [
+       "양파"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "handling"
+      ],
+      "object_tokens": [
+       "potatoes",
+       "strainer"
+      ],
+      "action_terms": [
+       "다루",
+       "들고",
+       "손에"
+      ],
+      "object_terms": [
+       "감자",
+       "소쿠리",
+       "스트레이너",
+       "채반",
+       "체"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 8,
+        "channel": "caption",
+        "action_matched": [
+         "들고",
+         "손에"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 4,
+      "start_sec": 42.0,
+      "end_sec": 45.0,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "onion",
+      "signature": [
+       "person",
+       "chopping",
+       "onion"
+      ],
+      "source_indices": [
+       4
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 1,
+      "start_sec": 40.0,
+      "end_sec": 48.0,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "oil into a pan",
+      "signature": [
+       "person",
+       "pouring",
+       "oil into a pan"
+      ],
+      "source_indices": [
+       1
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      42.0,
+      45.0
+     ],
+     "evidence_segment_idx": [
+      8
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP01",
+       "start_sec": 0.0,
+       "end_sec": 60.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "chopping"
+      ],
+      "object_tokens": [
+       "onion"
+      ],
+      "action_terms": [
+       "다지",
+       "썰",
+       "자르",
+       "절단",
+       "칼질"
+      ],
+      "object_terms": [
+       "양파"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "pouring"
+      ],
+      "object_tokens": [
+       "oil",
+       "pan"
+      ],
+      "action_terms": [
+       "따르",
+       "부어",
+       "붓"
+      ],
+      "object_terms": [
+       "기름",
+       "오일",
+       "팬",
+       "프라이팬",
+       "후라이팬"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 5,
+      "start_sec": 45.0,
+      "end_sec": 48.0,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "carrot",
+      "signature": [
+       "person",
+       "chopping",
+       "carrot"
+      ],
+      "source_indices": [
+       5
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 1,
+      "start_sec": 40.0,
+      "end_sec": 48.0,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "oil into a pan",
+      "signature": [
+       "person",
+       "pouring",
+       "oil into a pan"
+      ],
+      "source_indices": [
+       1
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      45.0,
+      48.0
+     ],
+     "evidence_segment_idx": [
+      9
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP01",
+       "start_sec": 0.0,
+       "end_sec": 60.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "chopping"
+      ],
+      "object_tokens": [
+       "carrot"
+      ],
+      "action_terms": [
+       "다지",
+       "썰",
+       "자르",
+       "절단",
+       "칼질"
+      ],
+      "object_terms": [
+       "당근"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "pouring"
+      ],
+      "object_tokens": [
+       "oil",
+       "pan"
+      ],
+      "action_terms": [
+       "따르",
+       "부어",
+       "붓"
+      ],
+      "object_terms": [
+       "기름",
+       "오일",
+       "팬",
+       "프라이팬",
+       "후라이팬"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 6,
+      "start_sec": 48.0,
+      "end_sec": 51.0,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "crab stick",
+      "signature": [
+       "person",
+       "chopping",
+       "crab stick"
+      ],
+      "source_indices": [
+       6
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 1,
+      "start_sec": 40.0,
+      "end_sec": 48.0,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "oil into a pan",
+      "signature": [
+       "person",
+       "pouring",
+       "oil into a pan"
+      ],
+      "source_indices": [
+       1
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      40.0,
+      51.0
+     ],
+     "evidence_segment_idx": [
+      8,
+      9,
+      10
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP01",
+       "start_sec": 0.0,
+       "end_sec": 60.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "chopping"
+      ],
+      "object_tokens": [
+       "crab",
+       "stick"
+      ],
+      "action_terms": [
+       "다지",
+       "썰",
+       "자르",
+       "절단",
+       "칼질"
+      ],
+      "object_terms": [
+       "게맛살",
+       "크래미",
+       "크랩"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "pouring"
+      ],
+      "object_tokens": [
+       "oil",
+       "pan"
+      ],
+      "action_terms": [
+       "따르",
+       "부어",
+       "붓"
+      ],
+      "object_terms": [
+       "기름",
+       "오일",
+       "팬",
+       "프라이팬",
+       "후라이팬"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 7,
+      "start_sec": 51.0,
+      "end_sec": 54.0,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "oil into bowl with breadcrumbs",
+      "signature": [
+       "person",
+       "pouring",
+       "oil into bowl with breadcrumbs"
+      ],
+      "source_indices": [
+       7
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 2,
+      "start_sec": 48.0,
+      "end_sec": 56.0,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "onion on a cutting board",
+      "signature": [
+       "person",
+       "chopping",
+       "onion on a cutting board"
+      ],
+      "source_indices": [
+       2
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      51.0,
+      54.0
+     ],
+     "evidence_segment_idx": [
+      10
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP01",
+       "start_sec": 0.0,
+       "end_sec": 60.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "pouring"
+      ],
+      "object_tokens": [
+       "bowl",
+       "breadcrumbs",
+       "oil"
+      ],
+      "action_terms": [
+       "따르",
+       "부어",
+       "붓"
+      ],
+      "object_terms": [
+       "그릇",
+       "기름",
+       "대접",
+       "브레드크럼",
+       "빵가루",
+       "오일"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "chopping"
+      ],
+      "object_tokens": [
+       "board",
+       "cutting",
+       "onion"
+      ],
+      "action_terms": [
+       "다지",
+       "썰",
+       "자르",
+       "절단",
+       "칼질"
+      ],
+      "object_terms": [
+       "도마",
+       "양파"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 8,
+      "start_sec": 54.0,
+      "end_sec": 57.0,
+      "actor": "person",
+      "action": "stirring",
+      "object_or_state": "breadcrumbs with oil",
+      "signature": [
+       "person",
+       "stirring",
+       "breadcrumbs with oil"
+      ],
+      "source_indices": [
+       8
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 2,
+      "start_sec": 48.0,
+      "end_sec": 56.0,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "onion on a cutting board",
+      "signature": [
+       "person",
+       "chopping",
+       "onion on a cutting board"
+      ],
+      "source_indices": [
+       2
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      54.0,
+      56.0
+     ],
+     "evidence_segment_idx": [
+      10,
+      11
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP01",
+       "start_sec": 0.0,
+       "end_sec": 60.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "stirring"
+      ],
+      "object_tokens": [
+       "breadcrumbs",
+       "oil"
+      ],
+      "action_terms": [
+       "섞",
+       "저어",
+       "젓"
+      ],
+      "object_terms": [
+       "기름",
+       "브레드크럼",
+       "빵가루",
+       "오일"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "chopping"
+      ],
+      "object_tokens": [
+       "board",
+       "cutting",
+       "onion"
+      ],
+      "action_terms": [
+       "다지",
+       "썰",
+       "자르",
+       "절단",
+       "칼질"
+      ],
+      "object_terms": [
+       "도마",
+       "양파"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 11,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "오일"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 9,
+      "start_sec": 57.0,
+      "end_sec": 60.0,
+      "actor": "person",
+      "action": "adding",
+      "object_or_state": "ground beef to bowl",
+      "signature": [
+       "person",
+       "adding",
+       "ground beef to bowl"
+      ],
+      "source_indices": [
+       9
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 2,
+      "start_sec": 48.0,
+      "end_sec": 56.0,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "onion on a cutting board",
+      "signature": [
+       "person",
+       "chopping",
+       "onion on a cutting board"
+      ],
+      "source_indices": [
+       2
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      48.0,
+      60.0
+     ],
+     "evidence_segment_idx": [
+      9,
+      10,
+      11
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP01",
+       "start_sec": 0.0,
+       "end_sec": 60.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "adding"
+      ],
+      "object_tokens": [
+       "beef",
+       "bowl",
+       "ground"
+      ],
+      "action_terms": [
+       "넣",
+       "추가"
+      ],
+      "object_terms": [
+       "고기",
+       "그릇",
+       "대접",
+       "민스",
+       "소고기"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "chopping"
+      ],
+      "object_tokens": [
+       "board",
+       "cutting",
+       "onion"
+      ],
+      "action_terms": [
+       "다지",
+       "썰",
+       "자르",
+       "절단",
+       "칼질"
+      ],
+      "object_terms": [
+       "도마",
+       "양파"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 11,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 9,
+      "start_sec": 57.0,
+      "end_sec": 60.0,
+      "actor": "person",
+      "action": "adding",
+      "object_or_state": "ground beef to bowl",
+      "signature": [
+       "person",
+       "adding",
+       "ground beef to bowl"
+      ],
+      "source_indices": [
+       9
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 4,
+      "start_sec": 64.0,
+      "end_sec": 72.0,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "onion on a cutting board",
+      "signature": [
+       "person",
+       "chopping",
+       "onion on a cutting board"
+      ],
+      "source_indices": [
+       4
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      57.0,
+      72.0
+     ],
+     "evidence_segment_idx": [
+      11,
+      12,
+      13,
+      14
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP01",
+       "start_sec": 0.0,
+       "end_sec": 60.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      },
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "adding"
+      ],
+      "object_tokens": [
+       "beef",
+       "bowl",
+       "ground"
+      ],
+      "action_terms": [
+       "넣",
+       "추가"
+      ],
+      "object_terms": [
+       "고기",
+       "그릇",
+       "대접",
+       "민스",
+       "소고기"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "chopping"
+      ],
+      "object_tokens": [
+       "board",
+       "cutting",
+       "onion"
+      ],
+      "action_terms": [
+       "다지",
+       "썰",
+       "자르",
+       "절단",
+       "칼질"
+      ],
+      "object_terms": [
+       "도마",
+       "양파"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 11,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 4
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 12,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "양파"
+        ]
+       },
+       {
+        "idx": 12,
+        "channel": "subtitle",
+        "action_matched": [],
+        "object_matched": [
+         "양파"
+        ]
+       },
+       {
+        "idx": 13,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "양파"
+        ]
+       },
+       {
+        "idx": 14,
+        "channel": "caption",
+        "action_matched": [
+         "절단"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 4
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 11,
+      "start_sec": 63.0,
+      "end_sec": 66.0,
+      "actor": "person",
+      "action": "adding",
+      "object_or_state": "carrot to bowl",
+      "signature": [
+       "person",
+       "adding",
+       "carrot to bowl"
+      ],
+      "source_indices": [
+       11
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 4,
+      "start_sec": 64.0,
+      "end_sec": 72.0,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "onion on a cutting board",
+      "signature": [
+       "person",
+       "chopping",
+       "onion on a cutting board"
+      ],
+      "source_indices": [
+       4
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      64.0,
+      66.0
+     ],
+     "evidence_segment_idx": [
+      12,
+      13
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "adding"
+      ],
+      "object_tokens": [
+       "bowl",
+       "carrot"
+      ],
+      "action_terms": [
+       "넣",
+       "추가"
+      ],
+      "object_terms": [
+       "그릇",
+       "당근",
+       "대접"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "chopping"
+      ],
+      "object_tokens": [
+       "board",
+       "cutting",
+       "onion"
+      ],
+      "action_terms": [
+       "다지",
+       "썰",
+       "자르",
+       "절단",
+       "칼질"
+      ],
+      "object_terms": [
+       "도마",
+       "양파"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 12,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "양파"
+        ]
+       },
+       {
+        "idx": 12,
+        "channel": "subtitle",
+        "action_matched": [],
+        "object_matched": [
+         "양파"
+        ]
+       },
+       {
+        "idx": 13,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "양파"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 12,
+      "start_sec": 66.0,
+      "end_sec": 69.0,
+      "actor": "person",
+      "action": "adding",
+      "object_or_state": "crab stick to bowl",
+      "signature": [
+       "person",
+       "adding",
+       "crab stick to bowl"
+      ],
+      "source_indices": [
+       12
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 4,
+      "start_sec": 64.0,
+      "end_sec": 72.0,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "onion on a cutting board",
+      "signature": [
+       "person",
+       "chopping",
+       "onion on a cutting board"
+      ],
+      "source_indices": [
+       4
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      66.0,
+      69.0
+     ],
+     "evidence_segment_idx": [
+      13
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "adding"
+      ],
+      "object_tokens": [
+       "bowl",
+       "crab",
+       "stick"
+      ],
+      "action_terms": [
+       "넣",
+       "추가"
+      ],
+      "object_terms": [
+       "게맛살",
+       "그릇",
+       "대접",
+       "크래미",
+       "크랩"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "chopping"
+      ],
+      "object_tokens": [
+       "board",
+       "cutting",
+       "onion"
+      ],
+      "action_terms": [
+       "다지",
+       "썰",
+       "자르",
+       "절단",
+       "칼질"
+      ],
+      "object_terms": [
+       "도마",
+       "양파"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 13,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "양파"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 12,
+      "start_sec": 66.0,
+      "end_sec": 69.0,
+      "actor": "person",
+      "action": "adding",
+      "object_or_state": "crab stick to bowl",
+      "signature": [
+       "person",
+       "adding",
+       "crab stick to bowl"
+      ],
+      "source_indices": [
+       12
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 5,
+      "start_sec": 72.0,
+      "end_sec": 80.0,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "carrot on a cutting board",
+      "signature": [
+       "person",
+       "chopping",
+       "carrot on a cutting board"
+      ],
+      "source_indices": [
+       5
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      66.0,
+      80.0
+     ],
+     "evidence_segment_idx": [
+      13,
+      14,
+      15
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "adding"
+      ],
+      "object_tokens": [
+       "bowl",
+       "crab",
+       "stick"
+      ],
+      "action_terms": [
+       "넣",
+       "추가"
+      ],
+      "object_terms": [
+       "게맛살",
+       "그릇",
+       "대접",
+       "크래미",
+       "크랩"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "chopping"
+      ],
+      "object_tokens": [
+       "board",
+       "carrot",
+       "cutting"
+      ],
+      "action_terms": [
+       "다지",
+       "썰",
+       "자르",
+       "절단",
+       "칼질"
+      ],
+      "object_terms": [
+       "당근",
+       "도마"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 15,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 14,
+        "channel": "caption",
+        "action_matched": [
+         "절단"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 13,
+      "start_sec": 69.0,
+      "end_sec": 72.0,
+      "actor": "person",
+      "action": "mixing",
+      "object_or_state": "ingredients in bowl",
+      "signature": [
+       "person",
+       "mixing",
+       "ingredients in bowl"
+      ],
+      "source_indices": [
+       13
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 4,
+      "start_sec": 64.0,
+      "end_sec": 72.0,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "onion on a cutting board",
+      "signature": [
+       "person",
+       "chopping",
+       "onion on a cutting board"
+      ],
+      "source_indices": [
+       4
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      69.0,
+      72.0
+     ],
+     "evidence_segment_idx": [
+      13,
+      14
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "mixing"
+      ],
+      "object_tokens": [
+       "bowl",
+       "ingredients"
+      ],
+      "action_terms": [
+       "반죽",
+       "버무리",
+       "섞",
+       "혼합"
+      ],
+      "object_terms": [
+       "그릇",
+       "대접"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "chopping"
+      ],
+      "object_tokens": [
+       "board",
+       "cutting",
+       "onion"
+      ],
+      "action_terms": [
+       "다지",
+       "썰",
+       "자르",
+       "절단",
+       "칼질"
+      ],
+      "object_terms": [
+       "도마",
+       "양파"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 13,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "양파"
+        ]
+       },
+       {
+        "idx": 14,
+        "channel": "caption",
+        "action_matched": [
+         "절단"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 13,
+      "start_sec": 69.0,
+      "end_sec": 72.0,
+      "actor": "person",
+      "action": "mixing",
+      "object_or_state": "ingredients in bowl",
+      "signature": [
+       "person",
+       "mixing",
+       "ingredients in bowl"
+      ],
+      "source_indices": [
+       13
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 5,
+      "start_sec": 72.0,
+      "end_sec": 80.0,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "carrot on a cutting board",
+      "signature": [
+       "person",
+       "chopping",
+       "carrot on a cutting board"
+      ],
+      "source_indices": [
+       5
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      69.0,
+      80.0
+     ],
+     "evidence_segment_idx": [
+      13,
+      14,
+      15
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "mixing"
+      ],
+      "object_tokens": [
+       "bowl",
+       "ingredients"
+      ],
+      "action_terms": [
+       "반죽",
+       "버무리",
+       "섞",
+       "혼합"
+      ],
+      "object_terms": [
+       "그릇",
+       "대접"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "chopping"
+      ],
+      "object_tokens": [
+       "board",
+       "carrot",
+       "cutting"
+      ],
+      "action_terms": [
+       "다지",
+       "썰",
+       "자르",
+       "절단",
+       "칼질"
+      ],
+      "object_terms": [
+       "당근",
+       "도마"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 15,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 14,
+        "channel": "caption",
+        "action_matched": [
+         "절단"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 14,
+      "start_sec": 72.0,
+      "end_sec": 75.0,
+      "actor": "person",
+      "action": "cooking",
+      "object_or_state": "mixture on stove",
+      "signature": [
+       "person",
+       "cooking",
+       "mixture on stove"
+      ],
+      "source_indices": [
+       14
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 4,
+      "start_sec": 64.0,
+      "end_sec": 72.0,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "onion on a cutting board",
+      "signature": [
+       "person",
+       "chopping",
+       "onion on a cutting board"
+      ],
+      "source_indices": [
+       4
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      64.0,
+      75.0
+     ],
+     "evidence_segment_idx": [
+      12,
+      13,
+      14
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "cooking"
+      ],
+      "object_tokens": [
+       "mixture",
+       "stove"
+      ],
+      "action_terms": [
+       "구워",
+       "굽",
+       "끓",
+       "볶",
+       "요리",
+       "익히",
+       "조리",
+       "튀기"
+      ],
+      "object_terms": [
+       "가스레인지",
+       "레인지",
+       "반죽",
+       "불",
+       "인덕션",
+       "재료",
+       "혼합물"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "chopping"
+      ],
+      "object_tokens": [
+       "board",
+       "cutting",
+       "onion"
+      ],
+      "action_terms": [
+       "다지",
+       "썰",
+       "자르",
+       "절단",
+       "칼질"
+      ],
+      "object_terms": [
+       "도마",
+       "양파"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": true,
+      "hits": [
+       {
+        "idx": 13,
+        "channel": "caption",
+        "action_matched": [
+         "조리"
+        ],
+        "object_matched": [
+         "재료"
+        ],
+        "shared_terms": [],
+        "independent": true,
+        "quote": "주인공은 나무 보드 위에 놓인 양파를 칼로 잘라내는 모습이다. 주변에는 다양한 조리 재료들이 배치되어 있다."
+       }
+      ],
+      "partial": [
+       {
+        "idx": 12,
+        "channel": "caption",
+        "action_matched": [
+         "조리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 12,
+        "channel": "subtitle",
+        "action_matched": [
+         "볶"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 14,
+        "channel": "caption",
+        "action_matched": [
+         "요리"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": true,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 12,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "양파"
+        ]
+       },
+       {
+        "idx": 12,
+        "channel": "subtitle",
+        "action_matched": [],
+        "object_matched": [
+         "양파"
+        ]
+       },
+       {
+        "idx": 13,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "양파"
+        ]
+       },
+       {
+        "idx": 14,
+        "channel": "caption",
+        "action_matched": [
+         "절단"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "reference_verdict": "EVIDENCE_SUPPORTS",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_CONTRADICTS",
+     "arm_reasons": [],
+     "resolution": "REFERENCE_ONLY_SUPPORTED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 14,
+      "start_sec": 72.0,
+      "end_sec": 75.0,
+      "actor": "person",
+      "action": "cooking",
+      "object_or_state": "mixture on stove",
+      "signature": [
+       "person",
+       "cooking",
+       "mixture on stove"
+      ],
+      "source_indices": [
+       14
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 5,
+      "start_sec": 72.0,
+      "end_sec": 80.0,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "carrot on a cutting board",
+      "signature": [
+       "person",
+       "chopping",
+       "carrot on a cutting board"
+      ],
+      "source_indices": [
+       5
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      72.0,
+      75.0
+     ],
+     "evidence_segment_idx": [
+      14
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "cooking"
+      ],
+      "object_tokens": [
+       "mixture",
+       "stove"
+      ],
+      "action_terms": [
+       "구워",
+       "굽",
+       "끓",
+       "볶",
+       "요리",
+       "익히",
+       "조리",
+       "튀기"
+      ],
+      "object_terms": [
+       "가스레인지",
+       "레인지",
+       "반죽",
+       "불",
+       "인덕션",
+       "재료",
+       "혼합물"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "chopping"
+      ],
+      "object_tokens": [
+       "board",
+       "carrot",
+       "cutting"
+      ],
+      "action_terms": [
+       "다지",
+       "썰",
+       "자르",
+       "절단",
+       "칼질"
+      ],
+      "object_terms": [
+       "당근",
+       "도마"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 14,
+        "channel": "caption",
+        "action_matched": [
+         "요리"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 14,
+        "channel": "caption",
+        "action_matched": [
+         "절단"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 15,
+      "start_sec": 75.0,
+      "end_sec": 78.0,
+      "actor": "person",
+      "action": "peeling",
+      "object_or_state": "potatoes with peeler",
+      "signature": [
+       "person",
+       "peeling",
+       "potatoes with peeler"
+      ],
+      "source_indices": [
+       15
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 4,
+      "start_sec": 64.0,
+      "end_sec": 72.0,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "onion on a cutting board",
+      "signature": [
+       "person",
+       "chopping",
+       "onion on a cutting board"
+      ],
+      "source_indices": [
+       4
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      64.0,
+      78.0
+     ],
+     "evidence_segment_idx": [
+      12,
+      13,
+      14,
+      15
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "peeling"
+      ],
+      "object_tokens": [
+       "peeler",
+       "potatoes"
+      ],
+      "action_terms": [
+       "깎",
+       "껍질",
+       "벗기"
+      ],
+      "object_terms": [
+       "감자",
+       "감자칼",
+       "필러"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "chopping"
+      ],
+      "object_tokens": [
+       "board",
+       "cutting",
+       "onion"
+      ],
+      "action_terms": [
+       "다지",
+       "썰",
+       "자르",
+       "절단",
+       "칼질"
+      ],
+      "object_terms": [
+       "도마",
+       "양파"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 4
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 12,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "양파"
+        ]
+       },
+       {
+        "idx": 12,
+        "channel": "subtitle",
+        "action_matched": [],
+        "object_matched": [
+         "양파"
+        ]
+       },
+       {
+        "idx": 13,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "양파"
+        ]
+       },
+       {
+        "idx": 14,
+        "channel": "caption",
+        "action_matched": [
+         "절단"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 4
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 15,
+      "start_sec": 75.0,
+      "end_sec": 78.0,
+      "actor": "person",
+      "action": "peeling",
+      "object_or_state": "potatoes with peeler",
+      "signature": [
+       "person",
+       "peeling",
+       "potatoes with peeler"
+      ],
+      "source_indices": [
+       15
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 5,
+      "start_sec": 72.0,
+      "end_sec": 80.0,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "carrot on a cutting board",
+      "signature": [
+       "person",
+       "chopping",
+       "carrot on a cutting board"
+      ],
+      "source_indices": [
+       5
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      75.0,
+      78.0
+     ],
+     "evidence_segment_idx": [
+      15
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "peeling"
+      ],
+      "object_tokens": [
+       "peeler",
+       "potatoes"
+      ],
+      "action_terms": [
+       "깎",
+       "껍질",
+       "벗기"
+      ],
+      "object_terms": [
+       "감자",
+       "감자칼",
+       "필러"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "chopping"
+      ],
+      "object_tokens": [
+       "board",
+       "carrot",
+       "cutting"
+      ],
+      "action_terms": [
+       "다지",
+       "썰",
+       "자르",
+       "절단",
+       "칼질"
+      ],
+      "object_terms": [
+       "당근",
+       "도마"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 15,
+      "start_sec": 75.0,
+      "end_sec": 78.0,
+      "actor": "person",
+      "action": "peeling",
+      "object_or_state": "potatoes with peeler",
+      "signature": [
+       "person",
+       "peeling",
+       "potatoes with peeler"
+      ],
+      "source_indices": [
+       15
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 6,
+      "start_sec": 80.0,
+      "end_sec": 88.0,
+      "actor": "person",
+      "action": "mixing",
+      "object_or_state": "ingredients in a bowl",
+      "signature": [
+       "person",
+       "mixing",
+       "ingredients in a bowl"
+      ],
+      "source_indices": [
+       6
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      75.0,
+      88.0
+     ],
+     "evidence_segment_idx": [
+      15,
+      16,
+      17
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "peeling"
+      ],
+      "object_tokens": [
+       "peeler",
+       "potatoes"
+      ],
+      "action_terms": [
+       "깎",
+       "껍질",
+       "벗기"
+      ],
+      "object_terms": [
+       "감자",
+       "감자칼",
+       "필러"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "mixing"
+      ],
+      "object_tokens": [
+       "bowl",
+       "ingredients"
+      ],
+      "action_terms": [
+       "반죽",
+       "버무리",
+       "섞",
+       "혼합"
+      ],
+      "object_terms": [
+       "그릇",
+       "대접"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "arm_support": {
+      "supported": true,
+      "hits": [
+       {
+        "idx": 17,
+        "channel": "caption",
+        "action_matched": [
+         "섞"
+        ],
+        "object_matched": [
+         "그릇"
+        ],
+        "shared_terms": [],
+        "independent": true,
+        "quote": "화면에는 분홍색 그릇에 담긴 밀가루와 나무 숟대가 보입니다. 숟대를 사용해 밀가루를 섞는 모습이 나타납니다. 배경은 희미하게 보이며, 주변 환경에 대한 구체적인 정보는 제공되지 않습니다."
+       }
+      ],
+      "partial": [
+       {
+        "idx": 15,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       },
+       {
+        "idx": 16,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": true,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "reference_verdict": "EVIDENCE_CONTRADICTS",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_SUPPORTS",
+     "arm_reasons": [],
+     "resolution": "ARM_ONLY_SUPPORTED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 16,
+      "start_sec": 78.0,
+      "end_sec": 81.0,
+      "actor": "person",
+      "action": "mashing",
+      "object_or_state": "potatoes",
+      "signature": [
+       "person",
+       "mashing",
+       "potatoes"
+      ],
+      "source_indices": [
+       16
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 5,
+      "start_sec": 72.0,
+      "end_sec": 80.0,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "carrot on a cutting board",
+      "signature": [
+       "person",
+       "chopping",
+       "carrot on a cutting board"
+      ],
+      "source_indices": [
+       5
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      78.0,
+      80.0
+     ],
+     "evidence_segment_idx": [
+      15
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "mashing"
+      ],
+      "object_tokens": [
+       "potatoes"
+      ],
+      "action_terms": [
+       "매시",
+       "으깨",
+       "으깬",
+       "짓이기"
+      ],
+      "object_terms": [
+       "감자"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "chopping"
+      ],
+      "object_tokens": [
+       "board",
+       "carrot",
+       "cutting"
+      ],
+      "action_terms": [
+       "다지",
+       "썰",
+       "자르",
+       "절단",
+       "칼질"
+      ],
+      "object_terms": [
+       "당근",
+       "도마"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 16,
+      "start_sec": 78.0,
+      "end_sec": 81.0,
+      "actor": "person",
+      "action": "mashing",
+      "object_or_state": "potatoes",
+      "signature": [
+       "person",
+       "mashing",
+       "potatoes"
+      ],
+      "source_indices": [
+       16
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 6,
+      "start_sec": 80.0,
+      "end_sec": 88.0,
+      "actor": "person",
+      "action": "mixing",
+      "object_or_state": "ingredients in a bowl",
+      "signature": [
+       "person",
+       "mixing",
+       "ingredients in a bowl"
+      ],
+      "source_indices": [
+       6
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      80.0,
+      81.0
+     ],
+     "evidence_segment_idx": [
+      16
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "mashing"
+      ],
+      "object_tokens": [
+       "potatoes"
+      ],
+      "action_terms": [
+       "매시",
+       "으깨",
+       "으깬",
+       "짓이기"
+      ],
+      "object_terms": [
+       "감자"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "mixing"
+      ],
+      "object_tokens": [
+       "bowl",
+       "ingredients"
+      ],
+      "action_terms": [
+       "반죽",
+       "버무리",
+       "섞",
+       "혼합"
+      ],
+      "object_terms": [
+       "그릇",
+       "대접"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 16,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 17,
+      "start_sec": 81.0,
+      "end_sec": 84.0,
+      "actor": "person",
+      "action": "adding",
+      "object_or_state": "mashed potatoes to bowl",
+      "signature": [
+       "person",
+       "adding",
+       "mashed potatoes to bowl"
+      ],
+      "source_indices": [
+       17
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 5,
+      "start_sec": 72.0,
+      "end_sec": 80.0,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "carrot on a cutting board",
+      "signature": [
+       "person",
+       "chopping",
+       "carrot on a cutting board"
+      ],
+      "source_indices": [
+       5
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      72.0,
+      84.0
+     ],
+     "evidence_segment_idx": [
+      14,
+      15,
+      16
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "adding"
+      ],
+      "object_tokens": [
+       "bowl",
+       "mashed",
+       "potatoes"
+      ],
+      "action_terms": [
+       "넣",
+       "추가"
+      ],
+      "object_terms": [
+       "감자",
+       "그릇",
+       "대접",
+       "매시",
+       "으깬"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "chopping"
+      ],
+      "object_tokens": [
+       "board",
+       "carrot",
+       "cutting"
+      ],
+      "action_terms": [
+       "다지",
+       "썰",
+       "자르",
+       "절단",
+       "칼질"
+      ],
+      "object_terms": [
+       "당근",
+       "도마"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 15,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       },
+       {
+        "idx": 16,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 14,
+        "channel": "caption",
+        "action_matched": [
+         "절단"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 18,
+      "start_sec": 84.0,
+      "end_sec": 87.0,
+      "actor": "person",
+      "action": "mixing",
+      "object_or_state": "ingredients in bowl",
+      "signature": [
+       "person",
+       "mixing",
+       "ingredients in bowl"
+      ],
+      "source_indices": [
+       18
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 5,
+      "start_sec": 72.0,
+      "end_sec": 80.0,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "carrot on a cutting board",
+      "signature": [
+       "person",
+       "chopping",
+       "carrot on a cutting board"
+      ],
+      "source_indices": [
+       5
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      72.0,
+      87.0
+     ],
+     "evidence_segment_idx": [
+      14,
+      15,
+      16,
+      17
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "mixing"
+      ],
+      "object_tokens": [
+       "bowl",
+       "ingredients"
+      ],
+      "action_terms": [
+       "반죽",
+       "버무리",
+       "섞",
+       "혼합"
+      ],
+      "object_terms": [
+       "그릇",
+       "대접"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "chopping"
+      ],
+      "object_tokens": [
+       "board",
+       "carrot",
+       "cutting"
+      ],
+      "action_terms": [
+       "다지",
+       "썰",
+       "자르",
+       "절단",
+       "칼질"
+      ],
+      "object_terms": [
+       "당근",
+       "도마"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": true,
+      "hits": [
+       {
+        "idx": 17,
+        "channel": "caption",
+        "action_matched": [
+         "섞"
+        ],
+        "object_matched": [
+         "그릇"
+        ],
+        "shared_terms": [],
+        "independent": true,
+        "quote": "화면에는 분홍색 그릇에 담긴 밀가루와 나무 숟대가 보입니다. 숟대를 사용해 밀가루를 섞는 모습이 나타납니다. 배경은 희미하게 보이며, 주변 환경에 대한 구체적인 정보는 제공되지 않습니다."
+       }
+      ],
+      "partial": [
+       {
+        "idx": 15,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       },
+       {
+        "idx": 16,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": true,
+      "shared_term_only_hits": 0,
+      "segment_count": 4
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 14,
+        "channel": "caption",
+        "action_matched": [
+         "절단"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 4
+     },
+     "reference_verdict": "EVIDENCE_SUPPORTS",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_CONTRADICTS",
+     "arm_reasons": [],
+     "resolution": "REFERENCE_ONLY_SUPPORTED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 19,
+      "start_sec": 87.0,
+      "end_sec": 90.0,
+      "actor": "person",
+      "action": "forming",
+      "object_or_state": "balls from mixture",
+      "signature": [
+       "person",
+       "forming",
+       "balls from mixture"
+      ],
+      "source_indices": [
+       19
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 6,
+      "start_sec": 80.0,
+      "end_sec": 88.0,
+      "actor": "person",
+      "action": "mixing",
+      "object_or_state": "ingredients in a bowl",
+      "signature": [
+       "person",
+       "mixing",
+       "ingredients in a bowl"
+      ],
+      "source_indices": [
+       6
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      87.0,
+      88.0
+     ],
+     "evidence_segment_idx": [
+      17
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "forming"
+      ],
+      "object_tokens": [
+       "balls",
+       "mixture"
+      ],
+      "action_terms": [
+       "둥글",
+       "만들",
+       "모양",
+       "빚",
+       "성형"
+      ],
+      "object_terms": [
+       "경단",
+       "공",
+       "동그랑",
+       "반죽",
+       "완자",
+       "재료",
+       "혼합물"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "mixing"
+      ],
+      "object_tokens": [
+       "bowl",
+       "ingredients"
+      ],
+      "action_terms": [
+       "반죽",
+       "버무리",
+       "섞",
+       "혼합"
+      ],
+      "object_terms": [
+       "그릇",
+       "대접"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 17,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "공"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "arm_support": {
+      "supported": true,
+      "hits": [
+       {
+        "idx": 17,
+        "channel": "caption",
+        "action_matched": [
+         "섞"
+        ],
+        "object_matched": [
+         "그릇"
+        ],
+        "shared_terms": [],
+        "independent": true,
+        "quote": "화면에는 분홍색 그릇에 담긴 밀가루와 나무 숟대가 보입니다. 숟대를 사용해 밀가루를 섞는 모습이 나타납니다. 배경은 희미하게 보이며, 주변 환경에 대한 구체적인 정보는 제공되지 않습니다."
+       }
+      ],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": true,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "reference_verdict": "EVIDENCE_CONTRADICTS",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_SUPPORTS",
+     "arm_reasons": [],
+     "resolution": "ARM_ONLY_SUPPORTED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 19,
+      "start_sec": 87.0,
+      "end_sec": 90.0,
+      "actor": "person",
+      "action": "forming",
+      "object_or_state": "balls from mixture",
+      "signature": [
+       "person",
+       "forming",
+       "balls from mixture"
+      ],
+      "source_indices": [
+       19
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 7,
+      "start_sec": 88.0,
+      "end_sec": 96.0,
+      "actor": "person",
+      "action": "adding",
+      "object_or_state": "beef to a bowl",
+      "signature": [
+       "person",
+       "adding",
+       "beef to a bowl"
+      ],
+      "source_indices": [
+       7
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      88.0,
+      90.0
+     ],
+     "evidence_segment_idx": [
+      17
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "forming"
+      ],
+      "object_tokens": [
+       "balls",
+       "mixture"
+      ],
+      "action_terms": [
+       "둥글",
+       "만들",
+       "모양",
+       "빚",
+       "성형"
+      ],
+      "object_terms": [
+       "경단",
+       "공",
+       "동그랑",
+       "반죽",
+       "완자",
+       "재료",
+       "혼합물"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "adding"
+      ],
+      "object_tokens": [
+       "beef",
+       "bowl"
+      ],
+      "action_terms": [
+       "넣",
+       "추가"
+      ],
+      "object_terms": [
+       "고기",
+       "그릇",
+       "대접",
+       "민스",
+       "소고기"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 17,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "공"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 17,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 20,
+      "start_sec": 90.0,
+      "end_sec": 93.0,
+      "actor": "person",
+      "action": "coating",
+      "object_or_state": "balls in breadcrumbs",
+      "signature": [
+       "person",
+       "coating",
+       "balls in breadcrumbs"
+      ],
+      "source_indices": [
+       20
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 6,
+      "start_sec": 80.0,
+      "end_sec": 88.0,
+      "actor": "person",
+      "action": "mixing",
+      "object_or_state": "ingredients in a bowl",
+      "signature": [
+       "person",
+       "mixing",
+       "ingredients in a bowl"
+      ],
+      "source_indices": [
+       6
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      80.0,
+      93.0
+     ],
+     "evidence_segment_idx": [
+      16,
+      17,
+      18
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "coating"
+      ],
+      "object_tokens": [
+       "balls",
+       "breadcrumbs"
+      ],
+      "action_terms": [
+       "묻히",
+       "바르",
+       "입히",
+       "코팅",
+       "튀김옷"
+      ],
+      "object_terms": [
+       "경단",
+       "공",
+       "동그랑",
+       "브레드크럼",
+       "빵가루",
+       "완자"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "mixing"
+      ],
+      "object_tokens": [
+       "bowl",
+       "ingredients"
+      ],
+      "action_terms": [
+       "반죽",
+       "버무리",
+       "섞",
+       "혼합"
+      ],
+      "object_terms": [
+       "그릇",
+       "대접"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 17,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "공"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "arm_support": {
+      "supported": true,
+      "hits": [
+       {
+        "idx": 17,
+        "channel": "caption",
+        "action_matched": [
+         "섞"
+        ],
+        "object_matched": [
+         "그릇"
+        ],
+        "shared_terms": [],
+        "independent": true,
+        "quote": "화면에는 분홍색 그릇에 담긴 밀가루와 나무 숟대가 보입니다. 숟대를 사용해 밀가루를 섞는 모습이 나타납니다. 배경은 희미하게 보이며, 주변 환경에 대한 구체적인 정보는 제공되지 않습니다."
+       },
+       {
+        "idx": 18,
+        "channel": "caption",
+        "action_matched": [
+         "섞"
+        ],
+        "object_matched": [
+         "그릇"
+        ],
+        "shared_terms": [],
+        "independent": true,
+        "quote": "화면에는 한 사람이 붉은 젓가락으로 녹색 그릇에 담긴 소고기와 양파를 섞는 모습이 보입니다. 그의 손은 젓가락으로 양파를 집어 올리며, 그 위에 담긴 소고기를 섞습니다. 배경에는 테이블 위에 놓인 다양한 요리 재료들이 보입니다."
+       }
+      ],
+      "partial": [
+       {
+        "idx": 16,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": true,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "reference_verdict": "EVIDENCE_CONTRADICTS",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_SUPPORTS",
+     "arm_reasons": [],
+     "resolution": "ARM_ONLY_SUPPORTED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 20,
+      "start_sec": 90.0,
+      "end_sec": 93.0,
+      "actor": "person",
+      "action": "coating",
+      "object_or_state": "balls in breadcrumbs",
+      "signature": [
+       "person",
+       "coating",
+       "balls in breadcrumbs"
+      ],
+      "source_indices": [
+       20
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 7,
+      "start_sec": 88.0,
+      "end_sec": 96.0,
+      "actor": "person",
+      "action": "adding",
+      "object_or_state": "beef to a bowl",
+      "signature": [
+       "person",
+       "adding",
+       "beef to a bowl"
+      ],
+      "source_indices": [
+       7
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      90.0,
+      93.0
+     ],
+     "evidence_segment_idx": [
+      18
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "coating"
+      ],
+      "object_tokens": [
+       "balls",
+       "breadcrumbs"
+      ],
+      "action_terms": [
+       "묻히",
+       "바르",
+       "입히",
+       "코팅",
+       "튀김옷"
+      ],
+      "object_terms": [
+       "경단",
+       "공",
+       "동그랑",
+       "브레드크럼",
+       "빵가루",
+       "완자"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "adding"
+      ],
+      "object_tokens": [
+       "beef",
+       "bowl"
+      ],
+      "action_terms": [
+       "넣",
+       "추가"
+      ],
+      "object_terms": [
+       "고기",
+       "그릇",
+       "대접",
+       "민스",
+       "소고기"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 18,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "고기",
+         "그릇",
+         "소고기"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 1
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 20,
+      "start_sec": 90.0,
+      "end_sec": 93.0,
+      "actor": "person",
+      "action": "coating",
+      "object_or_state": "balls in breadcrumbs",
+      "signature": [
+       "person",
+       "coating",
+       "balls in breadcrumbs"
+      ],
+      "source_indices": [
+       20
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 8,
+      "start_sec": 96.0,
+      "end_sec": 104.0,
+      "actor": "person",
+      "action": "stirring",
+      "object_or_state": "ingredients in a bowl",
+      "signature": [
+       "person",
+       "stirring",
+       "ingredients in a bowl"
+      ],
+      "source_indices": [
+       8
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      90.0,
+      104.0
+     ],
+     "evidence_segment_idx": [
+      18,
+      19,
+      20
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "coating"
+      ],
+      "object_tokens": [
+       "balls",
+       "breadcrumbs"
+      ],
+      "action_terms": [
+       "묻히",
+       "바르",
+       "입히",
+       "코팅",
+       "튀김옷"
+      ],
+      "object_terms": [
+       "경단",
+       "공",
+       "동그랑",
+       "브레드크럼",
+       "빵가루",
+       "완자"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "stirring"
+      ],
+      "object_tokens": [
+       "bowl",
+       "ingredients"
+      ],
+      "action_terms": [
+       "섞",
+       "저어",
+       "젓"
+      ],
+      "object_terms": [
+       "그릇",
+       "대접"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "arm_support": {
+      "supported": true,
+      "hits": [
+       {
+        "idx": 18,
+        "channel": "caption",
+        "action_matched": [
+         "섞",
+         "젓"
+        ],
+        "object_matched": [
+         "그릇"
+        ],
+        "shared_terms": [],
+        "independent": true,
+        "quote": "화면에는 한 사람이 붉은 젓가락으로 녹색 그릇에 담긴 소고기와 양파를 섞는 모습이 보입니다. 그의 손은 젓가락으로 양파를 집어 올리며, 그 위에 담긴 소고기를 섞습니다. 배경에는 테이블 위에 놓인 다양한 요리 재료들이 보입니다."
+       },
+       {
+        "idx": 19,
+        "channel": "caption",
+        "action_matched": [
+         "젓"
+        ],
+        "object_matched": [
+         "그릇"
+        ],
+        "shared_terms": [],
+        "independent": true,
+        "quote": "여성은 녹색 그릇에 담긴 고기와 야채를 꾸며주고 있다. 그녀는 빨간 젓가락을 사용하며, 배경에는 흰색 벽과 파란색 줄무늬 커튼이 보인다. 그릇 옆에는 흰색과 분홍색의 작은 가루가 있는 투명한 유리 상자와 금속 점자기가 보인다."
+       }
+      ],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": true,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "reference_verdict": "EVIDENCE_CONTRADICTS",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_SUPPORTS",
+     "arm_reasons": [],
+     "resolution": "ARM_ONLY_SUPPORTED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 21,
+      "start_sec": 93.0,
+      "end_sec": 96.0,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "balls on plate",
+      "signature": [
+       "person",
+       "placing",
+       "balls on plate"
+      ],
+      "source_indices": [
+       21
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 7,
+      "start_sec": 88.0,
+      "end_sec": 96.0,
+      "actor": "person",
+      "action": "adding",
+      "object_or_state": "beef to a bowl",
+      "signature": [
+       "person",
+       "adding",
+       "beef to a bowl"
+      ],
+      "source_indices": [
+       7
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      93.0,
+      96.0
+     ],
+     "evidence_segment_idx": [
+      18,
+      19
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "placing"
+      ],
+      "object_tokens": [
+       "balls",
+       "plate"
+      ],
+      "action_terms": [
+       "놓",
+       "담",
+       "올리"
+      ],
+      "object_terms": [
+       "경단",
+       "공",
+       "동그랑",
+       "완자",
+       "접시"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "adding"
+      ],
+      "object_tokens": [
+       "beef",
+       "bowl"
+      ],
+      "action_terms": [
+       "넣",
+       "추가"
+      ],
+      "object_terms": [
+       "고기",
+       "그릇",
+       "대접",
+       "민스",
+       "소고기"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 18,
+        "channel": "caption",
+        "action_matched": [
+         "놓",
+         "담",
+         "올리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 19,
+        "channel": "caption",
+        "action_matched": [
+         "담"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 18,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "고기",
+         "그릇",
+         "소고기"
+        ]
+       },
+       {
+        "idx": 19,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "고기",
+         "그릇"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 21,
+      "start_sec": 93.0,
+      "end_sec": 96.0,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "balls on plate",
+      "signature": [
+       "person",
+       "placing",
+       "balls on plate"
+      ],
+      "source_indices": [
+       21
+      ],
+      "collapsed_count": 1
+     },
+     "arm": {
+      "index": 8,
+      "start_sec": 96.0,
+      "end_sec": 104.0,
+      "actor": "person",
+      "action": "stirring",
+      "object_or_state": "ingredients in a bowl",
+      "signature": [
+       "person",
+       "stirring",
+       "ingredients in a bowl"
+      ],
+      "source_indices": [
+       8
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      93.0,
+      104.0
+     ],
+     "evidence_segment_idx": [
+      18,
+      19,
+      20
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "placing"
+      ],
+      "object_tokens": [
+       "balls",
+       "plate"
+      ],
+      "action_terms": [
+       "놓",
+       "담",
+       "올리"
+      ],
+      "object_terms": [
+       "경단",
+       "공",
+       "동그랑",
+       "완자",
+       "접시"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "stirring"
+      ],
+      "object_tokens": [
+       "bowl",
+       "ingredients"
+      ],
+      "action_terms": [
+       "섞",
+       "저어",
+       "젓"
+      ],
+      "object_terms": [
+       "그릇",
+       "대접"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 18,
+        "channel": "caption",
+        "action_matched": [
+         "놓",
+         "담",
+         "올리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 19,
+        "channel": "caption",
+        "action_matched": [
+         "담"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 20,
+        "channel": "caption",
+        "action_matched": [
+         "놓"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "arm_support": {
+      "supported": true,
+      "hits": [
+       {
+        "idx": 18,
+        "channel": "caption",
+        "action_matched": [
+         "섞",
+         "젓"
+        ],
+        "object_matched": [
+         "그릇"
+        ],
+        "shared_terms": [],
+        "independent": true,
+        "quote": "화면에는 한 사람이 붉은 젓가락으로 녹색 그릇에 담긴 소고기와 양파를 섞는 모습이 보입니다. 그의 손은 젓가락으로 양파를 집어 올리며, 그 위에 담긴 소고기를 섞습니다. 배경에는 테이블 위에 놓인 다양한 요리 재료들이 보입니다."
+       },
+       {
+        "idx": 19,
+        "channel": "caption",
+        "action_matched": [
+         "젓"
+        ],
+        "object_matched": [
+         "그릇"
+        ],
+        "shared_terms": [],
+        "independent": true,
+        "quote": "여성은 녹색 그릇에 담긴 고기와 야채를 꾸며주고 있다. 그녀는 빨간 젓가락을 사용하며, 배경에는 흰색 벽과 파란색 줄무늬 커튼이 보인다. 그릇 옆에는 흰색과 분홍색의 작은 가루가 있는 투명한 유리 상자와 금속 점자기가 보인다."
+       }
+      ],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": true,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "reference_verdict": "EVIDENCE_CONTRADICTS",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_SUPPORTS",
+     "arm_reasons": [],
+     "resolution": "ARM_ONLY_SUPPORTED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 22,
+      "start_sec": 96.0,
+      "end_sec": 210.0,
+      "actor": "person",
+      "action": "cooking",
+      "object_or_state": "balls in oven",
+      "signature": [
+       "person",
+       "cooking",
+       "balls in oven"
+      ],
+      "source_indices": [
+       22,
+       23,
+       24,
+       25,
+       26,
+       27,
+       28,
+       29,
+       30,
+       31,
+       32,
+       33,
+       34,
+       35,
+       36,
+       37,
+       38,
+       39,
+       40,
+       41,
+       42,
+       43,
+       44,
+       45,
+       46,
+       47,
+       48,
+       49,
+       50,
+       51,
+       52,
+       53,
+       54,
+       55,
+       56,
+       57,
+       58,
+       59
+      ],
+      "collapsed_count": 38
+     },
+     "arm": {
+      "index": 7,
+      "start_sec": 88.0,
+      "end_sec": 96.0,
+      "actor": "person",
+      "action": "adding",
+      "object_or_state": "beef to a bowl",
+      "signature": [
+       "person",
+       "adding",
+       "beef to a bowl"
+      ],
+      "source_indices": [
+       7
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      88.0,
+      210.0
+     ],
+     "evidence_segment_idx": [
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      },
+      {
+       "episode_id": "EP03",
+       "start_sec": 120.0,
+       "end_sec": 180.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      },
+      {
+       "episode_id": "EP04",
+       "start_sec": 180.0,
+       "end_sec": 240.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "cooking"
+      ],
+      "object_tokens": [
+       "balls",
+       "oven"
+      ],
+      "action_terms": [
+       "구워",
+       "굽",
+       "끓",
+       "볶",
+       "요리",
+       "익히",
+       "조리",
+       "튀기"
+      ],
+      "object_terms": [
+       "경단",
+       "공",
+       "동그랑",
+       "에어프라이어",
+       "오븐",
+       "완자"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "adding"
+      ],
+      "object_tokens": [
+       "beef",
+       "bowl"
+      ],
+      "action_terms": [
+       "넣",
+       "추가"
+      ],
+      "object_terms": [
+       "고기",
+       "그릇",
+       "대접",
+       "민스",
+       "소고기"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 17,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "공"
+        ]
+       },
+       {
+        "idx": 18,
+        "channel": "caption",
+        "action_matched": [
+         "요리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 20,
+        "channel": "caption",
+        "action_matched": [
+         "요리",
+         "조리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 21,
+        "channel": "caption",
+        "action_matched": [
+         "요리",
+         "조리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 22,
+        "channel": "caption",
+        "action_matched": [
+         "요리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 23,
+        "channel": "caption",
+        "action_matched": [
+         "조리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 24,
+        "channel": "caption",
+        "action_matched": [
+         "요리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 25,
+        "channel": "caption",
+        "action_matched": [
+         "요리",
+         "조리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 26,
+        "channel": "caption",
+        "action_matched": [
+         "요리",
+         "조리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 27,
+        "channel": "caption",
+        "action_matched": [
+         "요리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 28,
+        "channel": "caption",
+        "action_matched": [
+         "요리",
+         "조리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 29,
+        "channel": "caption",
+        "action_matched": [
+         "요리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 30,
+        "channel": "caption",
+        "action_matched": [
+         "요리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 34,
+        "channel": "caption",
+        "action_matched": [
+         "요리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 35,
+        "channel": "caption",
+        "action_matched": [
+         "요리",
+         "조리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 36,
+        "channel": "caption",
+        "action_matched": [
+         "조리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 41,
+        "channel": "caption",
+        "action_matched": [
+         "요리"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 25
+     },
+     "arm_support": {
+      "supported": true,
+      "hits": [
+       {
+        "idx": 25,
+        "channel": "caption",
+        "action_matched": [
+         "넣"
+        ],
+        "object_matched": [
+         "그릇"
+        ],
+        "shared_terms": [],
+        "independent": true,
+        "quote": "여성은 검은 장갑을 끼고 녹색 그릇에 밀가루를 넣고 있습니다. 그녀는 주방에서 요리를 하고 있으며, 주변에는 다양한 조리 재료와 도구들이 놓여 있습니다."
+       },
+       {
+        "idx": 40,
+        "channel": "caption",
+        "action_matched": [
+         "추가"
+        ],
+        "object_matched": [
+         "그릇"
+        ],
+        "shared_terms": [],
+        "independent": true,
+        "quote": "여성은 노란 그릇에 담긴 음식을 꾸준히 섞는다. 그녀의 손에는 나무 숟가락이 들려 있고, 그녀의 팔에는 반지가 보인다. 배경에는 흰색 가구와 빨간색 줄무늬 벽이 보인다. 화면 하단에는 '볼닥소스 추가하기'라는 자막이 나타나 있다."
+       }
+      ],
+      "partial": [
+       {
+        "idx": 17,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       },
+       {
+        "idx": 18,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "고기",
+         "그릇",
+         "소고기"
+        ]
+       },
+       {
+        "idx": 19,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "고기",
+         "그릇"
+        ]
+       },
+       {
+        "idx": 22,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       },
+       {
+        "idx": 23,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       },
+       {
+        "idx": 24,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       },
+       {
+        "idx": 26,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       },
+       {
+        "idx": 27,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       },
+       {
+        "idx": 28,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       },
+       {
+        "idx": 29,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       },
+       {
+        "idx": 30,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       },
+       {
+        "idx": 32,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       },
+       {
+        "idx": 33,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       },
+       {
+        "idx": 34,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       },
+       {
+        "idx": 35,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       },
+       {
+        "idx": 36,
+        "channel": "caption",
+        "action_matched": [
+         "넣"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 36,
+        "channel": "subtitle",
+        "action_matched": [
+         "넣"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 37,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "고기",
+         "그릇"
+        ]
+       },
+       {
+        "idx": 37,
+        "channel": "subtitle",
+        "action_matched": [
+         "넣"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 38,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       },
+       {
+        "idx": 38,
+        "channel": "subtitle",
+        "action_matched": [
+         "넣"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 39,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       },
+       {
+        "idx": 41,
+        "channel": "subtitle",
+        "action_matched": [
+         "넣"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": true,
+      "shared_term_only_hits": 0,
+      "segment_count": 25
+     },
+     "reference_verdict": "EVIDENCE_CONTRADICTS",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_SUPPORTS",
+     "arm_reasons": [],
+     "resolution": "ARM_ONLY_SUPPORTED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 22,
+      "start_sec": 96.0,
+      "end_sec": 210.0,
+      "actor": "person",
+      "action": "cooking",
+      "object_or_state": "balls in oven",
+      "signature": [
+       "person",
+       "cooking",
+       "balls in oven"
+      ],
+      "source_indices": [
+       22,
+       23,
+       24,
+       25,
+       26,
+       27,
+       28,
+       29,
+       30,
+       31,
+       32,
+       33,
+       34,
+       35,
+       36,
+       37,
+       38,
+       39,
+       40,
+       41,
+       42,
+       43,
+       44,
+       45,
+       46,
+       47,
+       48,
+       49,
+       50,
+       51,
+       52,
+       53,
+       54,
+       55,
+       56,
+       57,
+       58,
+       59
+      ],
+      "collapsed_count": 38
+     },
+     "arm": {
+      "index": 8,
+      "start_sec": 96.0,
+      "end_sec": 104.0,
+      "actor": "person",
+      "action": "stirring",
+      "object_or_state": "ingredients in a bowl",
+      "signature": [
+       "person",
+       "stirring",
+       "ingredients in a bowl"
+      ],
+      "source_indices": [
+       8
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      96.0,
+      104.0
+     ],
+     "evidence_segment_idx": [
+      19,
+      20
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "cooking"
+      ],
+      "object_tokens": [
+       "balls",
+       "oven"
+      ],
+      "action_terms": [
+       "구워",
+       "굽",
+       "끓",
+       "볶",
+       "요리",
+       "익히",
+       "조리",
+       "튀기"
+      ],
+      "object_terms": [
+       "경단",
+       "공",
+       "동그랑",
+       "에어프라이어",
+       "오븐",
+       "완자"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "stirring"
+      ],
+      "object_tokens": [
+       "bowl",
+       "ingredients"
+      ],
+      "action_terms": [
+       "섞",
+       "저어",
+       "젓"
+      ],
+      "object_terms": [
+       "그릇",
+       "대접"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 20,
+        "channel": "caption",
+        "action_matched": [
+         "요리",
+         "조리"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "arm_support": {
+      "supported": true,
+      "hits": [
+       {
+        "idx": 19,
+        "channel": "caption",
+        "action_matched": [
+         "젓"
+        ],
+        "object_matched": [
+         "그릇"
+        ],
+        "shared_terms": [],
+        "independent": true,
+        "quote": "여성은 녹색 그릇에 담긴 고기와 야채를 꾸며주고 있다. 그녀는 빨간 젓가락을 사용하며, 배경에는 흰색 벽과 파란색 줄무늬 커튼이 보인다. 그릇 옆에는 흰색과 분홍색의 작은 가루가 있는 투명한 유리 상자와 금속 점자기가 보인다."
+       }
+      ],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": true,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "reference_verdict": "EVIDENCE_CONTRADICTS",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_SUPPORTS",
+     "arm_reasons": [],
+     "resolution": "ARM_ONLY_SUPPORTED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT",
+      "REVIEWER_NAMED"
+     ],
+     "reference": {
+      "index": 22,
+      "start_sec": 96.0,
+      "end_sec": 210.0,
+      "actor": "person",
+      "action": "cooking",
+      "object_or_state": "balls in oven",
+      "signature": [
+       "person",
+       "cooking",
+       "balls in oven"
+      ],
+      "source_indices": [
+       22,
+       23,
+       24,
+       25,
+       26,
+       27,
+       28,
+       29,
+       30,
+       31,
+       32,
+       33,
+       34,
+       35,
+       36,
+       37,
+       38,
+       39,
+       40,
+       41,
+       42,
+       43,
+       44,
+       45,
+       46,
+       47,
+       48,
+       49,
+       50,
+       51,
+       52,
+       53,
+       54,
+       55,
+       56,
+       57,
+       58,
+       59
+      ],
+      "collapsed_count": 38
+     },
+     "arm": {
+      "index": 9,
+      "start_sec": 104.0,
+      "end_sec": 112.0,
+      "actor": "person",
+      "action": "using",
+      "object_or_state": "potato ricer",
+      "signature": [
+       "person",
+       "using",
+       "potato ricer"
+      ],
+      "source_indices": [
+       9
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      104.0,
+      112.0
+     ],
+     "evidence_segment_idx": [
+      20,
+      21,
+      22
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "cooking"
+      ],
+      "object_tokens": [
+       "balls",
+       "oven"
+      ],
+      "action_terms": [
+       "구워",
+       "굽",
+       "끓",
+       "볶",
+       "요리",
+       "익히",
+       "조리",
+       "튀기"
+      ],
+      "object_terms": [
+       "경단",
+       "공",
+       "동그랑",
+       "에어프라이어",
+       "오븐",
+       "완자"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "using"
+      ],
+      "object_tokens": [
+       "potato",
+       "ricer"
+      ],
+      "action_terms": [
+       "사용",
+       "쓰"
+      ],
+      "object_terms": [
+       "감자",
+       "라이서",
+       "매셔",
+       "으깨"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 20,
+        "channel": "caption",
+        "action_matched": [
+         "요리",
+         "조리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 21,
+        "channel": "caption",
+        "action_matched": [
+         "요리",
+         "조리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 22,
+        "channel": "caption",
+        "action_matched": [
+         "요리"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 22,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "감자"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT",
+      "REVIEWER_NAMED"
+     ],
+     "reference": {
+      "index": 22,
+      "start_sec": 96.0,
+      "end_sec": 210.0,
+      "actor": "person",
+      "action": "cooking",
+      "object_or_state": "balls in oven",
+      "signature": [
+       "person",
+       "cooking",
+       "balls in oven"
+      ],
+      "source_indices": [
+       22,
+       23,
+       24,
+       25,
+       26,
+       27,
+       28,
+       29,
+       30,
+       31,
+       32,
+       33,
+       34,
+       35,
+       36,
+       37,
+       38,
+       39,
+       40,
+       41,
+       42,
+       43,
+       44,
+       45,
+       46,
+       47,
+       48,
+       49,
+       50,
+       51,
+       52,
+       53,
+       54,
+       55,
+       56,
+       57,
+       58,
+       59
+      ],
+      "collapsed_count": 38
+     },
+     "arm": {
+      "index": 10,
+      "start_sec": 112.0,
+      "end_sec": 120.0,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "potato mash into a bowl",
+      "signature": [
+       "person",
+       "pouring",
+       "potato mash into a bowl"
+      ],
+      "source_indices": [
+       10
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      112.0,
+      120.0
+     ],
+     "evidence_segment_idx": [
+      22,
+      23
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP02",
+       "start_sec": 60.0,
+       "end_sec": 120.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "cooking"
+      ],
+      "object_tokens": [
+       "balls",
+       "oven"
+      ],
+      "action_terms": [
+       "구워",
+       "굽",
+       "끓",
+       "볶",
+       "요리",
+       "익히",
+       "조리",
+       "튀기"
+      ],
+      "object_terms": [
+       "경단",
+       "공",
+       "동그랑",
+       "에어프라이어",
+       "오븐",
+       "완자"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "pouring"
+      ],
+      "object_tokens": [
+       "bowl",
+       "mash",
+       "potato"
+      ],
+      "action_terms": [
+       "따르",
+       "부어",
+       "붓"
+      ],
+      "object_terms": [
+       "감자",
+       "그릇",
+       "대접",
+       "매시",
+       "으깬"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 22,
+        "channel": "caption",
+        "action_matched": [
+         "요리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 23,
+        "channel": "caption",
+        "action_matched": [
+         "조리"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 22,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "감자",
+         "그릇"
+        ]
+       },
+       {
+        "idx": 23,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "DETERMINISTIC_DOUBLY_DISJOINT"
+     ],
+     "reference": {
+      "index": 22,
+      "start_sec": 96.0,
+      "end_sec": 210.0,
+      "actor": "person",
+      "action": "cooking",
+      "object_or_state": "balls in oven",
+      "signature": [
+       "person",
+       "cooking",
+       "balls in oven"
+      ],
+      "source_indices": [
+       22,
+       23,
+       24,
+       25,
+       26,
+       27,
+       28,
+       29,
+       30,
+       31,
+       32,
+       33,
+       34,
+       35,
+       36,
+       37,
+       38,
+       39,
+       40,
+       41,
+       42,
+       43,
+       44,
+       45,
+       46,
+       47,
+       48,
+       49,
+       50,
+       51,
+       52,
+       53,
+       54,
+       55,
+       56,
+       57,
+       58,
+       59
+      ],
+      "collapsed_count": 38
+     },
+     "arm": {
+      "index": 11,
+      "start_sec": 120.0,
+      "end_sec": 128.0,
+      "actor": "person",
+      "action": "mixing",
+      "object_or_state": "ingredients in a bowl",
+      "signature": [
+       "person",
+       "mixing",
+       "ingredients in a bowl"
+      ],
+      "source_indices": [
+       11
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      120.0,
+      128.0
+     ],
+     "evidence_segment_idx": [
+      24,
+      25
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP03",
+       "start_sec": 120.0,
+       "end_sec": 180.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "cooking"
+      ],
+      "object_tokens": [
+       "balls",
+       "oven"
+      ],
+      "action_terms": [
+       "구워",
+       "굽",
+       "끓",
+       "볶",
+       "요리",
+       "익히",
+       "조리",
+       "튀기"
+      ],
+      "object_terms": [
+       "경단",
+       "공",
+       "동그랑",
+       "에어프라이어",
+       "오븐",
+       "완자"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "mixing"
+      ],
+      "object_tokens": [
+       "bowl",
+       "ingredients"
+      ],
+      "action_terms": [
+       "반죽",
+       "버무리",
+       "섞",
+       "혼합"
+      ],
+      "object_terms": [
+       "그릇",
+       "대접"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 24,
+        "channel": "caption",
+        "action_matched": [
+         "요리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 25,
+        "channel": "caption",
+        "action_matched": [
+         "요리",
+         "조리"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "arm_support": {
+      "supported": true,
+      "hits": [
+       {
+        "idx": 24,
+        "channel": "caption",
+        "action_matched": [
+         "섞"
+        ],
+        "object_matched": [
+         "그릇"
+        ],
+        "shared_terms": [],
+        "independent": true,
+        "quote": "여성은 밝은 회색 티셔츠를 입고 있으며, 손가락에 반지가 달린 손으로 토마토 그릴러를 들고 있습니다. 그릴러에서 나오는 토마토 조각들이 녹색 그릇에 담겨 있습니다. 그릇에는 여러 가지 재료가 섞인 요리가 담겨 있고, 그 위에 토마토 조각이 올라오고 있습니다. 배경에는 다양한 음식 재료와調리 도구들이 놓여 있습니다."
+       }
+      ],
+      "partial": [
+       {
+        "idx": 25,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "그릇"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": true,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "reference_verdict": "EVIDENCE_CONTRADICTS",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_SUPPORTS",
+     "arm_reasons": [],
+     "resolution": "ARM_ONLY_SUPPORTED"
+    },
+    {
+     "source": [
+      "REVIEWER_NAMED"
+     ],
+     "reference": {
+      "index": 22,
+      "start_sec": 96.0,
+      "end_sec": 210.0,
+      "actor": "person",
+      "action": "cooking",
+      "object_or_state": "balls in oven",
+      "signature": [
+       "person",
+       "cooking",
+       "balls in oven"
+      ],
+      "source_indices": [
+       22,
+       23,
+       24,
+       25,
+       26,
+       27,
+       28,
+       29,
+       30,
+       31,
+       32,
+       33,
+       34,
+       35,
+       36,
+       37,
+       38,
+       39,
+       40,
+       41,
+       42,
+       43,
+       44,
+       45,
+       46,
+       47,
+       48,
+       49,
+       50,
+       51,
+       52,
+       53,
+       54,
+       55,
+       56,
+       57,
+       58,
+       59
+      ],
+      "collapsed_count": 38
+     },
+     "arm": {
+      "index": 12,
+      "start_sec": 128.0,
+      "end_sec": 136.0,
+      "actor": "person",
+      "action": "shaping",
+      "object_or_state": "potato mixture into balls",
+      "signature": [
+       "person",
+       "shaping",
+       "potato mixture into balls"
+      ],
+      "source_indices": [
+       12
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      128.0,
+      136.0
+     ],
+     "evidence_segment_idx": [
+      25,
+      26,
+      27
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP03",
+       "start_sec": 120.0,
+       "end_sec": 180.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "cooking"
+      ],
+      "object_tokens": [
+       "balls",
+       "oven"
+      ],
+      "action_terms": [
+       "구워",
+       "굽",
+       "끓",
+       "볶",
+       "요리",
+       "익히",
+       "조리",
+       "튀기"
+      ],
+      "object_terms": [
+       "경단",
+       "공",
+       "동그랑",
+       "에어프라이어",
+       "오븐",
+       "완자"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "shaping"
+      ],
+      "object_tokens": [
+       "balls",
+       "mixture",
+       "potato"
+      ],
+      "action_terms": [
+       "둥글",
+       "만들",
+       "모양",
+       "빚",
+       "성형"
+      ],
+      "object_terms": [
+       "감자",
+       "경단",
+       "공",
+       "동그랑",
+       "반죽",
+       "완자",
+       "재료",
+       "혼합물"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 25,
+        "channel": "caption",
+        "action_matched": [
+         "요리",
+         "조리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 26,
+        "channel": "caption",
+        "action_matched": [
+         "요리",
+         "조리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 27,
+        "channel": "caption",
+        "action_matched": [
+         "요리"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 25,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "재료"
+        ]
+       },
+       {
+        "idx": 26,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "재료"
+        ]
+       },
+       {
+        "idx": 27,
+        "channel": "caption",
+        "action_matched": [],
+        "object_matched": [
+         "재료"
+        ]
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "REVIEWER_NAMED"
+     ],
+     "reference": {
+      "index": 22,
+      "start_sec": 96.0,
+      "end_sec": 210.0,
+      "actor": "person",
+      "action": "cooking",
+      "object_or_state": "balls in oven",
+      "signature": [
+       "person",
+       "cooking",
+       "balls in oven"
+      ],
+      "source_indices": [
+       22,
+       23,
+       24,
+       25,
+       26,
+       27,
+       28,
+       29,
+       30,
+       31,
+       32,
+       33,
+       34,
+       35,
+       36,
+       37,
+       38,
+       39,
+       40,
+       41,
+       42,
+       43,
+       44,
+       45,
+       46,
+       47,
+       48,
+       49,
+       50,
+       51,
+       52,
+       53,
+       54,
+       55,
+       56,
+       57,
+       58,
+       59
+      ],
+      "collapsed_count": 38
+     },
+     "arm": {
+      "index": 13,
+      "start_sec": 136.0,
+      "end_sec": 144.0,
+      "actor": "person",
+      "action": "coating",
+      "object_or_state": "potato balls in egg",
+      "signature": [
+       "person",
+       "coating",
+       "potato balls in egg"
+      ],
+      "source_indices": [
+       13
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      136.0,
+      144.0
+     ],
+     "evidence_segment_idx": [
+      27,
+      28
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP03",
+       "start_sec": 120.0,
+       "end_sec": 180.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "cooking"
+      ],
+      "object_tokens": [
+       "balls",
+       "oven"
+      ],
+      "action_terms": [
+       "구워",
+       "굽",
+       "끓",
+       "볶",
+       "요리",
+       "익히",
+       "조리",
+       "튀기"
+      ],
+      "object_terms": [
+       "경단",
+       "공",
+       "동그랑",
+       "에어프라이어",
+       "오븐",
+       "완자"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "coating"
+      ],
+      "object_tokens": [
+       "balls",
+       "egg",
+       "potato"
+      ],
+      "action_terms": [
+       "묻히",
+       "바르",
+       "입히",
+       "코팅",
+       "튀김옷"
+      ],
+      "object_terms": [
+       "감자",
+       "경단",
+       "계란",
+       "공",
+       "달걀",
+       "동그랑",
+       "에그",
+       "완자"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 27,
+        "channel": "caption",
+        "action_matched": [
+         "요리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 28,
+        "channel": "caption",
+        "action_matched": [
+         "요리",
+         "조리"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 2
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    },
+    {
+     "source": [
+      "REVIEWER_NAMED"
+     ],
+     "reference": {
+      "index": 22,
+      "start_sec": 96.0,
+      "end_sec": 210.0,
+      "actor": "person",
+      "action": "cooking",
+      "object_or_state": "balls in oven",
+      "signature": [
+       "person",
+       "cooking",
+       "balls in oven"
+      ],
+      "source_indices": [
+       22,
+       23,
+       24,
+       25,
+       26,
+       27,
+       28,
+       29,
+       30,
+       31,
+       32,
+       33,
+       34,
+       35,
+       36,
+       37,
+       38,
+       39,
+       40,
+       41,
+       42,
+       43,
+       44,
+       45,
+       46,
+       47,
+       48,
+       49,
+       50,
+       51,
+       52,
+       53,
+       54,
+       55,
+       56,
+       57,
+       58,
+       59
+      ],
+      "collapsed_count": 38
+     },
+     "arm": {
+      "index": 14,
+      "start_sec": 144.0,
+      "end_sec": 152.0,
+      "actor": "person",
+      "action": "coating",
+      "object_or_state": "potato balls in breadcrumbs",
+      "signature": [
+       "person",
+       "coating",
+       "potato balls in breadcrumbs"
+      ],
+      "source_indices": [
+       14
+      ],
+      "collapsed_count": 1
+     },
+     "evidence_window": [
+      144.0,
+      152.0
+     ],
+     "evidence_segment_idx": [
+      28,
+      29,
+      30
+     ],
+     "pre_freeze_viewed_idx": [],
+     "episodes": [
+      {
+       "episode_id": "EP03",
+       "start_sec": 120.0,
+       "end_sec": 180.0,
+       "source": "visual",
+       "grounding_status": "NOT_APPLICABLE",
+       "content_status": "VALID_PARSE"
+      }
+     ],
+     "reference_terms": {
+      "action_tokens": [
+       "cooking"
+      ],
+      "object_tokens": [
+       "balls",
+       "oven"
+      ],
+      "action_terms": [
+       "구워",
+       "굽",
+       "끓",
+       "볶",
+       "요리",
+       "익히",
+       "조리",
+       "튀기"
+      ],
+      "object_terms": [
+       "경단",
+       "공",
+       "동그랑",
+       "에어프라이어",
+       "오븐",
+       "완자"
+      ],
+      "covered": true
+     },
+     "arm_terms": {
+      "action_tokens": [
+       "coating"
+      ],
+      "object_tokens": [
+       "balls",
+       "breadcrumbs",
+       "potato"
+      ],
+      "action_terms": [
+       "묻히",
+       "바르",
+       "입히",
+       "코팅",
+       "튀김옷"
+      ],
+      "object_terms": [
+       "감자",
+       "경단",
+       "공",
+       "동그랑",
+       "브레드크럼",
+       "빵가루",
+       "완자"
+      ],
+      "covered": true
+     },
+     "reference_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [
+       {
+        "idx": 28,
+        "channel": "caption",
+        "action_matched": [
+         "요리",
+         "조리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 29,
+        "channel": "caption",
+        "action_matched": [
+         "요리"
+        ],
+        "object_matched": []
+       },
+       {
+        "idx": 30,
+        "channel": "caption",
+        "action_matched": [
+         "요리"
+        ],
+        "object_matched": []
+       }
+      ],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "arm_support": {
+      "supported": false,
+      "hits": [],
+      "partial": [],
+      "lexicon_covered": true,
+      "independent_support": false,
+      "shared_term_only_hits": 0,
+      "segment_count": 3
+     },
+     "reference_verdict": "EVIDENCE_UNRESOLVED",
+     "reference_reasons": [],
+     "arm_verdict": "EVIDENCE_UNRESOLVED",
+     "arm_reasons": [],
+     "resolution": "NEITHER_RESOLVED"
+    }
+   ]
+  },
+  "D3": {
+   "window": {
+    "window_id": "W05",
+    "start_sec": 120.0,
+    "end_sec": 300.0,
+    "label": "D3_lowest_change",
+    "stage1_score": 816.3476
+   },
+   "reference_event_count": 8,
+   "arm_event_count": 13,
+   "per_tolerance": {
+    "tol_4.0": {
+     "candidate_count": 0,
+     "reviewer_coverage": {
+      "named_count": 0,
+      "found": [],
+      "missing": [],
+      "status": "COMPLETE"
+     }
+    },
+    "tol_8.0": {
+     "candidate_count": 0,
+     "reviewer_coverage": {
+      "named_count": 0,
+      "found": [],
+      "missing": [],
+      "status": "COMPLETE"
+     }
+    }
+   },
+   "reviewer_named_resolution": [],
+   "conflict_count": 0,
+   "resolution_counts": {
+    "REFERENCE_ONLY_SUPPORTED": 0,
+    "ARM_ONLY_SUPPORTED": 0,
+    "BOTH_SUPPORTED_AT_DIFFERENT_SEGMENTS": 0,
+    "NEITHER_RESOLVED": 0
+   },
+   "conflicts": []
+  }
+ },
+ "resolution_totals": {
+  "REFERENCE_ONLY_SUPPORTED": 3,
+  "ARM_ONLY_SUPPORTED": 10,
+  "BOTH_SUPPORTED_AT_DIFFERENT_SEGMENTS": 0,
+  "NEITHER_RESOLVED": 37
+ },
+ "event_verdict": "BRANCH_C_EVIDENCE_INCONCLUSIVE",
+ "note": "caption 채널은 Qwen2.5-VL-3B-4bit 출력이고 subtitle은 Whisper ASR이다. 어느 쪽도 인간 GT가 아니므로 판정은 이 evidence 층에 대한 지지·반증일 뿐이다. 지지 부재는 반증이 아니다."
+}
