@@ -283,7 +283,7 @@ def test_wvr_e25_reviewer_named_pairs_are_unioned_not_replaced():
            _event(450.0, 460.0, "chopping", "tomato with a knife"),
            _event(470.0, 480.0, "cooking", "tomato and egg in a pan")]
     found = ev.candidate_pairs(reference, [arm[1]], 4.0)
-    merged = resolver.add_reviewer_named(found, "D1", reference, arm)
+    merged, notes = resolver.add_reviewer_named(found, "D1", reference, arm)
     assert len(merged) == 4
     sewing = [row for row in merged
               if float(row["arm"]["start_sec"]) == 420.0][0]
@@ -291,13 +291,42 @@ def test_wvr_e25_reviewer_named_pairs_are_unioned_not_replaced():
                                      ev.SOURCE_REVIEWER}
     others = [row for row in merged if row is not sewing]
     assert all(row["source"] == [ev.SOURCE_REVIEWER] for row in others)
+    assert {note["status"] for note in notes} == {"EXACT_IN_DETERMINISTIC_SET",
+                                                 "EXACT_ADDED"}
 
 
-def test_wvr_e26_a_reviewer_span_absent_from_frozen_output_is_an_error():
+def test_wvr_e26_a_reviewer_reference_span_absent_from_output_is_an_error():
     reference = [_event(312.0, 480.0, "eating", "a breaded food item")]
     arm = [_event(420.0, 450.0, "sewing", "pajama pants")]
     with pytest.raises(resolver.ResolveError):
         resolver.add_reviewer_named([], "D2", reference, arm)
+
+
+def test_wvr_e31_a_prose_merged_reviewer_span_is_decomposed_not_dropped():
+    reference = [_event(96.0, 210.0, "cooking", "balls in oven")]
+    arm = [_event(104.0, 112.0, "using", "potato ricer"),
+           _event(112.0, 120.0, "pouring", "potato mash into a bowl"),
+           _event(128.0, 136.0, "shaping", "potato mixture into balls"),
+           _event(136.0, 144.0, "coating", "potato balls in egg"),
+           _event(144.0, 152.0, "coating", "potato balls in breadcrumbs")]
+    merged, notes = resolver.add_reviewer_named([], "D2", reference, arm)
+    decomposed = [note for note in notes if note["status"] == "DECOMPOSED"]
+    assert len(decomposed) == 1
+    assert decomposed[0]["named"] == [[96.0, 210.0], [136.0, 152.0]]
+    assert decomposed[0]["components"] == [[136.0, 144.0], [144.0, 152.0]]
+    spans = {(float(row["arm"]["start_sec"]), float(row["arm"]["end_sec"]))
+             for row in merged}
+    assert (136.0, 144.0) in spans and (144.0, 152.0) in spans
+    assert all("reviewer_named_span" in row for row in merged)
+
+
+def test_wvr_e32_an_undecomposable_reviewer_span_is_recorded_not_silent():
+    reference = [_event(96.0, 210.0, "cooking", "balls in oven")]
+    arm = [_event(104.0, 112.0, "using", "potato ricer")]
+    merged, notes = resolver.add_reviewer_named([], "D2", reference, arm)
+    statuses = [note["status"] for note in notes]
+    assert statuses.count("REVIEWER_SPAN_NOT_IN_FROZEN_OUTPUT") == 3
+    assert len(merged) == 1
 
 
 # ── WVR-E27~E30 실행 후 (산출물 있을 때만) ──────────────────────────

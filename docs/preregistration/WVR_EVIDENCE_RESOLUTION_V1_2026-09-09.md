@@ -121,6 +121,24 @@ D2  ( 96,210) vs (104,112) · (112,120) · (128,136) · (136,152)
 않으면 `SELECTOR_INCOMPLETE`로 기록한다 — **실행을 무효화하지 않고, selector의 한계로
 남긴다**(WVR-E21).
 
+**[errata 2026-09-09 · 실행 전 · 판정값 산출 이전]** 지목 구간 `D2 (136,152)`는
+frozen V2 출력에 단일 interval로 존재하지 않는다 — 리뷰어가 산문에서
+`136–144 coating potato balls in egg`와 `144–152 coating potato balls in breadcrumbs`
+두 interval을 묶어 적은 것이다. 최초 규칙은 이 경우 실행을 중단시켰다. 이를 다음으로
+정정한다.
+
+```
+지목 구간이 frozen 출력에 그대로 있으면            그 쌍을 쓴다 (EXACT_*)
+없으면 지목 구간에 완전히 포함되는 arm interval을   전부 쓴다 (DECOMPOSED)
+포함되는 interval이 하나도 없으면                  REVIEWER_SPAN_NOT_IN_FROZEN_OUTPUT
+지목 reference 구간 자체가 없으면                  실행 중단 (오류)
+```
+
+분해는 포함 관계로만 하며 **부분 선택을 하지 않는다**(포함되는 것 전부). 각 행에
+`reviewer_named_span`을 남기고 pair별 `reviewer_named_resolution`에 처리 상태를
+기록한다. 이 정정은 evidence 본문을 읽거나 판정값을 계산하기 전에 이뤄졌고,
+§8·§9의 판정·분기 규칙은 건드리지 않았다(WVR-E31·E32).
+
 ## 7. evidence 창 — 겹친 구간만 본다
 
 ```
@@ -242,7 +260,8 @@ evidence    E10 half-open 교집합 · E11 사전 열람 공개 · E12 summary �
             E15 없음 ≠ 반증 · E16 경쟁 지지 필요 · E17 미덮 claim 반증 불가
 판정        E18 4값 · E19 분기 동결 · E20 지목 8건 동결 · E21 selector 불완전 기록
 실행기      E22 추론 스택 금지 · E23 무효 arm 거부 · E24 해시 검증
-            E25 합집합 태깅 · E26 없는 구간 오류
+            E25 합집합 태깅 · E26 없는 reference 구간 오류
+            E31 산문 병합 지목 구간 분해 · E32 분해 불가 시 기록
 실행 후     E27 한계 선언 · E28 모든 CONTRADICTS에 경쟁 지지 존재
             E29 라벨·합계 일관 · E30 입력 provenance = 채택 제출본 층
 ```

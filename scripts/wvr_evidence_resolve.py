@@ -112,13 +112,29 @@ def find_event(collapsed: list, span: tuple):
     return None
 
 
+def contained_arm_events(arm_events: list, span) -> list:
+    """지목 구간에 완전히 포함되는 frozen arm interval (결정적 분해)."""
+    return [row for row in arm_events
+            if float(row["start_sec"]) >= span[0]
+            and float(row["end_sec"]) <= span[1]]
+
+
 def add_reviewer_named(candidates: list, pair: str, reference_events: list,
-                       arm_events: list) -> list:
-    """리뷰어 지목 쌍을 union으로 합친다(중복은 source 태그만 추가)."""
-    rows = list(candidates)
+                       arm_events: list):
+    """리뷰어 지목 쌍을 union으로 합친다(중복은 source 태그만 추가).
+
+    지목 구간이 frozen 출력에 그대로 없으면(리뷰어가 산문에서 두 interval을
+    묶어 적은 경우) 포함 관계로 결정적으로 분해하고 그 사실을 기록한다.
+    임의 선택은 하지 않는다 — 포함되는 interval 전부를 넣는다.
+    """
+    rows, notes = list(candidates), []
     for named_pair, ref_span, arm_span in ev.REVIEWER_NAMED_CONFLICTS:
         if named_pair != pair:
             continue
+        reference = find_event(reference_events, ref_span)
+        if reference is None:
+            raise ResolveError("리뷰어 지목 reference 구간이 frozen 출력에 없다: "
+                               "%s %s" % (named_pair, ref_span))
         existing = None
         for row in rows:
             if (float(row["reference"]["start_sec"]),
@@ -130,20 +146,39 @@ def add_reviewer_named(candidates: list, pair: str, reference_events: list,
         if existing is not None:
             if ev.SOURCE_REVIEWER not in existing["source"]:
                 existing["source"].append(ev.SOURCE_REVIEWER)
+            notes.append({"named": [list(ref_span), list(arm_span)],
+                          "status": "EXACT_IN_DETERMINISTIC_SET"})
             continue
-        reference = find_event(reference_events, ref_span)
         arm = find_event(arm_events, arm_span)
-        if reference is None or arm is None:
-            raise ResolveError("리뷰어 지목 구간이 frozen 출력에 없다: %s %s %s"
-                               % (named_pair, ref_span, arm_span))
-        rows.append({
-            "reference_index": reference_events.index(reference),
-            "arm_index": arm_events.index(arm),
-            "reference": reference, "arm": arm,
-            "evidence_window": ev.evidence_window(reference, arm),
-            "source": [ev.SOURCE_REVIEWER],
-        })
-    return rows
+        targets, status = ([arm], "EXACT_ADDED") if arm is not None else (
+            contained_arm_events(arm_events, arm_span), "DECOMPOSED")
+        if not targets:
+            notes.append({"named": [list(ref_span), list(arm_span)],
+                          "status": "REVIEWER_SPAN_NOT_IN_FROZEN_OUTPUT"})
+            continue
+        for target in targets:
+            duplicate = next(
+                (row for row in rows
+                 if row["reference"] is reference and row["arm"] is target),
+                None)
+            if duplicate is not None:
+                if ev.SOURCE_REVIEWER not in duplicate["source"]:
+                    duplicate["source"].append(ev.SOURCE_REVIEWER)
+                continue
+            rows.append({
+                "reference_index": reference_events.index(reference),
+                "arm_index": arm_events.index(target),
+                "reference": reference, "arm": target,
+                "evidence_window": ev.evidence_window(reference, target),
+                "source": [ev.SOURCE_REVIEWER],
+                "reviewer_named_span": [list(ref_span), list(arm_span)],
+            })
+        notes.append({"named": [list(ref_span), list(arm_span)],
+                      "status": status,
+                      "components": [[float(row["start_sec"]),
+                                      float(row["end_sec"])]
+                                     for row in targets]})
+    return rows, notes
 
 
 def resolve(runs: Path, segments_path: Path, canonical_path: Path,
@@ -175,8 +210,8 @@ def resolve(runs: Path, segments_path: Path, canonical_path: Path,
             }
         primary = ev.candidate_pairs(reference_events, arm_events,
                                      ev.PRIMARY_TOLERANCE)
-        merged = add_reviewer_named(primary, pair, reference_events,
-                                    arm_events)
+        merged, reviewer_notes = add_reviewer_named(
+            primary, pair, reference_events, arm_events)
         resolved = [resolve_candidate(row, segments, canonical)
                     for row in merged]
         counts = dict.fromkeys(totals, 0)
@@ -188,6 +223,7 @@ def resolve(runs: Path, segments_path: Path, canonical_path: Path,
             "reference_event_count": len(reference_events),
             "arm_event_count": len(arm_events),
             "per_tolerance": per_tolerance,
+            "reviewer_named_resolution": reviewer_notes,
             "conflict_count": len(resolved),
             "resolution_counts": counts,
             "conflicts": resolved,
