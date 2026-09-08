@@ -94,6 +94,10 @@ def _sha256(path: Path) -> str:
 
 
 def _git_head() -> str:
+    """격리 실행 디렉터리에는 .git이 없다 — 그때는 환경변수로 실행 commit을 받는다."""
+    from_env = os.environ.get("WVR_CODE_GIT_HEAD", "").strip()
+    if from_env:
+        return from_env
     try:
         return subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True,
                               text=True, check=True,
