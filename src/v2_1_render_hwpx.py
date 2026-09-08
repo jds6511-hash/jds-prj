@@ -29,7 +29,7 @@ import zipfile
 from io import BytesIO
 from xml.sax.saxutils import escape, unescape
 
-from v2_1_render import (LABELS, excluded_cell, format_clock,
+from v2_1_render import (LABELS, chapter_cell, excluded_cell, format_clock,
                         semantic_view, summary_cell)
 from v2_1_run import require_report_mode
 
@@ -85,13 +85,25 @@ def _lines(manifest, view, highlights) -> list[str]:
         "■ 주요 사건 및 내용",
     ]
     for record, source in zip(view["highlights"], highlights):
+        chapter = view["chapters"].get(record["highlight_id"])
         lines += [
             _TOP,
             "%s%s%s" % (_MID, record["highlight_id"],
                         " · %s" % record["label"] if record["label"] else ""),
             "%s%s: %s–%s" % (_MID, LABELS["time"], format_clock(record["start_sec"]),
                              format_clock(record["end_sec"])),
-            "%s%s: %s" % (_MID, LABELS["summary"], summary_cell(source)),
+        ]
+        # C-06과 같은 조건·같은 값이다. 실패한 chapter는 상태 코드를 적는다.
+        if chapter is not None:
+            if chapter["title"]:
+                lines.append("%s%s: %s" % (_MID, LABELS["title"],
+                                           chapter["title"]))
+            lines.append("%s%s: %s" % (_MID, LABELS["summary"],
+                                       chapter_cell(chapter)))
+        else:
+            lines.append("%s%s: %s" % (_MID, LABELS["summary"],
+                                       summary_cell(source)))
+        lines += [
             "%s%s: %s" % (_MID, LABELS["sources"],
                           " · ".join(record["source_episode_ids"])),
             "%s%s: %s" % (_MID, LABELS["summary_sources"],
@@ -117,13 +129,16 @@ def _lines(manifest, view, highlights) -> list[str]:
     return lines
 
 
-def render_hwpx(manifest, highlights, synthesis) -> bytes:
+def render_hwpx(manifest, highlights, synthesis, *, chapters=None,
+                global_synthesis=None) -> bytes:
     """HWPX 패키지 하나를 만든다. `analysis_mode != report`이면 멈춘다.
 
     인터록은 C-06과 **같은 것**을 쓴다 — HWPX 전용 판정 규칙을 만들지 않는다.
+    합성 계층 인자도 C-06과 같은 이름·같은 의미로 받는다.
     """
     require_report_mode(manifest)
-    view = semantic_view(highlights, synthesis)
+    view = semantic_view(highlights, synthesis, chapters=chapters,
+                         global_synthesis=global_synthesis)
 
     section = _SECTION_OPEN + "".join(
         _paragraph(line) for line in _lines(manifest, view, highlights)
@@ -141,9 +156,11 @@ def render_hwpx(manifest, highlights, synthesis) -> bytes:
     return buffer.getvalue()
 
 
-def write_hwpx(path, manifest, highlights, synthesis):
+def write_hwpx(path, manifest, highlights, synthesis, *, chapters=None,
+               global_synthesis=None):
     """패키지를 파일로 쓴다. 실패를 다른 형식으로 대체하지 않는다(C-08 소관)."""
-    payload = render_hwpx(manifest, highlights, synthesis)
+    payload = render_hwpx(manifest, highlights, synthesis, chapters=chapters,
+                          global_synthesis=global_synthesis)
     path.write_bytes(payload)
     return path
 

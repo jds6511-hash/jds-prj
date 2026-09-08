@@ -34,6 +34,7 @@ LABELS = {
     "sources": "구성 구간",
     "summary_sources": "요약 출처",
     "excluded": "제외 구간",
+    "title": "제목",
     "synthesis_sources": "종합 출처 구간",
     "limitation": "한계",
 }
@@ -88,10 +89,39 @@ def excluded_cell(record) -> str:
                       for episode_id, reasons in record["excluded_summary_reasons"])
 
 
-def semantic_view(highlights, synthesis) -> dict:
-    """두 출력이 공통으로 담아야 하는 의미. 서식은 여기 없다."""
+def _chapter_view(chapters) -> dict:
+    """group_id → chapter 표현. 합성 계층은 정본 표현 객체를 덮지 않는다."""
+    view = {}
+    for chapter in chapters or ():
+        view[chapter.group_id] = {
+            "group_id": chapter.group_id,
+            "title": chapter.title,
+            "sentences": [{"text": item.text,
+                           "source_refs": list(item.source_refs)}
+                          for item in chapter.summary_sentences],
+            "content_status": chapter.content_status,
+            "quality_status": chapter.quality_status,
+            "presentable": chapter.presentable,
+        }
+    return view
+
+
+def chapter_cell(chapter: dict) -> str:
+    """chapter 본문 한 줄. 실패는 상태 코드로 적고 문장을 만들지 않는다."""
+    if not chapter["presentable"]:
+        return "(%s)" % chapter["content_status"]
+    return " ".join(item["text"] for item in chapter["sentences"])
+
+
+def semantic_view(highlights, synthesis, *, chapters=None,
+                  global_synthesis=None) -> dict:
+    """두 출력이 공통으로 담아야 하는 의미. 서식은 여기 없다.
+
+    `chapters` · `global_synthesis`를 주면 합성 계층이 본문이 된다. 주지 않으면
+    **예전 경로와 완전히 같다** — 두 경로가 공존한다(addendum §3).
+    """
     _check(highlights, synthesis)
-    return {
+    view = {
         "highlights": [
             {
                 "highlight_id": record.highlight_id,
@@ -110,11 +140,35 @@ def semantic_view(highlights, synthesis) -> dict:
             for record in highlights
         ],
         "overview": synthesis.overview,
+        "overview_sentences": [],
         "analysis": list(synthesis.analysis),
         "conclusion": synthesis.conclusion,
         "synthesis_sources": list(synthesis.source_episode_ids),
         "limitation": synthesis.limitation,
+        "synthesis_layer": "episode_concat",
+        "chapters": _chapter_view(chapters),
     }
+    if global_synthesis is None:
+        return view
+
+    view["synthesis_layer"] = "presentation_synthesis_v1"
+    if not global_synthesis.presentable:
+        view["overview"] = "(%s)" % global_synthesis.content_status
+        view["analysis"] = ["(%s)" % global_synthesis.content_status]
+        view["conclusion"] = "(%s)" % global_synthesis.content_status
+        return view
+    view["overview_sentences"] = [
+        {"text": item.text, "source_refs": list(item.source_refs)}
+        for item in global_synthesis.overview_sentences]
+    view["overview"] = " ".join(item["text"]
+                                for item in view["overview_sentences"])
+    view["analysis"] = [item.text for item in global_synthesis.analysis_points]
+    view["analysis_sources"] = [list(item.source_refs)
+                                for item in global_synthesis.analysis_points]
+    view["conclusion"] = " ".join(item.text for item
+                                  in global_synthesis.conclusion_sentences)
+    view["global_sources"] = list(global_synthesis.source_highlight_refs)
+    return view
 
 
 def render_preview(manifest, highlights, synthesis) -> str:
@@ -138,10 +192,12 @@ def render_preview(manifest, highlights, synthesis) -> str:
     return "\n".join(lines)
 
 
-def render_markdown(manifest, highlights, synthesis) -> str:
+def render_markdown(manifest, highlights, synthesis, *, chapters=None,
+                    global_synthesis=None) -> str:
     """정식 보고서 형식. `analysis_mode != report`이면 여기서 멈춘다."""
     require_report_mode(manifest)
-    view = semantic_view(highlights, synthesis)
+    view = semantic_view(highlights, synthesis, chapters=chapters,
+                         global_synthesis=global_synthesis)
 
     parts = [
         "# %s" % manifest.video_id,
@@ -157,13 +213,23 @@ def render_markdown(manifest, highlights, synthesis) -> str:
         "## %s" % SECTION_NAMES[1],
     ]
     for record, source in zip(view["highlights"], highlights):
+        chapter = view["chapters"].get(record["highlight_id"])
         parts += [
             "",
             "### %s%s" % (record["highlight_id"],
                           " %s" % record["label"] if record["label"] else ""),
             "- %s: %s–%s" % (LABELS["time"], format_clock(record["start_sec"]),
                              format_clock(record["end_sec"])),
-            "- %s: %s" % (LABELS["summary"], summary_cell(source)),
+        ]
+        # chapter가 있으면 합성 본문을 싣는다. 실패한 chapter는 상태 코드를 싣고
+        # **예전 concat으로 되돌리지 않는다**(addendum §8).
+        if chapter is not None:
+            if chapter["title"]:
+                parts.append("- %s: %s" % (LABELS["title"], chapter["title"]))
+            parts.append("- %s: %s" % (LABELS["summary"], chapter_cell(chapter)))
+        else:
+            parts.append("- %s: %s" % (LABELS["summary"], summary_cell(source)))
+        parts += [
             "- %s: %s" % (LABELS["sources"],
                           " · ".join(record["source_episode_ids"])),
             "- %s: %s" % (LABELS["summary_sources"],

@@ -42,10 +42,10 @@ C7 old artifacts    실질 통과 (감시 6개 해시 무변경)
 따라서 **사전등록의 첫 질문(run1 == run2)은 답을 얻지 못했다.** 빈 전사 두 개가
 같다는 사실은 temperature 고정의 효과를 증명하지 못한다.
 
-## 3. 사라진 것에 실제 발화가 포함돼 있다
+## 3. 겹쳤던 3발화도 출력되지 않았다 (원인 미분리 · 2026-09-08 정정)
 
 기존 전사 26발화 중 VAD 발화 구간과 겹치는 것은 3건이고, 전부 자연스러운 한국어
-대화다. 새 전사에서는 **이 3건도 사라졌다.**
+대화다. 새 전사에서는 **이 3건도 출력되지 않았다.**
 
 ```
 177.54–178.54  샘플 두께 이정도니까
@@ -56,17 +56,37 @@ C7 old artifacts    실질 통과 (감시 6개 해시 무변경)
 나머지 23건은 조리 지시문 형태다(`오븐에 2분간 구워주세요`, `크림치즈를 넣어주세요`
 중복, `parmesan`, `깨`, `달걀` 등). GT가 없으므로 이것이 환각이라고 판정하지 않는다.
 
-즉 이 클립에서 VAD-제약 디코딩은 **의심 문장과 실제 발화를 함께 제거**했다.
-false-negative 위험은 가설이 아니라 이 실측에서 실현됐다.
+**정확한 표현은 이것뿐이다.**
 
-## 4. 두 해석 — GT 없이 가를 수 없다
+```
+Three utterances from the previous transcript that overlapped the frozen VAD
+speech regions were not emitted by the VAD-constrained decoding run.
+```
+
+`VAD가 실제 발화를 잘랐다` · `false-negative가 실현됐다`고 쓰지 않는다 —
+VAD는 1.68초를 **남겼고**, 그 오디오는 디코더에 들어갔다. 그런데도 출력이 0이다.
+따라서 원인은 아직 분리되지 않았다.
+
+```
+A  Silero가 speech를 너무 적게 검출했다
+B  chunk가 남았지만 너무 짧고 단절돼 디코더가 아무 token도 만들지 않았다
+C  Whisper의 no_speech·log-prob 판정이 남은 chunk를 최종적으로 억제했다
+```
+
+`no_speech_threshold`는 log-probability 조건과 함께 segment를 silence로 판정하는
+**별도 단계**다. 즉 VAD가 오디오를 남겨도 디코더가 텍스트를 내지 않을 수 있다.
+이 셋을 가르는 것이 다음 사건이다(`STT_RETRANSCRIBE_DIAGNOSTIC_V1B`).
+
+## 4. 해석 — GT 없이 가를 수 없다
 
 ```
 해석 A   이 구간에 발화가 거의 없고, 기존 26발화 대부분이 무발화 생성이다
-         (VAD는 맞았고, 마지막 3건만 실제 발화였다)
-해석 B   음악·잡음 아래 발화가 있는데 frozen VAD 파라미터가 너무 엄격하다
-         (min_silence 2000ms · threshold 0.5 · pad 400ms)
+해석 B   발화가 있는데 frozen VAD 파라미터가 이 오디오에 엄격하다
+해석 C   VAD 판정과 무관하게 디코더 쪽 억제가 출력 0을 만들었다
 ```
+
+**어느 것도 지금 확정되지 않았다.** 그래서 `VAD hypothesis`는 기각되지 않았고,
+`VAD decode-time adoption`도 승인되지 않았다.
 
 Phase A의 전체 영상 측정(사용 가능 STT 294 중 210이 zero-overlap)과 방향은 같지만,
 어느 해석이 맞는지는 **여기서 가릴 수 없다.**
@@ -98,9 +118,18 @@ C8은 요청 범위(600–780초 절대 시간)로 클립 `segments.json`(0–18
 ## 7. 판정
 
 ```
-FULL_RETRANSCRIPTION      HOLD 유지 (승인 후보로 올리지 않는다)
+이번 canary                CLOSED / INCONCLUSIVE-DEGENERATE — 그대로 동결한다
+                          acceptance evidence로 재활용하지 않는다
+VAD hypothesis            NOT REJECTED
+VAD decode-time adoption  NOT APPROVED
+temperature=0 determinism NOT ESTABLISHED
+FULL_RETRANSCRIPTION      HOLD 유지
 threshold 조정으로 살리기   하지 않는다 (사전등록 §6)
 ```
+
+정확한 진단은 이것이다 — **sidecar에서 유효했던 VAD를 decode-time gate로 옮겼을 때
+거의 모든 오디오가 사라지고, 남은 짧은 speech chunk조차 출력되지 않는 메커니즘을
+아직 분리하지 못했다.**
 
 허용 문구는 이것뿐이다.
 
@@ -118,15 +147,21 @@ the frozen VAD speech regions.       ← 결과가 지지하지 않는다 (전�
 hallucination이 줄었다 · ASR이 정확해졌다 · 무발화가 확인됐다
 ```
 
-## 8. 다음 선택지 (실행 승인 없음)
+## 8. 다음 단계 — threshold 조정보다 mechanism 분리가 먼저다
 
 ```
-① VAD-제약 디코딩 종료          "frozen 파라미터에서 too aggressive"로 닫는다
-② 새 사전등록                   비퇴화 게이트 + VAD 파라미터 재검토
-                               → 파라미터를 건드리는 순간 threshold 사건이므로 별도 승인
-③ 진단 프로브(acceptance 밖)     발화가 분명한 구간(예: 8~9분대)에서 같은 파라미터로
-                               VAD만 재실행해 "엄격함"이 전역적인지 본다
-                               POST_HOC_DIAGNOSTIC_ONLY = true 로만 기록
+STT_RETRANSCRIBE_DIAGNOSTIC_V1B    파라미터는 이번 것 그대로. 아무것도 튜닝하지 않는다
+  D1  남은 1.68초에 무슨 일이 났는지 추적
+      Silero chunk 경계·길이 · duration before/after VAD
+      no_speech_prob · avg_logprob · compression_ratio
+      **token을 안 만들었는가 vs 만든 뒤 억제됐는가**를 가른다
+  D2  그 1.68초 오디오만 잘라 vad_filter=False로 디코드
+      0이면 VAD threshold만의 문제가 아니다 (fragment 디코딩 상호작용)
+      텍스트가 나오면 VAD 통합·chunk 조립·후단 필터 경로를 본다
+  D3  비퇴화 canary 구간을 **frozen Phase-A 측정만으로** 결정적으로 고른다
+      180초 bin별 VAD speech duration argmax · 동률은 이른 bin
+      transcript 내용은 선택에 쓰지 않는다
+  판정 조건  양 run이 non-empty일 때만 exact parity로 determinism을 판정한다
 ```
 
 ## 9. 산출물
