@@ -1,0 +1,187 @@
+{
+ "deleted_at": "2026-09-08T19:40:33.805771+09:00",
+ "reason": "non-adopted reproducible model/cache cleanup",
+ "approved_scope": "T1+T2+T3 (immediate rm)",
+ "note": "T3는 승인 범위보다 좁다 — backup_pre_*·quarantine_*·failed_gate_*는 사고·rollback 기록이라 보존했다",
+ "items": [
+  {
+   "path": "/ssd/daeseok/cache/hub/models--Qwen--Qwen3-VL-32B-Instruct",
+   "size_bytes": 66726518069,
+   "category": "T1"
+  },
+  {
+   "path": "/ssd/daeseok/cache/hub/models--Qwen--Qwen3-VL-30B-A3B-Instruct",
+   "size_bytes": 62141707014,
+   "category": "T1"
+  },
+  {
+   "path": "/ssd/daeseok/cache/hub/models--naver-hyperclovax--HyperCLOVAX-SEED-Omni-8B",
+   "size_bytes": 49152782408,
+   "category": "T1"
+  },
+  {
+   "path": "/ssd/daeseok/cache/hub/models--LGAI-EXAONE--EXAONE-3.5-7.8B-Instruct",
+   "size_bytes": 31282076627,
+   "category": "T1"
+  },
+  {
+   "path": "/ssd/daeseok/cache/hub/models--Qwen--Qwen2.5-14B-Instruct",
+   "size_bytes": 29551674635,
+   "category": "T1"
+  },
+  {
+   "path": "/ssd/daeseok/cache/hub/models--THUDM--GLM-4.1V-9B-Thinking",
+   "size_bytes": 20608231919,
+   "category": "T1"
+  },
+  {
+   "path": "/ssd/daeseok/cache/hub/models--openbmb--MiniCPM-V-4_5",
+   "size_bytes": 17408032896,
+   "category": "T1"
+  },
+  {
+   "path": "/ssd/daeseok/cache/hub/models--kakaocorp--kanana-1.5-8b-instruct-2505",
+   "size_bytes": 16077911409,
+   "category": "T1"
+  },
+  {
+   "path": "/ssd/daeseok/cache/hub/models--naver-hyperclovax--HyperCLOVAX-SEED-Vision-Instruct-3B",
+   "size_bytes": 14896340559,
+   "category": "T1"
+  },
+  {
+   "path": "/ssd/daeseok/cache/hub/models--kakaocorp--kanana-1.5-v-3b-instruct",
+   "size_bytes": 7353282151,
+   "category": "T1"
+  },
+  {
+   "path": "/ssd/daeseok/cache/hub/models--NCSOFT--VARCO-VISION-2.0-1.7B",
+   "size_bytes": 4264771719,
+   "category": "T1"
+  },
+  {
+   "path": "/ssd/daeseok/cache/hub/models--Qwen--Qwen3-ASR-1.7B-hf",
+   "size_bytes": 4087628668,
+   "category": "T1"
+  },
+  {
+   "path": "/ssd/daeseok/cache/hub/models--BAAI--bge-m3",
+   "size_bytes": 4564396882,
+   "category": "T2"
+  },
+  {
+   "path": "/ssd/daeseok/cache/hub/models--upskyy--bge-m3-korean",
+   "size_bytes": 2293230773,
+   "category": "T2"
+  },
+  {
+   "path": "/ssd/daeseok/cache/hub/models--Snowflake--snowflake-arctic-embed-l-v2.0",
+   "size_bytes": 2293472137,
+   "category": "T2"
+  },
+  {
+   "path": "/ssd/daeseok/cache/hub/models--nlpai-lab--KoE5",
+   "size_bytes": 2256712200,
+   "category": "T2"
+  },
+  {
+   "path": "/ssd/daeseok/cache/hub/models--intfloat--multilingual-e5-large",
+   "size_bytes": 2261925771,
+   "category": "T2"
+  },
+  {
+   "path": "/ssd/daeseok/cache/hub/models--dragonkue--BGE-m3-ko",
+   "size_bytes": 2288183892,
+   "category": "T2"
+  },
+  {
+   "path": "/ssd/daeseok/cache/hub/models--Bingsu--clip-vit-large-patch14-ko",
+   "size_bytes": 1715537858,
+   "category": "T2"
+  },
+  {
+   "path": "/ssd/daeseok/cache/hub/models--Qwen--Qwen3-Embedding-0.6B",
+   "size_bytes": 1207487965,
+   "category": "T2"
+  },
+  {
+   "path": "/ssd/daeseok/cache/hub/models--Alibaba-NLP--gte-multilingual-base",
+   "size_bytes": 627965262,
+   "category": "T2"
+  },
+  {
+   "path": "/ssd/daeseok/cache/hub/models--Alibaba-NLP--new-impl",
+   "size_bytes": 66294,
+   "category": "T2"
+  },
+  {
+   "path": "/ssd/daeseok/tmp_b02b_dry",
+   "size_bytes": 9257,
+   "category": "T3"
+  },
+  {
+   "path": "/ssd/daeseok/tmp_b02b_run",
+   "size_bytes": 10761,
+   "category": "T3"
+  },
+  {
+   "path": "/ssd/daeseok/tmp_b02b_run2",
+   "size_bytes": 10761,
+   "category": "T3"
+  },
+  {
+   "path": "/ssd/daeseok/tmp_b02b_run3",
+   "size_bytes": 10627,
+   "category": "T3"
+  },
+  {
+   "path": "/home/daeseok/.cache/pip",
+   "size_bytes": 3107704351,
+   "category": "T3"
+  },
+  {
+   "path": "/ssd/daeseok/cache/hub/**/*.lock (387개)",
+   "size_bytes": 0,
+   "category": "T3"
+  }
+ ],
+ "preserved_models": [
+  "Qwen3-VL-8B-Instruct",
+  "Qwen3-VL-4B-Instruct",
+  "Qwen2.5-VL-3B-Instruct",
+  "Qwen2.5-VL-7B-Instruct",
+  "Qwen2.5-7B-Instruct",
+  "KURE-v1",
+  "faster-whisper-large-v3"
+ ],
+ "preserved_dirs": [
+  "/ssd/daeseok/cache/hub/models--Qwen--Qwen3-VL-8B-Instruct",
+  "/ssd/daeseok/cache/hub/models--Qwen--Qwen3-VL-4B-Instruct",
+  "/ssd/daeseok/cache/hub/models--Qwen--Qwen2.5-VL-3B-Instruct",
+  "/ssd/daeseok/cache/hub/models--Qwen--Qwen2.5-VL-7B-Instruct",
+  "/ssd/daeseok/cache/hub/models--Qwen--Qwen2.5-7B-Instruct",
+  "/ssd/daeseok/cache/hub/models--nlpai-lab--KURE-v1",
+  "/ssd/daeseok/cache/hub/models--Systran--faster-whisper-large-v3"
+ ],
+ "df_before": {
+  "total_bytes": 1967847137280,
+  "used_bytes": 1002143596544,
+  "free_bytes": 865666818048,
+  "free_gib": 806.2
+ },
+ "planned_reclaim_bytes": 346167682865,
+ "planned_reclaim_gib": 322.4,
+ "df_after": {
+  "total_bytes": 1967847137280,
+  "used_bytes": 659079471104,
+  "free_bytes": 1208730943488,
+  "free_gib": 1125.7
+ },
+ "reclaimed_bytes": 343064125440,
+ "reclaimed_gib": 319.5,
+ "postcheck": {
+  "preserved_present": true,
+  "targets_gone": [],
+  "wvr_snapshot": "/ssd/daeseok/cache/hub/models--Qwen--Qwen3-VL-8B-Instruct/snapshots/0c351dd01ed87e9c1b53cbc748cba10e6187ff3b"
+ }
+}
