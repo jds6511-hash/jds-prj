@@ -16,7 +16,7 @@ P0  output quality gate          src/v2_1_output_quality.py (신규)
     FAIL-only interlock          summary_eligible_for_presentation()에 AND 1항
 P1  300초 presentation grouping   41 episode → 9 group (canonical 무변경)
     핵심 내용 분석 중복 제거        요약 문장 재인쇄 대신 group·lineage만
-P2  부재 사유 표시                 "상태: OUTPUT_LANGUAGE_DRIFT" 등 코드로
+P2  부재 사유 표시                 "제외 구간: EP13 (OUTPUT_LANGUAGE_DRIFT)" (§10)
     결론 문구                     "확인된 구간" → "요약이 제공된 구간"
     전사문 타임스탬프              45.98초가 `…45.10` → `…46.0` (자리올림 버그)
     전사문 헤더                   "자동 생성 STT 원문 — 미검증 · 편집하지 않음"
@@ -37,7 +37,7 @@ presentation eligible   39 / 41
 
 ```
 보고서 본문의 한자 줄        3 → 0
-"상태:" 사유 줄              0 → 2 (OUTPUT_LANGUAGE_DRIFT · PARSE_CONTRACT_FAILURE)
+"제외 구간:" 줄              0 → 2 (EP13 · EP17)
 ```
 
 ## 3. presentation grouping
@@ -52,17 +52,18 @@ canonical partition hash   a52a0bdf00d49972… (원본과 동일 — 쪼개지 �
 group 개수는 목표가 아니라 결과다. 9개가 나왔다고 window를 바꾸지 않았다.
 
 `H03`은 `구성 5구간 · 요약 출처 4구간`으로 적히고, 왜 하나가 빠졌는지는 같은 상자의
-`상태: OUTPUT_LANGUAGE_DRIFT`가 말한다.
+`제외 구간: EP13 (OUTPUT_LANGUAGE_DRIFT)`가 말한다 — group 전체가 아니라 그 구간이다.
 
 ## 4. 실물 검증 (그 candidate 파일 자체)
 
 ```
 A2' 구조 validator   PASS
 한글 Open()          True
-PDF export           True · 115,181 bytes
-본문 길이            7,887자 (기존 14,460자 — 중복 절 제거분)
+PDF export           True · 115,382 bytes
+본문 길이            7,907자 (한글 GetTextFile 기준 · 기존 제출본 14,460자)
 상자 글리프          ■ 5 · ┌ 9 · │ 47 · └ 9
-hwpx sha256          8ef856451fa2bf391e51d0824c0eb26457317976b82bd87a8e7a4fc2863e4f2c
+hwpx sha256          5732075871fd7902d52239cebced28f9489a0f558dac67c61f5d2ca994e9cd7b
+                     (10,185 bytes · §10 수정 반영본 · 정본은 candidate_manifest.json)
 ```
 
 ## 5. 전사문 타임스탬프 audit
@@ -153,7 +154,7 @@ group-level 상태 오표기         0 ("상태:" 라벨 0회)
 요약 재인쇄                    핵심 내용 분석 0회
                               개요 1 + 상자 1 = 37 episode가 2회
                               EP01 · EP41은 3회 (결론이 처음·마지막 요약을 인용 — GLS-003 계약)
-본문                           85줄 · 7,759자
+본문                           85줄 · 7,759자 (semantic_text 기준)
 텍스트 사본                    Desktop/v3_submission_quality/report_quality_hwpx_text.txt
 ```
 
