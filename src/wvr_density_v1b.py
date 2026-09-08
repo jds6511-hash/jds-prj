@@ -16,12 +16,15 @@ import wvr_contract as contract
 
 EVENT_V1 = "V1"
 EVENT_V1B = "V1B"
+EVENT_V2 = "V2"          # 새 계측기(event interval · English-only) · 토큰 상한은 V1B와 같다
 
-MAX_NEW_TOKENS = {EVENT_V1: contract.MAX_NEW_TOKENS, EVENT_V1B: 4096}
-ARTIFACT_TAG = {EVENT_V1: "density_stage2", EVENT_V1B: "density_stage2b"}
+MAX_NEW_TOKENS = {EVENT_V1: contract.MAX_NEW_TOKENS, EVENT_V1B: 4096,
+                  EVENT_V2: 4096}
+ARTIFACT_TAG = {EVENT_V1: "density_stage2", EVENT_V1B: "density_stage2b",
+                EVENT_V2: "density_v2"}
 
 # 사전등록된 두 값만 허용한다. 임의 값으로 돌릴 수 없다.
-ALLOWED_MAX_NEW_TOKENS = tuple(sorted(MAX_NEW_TOKENS.values()))
+ALLOWED_MAX_NEW_TOKENS = tuple(sorted(set(MAX_NEW_TOKENS.values())))
 
 ESCALATION_APPROVED = False        # 4096에서 또 절단되면 그대로 닫는다
 

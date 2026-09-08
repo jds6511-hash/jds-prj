@@ -4,10 +4,17 @@
 (commit `78cefa378690` — 실행 전 freeze) · 유일한 변경 `max_new_tokens 1024 → 4096`
 
 ```
-게이트 1  arm validity          6/6 valid   (파싱 OK · event ≥ 1 · 절단 없음)
-게이트 2  pair evaluability     3/3 EVALUABLE
-게이트 3  event verdict         PAIRED_OUTPUT_SENSITIVITY_MEASURED
-언어 계약  D2 S0                 OUTPUT_LANGUAGE_CONTRACT_FAILURE (V1에서도 같은 arm)
+EXECUTION_INTEGRITY        PASS
+ARM_VALIDITY               6/6 PASS      (파싱 OK · event ≥ 1 · 절단 없음)
+PAIR_EVALUABILITY          3/3 PASS      (사전등록 게이트 기준)
+PAIRED_OUTPUT_SENSITIVITY  MEASURED
+SEMANTIC_DENSITY_DECISION  INCONCLUSIVE
+  reason  MEASUREMENT_REPRESENTATION_DEGENERACY
+          + TEMPORAL_ONLY_MATCHING_NOT_SEMANTIC_EVENT_MATCHING
+          + D2 LANGUAGE_CONFOUND
+언어 계약   D2 S0  OUTPUT_LANGUAGE_CONTRACT_FAILURE (V1에서도 같은 arm)
+사건 상태   CLOSED / INCONCLUSIVE — 실행은 유효하고 게이트도 통과했으나,
+          측정된 수치가 의미적 event retention을 나타내지 않는다
 ```
 
 **그러나 출력 내용은 반복문이 지배한다**(§4). 게이트는 사전등록대로 섰고 판정도
@@ -57,10 +64,25 @@ D3    8.0     18       19        0         0         0.1212      0.3333
 ```
 event 수 변화   D1 −9 · D2 +13 · D3 −19        방향이 일치하지 않는다
 허용오차 민감도  4.0과 8.0의 결과가 세 창에서 전부 동일했다
-순서            매칭된 쌍의 순서 뒤집힘 0건 (세 창 전부)
-D1·D3           S1의 모든 event가 S0의 event와 매칭됐다 (only S1 = 0)
-D2              S1에만 있는 event 21건 — 단 §4·§5를 함께 읽어야 한다
+순서            temporal alignment된 쌍의 순서 뒤집힘 0건 (세 창 전부)
+D1·D3           사전등록 matcher가 S1-only record를 0건 산출했다
+D2              S1-only record 21건 — 단 §4·§5를 함께 읽어야 한다
 ```
+
+**용어를 제한한다.** 이 matcher는 시간으로 먼저 붙인다. 따라서 `matched`는
+**semantic equivalence가 아니라 temporal candidate alignment**다.
+
+```
+D1·D3의 only S1 = 0        → "0.25fps가 새 event를 만들지 않았다"고 쓰지 않는다
+                             허용 표현: "사전등록 matcher가 S1-only record를 0건 산출했다"
+D2의 matched = 25          → "25개 event가 동일했다"가 아니다
+                             허용 표현: "25 temporal candidate alignments"
+```
+
+D2에서는 영어 event와 한국어 event가 시간만으로 붙어 semantic similarity가 0인데,
+그것을 `matched event`라고 부르면 측정 이름이 알고리즘보다 강해진다. 산출물
+필드명(`pairs`·`matched_count`)은 그대로 두되 **해석에서 semantic equivalence로
+읽지 않는다.**
 
 ## 4. 결정적 한계 — 출력이 반복문이다
 
@@ -113,13 +135,14 @@ V1에서도 같은 arm(D2 S0)이 영어였다 — **두 번 재현**됐다. 프�
 세 pair 모두 evaluable이었고 사건 판정은 PAIRED_OUTPUT_SENSITIVITY_MEASURED다.
 매칭된 event의 시간 순서는 세 창 모두 유지됐다(뒤집힘 0).
 허용오차 4.0과 8.0에서 결과가 동일했다 — 결론이 허용오차 선택에 민감하지 않다.
-D1·D3에서 0.25fps arm이 만든 event는 전부 0.5fps arm의 event와 시간 매칭됐다
-(only S1 = 0) — 즉 표집을 줄여 새로 생긴 event는 이 두 창에서 없었다.
+D1·D3에서 사전등록 matcher는 S1-only record를 0건 산출했다.
 ```
 
 쓰지 않는 문장:
 
 ```
+0.25fps가 새 event를 만들지 않았다            ← matcher 산출물에 대한 진술로만 쓴다
+matched = 의미가 같은 event                   ← 시간 후보 정렬이다
 0.25fps에서 event가 9건·19건 사라졌다        ← 대부분 반복 문장 개수 차이다
 0.25fps가 의미를 보존한다 / 잃는다             ← 반복 지배 출력으로는 판정 불가
 0.5fps 출력이 기준이다                        ← ground truth가 아니다
@@ -167,7 +190,11 @@ C  Qwen3-VL의 긴 video 입력에서 나타나는 생성 축퇴
 ```
 WVR_SAMPLING_SEMANTIC_DENSITY_V1  Stage 1    REVIEWED / PASS
 WVR_SAMPLING_SEMANTIC_DENSITY_V1  Stage 2    CLOSED / INCONCLUSIVE (절단)
-WVR_SAMPLING_SEMANTIC_DENSITY_V1B Stage 2B   게이트 PASS / 내용 해석 보류
+WVR_SAMPLING_SEMANTIC_DENSITY_V1B Stage 2B   CLOSED / INCONCLUSIVE
+  실행 유효 · paired output measured · semantic 해석은 event-representation
+  degeneracy와 matcher 설계 때문에 막혔다
+WVR_SAMPLING_SEMANTIC_DENSITY_V2             APPROVED — 새 event-interval 계측기
+QWEN_OUTPUT_LANGUAGE_STABILITY               OBSERVED / REPRODUCED_ON_D2_S0 · HOLD
 WVR event extraction                         HOLD
 STT_RETRANSCRIBE_DIAGNOSTIC_V1B              HOLD
 현행 제출본                                    READ-ONLY / NO PROMOTION
