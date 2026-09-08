@@ -1,0 +1,7 @@
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7785.26it/s]
+[W908 20:33:21.007719856 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 17563648, total: 25250627584).
+[W908 20:33:23.794429955 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19660800, total: 25250627584).
+[W908 20:33:23.903487039 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19660800, total: 25250627584).
+[W908 20:33:23.011661180 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19660800, total: 25250627584).
+[W908 20:33:24.116387002 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19660800, total: 25250627584).
+arm=A1 verdict=CAPACITY_FAIL event=CAPACITY_FAIL stage={'MODEL_LOAD': 'PASS', 'VIDEO_PROCESS': 'PASS', '10MIN_INFERENCE': 'CAPACITY_FAIL'}

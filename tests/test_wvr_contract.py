@@ -285,5 +285,6 @@ def test_wvr_c27_an_oom_is_recorded_as_capacity_fail(result):
 
 def test_wvr_c28_no_shrunk_retry_was_recorded():
     """같은 사건에서 줄여 다시 돌린 산출물이 없어야 한다."""
-    produced = sorted(path.name for path in RESULT.parent.glob("capacity_*"))
+    # C01 계열 산출물만 본다. allocator 사건(capacity_alloc_A*)은 별도 사전등록이다.
+    produced = sorted(path.name for path in RESULT.parent.glob("capacity_C*"))
     assert produced == ["capacity_C01.json", "capacity_C01.log"]

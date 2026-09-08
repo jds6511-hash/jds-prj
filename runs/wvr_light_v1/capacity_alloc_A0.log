@@ -1,0 +1,4 @@
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:  58%|█████▊    | 438/750 [00:00<00:00, 4365.69it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 3457.47it/s]
+[W908 20:31:57.007134083 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 576716800 bytes (free: 109838336, total: 25250627584).
+[W908 20:31:58.583699008 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 576716800 bytes (free: 114032640, total: 25250627584).
+arm=A0 verdict=CAPACITY_FAIL event=A1_PENDING stage={'MODEL_LOAD': 'PASS', 'VIDEO_PROCESS': 'PASS', '10MIN_INFERENCE': 'CAPACITY_FAIL'}

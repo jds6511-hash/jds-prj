@@ -421,3 +421,49 @@ def test_a_passing_control_leaves_the_treatment_unrun():
     if record["arm_verdict"] == alloc.ARM_PASS:
         assert record["a1_status"] == alloc.A1_NOT_RUN
         assert record["event_verdict"] == alloc.EVENT_CONTROL_PASS
+
+
+# ── 보고서 수치는 JSON에서만 온다 ──────────────────────────────────────
+REPORT = ROOT / "docs/probes/WVR_CAPACITY_ALLOC_V1_2026-09-08.md"
+
+
+@pytest.mark.skipif(not A1_PATH.is_file(), reason="A1 미실행")
+@pytest.mark.parametrize("arm_path,field", [
+    (A0_PATH, "peak_vram_allocated_mib"), (A0_PATH, "peak_vram_reserved_mib"),
+    (A0_PATH, "device_peak_used_mib"), (A0_PATH, "reserved_minus_allocated_mib"),
+    (A0_PATH, "oom_free_mib"), (A1_PATH, "post_load_vram_mib"),
+    (A1_PATH, "peak_vram_allocated_mib"), (A1_PATH, "peak_vram_reserved_mib"),
+    (A1_PATH, "device_peak_used_mib"), (A1_PATH, "reserved_minus_allocated_mib"),
+    (A1_PATH, "oom_free_mib"),
+])
+def test_every_quoted_metric_matches_the_json(arm_path, field):
+    record = json.loads(arm_path.read_text(encoding="utf-8"))
+    text = REPORT.read_text(encoding="utf-8")
+    assert format(record["metrics"][field], ",") in text
+
+
+@pytest.mark.skipif(not A1_PATH.is_file(), reason="A1 미실행")
+def test_the_derived_differences_match_the_json():
+    a0 = json.loads(A0_PATH.read_text(encoding="utf-8"))["metrics"]
+    a1 = json.loads(A1_PATH.read_text(encoding="utf-8"))["metrics"]
+    text = REPORT.read_text(encoding="utf-8")
+    gained = round(a1["peak_vram_allocated_mib"]
+                   - a0["peak_vram_allocated_mib"], 1)
+    deficit_a0 = round(a0["oom_request_mib"] - a0["oom_free_mib"], 2)
+    deficit_a1 = round(a1["oom_request_mib"] - a1["oom_free_mib"], 2)
+    assert format(gained, ",") in text                    # 1,433.7
+    assert str(deficit_a0) in text                        # 441.25
+    assert str(deficit_a1) in text                        # 71.25
+    a0_split = json.loads(A0_PATH.read_text(encoding="utf-8"))[
+        "memory_stats"]["inactive_split_bytes.all.peak"]
+    assert format(a0_split, ",") in text     # 단편화 실측을 그대로 인용한다
+
+
+@pytest.mark.skipif(not A1_PATH.is_file(), reason="A1 미실행")
+def test_the_event_verdict_in_the_report_matches_the_json():
+    record = json.loads(A1_PATH.read_text(encoding="utf-8"))
+    text = REPORT.read_text(encoding="utf-8")
+    assert record["event_verdict"] == "CAPACITY_FAIL"
+    assert "사건 판정                       CAPACITY_FAIL" in text
+    assert record["treatment_applied"] is True
+    assert "treatment_applied True" in text
