@@ -89,6 +89,60 @@ def non_degenerate(record) -> bool:
                 and not truncated_at_cap(record))
 
 
+LANGUAGE_CONTRACT_FAILURE = "OUTPUT_LANGUAGE_CONTRACT_FAILURE"
+PAIR_EVALUABLE = "EVALUABLE"
+PAIR_NON_EVALUABLE = "NON_EVALUABLE"
+EVENT_MEASURED = "PAIRED_OUTPUT_SENSITIVITY_MEASURED"
+EVENT_INCONCLUSIVE = "INCONCLUSIVE"
+
+
+def language_contract(raw: str) -> dict:
+    """프롬프트의 한국어-only 계약 위반을 별도로 기록한다.
+
+    **arm validity와 분리한다** — 언어 위반은 계약 위반으로 남기고, 비교 가능성
+    판정은 파싱·event 수·절단으로만 한다(사전등록 V1B §5).
+    """
+    import v2_1_output_quality as quality
+
+    verdict = quality.evaluate_summary(raw or "")
+    failed = quality.REASON_LANGUAGE_CONTRACT in verdict.reasons
+    return {"status": verdict.status, "reasons": list(verdict.reasons),
+            "language_contract_failure": bool(failed)}
+
+
+def arm_validity(record) -> dict:
+    """arm 하나가 비교에 쓸 수 있는지. 사유를 모두 남긴다."""
+    parsed = record.get("parsed") or {}
+    reasons = []
+    if parsed.get("status") != PARSE_OK:
+        reasons.append(parsed.get("status") or "NO_PARSE_RECORD")
+    if not parsed.get("events"):
+        reasons.append("NO_EVENT")
+    if truncated_at_cap(record):
+        reasons.append("TRUNCATED_AT_CAP")
+    contract = language_contract(record.get("raw_output") or "")
+    return {"valid": not reasons, "reasons": reasons,
+            "language_contract_failure": contract["language_contract_failure"],
+            "language_quality_status": contract["status"]}
+
+
+def pair_evaluability(reference_record, arm_record) -> dict:
+    """비교 단위는 arm이 아니라 pair다. 한쪽만 살아 있으면 그 pair를 쓰지 않는다."""
+    left, right = arm_validity(reference_record), arm_validity(arm_record)
+    reasons = ([("S0:%s" % reason) for reason in left["reasons"]]
+               + [("S1:%s" % reason) for reason in right["reasons"]])
+    return {"status": PAIR_EVALUABLE if not reasons else PAIR_NON_EVALUABLE,
+            "reasons": reasons, "S0": left, "S1": right}
+
+
+def event_verdict(pair_statuses) -> str:
+    """세 pair가 모두 evaluable일 때만 사건 판정을 낸다."""
+    values = list(pair_statuses)
+    if len(values) != 3 or any(value != PAIR_EVALUABLE for value in values):
+        return EVENT_INCONCLUSIVE
+    return EVENT_MEASURED
+
+
 def bigrams(text: str) -> set:
     cleaned = re.sub(r"\s+", "", text or "")
     return {cleaned[index:index + 2] for index in range(len(cleaned) - 1)}

@@ -4,12 +4,16 @@
 (commit `2ebbe59`) · 실행 코드 commit `37b7ddde65c6`
 
 ```
-Stage 2 실행       6/6 완료 (D1·D2·D3 × S0·S1)
-arm 상태           6/6  PARSE_FAILURE
-판정               INCONCLUSIVE / OUTPUT_TRUNCATED_AT_CAP
-PAIRED_OUTPUT_SENSITIVITY   측정되지 않았다
-0.25fps 관련 결론   없음
+Stage 2 실행                 6/6 완료 (D1·D2·D3 × S0·S1)
+판정                         CLOSED / INCONCLUSIVE
+root cause                  OUTPUT_TRUNCATION_AT_GENERATION_CAP
+arm 상태(증상)               6/6 PARSE_FAILURE
+PAIRED_OUTPUT_SENSITIVITY   NOT MEASURED
+0.25fps 관련 결론             없음
 ```
+
+**`PARSE_FAILURE`를 최상위 원인으로 쓰지 않는다** — parser가 잘못된 것이 아니다.
+근본 원인은 생성이 `max_new_tokens` cap에서 끊긴 것이고, 파싱 실패는 그 증상이다.
 
 **결과가 나빠서가 아니라 측정이 성립하지 않았다.** 여섯 실행 모두 생성이
 `max_new_tokens = 1024`에서 끊겨 JSON이 중간에서 잘렸다. 비교를 하지 않았고,
@@ -77,8 +81,17 @@ basket."`). 프롬프트 첫 규칙이 "한국어로만 쓴다"인데도 그렇�
 다른 arm에서도 수백 개인 것은 JSON 키(`approx_time` 등) 때문이고, 판정을
 가른 것은 **한글 0**이다.
 
-이것은 절단과 독립된 사건이고, 다음 Stage 2 재실행에서도 볼 값이다. 다만
-표본 1건이므로 빈도를 주장하지 않는다.
+이것은 절단과 독립된 사건이고, 다음 Stage 2 재실행에서도 볼 값이다.
+
+```
+D2 S0   ancillary observation
+        OUTPUT_LANGUAGE_CONTRACT_FAILURE
+        frequency·generalization claim prohibited
+```
+
+**이번 V1에서 semantic-density 결과로 해석하지 않는다** — truncation 때문에
+pair measurement 자체가 성립하지 않았다. 이 현상을 고치려고 프롬프트를 만지지
+않는다. V1B에서 다시 나오는지 그대로 관찰한다.
 
 ## 4. 사전등록의 결함 — 같은 구멍이 반복됐다
 
@@ -122,7 +135,9 @@ WVR_SAMPLING_SEMANTIC_DENSITY_V1B
 
 ```
 WVR_SAMPLING_SEMANTIC_DENSITY_V1 Stage 1   REVIEWED / PASS (변경 없음)
-WVR_SAMPLING_SEMANTIC_DENSITY_V1 Stage 2   INCONCLUSIVE / OUTPUT_TRUNCATED_AT_CAP
+WVR_SAMPLING_SEMANTIC_DENSITY_V1 Stage 2   CLOSED / INCONCLUSIVE
+  reason = OUTPUT_TRUNCATION_AT_GENERATION_CAP · PAIRED_OUTPUT_SENSITIVITY NOT MEASURED
+WVR_SAMPLING_SEMANTIC_DENSITY_V1B          APPROVED — max_new_tokens 4096 (유일한 변경)
 WVR_CAPACITY_SAMPLING_V1                   CLOSED / CAPACITY_PASS
 WVR event extraction                       HOLD
 STT_RETRANSCRIBE_DIAGNOSTIC_V1B            HOLD

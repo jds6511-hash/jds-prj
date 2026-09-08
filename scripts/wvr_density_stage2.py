@@ -27,6 +27,7 @@ import wvr_capacity_probe as probe                          # noqa: E402
 import wvr_density as density                               # noqa: E402
 import wvr_density_compare as compare                       # noqa: E402
 import wvr_density_prompt as diag                           # noqa: E402
+import wvr_density_v1b as events                            # noqa: E402
 
 STAGE1_ARTIFACT = "density_stage1.json"
 ARM_S0 = "S0"          # 0.5fps · reference 밀도
@@ -62,7 +63,8 @@ def arm_timestamps(window, arm: str) -> tuple:
     raise Stage2Error("모르는 arm: %r" % arm)
 
 
-def run(video: Path, label: str, arm: str, out_dir: Path) -> dict:
+def run(video: Path, label: str, arm: str, out_dir: Path,
+        event: str = events.EVENT_V1) -> dict:
     import torch
     from transformers import AutoProcessor, Qwen3VLForConditionalGeneration
     from transformers.video_utils import VideoMetadata
@@ -73,8 +75,10 @@ def run(video: Path, label: str, arm: str, out_dir: Path) -> dict:
     window = window_for(label, stage1)
     stamps = arm_timestamps(window, arm)
     fps = density.REFERENCE_FPS if arm == ARM_S0 else density.DENSITY_FPS
-    out_path = out_dir / ("density_stage2_%s_%s.json" % (label.split("_")[0],
-                                                         arm))
+    max_new_tokens = events.tokens_for(event)
+    events.assert_allowed(max_new_tokens)
+    out_path = out_dir / ("%s_%s_%s.json" % (events.tag_for(event),
+                                             label.split("_")[0], arm))
     if out_path.exists():
         raise Stage2Error("%s 산출물이 이미 있다 — arm은 1회다" % out_path.name)
 
@@ -93,11 +97,12 @@ def run(video: Path, label: str, arm: str, out_dir: Path) -> dict:
             contract.ATTN_IMPLEMENTATION, "quantization": contract.QUANTIZATION,
             "device": contract.DEVICE, "device_map": contract.DEVICE_MAP,
             "do_sample": contract.DO_SAMPLE, "num_beams": contract.NUM_BEAMS,
-            "max_new_tokens": contract.MAX_NEW_TOKENS,
+            "max_new_tokens": max_new_tokens,
             "repetition_penalty": contract.REPETITION_PENALTY,
             "do_sample_frames": contract.DO_SAMPLE_FRAMES,
             "do_resize": contract.DO_RESIZE,
         },
+        "event": event,
         "prompt_contract": diag.DIAG_CONTRACT_NAME,
         "prompt_hash": diag.prompt_hash(),
         "is_production_contract": diag.IS_PRODUCTION_CONTRACT,
@@ -160,7 +165,7 @@ def run(video: Path, label: str, arm: str, out_dir: Path) -> dict:
             generated = model.generate(
                 **inputs, do_sample=contract.DO_SAMPLE,
                 num_beams=contract.NUM_BEAMS,
-                max_new_tokens=contract.MAX_NEW_TOKENS,
+                max_new_tokens=max_new_tokens,
                 repetition_penalty=contract.REPETITION_PENALTY)
         metrics["infer_wall_sec"] = round(time.time() - infer_started, 2)
         new_tokens = generated[0][inputs["input_ids"].shape[-1]:]
@@ -199,14 +204,17 @@ def main(argv=None) -> int:
                         choices=list(density.SELECTION_LABELS))
     parser.add_argument("--arm", required=True, choices=list(ARMS))
     parser.add_argument("--out-dir", required=True)
+    parser.add_argument("--event", default=events.EVENT_V1,
+                        choices=list(events.MAX_NEW_TOKENS))
     args = parser.parse_args(argv)
 
     video = Path(args.video)
     if not video.is_file():
         raise Stage2Error("영상이 없다: %s" % video)
-    record = run(video, args.window, args.arm, Path(args.out_dir))
-    print("window=%s arm=%s status=%s frames=%s tokens=%s events=%s"
-          % (record["window"]["window_id"], record["arm"],
+    record = run(video, args.window, args.arm, Path(args.out_dir),
+                 event=args.event)
+    print("event=%s window=%s arm=%s status=%s frames=%s tokens=%s events=%s"
+          % (record.get("event"), record["window"]["window_id"], record["arm"],
              record.get("arm_status"),
              record["metrics"].get("delivered_frame_count"),
              record["metrics"].get("input_token_count"),
