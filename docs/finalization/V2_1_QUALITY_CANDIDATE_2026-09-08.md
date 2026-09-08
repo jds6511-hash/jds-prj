@@ -89,8 +89,11 @@ src/v2_1_sanitation.py · repository default contract · VAD0 default OFF
 ## 7. 이번 사건에서 하지 못한 것 (frozen acceptance 충돌)
 
 ```
-개요 압축                  GLS-001이 "모든 eligible episode summary가 개요에 있다"를 요구
-                          → 개요는 여전히 39문장 이어붙임이다
+개요 압축                  matrix GLS-001 본문은 `overview generation | 개요 생성`뿐이다
+                          (MATRIX_2026-08-30.md:207) — 개요 포함을 요구하는 것은
+                          regression test 구현 한 건이다(2026-09-08 정정)
+                          → 개요는 여전히 39문장 이어붙임이다. 테스트 계약을 좁히는
+                            별도 addendum 사건으로 열 수 있다
 핵심 내용 분석 섹션 제거     SECTION_NAMES 5절 + 한글 E2E가 5절 존재를 요구
                           → 섹션은 남기고 문장 중복만 제거했다
 ```
@@ -120,3 +123,39 @@ Desktop/v3_submission_quality/                      사본(hwpx·pdf·md·전사
 ```
 
 제출 arm 교체는 아직 하지 않았다 — 현행 제출본은 `submission-vad0-2026-09-07`이다.
+
+## 10. 제외 사유 표기 정정 (2026-09-08 · 승격 전 필수 수정)
+
+group 단위로 `상태: OUTPUT_LANGUAGE_DRIFT`라고 적으면 **묶음 전체가 실패한 것으로
+읽힌다.** highlight 상태와 episode 제외 사유는 다른 것이므로 분리했다.
+
+```
+before  상태: OUTPUT_LANGUAGE_DRIFT
+after   제외 구간: EP13 (OUTPUT_LANGUAGE_DRIFT)
+```
+
+```
+필드   PresentationHighlight.excluded_summary_reasons
+       ((episode_id, (사유 코드, ...)), ...) — canonical 시간순
+검증   validate_presentation이 재계산으로 대조 (사람이 쓴 서술은 실패로 잡힌다)
+label  LABELS["excluded"] = "제외 구간" · 두 renderer가 같은 문자열을 쓴다
+```
+
+## 11. candidate HWPX 실물 감사 (본문 텍스트 전수)
+
+```
+연속 Han/Kana run              0 (한자·가나 0자)
+H13 중국어 본문                0
+"확인된 구간"                  0   ·  "요약이 제공된 구간" 1
+group-level 상태 오표기         0 ("상태:" 라벨 0회)
+제외 구간 표기                 EP13 (OUTPUT_LANGUAGE_DRIFT) · EP17 (PARSE_CONTRACT_FAILURE)
+9 group lineage                구성 구간 9줄이 manifest group과 전건 일치
+요약 재인쇄                    핵심 내용 분석 0회
+                              개요 1 + 상자 1 = 37 episode가 2회
+                              EP01 · EP41은 3회 (결론이 처음·마지막 요약을 인용 — GLS-003 계약)
+본문                           85줄 · 7,759자
+텍스트 사본                    Desktop/v3_submission_quality/report_quality_hwpx_text.txt
+```
+
+삼중 반복 중 **핵심 내용 분석 중복은 제거**됐고, **개요 ↔ 주요 사건 2중 노출은 남아
+있다**(개요 압축이 별도 사건이므로).

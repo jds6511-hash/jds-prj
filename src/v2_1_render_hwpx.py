@@ -29,7 +29,8 @@ import zipfile
 from io import BytesIO
 from xml.sax.saxutils import escape, unescape
 
-from v2_1_render import LABELS, format_clock, semantic_view, summary_cell
+from v2_1_render import (LABELS, excluded_cell, format_clock,
+                        semantic_view, summary_cell)
 from v2_1_run import require_report_mode
 
 MIMETYPE = "application/hwp+zip"
@@ -96,11 +97,10 @@ def _lines(manifest, view, highlights) -> list[str]:
             "%s%s: %s" % (_MID, LABELS["summary_sources"],
                           " · ".join(record["summary_source_episode_ids"]) or "-"),
         ]
-        # 사유가 있으면 적는다 — C-06과 같은 조건·같은 값이다.
-        if record["summary_status_reasons"]:
-            lines.append("%s%s: %s" % (
-                _MID, LABELS["status"],
-                " · ".join(record["summary_status_reasons"])))
+        # 빠진 구간이 있으면 적는다 — C-06과 같은 조건·같은 값이다.
+        if record["excluded_summary_reasons"]:
+            lines.append("%s%s: %s" % (_MID, LABELS["excluded"],
+                                       excluded_cell(record)))
         lines += [_BOTTOM]
     lines += ["", "■ 핵심 내용 분석"]
     lines += list(view["analysis"]) or ["—"]

@@ -77,9 +77,10 @@ class PresentationHighlight:
     summary_status: str
     summary_source_episode_ids: tuple[str, ...]
     excluded_summary_episode_ids: tuple[str, ...]
-    #: 왜 쓰이지 않았는가 — `exclusion_reasons()`가 만든 코드뿐이다. 사람이 쓴
-    #: 서술을 넣으면 `validate_presentation`이 잡는다.
-    summary_status_reasons: tuple[str, ...] = ()
+    #: **어느 구간이** 왜 쓰이지 않았는가 — `(episode_id, 사유 코드들)` 쌍이다.
+    #: group 단위로 뭉치면 묶음 전체가 실패한 것처럼 읽힌다. 사람이 쓴 서술을
+    #: 넣으면 `validate_presentation`이 잡는다.
+    excluded_summary_reasons: tuple[tuple[str, tuple[str, ...]], ...] = ()
 
 
 def _eligible_for_summary(episode) -> bool:
@@ -113,12 +114,12 @@ def presentation_groups(
     return tuple(tuple(bins[key]) for key in sorted(bins))
 
 
-def _reasons(members) -> tuple[str, ...]:
-    """쓰이지 않은 member의 사유를 모은다. 중복은 합치고 순서는 결정적이다."""
-    collected = {reason for member in members
-                 if not _eligible_for_summary(member)
-                 for reason in exclusion_reasons(member)}
-    return tuple(sorted(collected))
+def _excluded_reasons(members) -> tuple[tuple[str, tuple[str, ...]], ...]:
+    """쓰이지 않은 member를 **구간별로** 적는다. canonical 시간순이다."""
+    return tuple(
+        (member.episode_id, exclusion_reasons(member))
+        for member in sorted(members, key=lambda e: e.start_seg)
+        if not _eligible_for_summary(member) and exclusion_reasons(member))
 
 
 def build_presentation(presented, highlights) -> tuple[PresentationHighlight, ...]:
@@ -155,7 +156,7 @@ def build_presentation(presented, highlights) -> tuple[PresentationHighlight, ..
                             else SUMMARY_NO_RELIABLE_CONTENT),
             summary_source_episode_ids=tuple(e.episode_id for e in usable),
             excluded_summary_episode_ids=tuple(excluded),
-            summary_status_reasons=_reasons(members),
+            excluded_summary_reasons=_excluded_reasons(members),
         ))
     return tuple(records)
 
@@ -182,7 +183,7 @@ def validate_presentation(records, presented, format_reference=None) -> list[str
 
         # 사유는 **재계산으로 검증한다** — 사람이 쓴 서술이 들어오면 여기서 깨진다.
         members = [known[ref] for ref in record.source_episode_ids if ref in known]
-        if record.summary_status_reasons != _reasons(members):
+        if record.excluded_summary_reasons != _excluded_reasons(members):
             failures.append("%s: summary status reasons are not derived from "
                             "the canonical episodes" % label)
 
@@ -240,7 +241,9 @@ def serialize_presentation(records) -> str:
                     list(record.summary_source_episode_ids),
                 "excluded_summary_episode_ids":
                     list(record.excluded_summary_episode_ids),
-                "summary_status_reasons": list(record.summary_status_reasons),
+                "excluded_summary_reasons": [
+                    {"episode_id": episode_id, "reasons": list(reasons)}
+                    for episode_id, reasons in record.excluded_summary_reasons],
             }
             for record in records
         ],

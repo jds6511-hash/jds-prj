@@ -33,7 +33,7 @@ LABELS = {
     "summary": "요약",
     "sources": "구성 구간",
     "summary_sources": "요약 출처",
-    "status": "상태",
+    "excluded": "제외 구간",
     "synthesis_sources": "종합 출처 구간",
     "limitation": "한계",
 }
@@ -82,6 +82,12 @@ def summary_cell(record) -> str:
     )
 
 
+def excluded_cell(record) -> str:
+    """`EP13 (OUTPUT_LANGUAGE_DRIFT)` 형태. 두 renderer가 같은 문자열을 쓴다."""
+    return " · ".join("%s (%s)" % (episode_id, " · ".join(reasons))
+                      for episode_id, reasons in record["excluded_summary_reasons"])
+
+
 def semantic_view(highlights, synthesis) -> dict:
     """두 출력이 공통으로 담아야 하는 의미. 서식은 여기 없다."""
     _check(highlights, synthesis)
@@ -97,7 +103,9 @@ def semantic_view(highlights, synthesis) -> dict:
                 "source_episode_ids": list(record.source_episode_ids),
                 "summary_source_episode_ids":
                     list(record.summary_source_episode_ids),
-                "summary_status_reasons": list(record.summary_status_reasons),
+                "excluded_summary_reasons": [
+                    (episode_id, list(reasons))
+                    for episode_id, reasons in record.excluded_summary_reasons],
             }
             for record in highlights
         ],
@@ -161,11 +169,11 @@ def render_markdown(manifest, highlights, synthesis) -> str:
             "- %s: %s" % (LABELS["summary_sources"],
                           " · ".join(record["summary_source_episode_ids"]) or "-"),
         ]
-        # 쓰이지 않은 구간이 있으면 사유를 적는다 — 요약이 남아 있어도 마찬가지다.
-        # 코드뿐이고 서술을 만들지 않는다.
-        if record["summary_status_reasons"]:
-            parts.append("- %s: %s" % (LABELS["status"],
-                                       " · ".join(record["summary_status_reasons"])))
+        # 빠진 구간이 있으면 **구간 이름과 함께** 사유를 적는다. group 단위로
+        # 뭉치면 묶음 전체가 실패한 것처럼 읽힌다.
+        if record["excluded_summary_reasons"]:
+            parts.append("- %s: %s" % (LABELS["excluded"],
+                                       excluded_cell(record)))
     parts += ["", "## %s" % SECTION_NAMES[2], ""]
     parts += list(view["analysis"]) or ["(%s)" % SUMMARY_NO_RELIABLE_CONTENT]
     parts += [

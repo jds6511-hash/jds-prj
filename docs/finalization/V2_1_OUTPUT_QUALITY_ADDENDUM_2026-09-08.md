@@ -112,11 +112,18 @@ LLM 재실행                      금지 (S5 확정 정본을 provenance로 사
 실행하지 않는다**. 별도 승인 사건으로 남긴다.
 
 ```
-개요 압축 (group 대표문)   GLS-001 이 "모든 eligible episode summary가 개요에 있다"를 요구
-                          (tests/test_v2_1_synthesis.py::test_gls_001_… · C-04)
+개요 압축 (group 대표문)   막고 있는 것은 **regression test 구현 계약**이다
+                          matrix 본문은 `GLS-001 | P1 | overview generation | 개요 생성`뿐이고
+                          "모든 eligible episode summary가 개요에 있다"는 요구가 없다
+                          (V2_1_ACCEPTANCE_MATRIX_2026-08-30.md:207 확인 · 2026-09-08 정정)
+                          현재 그 문장을 요구하는 것은
+                          tests/test_v2_1_synthesis.py::test_gls_001_… 한 건이다
 핵심 내용 분석 섹션 제거     SECTION_NAMES 5절 고정 + 한글 E2E가 5절 존재를 요구
                           (tests/test_v2_1_presentation.py:264 · tests/test_v2_1_hwpx_via_hangul.py:120)
 ```
+
+따라서 개요 압축은 acceptance matrix를 깨는 사건이 아니라 **테스트 계약을 좁히는
+addendum 사건**으로 열 수 있다. 다만 이번 candidate와 묶지 않는다.
 
 대신 이번에 하는 것은 **중복 축소**다 — 핵심 내용 분석에서 요약 문장을 다시 인쇄하지
 않고 group·lineage만 적는다. GLS-002(highlight 구조)는 그대로 만족한다.

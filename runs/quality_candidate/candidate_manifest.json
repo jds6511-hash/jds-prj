@@ -494,17 +494,17 @@
  ],
  "artifact": {
   "hwpx": "runs\\quality_candidate\\S7\\report.hwpx",
-  "hwpx_sha256": "8ef856451fa2bf391e51d0824c0eb26457317976b82bd87a8e7a4fc2863e4f2c",
-  "hwpx_bytes": 10168,
-  "md_sha256": "c3a09062caf051758c571bb4a0d2980332aa0b0142099b1e53a911a8c2658ba9",
-  "presentation_sha256": "caac22771bb11e68209ba3248fe70c07080d0dd63b75c96602d0539068a7ff00"
+  "hwpx_sha256": "5732075871fd7902d52239cebced28f9489a0f558dac67c61f5d2ca994e9cd7b",
+  "hwpx_bytes": 10185,
+  "md_sha256": "d25e2fe9b1e51576a67c2829f85cf2c16ae34aa8e048443042c7a43934d9af12",
+  "presentation_sha256": "4de71722ec7acc31219d8894fe713d3863a4e84988c24f637a8fbdf635207d93"
  },
  "structural_validator": "PASS",
  "hangul": {
   "hancom_open": true,
   "pdf_export": true,
-  "pdf_bytes": 115181,
-  "text_chars": 7887,
+  "pdf_bytes": 115382,
+  "text_chars": 7907,
   "box_glyphs": {
    "■": 5,
    "┌": 9,

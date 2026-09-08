@@ -9,6 +9,7 @@
     {
       "end_sec": 300.0,
       "excluded_summary_episode_ids": [],
+      "excluded_summary_reasons": [],
       "highlight_id": "H01",
       "label": null,
       "segment_refs": [
@@ -89,12 +90,12 @@
         "EP04",
         "EP05"
       ],
-      "summary_status": "AVAILABLE",
-      "summary_status_reasons": []
+      "summary_status": "AVAILABLE"
     },
     {
       "end_sec": 600.0,
       "excluded_summary_episode_ids": [],
+      "excluded_summary_reasons": [],
       "highlight_id": "H02",
       "label": null,
       "segment_refs": [
@@ -175,13 +176,20 @@
         "EP09",
         "EP10"
       ],
-      "summary_status": "AVAILABLE",
-      "summary_status_reasons": []
+      "summary_status": "AVAILABLE"
     },
     {
       "end_sec": 900.0,
       "excluded_summary_episode_ids": [
         "EP13"
+      ],
+      "excluded_summary_reasons": [
+        {
+          "episode_id": "EP13",
+          "reasons": [
+            "OUTPUT_LANGUAGE_DRIFT"
+          ]
+        }
       ],
       "highlight_id": "H03",
       "label": null,
@@ -262,15 +270,20 @@
         "EP14",
         "EP15"
       ],
-      "summary_status": "AVAILABLE",
-      "summary_status_reasons": [
-        "OUTPUT_LANGUAGE_DRIFT"
-      ]
+      "summary_status": "AVAILABLE"
     },
     {
       "end_sec": 1200.0,
       "excluded_summary_episode_ids": [
         "EP17"
+      ],
+      "excluded_summary_reasons": [
+        {
+          "episode_id": "EP17",
+          "reasons": [
+            "PARSE_CONTRACT_FAILURE"
+          ]
+        }
       ],
       "highlight_id": "H04",
       "label": null,
@@ -351,14 +364,12 @@
         "EP19",
         "EP20"
       ],
-      "summary_status": "AVAILABLE",
-      "summary_status_reasons": [
-        "PARSE_CONTRACT_FAILURE"
-      ]
+      "summary_status": "AVAILABLE"
     },
     {
       "end_sec": 1500.0,
       "excluded_summary_episode_ids": [],
+      "excluded_summary_reasons": [],
       "highlight_id": "H05",
       "label": null,
       "segment_refs": [
@@ -439,12 +450,12 @@
         "EP24",
         "EP25"
       ],
-      "summary_status": "AVAILABLE",
-      "summary_status_reasons": []
+      "summary_status": "AVAILABLE"
     },
     {
       "end_sec": 1800.0,
       "excluded_summary_episode_ids": [],
+      "excluded_summary_reasons": [],
       "highlight_id": "H06",
       "label": null,
       "segment_refs": [
@@ -525,12 +536,12 @@
         "EP29",
         "EP30"
       ],
-      "summary_status": "AVAILABLE",
-      "summary_status_reasons": []
+      "summary_status": "AVAILABLE"
     },
     {
       "end_sec": 2100.0,
       "excluded_summary_episode_ids": [],
+      "excluded_summary_reasons": [],
       "highlight_id": "H07",
       "label": null,
       "segment_refs": [
@@ -611,12 +622,12 @@
         "EP34",
         "EP35"
       ],
-      "summary_status": "AVAILABLE",
-      "summary_status_reasons": []
+      "summary_status": "AVAILABLE"
     },
     {
       "end_sec": 2400.0,
       "excluded_summary_episode_ids": [],
+      "excluded_summary_reasons": [],
       "highlight_id": "H08",
       "label": null,
       "segment_refs": [
@@ -697,12 +708,12 @@
         "EP39",
         "EP40"
       ],
-      "summary_status": "AVAILABLE",
-      "summary_status_reasons": []
+      "summary_status": "AVAILABLE"
     },
     {
       "end_sec": 2424.133,
       "excluded_summary_episode_ids": [],
+      "excluded_summary_reasons": [],
       "highlight_id": "H09",
       "label": null,
       "segment_refs": [
@@ -720,8 +731,7 @@
       "summary_source_episode_ids": [
         "EP41"
       ],
-      "summary_status": "AVAILABLE",
-      "summary_status_reasons": []
+      "summary_status": "AVAILABLE"
     }
   ],
   "schema": "presentation_highlights_v2_1",
