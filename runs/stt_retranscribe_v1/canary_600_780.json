@@ -1,0 +1,205 @@
+{
+ "track": "STT_RETRANSCRIBE_V1",
+ "phase": "canary",
+ "range_sec": [
+  600,
+  780
+ ],
+ "code_revision": "1d36bad769f9882652f79c31663a182f63370ad5",
+ "inputs": {
+  "audio": "C:\\Users\\UserK\\Desktop\\prj\\work_canary\\canary_xekZO4n4QuE_600_780\\audio.wav",
+  "audio_sha256": "cc5d975b1740a68066110ce803b785bb09cab008dc4dcdb2ec1847fcb2b6afc3",
+  "baseline": "C:\\Users\\UserK\\Desktop\\prj\\work_canary\\canary_xekZO4n4QuE_600_780",
+  "measurements_sha256": "59675339ab1fa64c1af6f38487db9573ecbaf56f6d821d646dc2763315b0be42"
+ },
+ "run1": {
+  "faster_whisper_version": "1.2.1",
+  "device": "cuda",
+  "compute_type": "float16",
+  "dll_directories_added": [
+   "C:\\Users\\UserK\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python312\\site-packages\\nvidia\\cublas\\bin",
+   "C:\\Users\\UserK\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python312\\site-packages\\nvidia\\cudnn\\bin"
+  ],
+  "ladder_attempts": [],
+  "decoding_resolved": {
+   "model": "large-v3",
+   "language": "ko",
+   "beam_size": 5,
+   "best_of": 5,
+   "condition_on_previous_text": false,
+   "word_timestamps": true,
+   "hallucination_silence_threshold": 1.0,
+   "vad_filter": true,
+   "temperature": 0.0
+  },
+  "vad_params_resolved": {
+   "threshold": 0.5,
+   "neg_threshold": 0.35,
+   "min_speech_duration_ms": 0,
+   "max_speech_duration_s": "inf",
+   "min_silence_duration_ms": 2000,
+   "speech_pad_ms": 400
+  },
+  "vad_sampling_rate": 16000,
+  "language_detected": "ko",
+  "language_probability": 1.0,
+  "duration_sec": 180.0,
+  "duration_after_vad_sec": 1.68
+ },
+ "run2": {
+  "faster_whisper_version": "1.2.1",
+  "device": "cuda",
+  "compute_type": "float16",
+  "dll_directories_added": [
+   "C:\\Users\\UserK\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python312\\site-packages\\nvidia\\cublas\\bin",
+   "C:\\Users\\UserK\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python312\\site-packages\\nvidia\\cudnn\\bin"
+  ],
+  "ladder_attempts": [],
+  "decoding_resolved": {
+   "model": "large-v3",
+   "language": "ko",
+   "beam_size": 5,
+   "best_of": 5,
+   "condition_on_previous_text": false,
+   "word_timestamps": true,
+   "hallucination_silence_threshold": 1.0,
+   "vad_filter": true,
+   "temperature": 0.0
+  },
+  "vad_params_resolved": {
+   "threshold": 0.5,
+   "neg_threshold": 0.35,
+   "min_speech_duration_ms": 0,
+   "max_speech_duration_s": "inf",
+   "min_silence_duration_ms": 2000,
+   "speech_pad_ms": 400
+  },
+  "vad_sampling_rate": 16000,
+  "language_detected": "ko",
+  "language_probability": 1.0,
+  "duration_sec": 180.0,
+  "duration_after_vad_sec": 1.68
+ },
+ "vad_measurement": {
+  "faster_whisper_version": "1.2.1",
+  "vad_model": "silero_vad_v6.onnx",
+  "vad_model_sha256": "4cbf549b8326f60f80f2536d9eefeb450a9abe83365a098031c89719f1be17d2",
+  "vad_params_resolved": {
+   "threshold": 0.5,
+   "neg_threshold": 0.35,
+   "min_speech_duration_ms": 0,
+   "max_speech_duration_s": null,
+   "min_silence_duration_ms": 2000,
+   "speech_pad_ms": 400
+  },
+  "max_speech_duration_s": "inf",
+  "sampling_rate": 16000,
+  "audio_seconds": 180.0,
+  "speech_chunks": 1
+ },
+ "vad_speech_intervals": [
+  [
+   178.32,
+   180.001
+  ]
+ ],
+ "temperature_observed": {
+  "run1": [],
+  "run2": []
+ },
+ "comparison": {
+  "utterance_count": {
+   "run1": 0,
+   "run2": 0
+  },
+  "count_equal": true,
+  "text_mismatches": [],
+  "timing_mismatches": [],
+  "raw_text_differences": 0,
+  "identical": true,
+  "ordered_digest": {
+   "run1": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "run2": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  }
+ },
+ "determinism": "PASS",
+ "timestamp_validity": {
+  "run1": {
+   "rows": 0,
+   "start_gt_end": 0,
+   "zero_duration": 0,
+   "nonfinite": 0
+  },
+  "run2": {
+   "rows": 0,
+   "start_gt_end": 0,
+   "zero_duration": 0,
+   "nonfinite": 0
+  }
+ },
+ "counts": {
+  "old_utterances": 26,
+  "new_utterances": 0,
+  "exact_retained": 0,
+  "removed": 24,
+  "newly_emitted": 0,
+  "text_change_rate": 1.0
+ },
+ "overlap": {
+  "old": {
+   "utterances": 26,
+   "zero_overlap": 23,
+   "with_overlap": 3
+  },
+  "new": {
+   "utterances": 0,
+   "zero_overlap": 0,
+   "with_overlap": 0
+  }
+ },
+ "canonical_mapping_equal": true,
+ "canonical_mapping": [],
+ "old_artifacts_unchanged": true,
+ "watched_digests": {
+  "before": {
+   "baseline_stt_cache": "e3361204a6c27cd720a63520b12d0c0bc98a0c6a3bf7621d8ec2be775beb9fa9",
+   "baseline_segments": "4a253d823e3067acb0faa222cb33bb14c0cdf6ab92f85ecdb56dce44fb6b3294",
+   "full_stt_cache": "59c98df1e0ea18e93623074a538b63b91794a8fca686e68a345c85dfc1c1a90d",
+   "full_segments": "aa008317023c884a206c2ea8ce9f1de5db809c2638fca257f964a58df4799c92",
+   "submission_hwpx": "5732075871fd7902d52239cebced28f9489a0f558dac67c61f5d2ca994e9cd7b",
+   "rollback_hwpx": "4e10aaaba1d8a6e510c4749efc4a6e1bf5a5dbb5dba963403a84379bcd92ff90"
+  },
+  "after": {
+   "baseline_stt_cache": "e3361204a6c27cd720a63520b12d0c0bc98a0c6a3bf7621d8ec2be775beb9fa9",
+   "baseline_segments": "4a253d823e3067acb0faa222cb33bb14c0cdf6ab92f85ecdb56dce44fb6b3294",
+   "full_stt_cache": "59c98df1e0ea18e93623074a538b63b91794a8fca686e68a345c85dfc1c1a90d",
+   "full_segments": "aa008317023c884a206c2ea8ce9f1de5db809c2638fca257f964a58df4799c92",
+   "submission_hwpx": "5732075871fd7902d52239cebced28f9489a0f558dac67c61f5d2ca994e9cd7b",
+   "rollback_hwpx": "4e10aaaba1d8a6e510c4749efc4a6e1bf5a5dbb5dba963403a84379bcd92ff90"
+  }
+ },
+ "lineage_complete": {
+  "run1": true,
+  "run2": true
+ },
+ "gates": {
+  "C1": true,
+  "C2": true,
+  "C3": true,
+  "C4": true,
+  "C5": true,
+  "C6": true,
+  "C7": true,
+  "C8": true
+ },
+ "gate_descriptions": {
+  "C1": "provenance complete — decoding·VAD resolved 값과 실행 환경을 기록했다",
+  "C2": "deterministic pairing — run1 == run2",
+  "C3": "no temperature fallback — 관측 temperature가 0.0뿐이다",
+  "C4": "VAD resolved params exact — Phase A 값과 전건 일치",
+  "C5": "raw→merged lineage complete — 버려진 행까지 남는다",
+  "C6": "timestamp validity — start<=end · zero-duration · nonfinite 집계",
+  "C7": "old artifacts unchanged — 기존 전사·인덱스·제출물 해시 무변경",
+  "C8": "canonical mapping unchanged — canary 범위 segment_id·start·end 동일"
+ }
+}
