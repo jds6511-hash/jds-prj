@@ -225,3 +225,38 @@ def test_wvr_e16_there_is_no_retry_or_offload_path():
                       "load_in_8bit", "load_in_4bit", "PYTORCH_CUDA_ALLOC_CONF"):
         assert forbidden not in source
     assert "arm은 1회다" in source
+
+
+# ── 비퇴화 전제조건 (다음 사건용 · 이번 실행을 재판정하지 않는다) ──────
+def _record(*, generated=512, cap=1024, status=compare.PARSE_OK, events=1):
+    return {"metrics": {"generated_token_count": generated},
+            "requested": {"max_new_tokens": cap},
+            "parsed": {"status": status,
+                       "events": [{"index": 0}] * events}}
+
+
+def test_a_capped_generation_is_degenerate():
+    assert compare.truncated_at_cap(_record(generated=1024)) is True
+    assert compare.truncated_at_cap(_record(generated=512)) is False
+    assert compare.non_degenerate(_record(generated=1024)) is False
+
+
+def test_an_unparsable_or_empty_output_is_degenerate():
+    assert compare.non_degenerate(
+        _record(status=compare.PARSE_FAILURE)) is False
+    assert compare.non_degenerate(_record(events=0)) is False
+    assert compare.non_degenerate(_record()) is True
+
+
+@pytest.mark.parametrize("name", ["D1_S0", "D1_S1", "D2_S0", "D2_S1",
+                                  "D3_S0", "D3_S1"])
+def test_the_2026_09_09_run_is_recorded_as_degenerate(name):
+    """이번 실행은 전부 cap에서 끊겼다. 그 사실이 산출물에 남아 있어야 한다."""
+    path = ROOT / ("runs/wvr_light_v1/density_stage2_%s.json" % name)
+    if not path.is_file():
+        pytest.skip("Stage 2 미실행")
+    record = json.loads(path.read_text(encoding="utf-8"))
+    assert record["arm_status"] == compare.PARSE_FAILURE
+    assert compare.truncated_at_cap(record) is True
+    assert compare.non_degenerate(record) is False
+    assert record["metrics"]["generated_token_count"] == 1024

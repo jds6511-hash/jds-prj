@@ -1,0 +1,25 @@
+=== D1_highest_change S0 (2026. 09. 09. (수) 00:10:54 KST) ===
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 8226.71it/s]
+window=W11 arm=S0 status=PARSE_FAILURE frames=90 tokens=7197 events=0
+RC=1
+=== D1_highest_change S1 (2026. 09. 09. (수) 00:11:54 KST) ===
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:  90%|█████████ | 675/750 [00:00<00:00, 6736.95it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7055.27it/s]
+window=W11 arm=S1 status=PARSE_FAILURE frames=45 tokens=3809 events=0
+RC=1
+=== D2_median_change S0 (2026. 09. 09. (수) 00:12:48 KST) ===
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 8625.03it/s]
+window=W02 arm=S0 status=PARSE_FAILURE frames=90 tokens=7178 events=0
+RC=1
+=== D2_median_change S1 (2026. 09. 09. (수) 00:13:49 KST) ===
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 9029.43it/s]
+window=W02 arm=S1 status=PARSE_FAILURE frames=45 tokens=3799 events=0
+RC=1
+=== D3_lowest_change S0 (2026. 09. 09. (수) 00:14:43 KST) ===
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7594.71it/s]
+window=W05 arm=S0 status=PARSE_FAILURE frames=90 tokens=7197 events=0
+RC=1
+=== D3_lowest_change S1 (2026. 09. 09. (수) 00:15:43 KST) ===
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:  94%|█████████▍| 705/750 [00:00<00:00, 7047.34it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7321.50it/s]
+window=W05 arm=S1 status=PARSE_FAILURE frames=45 tokens=3809 events=0
+RC=1
+ALL_DONE

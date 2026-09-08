@@ -1,0 +1,106 @@
+{
+ "schema": "wvr_density_stage2_v1",
+ "stage": "PAIRED_OUTPUT_SENSITIVITY",
+ "prereg": "docs/preregistration/WVR_SAMPLING_SEMANTIC_DENSITY_V1_2026-09-08.md",
+ "window": {
+  "window_id": "W11",
+  "start_sec": 300.0,
+  "end_sec": 480.0,
+  "label": "D1_highest_change",
+  "stage1_score": 1411.2169
+ },
+ "arm": "S0",
+ "requested": {
+  "fps": 0.5,
+  "frames": 90,
+  "frame_size": [
+   512,
+   288
+  ],
+  "model_id": "Qwen/Qwen3-VL-8B-Instruct",
+  "model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "dtype": "bfloat16",
+  "attn_implementation": "sdpa",
+  "quantization": null,
+  "device": "cuda:0",
+  "device_map": null,
+  "do_sample": false,
+  "num_beams": 1,
+  "max_new_tokens": 1024,
+  "repetition_penalty": 1.0,
+  "do_sample_frames": false,
+  "do_resize": false
+ },
+ "prompt_contract": "SAMPLING_DIAG_PROMPT_V1",
+ "prompt_hash": "7899dc460957fff6eef49ffb50ab15fb527436ec5008ee618772a232ce4350a4",
+ "is_production_contract": false,
+ "timestamps_first_last": [
+  300.0,
+  478.0
+ ],
+ "event_extraction_approved": false,
+ "semantic_verdict_allowed": false,
+ "code_git_head": "37b7ddde65c6234d9455230758b3d052cd01ba7c",
+ "metrics": {
+  "load_wall_sec": 3.58,
+  "video_process_wall_sec": 11.72,
+  "delivered_frame_count": 90,
+  "frame_size": [
+   512,
+   288
+  ],
+  "frame_times_first_last": [
+   300.0,
+   478.0
+  ],
+  "input_token_count": 7197,
+  "video_token_count": 6480,
+  "infer_wall_sec": 37.8,
+  "generated_token_count": 1024,
+  "peak_vram_allocated_mib": 18953.0,
+  "peak_vram_reserved_mib": 19566.0,
+  "total_wall_sec": 55.27
+ },
+ "stage_status": {
+  "MODEL_LOAD": "OK",
+  "VIDEO_PROCESS": "OK",
+  "INFERENCE": "OK"
+ },
+ "allocator_observed": {
+  "backend": "native",
+  "env": "",
+  "segment_count": 268,
+  "expandable_segments_observed": false,
+  "expandable_flags_head": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ]
+ },
+ "frame_indices_first_last": [
+  9000,
+  14340
+ ],
+ "raw_output": "{\"observed_events\": [{\"approx_time\": 300.0, \"event\": \"여성의 손이 젓가락으로 튀긴 음식을 집어 먹는다.\",\n                      \"visible_entities\": [\"여성\", \"젓가락\", \"튀긴 음식\", \"접시\", \"음료수\", \"식탁\"],\n                      \"activity\": \"식사 중이다.\"},\n                     {\"approx_time\": 304.0, \"event\": \"여성의 손이 젓가락으로 음식을 집어 먹는다.\",\n                      \"visible_entities\": [\"여성\", \"젓가락\", \"음식\", \"접시\", \"식탁\"],\n                      \"activity\": \"식사 중이다.\"},\n                     {\"approx_time\": 308.0, \"event\": \"여성의 손이 음료수를 마시는다.\",\n                      \"visible_entities\": [\"여성\", \"음료수\", \"식탁\"],\n                      \"activity\": \"음료수를 마시는 중이다.\"},\n                     {\"approx_time\": 312.0, \"event\": \"여성의 손이 젓가락으로 음식을 집어 먹는다.\",\n                      \"visible_entities\": [\"여성\", \"젓가락\", \"음식\", \"접시\", \"식탁\"],\n                      \"activity\": \"식사 중이다.\"},\n                     {\"approx_time\": 316.0, \"event\": \"여성의 손이 젓가락으로 음식을 집어 먹는다.\",\n                      \"visible_entities\": [\"여성\", \"젓가락\", \"음식\", \"접시\", \"식탁\"],\n                      \"activity\": \"식사 중이다.\"},\n                     {\"approx_time\": 320.0, \"event\": \"여성의 손이 젓가락으로 음식을 집어 먹는다.\",\n                      \"visible_entities\": [\"여성\", \"젓가락\", \"음식\", \"접시\", \"식탁\"],\n                      \"activity\": \"식사 중이다.\"},\n                     {\"approx_time\": 324.0, \"event\": \"여성의 손이 젓가락으로 음식을 집어 먹는다.\",\n                      \"visible_entities\": [\"여성\", \"젓가락\", \"음식\", \"접시\", \"식탁\"],\n                      \"activity\": \"식사 중이다.\"},\n                     {\"approx_time\": 328.0, \"event\": \"여성의 손이 젓가락으로 음식을 집어 먹는다.\",\n                      \"visible_entities\": [\"여성\", \"젓가락\", \"음식\", \"접시\", \"식탁\"],\n                      \"activity\": \"식사 중이다.\"},\n                     {\"approx_time\": 332.0, \"event\": \"여성의 손이 젓가락으로 음식을 집어 먹는다.\",\n                      \"visible_entities\": [\"여성\", \"젓가락\", \"음식\", \"접시\", \"식탁\"],\n                      \"activity\": \"식사 중이다.\"},\n                     {\"approx_time\": 336.0, \"event\": \"여성의 손이 젓가락으로 음식을 집어 먹는다.\",\n                      \"visible_entities\": [\"여성\", \"젓가락\", \"음식\", \"접시\", \"식탁\"],\n                      \"activity\": \"식사 중이다.\"},\n                     {\"approx_time\": 340.0, \"event\": \"여성의 손이 젓가락으로 음식을 집어 먹는다.\",\n                      \"visible_entities\": [\"여성\", \"젓가락\", \"음식\", \"접시\", \"식탁\"],\n                      \"activity\": \"식사 중이다.\"},\n                     {\"approx_time\": 344.0, \"event\": \"여성의 손이 젓가락으로 음식을 집어 먹는다.\",\n                      \"visible_entities\": [\"여성\", \"젓가락\", \"음식\", \"접시\", \"식탁\"],\n                      \"activity\": \"식사 중이다.\"},\n                     {\"approx_time\": 348.0, \"event\": \"여성의 손이 젓가락으로 음식을 집어 먹는다.\",\n                      \"visible_entities\": [\"여성\", \"젓가락\", \"음식\", \"접시\", \"식탁\"],\n                      \"activity\": \"식사 중이다.\"},\n                     {\"approx_time\": 352.0, \"event\": \"여성의 손이 젓가락으로 음식을 집어 먹는다.\",\n                      \"visible_entities\": [\"여성\", \"젓가락\", \"음식\",",
+ "parsed": {
+  "status": "PARSE_FAILURE",
+  "events": [],
+  "violations": [],
+  "reason": "Expecting ',' delimiter: line 39 column 45 (char 2624)"
+ },
+ "arm_status": "PARSE_FAILURE",
+ "memory_stats": {
+  "allocated_bytes.all.peak": 19873646080,
+  "reserved_bytes.all.peak": 20516438016,
+  "requested_bytes.all.peak": 19859013098,
+  "active_bytes.all.peak": 19873646080,
+  "inactive_split_bytes.all.peak": 1016998400,
+  "num_alloc_retries": 0,
+  "num_ooms": 0
+ }
+}

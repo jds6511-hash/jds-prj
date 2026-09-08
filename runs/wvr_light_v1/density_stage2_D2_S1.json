@@ -1,0 +1,106 @@
+{
+ "schema": "wvr_density_stage2_v1",
+ "stage": "PAIRED_OUTPUT_SENSITIVITY",
+ "prereg": "docs/preregistration/WVR_SAMPLING_SEMANTIC_DENSITY_V1_2026-09-08.md",
+ "window": {
+  "window_id": "W02",
+  "start_sec": 30.0,
+  "end_sec": 210.0,
+  "label": "D2_median_change",
+  "stage1_score": 1115.5522
+ },
+ "arm": "S1",
+ "requested": {
+  "fps": 0.25,
+  "frames": 45,
+  "frame_size": [
+   512,
+   288
+  ],
+  "model_id": "Qwen/Qwen3-VL-8B-Instruct",
+  "model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "dtype": "bfloat16",
+  "attn_implementation": "sdpa",
+  "quantization": null,
+  "device": "cuda:0",
+  "device_map": null,
+  "do_sample": false,
+  "num_beams": 1,
+  "max_new_tokens": 1024,
+  "repetition_penalty": 1.0,
+  "do_sample_frames": false,
+  "do_resize": false
+ },
+ "prompt_contract": "SAMPLING_DIAG_PROMPT_V1",
+ "prompt_hash": "7899dc460957fff6eef49ffb50ab15fb527436ec5008ee618772a232ce4350a4",
+ "is_production_contract": false,
+ "timestamps_first_last": [
+  32.0,
+  208.0
+ ],
+ "event_extraction_approved": false,
+ "semantic_verdict_allowed": false,
+ "code_git_head": "37b7ddde65c6234d9455230758b3d052cd01ba7c",
+ "metrics": {
+  "load_wall_sec": 3.6,
+  "video_process_wall_sec": 5.59,
+  "delivered_frame_count": 45,
+  "frame_size": [
+   512,
+   288
+  ],
+  "frame_times_first_last": [
+   32.0,
+   208.0
+  ],
+  "input_token_count": 3799,
+  "video_token_count": 3312,
+  "infer_wall_sec": 38.41,
+  "generated_token_count": 1024,
+  "peak_vram_allocated_mib": 17907.1,
+  "peak_vram_reserved_mib": 18300.0,
+  "total_wall_sec": 49.6
+ },
+ "stage_status": {
+  "MODEL_LOAD": "OK",
+  "VIDEO_PROCESS": "OK",
+  "INFERENCE": "OK"
+ },
+ "allocator_observed": {
+  "backend": "native",
+  "env": "",
+  "segment_count": 268,
+  "expandable_segments_observed": false,
+  "expandable_flags_head": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ]
+ },
+ "frame_indices_first_last": [
+  960,
+  6240
+ ],
+ "raw_output": "{\"observed_events\": [{\"approx_time\": 30.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 34.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 38.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 42.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 46.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 50.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 54.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 58.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 62.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 66.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 70.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 74.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 78.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 82.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 86.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 90.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 94.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\",",
+ "parsed": {
+  "status": "PARSE_FAILURE",
+  "events": [],
+  "violations": [],
+  "reason": "Expecting ',' delimiter: line 32 column 88 (char 2322)"
+ },
+ "arm_status": "PARSE_FAILURE",
+ "memory_stats": {
+  "allocated_bytes.all.peak": 18776977920,
+  "reserved_bytes.all.peak": 19188940800,
+  "requested_bytes.all.peak": 18757305822,
+  "active_bytes.all.peak": 18776977920,
+  "inactive_split_bytes.all.peak": 613498368,
+  "num_alloc_retries": 0,
+  "num_ooms": 0
+ }
+}

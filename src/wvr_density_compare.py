@@ -69,6 +69,26 @@ def parse_events(raw: str, window) -> dict:
             "reason": "" if status == PARSE_OK else "event가 없다"}
 
 
+def truncated_at_cap(record) -> bool:
+    """생성이 max_new_tokens에서 끊겼는가 — 끊긴 JSON은 비교 대상이 아니다."""
+    metrics = record.get("metrics") or {}
+    generated = metrics.get("generated_token_count")
+    cap = (record.get("requested") or {}).get("max_new_tokens")
+    return bool(generated and cap and generated >= cap)
+
+
+def non_degenerate(record) -> bool:
+    """비교가 성립할 최소 조건.
+
+    **2026-09-09 실행분을 이 조건으로 재판정하지 않는다** — 그 실행은
+    `INCONCLUSIVE / OUTPUT_TRUNCATED_AT_CAP`으로 동결됐다. 이 함수는 다음
+    사건에서 공허한 통과를 막기 위한 전제조건이다.
+    """
+    parsed = record.get("parsed") or {}
+    return bool(parsed.get("status") == PARSE_OK and parsed.get("events")
+                and not truncated_at_cap(record))
+
+
 def bigrams(text: str) -> set:
     cleaned = re.sub(r"\s+", "", text or "")
     return {cleaned[index:index + 2] for index in range(len(cleaned) - 1)}

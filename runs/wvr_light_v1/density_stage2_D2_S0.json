@@ -1,0 +1,106 @@
+{
+ "schema": "wvr_density_stage2_v1",
+ "stage": "PAIRED_OUTPUT_SENSITIVITY",
+ "prereg": "docs/preregistration/WVR_SAMPLING_SEMANTIC_DENSITY_V1_2026-09-08.md",
+ "window": {
+  "window_id": "W02",
+  "start_sec": 30.0,
+  "end_sec": 210.0,
+  "label": "D2_median_change",
+  "stage1_score": 1115.5522
+ },
+ "arm": "S0",
+ "requested": {
+  "fps": 0.5,
+  "frames": 90,
+  "frame_size": [
+   512,
+   288
+  ],
+  "model_id": "Qwen/Qwen3-VL-8B-Instruct",
+  "model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "dtype": "bfloat16",
+  "attn_implementation": "sdpa",
+  "quantization": null,
+  "device": "cuda:0",
+  "device_map": null,
+  "do_sample": false,
+  "num_beams": 1,
+  "max_new_tokens": 1024,
+  "repetition_penalty": 1.0,
+  "do_sample_frames": false,
+  "do_resize": false
+ },
+ "prompt_contract": "SAMPLING_DIAG_PROMPT_V1",
+ "prompt_hash": "7899dc460957fff6eef49ffb50ab15fb527436ec5008ee618772a232ce4350a4",
+ "is_production_contract": false,
+ "timestamps_first_last": [
+  30.0,
+  208.0
+ ],
+ "event_extraction_approved": false,
+ "semantic_verdict_allowed": false,
+ "code_git_head": "37b7ddde65c6234d9455230758b3d052cd01ba7c",
+ "metrics": {
+  "load_wall_sec": 3.6,
+  "video_process_wall_sec": 11.56,
+  "delivered_frame_count": 90,
+  "frame_size": [
+   512,
+   288
+  ],
+  "frame_times_first_last": [
+   30.0,
+   208.0
+  ],
+  "input_token_count": 7178,
+  "video_token_count": 6480,
+  "infer_wall_sec": 38.01,
+  "generated_token_count": 1024,
+  "peak_vram_allocated_mib": 18948.5,
+  "peak_vram_reserved_mib": 19566.0,
+  "total_wall_sec": 55.32
+ },
+ "stage_status": {
+  "MODEL_LOAD": "OK",
+  "VIDEO_PROCESS": "OK",
+  "INFERENCE": "OK"
+ },
+ "allocator_observed": {
+  "backend": "native",
+  "env": "",
+  "segment_count": 268,
+  "expandable_segments_observed": false,
+  "expandable_flags_head": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ]
+ },
+ "frame_indices_first_last": [
+  900,
+  6240
+ ],
+ "raw_output": "{\"observed_events\": [{\"approx_time\": 30.0, \"event\": \"A hand holds a bag of potato chips in a green basket.\",\n                      \"visible_entities\": [\"hand\", \"bag of potato chips\", \"green basket\"], \"activity\": \"Holding a bag of potato chips.\"},\n                     {\"approx_time\": 33.0, \"event\": \"A person washes potatoes under running water in a sink.\",\n                      \"visible_entities\": [\"person\", \"potatoes\", \"sink\", \"water\"], \"activity\": \"Washing potatoes.\"},\n                     {\"approx_time\": 36.0, \"event\": \"A person places potatoes into a steamer pot.\",\n                      \"visible_entities\": [\"person\", \"potatoes\", \"steamer pot\"], \"activity\": \"Placing potatoes into a steamer pot.\"},\n                     {\"approx_time\": 39.0, \"event\": \"A person pours a bag of potato chips into a green bowl.\",\n                      \"visible_entities\": [\"person\", \"bag of potato chips\", \"green bowl\"], \"activity\": \"Pouring potato chips into a green bowl.\"},\n                     {\"approx_time\": 42.0, \"event\": \"A person places sliced bread into a blender.\",\n                      \"visible_entities\": [\"person\", \"sliced bread\", \"blender\"], \"activity\": \"Placing sliced bread into a blender.\"},\n                     {\"approx_time\": 45.0, \"event\": \"A person blends sliced bread in a blender.\",\n                      \"visible_entities\": [\"person\", \"sliced bread\", \"blender\"], \"activity\": \"Blending sliced bread in a blender.\"},\n                     {\"approx_time\": 48.0, \"event\": \"A person pours oil into a bowl of breadcrumbs.\",\n                      \"visible_entities\": [\"person\", \"oil\", \"bowl\", \"breadcrumbs\"], \"activity\": \"Pouring oil into a bowl of breadcrumbs.\"},\n                     {\"approx_time\": 51.0, \"event\": \"A person stirs breadcrumbs in a bowl with a wooden spoon.\",\n                      \"visible_entities\": [\"person\", \"breadcrumbs\", \"wooden spoon\", \"bowl\"], \"activity\": \"Stirring breadcrumbs in a bowl with a wooden spoon.\"},\n                     {\"approx_time\": 54.0, \"event\": \"A person chops an onion on a wooden cutting board.\",\n                      \"visible_entities\": [\"person\", \"onion\", \"wooden cutting board\", \"knife\"], \"activity\": \"Chopping an onion on a wooden cutting board.\"},\n                     {\"approx_time\": 57.0, \"event\": \"A person chops carrots on a wooden cutting board.\",\n                      \"visible_entities\": [\"person\", \"carrots\", \"wooden cutting board\", \"knife\"], \"activity\": \"Chopping carrots on a wooden cutting board.\"},\n                     {\"approx_time\": 60.0, \"event\": \"A person chops crab sticks on a wooden cutting board.\",\n                      \"visible_entities\": [\"person\", \"crab sticks\", \"wooden cutting board\", \"knife\"], \"activity\": \"Chopping crab sticks on a wooden cutting board.\"},\n                     {\"approx_time\": 63.0, \"event\": \"A person mixes breadcrumbs with oil in a bowl.\",\n                      \"visible_entities\": [\"person\", \"breadcrumbs\", \"oil\", \"bowl\", \"wooden spoon\"], \"activity\": \"Mixing breadcrumbs with oil in a bowl.\"},\n                     {\"approx_time\": 66.0, \"event\": \"A person adds ground beef to a bowl with chopped vegetables.\",\n                      \"visible_entities\": [\"person\", \"ground beef\", \"bowl\", \"chopped vegetables\"], \"activity\": \"Adding ground beef to a bowl with chopped vegetables.\"},\n                     {\"approx_time\": 69.0, \"event\": \"A person adds soy sauce to a bowl with ground beef and vegetables.\",\n                      \"visible_entities\": [\"person\", \"soy sauce\", \"bowl\", \"ground beef\", \"chopped vegetables\"], \"activity\": \"Adding soy sauce to a bowl with ground beef and vegetables.\"},\n                     {\"approx_time\": 72.0, \"event\": \"A person adds pepper to a bowl with ground beef and vegetables.\",\n                      \"visible_entities\": [\"person\", \"pepper\", \"bowl\", \"ground beef\", \"chopped vegetables\"], \"activity\": \"Adding pepper to a bowl with ground beef and vegetables.\"},\n                     {\"approx_time\": 75.0, \"event\": \"A person cooks ground beef and vegetables in a pan over direct heat.\",\n                      \"visible_entities\": [\"person\", \"ground beef\", \"chopped vegetables\", \"pan\", \"direct heat\"], \"activity\": \"Cooking ground beef and vegetables in a pan over direct heat.\"},\n                     {\"approx_time\": 78.0, \"event\": \"A person peels potatoes with an automatic potato peeler.\",\n                      \"visible_entities\": [\"person\", \"potatoes\", \"automatic potato peeler\"], \"activity\": \"Peeling potatoes with an automatic",
+ "parsed": {
+  "status": "PARSE_FAILURE",
+  "events": [],
+  "violations": [],
+  "reason": "Expecting ',' delimiter: line 32 column 190 (char 4215)"
+ },
+ "arm_status": "PARSE_FAILURE",
+ "memory_stats": {
+  "allocated_bytes.all.peak": 19868898304,
+  "reserved_bytes.all.peak": 20516438016,
+  "requested_bytes.all.peak": 19854177028,
+  "active_bytes.all.peak": 19868898304,
+  "inactive_split_bytes.all.peak": 1018399744,
+  "num_alloc_retries": 0,
+  "num_ooms": 0
+ }
+}
