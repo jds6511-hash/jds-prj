@@ -153,6 +153,15 @@ def test_a_second_change_is_a_violation(path, value):
     assert "%s.%s" % path in sampling.single_change(control, arm)
 
 
+def test_a_changed_duration_is_a_violation():
+    """metrics 쪽 단일 변경 검사가 살아 있는지 — 구간 길이는 바뀌면 안 된다."""
+    control = _control()
+    arm = _arm(control)
+    arm["metrics"]["effective_video_duration_sec"] = 480.0
+    assert "metrics.effective_video_duration_sec" in sampling.single_change(
+        control, arm)
+
+
 def test_a_changed_prompt_or_chunk_is_a_violation():
     control = _control()
     arm = _arm(control)
