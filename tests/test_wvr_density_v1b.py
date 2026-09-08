@@ -179,7 +179,8 @@ def test_wvr_f13_the_v1_artifacts_are_untouched(name):
 
 # ── 조건부: V1B 실행 후 ──────────────────────────────────────────────
 def _v1b_paths():
-    return sorted(RUNS.glob("density_stage2b_*.json"))
+    """arm 산출물만. 요약(density_stage2b_summary.json)은 별도로 본다."""
+    return sorted(path for path in RUNS.glob("density_stage2b_D*_S*.json"))
 
 
 @pytest.mark.skipif(not _v1b_paths(), reason="V1B 미실행")
@@ -216,3 +217,68 @@ def test_wvr_f14_the_report_agrees_with_the_summary():
     assert record["event_verdict"] in text
     for name in ("D1", "D2", "D3"):
         assert record["pairs"][name]["evaluability"]["status"] in text
+
+
+# ── 실행 후: 반복 지배를 수치로 남긴다 ────────────────────────────────
+@pytest.mark.skipif(not _v1b_paths(), reason="V1B 미실행")
+@pytest.mark.parametrize("pair,arm,events_count,unique", [
+    ("D1", "S0", 46, 3), ("D1", "S1", 37, 4), ("D2", "S0", 33, 33),
+    ("D2", "S1", 46, 1), ("D3", "S0", 37, 5), ("D3", "S1", 18, 7),
+])
+def test_the_repetition_is_recorded_in_the_report(pair, arm, events_count,
+                                                  unique):
+    """보고서의 고유 문장 수는 산출물에서만 온다."""
+    record = json.loads((RUNS / ("density_stage2b_%s_%s.json"
+                                 % (pair, arm))).read_text(encoding="utf-8"))
+    texts = [event["event"].strip() for event in record["parsed"]["events"]]
+    assert len(texts) == events_count
+    assert len(set(texts)) == unique
+    if REPORT.is_file():
+        text = REPORT.read_text(encoding="utf-8")
+        assert "%d        %d" % (events_count, unique) in text \
+            or "%d       %d" % (events_count, unique) in text \
+            or str(unique) in text
+
+
+@pytest.mark.skipif(not _v1b_paths(), reason="V1B 미실행")
+def test_no_arm_was_truncated_at_the_new_cap():
+    for path in _v1b_paths():
+        record = json.loads(path.read_text(encoding="utf-8"))
+        assert compare.truncated_at_cap(record) is False
+        assert compare.arm_validity(record)["valid"] is True
+
+
+@pytest.mark.skipif(not _v1b_paths(), reason="V1B 미실행")
+def test_the_only_reference_events_are_mostly_duplicates():
+    """only S0로 분류된 event가 사라진 내용이 아니라 반복이라는 사실."""
+    summary = json.loads((RUNS / "density_stage2b_summary.json").read_text(
+        encoding="utf-8"))
+    expected = {"D1": (9, 9), "D2": (8, 0), "D3": (19, 17)}
+    for pair, (total, duplicates) in expected.items():
+        rows = summary["pairs"][pair]["comparison"]["per_tolerance"]["tol_4.0"]
+        matched = {entry["reference_event"].strip() for entry in rows["pairs"]}
+        only = [entry["event"].strip() for entry in rows["only_reference"]]
+        assert len(only) == total
+        assert sum(1 for text in only if text in matched) == duplicates
+
+
+@pytest.mark.skipif(not _v1b_paths(), reason="V1B 미실행")
+def test_the_tolerance_choice_did_not_change_the_result():
+    summary = json.loads((RUNS / "density_stage2b_summary.json").read_text(
+        encoding="utf-8"))
+    for pair in ("D1", "D2", "D3"):
+        per = summary["pairs"][pair]["comparison"]["per_tolerance"]
+        for field in ("matched_count", "only_reference_count",
+                      "only_arm_count", "order_inversions"):
+            assert per["tol_4.0"][field] == per["tol_8.0"][field]
+
+
+@pytest.mark.skipif(not _v1b_paths(), reason="V1B 미실행")
+def test_the_language_failure_is_recorded_for_d2_s0_only():
+    summary = json.loads((RUNS / "density_stage2b_summary.json").read_text(
+        encoding="utf-8"))
+    failures = {(pair, arm)
+                for pair in ("D1", "D2", "D3") for arm in ("S0", "S1")
+                if summary["pairs"][pair]["arms"][arm][
+                    "language_contract_failure"]}
+    assert failures == {("D2", "S0")}

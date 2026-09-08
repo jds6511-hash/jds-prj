@@ -1,0 +1,660 @@
+{
+ "schema": "wvr_density_stage2_v1",
+ "stage": "PAIRED_OUTPUT_SENSITIVITY",
+ "prereg": "docs/preregistration/WVR_SAMPLING_SEMANTIC_DENSITY_V1_2026-09-08.md",
+ "window": {
+  "window_id": "W02",
+  "start_sec": 30.0,
+  "end_sec": 210.0,
+  "label": "D2_median_change",
+  "stage1_score": 1115.5522
+ },
+ "arm": "S1",
+ "requested": {
+  "fps": 0.25,
+  "frames": 45,
+  "frame_size": [
+   512,
+   288
+  ],
+  "model_id": "Qwen/Qwen3-VL-8B-Instruct",
+  "model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "dtype": "bfloat16",
+  "attn_implementation": "sdpa",
+  "quantization": null,
+  "device": "cuda:0",
+  "device_map": null,
+  "do_sample": false,
+  "num_beams": 1,
+  "max_new_tokens": 4096,
+  "repetition_penalty": 1.0,
+  "do_sample_frames": false,
+  "do_resize": false
+ },
+ "event": "V1B",
+ "prompt_contract": "SAMPLING_DIAG_PROMPT_V1",
+ "prompt_hash": "7899dc460957fff6eef49ffb50ab15fb527436ec5008ee618772a232ce4350a4",
+ "is_production_contract": false,
+ "timestamps_first_last": [
+  32.0,
+  208.0
+ ],
+ "event_extraction_approved": false,
+ "semantic_verdict_allowed": false,
+ "code_git_head": "78cefa3786900ab5219df491020ea752c4095ce1",
+ "metrics": {
+  "load_wall_sec": 3.61,
+  "video_process_wall_sec": 5.6,
+  "delivered_frame_count": 45,
+  "frame_size": [
+   512,
+   288
+  ],
+  "frame_times_first_last": [
+   32.0,
+   208.0
+  ],
+  "input_token_count": 3799,
+  "video_token_count": 3312,
+  "infer_wall_sec": 97.99,
+  "generated_token_count": 2841,
+  "peak_vram_allocated_mib": 17907.1,
+  "peak_vram_reserved_mib": 18300.0,
+  "total_wall_sec": 109.22
+ },
+ "stage_status": {
+  "MODEL_LOAD": "OK",
+  "VIDEO_PROCESS": "OK",
+  "INFERENCE": "OK"
+ },
+ "allocator_observed": {
+  "backend": "native",
+  "env": "",
+  "segment_count": 268,
+  "expandable_segments_observed": false,
+  "expandable_flags_head": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ]
+ },
+ "frame_indices_first_last": [
+  960,
+  6240
+ ],
+ "raw_output": "{\"observed_events\": [{\"approx_time\": 30.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 34.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 38.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 42.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 46.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 50.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 54.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 58.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 62.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 66.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 70.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 74.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 78.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 82.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 86.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 90.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 94.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 98.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 102.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 106.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 110.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 114.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 118.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 122.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 126.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 130.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 134.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 138.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 142.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 146.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 150.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 154.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 158.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 162.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 166.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 170.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 174.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 178.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 182.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 186.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 190.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 194.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 198.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 202.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 206.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"},\n {\"approx_time\": 210.0, \"event\": \"손이 감자 한 덩이를 그릇에 넣는다\",\n                      \"visible_entities\": [\"손\", \"감자\", \"그릇\"], \"activity\": \"감자를 그릇에 넣는다\"}]}",
+ "parsed": {
+  "status": "OK",
+  "events": [
+   {
+    "index": 0,
+    "approx_time": 30.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 1,
+    "approx_time": 34.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 2,
+    "approx_time": 38.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 3,
+    "approx_time": 42.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 4,
+    "approx_time": 46.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 5,
+    "approx_time": 50.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 6,
+    "approx_time": 54.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 7,
+    "approx_time": 58.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 8,
+    "approx_time": 62.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 9,
+    "approx_time": 66.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 10,
+    "approx_time": 70.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 11,
+    "approx_time": 74.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 12,
+    "approx_time": 78.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 13,
+    "approx_time": 82.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 14,
+    "approx_time": 86.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 15,
+    "approx_time": 90.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 16,
+    "approx_time": 94.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 17,
+    "approx_time": 98.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 18,
+    "approx_time": 102.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 19,
+    "approx_time": 106.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 20,
+    "approx_time": 110.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 21,
+    "approx_time": 114.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 22,
+    "approx_time": 118.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 23,
+    "approx_time": 122.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 24,
+    "approx_time": 126.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 25,
+    "approx_time": 130.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 26,
+    "approx_time": 134.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 27,
+    "approx_time": 138.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 28,
+    "approx_time": 142.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 29,
+    "approx_time": 146.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 30,
+    "approx_time": 150.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 31,
+    "approx_time": 154.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 32,
+    "approx_time": 158.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 33,
+    "approx_time": 162.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 34,
+    "approx_time": 166.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 35,
+    "approx_time": 170.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 36,
+    "approx_time": 174.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 37,
+    "approx_time": 178.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 38,
+    "approx_time": 182.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 39,
+    "approx_time": 186.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 40,
+    "approx_time": 190.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 41,
+    "approx_time": 194.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 42,
+    "approx_time": 198.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 43,
+    "approx_time": 202.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 44,
+    "approx_time": 206.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   },
+   {
+    "index": 45,
+    "approx_time": 210.0,
+    "event": "손이 감자 한 덩이를 그릇에 넣는다",
+    "visible_entities": [
+     "손",
+     "감자",
+     "그릇"
+    ],
+    "activity": "감자를 그릇에 넣는다",
+    "inside_window": true
+   }
+  ],
+  "violations": [],
+  "reason": ""
+ },
+ "arm_status": "OK",
+ "memory_stats": {
+  "allocated_bytes.all.peak": 18776977920,
+  "reserved_bytes.all.peak": 19188940800,
+  "requested_bytes.all.peak": 18757305822,
+  "active_bytes.all.peak": 18776977920,
+  "inactive_split_bytes.all.peak": 639209472,
+  "num_alloc_retries": 0,
+  "num_ooms": 0
+ }
+}

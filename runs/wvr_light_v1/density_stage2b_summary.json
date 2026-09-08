@@ -1,0 +1,3853 @@
+{
+ "schema": "wvr_density_stage2_summary_v1",
+ "event": "V1B",
+ "prereg": "docs/preregistration/WVR_SAMPLING_SEMANTIC_DENSITY_V1B_2026-09-09.md",
+ "max_new_tokens": 4096,
+ "escalation_approved": false,
+ "match_tolerances": [
+  4.0,
+  8.0
+ ],
+ "stage1_selection": {
+  "D1_highest_change": {
+   "window_id": "W11",
+   "start_sec": 300.0,
+   "end_sec": 480.0,
+   "score": 1411.2169,
+   "reference_frames": 90,
+   "keep_frames": 45,
+   "drop_frames": 45
+  },
+  "D2_median_change": {
+   "window_id": "W02",
+   "start_sec": 30.0,
+   "end_sec": 210.0,
+   "score": 1115.5522,
+   "reference_frames": 90,
+   "keep_frames": 45,
+   "drop_frames": 45
+  },
+  "D3_lowest_change": {
+   "window_id": "W05",
+   "start_sec": 120.0,
+   "end_sec": 300.0,
+   "score": 816.3476,
+   "reference_frames": 90,
+   "keep_frames": 45,
+   "drop_frames": 45
+  }
+ },
+ "pairs": {
+  "D1": {
+   "window": {
+    "window_id": "W11",
+    "start_sec": 300.0,
+    "end_sec": 480.0,
+    "label": "D1_highest_change",
+    "stage1_score": 1411.2169
+   },
+   "stage1_score": 1411.2169,
+   "evaluability": {
+    "status": "EVALUABLE",
+    "reasons": [],
+    "S0": {
+     "valid": true,
+     "reasons": [],
+     "language_contract_failure": false,
+     "language_quality_status": "PASS"
+    },
+    "S1": {
+     "valid": true,
+     "reasons": [],
+     "language_contract_failure": false,
+     "language_quality_status": "PASS"
+    }
+   },
+   "arms": {
+    "S0": {
+     "frames": 90,
+     "input_tokens": 7197,
+     "generated_tokens": 3413,
+     "truncated_at_cap": false,
+     "event_count": 46,
+     "parse_status": "OK",
+     "language_contract_failure": false,
+     "infer_wall_sec": 118.71,
+     "peak_vram_allocated_mib": 18953.0
+    },
+    "S1": {
+     "frames": 45,
+     "input_tokens": 3809,
+     "generated_tokens": 2414,
+     "truncated_at_cap": false,
+     "event_count": 37,
+     "parse_status": "OK",
+     "language_contract_failure": false,
+     "infer_wall_sec": 85.28,
+     "peak_vram_allocated_mib": 17908.2
+    }
+   },
+   "comparison": {
+    "reference_status": "OK",
+    "arm_status": "OK",
+    "reference_event_count": 46,
+    "arm_event_count": 37,
+    "event_count_delta": -9,
+    "reference_violations": 0,
+    "arm_violations": 0,
+    "per_tolerance": {
+     "tol_4.0": {
+      "tolerance_sec": 4.0,
+      "pairs": [
+       {
+        "reference_index": 0,
+        "arm_index": 0,
+        "reference_time": 300.0,
+        "arm_time": 300.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.7273,
+        "entity_jaccard": 0.5714,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 튀긴 음식을 집어 먹는다.",
+        "arm_event": "사람이 젓가락으로 튀긴 음식을 집어 먹는다."
+       },
+       {
+        "reference_index": 2,
+        "arm_index": 1,
+        "reference_time": 308.0,
+        "arm_time": 305.0,
+        "time_delta": 3.0,
+        "event_similarity": 0.2,
+        "entity_jaccard": 0.2,
+        "activity_similarity": 0.7273,
+        "reference_event": "여성의 손이 음료수를 마시는다.",
+        "arm_event": "사람이 컵을 들어 마시는다."
+       },
+       {
+        "reference_index": 3,
+        "arm_index": 2,
+        "reference_time": 312.0,
+        "arm_time": 310.0,
+        "time_delta": 2.0,
+        "event_similarity": 0.1304,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 밥을 먹는다."
+       },
+       {
+        "reference_index": 4,
+        "arm_index": 3,
+        "reference_time": 316.0,
+        "arm_time": 315.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 5,
+        "arm_index": 4,
+        "reference_time": 320.0,
+        "arm_time": 320.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 6,
+        "arm_index": 5,
+        "reference_time": 324.0,
+        "arm_time": 325.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 7,
+        "arm_index": 6,
+        "reference_time": 328.0,
+        "arm_time": 330.0,
+        "time_delta": 2.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 9,
+        "arm_index": 7,
+        "reference_time": 336.0,
+        "arm_time": 335.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 10,
+        "arm_index": 8,
+        "reference_time": 340.0,
+        "arm_time": 340.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 11,
+        "arm_index": 9,
+        "reference_time": 344.0,
+        "arm_time": 345.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 12,
+        "arm_index": 10,
+        "reference_time": 348.0,
+        "arm_time": 350.0,
+        "time_delta": 2.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 14,
+        "arm_index": 11,
+        "reference_time": 356.0,
+        "arm_time": 355.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 15,
+        "arm_index": 12,
+        "reference_time": 360.0,
+        "arm_time": 360.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 16,
+        "arm_index": 13,
+        "reference_time": 364.0,
+        "arm_time": 365.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 17,
+        "arm_index": 14,
+        "reference_time": 368.0,
+        "arm_time": 370.0,
+        "time_delta": 2.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 19,
+        "arm_index": 15,
+        "reference_time": 376.0,
+        "arm_time": 375.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 20,
+        "arm_index": 16,
+        "reference_time": 380.0,
+        "arm_time": 380.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 21,
+        "arm_index": 17,
+        "reference_time": 384.0,
+        "arm_time": 385.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 22,
+        "arm_index": 18,
+        "reference_time": 388.0,
+        "arm_time": 390.0,
+        "time_delta": 2.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 24,
+        "arm_index": 19,
+        "reference_time": 396.0,
+        "arm_time": 395.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 25,
+        "arm_index": 20,
+        "reference_time": 400.0,
+        "arm_time": 400.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 26,
+        "arm_index": 21,
+        "reference_time": 404.0,
+        "arm_time": 405.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 27,
+        "arm_index": 22,
+        "reference_time": 408.0,
+        "arm_time": 410.0,
+        "time_delta": 2.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 29,
+        "arm_index": 23,
+        "reference_time": 416.0,
+        "arm_time": 415.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 30,
+        "arm_index": 24,
+        "reference_time": 420.0,
+        "arm_time": 420.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 31,
+        "arm_index": 25,
+        "reference_time": 424.0,
+        "arm_time": 425.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 32,
+        "arm_index": 26,
+        "reference_time": 428.0,
+        "arm_time": 430.0,
+        "time_delta": 2.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 34,
+        "arm_index": 27,
+        "reference_time": 436.0,
+        "arm_time": 435.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 35,
+        "arm_index": 28,
+        "reference_time": 440.0,
+        "arm_time": 440.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 36,
+        "arm_index": 29,
+        "reference_time": 444.0,
+        "arm_time": 445.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 37,
+        "arm_index": 30,
+        "reference_time": 448.0,
+        "arm_time": 450.0,
+        "time_delta": 2.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 39,
+        "arm_index": 31,
+        "reference_time": 456.0,
+        "arm_time": 455.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 40,
+        "arm_index": 32,
+        "reference_time": 460.0,
+        "arm_time": 460.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 41,
+        "arm_index": 33,
+        "reference_time": 464.0,
+        "arm_time": 465.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 42,
+        "arm_index": 34,
+        "reference_time": 468.0,
+        "arm_time": 470.0,
+        "time_delta": 2.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 44,
+        "arm_index": 35,
+        "reference_time": 476.0,
+        "arm_time": 475.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 45,
+        "arm_index": 36,
+        "reference_time": 480.0,
+        "arm_time": 480.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       }
+      ],
+      "only_reference": [
+       {
+        "index": 1,
+        "approx_time": 304.0,
+        "event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "visible_entities": [
+         "여성",
+         "젓가락",
+         "음식",
+         "접시",
+         "식탁"
+        ],
+        "activity": "식사 중이다.",
+        "inside_window": true
+       },
+       {
+        "index": 8,
+        "approx_time": 332.0,
+        "event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "visible_entities": [
+         "여성",
+         "젓가락",
+         "음식",
+         "접시",
+         "식탁"
+        ],
+        "activity": "식사 중이다.",
+        "inside_window": true
+       },
+       {
+        "index": 13,
+        "approx_time": 352.0,
+        "event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "visible_entities": [
+         "여성",
+         "젓가락",
+         "음식",
+         "접시",
+         "식탁"
+        ],
+        "activity": "식사 중이다.",
+        "inside_window": true
+       },
+       {
+        "index": 18,
+        "approx_time": 372.0,
+        "event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "visible_entities": [
+         "여성",
+         "젓가락",
+         "음식",
+         "접시",
+         "식탁"
+        ],
+        "activity": "식사 중이다.",
+        "inside_window": true
+       },
+       {
+        "index": 23,
+        "approx_time": 392.0,
+        "event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "visible_entities": [
+         "여성",
+         "젓가락",
+         "음식",
+         "접시",
+         "식탁"
+        ],
+        "activity": "식사 중이다.",
+        "inside_window": true
+       },
+       {
+        "index": 28,
+        "approx_time": 412.0,
+        "event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "visible_entities": [
+         "여성",
+         "젓가락",
+         "음식",
+         "접시",
+         "식탁"
+        ],
+        "activity": "식사 중이다.",
+        "inside_window": true
+       },
+       {
+        "index": 33,
+        "approx_time": 432.0,
+        "event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "visible_entities": [
+         "여성",
+         "젓가락",
+         "음식",
+         "접시",
+         "식탁"
+        ],
+        "activity": "식사 중이다.",
+        "inside_window": true
+       },
+       {
+        "index": 38,
+        "approx_time": 452.0,
+        "event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "visible_entities": [
+         "여성",
+         "젓가락",
+         "음식",
+         "접시",
+         "식탁"
+        ],
+        "activity": "식사 중이다.",
+        "inside_window": true
+       },
+       {
+        "index": 43,
+        "approx_time": 472.0,
+        "event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "visible_entities": [
+         "여성",
+         "젓가락",
+         "음식",
+         "접시",
+         "식탁"
+        ],
+        "activity": "식사 중이다.",
+        "inside_window": true
+       }
+      ],
+      "only_arm": [],
+      "matched_count": 37,
+      "only_reference_count": 9,
+      "only_arm_count": 0,
+      "order_inversions": 0,
+      "event_similarity": {
+       "count": 37,
+       "min": 0.125,
+       "median": 0.125,
+       "p75": 0.125,
+       "p90": 0.125,
+       "p95": 0.1304,
+       "max": 0.7273,
+       "mean": 0.1435
+      },
+      "entity_jaccard": {
+       "count": 37,
+       "min": 0.2,
+       "median": 0.4286,
+       "p75": 0.4286,
+       "p90": 0.4286,
+       "p95": 0.4286,
+       "max": 0.5714,
+       "mean": 0.4263
+      },
+      "identical_entity_pairs": 0
+     },
+     "tol_8.0": {
+      "tolerance_sec": 8.0,
+      "pairs": [
+       {
+        "reference_index": 0,
+        "arm_index": 0,
+        "reference_time": 300.0,
+        "arm_time": 300.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.7273,
+        "entity_jaccard": 0.5714,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 튀긴 음식을 집어 먹는다.",
+        "arm_event": "사람이 젓가락으로 튀긴 음식을 집어 먹는다."
+       },
+       {
+        "reference_index": 2,
+        "arm_index": 1,
+        "reference_time": 308.0,
+        "arm_time": 305.0,
+        "time_delta": 3.0,
+        "event_similarity": 0.2,
+        "entity_jaccard": 0.2,
+        "activity_similarity": 0.7273,
+        "reference_event": "여성의 손이 음료수를 마시는다.",
+        "arm_event": "사람이 컵을 들어 마시는다."
+       },
+       {
+        "reference_index": 3,
+        "arm_index": 2,
+        "reference_time": 312.0,
+        "arm_time": 310.0,
+        "time_delta": 2.0,
+        "event_similarity": 0.1304,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 밥을 먹는다."
+       },
+       {
+        "reference_index": 4,
+        "arm_index": 3,
+        "reference_time": 316.0,
+        "arm_time": 315.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 5,
+        "arm_index": 4,
+        "reference_time": 320.0,
+        "arm_time": 320.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 6,
+        "arm_index": 5,
+        "reference_time": 324.0,
+        "arm_time": 325.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 7,
+        "arm_index": 6,
+        "reference_time": 328.0,
+        "arm_time": 330.0,
+        "time_delta": 2.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 9,
+        "arm_index": 7,
+        "reference_time": 336.0,
+        "arm_time": 335.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 10,
+        "arm_index": 8,
+        "reference_time": 340.0,
+        "arm_time": 340.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 11,
+        "arm_index": 9,
+        "reference_time": 344.0,
+        "arm_time": 345.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 12,
+        "arm_index": 10,
+        "reference_time": 348.0,
+        "arm_time": 350.0,
+        "time_delta": 2.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 14,
+        "arm_index": 11,
+        "reference_time": 356.0,
+        "arm_time": 355.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 15,
+        "arm_index": 12,
+        "reference_time": 360.0,
+        "arm_time": 360.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 16,
+        "arm_index": 13,
+        "reference_time": 364.0,
+        "arm_time": 365.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 17,
+        "arm_index": 14,
+        "reference_time": 368.0,
+        "arm_time": 370.0,
+        "time_delta": 2.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 19,
+        "arm_index": 15,
+        "reference_time": 376.0,
+        "arm_time": 375.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 20,
+        "arm_index": 16,
+        "reference_time": 380.0,
+        "arm_time": 380.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 21,
+        "arm_index": 17,
+        "reference_time": 384.0,
+        "arm_time": 385.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 22,
+        "arm_index": 18,
+        "reference_time": 388.0,
+        "arm_time": 390.0,
+        "time_delta": 2.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 24,
+        "arm_index": 19,
+        "reference_time": 396.0,
+        "arm_time": 395.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 25,
+        "arm_index": 20,
+        "reference_time": 400.0,
+        "arm_time": 400.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 26,
+        "arm_index": 21,
+        "reference_time": 404.0,
+        "arm_time": 405.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 27,
+        "arm_index": 22,
+        "reference_time": 408.0,
+        "arm_time": 410.0,
+        "time_delta": 2.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 29,
+        "arm_index": 23,
+        "reference_time": 416.0,
+        "arm_time": 415.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 30,
+        "arm_index": 24,
+        "reference_time": 420.0,
+        "arm_time": 420.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 31,
+        "arm_index": 25,
+        "reference_time": 424.0,
+        "arm_time": 425.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 32,
+        "arm_index": 26,
+        "reference_time": 428.0,
+        "arm_time": 430.0,
+        "time_delta": 2.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 34,
+        "arm_index": 27,
+        "reference_time": 436.0,
+        "arm_time": 435.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 35,
+        "arm_index": 28,
+        "reference_time": 440.0,
+        "arm_time": 440.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 36,
+        "arm_index": 29,
+        "reference_time": 444.0,
+        "arm_time": 445.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 37,
+        "arm_index": 30,
+        "reference_time": 448.0,
+        "arm_time": 450.0,
+        "time_delta": 2.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 39,
+        "arm_index": 31,
+        "reference_time": 456.0,
+        "arm_time": 455.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 40,
+        "arm_index": 32,
+        "reference_time": 460.0,
+        "arm_time": 460.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 41,
+        "arm_index": 33,
+        "reference_time": 464.0,
+        "arm_time": 465.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 42,
+        "arm_index": 34,
+        "reference_time": 468.0,
+        "arm_time": 470.0,
+        "time_delta": 2.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 44,
+        "arm_index": 35,
+        "reference_time": 476.0,
+        "arm_time": 475.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       },
+       {
+        "reference_index": 45,
+        "arm_index": 36,
+        "reference_time": 480.0,
+        "arm_time": 480.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.125,
+        "entity_jaccard": 0.4286,
+        "activity_similarity": 1.0,
+        "reference_event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "arm_event": "사람이 냉면을 먹는다."
+       }
+      ],
+      "only_reference": [
+       {
+        "index": 1,
+        "approx_time": 304.0,
+        "event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "visible_entities": [
+         "여성",
+         "젓가락",
+         "음식",
+         "접시",
+         "식탁"
+        ],
+        "activity": "식사 중이다.",
+        "inside_window": true
+       },
+       {
+        "index": 8,
+        "approx_time": 332.0,
+        "event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "visible_entities": [
+         "여성",
+         "젓가락",
+         "음식",
+         "접시",
+         "식탁"
+        ],
+        "activity": "식사 중이다.",
+        "inside_window": true
+       },
+       {
+        "index": 13,
+        "approx_time": 352.0,
+        "event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "visible_entities": [
+         "여성",
+         "젓가락",
+         "음식",
+         "접시",
+         "식탁"
+        ],
+        "activity": "식사 중이다.",
+        "inside_window": true
+       },
+       {
+        "index": 18,
+        "approx_time": 372.0,
+        "event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "visible_entities": [
+         "여성",
+         "젓가락",
+         "음식",
+         "접시",
+         "식탁"
+        ],
+        "activity": "식사 중이다.",
+        "inside_window": true
+       },
+       {
+        "index": 23,
+        "approx_time": 392.0,
+        "event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "visible_entities": [
+         "여성",
+         "젓가락",
+         "음식",
+         "접시",
+         "식탁"
+        ],
+        "activity": "식사 중이다.",
+        "inside_window": true
+       },
+       {
+        "index": 28,
+        "approx_time": 412.0,
+        "event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "visible_entities": [
+         "여성",
+         "젓가락",
+         "음식",
+         "접시",
+         "식탁"
+        ],
+        "activity": "식사 중이다.",
+        "inside_window": true
+       },
+       {
+        "index": 33,
+        "approx_time": 432.0,
+        "event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "visible_entities": [
+         "여성",
+         "젓가락",
+         "음식",
+         "접시",
+         "식탁"
+        ],
+        "activity": "식사 중이다.",
+        "inside_window": true
+       },
+       {
+        "index": 38,
+        "approx_time": 452.0,
+        "event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "visible_entities": [
+         "여성",
+         "젓가락",
+         "음식",
+         "접시",
+         "식탁"
+        ],
+        "activity": "식사 중이다.",
+        "inside_window": true
+       },
+       {
+        "index": 43,
+        "approx_time": 472.0,
+        "event": "여성의 손이 젓가락으로 음식을 집어 먹는다.",
+        "visible_entities": [
+         "여성",
+         "젓가락",
+         "음식",
+         "접시",
+         "식탁"
+        ],
+        "activity": "식사 중이다.",
+        "inside_window": true
+       }
+      ],
+      "only_arm": [],
+      "matched_count": 37,
+      "only_reference_count": 9,
+      "only_arm_count": 0,
+      "order_inversions": 0,
+      "event_similarity": {
+       "count": 37,
+       "min": 0.125,
+       "median": 0.125,
+       "p75": 0.125,
+       "p90": 0.125,
+       "p95": 0.1304,
+       "max": 0.7273,
+       "mean": 0.1435
+      },
+      "entity_jaccard": {
+       "count": 37,
+       "min": 0.2,
+       "median": 0.4286,
+       "p75": 0.4286,
+       "p90": 0.4286,
+       "p95": 0.4286,
+       "max": 0.5714,
+       "mean": 0.4263
+      },
+      "identical_entity_pairs": 0
+     }
+    },
+    "note": "0.5fps arm은 ground truth가 아니다. 둘 다 같은 모델 출력이고, 허용오차 두 값의 결과를 함께 본다."
+   }
+  },
+  "D2": {
+   "window": {
+    "window_id": "W02",
+    "start_sec": 30.0,
+    "end_sec": 210.0,
+    "label": "D2_median_change",
+    "stage1_score": 1115.5522
+   },
+   "stage1_score": 1115.5522,
+   "evaluability": {
+    "status": "EVALUABLE",
+    "reasons": [],
+    "S0": {
+     "valid": true,
+     "reasons": [],
+     "language_contract_failure": true,
+     "language_quality_status": "FAIL"
+    },
+    "S1": {
+     "valid": true,
+     "reasons": [],
+     "language_contract_failure": false,
+     "language_quality_status": "PASS"
+    }
+   },
+   "arms": {
+    "S0": {
+     "frames": 90,
+     "input_tokens": 7178,
+     "generated_tokens": 2070,
+     "truncated_at_cap": false,
+     "event_count": 33,
+     "parse_status": "OK",
+     "language_contract_failure": true,
+     "infer_wall_sec": 73.11,
+     "peak_vram_allocated_mib": 18948.5
+    },
+    "S1": {
+     "frames": 45,
+     "input_tokens": 3799,
+     "generated_tokens": 2841,
+     "truncated_at_cap": false,
+     "event_count": 46,
+     "parse_status": "OK",
+     "language_contract_failure": false,
+     "infer_wall_sec": 97.99,
+     "peak_vram_allocated_mib": 17907.1
+    }
+   },
+   "comparison": {
+    "reference_status": "OK",
+    "arm_status": "OK",
+    "reference_event_count": 33,
+    "arm_event_count": 46,
+    "event_count_delta": 13,
+    "reference_violations": 0,
+    "arm_violations": 0,
+    "per_tolerance": {
+     "tol_4.0": {
+      "tolerance_sec": 4.0,
+      "pairs": [
+       {
+        "reference_index": 0,
+        "arm_index": 0,
+        "reference_time": 30.0,
+        "arm_time": 30.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A hand holds a bag of potato chips in a green basket.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 1,
+        "arm_index": 1,
+        "reference_time": 33.0,
+        "arm_time": 34.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person washes potatoes under running water in a sink.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 3,
+        "arm_index": 2,
+        "reference_time": 39.0,
+        "arm_time": 38.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person pours a bag of potato chips into a green bowl.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 4,
+        "arm_index": 3,
+        "reference_time": 42.0,
+        "arm_time": 42.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person places sliced bread into a blender.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 5,
+        "arm_index": 4,
+        "reference_time": 45.0,
+        "arm_time": 46.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person blends sliced bread in a blender.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 7,
+        "arm_index": 5,
+        "reference_time": 51.0,
+        "arm_time": 50.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person stirs breadcrumbs in a bowl with a wooden spoon.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 8,
+        "arm_index": 6,
+        "reference_time": 54.0,
+        "arm_time": 54.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person chops an onion on a wooden cutting board.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 9,
+        "arm_index": 7,
+        "reference_time": 57.0,
+        "arm_time": 58.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person chops carrots on a wooden cutting board.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 11,
+        "arm_index": 8,
+        "reference_time": 63.0,
+        "arm_time": 62.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person mixes breadcrumbs with oil in a bowl.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 12,
+        "arm_index": 9,
+        "reference_time": 66.0,
+        "arm_time": 66.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person adds ground beef to a bowl with chopped vegetables.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 13,
+        "arm_index": 10,
+        "reference_time": 69.0,
+        "arm_time": 70.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person adds soy sauce to a bowl with ground beef and vegetables.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 15,
+        "arm_index": 11,
+        "reference_time": 75.0,
+        "arm_time": 74.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person cooks ground beef and vegetables in a pan over direct heat.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 16,
+        "arm_index": 12,
+        "reference_time": 78.0,
+        "arm_time": 78.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person peels potatoes with an automatic potato peeler.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 17,
+        "arm_index": 13,
+        "reference_time": 81.0,
+        "arm_time": 82.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person grates potatoes with an automatic potato grater.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 19,
+        "arm_index": 14,
+        "reference_time": 87.0,
+        "arm_time": 86.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person mixes grated potatoes with ground beef and vegetables in a bowl.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 20,
+        "arm_index": 15,
+        "reference_time": 90.0,
+        "arm_time": 90.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person shapes the mixture into balls.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 21,
+        "arm_index": 16,
+        "reference_time": 93.0,
+        "arm_time": 94.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person places the balls on a plate.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 23,
+        "arm_index": 17,
+        "reference_time": 99.0,
+        "arm_time": 98.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person dips a ball into an egg mixture.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 24,
+        "arm_index": 18,
+        "reference_time": 102.0,
+        "arm_time": 102.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person coats a ball with breadcrumbs.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 25,
+        "arm_index": 19,
+        "reference_time": 105.0,
+        "arm_time": 106.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person places the coated ball on a plate.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 27,
+        "arm_index": 20,
+        "reference_time": 111.0,
+        "arm_time": 110.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person adds curry sauce to a pan with onions.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 28,
+        "arm_index": 21,
+        "reference_time": 114.0,
+        "arm_time": 114.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person adds ground beef to a pan with onions and curry sauce.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 29,
+        "arm_index": 22,
+        "reference_time": 117.0,
+        "arm_time": 118.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person adds soy sauce to a pan with ground beef, onions, and curry sauce.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 31,
+        "arm_index": 23,
+        "reference_time": 123.0,
+        "arm_time": 122.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person stirs the contents of a pan with a wooden spoon.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 32,
+        "arm_index": 24,
+        "reference_time": 126.0,
+        "arm_time": 126.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person adds cream to a pan with ground beef, onions, and curry sauce.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       }
+      ],
+      "only_reference": [
+       {
+        "index": 2,
+        "approx_time": 36.0,
+        "event": "A person places potatoes into a steamer pot.",
+        "visible_entities": [
+         "person",
+         "potatoes",
+         "steamer pot"
+        ],
+        "activity": "Placing potatoes into a steamer pot.",
+        "inside_window": true
+       },
+       {
+        "index": 6,
+        "approx_time": 48.0,
+        "event": "A person pours oil into a bowl of breadcrumbs.",
+        "visible_entities": [
+         "person",
+         "oil",
+         "bowl",
+         "breadcrumbs"
+        ],
+        "activity": "Pouring oil into a bowl of breadcrumbs.",
+        "inside_window": true
+       },
+       {
+        "index": 10,
+        "approx_time": 60.0,
+        "event": "A person chops crab sticks on a wooden cutting board.",
+        "visible_entities": [
+         "person",
+         "crab sticks",
+         "wooden cutting board",
+         "knife"
+        ],
+        "activity": "Chopping crab sticks on a wooden cutting board.",
+        "inside_window": true
+       },
+       {
+        "index": 14,
+        "approx_time": 72.0,
+        "event": "A person adds pepper to a bowl with ground beef and vegetables.",
+        "visible_entities": [
+         "person",
+         "pepper",
+         "bowl",
+         "ground beef",
+         "chopped vegetables"
+        ],
+        "activity": "Adding pepper to a bowl with ground beef and vegetables.",
+        "inside_window": true
+       },
+       {
+        "index": 18,
+        "approx_time": 84.0,
+        "event": "A person adds grated potatoes to a bowl with ground beef and vegetables.",
+        "visible_entities": [
+         "person",
+         "grated potatoes",
+         "bowl",
+         "ground beef",
+         "chopped vegetables"
+        ],
+        "activity": "Adding grated potatoes to a bowl with ground beef and vegetables.",
+        "inside_window": true
+       },
+       {
+        "index": 22,
+        "approx_time": 96.0,
+        "event": "A person cracks an egg into a bowl.",
+        "visible_entities": [
+         "person",
+         "egg",
+         "bowl"
+        ],
+        "activity": "Cracking an egg into a bowl.",
+        "inside_window": true
+       },
+       {
+        "index": 26,
+        "approx_time": 108.0,
+        "event": "A person places the coated balls on a plate.",
+        "visible_entities": [
+         "person",
+         "coated balls",
+         "plate"
+        ],
+        "activity": "Placing the coated balls on a plate.",
+        "inside_window": true
+       },
+       {
+        "index": 30,
+        "approx_time": 120.0,
+        "event": "A person adds buldak sauce to a pan with ground beef, onions, and curry sauce.",
+        "visible_entities": [
+         "person",
+         "buldak sauce",
+         "pan",
+         "ground beef",
+         "onions",
+         "curry sauce"
+        ],
+        "activity": "Adding buldak sauce to a pan with ground beef, onions, and curry sauce.",
+        "inside_window": true
+       }
+      ],
+      "only_arm": [
+       {
+        "index": 25,
+        "approx_time": 130.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 26,
+        "approx_time": 134.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 27,
+        "approx_time": 138.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 28,
+        "approx_time": 142.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 29,
+        "approx_time": 146.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 30,
+        "approx_time": 150.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 31,
+        "approx_time": 154.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 32,
+        "approx_time": 158.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 33,
+        "approx_time": 162.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 34,
+        "approx_time": 166.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 35,
+        "approx_time": 170.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 36,
+        "approx_time": 174.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 37,
+        "approx_time": 178.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 38,
+        "approx_time": 182.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 39,
+        "approx_time": 186.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 40,
+        "approx_time": 190.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 41,
+        "approx_time": 194.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 42,
+        "approx_time": 198.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 43,
+        "approx_time": 202.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 44,
+        "approx_time": 206.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 45,
+        "approx_time": 210.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       }
+      ],
+      "matched_count": 25,
+      "only_reference_count": 8,
+      "only_arm_count": 21,
+      "order_inversions": 0,
+      "event_similarity": {
+       "count": 25,
+       "min": 0.0,
+       "median": 0.0,
+       "p75": 0.0,
+       "p90": 0.0,
+       "p95": 0.0,
+       "max": 0.0,
+       "mean": 0.0
+      },
+      "entity_jaccard": {
+       "count": 25,
+       "min": 0.0,
+       "median": 0.0,
+       "p75": 0.0,
+       "p90": 0.0,
+       "p95": 0.0,
+       "max": 0.0,
+       "mean": 0.0
+      },
+      "identical_entity_pairs": 0
+     },
+     "tol_8.0": {
+      "tolerance_sec": 8.0,
+      "pairs": [
+       {
+        "reference_index": 0,
+        "arm_index": 0,
+        "reference_time": 30.0,
+        "arm_time": 30.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A hand holds a bag of potato chips in a green basket.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 1,
+        "arm_index": 1,
+        "reference_time": 33.0,
+        "arm_time": 34.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person washes potatoes under running water in a sink.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 3,
+        "arm_index": 2,
+        "reference_time": 39.0,
+        "arm_time": 38.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person pours a bag of potato chips into a green bowl.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 4,
+        "arm_index": 3,
+        "reference_time": 42.0,
+        "arm_time": 42.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person places sliced bread into a blender.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 5,
+        "arm_index": 4,
+        "reference_time": 45.0,
+        "arm_time": 46.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person blends sliced bread in a blender.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 7,
+        "arm_index": 5,
+        "reference_time": 51.0,
+        "arm_time": 50.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person stirs breadcrumbs in a bowl with a wooden spoon.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 8,
+        "arm_index": 6,
+        "reference_time": 54.0,
+        "arm_time": 54.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person chops an onion on a wooden cutting board.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 9,
+        "arm_index": 7,
+        "reference_time": 57.0,
+        "arm_time": 58.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person chops carrots on a wooden cutting board.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 11,
+        "arm_index": 8,
+        "reference_time": 63.0,
+        "arm_time": 62.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person mixes breadcrumbs with oil in a bowl.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 12,
+        "arm_index": 9,
+        "reference_time": 66.0,
+        "arm_time": 66.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person adds ground beef to a bowl with chopped vegetables.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 13,
+        "arm_index": 10,
+        "reference_time": 69.0,
+        "arm_time": 70.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person adds soy sauce to a bowl with ground beef and vegetables.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 15,
+        "arm_index": 11,
+        "reference_time": 75.0,
+        "arm_time": 74.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person cooks ground beef and vegetables in a pan over direct heat.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 16,
+        "arm_index": 12,
+        "reference_time": 78.0,
+        "arm_time": 78.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person peels potatoes with an automatic potato peeler.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 17,
+        "arm_index": 13,
+        "reference_time": 81.0,
+        "arm_time": 82.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person grates potatoes with an automatic potato grater.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 19,
+        "arm_index": 14,
+        "reference_time": 87.0,
+        "arm_time": 86.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person mixes grated potatoes with ground beef and vegetables in a bowl.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 20,
+        "arm_index": 15,
+        "reference_time": 90.0,
+        "arm_time": 90.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person shapes the mixture into balls.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 21,
+        "arm_index": 16,
+        "reference_time": 93.0,
+        "arm_time": 94.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person places the balls on a plate.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 23,
+        "arm_index": 17,
+        "reference_time": 99.0,
+        "arm_time": 98.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person dips a ball into an egg mixture.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 24,
+        "arm_index": 18,
+        "reference_time": 102.0,
+        "arm_time": 102.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person coats a ball with breadcrumbs.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 25,
+        "arm_index": 19,
+        "reference_time": 105.0,
+        "arm_time": 106.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person places the coated ball on a plate.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 27,
+        "arm_index": 20,
+        "reference_time": 111.0,
+        "arm_time": 110.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person adds curry sauce to a pan with onions.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 28,
+        "arm_index": 21,
+        "reference_time": 114.0,
+        "arm_time": 114.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person adds ground beef to a pan with onions and curry sauce.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 29,
+        "arm_index": 22,
+        "reference_time": 117.0,
+        "arm_time": 118.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person adds soy sauce to a pan with ground beef, onions, and curry sauce.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 31,
+        "arm_index": 23,
+        "reference_time": 123.0,
+        "arm_time": 122.0,
+        "time_delta": 1.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person stirs the contents of a pan with a wooden spoon.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       },
+       {
+        "reference_index": 32,
+        "arm_index": 24,
+        "reference_time": 126.0,
+        "arm_time": 126.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.0,
+        "entity_jaccard": 0.0,
+        "activity_similarity": 0.0,
+        "reference_event": "A person adds cream to a pan with ground beef, onions, and curry sauce.",
+        "arm_event": "손이 감자 한 덩이를 그릇에 넣는다"
+       }
+      ],
+      "only_reference": [
+       {
+        "index": 2,
+        "approx_time": 36.0,
+        "event": "A person places potatoes into a steamer pot.",
+        "visible_entities": [
+         "person",
+         "potatoes",
+         "steamer pot"
+        ],
+        "activity": "Placing potatoes into a steamer pot.",
+        "inside_window": true
+       },
+       {
+        "index": 6,
+        "approx_time": 48.0,
+        "event": "A person pours oil into a bowl of breadcrumbs.",
+        "visible_entities": [
+         "person",
+         "oil",
+         "bowl",
+         "breadcrumbs"
+        ],
+        "activity": "Pouring oil into a bowl of breadcrumbs.",
+        "inside_window": true
+       },
+       {
+        "index": 10,
+        "approx_time": 60.0,
+        "event": "A person chops crab sticks on a wooden cutting board.",
+        "visible_entities": [
+         "person",
+         "crab sticks",
+         "wooden cutting board",
+         "knife"
+        ],
+        "activity": "Chopping crab sticks on a wooden cutting board.",
+        "inside_window": true
+       },
+       {
+        "index": 14,
+        "approx_time": 72.0,
+        "event": "A person adds pepper to a bowl with ground beef and vegetables.",
+        "visible_entities": [
+         "person",
+         "pepper",
+         "bowl",
+         "ground beef",
+         "chopped vegetables"
+        ],
+        "activity": "Adding pepper to a bowl with ground beef and vegetables.",
+        "inside_window": true
+       },
+       {
+        "index": 18,
+        "approx_time": 84.0,
+        "event": "A person adds grated potatoes to a bowl with ground beef and vegetables.",
+        "visible_entities": [
+         "person",
+         "grated potatoes",
+         "bowl",
+         "ground beef",
+         "chopped vegetables"
+        ],
+        "activity": "Adding grated potatoes to a bowl with ground beef and vegetables.",
+        "inside_window": true
+       },
+       {
+        "index": 22,
+        "approx_time": 96.0,
+        "event": "A person cracks an egg into a bowl.",
+        "visible_entities": [
+         "person",
+         "egg",
+         "bowl"
+        ],
+        "activity": "Cracking an egg into a bowl.",
+        "inside_window": true
+       },
+       {
+        "index": 26,
+        "approx_time": 108.0,
+        "event": "A person places the coated balls on a plate.",
+        "visible_entities": [
+         "person",
+         "coated balls",
+         "plate"
+        ],
+        "activity": "Placing the coated balls on a plate.",
+        "inside_window": true
+       },
+       {
+        "index": 30,
+        "approx_time": 120.0,
+        "event": "A person adds buldak sauce to a pan with ground beef, onions, and curry sauce.",
+        "visible_entities": [
+         "person",
+         "buldak sauce",
+         "pan",
+         "ground beef",
+         "onions",
+         "curry sauce"
+        ],
+        "activity": "Adding buldak sauce to a pan with ground beef, onions, and curry sauce.",
+        "inside_window": true
+       }
+      ],
+      "only_arm": [
+       {
+        "index": 25,
+        "approx_time": 130.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 26,
+        "approx_time": 134.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 27,
+        "approx_time": 138.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 28,
+        "approx_time": 142.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 29,
+        "approx_time": 146.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 30,
+        "approx_time": 150.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 31,
+        "approx_time": 154.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 32,
+        "approx_time": 158.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 33,
+        "approx_time": 162.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 34,
+        "approx_time": 166.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 35,
+        "approx_time": 170.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 36,
+        "approx_time": 174.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 37,
+        "approx_time": 178.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 38,
+        "approx_time": 182.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 39,
+        "approx_time": 186.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 40,
+        "approx_time": 190.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 41,
+        "approx_time": 194.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 42,
+        "approx_time": 198.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 43,
+        "approx_time": 202.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 44,
+        "approx_time": 206.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       },
+       {
+        "index": 45,
+        "approx_time": 210.0,
+        "event": "손이 감자 한 덩이를 그릇에 넣는다",
+        "visible_entities": [
+         "손",
+         "감자",
+         "그릇"
+        ],
+        "activity": "감자를 그릇에 넣는다",
+        "inside_window": true
+       }
+      ],
+      "matched_count": 25,
+      "only_reference_count": 8,
+      "only_arm_count": 21,
+      "order_inversions": 0,
+      "event_similarity": {
+       "count": 25,
+       "min": 0.0,
+       "median": 0.0,
+       "p75": 0.0,
+       "p90": 0.0,
+       "p95": 0.0,
+       "max": 0.0,
+       "mean": 0.0
+      },
+      "entity_jaccard": {
+       "count": 25,
+       "min": 0.0,
+       "median": 0.0,
+       "p75": 0.0,
+       "p90": 0.0,
+       "p95": 0.0,
+       "max": 0.0,
+       "mean": 0.0
+      },
+      "identical_entity_pairs": 0
+     }
+    },
+    "note": "0.5fps arm은 ground truth가 아니다. 둘 다 같은 모델 출력이고, 허용오차 두 값의 결과를 함께 본다."
+   }
+  },
+  "D3": {
+   "window": {
+    "window_id": "W05",
+    "start_sec": 120.0,
+    "end_sec": 300.0,
+    "label": "D3_lowest_change",
+    "stage1_score": 816.3476
+   },
+   "stage1_score": 816.3476,
+   "evaluability": {
+    "status": "EVALUABLE",
+    "reasons": [],
+    "S0": {
+     "valid": true,
+     "reasons": [],
+     "language_contract_failure": false,
+     "language_quality_status": "PASS"
+    },
+    "S1": {
+     "valid": true,
+     "reasons": [],
+     "language_contract_failure": false,
+     "language_quality_status": "PASS"
+    }
+   },
+   "arms": {
+    "S0": {
+     "frames": 90,
+     "input_tokens": 7197,
+     "generated_tokens": 3754,
+     "truncated_at_cap": false,
+     "event_count": 37,
+     "parse_status": "OK",
+     "language_contract_failure": false,
+     "infer_wall_sec": 130.75,
+     "peak_vram_allocated_mib": 18953.0
+    },
+    "S1": {
+     "frames": 45,
+     "input_tokens": 3809,
+     "generated_tokens": 1192,
+     "truncated_at_cap": false,
+     "event_count": 18,
+     "parse_status": "OK",
+     "language_contract_failure": false,
+     "infer_wall_sec": 42.47,
+     "peak_vram_allocated_mib": 17908.2
+    }
+   },
+   "comparison": {
+    "reference_status": "OK",
+    "arm_status": "OK",
+    "reference_event_count": 37,
+    "arm_event_count": 18,
+    "event_count_delta": -19,
+    "reference_violations": 0,
+    "arm_violations": 0,
+    "per_tolerance": {
+     "tol_4.0": {
+      "tolerance_sec": 4.0,
+      "pairs": [
+       {
+        "reference_index": 0,
+        "arm_index": 0,
+        "reference_time": 120.0,
+        "arm_time": 120.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.2609,
+        "entity_jaccard": 0.4,
+        "activity_similarity": 0.3158,
+        "reference_event": "사람이 감자 슬라이서로 감자를 다져 넣는다.",
+        "arm_event": "사람이 감자蓉을 그릇에 넣는다"
+       },
+       {
+        "reference_index": 2,
+        "arm_index": 1,
+        "reference_time": 130.0,
+        "arm_time": 130.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.3929,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.0435,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 접시에 올린다.",
+        "arm_event": "사람이 검은 장갑을 끼고 감자蓉을 섞는다"
+       },
+       {
+        "reference_index": 4,
+        "arm_index": 2,
+        "reference_time": 140.0,
+        "arm_time": 140.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.2963,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.5385,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 접시에 올린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       },
+       {
+        "reference_index": 6,
+        "arm_index": 3,
+        "reference_time": 150.0,
+        "arm_time": 150.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.25,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.4286,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 접시에 올린다.",
+        "arm_event": "사람이 계란물을 접시에 올린다"
+       },
+       {
+        "reference_index": 8,
+        "arm_index": 4,
+        "reference_time": 160.0,
+        "arm_time": 160.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.0857,
+        "entity_jaccard": 0.1429,
+        "activity_similarity": 0.0455,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 계란물에 넣는다"
+       },
+       {
+        "reference_index": 10,
+        "arm_index": 5,
+        "reference_time": 170.0,
+        "arm_time": 170.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1875,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.2778,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 빵가루에 넣는다"
+       },
+       {
+        "reference_index": 12,
+        "arm_index": 6,
+        "reference_time": 180.0,
+        "arm_time": 180.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1212,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.1,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       },
+       {
+        "reference_index": 14,
+        "arm_index": 7,
+        "reference_time": 190.0,
+        "arm_time": 190.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.0968,
+        "entity_jaccard": 0.1429,
+        "activity_similarity": 0.0556,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 굽는다"
+       },
+       {
+        "reference_index": 16,
+        "arm_index": 8,
+        "reference_time": 200.0,
+        "arm_time": 200.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1212,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.1,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       },
+       {
+        "reference_index": 18,
+        "arm_index": 9,
+        "reference_time": 210.0,
+        "arm_time": 210.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1212,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.1,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       },
+       {
+        "reference_index": 20,
+        "arm_index": 10,
+        "reference_time": 220.0,
+        "arm_time": 220.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1212,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.1,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       },
+       {
+        "reference_index": 22,
+        "arm_index": 11,
+        "reference_time": 230.0,
+        "arm_time": 230.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1212,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.1,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       },
+       {
+        "reference_index": 24,
+        "arm_index": 12,
+        "reference_time": 240.0,
+        "arm_time": 240.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1212,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.1,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       },
+       {
+        "reference_index": 26,
+        "arm_index": 13,
+        "reference_time": 250.0,
+        "arm_time": 250.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1212,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.1,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       },
+       {
+        "reference_index": 28,
+        "arm_index": 14,
+        "reference_time": 260.0,
+        "arm_time": 260.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1212,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.1,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       },
+       {
+        "reference_index": 30,
+        "arm_index": 15,
+        "reference_time": 270.0,
+        "arm_time": 270.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1212,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.1,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       },
+       {
+        "reference_index": 32,
+        "arm_index": 16,
+        "reference_time": 280.0,
+        "arm_time": 280.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1212,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.1,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       },
+       {
+        "reference_index": 34,
+        "arm_index": 17,
+        "reference_time": 290.0,
+        "arm_time": 290.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1212,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.1,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       }
+      ],
+      "only_reference": [
+       {
+        "index": 1,
+        "approx_time": 125.0,
+        "event": "사람이 검은 장갑을 끼고 나무 숟가락으로 감자 반죽을 섞는다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "나무 숟가락",
+         "감자 반죽",
+         "그릇"
+        ],
+        "activity": "감자 반죽을 나무 숟가락으로 섞는다.",
+        "inside_window": true
+       },
+       {
+        "index": 3,
+        "approx_time": 135.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 접시에 올린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "접시",
+         "나무 숟가락"
+        ],
+        "activity": "감자 반죽을 접시에 올린다.",
+        "inside_window": true
+       },
+       {
+        "index": 5,
+        "approx_time": 145.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 접시에 올린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "접시",
+         "나무 숟가락"
+        ],
+        "activity": "감자 반죽을 접시에 올린다.",
+        "inside_window": true
+       },
+       {
+        "index": 7,
+        "approx_time": 155.0,
+        "event": "사람이 검은 장갑을 끼고 계란물을 떠서 감자 반죽에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "계란물",
+         "감자 반죽",
+         "접시"
+        ],
+        "activity": "감자 반죽을 계란물에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 9,
+        "approx_time": 165.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 11,
+        "approx_time": 175.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 13,
+        "approx_time": 185.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 15,
+        "approx_time": 195.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 17,
+        "approx_time": 205.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 19,
+        "approx_time": 215.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 21,
+        "approx_time": 225.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 23,
+        "approx_time": 235.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 25,
+        "approx_time": 245.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 27,
+        "approx_time": 255.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 29,
+        "approx_time": 265.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 31,
+        "approx_time": 275.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 33,
+        "approx_time": 285.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 35,
+        "approx_time": 295.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 36,
+        "approx_time": 300.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       }
+      ],
+      "only_arm": [],
+      "matched_count": 18,
+      "only_reference_count": 19,
+      "only_arm_count": 0,
+      "order_inversions": 0,
+      "event_similarity": {
+       "count": 18,
+       "min": 0.0857,
+       "median": 0.1212,
+       "p75": 0.1875,
+       "p90": 0.2609,
+       "p95": 0.2963,
+       "max": 0.3929,
+       "mean": 0.1613
+      },
+      "entity_jaccard": {
+       "count": 18,
+       "min": 0.1429,
+       "median": 0.3333,
+       "p75": 0.3333,
+       "p90": 0.3333,
+       "p95": 0.3333,
+       "max": 0.4,
+       "mean": 0.3158
+      },
+      "identical_entity_pairs": 0
+     },
+     "tol_8.0": {
+      "tolerance_sec": 8.0,
+      "pairs": [
+       {
+        "reference_index": 0,
+        "arm_index": 0,
+        "reference_time": 120.0,
+        "arm_time": 120.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.2609,
+        "entity_jaccard": 0.4,
+        "activity_similarity": 0.3158,
+        "reference_event": "사람이 감자 슬라이서로 감자를 다져 넣는다.",
+        "arm_event": "사람이 감자蓉을 그릇에 넣는다"
+       },
+       {
+        "reference_index": 1,
+        "arm_index": 1,
+        "reference_time": 125.0,
+        "arm_time": 130.0,
+        "time_delta": 5.0,
+        "event_similarity": 0.4643,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.12,
+        "reference_event": "사람이 검은 장갑을 끼고 나무 숟가락으로 감자 반죽을 섞는다.",
+        "arm_event": "사람이 검은 장갑을 끼고 감자蓉을 섞는다"
+       },
+       {
+        "reference_index": 4,
+        "arm_index": 2,
+        "reference_time": 140.0,
+        "arm_time": 140.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.2963,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.5385,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 접시에 올린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       },
+       {
+        "reference_index": 6,
+        "arm_index": 3,
+        "reference_time": 150.0,
+        "arm_time": 150.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.25,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.4286,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 접시에 올린다.",
+        "arm_event": "사람이 계란물을 접시에 올린다"
+       },
+       {
+        "reference_index": 7,
+        "arm_index": 4,
+        "reference_time": 155.0,
+        "arm_time": 160.0,
+        "time_delta": 5.0,
+        "event_similarity": 0.1515,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.2778,
+        "reference_event": "사람이 검은 장갑을 끼고 계란물을 떠서 감자 반죽에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 계란물에 넣는다"
+       },
+       {
+        "reference_index": 10,
+        "arm_index": 5,
+        "reference_time": 170.0,
+        "arm_time": 170.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1875,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.2778,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 빵가루에 넣는다"
+       },
+       {
+        "reference_index": 12,
+        "arm_index": 6,
+        "reference_time": 180.0,
+        "arm_time": 180.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1212,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.1,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       },
+       {
+        "reference_index": 14,
+        "arm_index": 7,
+        "reference_time": 190.0,
+        "arm_time": 190.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.0968,
+        "entity_jaccard": 0.1429,
+        "activity_similarity": 0.0556,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 굽는다"
+       },
+       {
+        "reference_index": 16,
+        "arm_index": 8,
+        "reference_time": 200.0,
+        "arm_time": 200.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1212,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.1,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       },
+       {
+        "reference_index": 18,
+        "arm_index": 9,
+        "reference_time": 210.0,
+        "arm_time": 210.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1212,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.1,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       },
+       {
+        "reference_index": 20,
+        "arm_index": 10,
+        "reference_time": 220.0,
+        "arm_time": 220.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1212,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.1,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       },
+       {
+        "reference_index": 22,
+        "arm_index": 11,
+        "reference_time": 230.0,
+        "arm_time": 230.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1212,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.1,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       },
+       {
+        "reference_index": 24,
+        "arm_index": 12,
+        "reference_time": 240.0,
+        "arm_time": 240.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1212,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.1,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       },
+       {
+        "reference_index": 26,
+        "arm_index": 13,
+        "reference_time": 250.0,
+        "arm_time": 250.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1212,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.1,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       },
+       {
+        "reference_index": 28,
+        "arm_index": 14,
+        "reference_time": 260.0,
+        "arm_time": 260.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1212,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.1,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       },
+       {
+        "reference_index": 30,
+        "arm_index": 15,
+        "reference_time": 270.0,
+        "arm_time": 270.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1212,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.1,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       },
+       {
+        "reference_index": 32,
+        "arm_index": 16,
+        "reference_time": 280.0,
+        "arm_time": 280.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1212,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.1,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       },
+       {
+        "reference_index": 34,
+        "arm_index": 17,
+        "reference_time": 290.0,
+        "arm_time": 290.0,
+        "time_delta": 0.0,
+        "event_similarity": 0.1212,
+        "entity_jaccard": 0.3333,
+        "activity_similarity": 0.1,
+        "reference_event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "arm_event": "사람이 감자蓉을 접시에 올린다"
+       }
+      ],
+      "only_reference": [
+       {
+        "index": 2,
+        "approx_time": 130.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 접시에 올린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "접시",
+         "나무 숟가락"
+        ],
+        "activity": "감자 반죽을 접시에 올린다.",
+        "inside_window": true
+       },
+       {
+        "index": 3,
+        "approx_time": 135.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 접시에 올린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "접시",
+         "나무 숟가락"
+        ],
+        "activity": "감자 반죽을 접시에 올린다.",
+        "inside_window": true
+       },
+       {
+        "index": 5,
+        "approx_time": 145.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 접시에 올린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "접시",
+         "나무 숟가락"
+        ],
+        "activity": "감자 반죽을 접시에 올린다.",
+        "inside_window": true
+       },
+       {
+        "index": 8,
+        "approx_time": 160.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 9,
+        "approx_time": 165.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 11,
+        "approx_time": 175.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 13,
+        "approx_time": 185.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 15,
+        "approx_time": 195.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 17,
+        "approx_time": 205.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 19,
+        "approx_time": 215.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 21,
+        "approx_time": 225.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 23,
+        "approx_time": 235.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 25,
+        "approx_time": 245.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 27,
+        "approx_time": 255.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 29,
+        "approx_time": 265.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 31,
+        "approx_time": 275.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 33,
+        "approx_time": 285.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 35,
+        "approx_time": 295.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       },
+       {
+        "index": 36,
+        "approx_time": 300.0,
+        "event": "사람이 검은 장갑을 끼고 감자 반죽을 떠서 빵가루에 빠뜨린다.",
+        "visible_entities": [
+         "사람",
+         "검은 장갑",
+         "감자 반죽",
+         "빵가루",
+         "접시"
+        ],
+        "activity": "감자 반죽을 빵가루에 빠뜨린다.",
+        "inside_window": true
+       }
+      ],
+      "only_arm": [],
+      "matched_count": 18,
+      "only_reference_count": 19,
+      "only_arm_count": 0,
+      "order_inversions": 0,
+      "event_similarity": {
+       "count": 18,
+       "min": 0.0968,
+       "median": 0.1212,
+       "p75": 0.1875,
+       "p90": 0.2609,
+       "p95": 0.2963,
+       "max": 0.4643,
+       "mean": 0.1689
+      },
+      "entity_jaccard": {
+       "count": 18,
+       "min": 0.1429,
+       "median": 0.3333,
+       "p75": 0.3333,
+       "p90": 0.3333,
+       "p95": 0.3333,
+       "max": 0.4,
+       "mean": 0.3264
+      },
+      "identical_entity_pairs": 0
+     }
+    },
+    "note": "0.5fps arm은 ground truth가 아니다. 둘 다 같은 모델 출력이고, 허용오차 두 값의 결과를 함께 본다."
+   }
+  }
+ },
+ "pair_statuses": [
+  "EVALUABLE",
+  "EVALUABLE",
+  "EVALUABLE"
+ ],
+ "event_verdict": "PAIRED_OUTPUT_SENSITIVITY_MEASURED",
+ "note": "세 pair가 모두 EVALUABLE일 때만 PAIRED_OUTPUT_SENSITIVITY를 낸다. 0.5fps arm은 ground truth가 아니고, D2·D3는 90초 겹치므로 n=3 독립 표본으로 해석하지 않는다."
+}

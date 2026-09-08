@@ -1,0 +1,542 @@
+{
+ "schema": "wvr_density_stage2_v1",
+ "stage": "PAIRED_OUTPUT_SENSITIVITY",
+ "prereg": "docs/preregistration/WVR_SAMPLING_SEMANTIC_DENSITY_V1_2026-09-08.md",
+ "window": {
+  "window_id": "W02",
+  "start_sec": 30.0,
+  "end_sec": 210.0,
+  "label": "D2_median_change",
+  "stage1_score": 1115.5522
+ },
+ "arm": "S0",
+ "requested": {
+  "fps": 0.5,
+  "frames": 90,
+  "frame_size": [
+   512,
+   288
+  ],
+  "model_id": "Qwen/Qwen3-VL-8B-Instruct",
+  "model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "dtype": "bfloat16",
+  "attn_implementation": "sdpa",
+  "quantization": null,
+  "device": "cuda:0",
+  "device_map": null,
+  "do_sample": false,
+  "num_beams": 1,
+  "max_new_tokens": 4096,
+  "repetition_penalty": 1.0,
+  "do_sample_frames": false,
+  "do_resize": false
+ },
+ "event": "V1B",
+ "prompt_contract": "SAMPLING_DIAG_PROMPT_V1",
+ "prompt_hash": "7899dc460957fff6eef49ffb50ab15fb527436ec5008ee618772a232ce4350a4",
+ "is_production_contract": false,
+ "timestamps_first_last": [
+  30.0,
+  208.0
+ ],
+ "event_extraction_approved": false,
+ "semantic_verdict_allowed": false,
+ "code_git_head": "78cefa3786900ab5219df491020ea752c4095ce1",
+ "metrics": {
+  "load_wall_sec": 3.61,
+  "video_process_wall_sec": 11.55,
+  "delivered_frame_count": 90,
+  "frame_size": [
+   512,
+   288
+  ],
+  "frame_times_first_last": [
+   30.0,
+   208.0
+  ],
+  "input_token_count": 7178,
+  "video_token_count": 6480,
+  "infer_wall_sec": 73.11,
+  "generated_token_count": 2070,
+  "peak_vram_allocated_mib": 18948.5,
+  "peak_vram_reserved_mib": 19566.0,
+  "total_wall_sec": 90.43
+ },
+ "stage_status": {
+  "MODEL_LOAD": "OK",
+  "VIDEO_PROCESS": "OK",
+  "INFERENCE": "OK"
+ },
+ "allocator_observed": {
+  "backend": "native",
+  "env": "",
+  "segment_count": 268,
+  "expandable_segments_observed": false,
+  "expandable_flags_head": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ]
+ },
+ "frame_indices_first_last": [
+  900,
+  6240
+ ],
+ "raw_output": "{\"observed_events\": [{\"approx_time\": 30.0, \"event\": \"A hand holds a bag of potato chips in a green basket.\",\n                      \"visible_entities\": [\"hand\", \"bag of potato chips\", \"green basket\"], \"activity\": \"Holding a bag of potato chips.\"},\n                     {\"approx_time\": 33.0, \"event\": \"A person washes potatoes under running water in a sink.\",\n                      \"visible_entities\": [\"person\", \"potatoes\", \"sink\", \"water\"], \"activity\": \"Washing potatoes.\"},\n                     {\"approx_time\": 36.0, \"event\": \"A person places potatoes into a steamer pot.\",\n                      \"visible_entities\": [\"person\", \"potatoes\", \"steamer pot\"], \"activity\": \"Placing potatoes into a steamer pot.\"},\n                     {\"approx_time\": 39.0, \"event\": \"A person pours a bag of potato chips into a green bowl.\",\n                      \"visible_entities\": [\"person\", \"bag of potato chips\", \"green bowl\"], \"activity\": \"Pouring potato chips into a green bowl.\"},\n                     {\"approx_time\": 42.0, \"event\": \"A person places sliced bread into a blender.\",\n                      \"visible_entities\": [\"person\", \"sliced bread\", \"blender\"], \"activity\": \"Placing sliced bread into a blender.\"},\n                     {\"approx_time\": 45.0, \"event\": \"A person blends sliced bread in a blender.\",\n                      \"visible_entities\": [\"person\", \"sliced bread\", \"blender\"], \"activity\": \"Blending sliced bread in a blender.\"},\n                     {\"approx_time\": 48.0, \"event\": \"A person pours oil into a bowl of breadcrumbs.\",\n                      \"visible_entities\": [\"person\", \"oil\", \"bowl\", \"breadcrumbs\"], \"activity\": \"Pouring oil into a bowl of breadcrumbs.\"},\n                     {\"approx_time\": 51.0, \"event\": \"A person stirs breadcrumbs in a bowl with a wooden spoon.\",\n                      \"visible_entities\": [\"person\", \"breadcrumbs\", \"wooden spoon\", \"bowl\"], \"activity\": \"Stirring breadcrumbs in a bowl with a wooden spoon.\"},\n                     {\"approx_time\": 54.0, \"event\": \"A person chops an onion on a wooden cutting board.\",\n                      \"visible_entities\": [\"person\", \"onion\", \"wooden cutting board\", \"knife\"], \"activity\": \"Chopping an onion on a wooden cutting board.\"},\n                     {\"approx_time\": 57.0, \"event\": \"A person chops carrots on a wooden cutting board.\",\n                      \"visible_entities\": [\"person\", \"carrots\", \"wooden cutting board\", \"knife\"], \"activity\": \"Chopping carrots on a wooden cutting board.\"},\n                     {\"approx_time\": 60.0, \"event\": \"A person chops crab sticks on a wooden cutting board.\",\n                      \"visible_entities\": [\"person\", \"crab sticks\", \"wooden cutting board\", \"knife\"], \"activity\": \"Chopping crab sticks on a wooden cutting board.\"},\n                     {\"approx_time\": 63.0, \"event\": \"A person mixes breadcrumbs with oil in a bowl.\",\n                      \"visible_entities\": [\"person\", \"breadcrumbs\", \"oil\", \"bowl\", \"wooden spoon\"], \"activity\": \"Mixing breadcrumbs with oil in a bowl.\"},\n                     {\"approx_time\": 66.0, \"event\": \"A person adds ground beef to a bowl with chopped vegetables.\",\n                      \"visible_entities\": [\"person\", \"ground beef\", \"bowl\", \"chopped vegetables\"], \"activity\": \"Adding ground beef to a bowl with chopped vegetables.\"},\n                     {\"approx_time\": 69.0, \"event\": \"A person adds soy sauce to a bowl with ground beef and vegetables.\",\n                      \"visible_entities\": [\"person\", \"soy sauce\", \"bowl\", \"ground beef\", \"chopped vegetables\"], \"activity\": \"Adding soy sauce to a bowl with ground beef and vegetables.\"},\n                     {\"approx_time\": 72.0, \"event\": \"A person adds pepper to a bowl with ground beef and vegetables.\",\n                      \"visible_entities\": [\"person\", \"pepper\", \"bowl\", \"ground beef\", \"chopped vegetables\"], \"activity\": \"Adding pepper to a bowl with ground beef and vegetables.\"},\n                     {\"approx_time\": 75.0, \"event\": \"A person cooks ground beef and vegetables in a pan over direct heat.\",\n                      \"visible_entities\": [\"person\", \"ground beef\", \"chopped vegetables\", \"pan\", \"direct heat\"], \"activity\": \"Cooking ground beef and vegetables in a pan over direct heat.\"},\n                     {\"approx_time\": 78.0, \"event\": \"A person peels potatoes with an automatic potato peeler.\",\n                      \"visible_entities\": [\"person\", \"potatoes\", \"automatic potato peeler\"], \"activity\": \"Peeling potatoes with an automatic potato peeler.\"},\n                     {\"approx_time\": 81.0, \"event\": \"A person grates potatoes with an automatic potato grater.\",\n                      \"visible_entities\": [\"person\", \"potatoes\", \"automatic potato grater\"], \"activity\": \"Grating potatoes with an automatic potato grater.\"},\n                     {\"approx_time\": 84.0, \"event\": \"A person adds grated potatoes to a bowl with ground beef and vegetables.\",\n                      \"visible_entities\": [\"person\", \"grated potatoes\", \"bowl\", \"ground beef\", \"chopped vegetables\"], \"activity\": \"Adding grated potatoes to a bowl with ground beef and vegetables.\"},\n                     {\"approx_time\": 87.0, \"event\": \"A person mixes grated potatoes with ground beef and vegetables in a bowl.\",\n                      \"visible_entities\": [\"person\", \"grated potatoes\", \"bowl\", \"ground beef\", \"chopped vegetables\"], \"activity\": \"Mixing grated potatoes with ground beef and vegetables in a bowl.\"},\n                     {\"approx_time\": 90.0, \"event\": \"A person shapes the mixture into balls.\",\n                      \"visible_entities\": [\"person\", \"mixture\", \"balls\"], \"activity\": \"Shaping the mixture into balls.\"},\n                     {\"approx_time\": 93.0, \"event\": \"A person places the balls on a plate.\",\n                      \"visible_entities\": [\"person\", \"balls\", \"plate\"], \"activity\": \"Placing the balls on a plate.\"},\n                     {\"approx_time\": 96.0, \"event\": \"A person cracks an egg into a bowl.\",\n                      \"visible_entities\": [\"person\", \"egg\", \"bowl\"], \"activity\": \"Cracking an egg into a bowl.\"},\n                     {\"approx_time\": 99.0, \"event\": \"A person dips a ball into an egg mixture.\",\n                      \"visible_entities\": [\"person\", \"ball\", \"egg mixture\", \"bowl\"], \"activity\": \"Dipping a ball into an egg mixture.\"},\n                     {\"approx_time\": 102.0, \"event\": \"A person coats a ball with breadcrumbs.\",\n                      \"visible_entities\": [\"person\", \"ball\", \"breadcrumbs\", \"bowl\"], \"activity\": \"Coating a ball with breadcrumbs.\"},\n                     {\"approx_time\": 105.0, \"event\": \"A person places the coated ball on a plate.\",\n                      \"visible_entities\": [\"person\", \"coated ball\", \"plate\"], \"activity\": \"Placing the coated ball on a plate.\"},\n                     {\"approx_time\": 108.0, \"event\": \"A person places the coated balls on a plate.\",\n                      \"visible_entities\": [\"person\", \"coated balls\", \"plate\"], \"activity\": \"Placing the coated balls on a plate.\"},\n                     {\"approx_time\": 111.0, \"event\": \"A person adds curry sauce to a pan with onions.\",\n                      \"visible_entities\": [\"person\", \"curry sauce\", \"pan\", \"onions\"], \"activity\": \"Adding curry sauce to a pan with onions.\"},\n                     {\"approx_time\": 114.0, \"event\": \"A person adds ground beef to a pan with onions and curry sauce.\",\n                      \"visible_entities\": [\"person\", \"ground beef\", \"pan\", \"onions\", \"curry sauce\"], \"activity\": \"Adding ground beef to a pan with onions and curry sauce.\"},\n                     {\"approx_time\": 117.0, \"event\": \"A person adds soy sauce to a pan with ground beef, onions, and curry sauce.\",\n                      \"visible_entities\": [\"person\", \"soy sauce\", \"pan\", \"ground beef\", \"onions\", \"curry sauce\"], \"activity\": \"Adding soy sauce to a pan with ground beef, onions, and curry sauce.\"},\n                     {\"approx_time\": 120.0, \"event\": \"A person adds buldak sauce to a pan with ground beef, onions, and curry sauce.\",\n                      \"visible_entities\": [\"person\", \"buldak sauce\", \"pan\", \"ground beef\", \"onions\", \"curry sauce\"], \"activity\": \"Adding buldak sauce to a pan with ground beef, onions, and curry sauce.\"},\n                     {\"approx_time\": 123.0, \"event\": \"A person stirs the contents of a pan with a wooden spoon.\",\n                      \"visible_entities\": [\"person\", \"pan\", \"wooden spoon\", \"ground beef\", \"onions\", \"curry sauce\", \"soy sauce\", \"buldak sauce\"], \"activity\": \"Stirring the contents of a pan with a wooden spoon.\"},\n                     {\"approx_time\": 126.0, \"event\": \"A person adds cream to a pan with ground beef, onions, and curry sauce.\",\n                      \"visible_entities\": [\"person\", \"cream\", \"pan\", \"ground beef\", \"onions\", \"curry sauce\"], \"activity\": \"Adding cream to a pan with ground beef, onions, and curry sauce.\"}]}",
+ "parsed": {
+  "status": "OK",
+  "events": [
+   {
+    "index": 0,
+    "approx_time": 30.0,
+    "event": "A hand holds a bag of potato chips in a green basket.",
+    "visible_entities": [
+     "hand",
+     "bag of potato chips",
+     "green basket"
+    ],
+    "activity": "Holding a bag of potato chips.",
+    "inside_window": true
+   },
+   {
+    "index": 1,
+    "approx_time": 33.0,
+    "event": "A person washes potatoes under running water in a sink.",
+    "visible_entities": [
+     "person",
+     "potatoes",
+     "sink",
+     "water"
+    ],
+    "activity": "Washing potatoes.",
+    "inside_window": true
+   },
+   {
+    "index": 2,
+    "approx_time": 36.0,
+    "event": "A person places potatoes into a steamer pot.",
+    "visible_entities": [
+     "person",
+     "potatoes",
+     "steamer pot"
+    ],
+    "activity": "Placing potatoes into a steamer pot.",
+    "inside_window": true
+   },
+   {
+    "index": 3,
+    "approx_time": 39.0,
+    "event": "A person pours a bag of potato chips into a green bowl.",
+    "visible_entities": [
+     "person",
+     "bag of potato chips",
+     "green bowl"
+    ],
+    "activity": "Pouring potato chips into a green bowl.",
+    "inside_window": true
+   },
+   {
+    "index": 4,
+    "approx_time": 42.0,
+    "event": "A person places sliced bread into a blender.",
+    "visible_entities": [
+     "person",
+     "sliced bread",
+     "blender"
+    ],
+    "activity": "Placing sliced bread into a blender.",
+    "inside_window": true
+   },
+   {
+    "index": 5,
+    "approx_time": 45.0,
+    "event": "A person blends sliced bread in a blender.",
+    "visible_entities": [
+     "person",
+     "sliced bread",
+     "blender"
+    ],
+    "activity": "Blending sliced bread in a blender.",
+    "inside_window": true
+   },
+   {
+    "index": 6,
+    "approx_time": 48.0,
+    "event": "A person pours oil into a bowl of breadcrumbs.",
+    "visible_entities": [
+     "person",
+     "oil",
+     "bowl",
+     "breadcrumbs"
+    ],
+    "activity": "Pouring oil into a bowl of breadcrumbs.",
+    "inside_window": true
+   },
+   {
+    "index": 7,
+    "approx_time": 51.0,
+    "event": "A person stirs breadcrumbs in a bowl with a wooden spoon.",
+    "visible_entities": [
+     "person",
+     "breadcrumbs",
+     "wooden spoon",
+     "bowl"
+    ],
+    "activity": "Stirring breadcrumbs in a bowl with a wooden spoon.",
+    "inside_window": true
+   },
+   {
+    "index": 8,
+    "approx_time": 54.0,
+    "event": "A person chops an onion on a wooden cutting board.",
+    "visible_entities": [
+     "person",
+     "onion",
+     "wooden cutting board",
+     "knife"
+    ],
+    "activity": "Chopping an onion on a wooden cutting board.",
+    "inside_window": true
+   },
+   {
+    "index": 9,
+    "approx_time": 57.0,
+    "event": "A person chops carrots on a wooden cutting board.",
+    "visible_entities": [
+     "person",
+     "carrots",
+     "wooden cutting board",
+     "knife"
+    ],
+    "activity": "Chopping carrots on a wooden cutting board.",
+    "inside_window": true
+   },
+   {
+    "index": 10,
+    "approx_time": 60.0,
+    "event": "A person chops crab sticks on a wooden cutting board.",
+    "visible_entities": [
+     "person",
+     "crab sticks",
+     "wooden cutting board",
+     "knife"
+    ],
+    "activity": "Chopping crab sticks on a wooden cutting board.",
+    "inside_window": true
+   },
+   {
+    "index": 11,
+    "approx_time": 63.0,
+    "event": "A person mixes breadcrumbs with oil in a bowl.",
+    "visible_entities": [
+     "person",
+     "breadcrumbs",
+     "oil",
+     "bowl",
+     "wooden spoon"
+    ],
+    "activity": "Mixing breadcrumbs with oil in a bowl.",
+    "inside_window": true
+   },
+   {
+    "index": 12,
+    "approx_time": 66.0,
+    "event": "A person adds ground beef to a bowl with chopped vegetables.",
+    "visible_entities": [
+     "person",
+     "ground beef",
+     "bowl",
+     "chopped vegetables"
+    ],
+    "activity": "Adding ground beef to a bowl with chopped vegetables.",
+    "inside_window": true
+   },
+   {
+    "index": 13,
+    "approx_time": 69.0,
+    "event": "A person adds soy sauce to a bowl with ground beef and vegetables.",
+    "visible_entities": [
+     "person",
+     "soy sauce",
+     "bowl",
+     "ground beef",
+     "chopped vegetables"
+    ],
+    "activity": "Adding soy sauce to a bowl with ground beef and vegetables.",
+    "inside_window": true
+   },
+   {
+    "index": 14,
+    "approx_time": 72.0,
+    "event": "A person adds pepper to a bowl with ground beef and vegetables.",
+    "visible_entities": [
+     "person",
+     "pepper",
+     "bowl",
+     "ground beef",
+     "chopped vegetables"
+    ],
+    "activity": "Adding pepper to a bowl with ground beef and vegetables.",
+    "inside_window": true
+   },
+   {
+    "index": 15,
+    "approx_time": 75.0,
+    "event": "A person cooks ground beef and vegetables in a pan over direct heat.",
+    "visible_entities": [
+     "person",
+     "ground beef",
+     "chopped vegetables",
+     "pan",
+     "direct heat"
+    ],
+    "activity": "Cooking ground beef and vegetables in a pan over direct heat.",
+    "inside_window": true
+   },
+   {
+    "index": 16,
+    "approx_time": 78.0,
+    "event": "A person peels potatoes with an automatic potato peeler.",
+    "visible_entities": [
+     "person",
+     "potatoes",
+     "automatic potato peeler"
+    ],
+    "activity": "Peeling potatoes with an automatic potato peeler.",
+    "inside_window": true
+   },
+   {
+    "index": 17,
+    "approx_time": 81.0,
+    "event": "A person grates potatoes with an automatic potato grater.",
+    "visible_entities": [
+     "person",
+     "potatoes",
+     "automatic potato grater"
+    ],
+    "activity": "Grating potatoes with an automatic potato grater.",
+    "inside_window": true
+   },
+   {
+    "index": 18,
+    "approx_time": 84.0,
+    "event": "A person adds grated potatoes to a bowl with ground beef and vegetables.",
+    "visible_entities": [
+     "person",
+     "grated potatoes",
+     "bowl",
+     "ground beef",
+     "chopped vegetables"
+    ],
+    "activity": "Adding grated potatoes to a bowl with ground beef and vegetables.",
+    "inside_window": true
+   },
+   {
+    "index": 19,
+    "approx_time": 87.0,
+    "event": "A person mixes grated potatoes with ground beef and vegetables in a bowl.",
+    "visible_entities": [
+     "person",
+     "grated potatoes",
+     "bowl",
+     "ground beef",
+     "chopped vegetables"
+    ],
+    "activity": "Mixing grated potatoes with ground beef and vegetables in a bowl.",
+    "inside_window": true
+   },
+   {
+    "index": 20,
+    "approx_time": 90.0,
+    "event": "A person shapes the mixture into balls.",
+    "visible_entities": [
+     "person",
+     "mixture",
+     "balls"
+    ],
+    "activity": "Shaping the mixture into balls.",
+    "inside_window": true
+   },
+   {
+    "index": 21,
+    "approx_time": 93.0,
+    "event": "A person places the balls on a plate.",
+    "visible_entities": [
+     "person",
+     "balls",
+     "plate"
+    ],
+    "activity": "Placing the balls on a plate.",
+    "inside_window": true
+   },
+   {
+    "index": 22,
+    "approx_time": 96.0,
+    "event": "A person cracks an egg into a bowl.",
+    "visible_entities": [
+     "person",
+     "egg",
+     "bowl"
+    ],
+    "activity": "Cracking an egg into a bowl.",
+    "inside_window": true
+   },
+   {
+    "index": 23,
+    "approx_time": 99.0,
+    "event": "A person dips a ball into an egg mixture.",
+    "visible_entities": [
+     "person",
+     "ball",
+     "egg mixture",
+     "bowl"
+    ],
+    "activity": "Dipping a ball into an egg mixture.",
+    "inside_window": true
+   },
+   {
+    "index": 24,
+    "approx_time": 102.0,
+    "event": "A person coats a ball with breadcrumbs.",
+    "visible_entities": [
+     "person",
+     "ball",
+     "breadcrumbs",
+     "bowl"
+    ],
+    "activity": "Coating a ball with breadcrumbs.",
+    "inside_window": true
+   },
+   {
+    "index": 25,
+    "approx_time": 105.0,
+    "event": "A person places the coated ball on a plate.",
+    "visible_entities": [
+     "person",
+     "coated ball",
+     "plate"
+    ],
+    "activity": "Placing the coated ball on a plate.",
+    "inside_window": true
+   },
+   {
+    "index": 26,
+    "approx_time": 108.0,
+    "event": "A person places the coated balls on a plate.",
+    "visible_entities": [
+     "person",
+     "coated balls",
+     "plate"
+    ],
+    "activity": "Placing the coated balls on a plate.",
+    "inside_window": true
+   },
+   {
+    "index": 27,
+    "approx_time": 111.0,
+    "event": "A person adds curry sauce to a pan with onions.",
+    "visible_entities": [
+     "person",
+     "curry sauce",
+     "pan",
+     "onions"
+    ],
+    "activity": "Adding curry sauce to a pan with onions.",
+    "inside_window": true
+   },
+   {
+    "index": 28,
+    "approx_time": 114.0,
+    "event": "A person adds ground beef to a pan with onions and curry sauce.",
+    "visible_entities": [
+     "person",
+     "ground beef",
+     "pan",
+     "onions",
+     "curry sauce"
+    ],
+    "activity": "Adding ground beef to a pan with onions and curry sauce.",
+    "inside_window": true
+   },
+   {
+    "index": 29,
+    "approx_time": 117.0,
+    "event": "A person adds soy sauce to a pan with ground beef, onions, and curry sauce.",
+    "visible_entities": [
+     "person",
+     "soy sauce",
+     "pan",
+     "ground beef",
+     "onions",
+     "curry sauce"
+    ],
+    "activity": "Adding soy sauce to a pan with ground beef, onions, and curry sauce.",
+    "inside_window": true
+   },
+   {
+    "index": 30,
+    "approx_time": 120.0,
+    "event": "A person adds buldak sauce to a pan with ground beef, onions, and curry sauce.",
+    "visible_entities": [
+     "person",
+     "buldak sauce",
+     "pan",
+     "ground beef",
+     "onions",
+     "curry sauce"
+    ],
+    "activity": "Adding buldak sauce to a pan with ground beef, onions, and curry sauce.",
+    "inside_window": true
+   },
+   {
+    "index": 31,
+    "approx_time": 123.0,
+    "event": "A person stirs the contents of a pan with a wooden spoon.",
+    "visible_entities": [
+     "person",
+     "pan",
+     "wooden spoon",
+     "ground beef",
+     "onions",
+     "curry sauce",
+     "soy sauce",
+     "buldak sauce"
+    ],
+    "activity": "Stirring the contents of a pan with a wooden spoon.",
+    "inside_window": true
+   },
+   {
+    "index": 32,
+    "approx_time": 126.0,
+    "event": "A person adds cream to a pan with ground beef, onions, and curry sauce.",
+    "visible_entities": [
+     "person",
+     "cream",
+     "pan",
+     "ground beef",
+     "onions",
+     "curry sauce"
+    ],
+    "activity": "Adding cream to a pan with ground beef, onions, and curry sauce.",
+    "inside_window": true
+   }
+  ],
+  "violations": [],
+  "reason": ""
+ },
+ "arm_status": "OK",
+ "memory_stats": {
+  "allocated_bytes.all.peak": 19868898304,
+  "reserved_bytes.all.peak": 20516438016,
+  "requested_bytes.all.peak": 19854177028,
+  "active_bytes.all.peak": 19868898304,
+  "inactive_split_bytes.all.peak": 1018399744,
+  "num_alloc_retries": 0,
+  "num_ooms": 0
+ }
+}

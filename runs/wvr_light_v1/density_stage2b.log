@@ -1,0 +1,19 @@
+=== D1_highest_change S0 (2026. 09. 09. (수) 00:37:10 KST) ===
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:  89%|████████▉ | 671/750 [00:00<00:00, 6706.82it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7201.13it/s]
+event=V1B window=W11 arm=S0 status=OK frames=90 tokens=7197 events=46
+=== D1_highest_change S1 (2026. 09. 09. (수) 00:39:31 KST) ===
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:  90%|████████▉ | 673/750 [00:00<00:00, 6725.56it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7173.23it/s]
+event=V1B window=W11 arm=S1 status=OK frames=45 tokens=3809 events=37
+=== D2_median_change S0 (2026. 09. 09. (수) 00:41:14 KST) ===
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7795.54it/s]
+event=V1B window=W02 arm=S0 status=OK frames=90 tokens=7178 events=33
+=== D2_median_change S1 (2026. 09. 09. (수) 00:42:49 KST) ===
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 8439.49it/s]
+event=V1B window=W02 arm=S1 status=OK frames=45 tokens=3799 events=46
+=== D3_lowest_change S0 (2026. 09. 09. (수) 00:44:43 KST) ===
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 8873.35it/s]
+event=V1B window=W05 arm=S0 status=OK frames=90 tokens=7197 events=37
+=== D3_lowest_change S1 (2026. 09. 09. (수) 00:47:16 KST) ===
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 8637.77it/s]
+event=V1B window=W05 arm=S1 status=OK frames=45 tokens=3809 events=18
+ALL_DONE
