@@ -216,6 +216,14 @@ def test_wvr_g13_the_order_is_counted_on_equivalent_pairs_only():
     assert alignment["equivalent_count"] == 2
     assert alignment["order_inversions"] == 1
     assert v2.order_inversions([]) == 0
+    # 순서가 그대로인 쌍에서는 0이어야 한다. 후보 전체를 세면 0이 아니게 된다.
+    aligned = v2.align(reference, [
+        _event(300.0, 305.0, action="holds", index=0),
+        _event(306.0, 310.0, action="opens", index=1)], 8.0)
+    assert aligned["equivalent_count"] == 2
+    assert aligned["adjudication_count"] > 0
+    assert aligned["order_inversions"] == 0
+    assert v2.order_inversions(aligned["candidates"]) > 0
 
 
 def test_the_field_divergence_counts_each_field():
@@ -285,9 +293,14 @@ def test_wvr_g17_the_runtime_matches_v1b():
         encoding="utf-8"))
     assert [stage1["selection"][label]["window_id"]
             for label in density.SELECTION_LABELS] == ["W11", "W02", "W05"]
-    window = runner.window_for("D1_highest_change", stage1)
-    assert len(runner.arm_timestamps(window, "S0")) == 90
-    assert len(runner.arm_timestamps(window, "S1")) == 45
+    for label in density.SELECTION_LABELS:
+        window = runner.window_for(label, stage1)
+        chosen = stage1["selection"][label]
+        assert window["window_id"] == chosen["window_id"]      # 창 재선택 금지
+        assert window["start_sec"] == chosen["start_sec"]
+        assert window["stage1_score"] == chosen["score"]
+        assert len(runner.arm_timestamps(window, "S0")) == 90
+        assert len(runner.arm_timestamps(window, "S1")) == 45
     assert (contract.FRAME_WIDTH, contract.FRAME_HEIGHT) == (512, 288)
     assert v2.TOLERANCES == (4.0, 8.0)
     assert contract.REPETITION_PENALTY == 1.0
