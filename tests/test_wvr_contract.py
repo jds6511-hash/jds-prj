@@ -237,3 +237,53 @@ def test_wvr_c24_the_document_forbids_the_shrink_retry():
     assert "동일 사건에서 8분·5분으로 자동 재시도 금지" in DOC
     assert "SUBMISSION_PROMOTION             HOLD" in DOC
     assert "OFFICIAL TEST                    UNOPENED" in DOC
+
+
+# ── WVR-C25~C28 capacity 결과 문서 대조 ─────────────────────────────────
+RESULT = ROOT / "runs/wvr_light_v1/capacity_C01.json"
+PROBE_DOC = ROOT / "docs/probes/WVR_LIGHT_V1_CAPACITY_C01_2026-09-08.md"
+
+
+@pytest.fixture
+def result():
+    return json.loads(RESULT.read_text(encoding="utf-8"))
+
+
+def test_wvr_c25_the_probe_artifact_records_the_frozen_request(result):
+    assert result["chunk"] == {"chunk_id": "C01", "start_sec": 0.0,
+                               "end_sec": 600.0}
+    assert result["requested"]["chunk_fps"] == contract.CHUNK_FPS
+    assert result["requested"]["frame_size"] == [contract.FRAME_WIDTH,
+                                                 contract.FRAME_HEIGHT]
+    assert result["requested"]["device_map"] is None
+    assert result["prompt_hashes"] == prompts.contract_hashes()
+    assert result["semantic_result"] == "NOT_EVALUATED"
+
+
+@pytest.mark.parametrize("field,expected", [
+    ("post_load_vram_mib", "17,336.1"), ("peak_vram_allocated_mib", "21,890.1"),
+    ("peak_vram_reserved_mib", "23,460.0"), ("device_peak_used_mib", "23,972.1"),
+    ("input_token_count", "23,463"), ("video_token_count", "21,600"),
+    ("delivered_frame_count", "300"),
+])
+def test_wvr_c26_the_document_quotes_the_measured_numbers(result, field,
+                                                          expected):
+    """문서의 숫자는 JSON에서만 온다 — 손으로 쓴 값이면 실패한다."""
+    text = PROBE_DOC.read_text(encoding="utf-8")
+    assert expected in text
+    assert "%s" % format(result["metrics"][field], ",") == expected
+
+
+def test_wvr_c27_an_oom_is_recorded_as_capacity_fail(result):
+    assert result["verdict"] == "CAPACITY_FAIL"
+    assert result["metrics"]["oom"] is True
+    assert result["stage"]["MODEL_LOAD"] == "PASS"
+    assert result["stage"]["VIDEO_PROCESS"] == "PASS"
+    assert result["stage"]["10MIN_INFERENCE"] == "CAPACITY_FAIL"
+    assert result["metrics"]["offloaded_params"] == 0
+
+
+def test_wvr_c28_no_shrunk_retry_was_recorded():
+    """같은 사건에서 줄여 다시 돌린 산출물이 없어야 한다."""
+    produced = sorted(path.name for path in RESULT.parent.glob("capacity_*"))
+    assert produced == ["capacity_C01.json", "capacity_C01.log"]
