@@ -1,0 +1,218 @@
+{
+ "schema": "wvr_capacity_probe_v1",
+ "prereg": "docs/preregistration/WVR_CAPACITY_SAMPLING_V1_2026-09-08.md",
+ "chunk": {
+  "chunk_id": "C01",
+  "start_sec": 0.0,
+  "end_sec": 600.0
+ },
+ "semantic_result": "NOT_EVALUATED",
+ "full_pipeline_approved": false,
+ "requested": {
+  "model_id": "Qwen/Qwen3-VL-8B-Instruct",
+  "model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "dtype": "bfloat16",
+  "quantization": null,
+  "device": "cuda:0",
+  "device_map": null,
+  "attn_implementation": "sdpa",
+  "chunk_fps": 0.25,
+  "frame_size": [
+   512,
+   288
+  ],
+  "do_sample_frames": false,
+  "do_resize": false,
+  "do_sample": false,
+  "num_beams": 1,
+  "max_new_tokens": 1024,
+  "repetition_penalty": 1.0
+ },
+ "video": {
+  "path": "/ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4",
+  "sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+  "width": 1920,
+  "height": 1080,
+  "nb_frames": 72724,
+  "avg_rate": 30.0000041251862,
+  "duration_sec": 2424.186485
+ },
+ "prompt_contract": "EVENT_PROMPT_V1",
+ "prompt_hashes": {
+  "SPARSE_GLOBAL_PROMPT_V1": "30595746f4a9db7b727cdd468f752e2cc49b35aa021ea8cb4fd2ab17615146ea",
+  "EVENT_PROMPT_V1": "a3c087d715b1dd4914d670dbb254e5bdb012e5fcc17314ee95c7abdf8ea3a303",
+  "EVENT_MERGE_PROMPT_V1": "75ec306ae705e1c2ff4a45753638b4c955c275ced2409d986e33dbb4bd122e22",
+  "CHAPTER_PROMPT_V1": "e9eab9cc2b960711914a77a5cbe117fc7608a7234ab4282737d6cd1ee36c53ee",
+  "HIGHLIGHT_PROMPT_V1": "98a3371c8ab60b6dbc50e0f0f9f893c92972404f8fa720494840cf6f19d2baa4",
+  "OVERVIEW_PROMPT_V1": "aa8bcb8cafa84d3e951882e208e3f9a4b21db91ed4b6e616fe7595982feb0907",
+  "ANALYSIS_PROMPT_V1": "4568e1e9bec6e3a4c989bc17ca73a04940d16a8d7f6d9607f61dd935d6b14893",
+  "CONCLUSION_PROMPT_V1": "90e7ab949180df1d3d9a623da86942f953ed6c853e73ab642cd7a48a94209fe7"
+ },
+ "code_git_head": "7901d8e23196a018e5b4a162b92ab197b37520a0",
+ "code_sha256": "c7dc4e6b37e2fe95c487ea51e6b21391dd3a26b4af2ed31870996b9bebcd59c1",
+ "contract_sha256": "1bd6ed4f44d4b2971dcc1a0a4814472b524c35f519bda0f47fa8a13fdd4b1849",
+ "metrics": {
+  "requested_timestamps": 150,
+  "effective_video_duration_sec": 600.0,
+  "baseline_vram_mib": 434.1,
+  "baseline_vram_free_mib": 23646.8,
+  "load_wall_sec": 3.49,
+  "post_load_vram_mib": 17336.1,
+  "offloaded_params": 0,
+  "video_process_wall_sec": 19.51,
+  "delivered_frame_count": 150,
+  "frame_size": [
+   512,
+   288
+  ],
+  "frame_times_first_last": [
+   0.0,
+   596.0
+  ],
+  "input_token_count": 11927,
+  "video_token_count": 10800,
+  "infer_wall_sec": 40.12,
+  "output_token_count": 1024,
+  "generated_token_count": 1024,
+  "finish_reason": "MAX_NEW_TOKENS",
+  "generation_completed": true,
+  "oom": false,
+  "peak_vram_allocated_mib": 20412.1,
+  "peak_vram_reserved_mib": 21318.0,
+  "device_peak_used_mib": 21834.1,
+  "total_wall_sec": 63.84,
+  "oom_request_mib": null,
+  "oom_free_mib": null,
+  "reserved_minus_allocated_mib": 905.9
+ },
+ "resolved": {
+  "torch": "2.13.0+cu130",
+  "transformers": "5.14.1",
+  "dtype": "torch.bfloat16",
+  "attn_implementation": "sdpa",
+  "device": "cuda:0",
+  "patch_size": 16,
+  "merge_size": 2,
+  "temporal_patch_size": 2,
+  "hf_home": "/ssd/daeseok/cache"
+ },
+ "stage": {
+  "MODEL_LOAD": "PASS",
+  "VIDEO_PROCESS": "PASS",
+  "10MIN_INFERENCE": "PASS"
+ },
+ "allocator_observed": {
+  "backend": "native",
+  "env": "",
+  "segment_count": 268,
+  "expandable_segments_observed": false,
+  "expandable_flags_head": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ]
+ },
+ "frame_indices_first_last": [
+  0,
+  17880
+ ],
+ "raw_output": "{\"events\": [{\"start_sec\": 0.0, \"end_sec\": 10.0, \"what_happens\": \"A person pours milk into a glass bowl.\",\n \"visible_evidence\": \"A hand holding a carton of milk pours it into a clear glass bowl on a kitchen counter. The carton has a label with text and an image of a cow. The bowl is on a white cloth. Other kitchen items are visible in the background.\",\n \"confidence\": \"high\"},\n {\"start_sec\": 10.0, \"end_sec\": 18.0, \"what_happens\": \"A person uses chopsticks to pick up a piece of food from a plate.\",\n \"visible_evidence\": \"A hand holding chopsticks picks up a piece of food from a white plate. The plate contains pink-colored food items, possibly sliced watermelon or a similar fruit. The background shows a kitchen counter with various items, including a bottle and a container.\",\n \"confidence\": \"high\"},\n {\"start_sec\": 18.0, \"end_sec\": 26.0, \"what_happens\": \"A person holds a piece of paper with text and numbers.\",\n \"visible_evidence\": \"A hand holds a white piece of paper with black text and numbers. The text appears to be in Korean. The background is slightly blurred, but it seems to be an indoor setting with some furniture and possibly a window or door.\",\n \"confidence\": \"high\"},\n {\"start_sec\": 26.0, \"end_sec\": 34.0, \"what_happens\": \"A person holds a bag of food items.\",\n \"visible_evidence\": \"A hand holds a yellow bag with red and black text. The bag appears to contain food items, possibly snacks or packaged goods. The background is slightly blurred, but it seems to be an indoor setting with some furniture and possibly a window or door.\",\n \"confidence\": \"high\"},\n {\"start_sec\": 34.0, \"end_sec\": 42.0, \"what_happens\": \"A person holds a bowl of potatoes.\",\n \"visible_evidence\": \"A hand holds a metal bowl containing several potatoes. The potatoes are brown and appear to be unpeeled. The background is slightly blurred, but it seems to be an indoor setting with some furniture and possibly a window or door.\",\n \"confidence\": \"high\"},\n {\"start_sec\": 42.0, \"end_sec\": 50.0, \"what_happens\": \"A person holds a bottle of oil.\",\n \"visible_evidence\": \"A hand holds a bottle of oil with a label that appears to be in Korean. The bottle is transparent and contains a yellowish liquid. The background is slightly blurred, but it seems to be an indoor setting with some furniture and possibly a window or door.\",\n \"confidence\": \"high\"},\n {\"start_sec\": 50.0, \"end_sec\": 58.0, \"what_happens\": \"A person uses a blender to mix ingredients.\",\n \"visible_evidence\": \"A hand holds a blender with a black base and a clear container. The blender is on a kitchen counter, and the person is using it to mix ingredients. The background is slightly blurred, but it seems to be an indoor setting with some furniture and possibly a window or door.\",\n \"confidence\": \"high\"},\n {\"start_sec\": 58.0, \"end_sec\": 66.0, \"what_happens\": \"A person pours oil into a bowl of breadcrumbs.\",\n \"visible_evidence\": \"A hand pours oil from a bottle into a green bowl containing breadcrumbs. The oil is yellowish, and the breadcrumbs are light brown. The background is slightly blurred, but it seems to be an indoor setting with some furniture and possibly a window or door.\",\n \"confidence\": \"high\"},\n {\"start_sec\": 66.0, \"end_sec\": 74.0, \"what_happens\": \"A person chops an onion on a cutting board.\",\n \"visible_evidence\": \"A hand holds a knife and chops an onion on a wooden cutting board. The onion is white and appears to be fresh. The background is slightly blurred, but it seems to be an indoor setting with some furniture and possibly a window or door.\",\n \"confidence\": \"high\"},\n {\"start_sec\": 74.0, \"end_sec\": 82.0, \"what_happens\": \"A person places a piece of meat on a plate.\",\n \"visible_evidence\": \"A hand places a piece of meat on a white plate. The meat appears to be cooked and has a brown color. The plate is on a kitchen counter, and the background is slightly blurred, but it seems to be an indoor setting with some furniture and possibly a window or door.\",\n \"confidence\": \"high\"},\n {\"start_sec\": 82.0, \"end_sec\": 90.0, \"",
+ "verdict": "PASS",
+ "memory_stats": {
+  "allocated_bytes.all.peak": 21403632128,
+  "reserved_bytes.all.peak": 22353543168,
+  "requested_bytes.all.peak": 21385868638,
+  "active_bytes.all.peak": 21403632128,
+  "inactive_split_bytes.all.peak": 1532812800,
+  "num_alloc_retries": 0,
+  "num_ooms": 0
+ },
+ "memory_summary": "|===========================================================================|\n|                  PyTorch CUDA memory summary, device ID 0                 |\n|---------------------------------------------------------------------------|\n|            CUDA OOMs: 0            |        cudaMalloc retries: 0         |\n|===========================================================================|\n|        Metric         | Cur Usage  | Peak Usage | Tot Alloc  | Tot Freed  |\n|---------------------------------------------------------------------------|\n| Allocated memory      |  16997 MiB |  20412 MiB |   2095 GiB |   2078 GiB |\n|       from large pool |  16995 MiB |  20409 MiB |   2063 GiB |   2046 GiB |\n|       from small pool |      1 MiB |      5 MiB |     32 GiB |     32 GiB |\n|---------------------------------------------------------------------------|\n| Active memory         |  16997 MiB |  20412 MiB |   2095 GiB |   2078 GiB |\n|       from large pool |  16995 MiB |  20409 MiB |   2063 GiB |   2046 GiB |\n|       from small pool |      1 MiB |      5 MiB |     32 GiB |     32 GiB |\n|---------------------------------------------------------------------------|\n| Requested memory      |  16983 MiB |  20395 MiB |   2094 GiB |   2077 GiB |\n|       from large pool |  16981 MiB |  20392 MiB |   2062 GiB |   2045 GiB |\n|       from small pool |      1 MiB |      5 MiB |     31 GiB |     31 GiB |\n|---------------------------------------------------------------------------|\n| GPU reserved memory   |  21318 MiB |  21318 MiB |  21318 MiB |      0 B   |\n|       from large pool |  21310 MiB |  21310 MiB |  21310 MiB |      0 B   |\n|       from small pool |      8 MiB |      8 MiB |      8 MiB |      0 B   |\n|---------------------------------------------------------------------------|\n| Non-releasable memory | 262762 KiB |   1461 MiB |   2053 GiB |   2053 GiB |\n|       from large pool | 260624 KiB |   1460 MiB |   2019 GiB |   2019 GiB |\n|       from small pool |   2138 KiB |      4 MiB |     34 GiB |     34 GiB |\n|---------------------------------------------------------------------------|\n| Allocations           |     761    |     923    |    2318 K  |    2317 K  |\n|       from large pool |     374    |     466    |      80 K  |      80 K  |\n|       from small pool |     387    |     550    |    2238 K  |    2237 K  |\n|---------------------------------------------------------------------------|\n| Active allocs         |     761    |     923    |    2318 K  |    2317 K  |\n|       from large pool |     374    |     466    |      80 K  |      80 K  |\n|       from small pool |     387    |     550    |    2238 K  |    2237 K  |\n|---------------------------------------------------------------------------|\n| GPU reserved segments |     288    |     288    |     288    |       0    |\n|       from large pool |     284    |     284    |     284    |       0    |\n|       from small pool |       4    |       4    |       4    |       0    |\n|---------------------------------------------------------------------------|\n| Non-releasable allocs |      61    |      88    |    1079 K  |    1079 K  |\n|       from large pool |      57    |      77    |      13 K  |      13 K  |\n|       from small pool |       4    |      17    |    1066 K  |    1066 K  |\n|---------------------------------------------------------------------------|\n| Oversize allocations  |       0    |       0    |       0    |       0    |\n|---------------------------------------------------------------------------|\n| Oversize GPU segments |       0    |       0    |       0    |       0    |\n|===========================================================================|\n",
+ "event": "WVR_CAPACITY_SAMPLING_V1",
+ "arm": "B",
+ "parent_control": {
+  "artifact": "capacity_alloc_A0.json",
+  "verdict": "CAPACITY_FAIL",
+  "chunk_fps": 0.5,
+  "delivered_frame_count": 300,
+  "input_token_count": 23463,
+  "baseline_vram_mib": 434.1
+ },
+ "semantic_evaluation_enabled": false,
+ "event_extraction_approved": false,
+ "allocator_env_observed": "",
+ "gpu_idle_before": {
+  "timestamp": "2026-09-08T20:50:34+0900",
+  "memory_total_mib": 24564.0,
+  "memory_used_mib": 40.0,
+  "memory_free_mib": 24041.0,
+  "utilization_pct": 0.0,
+  "temperature_c": 51.0,
+  "compute_process_count": 0,
+  "compute_apps": []
+ },
+ "preflight": {
+  "arm": "B",
+  "gpu_idle": {
+   "timestamp": "2026-09-08T20:50:34+0900",
+   "memory_total_mib": 24564.0,
+   "memory_used_mib": 40.0,
+   "memory_free_mib": 24041.0,
+   "utilization_pct": 0.0,
+   "temperature_c": 51.0,
+   "compute_process_count": 0,
+   "compute_apps": []
+  },
+  "video_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+  "model_snapshot": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "git_head": "7901d8e23196a018e5b4a162b92ab197b37520a0",
+  "tree_clean": true,
+  "tree_clean_source": "env",
+  "command": [
+   "/ssd/daeseok/envs/prj/bin/python",
+   "scripts/wvr_capacity_sampling.py",
+   "--video",
+   "/ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4",
+   "--out-dir",
+   "runs/wvr_light_v1",
+   "--log",
+   "runs/wvr_light_v1/capacity_sampling_B.log"
+  ],
+  "cwd": "/ssd/daeseok/wvr_light_v1",
+  "environment": {
+   "PYTORCH_CUDA_ALLOC_CONF": "",
+   "HF_HOME": "/ssd/daeseok/cache",
+   "CUDA_VISIBLE_DEVICES": "",
+   "WVR_CODE_GIT_HEAD": "7901d8e23196a018e5b4a162b92ab197b37520a0",
+   "LD_LIBRARY_PATH": "/usr/local/cuda/lib64:",
+   "CUDA_HOME": ""
+  }
+ },
+ "expected_frames": 150,
+ "expected_video_tokens": 10800,
+ "allocator_warnings": [],
+ "arm_verdict": "CAPACITY_PASS",
+ "single_change_violations": [],
+ "sampling_changed": true,
+ "token_reduction": {
+  "video_tokens": [
+   21600,
+   10800
+  ],
+  "input_tokens": [
+   23463,
+   11927
+  ],
+  "video_token_delta": -10800,
+  "input_token_delta": -11536
+ },
+ "baseline_delta_mib": 0.0,
+ "comparability_gate_mib": 128,
+ "comparability": "COMPARABLE",
+ "event_verdict": "CAPACITY_PASS"
+}
