@@ -1,0 +1,26 @@
+{
+ "schema": "wvr_frame_adjudication_verdicts_v1",
+ "event": "WVR_SAMPLING_SEMANTIC_DENSITY_FRAME_ADJUDICATION_V1",
+ "prereg": "docs/preregistration/WVR_FRAME_ADJUDICATION_V1_2026-09-09.md",
+ "code_git_head": "937405c1a09b8bd9230dfb8a601fe310fd46725b",
+ "question_verdicts": {
+  "Q1": {
+   "cause": "GENERATION_ERROR_NOT_SAMPLING",
+   "claim_correspondence": "S0_CLAIM_MATCHES"
+  },
+  "Q2": {
+   "cause": "GENERATION_ERROR_NOT_SAMPLING",
+   "claim_correspondence": "S1_CLAIM_MATCHES"
+  },
+  "Q3": {
+   "cause": "DROP_FRAMES_CARRY_MATERIAL_INFORMATION",
+   "claim_correspondence": "S0_CLAIM_MATCHES"
+  }
+ },
+ "probe_verdict": "SAMPLING_LOSS_CONFIRMED",
+ "observation_order": "KEEP_THEN_DROP_WITH_PRIOR_COMBINED_EXPOSURE",
+ "semantic_sufficiency_claim_allowed": false,
+ "gt_label_use_allowed": false,
+ "event_extraction_approved": false,
+ "allowed_scope": "영상 1편의 48초 창 2개에서 뽑은 3개 구간(합계 56초)에 대한 판정이다. 다른 영상·다른 구간·전체 파이프라인으로 일반화하지 않는다."
+}
