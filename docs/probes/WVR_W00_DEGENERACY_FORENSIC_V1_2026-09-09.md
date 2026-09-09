@@ -138,6 +138,10 @@ frame-grounding                       NOT ADJUDICATED
 뮤테이션    J-M1~M17 전부 RED (구멍 없음)
 경계 확인   기존 산출물 쓰기 0건(결과 파일 1건만) · blind map·overlap packet 미접촉 ·
           현행 제출본 해시 5732075871fd… 불변
+파일명 정정  실행 후 `scripts/wvr_w00_forensic.py` → `scripts/wvr_w00_forensic_run.py`로
+          바꿨다. `src/wvr_w00_forensic.py`와 basename이 같아 전체 스위트에서
+          import가 실행기로 잡히는 충돌이 있었다(사전등록 §8의 경로 표기만 달라진다).
+          이름 변경 후 분석을 다시 돌려 결과 JSON이 완전히 동일함을 확인했다
 ```
 
 ## 상태

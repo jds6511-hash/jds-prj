@@ -2,7 +2,7 @@
  "schema": "wvr_w00_forensic_v1",
  "event": "WVR_EVENT_EXTRACTION_W00_DEGENERACY_FORENSIC_V1",
  "prereg": "docs/preregistration/WVR_W00_DEGENERACY_FORENSIC_V1_2026-09-09.md",
- "code_git_head": "8118946a79ea69c09bf4e74ed322469d1dfc67cb",
+ "code_git_head": "ecb13427c1f0edf784d7c04f5a1dbfb07a1513d1",
  "new_inference_allowed": false,
  "rerun_allowed": false,
  "raw_salvage_allowed": false,

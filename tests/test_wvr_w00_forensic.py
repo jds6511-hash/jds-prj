@@ -24,7 +24,7 @@ import wvr_w00_forensic as fx
 ROOT = Path(__file__).resolve().parents[1]
 PREREG = (ROOT / "docs/preregistration/"
           "WVR_W00_DEGENERACY_FORENSIC_V1_2026-09-09.md")
-RUNNER = ROOT / "scripts/wvr_w00_forensic.py"
+RUNNER = ROOT / "scripts/wvr_w00_forensic_run.py"
 RUNS = ROOT / "runs/wvr_light_v1"
 RESULT = RUNS / "w00_forensic_v1.json"
 SUBMISSION = ROOT / "runs/quality_candidate/S7/report.hwpx"
