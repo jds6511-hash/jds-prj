@@ -1,0 +1,471 @@
+{
+ "schema": "wvr_subdivision_v1",
+ "event": "WVR_W00_SUBDIVISION_RECOVERY_V1",
+ "prereg": "docs/preregistration/WVR_W00_SUBDIVISION_RECOVERY_V1_2026-09-09.md",
+ "child": {
+  "child_id": "C2",
+  "index": 2,
+  "start_sec": 24.0,
+  "end_sec": 48.0
+ },
+ "parent_window": {
+  "window_id": "W00",
+  "index": 0,
+  "start_sec": 0.0,
+  "end_sec": 48.0
+ },
+ "requested": {
+  "sampling_fps": 0.5,
+  "frames": 12,
+  "frame_width": 512,
+  "frame_height": 288,
+  "model_id": "Qwen/Qwen3-VL-8B-Instruct",
+  "model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "dtype": "bfloat16",
+  "attn_implementation": "sdpa",
+  "quantization": null,
+  "device": "cuda:0",
+  "device_map": null,
+  "do_sample": false,
+  "num_beams": 1,
+  "max_new_tokens": 4096,
+  "repetition_penalty": 1.0,
+  "do_sample_frames": false,
+  "do_resize": false,
+  "prompt_contract": "SAMPLING_DIAG_PROMPT_V2",
+  "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+  "output_language": "en",
+  "window_sec": 24.0,
+  "frames_per_window": 12
+ },
+ "inference_config_change": {
+  "inference_config_change": "NONE",
+  "differences": {},
+  "architecture_change": {
+   "from": "48-sec local window / 24 frames",
+   "to": "24-sec local windows / 12-sec overlap / 12 frames",
+   "sole_recovery_mechanism": true,
+   "not_a_causal_claim": "48초가 degeneracy의 원인이라는 주장을 하지 않는다 — recovery efficacy만 잰다"
+  },
+  "declared_geometry": {
+   "window_sec": 24.0,
+   "frames_per_window": 12
+  },
+  "observed_geometry": {
+   "window_sec": 24.0,
+   "frames_per_window": 12
+  },
+  "geometry_as_declared": true,
+  "not_an_ablation_of_content_or_prompt": true
+ },
+ "coverage": {
+  "parent": [
+   0.0,
+   48.0
+  ],
+  "union": [
+   0.0,
+   48.0
+  ],
+  "gaps": [],
+  "covered": true
+ },
+ "frame_times": [
+  24.0,
+  26.0,
+  28.0,
+  30.0,
+  32.0,
+  34.0,
+  36.0,
+  38.0,
+  40.0,
+  42.0,
+  44.0,
+  46.0
+ ],
+ "prompt_contract": "SAMPLING_DIAG_PROMPT_V2",
+ "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+ "is_production_contract": false,
+ "output_language": "en",
+ "video_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+ "code_git_head": "fb8f75fda38264081e15e30b1952dfc4b691b506",
+ "runtime_config_hash": "082494b61c8b2fb1c5ba614b59254f86b442a34274b95e8a20b00ccff6459be3",
+ "original_w00_unchanged": {
+  "unchanged": true,
+  "checks": {
+   "record": true,
+   "raw": true
+  },
+  "expected": {
+   "record": "c8e65b74b8c71aa97f85fc69c6ffdfb2c72fab18911e6e1565c8458e44daa074",
+   "raw": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6"
+  },
+  "observed": {
+   "record": "c8e65b74b8c71aa97f85fc69c6ffdfb2c72fab18911e6e1565c8458e44daa074",
+   "raw": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6"
+  },
+  "original_status_retained": "WINDOW_INVALID",
+  "may_be_revalidated": false
+ },
+ "lineage_sources": [
+  "shadow_v1_W00.json",
+  "shadow_frame_bank.json"
+ ],
+ "reference_missing_times": [],
+ "raw_persisted": true,
+ "raw_path": "subdiv_v1_C2_raw.txt",
+ "retry_allowed": false,
+ "semantic_verdict_by_executor": false,
+ "production_promotion_allowed": false,
+ "metrics": {
+  "load_wall_sec": 3.64,
+  "video_process_wall_sec": 1.65,
+  "delivered_frame_count": 12,
+  "frame_size": [
+   512,
+   288
+  ],
+  "input_token_count": 1221,
+  "video_token_count": 864,
+  "infer_wall_sec": 13.67,
+  "generated_token_count": 352,
+  "generation_cap_hit": false,
+  "peak_vram_allocated_mib": 17103.6,
+  "peak_vram_reserved_mib": 17238.0,
+  "total_wall_sec": 20.88
+ },
+ "stage_status": {
+  "MODEL_LOAD": "OK",
+  "VIDEO_PROCESS": "OK",
+  "RAW_PERSIST": "OK",
+  "INFERENCE": "OK"
+ },
+ "allocator_observed": {
+  "backend": "native",
+  "env": "",
+  "segment_count": 268,
+  "expandable_segments_observed": false,
+  "expandable_flags_head": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ]
+ },
+ "frame_hashes": [
+  "c446332bad960066d2329633952601e15a8761a19aae8f992763df006ad2b8c8",
+  "7c4b5f9612afbf7f7640b7557cc32f09c92b1719830fc9f5ca3e134b68ea6110",
+  "2f9da79d4353a0368dba129a4f4fa657f54a692ba2080e49a0b5ea5b5d22e722",
+  "c95b3294c887b7868e86b9f8e75fd2cef0c28f816020ffad14046cec54cc2005",
+  "1f430683ed3a23161975eb853586f86277fe1caeffd5c954cc2a4f2420b1c13b",
+  "5d92b3421a25e688cf8de97d914c8e66a202c3ab58fc7990fd3f5a221d6e4604",
+  "5e9f28f3b739f3300afe461abc46464e9ebc87335ad5f52a1974e53c945cd5c6",
+  "a32eda960a50dcc953b5119eb32f1348ef18b88c59b44a29fc21625a2354b329",
+  "880a363875ce0c5b08d81a453bbaac68d467990cc574110a3663e8a40d6cdd3e",
+  "ee2d1343b4be65c169b9b554651c03d780b8f756d95e06d05903b727e3f5a2e3",
+  "7d45586b654482b844544f492c6754f9d152e163ae256eba3fa0aea901be8f42",
+  "8d2756e6a6c526967f273a7ac7c4082d226a4901925aeb40ff17d75599532dcd"
+ ],
+ "frame_indices": [
+  720,
+  780,
+  840,
+  900,
+  960,
+  1020,
+  1080,
+  1140,
+  1200,
+  1260,
+  1320,
+  1380
+ ],
+ "decoded_times": [
+  24.0,
+  26.0,
+  28.0,
+  30.0,
+  32.0,
+  34.0,
+  36.0,
+  38.0,
+  40.0,
+  42.0,
+  44.0,
+  46.0
+ ],
+ "decoded_fps": 30.0000041251862,
+ "lineage": {
+  "checked": 12,
+  "mismatches": [],
+  "uncovered": [],
+  "identity_ok": true,
+  "note": "대조 대상이 없으면 checked=0이고 일치를 주장하지 않는다"
+ },
+ "raw_output_hash": "70815aeee2408bd174d0a031a08200bf9e6b12fdff6d46a9c8a0ec36ef453b10",
+ "raw_output": "{\"events\": [{\"start_sec\": 24.0, \"end_sec\": 27.0, \"actor\": \"person\", \"action\": \"selecting\", \"object_or_state\": \"bottle of soy sauce\"}, {\"start_sec\": 27.0, \"end_sec\": 30.0, \"actor\": \"person\", \"action\": \"selecting\", \"object_or_state\": \"packet of curry\"}, {\"start_sec\": 30.0, \"end_sec\": 33.0, \"actor\": \"person\", \"action\": \"selecting\", \"object_or_state\": \"bag of potatoes\"}, {\"start_sec\": 33.0, \"end_sec\": 36.0, \"actor\": \"person\", \"action\": \"placing\", \"object_or_state\": \"potatoes in steamer\"}, {\"start_sec\": 36.0, \"end_sec\": 39.0, \"actor\": \"person\", \"action\": \"covering\", \"object_or_state\": \"steamer\"}, {\"start_sec\": 39.0, \"end_sec\": 42.0, \"actor\": \"person\", \"action\": \"pouring\", \"object_or_state\": \"curry powder into pan\"}, {\"start_sec\": 42.0, \"end_sec\": 45.0, \"actor\": \"person\", \"action\": \"pouring\", \"object_or_state\": \"oil into pan\"}, {\"start_sec\": 45.0, \"end_sec\": 48.0, \"actor\": \"person\", \"action\": \"pouring\", \"object_or_state\": \"water into pan\"}]}",
+ "parsed": {
+  "status": "OK",
+  "events": [
+   {
+    "index": 0,
+    "start_sec": 24.0,
+    "end_sec": 27.0,
+    "actor": "person",
+    "action": "selecting",
+    "object_or_state": "bottle of soy sauce",
+    "inside_window": true
+   },
+   {
+    "index": 1,
+    "start_sec": 27.0,
+    "end_sec": 30.0,
+    "actor": "person",
+    "action": "selecting",
+    "object_or_state": "packet of curry",
+    "inside_window": true
+   },
+   {
+    "index": 2,
+    "start_sec": 30.0,
+    "end_sec": 33.0,
+    "actor": "person",
+    "action": "selecting",
+    "object_or_state": "bag of potatoes",
+    "inside_window": true
+   },
+   {
+    "index": 3,
+    "start_sec": 33.0,
+    "end_sec": 36.0,
+    "actor": "person",
+    "action": "placing",
+    "object_or_state": "potatoes in steamer",
+    "inside_window": true
+   },
+   {
+    "index": 4,
+    "start_sec": 36.0,
+    "end_sec": 39.0,
+    "actor": "person",
+    "action": "covering",
+    "object_or_state": "steamer",
+    "inside_window": true
+   },
+   {
+    "index": 5,
+    "start_sec": 39.0,
+    "end_sec": 42.0,
+    "actor": "person",
+    "action": "pouring",
+    "object_or_state": "curry powder into pan",
+    "inside_window": true
+   },
+   {
+    "index": 6,
+    "start_sec": 42.0,
+    "end_sec": 45.0,
+    "actor": "person",
+    "action": "pouring",
+    "object_or_state": "oil into pan",
+    "inside_window": true
+   },
+   {
+    "index": 7,
+    "start_sec": 45.0,
+    "end_sec": 48.0,
+    "actor": "person",
+    "action": "pouring",
+    "object_or_state": "water into pan",
+    "inside_window": true
+   }
+  ],
+  "collapsed": [
+   {
+    "index": 0,
+    "start_sec": 24.0,
+    "end_sec": 27.0,
+    "actor": "person",
+    "action": "selecting",
+    "object_or_state": "bottle of soy sauce",
+    "signature": [
+     "person",
+     "selecting",
+     "bottle of soy sauce"
+    ],
+    "source_indices": [
+     0
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 1,
+    "start_sec": 27.0,
+    "end_sec": 30.0,
+    "actor": "person",
+    "action": "selecting",
+    "object_or_state": "packet of curry",
+    "signature": [
+     "person",
+     "selecting",
+     "packet of curry"
+    ],
+    "source_indices": [
+     1
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 2,
+    "start_sec": 30.0,
+    "end_sec": 33.0,
+    "actor": "person",
+    "action": "selecting",
+    "object_or_state": "bag of potatoes",
+    "signature": [
+     "person",
+     "selecting",
+     "bag of potatoes"
+    ],
+    "source_indices": [
+     2
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 3,
+    "start_sec": 33.0,
+    "end_sec": 36.0,
+    "actor": "person",
+    "action": "placing",
+    "object_or_state": "potatoes in steamer",
+    "signature": [
+     "person",
+     "placing",
+     "potatoes in steamer"
+    ],
+    "source_indices": [
+     3
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 4,
+    "start_sec": 36.0,
+    "end_sec": 39.0,
+    "actor": "person",
+    "action": "covering",
+    "object_or_state": "steamer",
+    "signature": [
+     "person",
+     "covering",
+     "steamer"
+    ],
+    "source_indices": [
+     4
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 5,
+    "start_sec": 39.0,
+    "end_sec": 42.0,
+    "actor": "person",
+    "action": "pouring",
+    "object_or_state": "curry powder into pan",
+    "signature": [
+     "person",
+     "pouring",
+     "curry powder into pan"
+    ],
+    "source_indices": [
+     5
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 6,
+    "start_sec": 42.0,
+    "end_sec": 45.0,
+    "actor": "person",
+    "action": "pouring",
+    "object_or_state": "oil into pan",
+    "signature": [
+     "person",
+     "pouring",
+     "oil into pan"
+    ],
+    "source_indices": [
+     6
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 7,
+    "start_sec": 45.0,
+    "end_sec": 48.0,
+    "actor": "person",
+    "action": "pouring",
+    "object_or_state": "water into pan",
+    "signature": [
+     "person",
+     "pouring",
+     "water into pan"
+    ],
+    "source_indices": [
+     7
+    ],
+    "collapsed_count": 1
+   }
+  ],
+  "violations": [],
+  "language": {
+   "contract": "ENGLISH_ONLY",
+   "satisfied": true,
+   "hangul_chars": 0,
+   "cjk_chars": 0,
+   "latin_chars": 217
+  },
+  "reason": ""
+ },
+ "parsed_output_hash": "464b98391c26aba698824d6f5a7b4ab253a4566faf44a01548c9884ac6093637",
+ "representation": {
+  "collapsed_event_count": 8,
+  "unique_signature_count": 8,
+  "max_collapsed_run": 1,
+  "degenerate": false,
+  "reason": ""
+ },
+ "collapse_output_hash": "a2fbf56b43b54fdc3233d18a414fa2fa313381bb16f2617b3220bc24cb12721c",
+ "structure": null,
+ "arm_status": "OK",
+ "finish_reason": "stop",
+ "memory_stats": {
+  "allocated_bytes.all.peak": 17934440448,
+  "reserved_bytes.all.peak": 18075353088,
+  "requested_bytes.all.peak": 17918134586,
+  "active_bytes.all.peak": 17934440448,
+  "inactive_split_bytes.all.peak": 274494464,
+  "num_alloc_retries": 0,
+  "num_ooms": 0
+ },
+ "validity": {
+  "valid": true,
+  "reasons": [],
+  "status": "WINDOW_VALID",
+  "language": {
+   "contract": "ENGLISH_ONLY",
+   "satisfied": true,
+   "hangul_chars": 0,
+   "cjk_chars": 0,
+   "latin_chars": 217
+  },
+  "blockers": [],
+  "output_failures": []
+ }
+}

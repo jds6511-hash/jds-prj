@@ -1,0 +1,375 @@
+{
+ "schema": "wvr_subdivision_v1",
+ "event": "WVR_W00_SUBDIVISION_RECOVERY_V1",
+ "prereg": "docs/preregistration/WVR_W00_SUBDIVISION_RECOVERY_V1_2026-09-09.md",
+ "child": {
+  "child_id": "C1",
+  "index": 1,
+  "start_sec": 12.0,
+  "end_sec": 36.0
+ },
+ "parent_window": {
+  "window_id": "W00",
+  "index": 0,
+  "start_sec": 0.0,
+  "end_sec": 48.0
+ },
+ "requested": {
+  "sampling_fps": 0.5,
+  "frames": 12,
+  "frame_width": 512,
+  "frame_height": 288,
+  "model_id": "Qwen/Qwen3-VL-8B-Instruct",
+  "model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "dtype": "bfloat16",
+  "attn_implementation": "sdpa",
+  "quantization": null,
+  "device": "cuda:0",
+  "device_map": null,
+  "do_sample": false,
+  "num_beams": 1,
+  "max_new_tokens": 4096,
+  "repetition_penalty": 1.0,
+  "do_sample_frames": false,
+  "do_resize": false,
+  "prompt_contract": "SAMPLING_DIAG_PROMPT_V2",
+  "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+  "output_language": "en",
+  "window_sec": 24.0,
+  "frames_per_window": 12
+ },
+ "inference_config_change": {
+  "inference_config_change": "NONE",
+  "differences": {},
+  "architecture_change": {
+   "from": "48-sec local window / 24 frames",
+   "to": "24-sec local windows / 12-sec overlap / 12 frames",
+   "sole_recovery_mechanism": true,
+   "not_a_causal_claim": "48초가 degeneracy의 원인이라는 주장을 하지 않는다 — recovery efficacy만 잰다"
+  },
+  "declared_geometry": {
+   "window_sec": 24.0,
+   "frames_per_window": 12
+  },
+  "observed_geometry": {
+   "window_sec": 24.0,
+   "frames_per_window": 12
+  },
+  "geometry_as_declared": true,
+  "not_an_ablation_of_content_or_prompt": true
+ },
+ "coverage": {
+  "parent": [
+   0.0,
+   48.0
+  ],
+  "union": [
+   0.0,
+   48.0
+  ],
+  "gaps": [],
+  "covered": true
+ },
+ "frame_times": [
+  12.0,
+  14.0,
+  16.0,
+  18.0,
+  20.0,
+  22.0,
+  24.0,
+  26.0,
+  28.0,
+  30.0,
+  32.0,
+  34.0
+ ],
+ "prompt_contract": "SAMPLING_DIAG_PROMPT_V2",
+ "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+ "is_production_contract": false,
+ "output_language": "en",
+ "video_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+ "code_git_head": "fb8f75fda38264081e15e30b1952dfc4b691b506",
+ "runtime_config_hash": "082494b61c8b2fb1c5ba614b59254f86b442a34274b95e8a20b00ccff6459be3",
+ "original_w00_unchanged": {
+  "unchanged": true,
+  "checks": {
+   "record": true,
+   "raw": true
+  },
+  "expected": {
+   "record": "c8e65b74b8c71aa97f85fc69c6ffdfb2c72fab18911e6e1565c8458e44daa074",
+   "raw": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6"
+  },
+  "observed": {
+   "record": "c8e65b74b8c71aa97f85fc69c6ffdfb2c72fab18911e6e1565c8458e44daa074",
+   "raw": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6"
+  },
+  "original_status_retained": "WINDOW_INVALID",
+  "may_be_revalidated": false
+ },
+ "lineage_sources": [
+  "shadow_v1_W00.json",
+  "shadow_frame_bank.json"
+ ],
+ "reference_missing_times": [],
+ "raw_persisted": true,
+ "raw_path": "subdiv_v1_C1_raw.txt",
+ "retry_allowed": false,
+ "semantic_verdict_by_executor": false,
+ "production_promotion_allowed": false,
+ "metrics": {
+  "load_wall_sec": 3.61,
+  "video_process_wall_sec": 1.27,
+  "delivered_frame_count": 12,
+  "frame_size": [
+   512,
+   288
+  ],
+  "input_token_count": 1221,
+  "video_token_count": 864,
+  "infer_wall_sec": 13.67,
+  "generated_token_count": 355,
+  "generation_cap_hit": false,
+  "peak_vram_allocated_mib": 17103.6,
+  "peak_vram_reserved_mib": 17238.0,
+  "total_wall_sec": 20.46
+ },
+ "stage_status": {
+  "MODEL_LOAD": "OK",
+  "VIDEO_PROCESS": "OK",
+  "RAW_PERSIST": "OK",
+  "INFERENCE": "OK"
+ },
+ "allocator_observed": {
+  "backend": "native",
+  "env": "",
+  "segment_count": 268,
+  "expandable_segments_observed": false,
+  "expandable_flags_head": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ]
+ },
+ "frame_hashes": [
+  "f7b78d2701f25c41888b8ec3559dd461053c7f67b53e74022c4dd1971135fb0a",
+  "17bdf4d20d9afeba483ae57bae2bfa6ede51ed7291b070cb37cbdb8fcaad3505",
+  "7a52c8fd00a9efbc9b23998cdbed59f32d13c8ad43909bfe9f7f15a6c1c17660",
+  "703cb2992adc200ab291a83e8b829a1d63c5717e81f77bb7517bd9c7216422d5",
+  "7ef670a6d833e65d3da2f511cba433e0b87df9b90edc92f1c28a748696cefbad",
+  "f2a457fe9cfd79079bd9bdac7e62f7aa563c8b9c20449ea41d4927a490e76074",
+  "c446332bad960066d2329633952601e15a8761a19aae8f992763df006ad2b8c8",
+  "7c4b5f9612afbf7f7640b7557cc32f09c92b1719830fc9f5ca3e134b68ea6110",
+  "2f9da79d4353a0368dba129a4f4fa657f54a692ba2080e49a0b5ea5b5d22e722",
+  "c95b3294c887b7868e86b9f8e75fd2cef0c28f816020ffad14046cec54cc2005",
+  "1f430683ed3a23161975eb853586f86277fe1caeffd5c954cc2a4f2420b1c13b",
+  "5d92b3421a25e688cf8de97d914c8e66a202c3ab58fc7990fd3f5a221d6e4604"
+ ],
+ "frame_indices": [
+  360,
+  420,
+  480,
+  540,
+  600,
+  660,
+  720,
+  780,
+  840,
+  900,
+  960,
+  1020
+ ],
+ "decoded_times": [
+  12.0,
+  14.0,
+  16.0,
+  18.0,
+  20.0,
+  22.0,
+  24.0,
+  26.0,
+  28.0,
+  30.0,
+  32.0,
+  34.0
+ ],
+ "decoded_fps": 30.0000041251862,
+ "lineage": {
+  "checked": 12,
+  "mismatches": [],
+  "uncovered": [],
+  "identity_ok": true,
+  "note": "대조 대상이 없으면 checked=0이고 일치를 주장하지 않는다"
+ },
+ "raw_output_hash": "9316f9f62b519ef0cc8a99a827fa71ed153b5efea3a673e5d53b2d084392f117",
+ "raw_output": "{\"events\": [{\"start_sec\": 12.0, \"end_sec\": 15.0, \"actor\": \"person\", \"action\": \"holding\", \"object_or_state\": \"sticker sheet\"}, {\"start_sec\": 15.0, \"end_sec\": 18.0, \"actor\": \"person\", \"action\": \"holding\", \"object_or_state\": \"plastic bag with rice\"}, {\"start_sec\": 18.0, \"end_sec\": 21.0, \"actor\": \"person\", \"action\": \"holding\", \"object_or_state\": \"plastic bag with rice\"}, {\"start_sec\": 21.0, \"end_sec\": 24.0, \"actor\": \"person\", \"action\": \"holding\", \"object_or_state\": \"plastic bag with rice\"}, {\"start_sec\": 24.0, \"end_sec\": 27.0, \"actor\": \"person\", \"action\": \"holding\", \"object_or_state\": \"plastic bag with rice\"}, {\"start_sec\": 27.0, \"end_sec\": 30.0, \"actor\": \"person\", \"action\": \"holding\", \"object_or_state\": \"plastic bag with rice\"}, {\"start_sec\": 30.0, \"end_sec\": 33.0, \"actor\": \"person\", \"action\": \"holding\", \"object_or_state\": \"plastic bag with rice\"}, {\"start_sec\": 33.0, \"end_sec\": 36.0, \"actor\": \"person\", \"action\": \"holding\", \"object_or_state\": \"plastic bag with rice\"}]}",
+ "parsed": {
+  "status": "OK",
+  "events": [
+   {
+    "index": 0,
+    "start_sec": 12.0,
+    "end_sec": 15.0,
+    "actor": "person",
+    "action": "holding",
+    "object_or_state": "sticker sheet",
+    "inside_window": true
+   },
+   {
+    "index": 1,
+    "start_sec": 15.0,
+    "end_sec": 18.0,
+    "actor": "person",
+    "action": "holding",
+    "object_or_state": "plastic bag with rice",
+    "inside_window": true
+   },
+   {
+    "index": 2,
+    "start_sec": 18.0,
+    "end_sec": 21.0,
+    "actor": "person",
+    "action": "holding",
+    "object_or_state": "plastic bag with rice",
+    "inside_window": true
+   },
+   {
+    "index": 3,
+    "start_sec": 21.0,
+    "end_sec": 24.0,
+    "actor": "person",
+    "action": "holding",
+    "object_or_state": "plastic bag with rice",
+    "inside_window": true
+   },
+   {
+    "index": 4,
+    "start_sec": 24.0,
+    "end_sec": 27.0,
+    "actor": "person",
+    "action": "holding",
+    "object_or_state": "plastic bag with rice",
+    "inside_window": true
+   },
+   {
+    "index": 5,
+    "start_sec": 27.0,
+    "end_sec": 30.0,
+    "actor": "person",
+    "action": "holding",
+    "object_or_state": "plastic bag with rice",
+    "inside_window": true
+   },
+   {
+    "index": 6,
+    "start_sec": 30.0,
+    "end_sec": 33.0,
+    "actor": "person",
+    "action": "holding",
+    "object_or_state": "plastic bag with rice",
+    "inside_window": true
+   },
+   {
+    "index": 7,
+    "start_sec": 33.0,
+    "end_sec": 36.0,
+    "actor": "person",
+    "action": "holding",
+    "object_or_state": "plastic bag with rice",
+    "inside_window": true
+   }
+  ],
+  "collapsed": [
+   {
+    "index": 0,
+    "start_sec": 12.0,
+    "end_sec": 15.0,
+    "actor": "person",
+    "action": "holding",
+    "object_or_state": "sticker sheet",
+    "signature": [
+     "person",
+     "holding",
+     "sticker sheet"
+    ],
+    "source_indices": [
+     0
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 1,
+    "start_sec": 15.0,
+    "end_sec": 36.0,
+    "actor": "person",
+    "action": "holding",
+    "object_or_state": "plastic bag with rice",
+    "signature": [
+     "person",
+     "holding",
+     "plastic bag with rice"
+    ],
+    "source_indices": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ],
+    "collapsed_count": 7
+   }
+  ],
+  "violations": [],
+  "language": {
+   "contract": "ENGLISH_ONLY",
+   "satisfied": true,
+   "hangul_chars": 0,
+   "cjk_chars": 0,
+   "latin_chars": 242
+  },
+  "reason": ""
+ },
+ "parsed_output_hash": "9101bb56f4c344f94b7d34f7938603f5ff71a12050e4587235cf6eb077ba303d",
+ "representation": {
+  "collapsed_event_count": 2,
+  "unique_signature_count": 2,
+  "max_collapsed_run": 7,
+  "degenerate": false,
+  "reason": ""
+ },
+ "collapse_output_hash": "20298b74d9aab9baf6749a80e96f96fa5cd687310161be2b01f9d38a82bc4320",
+ "structure": null,
+ "arm_status": "OK",
+ "finish_reason": "stop",
+ "memory_stats": {
+  "allocated_bytes.all.peak": 17934440448,
+  "reserved_bytes.all.peak": 18075353088,
+  "requested_bytes.all.peak": 17918134586,
+  "active_bytes.all.peak": 17934440448,
+  "inactive_split_bytes.all.peak": 274494464,
+  "num_alloc_retries": 0,
+  "num_ooms": 0
+ },
+ "validity": {
+  "valid": true,
+  "reasons": [],
+  "status": "WINDOW_VALID",
+  "language": {
+   "contract": "ENGLISH_ONLY",
+   "satisfied": true,
+   "hangul_chars": 0,
+   "cjk_chars": 0,
+   "latin_chars": 242
+  },
+  "blockers": [],
+  "output_failures": []
+ }
+}

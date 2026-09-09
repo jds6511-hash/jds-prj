@@ -1,0 +1,77 @@
++ BASE=/ssd/daeseok/jds-prj
++ VIDEO=/ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4
++ OUT_DIR=/ssd/daeseok/jds-prj/runs/wvr_light_v1
++ PY=/ssd/daeseok/envs/prj/bin/python
++ export HF_HOME=/ssd/daeseok/cache
++ HF_HOME=/ssd/daeseok/cache
++ export PYTHONUNBUFFERED=1
++ PYTHONUNBUFFERED=1
++ export PYTHONDONTWRITEBYTECODE=1
++ PYTHONDONTWRITEBYTECODE=1
+++ git -C /ssd/daeseok/jds-prj rev-parse HEAD
++ export WVR_CODE_GIT_HEAD=fb8f75fda38264081e15e30b1952dfc4b691b506
++ WVR_CODE_GIT_HEAD=fb8f75fda38264081e15e30b1952dfc4b691b506
+++ date
++ echo '=== subdivision validator (2026. 09. 09. (수) 21:05:43 KST) commit fb8f75fda38264081e15e30b1952dfc4b691b506 ==='
+=== subdivision validator (2026. 09. 09. (수) 21:05:43 KST) commit fb8f75fda38264081e15e30b1952dfc4b691b506 ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_subdiv_validate.py --runs /ssd/daeseok/jds-prj/runs/wvr_light_v1
+validator=PASS
+  C0   0.0- 24.0 frames=12 change=NONE geom=True lineage_missing=0
+  C1  12.0- 36.0 frames=12 change=NONE geom=True lineage_missing=0
+  C2  24.0- 48.0 frames=12 change=NONE geom=True lineage_missing=0
+  R-O1  12.0- 24.0 shared=6  12, 14, 16, 18, 20, 22
+  R-O2  24.0- 36.0 shared=6  24, 26, 28, 30, 32, 34
+  check child_count                  True
+  check coverage_no_gap              True
+  check frames_per_child             True
+  check config_change_none           True
+  check geometry_as_declared         True
+  check shared_frames                True
+  check original_w00_unchanged       True
+  check lineage_reference_complete   True
+++ date
++ echo '=== subdivision 시작 (2026. 09. 09. (수) 21:05:43 KST) ==='
+=== subdivision 시작 (2026. 09. 09. (수) 21:05:43 KST) ===
++ nvidia-smi --query-gpu=memory.used,utilization.gpu --format=csv,noheader
+40 MiB, 0 %
++ for child in C0 C1 C2
+++ date
++ echo '=== C0 시작 (2026. 09. 09. (수) 21:05:43 KST) ==='
+=== C0 시작 (2026. 09. 09. (수) 21:05:43 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_subdiv_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --child C0 --runs-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 8367.81it/s]
+child=C0 0-24 status=PARSE_FAILURE frames=12 in=1217 gen=4096 cap=True
+  raw=0 collapsed=0 uniq=0 degenerate=True lineage=12/0 validity=WINDOW_INVALID ['PARSE_FAILURE', 'NO_EVENT', 'TRUNCATED_AT_CAP', 'OUTPUT_LANGUAGE_CONTRACT_FAILURE', 'EVENT_REPRESENTATION_DEGENERACY']
++ echo '=== C0 실패 기록됨 (재시도하지 않는다) ==='
+=== C0 실패 기록됨 (재시도하지 않는다) ===
+++ date
++ echo '=== C0 완료 (2026. 09. 09. (수) 21:08:20 KST) ==='
+=== C0 완료 (2026. 09. 09. (수) 21:08:20 KST) ===
++ for child in C0 C1 C2
+++ date
++ echo '=== C1 시작 (2026. 09. 09. (수) 21:08:20 KST) ==='
+=== C1 시작 (2026. 09. 09. (수) 21:08:20 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_subdiv_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --child C1 --runs-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 9179.78it/s]
+child=C1 12-36 status=OK frames=12 in=1221 gen=355 cap=False
+  raw=8 collapsed=2 uniq=2 degenerate=False lineage=12/0 validity=WINDOW_VALID []
+++ date
++ echo '=== C1 완료 (2026. 09. 09. (수) 21:08:47 KST) ==='
+=== C1 완료 (2026. 09. 09. (수) 21:08:47 KST) ===
++ for child in C0 C1 C2
+++ date
++ echo '=== C2 시작 (2026. 09. 09. (수) 21:08:47 KST) ==='
+=== C2 시작 (2026. 09. 09. (수) 21:08:47 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_subdiv_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --child C2 --runs-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:  90%|█████████ | 677/750 [00:00<00:00, 6766.38it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7234.05it/s]
+child=C2 24-48 status=OK frames=12 in=1221 gen=352 cap=False
+  raw=8 collapsed=8 uniq=8 degenerate=False lineage=12/0 validity=WINDOW_VALID []
+++ date
++ echo '=== C2 완료 (2026. 09. 09. (수) 21:09:14 KST) ==='
+=== C2 완료 (2026. 09. 09. (수) 21:09:14 KST) ===
+++ date
++ echo '=== subdivision 완료 (2026. 09. 09. (수) 21:09:14 KST) ==='
+=== subdivision 완료 (2026. 09. 09. (수) 21:09:14 KST) ===
++ wc -l
++ ls -l /ssd/daeseok/jds-prj/runs/wvr_light_v1/subdiv_v1_C0.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/subdiv_v1_C1.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/subdiv_v1_C2.json
+3

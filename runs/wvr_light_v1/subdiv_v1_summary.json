@@ -1,0 +1,684 @@
+{
+ "schema": "wvr_subdivision_v1_summary",
+ "event": "WVR_W00_SUBDIVISION_RECOVERY_V1",
+ "prereg": "docs/preregistration/WVR_W00_SUBDIVISION_RECOVERY_V1_2026-09-09.md",
+ "code_git_head": "21c8359195213094dc68fee3b52e1df3a4c4bc6b",
+ "prereg_sha_used_for_blinding": "e593914d69826c378ce59c3476b036396ac3a723",
+ "parent_window": {
+  "window_id": "W00",
+  "index": 0,
+  "start_sec": 0.0,
+  "end_sec": 48.0
+ },
+ "coverage": {
+  "parent": [
+   0.0,
+   48.0
+  ],
+  "union": [
+   0.0,
+   48.0
+  ],
+  "gaps": [],
+  "covered": true
+ },
+ "architecture_change": {
+  "from": "48-sec local window / 24 frames",
+  "to": "24-sec local windows / 12-sec overlap / 12 frames",
+  "sole_recovery_mechanism": true,
+  "not_a_causal_claim": "48초가 degeneracy의 원인이라는 주장을 하지 않는다 — recovery efficacy만 잰다"
+ },
+ "child_count": 3,
+ "children": [
+  {
+   "child_id": "C0",
+   "start_sec": 0.0,
+   "end_sec": 24.0,
+   "frames": 12,
+   "frame_times": [
+    0.0,
+    2.0,
+    4.0,
+    6.0,
+    8.0,
+    10.0,
+    12.0,
+    14.0,
+    16.0,
+    18.0,
+    20.0,
+    22.0
+   ],
+   "input_tokens": 1217,
+   "video_tokens": 864,
+   "generated_tokens": 4096,
+   "generation_cap_hit": true,
+   "finish_reason": "length",
+   "raw_chars": 11713,
+   "raw_event_count": 0,
+   "completed_object_count": 93,
+   "collapsed_event_count": 0,
+   "unique_signature_count": 0,
+   "raw_unique_signature_count": 3,
+   "zero_duration_count": 93,
+   "max_signature_repeat": 31,
+   "json_complete": false,
+   "positive_duration_count": 0,
+   "first_repeat": {
+    "object_index": 3,
+    "first_seen_index": 0,
+    "offset": 387,
+    "signature": [
+     "a person",
+     "pouring",
+     "liquid from a bottle into a bowl"
+    ]
+   },
+   "top_signatures": [
+    {
+     "signature": [
+      "a person",
+      "pouring",
+      "liquid from a bottle into a bowl"
+     ],
+     "count": 31
+    },
+    {
+     "signature": [
+      "a person",
+      "holding",
+      "a bottle of liquid"
+     ],
+     "count": 31
+    },
+    {
+     "signature": [
+      "a person",
+      "standing",
+      "in front of a counter"
+     ],
+     "count": 31
+    }
+   ],
+   "structure_source": "raw_file_post_hoc",
+   "degenerate": true,
+   "parse_status": "PARSE_FAILURE",
+   "language_satisfied": false,
+   "raw_persisted": true,
+   "arm_status": "PARSE_FAILURE",
+   "valid": false,
+   "status": "WINDOW_INVALID",
+   "reasons": [
+    "PARSE_FAILURE",
+    "NO_EVENT",
+    "TRUNCATED_AT_CAP",
+    "OUTPUT_LANGUAGE_CONTRACT_FAILURE",
+    "EVENT_REPRESENTATION_DEGENERACY"
+   ],
+   "blockers": [],
+   "output_failures": [
+    "PARSE_FAILURE",
+    "NO_EVENT",
+    "TRUNCATED_AT_CAP",
+    "OUTPUT_LANGUAGE_CONTRACT_FAILURE",
+    "EVENT_REPRESENTATION_DEGENERACY"
+   ],
+   "lineage_checked": 12,
+   "lineage_mismatches": 0,
+   "raw_output_hash": "7460a5b61821e41b15dd0281aa15580a2ac7752dab48be2bbf809f1d193105d0",
+   "parsed_output_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "collapse_output_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "runtime_config_hash": "082494b61c8b2fb1c5ba614b59254f86b442a34274b95e8a20b00ccff6459be3",
+   "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+   "infer_wall_sec": 143.64,
+   "peak_vram_allocated_mib": 17521.6,
+   "code_git_head": "fb8f75fda38264081e15e30b1952dfc4b691b506"
+  },
+  {
+   "child_id": "C1",
+   "start_sec": 12.0,
+   "end_sec": 36.0,
+   "frames": 12,
+   "frame_times": [
+    12.0,
+    14.0,
+    16.0,
+    18.0,
+    20.0,
+    22.0,
+    24.0,
+    26.0,
+    28.0,
+    30.0,
+    32.0,
+    34.0
+   ],
+   "input_tokens": 1221,
+   "video_tokens": 864,
+   "generated_tokens": 355,
+   "generation_cap_hit": false,
+   "finish_reason": "stop",
+   "raw_chars": 980,
+   "raw_event_count": 8,
+   "completed_object_count": 8,
+   "collapsed_event_count": 2,
+   "unique_signature_count": 2,
+   "raw_unique_signature_count": 2,
+   "zero_duration_count": 0,
+   "max_signature_repeat": 7,
+   "json_complete": true,
+   "positive_duration_count": 8,
+   "first_repeat": {
+    "object_index": 2,
+    "first_seen_index": 1,
+    "offset": 248,
+    "signature": [
+     "person",
+     "holding",
+     "plastic bag with rice"
+    ]
+   },
+   "top_signatures": [
+    {
+     "signature": [
+      "person",
+      "holding",
+      "plastic bag with rice"
+     ],
+     "count": 7
+    },
+    {
+     "signature": [
+      "person",
+      "holding",
+      "sticker sheet"
+     ],
+     "count": 1
+    }
+   ],
+   "structure_source": "raw_file_post_hoc",
+   "degenerate": false,
+   "parse_status": "OK",
+   "language_satisfied": true,
+   "raw_persisted": true,
+   "arm_status": "OK",
+   "valid": true,
+   "status": "WINDOW_VALID",
+   "reasons": [],
+   "blockers": [],
+   "output_failures": [],
+   "lineage_checked": 12,
+   "lineage_mismatches": 0,
+   "raw_output_hash": "9316f9f62b519ef0cc8a99a827fa71ed153b5efea3a673e5d53b2d084392f117",
+   "parsed_output_hash": "9101bb56f4c344f94b7d34f7938603f5ff71a12050e4587235cf6eb077ba303d",
+   "collapse_output_hash": "20298b74d9aab9baf6749a80e96f96fa5cd687310161be2b01f9d38a82bc4320",
+   "runtime_config_hash": "082494b61c8b2fb1c5ba614b59254f86b442a34274b95e8a20b00ccff6459be3",
+   "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+   "infer_wall_sec": 13.67,
+   "peak_vram_allocated_mib": 17103.6,
+   "code_git_head": "fb8f75fda38264081e15e30b1952dfc4b691b506"
+  },
+  {
+   "child_id": "C2",
+   "start_sec": 24.0,
+   "end_sec": 48.0,
+   "frames": 12,
+   "frame_times": [
+    24.0,
+    26.0,
+    28.0,
+    30.0,
+    32.0,
+    34.0,
+    36.0,
+    38.0,
+    40.0,
+    42.0,
+    44.0,
+    46.0
+   ],
+   "input_tokens": 1221,
+   "video_tokens": 864,
+   "generated_tokens": 352,
+   "generation_cap_hit": false,
+   "finish_reason": "stop",
+   "raw_chars": 949,
+   "raw_event_count": 8,
+   "completed_object_count": 8,
+   "collapsed_event_count": 8,
+   "unique_signature_count": 8,
+   "raw_unique_signature_count": 8,
+   "zero_duration_count": 0,
+   "max_signature_repeat": 1,
+   "json_complete": true,
+   "positive_duration_count": 8,
+   "first_repeat": null,
+   "top_signatures": [
+    {
+     "signature": [
+      "person",
+      "selecting",
+      "bottle of soy sauce"
+     ],
+     "count": 1
+    },
+    {
+     "signature": [
+      "person",
+      "selecting",
+      "packet of curry"
+     ],
+     "count": 1
+    },
+    {
+     "signature": [
+      "person",
+      "selecting",
+      "bag of potatoes"
+     ],
+     "count": 1
+    }
+   ],
+   "structure_source": "raw_file_post_hoc",
+   "degenerate": false,
+   "parse_status": "OK",
+   "language_satisfied": true,
+   "raw_persisted": true,
+   "arm_status": "OK",
+   "valid": true,
+   "status": "WINDOW_VALID",
+   "reasons": [],
+   "blockers": [],
+   "output_failures": [],
+   "lineage_checked": 12,
+   "lineage_mismatches": 0,
+   "raw_output_hash": "70815aeee2408bd174d0a031a08200bf9e6b12fdff6d46a9c8a0ec36ef453b10",
+   "parsed_output_hash": "464b98391c26aba698824d6f5a7b4ab253a4566faf44a01548c9884ac6093637",
+   "collapse_output_hash": "a2fbf56b43b54fdc3233d18a414fa2fa313381bb16f2617b3220bc24cb12721c",
+   "runtime_config_hash": "082494b61c8b2fb1c5ba614b59254f86b442a34274b95e8a20b00ccff6459be3",
+   "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+   "infer_wall_sec": 13.67,
+   "peak_vram_allocated_mib": 17103.6,
+   "code_git_head": "fb8f75fda38264081e15e30b1952dfc4b691b506"
+  }
+ ],
+ "overlap_identity": [
+  {
+   "overlap_id": "R-O1",
+   "start_sec": 12.0,
+   "end_sec": 24.0,
+   "shared_expected": 6,
+   "shared_observed": 6,
+   "missing_times": [],
+   "pixel_hash_mismatches": [],
+   "identity_ok": true
+  },
+  {
+   "overlap_id": "R-O2",
+   "start_sec": 24.0,
+   "end_sec": 36.0,
+   "shared_expected": 6,
+   "shared_observed": 6,
+   "missing_times": [],
+   "pixel_hash_mismatches": [],
+   "identity_ok": true
+  }
+ ],
+ "shared_frames_per_overlap": 6,
+ "recovery_gate": {
+  "recovery_verdict": "SUBDIVISION_RECOVERY_FAIL",
+  "reason": "CHILD_TECHNICAL_INVALID",
+  "valid_child_count": 2,
+  "expected_child_count": 3,
+  "invalid_children": [
+   "C0"
+  ],
+  "blockers": [],
+  "packet_generation_allowed": false,
+  "event_status": "SUBDIVISION_RECOVERY_FAIL",
+  "semantic_verdict": null,
+  "semantic_verdict_by_executor": false,
+  "allowed_max_conclusion": "The deterministic W00 degeneracy observed at 48 seconds was not reproduced in any of the three preregistered 24-second recovery children under the frozen inference configuration.",
+  "forbidden_conclusions": [
+   "24초 semantic stability proven",
+   "24초 production approved",
+   "0.5fps sufficient",
+   "Event extraction solved",
+   "48초가 degeneracy의 원인이다",
+   "24초가 universally safe하다",
+   "24초 전체 architecture 불가능",
+   "original W00이 복구됐다",
+   "SHADOW_V1이 복구됐다"
+  ]
+ },
+ "extra_blockers": [],
+ "parent_comparison": {
+  "parent": {
+   "available": true,
+   "window_id": "W00",
+   "start_sec": 0.0,
+   "end_sec": 48.0,
+   "frames": 24,
+   "input_tokens": 2135,
+   "generated_tokens": 4096,
+   "generation_cap_hit": true,
+   "raw_chars": 11533,
+   "completed_object_count": 95,
+   "raw_unique_signature_count": 2,
+   "zero_duration_count": 95,
+   "positive_duration_count": 0,
+   "max_signature_repeat": 48,
+   "json_complete": false,
+   "status": "WINDOW_INVALID",
+   "reasons": [
+    "PARSE_FAILURE",
+    "NO_EVENT",
+    "TRUNCATED_AT_CAP",
+    "OUTPUT_LANGUAGE_CONTRACT_FAILURE"
+   ],
+   "raw_output_hash_file": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6",
+   "record_sha256": "c8e65b74b8c71aa97f85fc69c6ffdfb2c72fab18911e6e1565c8458e44daa074"
+  },
+  "children": [
+   {
+    "child_id": "C0",
+    "start_sec": 0.0,
+    "end_sec": 24.0,
+    "frames": 12,
+    "frame_times": [
+     0.0,
+     2.0,
+     4.0,
+     6.0,
+     8.0,
+     10.0,
+     12.0,
+     14.0,
+     16.0,
+     18.0,
+     20.0,
+     22.0
+    ],
+    "input_tokens": 1217,
+    "video_tokens": 864,
+    "generated_tokens": 4096,
+    "generation_cap_hit": true,
+    "finish_reason": "length",
+    "raw_chars": 11713,
+    "raw_event_count": 0,
+    "completed_object_count": 93,
+    "collapsed_event_count": 0,
+    "unique_signature_count": 0,
+    "raw_unique_signature_count": 3,
+    "zero_duration_count": 93,
+    "max_signature_repeat": 31,
+    "json_complete": false,
+    "positive_duration_count": 0,
+    "first_repeat": {
+     "object_index": 3,
+     "first_seen_index": 0,
+     "offset": 387,
+     "signature": [
+      "a person",
+      "pouring",
+      "liquid from a bottle into a bowl"
+     ]
+    },
+    "top_signatures": [
+     {
+      "signature": [
+       "a person",
+       "pouring",
+       "liquid from a bottle into a bowl"
+      ],
+      "count": 31
+     },
+     {
+      "signature": [
+       "a person",
+       "holding",
+       "a bottle of liquid"
+      ],
+      "count": 31
+     },
+     {
+      "signature": [
+       "a person",
+       "standing",
+       "in front of a counter"
+      ],
+      "count": 31
+     }
+    ],
+    "structure_source": "raw_file_post_hoc",
+    "degenerate": true,
+    "parse_status": "PARSE_FAILURE",
+    "language_satisfied": false,
+    "raw_persisted": true,
+    "arm_status": "PARSE_FAILURE",
+    "valid": false,
+    "status": "WINDOW_INVALID",
+    "reasons": [
+     "PARSE_FAILURE",
+     "NO_EVENT",
+     "TRUNCATED_AT_CAP",
+     "OUTPUT_LANGUAGE_CONTRACT_FAILURE",
+     "EVENT_REPRESENTATION_DEGENERACY"
+    ],
+    "blockers": [],
+    "output_failures": [
+     "PARSE_FAILURE",
+     "NO_EVENT",
+     "TRUNCATED_AT_CAP",
+     "OUTPUT_LANGUAGE_CONTRACT_FAILURE",
+     "EVENT_REPRESENTATION_DEGENERACY"
+    ],
+    "lineage_checked": 12,
+    "lineage_mismatches": 0,
+    "raw_output_hash": "7460a5b61821e41b15dd0281aa15580a2ac7752dab48be2bbf809f1d193105d0",
+    "parsed_output_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "collapse_output_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "runtime_config_hash": "082494b61c8b2fb1c5ba614b59254f86b442a34274b95e8a20b00ccff6459be3",
+    "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+    "infer_wall_sec": 143.64,
+    "peak_vram_allocated_mib": 17521.6,
+    "code_git_head": "fb8f75fda38264081e15e30b1952dfc4b691b506"
+   },
+   {
+    "child_id": "C1",
+    "start_sec": 12.0,
+    "end_sec": 36.0,
+    "frames": 12,
+    "frame_times": [
+     12.0,
+     14.0,
+     16.0,
+     18.0,
+     20.0,
+     22.0,
+     24.0,
+     26.0,
+     28.0,
+     30.0,
+     32.0,
+     34.0
+    ],
+    "input_tokens": 1221,
+    "video_tokens": 864,
+    "generated_tokens": 355,
+    "generation_cap_hit": false,
+    "finish_reason": "stop",
+    "raw_chars": 980,
+    "raw_event_count": 8,
+    "completed_object_count": 8,
+    "collapsed_event_count": 2,
+    "unique_signature_count": 2,
+    "raw_unique_signature_count": 2,
+    "zero_duration_count": 0,
+    "max_signature_repeat": 7,
+    "json_complete": true,
+    "positive_duration_count": 8,
+    "first_repeat": {
+     "object_index": 2,
+     "first_seen_index": 1,
+     "offset": 248,
+     "signature": [
+      "person",
+      "holding",
+      "plastic bag with rice"
+     ]
+    },
+    "top_signatures": [
+     {
+      "signature": [
+       "person",
+       "holding",
+       "plastic bag with rice"
+      ],
+      "count": 7
+     },
+     {
+      "signature": [
+       "person",
+       "holding",
+       "sticker sheet"
+      ],
+      "count": 1
+     }
+    ],
+    "structure_source": "raw_file_post_hoc",
+    "degenerate": false,
+    "parse_status": "OK",
+    "language_satisfied": true,
+    "raw_persisted": true,
+    "arm_status": "OK",
+    "valid": true,
+    "status": "WINDOW_VALID",
+    "reasons": [],
+    "blockers": [],
+    "output_failures": [],
+    "lineage_checked": 12,
+    "lineage_mismatches": 0,
+    "raw_output_hash": "9316f9f62b519ef0cc8a99a827fa71ed153b5efea3a673e5d53b2d084392f117",
+    "parsed_output_hash": "9101bb56f4c344f94b7d34f7938603f5ff71a12050e4587235cf6eb077ba303d",
+    "collapse_output_hash": "20298b74d9aab9baf6749a80e96f96fa5cd687310161be2b01f9d38a82bc4320",
+    "runtime_config_hash": "082494b61c8b2fb1c5ba614b59254f86b442a34274b95e8a20b00ccff6459be3",
+    "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+    "infer_wall_sec": 13.67,
+    "peak_vram_allocated_mib": 17103.6,
+    "code_git_head": "fb8f75fda38264081e15e30b1952dfc4b691b506"
+   },
+   {
+    "child_id": "C2",
+    "start_sec": 24.0,
+    "end_sec": 48.0,
+    "frames": 12,
+    "frame_times": [
+     24.0,
+     26.0,
+     28.0,
+     30.0,
+     32.0,
+     34.0,
+     36.0,
+     38.0,
+     40.0,
+     42.0,
+     44.0,
+     46.0
+    ],
+    "input_tokens": 1221,
+    "video_tokens": 864,
+    "generated_tokens": 352,
+    "generation_cap_hit": false,
+    "finish_reason": "stop",
+    "raw_chars": 949,
+    "raw_event_count": 8,
+    "completed_object_count": 8,
+    "collapsed_event_count": 8,
+    "unique_signature_count": 8,
+    "raw_unique_signature_count": 8,
+    "zero_duration_count": 0,
+    "max_signature_repeat": 1,
+    "json_complete": true,
+    "positive_duration_count": 8,
+    "first_repeat": null,
+    "top_signatures": [
+     {
+      "signature": [
+       "person",
+       "selecting",
+       "bottle of soy sauce"
+      ],
+      "count": 1
+     },
+     {
+      "signature": [
+       "person",
+       "selecting",
+       "packet of curry"
+      ],
+      "count": 1
+     },
+     {
+      "signature": [
+       "person",
+       "selecting",
+       "bag of potatoes"
+      ],
+      "count": 1
+     }
+    ],
+    "structure_source": "raw_file_post_hoc",
+    "degenerate": false,
+    "parse_status": "OK",
+    "language_satisfied": true,
+    "raw_persisted": true,
+    "arm_status": "OK",
+    "valid": true,
+    "status": "WINDOW_VALID",
+    "reasons": [],
+    "blockers": [],
+    "output_failures": [],
+    "lineage_checked": 12,
+    "lineage_mismatches": 0,
+    "raw_output_hash": "70815aeee2408bd174d0a031a08200bf9e6b12fdff6d46a9c8a0ec36ef453b10",
+    "parsed_output_hash": "464b98391c26aba698824d6f5a7b4ab253a4566faf44a01548c9884ac6093637",
+    "collapse_output_hash": "a2fbf56b43b54fdc3233d18a414fa2fa313381bb16f2617b3220bc24cb12721c",
+    "runtime_config_hash": "082494b61c8b2fb1c5ba614b59254f86b442a34274b95e8a20b00ccff6459be3",
+    "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+    "infer_wall_sec": 13.67,
+    "peak_vram_allocated_mib": 17103.6,
+    "code_git_head": "fb8f75fda38264081e15e30b1952dfc4b691b506"
+   }
+  ],
+  "axis": "구조 항목만 비교한다 — generated tokens · cap hit · 완성 object · unique signature · zero-duration · JSON 완결",
+  "semantic_superiority_claimed": false,
+  "original_parent_status": "WINDOW_INVALID (유지 · 소급 VALID 금지)",
+  "shadow_v1_retroactive_repair_allowed": false
+ },
+ "prior_state": {
+  "WVR_EVENT_EXTRACTION_SHADOW_V1": "CLOSED / INCONCLUSIVE",
+  "WVR_W00_DEGENERACY_FORENSIC_V1": "CLOSED / MODEL_OUTPUT_DEGENERACY",
+  "WVR_W00_DEGENERACY_REPRO_V1": "CLOSED / REPRODUCIBLE",
+  "original_W00": "WINDOW_INVALID (유지 · 소급 VALID 금지)"
+ },
+ "normative_authority": [
+  "WVR_W00_SUBDIVISION_RECOVERY_V1 preregistration",
+  "frozen prompt/model/runtime configuration",
+  "raw execution artifacts",
+  "prior W00 forensic/repro results",
+  "PROJECT_OVERVIEW.md"
+ ],
+ "branches": {
+  "PASS + semantic overlap stable": "reviewer가 hierarchical fallback architecture를 검토",
+  "PASS + semantic divergence": "shorter context가 technical loop는 풀고 representation 안정성은 못 푼 것",
+  "RECOVERY FAIL": "24초 subdivision도 현행 prompt/runtime에서 recovery 불충분",
+  "INCONCLUSIVE": "measurement/provenance repair"
+ },
+ "branch_execution_allowed": false,
+ "shadow_v1_blind_map_sha256": "10282152a8591a05460406041f41f5b52dfe49174e0f925f2cedc40947587b68",
+ "shadow_v1_blind_map_reveal_allowed": false,
+ "packet_generated": false,
+ "note": "기술 recovery 게이트만 계산했다. 두 overlap semantic 판정과 frame support 판정은 reviewer 전용이다."
+}
