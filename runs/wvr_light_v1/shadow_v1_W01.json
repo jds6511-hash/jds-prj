@@ -1,0 +1,585 @@
+{
+ "schema": "wvr_shadow_v1",
+ "event": "WVR_EVENT_EXTRACTION_SHADOW_V1",
+ "prereg": "docs/preregistration/WVR_EVENT_EXTRACTION_SHADOW_V1_2026-09-09.md",
+ "window": {
+  "window_id": "W01",
+  "index": 1,
+  "start_sec": 24.0,
+  "end_sec": 72.0
+ },
+ "arm": "LOCAL_0_5FPS",
+ "requested": {
+  "sampling_fps": 0.5,
+  "frames": 24,
+  "frame_width": 512,
+  "frame_height": 288,
+  "model_id": "Qwen/Qwen3-VL-8B-Instruct",
+  "model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "dtype": "bfloat16",
+  "attn_implementation": "sdpa",
+  "quantization": null,
+  "device": "cuda:0",
+  "device_map": null,
+  "do_sample": false,
+  "num_beams": 1,
+  "max_new_tokens": 4096,
+  "repetition_penalty": 1.0,
+  "do_sample_frames": false,
+  "do_resize": false,
+  "prompt_contract": "SAMPLING_DIAG_PROMPT_V2",
+  "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+  "output_language": "en",
+  "window_sec": 48.0,
+  "frames_per_window": 24
+ },
+ "inference_config_change": {
+  "inference_config_change": "NONE",
+  "differences": {},
+  "architecture_under_characterization": "deterministic 48s / 24s-overlap tiling of C01",
+  "new_measurement_instrumentation": "overlap comparison + preregistered frame audit (7 overlaps)",
+  "not_an_ablation": true
+ },
+ "frame_times": [
+  24.0,
+  26.0,
+  28.0,
+  30.0,
+  32.0,
+  34.0,
+  36.0,
+  38.0,
+  40.0,
+  42.0,
+  44.0,
+  46.0,
+  48.0,
+  50.0,
+  52.0,
+  54.0,
+  56.0,
+  58.0,
+  60.0,
+  62.0,
+  64.0,
+  66.0,
+  68.0,
+  70.0
+ ],
+ "prompt_contract": "SAMPLING_DIAG_PROMPT_V2",
+ "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+ "is_production_contract": false,
+ "output_language": "en",
+ "video_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+ "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+ "runtime_config_hash": "cb43ffd357d771ff2923f2d3e0dec0f48f85bba660171cfc3832a298f4fef5aa",
+ "raw_persisted": true,
+ "raw_path": "shadow_v1_W01_raw.txt",
+ "semantic_verdict_by_executor": false,
+ "event_map_production_approved": false,
+ "runtime_retry_allowed": false,
+ "metrics": {
+  "load_wall_sec": 3.57,
+  "video_process_wall_sec": 3.19,
+  "delivered_frame_count": 24,
+  "frame_size": [
+   512,
+   288
+  ],
+  "input_token_count": 2139,
+  "video_token_count": 1728,
+  "infer_wall_sec": 25.18,
+  "generated_token_count": 696,
+  "generation_cap_hit": false,
+  "peak_vram_allocated_mib": 17385.4,
+  "peak_vram_reserved_mib": 17724.0,
+  "total_wall_sec": 33.89
+ },
+ "stage_status": {
+  "MODEL_LOAD": "OK",
+  "VIDEO_PROCESS": "OK",
+  "RAW_PERSIST": "OK",
+  "INFERENCE": "OK"
+ },
+ "allocator_observed": {
+  "backend": "native",
+  "env": "",
+  "segment_count": 268,
+  "expandable_segments_observed": false,
+  "expandable_flags_head": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ]
+ },
+ "frame_hashes": [
+  "c446332bad960066d2329633952601e15a8761a19aae8f992763df006ad2b8c8",
+  "7c4b5f9612afbf7f7640b7557cc32f09c92b1719830fc9f5ca3e134b68ea6110",
+  "2f9da79d4353a0368dba129a4f4fa657f54a692ba2080e49a0b5ea5b5d22e722",
+  "c95b3294c887b7868e86b9f8e75fd2cef0c28f816020ffad14046cec54cc2005",
+  "1f430683ed3a23161975eb853586f86277fe1caeffd5c954cc2a4f2420b1c13b",
+  "5d92b3421a25e688cf8de97d914c8e66a202c3ab58fc7990fd3f5a221d6e4604",
+  "5e9f28f3b739f3300afe461abc46464e9ebc87335ad5f52a1974e53c945cd5c6",
+  "a32eda960a50dcc953b5119eb32f1348ef18b88c59b44a29fc21625a2354b329",
+  "880a363875ce0c5b08d81a453bbaac68d467990cc574110a3663e8a40d6cdd3e",
+  "ee2d1343b4be65c169b9b554651c03d780b8f756d95e06d05903b727e3f5a2e3",
+  "7d45586b654482b844544f492c6754f9d152e163ae256eba3fa0aea901be8f42",
+  "8d2756e6a6c526967f273a7ac7c4082d226a4901925aeb40ff17d75599532dcd",
+  "0d0acf2711cd6d42b63a8af50c0b3a047c28d792a5fbf69c9b477ff4cce13644",
+  "a62e4caf1d437fdb5e7d918bcf0ea0eb17ee00ea94cb9e9eabd69fa61e1034ff",
+  "a4715d02834e0b3ca83e5d92bbdeda7a8d0fc5a74bf62025078526ca9cca02f8",
+  "836f59f6a2396ea9d654624b1dba43e505c3718ad8138ff98cff237ffde6aa1a",
+  "fe711fed58a627de8b4c5b83840839941017e6c0e3e420cf343c593909d8fc0f",
+  "a6e4b01e5eb7ee44bcdd79d7cd736c6a6d4f781befe52f6efe6a3e8af0b54913",
+  "570179292e93d1e3cb829aae021c803fd9804a30e7500259d1f38f4fb111ea77",
+  "632a71310c10ee9bdecdf6407471b6713ebe2e0b30596c3e98f3719b0b2ac811",
+  "c41204e0dabbcef65e003ffa3b6bfd69a181ce53877844d63d75cf67e79f902d",
+  "79a6564a1300e8bc2155483a3e2fd18e35ead00c1531c51f8d1b8fdfa78017e4",
+  "e69b9cc4a4d029509b4211de98e3bd8f7cbf3bdeabc838ab1b5e3067cf6e2c73",
+  "4334f9a347b80bf6d09f4bd0bbb63ebce6dd80797d1fb45cc760eee329b35575"
+ ],
+ "frame_indices": [
+  720,
+  780,
+  840,
+  900,
+  960,
+  1020,
+  1080,
+  1140,
+  1200,
+  1260,
+  1320,
+  1380,
+  1440,
+  1500,
+  1560,
+  1620,
+  1680,
+  1740,
+  1800,
+  1860,
+  1920,
+  1980,
+  2040,
+  2100
+ ],
+ "decoded_times": [
+  24.0,
+  26.0,
+  28.0,
+  30.0,
+  32.0,
+  34.0,
+  36.0,
+  38.0,
+  40.0,
+  42.0,
+  44.0,
+  46.0,
+  48.0,
+  50.0,
+  52.0,
+  54.0,
+  56.0,
+  58.0,
+  60.0,
+  62.0,
+  64.0,
+  66.0,
+  68.0,
+  70.0
+ ],
+ "decoded_fps": 30.0000041251862,
+ "raw_output_hash": "230b46efad477aa9db4ae3055699bf18259b5166e8c94eeb0c27ad996bde473e",
+ "raw_output": "{\"events\": [{\"start_sec\": 24.0, \"end_sec\": 28.0, \"actor\": \"person\", \"action\": \"selecting\", \"object_or_state\": \"bottle of soy sauce\"}, {\"start_sec\": 28.0, \"end_sec\": 31.0, \"actor\": \"person\", \"action\": \"selecting\", \"object_or_state\": \"packet of curry\"}, {\"start_sec\": 31.0, \"end_sec\": 34.0, \"actor\": \"person\", \"action\": \"selecting\", \"object_or_state\": \"bag of potatoes\"}, {\"start_sec\": 34.0, \"end_sec\": 37.0, \"actor\": \"person\", \"action\": \"placing\", \"object_or_state\": \"potatoes in steamer\"}, {\"start_sec\": 37.0, \"end_sec\": 40.0, \"actor\": \"person\", \"action\": \"covering\", \"object_or_state\": \"steamer\"}, {\"start_sec\": 40.0, \"end_sec\": 43.0, \"actor\": \"person\", \"action\": \"pouring\", \"object_or_state\": \"curry powder into bowl\"}, {\"start_sec\": 43.0, \"end_sec\": 46.0, \"actor\": \"person\", \"action\": \"placing\", \"object_or_state\": \"potato slices in blender\"}, {\"start_sec\": 46.0, \"end_sec\": 49.0, \"actor\": \"person\", \"action\": \"blending\", \"object_or_state\": \"potato slices\"}, {\"start_sec\": 49.0, \"end_sec\": 52.0, \"actor\": \"person\", \"action\": \"pouring\", \"object_or_state\": \"oil into bowl with curry powder\"}, {\"start_sec\": 52.0, \"end_sec\": 55.0, \"actor\": \"person\", \"action\": \"mixing\", \"object_or_state\": \"curry powder and oil\"}, {\"start_sec\": 55.0, \"end_sec\": 58.0, \"actor\": \"person\", \"action\": \"chopping\", \"object_or_state\": \"onion\"}, {\"start_sec\": 58.0, \"end_sec\": 61.0, \"actor\": \"person\", \"action\": \"chopping\", \"object_or_state\": \"onion\"}, {\"start_sec\": 61.0, \"end_sec\": 64.0, \"actor\": \"person\", \"action\": \"chopping\", \"object_or_state\": \"onion\"}, {\"start_sec\": 64.0, \"end_sec\": 67.0, \"actor\": \"person\", \"action\": \"chopping\", \"object_or_state\": \"onion\"}, {\"start_sec\": 67.0, \"end_sec\": 70.0, \"actor\": \"person\", \"action\": \"chopping\", \"object_or_state\": \"onion\"}, {\"start_sec\": 70.0, \"end_sec\": 72.0, \"actor\": \"person\", \"action\": \"chopping\", \"object_or_state\": \"onion\"}]}",
+ "parsed": {
+  "status": "OK",
+  "events": [
+   {
+    "index": 0,
+    "start_sec": 24.0,
+    "end_sec": 28.0,
+    "actor": "person",
+    "action": "selecting",
+    "object_or_state": "bottle of soy sauce",
+    "inside_window": true
+   },
+   {
+    "index": 1,
+    "start_sec": 28.0,
+    "end_sec": 31.0,
+    "actor": "person",
+    "action": "selecting",
+    "object_or_state": "packet of curry",
+    "inside_window": true
+   },
+   {
+    "index": 2,
+    "start_sec": 31.0,
+    "end_sec": 34.0,
+    "actor": "person",
+    "action": "selecting",
+    "object_or_state": "bag of potatoes",
+    "inside_window": true
+   },
+   {
+    "index": 3,
+    "start_sec": 34.0,
+    "end_sec": 37.0,
+    "actor": "person",
+    "action": "placing",
+    "object_or_state": "potatoes in steamer",
+    "inside_window": true
+   },
+   {
+    "index": 4,
+    "start_sec": 37.0,
+    "end_sec": 40.0,
+    "actor": "person",
+    "action": "covering",
+    "object_or_state": "steamer",
+    "inside_window": true
+   },
+   {
+    "index": 5,
+    "start_sec": 40.0,
+    "end_sec": 43.0,
+    "actor": "person",
+    "action": "pouring",
+    "object_or_state": "curry powder into bowl",
+    "inside_window": true
+   },
+   {
+    "index": 6,
+    "start_sec": 43.0,
+    "end_sec": 46.0,
+    "actor": "person",
+    "action": "placing",
+    "object_or_state": "potato slices in blender",
+    "inside_window": true
+   },
+   {
+    "index": 7,
+    "start_sec": 46.0,
+    "end_sec": 49.0,
+    "actor": "person",
+    "action": "blending",
+    "object_or_state": "potato slices",
+    "inside_window": true
+   },
+   {
+    "index": 8,
+    "start_sec": 49.0,
+    "end_sec": 52.0,
+    "actor": "person",
+    "action": "pouring",
+    "object_or_state": "oil into bowl with curry powder",
+    "inside_window": true
+   },
+   {
+    "index": 9,
+    "start_sec": 52.0,
+    "end_sec": 55.0,
+    "actor": "person",
+    "action": "mixing",
+    "object_or_state": "curry powder and oil",
+    "inside_window": true
+   },
+   {
+    "index": 10,
+    "start_sec": 55.0,
+    "end_sec": 58.0,
+    "actor": "person",
+    "action": "chopping",
+    "object_or_state": "onion",
+    "inside_window": true
+   },
+   {
+    "index": 11,
+    "start_sec": 58.0,
+    "end_sec": 61.0,
+    "actor": "person",
+    "action": "chopping",
+    "object_or_state": "onion",
+    "inside_window": true
+   },
+   {
+    "index": 12,
+    "start_sec": 61.0,
+    "end_sec": 64.0,
+    "actor": "person",
+    "action": "chopping",
+    "object_or_state": "onion",
+    "inside_window": true
+   },
+   {
+    "index": 13,
+    "start_sec": 64.0,
+    "end_sec": 67.0,
+    "actor": "person",
+    "action": "chopping",
+    "object_or_state": "onion",
+    "inside_window": true
+   },
+   {
+    "index": 14,
+    "start_sec": 67.0,
+    "end_sec": 70.0,
+    "actor": "person",
+    "action": "chopping",
+    "object_or_state": "onion",
+    "inside_window": true
+   },
+   {
+    "index": 15,
+    "start_sec": 70.0,
+    "end_sec": 72.0,
+    "actor": "person",
+    "action": "chopping",
+    "object_or_state": "onion",
+    "inside_window": true
+   }
+  ],
+  "collapsed": [
+   {
+    "index": 0,
+    "start_sec": 24.0,
+    "end_sec": 28.0,
+    "actor": "person",
+    "action": "selecting",
+    "object_or_state": "bottle of soy sauce",
+    "signature": [
+     "person",
+     "selecting",
+     "bottle of soy sauce"
+    ],
+    "source_indices": [
+     0
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 1,
+    "start_sec": 28.0,
+    "end_sec": 31.0,
+    "actor": "person",
+    "action": "selecting",
+    "object_or_state": "packet of curry",
+    "signature": [
+     "person",
+     "selecting",
+     "packet of curry"
+    ],
+    "source_indices": [
+     1
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 2,
+    "start_sec": 31.0,
+    "end_sec": 34.0,
+    "actor": "person",
+    "action": "selecting",
+    "object_or_state": "bag of potatoes",
+    "signature": [
+     "person",
+     "selecting",
+     "bag of potatoes"
+    ],
+    "source_indices": [
+     2
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 3,
+    "start_sec": 34.0,
+    "end_sec": 37.0,
+    "actor": "person",
+    "action": "placing",
+    "object_or_state": "potatoes in steamer",
+    "signature": [
+     "person",
+     "placing",
+     "potatoes in steamer"
+    ],
+    "source_indices": [
+     3
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 4,
+    "start_sec": 37.0,
+    "end_sec": 40.0,
+    "actor": "person",
+    "action": "covering",
+    "object_or_state": "steamer",
+    "signature": [
+     "person",
+     "covering",
+     "steamer"
+    ],
+    "source_indices": [
+     4
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 5,
+    "start_sec": 40.0,
+    "end_sec": 43.0,
+    "actor": "person",
+    "action": "pouring",
+    "object_or_state": "curry powder into bowl",
+    "signature": [
+     "person",
+     "pouring",
+     "curry powder into bowl"
+    ],
+    "source_indices": [
+     5
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 6,
+    "start_sec": 43.0,
+    "end_sec": 46.0,
+    "actor": "person",
+    "action": "placing",
+    "object_or_state": "potato slices in blender",
+    "signature": [
+     "person",
+     "placing",
+     "potato slices in blender"
+    ],
+    "source_indices": [
+     6
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 7,
+    "start_sec": 46.0,
+    "end_sec": 49.0,
+    "actor": "person",
+    "action": "blending",
+    "object_or_state": "potato slices",
+    "signature": [
+     "person",
+     "blending",
+     "potato slices"
+    ],
+    "source_indices": [
+     7
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 8,
+    "start_sec": 49.0,
+    "end_sec": 52.0,
+    "actor": "person",
+    "action": "pouring",
+    "object_or_state": "oil into bowl with curry powder",
+    "signature": [
+     "person",
+     "pouring",
+     "oil into bowl with curry powder"
+    ],
+    "source_indices": [
+     8
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 9,
+    "start_sec": 52.0,
+    "end_sec": 55.0,
+    "actor": "person",
+    "action": "mixing",
+    "object_or_state": "curry powder and oil",
+    "signature": [
+     "person",
+     "mixing",
+     "curry powder and oil"
+    ],
+    "source_indices": [
+     9
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 10,
+    "start_sec": 55.0,
+    "end_sec": 72.0,
+    "actor": "person",
+    "action": "chopping",
+    "object_or_state": "onion",
+    "signature": [
+     "person",
+     "chopping",
+     "onion"
+    ],
+    "source_indices": [
+     10,
+     11,
+     12,
+     13,
+     14,
+     15
+    ],
+    "collapsed_count": 6
+   }
+  ],
+  "violations": [],
+  "language": {
+   "contract": "ENGLISH_ONLY",
+   "satisfied": true,
+   "hangul_chars": 0,
+   "cjk_chars": 0,
+   "latin_chars": 412
+  },
+  "reason": ""
+ },
+ "parsed_output_hash": "b68ffed77d3d885858385fa62072aa1fcfbf2649ddd1d5aebbb071c7e2b6d6d6",
+ "representation": {
+  "collapsed_event_count": 11,
+  "unique_signature_count": 11,
+  "max_collapsed_run": 6,
+  "degenerate": false,
+  "reason": ""
+ },
+ "collapse_output_hash": "6d9e476b18399fae581fd9083e5362e9e3e86419f7a0510581616b0cc44af105",
+ "arm_status": "OK",
+ "finish_reason": "stop",
+ "memory_stats": {
+  "allocated_bytes.all.peak": 18229947904,
+  "reserved_bytes.all.peak": 18584961024,
+  "requested_bytes.all.peak": 18216378854,
+  "active_bytes.all.peak": 18229947904,
+  "inactive_split_bytes.all.peak": 416342528,
+  "num_alloc_retries": 0,
+  "num_ooms": 0
+ },
+ "validity": {
+  "valid": true,
+  "reasons": [],
+  "status": "WINDOW_VALID",
+  "language": {
+   "contract": "ENGLISH_ONLY",
+   "satisfied": true,
+   "hangul_chars": 0,
+   "cjk_chars": 0,
+   "latin_chars": 412
+  }
+ }
+}

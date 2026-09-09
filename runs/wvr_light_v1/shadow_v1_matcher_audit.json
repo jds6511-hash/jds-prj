@@ -1,0 +1,586 @@
+{
+ "event": "WVR_EVENT_EXTRACTION_SHADOW_V1",
+ "role": "AUDIT_DIAGNOSTIC_ONLY",
+ "tolerances": [
+  4.0,
+  8.0
+ ],
+ "overlaps": {
+  "O01": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 0,
+     "equivalent_count": 0,
+     "adjudication_count": 0,
+     "earlier_without_equivalent": 0,
+     "later_without_equivalent": 8,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 0,
+     "equivalent_count": 0,
+     "adjudication_count": 0,
+     "earlier_without_equivalent": 0,
+     "later_without_equivalent": 8,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "O02": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 16,
+     "equivalent_count": 0,
+     "adjudication_count": 16,
+     "earlier_without_equivalent": 4,
+     "later_without_equivalent": 7,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 19,
+     "equivalent_count": 0,
+     "adjudication_count": 19,
+     "earlier_without_equivalent": 4,
+     "later_without_equivalent": 7,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "O03": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 13,
+     "equivalent_count": 1,
+     "adjudication_count": 12,
+     "earlier_without_equivalent": 3,
+     "later_without_equivalent": 5,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 18,
+     "equivalent_count": 1,
+     "adjudication_count": 17,
+     "earlier_without_equivalent": 3,
+     "later_without_equivalent": 5,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "O04": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 9,
+     "equivalent_count": 0,
+     "adjudication_count": 9,
+     "earlier_without_equivalent": 3,
+     "later_without_equivalent": 3,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 9,
+     "equivalent_count": 0,
+     "adjudication_count": 9,
+     "earlier_without_equivalent": 3,
+     "later_without_equivalent": 3,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "O05": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 13,
+     "equivalent_count": 0,
+     "adjudication_count": 13,
+     "earlier_without_equivalent": 4,
+     "later_without_equivalent": 5,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 16,
+     "equivalent_count": 0,
+     "adjudication_count": 16,
+     "earlier_without_equivalent": 4,
+     "later_without_equivalent": 5,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "O06": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 8,
+     "equivalent_count": 0,
+     "adjudication_count": 8,
+     "earlier_without_equivalent": 2,
+     "later_without_equivalent": 6,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 9,
+     "equivalent_count": 0,
+     "adjudication_count": 9,
+     "earlier_without_equivalent": 2,
+     "later_without_equivalent": 6,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "O07": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 13,
+     "equivalent_count": 0,
+     "adjudication_count": 13,
+     "earlier_without_equivalent": 5,
+     "later_without_equivalent": 5,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 17,
+     "equivalent_count": 0,
+     "adjudication_count": 17,
+     "earlier_without_equivalent": 5,
+     "later_without_equivalent": 5,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "O08": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 6,
+     "equivalent_count": 0,
+     "adjudication_count": 6,
+     "earlier_without_equivalent": 4,
+     "later_without_equivalent": 2,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 7,
+     "equivalent_count": 0,
+     "adjudication_count": 7,
+     "earlier_without_equivalent": 4,
+     "later_without_equivalent": 2,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "O09": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 6,
+     "equivalent_count": 0,
+     "adjudication_count": 6,
+     "earlier_without_equivalent": 1,
+     "later_without_equivalent": 6,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 6,
+     "equivalent_count": 0,
+     "adjudication_count": 6,
+     "earlier_without_equivalent": 1,
+     "later_without_equivalent": 6,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "O10": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 4,
+     "equivalent_count": 0,
+     "adjudication_count": 4,
+     "earlier_without_equivalent": 1,
+     "later_without_equivalent": 4,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 4,
+     "equivalent_count": 0,
+     "adjudication_count": 4,
+     "earlier_without_equivalent": 1,
+     "later_without_equivalent": 4,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "O11": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 3,
+     "equivalent_count": 0,
+     "adjudication_count": 3,
+     "earlier_without_equivalent": 1,
+     "later_without_equivalent": 3,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 3,
+     "equivalent_count": 0,
+     "adjudication_count": 3,
+     "earlier_without_equivalent": 1,
+     "later_without_equivalent": 3,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "O12": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 12,
+     "equivalent_count": 0,
+     "adjudication_count": 12,
+     "earlier_without_equivalent": 3,
+     "later_without_equivalent": 6,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 15,
+     "equivalent_count": 0,
+     "adjudication_count": 15,
+     "earlier_without_equivalent": 3,
+     "later_without_equivalent": 6,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "O13": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 2,
+     "equivalent_count": 0,
+     "adjudication_count": 2,
+     "earlier_without_equivalent": 1,
+     "later_without_equivalent": 2,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 2,
+     "equivalent_count": 0,
+     "adjudication_count": 2,
+     "earlier_without_equivalent": 1,
+     "later_without_equivalent": 2,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "O14": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 2,
+     "equivalent_count": 0,
+     "adjudication_count": 2,
+     "earlier_without_equivalent": 1,
+     "later_without_equivalent": 2,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 2,
+     "equivalent_count": 0,
+     "adjudication_count": 2,
+     "earlier_without_equivalent": 1,
+     "later_without_equivalent": 2,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "O15": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 10,
+     "equivalent_count": 0,
+     "adjudication_count": 10,
+     "earlier_without_equivalent": 3,
+     "later_without_equivalent": 5,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 12,
+     "equivalent_count": 0,
+     "adjudication_count": 12,
+     "earlier_without_equivalent": 3,
+     "later_without_equivalent": 5,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "O16": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 10,
+     "equivalent_count": 0,
+     "adjudication_count": 10,
+     "earlier_without_equivalent": 5,
+     "later_without_equivalent": 3,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 11,
+     "equivalent_count": 0,
+     "adjudication_count": 11,
+     "earlier_without_equivalent": 5,
+     "later_without_equivalent": 3,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "O17": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 11,
+     "equivalent_count": 0,
+     "adjudication_count": 11,
+     "earlier_without_equivalent": 4,
+     "later_without_equivalent": 4,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 14,
+     "equivalent_count": 0,
+     "adjudication_count": 14,
+     "earlier_without_equivalent": 4,
+     "later_without_equivalent": 4,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "O18": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 5,
+     "equivalent_count": 0,
+     "adjudication_count": 5,
+     "earlier_without_equivalent": 3,
+     "later_without_equivalent": 2,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 6,
+     "equivalent_count": 0,
+     "adjudication_count": 6,
+     "earlier_without_equivalent": 3,
+     "later_without_equivalent": 2,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "O19": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 15,
+     "equivalent_count": 0,
+     "adjudication_count": 8,
+     "earlier_without_equivalent": 4,
+     "later_without_equivalent": 6,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 19,
+     "equivalent_count": 0,
+     "adjudication_count": 9,
+     "earlier_without_equivalent": 4,
+     "later_without_equivalent": 6,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "O20": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 11,
+     "equivalent_count": 0,
+     "adjudication_count": 5,
+     "earlier_without_equivalent": 6,
+     "later_without_equivalent": 3,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 13,
+     "equivalent_count": 0,
+     "adjudication_count": 5,
+     "earlier_without_equivalent": 6,
+     "later_without_equivalent": 3,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "O21": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 5,
+     "equivalent_count": 0,
+     "adjudication_count": 5,
+     "earlier_without_equivalent": 1,
+     "later_without_equivalent": 5,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 5,
+     "equivalent_count": 0,
+     "adjudication_count": 5,
+     "earlier_without_equivalent": 1,
+     "later_without_equivalent": 5,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "O22": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 15,
+     "equivalent_count": 0,
+     "adjudication_count": 6,
+     "earlier_without_equivalent": 4,
+     "later_without_equivalent": 6,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 18,
+     "equivalent_count": 0,
+     "adjudication_count": 7,
+     "earlier_without_equivalent": 4,
+     "later_without_equivalent": 6,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "O23": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 15,
+     "equivalent_count": 0,
+     "adjudication_count": 15,
+     "earlier_without_equivalent": 5,
+     "later_without_equivalent": 5,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 20,
+     "equivalent_count": 0,
+     "adjudication_count": 20,
+     "earlier_without_equivalent": 5,
+     "later_without_equivalent": 5,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  }
+ },
+ "note": "semantic·materiality·PASS 계산 authority가 아니다."
+}

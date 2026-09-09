@@ -1,0 +1,146 @@
+{
+ "event": "WVR_EVENT_EXTRACTION_SHADOW_V1",
+ "prereg_sha": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+ "prereg_sha_sha256": "02d51acb7f2462f712d3ecac0f9e7f4c2d4a3c3035e30d9ccba7eba17b76fed5",
+ "mapping": {
+  "O01": {
+   "B": "W00",
+   "A": "W01",
+   "start_sec": 24.0,
+   "end_sec": 48.0
+  },
+  "O02": {
+   "A": "W01",
+   "B": "W02",
+   "start_sec": 48.0,
+   "end_sec": 72.0
+  },
+  "O03": {
+   "B": "W02",
+   "A": "W03",
+   "start_sec": 72.0,
+   "end_sec": 96.0
+  },
+  "O04": {
+   "A": "W03",
+   "B": "W04",
+   "start_sec": 96.0,
+   "end_sec": 120.0
+  },
+  "O05": {
+   "B": "W04",
+   "A": "W05",
+   "start_sec": 120.0,
+   "end_sec": 144.0
+  },
+  "O06": {
+   "A": "W05",
+   "B": "W06",
+   "start_sec": 144.0,
+   "end_sec": 168.0
+  },
+  "O07": {
+   "B": "W06",
+   "A": "W07",
+   "start_sec": 168.0,
+   "end_sec": 192.0
+  },
+  "O08": {
+   "B": "W07",
+   "A": "W08",
+   "start_sec": 192.0,
+   "end_sec": 216.0
+  },
+  "O09": {
+   "B": "W08",
+   "A": "W09",
+   "start_sec": 216.0,
+   "end_sec": 240.0
+  },
+  "O10": {
+   "A": "W09",
+   "B": "W10",
+   "start_sec": 240.0,
+   "end_sec": 264.0
+  },
+  "O11": {
+   "A": "W10",
+   "B": "W11",
+   "start_sec": 264.0,
+   "end_sec": 288.0
+  },
+  "O12": {
+   "A": "W11",
+   "B": "W12",
+   "start_sec": 288.0,
+   "end_sec": 312.0
+  },
+  "O13": {
+   "B": "W12",
+   "A": "W13",
+   "start_sec": 312.0,
+   "end_sec": 336.0
+  },
+  "O14": {
+   "B": "W13",
+   "A": "W14",
+   "start_sec": 336.0,
+   "end_sec": 360.0
+  },
+  "O15": {
+   "A": "W14",
+   "B": "W15",
+   "start_sec": 360.0,
+   "end_sec": 384.0
+  },
+  "O16": {
+   "A": "W15",
+   "B": "W16",
+   "start_sec": 384.0,
+   "end_sec": 408.0
+  },
+  "O17": {
+   "B": "W16",
+   "A": "W17",
+   "start_sec": 408.0,
+   "end_sec": 432.0
+  },
+  "O18": {
+   "A": "W17",
+   "B": "W18",
+   "start_sec": 432.0,
+   "end_sec": 456.0
+  },
+  "O19": {
+   "A": "W18",
+   "B": "W19",
+   "start_sec": 456.0,
+   "end_sec": 480.0
+  },
+  "O20": {
+   "B": "W19",
+   "A": "W20",
+   "start_sec": 480.0,
+   "end_sec": 504.0
+  },
+  "O21": {
+   "A": "W20",
+   "B": "W21",
+   "start_sec": 504.0,
+   "end_sec": 528.0
+  },
+  "O22": {
+   "B": "W21",
+   "A": "W22",
+   "start_sec": 528.0,
+   "end_sec": 552.0
+  },
+  "O23": {
+   "B": "W22",
+   "A": "W23",
+   "start_sec": 552.0,
+   "end_sec": 576.0
+  }
+ },
+ "note": "절차적 blinding이다 — 산출물 파일명이 창 id를 담고 있으므로 저장소에서 mapping을 복원할 수 있다. packet만 읽는다는 규율에 의존한다."
+}

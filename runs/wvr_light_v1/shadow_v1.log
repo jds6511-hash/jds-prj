@@ -1,0 +1,317 @@
++ BASE=/ssd/daeseok/jds-prj
++ VIDEO=/ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4
++ OUT_DIR=/ssd/daeseok/jds-prj/runs/wvr_light_v1
++ PY=/ssd/daeseok/envs/prj/bin/python
++ export HF_HOME=/ssd/daeseok/cache
++ HF_HOME=/ssd/daeseok/cache
++ export PYTHONUNBUFFERED=1
++ PYTHONUNBUFFERED=1
++ export PYTHONDONTWRITEBYTECODE=1
++ PYTHONDONTWRITEBYTECODE=1
+++ git -C /ssd/daeseok/jds-prj rev-parse HEAD
++ export WVR_CODE_GIT_HEAD=d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c
++ WVR_CODE_GIT_HEAD=d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c
+++ date
++ echo '=== shadow batch 시작 (2026. 09. 09. (수) 13:10:25 KST) commit d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c ==='
+=== shadow batch 시작 (2026. 09. 09. (수) 13:10:25 KST) commit d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c ===
++ nvidia-smi --query-gpu=memory.used,utilization.gpu --format=csv,noheader
+40 MiB, 0 %
++ failed=0
+++ seq -w 0 23
++ for index in $(seq -w 0 23)
++ window=W00
+++ date
++ echo '=== W00 시작 (2026. 09. 09. (수) 13:10:25 KST) ==='
+=== W00 시작 (2026. 09. 09. (수) 13:10:25 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W00 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 8299.77it/s]
+window=W00 0-48 status=PARSE_FAILURE frames=24 in=2135 gen=4096 cap=True
+  raw=0 collapsed=0 uniq=0 degenerate=True validity=WINDOW_INVALID ['PARSE_FAILURE', 'NO_EVENT', 'TRUNCATED_AT_CAP', 'OUTPUT_LANGUAGE_CONTRACT_FAILURE']
++ failed=1
++ echo '=== W00 INVALID (재시도하지 않는다) ==='
+=== W00 INVALID (재시도하지 않는다) ===
+++ date
++ echo '=== W00 완료 (2026. 09. 09. (수) 13:13:01 KST) ==='
+=== W00 완료 (2026. 09. 09. (수) 13:13:01 KST) ===
++ for index in $(seq -w 0 23)
++ window=W01
+++ date
++ echo '=== W01 시작 (2026. 09. 09. (수) 13:13:01 KST) ==='
+=== W01 시작 (2026. 09. 09. (수) 13:13:01 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W01 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 9248.85it/s]
+window=W01 24-72 status=OK frames=24 in=2139 gen=696 cap=False
+  raw=16 collapsed=11 uniq=11 degenerate=False validity=WINDOW_VALID []
+++ date
++ echo '=== W01 완료 (2026. 09. 09. (수) 13:13:42 KST) ==='
+=== W01 완료 (2026. 09. 09. (수) 13:13:42 KST) ===
++ for index in $(seq -w 0 23)
++ window=W02
+++ date
++ echo '=== W02 시작 (2026. 09. 09. (수) 13:13:42 KST) ==='
+=== W02 시작 (2026. 09. 09. (수) 13:13:42 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W02 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 8415.04it/s]
+window=W02 48-96 status=OK frames=24 in=2139 gen=449 cap=False
+  raw=10 collapsed=10 uniq=10 degenerate=False validity=WINDOW_VALID []
+++ date
++ echo '=== W02 완료 (2026. 09. 09. (수) 13:14:14 KST) ==='
+=== W02 완료 (2026. 09. 09. (수) 13:14:14 KST) ===
++ for index in $(seq -w 0 23)
++ window=W03
+++ date
++ echo '=== W03 시작 (2026. 09. 09. (수) 13:14:14 KST) ==='
+=== W03 시작 (2026. 09. 09. (수) 13:14:14 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W03 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7919.14it/s]
+window=W03 72-120 status=OK frames=24 in=2145 gen=498 cap=False
+  raw=11 collapsed=9 uniq=9 degenerate=False validity=WINDOW_VALID []
+++ date
++ echo '=== W03 완료 (2026. 09. 09. (수) 13:14:48 KST) ==='
+=== W03 완료 (2026. 09. 09. (수) 13:14:48 KST) ===
++ for index in $(seq -w 0 23)
++ window=W04
+++ date
++ echo '=== W04 시작 (2026. 09. 09. (수) 13:14:48 KST) ==='
+=== W04 시작 (2026. 09. 09. (수) 13:14:48 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W04 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7565.72it/s]
+window=W04 96-144 status=OK frames=24 in=2151 gen=575 cap=False
+  raw=12 collapsed=6 uniq=6 degenerate=False validity=WINDOW_VALID []
+++ date
++ echo '=== W04 완료 (2026. 09. 09. (수) 13:15:24 KST) ==='
+=== W04 완료 (2026. 09. 09. (수) 13:15:24 KST) ===
++ for index in $(seq -w 0 23)
++ window=W05
+++ date
++ echo '=== W05 시작 (2026. 09. 09. (수) 13:15:24 KST) ==='
+=== W05 시작 (2026. 09. 09. (수) 13:15:24 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W05 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 8705.10it/s]
+window=W05 120-168 status=OK frames=24 in=2153 gen=452 cap=False
+  raw=10 collapsed=6 uniq=5 degenerate=False validity=WINDOW_VALID []
+++ date
++ echo '=== W05 완료 (2026. 09. 09. (수) 13:15:57 KST) ==='
+=== W05 완료 (2026. 09. 09. (수) 13:15:57 KST) ===
++ for index in $(seq -w 0 23)
++ window=W06
+++ date
++ echo '=== W06 시작 (2026. 09. 09. (수) 13:15:57 KST) ==='
+=== W06 시작 (2026. 09. 09. (수) 13:15:57 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W06 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 9010.97it/s]
+window=W06 144-192 status=OK frames=24 in=2153 gen=476 cap=False
+  raw=10 collapsed=10 uniq=6 degenerate=False validity=WINDOW_VALID []
+++ date
++ echo '=== W06 완료 (2026. 09. 09. (수) 13:16:30 KST) ==='
+=== W06 완료 (2026. 09. 09. (수) 13:16:30 KST) ===
++ for index in $(seq -w 0 23)
++ window=W07
+++ date
++ echo '=== W07 시작 (2026. 09. 09. (수) 13:16:30 KST) ==='
+=== W07 시작 (2026. 09. 09. (수) 13:16:30 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W07 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 8000.28it/s]
+window=W07 168-216 status=OK frames=24 in=2153 gen=640 cap=False
+  raw=14 collapsed=8 uniq=8 degenerate=False validity=WINDOW_VALID []
+++ date
++ echo '=== W07 완료 (2026. 09. 09. (수) 13:17:09 KST) ==='
+=== W07 완료 (2026. 09. 09. (수) 13:17:09 KST) ===
++ for index in $(seq -w 0 23)
++ window=W08
+++ date
++ echo '=== W08 시작 (2026. 09. 09. (수) 13:17:09 KST) ==='
+=== W08 시작 (2026. 09. 09. (수) 13:17:09 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W08 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:  89%|████████▉ | 671/750 [00:00<00:00, 6706.03it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7118.45it/s]
+window=W08 192-240 status=OK frames=24 in=2153 gen=790 cap=False
+  raw=16 collapsed=2 uniq=2 degenerate=False validity=WINDOW_VALID []
+++ date
++ echo '=== W08 완료 (2026. 09. 09. (수) 13:17:53 KST) ==='
+=== W08 완료 (2026. 09. 09. (수) 13:17:53 KST) ===
++ for index in $(seq -w 0 23)
++ window=W09
+++ date
++ echo '=== W09 시작 (2026. 09. 09. (수) 13:17:53 KST) ==='
+=== W09 시작 (2026. 09. 09. (수) 13:17:53 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W09 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|█████████▉| 749/750 [00:00<00:00, 7488.95it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7484.95it/s]
+window=W09 216-264 status=OK frames=24 in=2153 gen=582 cap=False
+  raw=12 collapsed=6 uniq=6 degenerate=False validity=WINDOW_VALID []
+++ date
++ echo '=== W09 완료 (2026. 09. 09. (수) 13:18:30 KST) ==='
+=== W09 완료 (2026. 09. 09. (수) 13:18:30 KST) ===
++ for index in $(seq -w 0 23)
++ window=W10
+++ date
++ echo '=== W10 시작 (2026. 09. 09. (수) 13:18:30 KST) ==='
+=== W10 시작 (2026. 09. 09. (수) 13:18:30 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W10 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:  89%|████████▊ | 664/750 [00:00<00:00, 6631.56it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 6878.42it/s]
+window=W10 240-288 status=OK frames=24 in=2153 gen=267 cap=False
+  raw=6 collapsed=4 uniq=4 degenerate=False validity=WINDOW_VALID []
+++ date
++ echo '=== W10 완료 (2026. 09. 09. (수) 13:18:56 KST) ==='
+=== W10 완료 (2026. 09. 09. (수) 13:18:56 KST) ===
++ for index in $(seq -w 0 23)
++ window=W11
+++ date
++ echo '=== W11 시작 (2026. 09. 09. (수) 13:18:56 KST) ==='
+=== W11 시작 (2026. 09. 09. (수) 13:18:56 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W11 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:  89%|████████▉ | 670/750 [00:00<00:00, 6699.59it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7201.56it/s]
+window=W11 264-312 status=OK frames=24 in=2153 gen=291 cap=False
+  raw=6 collapsed=6 uniq=4 degenerate=False validity=WINDOW_VALID []
+++ date
++ echo '=== W11 완료 (2026. 09. 09. (수) 13:19:23 KST) ==='
+=== W11 완료 (2026. 09. 09. (수) 13:19:23 KST) ===
++ for index in $(seq -w 0 23)
++ window=W12
+++ date
++ echo '=== W12 시작 (2026. 09. 09. (수) 13:19:23 KST) ==='
+=== W12 시작 (2026. 09. 09. (수) 13:19:23 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W12 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:  96%|█████████▌| 719/750 [00:00<00:00, 7186.17it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7373.95it/s]
+window=W12 288-336 status=OK frames=24 in=2153 gen=454 cap=False
+  raw=10 collapsed=6 uniq=4 degenerate=False validity=WINDOW_VALID []
+++ date
++ echo '=== W12 완료 (2026. 09. 09. (수) 13:19:55 KST) ==='
+=== W12 완료 (2026. 09. 09. (수) 13:19:55 KST) ===
++ for index in $(seq -w 0 23)
++ window=W13
+++ date
++ echo '=== W13 시작 (2026. 09. 09. (수) 13:19:55 KST) ==='
+=== W13 시작 (2026. 09. 09. (수) 13:19:55 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W13 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 9069.76it/s]
+window=W13 312-360 status=OK frames=24 in=2153 gen=695 cap=False
+  raw=15 collapsed=2 uniq=2 degenerate=False validity=WINDOW_VALID []
+++ date
++ echo '=== W13 완료 (2026. 09. 09. (수) 13:20:36 KST) ==='
+=== W13 완료 (2026. 09. 09. (수) 13:20:36 KST) ===
++ for index in $(seq -w 0 23)
++ window=W14
+++ date
++ echo '=== W14 시작 (2026. 09. 09. (수) 13:20:36 KST) ==='
+=== W14 시작 (2026. 09. 09. (수) 13:20:36 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W14 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 8683.72it/s]
+window=W14 336-384 status=OK frames=24 in=2153 gen=576 cap=False
+  raw=12 collapsed=4 uniq=4 degenerate=False validity=WINDOW_VALID []
+++ date
++ echo '=== W14 완료 (2026. 09. 09. (수) 13:21:14 KST) ==='
+=== W14 완료 (2026. 09. 09. (수) 13:21:14 KST) ===
++ for index in $(seq -w 0 23)
++ window=W15
+++ date
++ echo '=== W15 시작 (2026. 09. 09. (수) 13:21:14 KST) ==='
+=== W15 시작 (2026. 09. 09. (수) 13:21:14 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W15 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 8373.67it/s]
+window=W15 360-408 status=OK frames=24 in=2153 gen=462 cap=False
+  raw=10 collapsed=9 uniq=9 degenerate=False validity=WINDOW_VALID []
+++ date
++ echo '=== W15 완료 (2026. 09. 09. (수) 13:21:47 KST) ==='
+=== W15 완료 (2026. 09. 09. (수) 13:21:47 KST) ===
++ for index in $(seq -w 0 23)
++ window=W16
+++ date
++ echo '=== W16 시작 (2026. 09. 09. (수) 13:21:47 KST) ==='
+=== W16 시작 (2026. 09. 09. (수) 13:21:47 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W16 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:  96%|█████████▌| 719/750 [00:00<00:00, 7186.12it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7373.54it/s]
+window=W16 384-432 status=OK frames=24 in=2153 gen=562 cap=False
+  raw=12 collapsed=7 uniq=6 degenerate=False validity=WINDOW_VALID []
+++ date
++ echo '=== W16 완료 (2026. 09. 09. (수) 13:22:23 KST) ==='
+=== W16 완료 (2026. 09. 09. (수) 13:22:23 KST) ===
++ for index in $(seq -w 0 23)
++ window=W17
+++ date
++ echo '=== W17 시작 (2026. 09. 09. (수) 13:22:23 KST) ==='
+=== W17 시작 (2026. 09. 09. (수) 13:22:23 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W17 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:  90%|█████████ | 675/750 [00:00<00:00, 6746.55it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7299.71it/s]
+window=W17 408-456 status=OK frames=24 in=2153 gen=324 cap=False
+  raw=7 collapsed=6 uniq=5 degenerate=False validity=WINDOW_VALID []
+++ date
++ echo '=== W17 완료 (2026. 09. 09. (수) 13:22:51 KST) ==='
+=== W17 완료 (2026. 09. 09. (수) 13:22:51 KST) ===
++ for index in $(seq -w 0 23)
++ window=W18
+++ date
++ echo '=== W18 시작 (2026. 09. 09. (수) 13:22:51 KST) ==='
+=== W18 시작 (2026. 09. 09. (수) 13:22:51 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W18 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 8184.73it/s]
+window=W18 432-480 status=OK frames=24 in=2153 gen=425 cap=False
+  raw=9 collapsed=5 uniq=5 degenerate=False validity=WINDOW_VALID []
+++ date
++ echo '=== W18 완료 (2026. 09. 09. (수) 13:23:22 KST) ==='
+=== W18 완료 (2026. 09. 09. (수) 13:23:22 KST) ===
++ for index in $(seq -w 0 23)
++ window=W19
+++ date
++ echo '=== W19 시작 (2026. 09. 09. (수) 13:23:22 KST) ==='
+=== W19 시작 (2026. 09. 09. (수) 13:23:22 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W19 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:  85%|████████▌ | 640/750 [00:00<00:00, 6398.97it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7079.65it/s]
+window=W19 456-504 status=OK frames=24 in=2153 gen=558 cap=False
+  raw=12 collapsed=12 uniq=12 degenerate=False validity=WINDOW_VALID []
+++ date
++ echo '=== W19 완료 (2026. 09. 09. (수) 13:23:59 KST) ==='
+=== W19 완료 (2026. 09. 09. (수) 13:23:59 KST) ===
++ for index in $(seq -w 0 23)
++ window=W20
+++ date
++ echo '=== W20 시작 (2026. 09. 09. (수) 13:23:59 KST) ==='
+=== W20 시작 (2026. 09. 09. (수) 13:23:59 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W20 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7770.70it/s]
+window=W20 480-528 status=OK frames=24 in=2153 gen=771 cap=False
+  raw=16 collapsed=3 uniq=3 degenerate=False validity=WINDOW_VALID []
+++ date
++ echo '=== W20 완료 (2026. 09. 09. (수) 13:24:42 KST) ==='
+=== W20 완료 (2026. 09. 09. (수) 13:24:42 KST) ===
++ for index in $(seq -w 0 23)
++ window=W21
+++ date
++ echo '=== W21 시작 (2026. 09. 09. (수) 13:24:42 KST) ==='
+=== W21 시작 (2026. 09. 09. (수) 13:24:42 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W21 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 8133.25it/s]
+window=W21 504-552 status=OK frames=24 in=2153 gen=477 cap=False
+  raw=10 collapsed=8 uniq=8 degenerate=False validity=WINDOW_VALID []
+++ date
++ echo '=== W21 완료 (2026. 09. 09. (수) 13:25:16 KST) ==='
+=== W21 완료 (2026. 09. 09. (수) 13:25:16 KST) ===
++ for index in $(seq -w 0 23)
++ window=W22
+++ date
++ echo '=== W22 시작 (2026. 09. 09. (수) 13:25:16 KST) ==='
+=== W22 시작 (2026. 09. 09. (수) 13:25:16 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W22 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:  93%|█████████▎| 697/750 [00:00<00:00, 6966.50it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7297.34it/s]
+window=W22 528-576 status=OK frames=24 in=2153 gen=458 cap=False
+  raw=10 collapsed=10 uniq=10 degenerate=False validity=WINDOW_VALID []
+++ date
++ echo '=== W22 완료 (2026. 09. 09. (수) 13:25:49 KST) ==='
+=== W22 완료 (2026. 09. 09. (수) 13:25:49 KST) ===
++ for index in $(seq -w 0 23)
++ window=W23
+++ date
++ echo '=== W23 시작 (2026. 09. 09. (수) 13:25:49 KST) ==='
+=== W23 시작 (2026. 09. 09. (수) 13:25:49 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_shadow_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window W23 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 8008.94it/s]
+window=W23 552-600 status=OK frames=24 in=2153 gen=473 cap=False
+  raw=10 collapsed=10 uniq=10 degenerate=False validity=WINDOW_VALID []
+++ date
++ echo '=== W23 완료 (2026. 09. 09. (수) 13:26:22 KST) ==='
+=== W23 완료 (2026. 09. 09. (수) 13:26:22 KST) ===
+++ date
++ echo '=== shadow batch 완료 (2026. 09. 09. (수) 13:26:22 KST) invalid_or_failed=1 ==='
+=== shadow batch 완료 (2026. 09. 09. (수) 13:26:22 KST) invalid_or_failed=1 ===
++ wc -l
++ ls -l /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W00.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W01.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W02.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W03.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W04.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W05.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W06.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W07.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W08.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W09.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W10.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W11.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W12.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W13.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W14.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W15.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W16.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W17.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W18.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W19.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W20.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W21.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W22.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/shadow_v1_W23.json
+24

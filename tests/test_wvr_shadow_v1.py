@@ -420,13 +420,23 @@ def test_wvr_h31_the_summary_reports_technical_gate_only():
 
 @requires_summary
 def test_wvr_h32_every_window_kept_the_frozen_geometry():
+    """기하 불변식과, 절단이 발생했다면 그것이 INVALID로 잡혔는지 확인한다.
+
+    [정정 2026-09-09 · 실행 후] 최초 단언은 "모든 창이 생성 상한에 도달하지 않는다"였다.
+    그것은 기하 불변식이 아니라 결과에 대한 기대였고, W00이 상한 4096에 도달했다.
+    동결된 게이트는 이미 그 창을 TRUNCATED_AT_CAP으로 INVALID 처리했고 사건 판정도
+    INCONCLUSIVE로 나왔다 — 게이트·판정은 바꾸지 않고 단언만 실제 불변식으로 고쳤다.
+    """
     record = json.loads(SUMMARY.read_text(encoding="utf-8"))
     schedule = {row["window_id"]: row for row in sh.windows()}
+    invalid = set(record["technical_gate"]["invalid_windows"])
     for row in record["windows"]:
         assert row["frames"] == 24
         assert row["start_sec"] == schedule[row["window_id"]]["start_sec"]
         assert row["raw_persisted"] is True
-        assert row["generation_cap_hit"] is False
+        if row["generation_cap_hit"]:
+            assert row["window_id"] in invalid, "절단이 게이트에 안 잡혔다"
+            assert "TRUNCATED_AT_CAP" in row["reasons"]
 
 
 @requires_summary

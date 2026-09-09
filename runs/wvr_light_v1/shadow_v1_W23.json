@@ -1,0 +1,509 @@
+{
+ "schema": "wvr_shadow_v1",
+ "event": "WVR_EVENT_EXTRACTION_SHADOW_V1",
+ "prereg": "docs/preregistration/WVR_EVENT_EXTRACTION_SHADOW_V1_2026-09-09.md",
+ "window": {
+  "window_id": "W23",
+  "index": 23,
+  "start_sec": 552.0,
+  "end_sec": 600.0
+ },
+ "arm": "LOCAL_0_5FPS",
+ "requested": {
+  "sampling_fps": 0.5,
+  "frames": 24,
+  "frame_width": 512,
+  "frame_height": 288,
+  "model_id": "Qwen/Qwen3-VL-8B-Instruct",
+  "model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "dtype": "bfloat16",
+  "attn_implementation": "sdpa",
+  "quantization": null,
+  "device": "cuda:0",
+  "device_map": null,
+  "do_sample": false,
+  "num_beams": 1,
+  "max_new_tokens": 4096,
+  "repetition_penalty": 1.0,
+  "do_sample_frames": false,
+  "do_resize": false,
+  "prompt_contract": "SAMPLING_DIAG_PROMPT_V2",
+  "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+  "output_language": "en",
+  "window_sec": 48.0,
+  "frames_per_window": 24
+ },
+ "inference_config_change": {
+  "inference_config_change": "NONE",
+  "differences": {},
+  "architecture_under_characterization": "deterministic 48s / 24s-overlap tiling of C01",
+  "new_measurement_instrumentation": "overlap comparison + preregistered frame audit (7 overlaps)",
+  "not_an_ablation": true
+ },
+ "frame_times": [
+  552.0,
+  554.0,
+  556.0,
+  558.0,
+  560.0,
+  562.0,
+  564.0,
+  566.0,
+  568.0,
+  570.0,
+  572.0,
+  574.0,
+  576.0,
+  578.0,
+  580.0,
+  582.0,
+  584.0,
+  586.0,
+  588.0,
+  590.0,
+  592.0,
+  594.0,
+  596.0,
+  598.0
+ ],
+ "prompt_contract": "SAMPLING_DIAG_PROMPT_V2",
+ "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+ "is_production_contract": false,
+ "output_language": "en",
+ "video_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+ "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+ "runtime_config_hash": "cb43ffd357d771ff2923f2d3e0dec0f48f85bba660171cfc3832a298f4fef5aa",
+ "raw_persisted": true,
+ "raw_path": "shadow_v1_W23_raw.txt",
+ "semantic_verdict_by_executor": false,
+ "event_map_production_approved": false,
+ "runtime_retry_allowed": false,
+ "metrics": {
+  "load_wall_sec": 3.57,
+  "video_process_wall_sec": 3.63,
+  "delivered_frame_count": 24,
+  "frame_size": [
+   512,
+   288
+  ],
+  "input_token_count": 2153,
+  "video_token_count": 1728,
+  "infer_wall_sec": 17.56,
+  "generated_token_count": 473,
+  "generation_cap_hit": false,
+  "peak_vram_allocated_mib": 17390.7,
+  "peak_vram_reserved_mib": 17724.0,
+  "total_wall_sec": 26.72
+ },
+ "stage_status": {
+  "MODEL_LOAD": "OK",
+  "VIDEO_PROCESS": "OK",
+  "RAW_PERSIST": "OK",
+  "INFERENCE": "OK"
+ },
+ "allocator_observed": {
+  "backend": "native",
+  "env": "",
+  "segment_count": 268,
+  "expandable_segments_observed": false,
+  "expandable_flags_head": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ]
+ },
+ "frame_hashes": [
+  "a0b1ed62f263aa7e0ca24b7e8fc80904b64de17e337884adbe047ee197d4d0c7",
+  "c823a9ecb4a795a9e9f92f260191b8f9f0627e5ff57cee0e23dfa59533c752aa",
+  "6966f7840a92b2ac5a40d5e89381351c70d6c1de2481b6f32b45dd62d5739788",
+  "88fb9cb24633ef17108e5bbd2014d865221723a8f8d1dfde83c6621ddc93b7ca",
+  "de12f1cfc2e4c58f614a9be6182995cd8774186dfed76c65a3f4a6a2b477bee9",
+  "bd8e88de74519c5d976c59e560274bae75edfc17013867f8645171e471659ec4",
+  "2eb5ebfafcd54d681cfd258f6b1ab5c71392482683420a0e516deed5e6873209",
+  "136fe2708c0f903570deb0f3d4e91329ffcb1d72c1f4360fbae9d7019967dbe0",
+  "b5b667f087976ef8aa24830ab8a4f9040357c4f39b038596892aeaf243f39de6",
+  "045fdf4fd4d9899c992c26864c1e111754a1482f77d26fd95a86d488b168ea24",
+  "c42fad23d77bc603997e55538dffefd210a8be075d82c24072466a406e531949",
+  "7da034176e2c61f5ac7e55ebe5edc799ec63ceb506ac2e65632ff708e03cf26e",
+  "117f7cd39413760c28d4a39416266002c47bc120764fbff879e2d73829e5611b",
+  "d6b1ee3e2942bc2239bdfd65687cf6e5c8e5cdcecb0252c65887b6f146d9314e",
+  "4d7858b353ae4f4411b9e21f270e46e0b5818b7159e7b7fc3bf4ecd20d471b2f",
+  "cf81bb7cfef6777c608d17aef737e4901ec7f0eff28ef26c5222e6af82fb0fa7",
+  "6a68dc096c21bf37c19df6272a2e7401a3f03c5ba5ca8616434a1d8c155cfe6a",
+  "a0cfbe754d2091d9ae0d04d04e831fbb43cc688487b3a35f6b0b9fe9b4b9828e",
+  "ba623e06016c8e9a9eee46c44094278073d0733c9f32d0f26d63fd1b3eab347c",
+  "f97b94d64fb150dad4304903e8abbea8ebe57f6e584e8385dd35e9d88ceb899f",
+  "a8b2e82267686a8c599a7e0e29e727372e34016dab6ddb7d5f943455d4a2ca72",
+  "ca25a2ceb343d90e634c1aa23c7c70aa0c07999aee8bf743469fa9b81ef5c9d3",
+  "8fa0c33ad7ab0bd747b6d59b4ad27724fa9f83f92cd3dad24c45eefe52ed934c",
+  "20ad709d0d7af2af6481b53aa24d6884af2b4b28ce2c8ed50bb5359c546719bb"
+ ],
+ "frame_indices": [
+  16560,
+  16620,
+  16680,
+  16740,
+  16800,
+  16860,
+  16920,
+  16980,
+  17040,
+  17100,
+  17160,
+  17220,
+  17280,
+  17340,
+  17400,
+  17460,
+  17520,
+  17580,
+  17640,
+  17700,
+  17760,
+  17820,
+  17880,
+  17940
+ ],
+ "decoded_times": [
+  552.0,
+  554.0,
+  556.0,
+  558.0,
+  560.0,
+  562.0,
+  564.0,
+  566.0,
+  568.0,
+  570.0,
+  572.0,
+  574.0,
+  576.0,
+  578.0,
+  580.0,
+  582.0,
+  584.0,
+  586.0,
+  588.0,
+  590.0,
+  592.0,
+  594.0,
+  596.0,
+  598.0
+ ],
+ "decoded_fps": 30.0000041251862,
+ "raw_output_hash": "29657ce21052b465ddacbdeb440e601605c1561a6fd9ffeb532f8a3263bd748b",
+ "raw_output": "{\"events\": [{\"start_sec\": 552.0, \"end_sec\": 557.0, \"actor\": \"person\", \"action\": \"holding and displaying fabric\", \"object_or_state\": \"white fabric\"}, {\"start_sec\": 557.0, \"end_sec\": 561.0, \"actor\": \"person\", \"action\": \"placing fabric on table\", \"object_or_state\": \"white fabric\"}, {\"start_sec\": 561.0, \"end_sec\": 565.0, \"actor\": \"person\", \"action\": \"picking up handbag\", \"object_or_state\": \"brown handbag\"}, {\"start_sec\": 565.0, \"end_sec\": 573.0, \"actor\": \"person\", \"action\": \"taking mirror selfie\", \"object_or_state\": \"camera\"}, {\"start_sec\": 573.0, \"end_sec\": 580.0, \"actor\": \"person\", \"action\": \"adjusting clothing\", \"object_or_state\": \"white shirt and shorts\"}, {\"start_sec\": 580.0, \"end_sec\": 585.0, \"actor\": \"person\", \"action\": \"looking at phone\", \"object_or_state\": \"phone displaying weather\"}, {\"start_sec\": 585.0, \"end_sec\": 590.0, \"actor\": \"person\", \"action\": \"walking through train window\", \"object_or_state\": \"train window showing cityscape\"}, {\"start_sec\": 590.0, \"end_sec\": 593.0, \"actor\": \"person\", \"action\": \"looking at train station sign\", \"object_or_state\": \"train station sign with text\"}, {\"start_sec\": 593.0, \"end_sec\": 597.0, \"actor\": \"person\", \"action\": \"walking outside\", \"object_or_state\": \"building with signage\"}, {\"start_sec\": 597.0, \"end_sec\": 600.0, \"actor\": \"person\", \"action\": \"entering shop\", \"object_or_state\": \"shop entrance with sign\"}]}",
+ "parsed": {
+  "status": "OK",
+  "events": [
+   {
+    "index": 0,
+    "start_sec": 552.0,
+    "end_sec": 557.0,
+    "actor": "person",
+    "action": "holding and displaying fabric",
+    "object_or_state": "white fabric",
+    "inside_window": true
+   },
+   {
+    "index": 1,
+    "start_sec": 557.0,
+    "end_sec": 561.0,
+    "actor": "person",
+    "action": "placing fabric on table",
+    "object_or_state": "white fabric",
+    "inside_window": true
+   },
+   {
+    "index": 2,
+    "start_sec": 561.0,
+    "end_sec": 565.0,
+    "actor": "person",
+    "action": "picking up handbag",
+    "object_or_state": "brown handbag",
+    "inside_window": true
+   },
+   {
+    "index": 3,
+    "start_sec": 565.0,
+    "end_sec": 573.0,
+    "actor": "person",
+    "action": "taking mirror selfie",
+    "object_or_state": "camera",
+    "inside_window": true
+   },
+   {
+    "index": 4,
+    "start_sec": 573.0,
+    "end_sec": 580.0,
+    "actor": "person",
+    "action": "adjusting clothing",
+    "object_or_state": "white shirt and shorts",
+    "inside_window": true
+   },
+   {
+    "index": 5,
+    "start_sec": 580.0,
+    "end_sec": 585.0,
+    "actor": "person",
+    "action": "looking at phone",
+    "object_or_state": "phone displaying weather",
+    "inside_window": true
+   },
+   {
+    "index": 6,
+    "start_sec": 585.0,
+    "end_sec": 590.0,
+    "actor": "person",
+    "action": "walking through train window",
+    "object_or_state": "train window showing cityscape",
+    "inside_window": true
+   },
+   {
+    "index": 7,
+    "start_sec": 590.0,
+    "end_sec": 593.0,
+    "actor": "person",
+    "action": "looking at train station sign",
+    "object_or_state": "train station sign with text",
+    "inside_window": true
+   },
+   {
+    "index": 8,
+    "start_sec": 593.0,
+    "end_sec": 597.0,
+    "actor": "person",
+    "action": "walking outside",
+    "object_or_state": "building with signage",
+    "inside_window": true
+   },
+   {
+    "index": 9,
+    "start_sec": 597.0,
+    "end_sec": 600.0,
+    "actor": "person",
+    "action": "entering shop",
+    "object_or_state": "shop entrance with sign",
+    "inside_window": true
+   }
+  ],
+  "collapsed": [
+   {
+    "index": 0,
+    "start_sec": 552.0,
+    "end_sec": 557.0,
+    "actor": "person",
+    "action": "holding and displaying fabric",
+    "object_or_state": "white fabric",
+    "signature": [
+     "person",
+     "holding and displaying fabric",
+     "white fabric"
+    ],
+    "source_indices": [
+     0
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 1,
+    "start_sec": 557.0,
+    "end_sec": 561.0,
+    "actor": "person",
+    "action": "placing fabric on table",
+    "object_or_state": "white fabric",
+    "signature": [
+     "person",
+     "placing fabric on table",
+     "white fabric"
+    ],
+    "source_indices": [
+     1
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 2,
+    "start_sec": 561.0,
+    "end_sec": 565.0,
+    "actor": "person",
+    "action": "picking up handbag",
+    "object_or_state": "brown handbag",
+    "signature": [
+     "person",
+     "picking up handbag",
+     "brown handbag"
+    ],
+    "source_indices": [
+     2
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 3,
+    "start_sec": 565.0,
+    "end_sec": 573.0,
+    "actor": "person",
+    "action": "taking mirror selfie",
+    "object_or_state": "camera",
+    "signature": [
+     "person",
+     "taking mirror selfie",
+     "camera"
+    ],
+    "source_indices": [
+     3
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 4,
+    "start_sec": 573.0,
+    "end_sec": 580.0,
+    "actor": "person",
+    "action": "adjusting clothing",
+    "object_or_state": "white shirt and shorts",
+    "signature": [
+     "person",
+     "adjusting clothing",
+     "white shirt and shorts"
+    ],
+    "source_indices": [
+     4
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 5,
+    "start_sec": 580.0,
+    "end_sec": 585.0,
+    "actor": "person",
+    "action": "looking at phone",
+    "object_or_state": "phone displaying weather",
+    "signature": [
+     "person",
+     "looking at phone",
+     "phone displaying weather"
+    ],
+    "source_indices": [
+     5
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 6,
+    "start_sec": 585.0,
+    "end_sec": 590.0,
+    "actor": "person",
+    "action": "walking through train window",
+    "object_or_state": "train window showing cityscape",
+    "signature": [
+     "person",
+     "walking through train window",
+     "train window showing cityscape"
+    ],
+    "source_indices": [
+     6
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 7,
+    "start_sec": 590.0,
+    "end_sec": 593.0,
+    "actor": "person",
+    "action": "looking at train station sign",
+    "object_or_state": "train station sign with text",
+    "signature": [
+     "person",
+     "looking at train station sign",
+     "train station sign with text"
+    ],
+    "source_indices": [
+     7
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 8,
+    "start_sec": 593.0,
+    "end_sec": 597.0,
+    "actor": "person",
+    "action": "walking outside",
+    "object_or_state": "building with signage",
+    "signature": [
+     "person",
+     "walking outside",
+     "building with signage"
+    ],
+    "source_indices": [
+     8
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 9,
+    "start_sec": 597.0,
+    "end_sec": 600.0,
+    "actor": "person",
+    "action": "entering shop",
+    "object_or_state": "shop entrance with sign",
+    "signature": [
+     "person",
+     "entering shop",
+     "shop entrance with sign"
+    ],
+    "source_indices": [
+     9
+    ],
+    "collapsed_count": 1
+   }
+  ],
+  "violations": [],
+  "language": {
+   "contract": "ENGLISH_ONLY",
+   "satisfied": true,
+   "hangul_chars": 0,
+   "cjk_chars": 0,
+   "latin_chars": 418
+  },
+  "reason": ""
+ },
+ "parsed_output_hash": "739e03394616fee9706179bdc7567773380dda72a1e6299505339f9b9b0b32d5",
+ "representation": {
+  "collapsed_event_count": 10,
+  "unique_signature_count": 10,
+  "max_collapsed_run": 1,
+  "degenerate": false,
+  "reason": ""
+ },
+ "collapse_output_hash": "d7cc147c643970ecad8c41e2db2b9c0b1398f9b35d6317d3162100b6d30936c1",
+ "arm_status": "OK",
+ "finish_reason": "stop",
+ "memory_stats": {
+  "allocated_bytes.all.peak": 18235517952,
+  "reserved_bytes.all.peak": 18584961024,
+  "requested_bytes.all.peak": 18219942274,
+  "active_bytes.all.peak": 18235517952,
+  "inactive_split_bytes.all.peak": 416349184,
+  "num_alloc_retries": 0,
+  "num_ooms": 0
+ },
+ "validity": {
+  "valid": true,
+  "reasons": [],
+  "status": "WINDOW_VALID",
+  "language": {
+   "contract": "ENGLISH_ONLY",
+   "satisfied": true,
+   "hangul_chars": 0,
+   "cjk_chars": 0,
+   "latin_chars": 418
+  }
+ }
+}

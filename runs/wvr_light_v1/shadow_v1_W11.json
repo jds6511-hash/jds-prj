@@ -1,0 +1,405 @@
+{
+ "schema": "wvr_shadow_v1",
+ "event": "WVR_EVENT_EXTRACTION_SHADOW_V1",
+ "prereg": "docs/preregistration/WVR_EVENT_EXTRACTION_SHADOW_V1_2026-09-09.md",
+ "window": {
+  "window_id": "W11",
+  "index": 11,
+  "start_sec": 264.0,
+  "end_sec": 312.0
+ },
+ "arm": "LOCAL_0_5FPS",
+ "requested": {
+  "sampling_fps": 0.5,
+  "frames": 24,
+  "frame_width": 512,
+  "frame_height": 288,
+  "model_id": "Qwen/Qwen3-VL-8B-Instruct",
+  "model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "dtype": "bfloat16",
+  "attn_implementation": "sdpa",
+  "quantization": null,
+  "device": "cuda:0",
+  "device_map": null,
+  "do_sample": false,
+  "num_beams": 1,
+  "max_new_tokens": 4096,
+  "repetition_penalty": 1.0,
+  "do_sample_frames": false,
+  "do_resize": false,
+  "prompt_contract": "SAMPLING_DIAG_PROMPT_V2",
+  "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+  "output_language": "en",
+  "window_sec": 48.0,
+  "frames_per_window": 24
+ },
+ "inference_config_change": {
+  "inference_config_change": "NONE",
+  "differences": {},
+  "architecture_under_characterization": "deterministic 48s / 24s-overlap tiling of C01",
+  "new_measurement_instrumentation": "overlap comparison + preregistered frame audit (7 overlaps)",
+  "not_an_ablation": true
+ },
+ "frame_times": [
+  264.0,
+  266.0,
+  268.0,
+  270.0,
+  272.0,
+  274.0,
+  276.0,
+  278.0,
+  280.0,
+  282.0,
+  284.0,
+  286.0,
+  288.0,
+  290.0,
+  292.0,
+  294.0,
+  296.0,
+  298.0,
+  300.0,
+  302.0,
+  304.0,
+  306.0,
+  308.0,
+  310.0
+ ],
+ "prompt_contract": "SAMPLING_DIAG_PROMPT_V2",
+ "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+ "is_production_contract": false,
+ "output_language": "en",
+ "video_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+ "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+ "runtime_config_hash": "cb43ffd357d771ff2923f2d3e0dec0f48f85bba660171cfc3832a298f4fef5aa",
+ "raw_persisted": true,
+ "raw_path": "shadow_v1_W11_raw.txt",
+ "semantic_verdict_by_executor": false,
+ "event_map_production_approved": false,
+ "runtime_retry_allowed": false,
+ "metrics": {
+  "load_wall_sec": 3.62,
+  "video_process_wall_sec": 2.71,
+  "delivered_frame_count": 24,
+  "frame_size": [
+   512,
+   288
+  ],
+  "input_token_count": 2153,
+  "video_token_count": 1728,
+  "infer_wall_sec": 11.62,
+  "generated_token_count": 291,
+  "generation_cap_hit": false,
+  "peak_vram_allocated_mib": 17390.7,
+  "peak_vram_reserved_mib": 17724.0,
+  "total_wall_sec": 19.91
+ },
+ "stage_status": {
+  "MODEL_LOAD": "OK",
+  "VIDEO_PROCESS": "OK",
+  "RAW_PERSIST": "OK",
+  "INFERENCE": "OK"
+ },
+ "allocator_observed": {
+  "backend": "native",
+  "env": "",
+  "segment_count": 268,
+  "expandable_segments_observed": false,
+  "expandable_flags_head": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ]
+ },
+ "frame_hashes": [
+  "2dc4a66f836212e9459bff826aa960ac849c8929c7633883b0338e0fc25b3327",
+  "ce79252c7923ea34911b5a0be77660f1ae0a8316ffabc21195b808b60c95a138",
+  "d56f6b47956a160e88be9f14c8aec9b43d1e699a16f78a7dfcc7a5d1ed4a4103",
+  "e68f7d82a91c7c9b069c5ca97e1312f0687979e179f2364083ad9c89494dbb41",
+  "ef0160e037209d6eab975bf956b585d3e917b4c999d0655bb4984737e44dab06",
+  "0d8f4075e2d6d3a354c5f97305a49a820aa316031bf499d2623924f6d5866f73",
+  "007b0420ac677c6229fd9514e1c8d1f2e9281c72b51d14d4c10b6b47df63dfe5",
+  "bf09c36afc0897e0d6c0de8a9a1063bfc62c6cb1948b79cf492bb76519a93fd7",
+  "babcab7f92c7d3c84af84492c59a4f23336e6d6fb1382d4a829cdc7ef7e0100e",
+  "792d19c5b85cc83b8e07016a5459ce4dd994f739d66d9aa6fed3387ebc512616",
+  "65a78ce5409c6fe27ab7ef25f4805eaee4ca19757456eb19729736ef8ba2fe2c",
+  "673344a5080c6d2bb60ecf801be60a4b67286a80ecc72d4167fdfaa8745a54f0",
+  "5860221a6326bb84fa48180e007cfa8756ead37c3e3c8d6bf2e70f43af60cccc",
+  "bc5c0bf1140571eed1bf1eb414759e7c12bababfd36f2a8226edd649f4ac685c",
+  "e50fd1b7e80ecebdd96c56fc8f75a3712ff2db93476949e3204dfd2653f29caa",
+  "07ad9fec6821050bec1cbf1a4ce9f1193cffa9170cb9a17619b55fbe5c4abdcd",
+  "3096cd1c5a835f59986477b4827bd2b70dd73c972381cc8e4f5e1934370913cd",
+  "ca68b696135ef0baaa77f516428c1566e434aedaf0813639bb11be76e18e9362",
+  "a80e7d868c5958db85d864e3e689bb5684c61f4491d92ceb148311d90128d89d",
+  "8ceadcb18001554d5df8ba1ebcdc823aeedf5bff0c6e66fb574db9d7af17cb29",
+  "287da459ba9b2d0860d08d245c6a81ec8b7d846b81ef22270cf8ae511f0f45ec",
+  "b6a67d0a67fa4d7eee15ff398b7692ca06353effc1a970de267bfec5a559526a",
+  "758ad6dc1c613721c3e063fbb746ab9053f068147b39b3976805a3625f45f124",
+  "2ce0e6cd42cf544e7b01ae508a6aec18fa90f83dde359975c9a652301eb38190"
+ ],
+ "frame_indices": [
+  7920,
+  7980,
+  8040,
+  8100,
+  8160,
+  8220,
+  8280,
+  8340,
+  8400,
+  8460,
+  8520,
+  8580,
+  8640,
+  8700,
+  8760,
+  8820,
+  8880,
+  8940,
+  9000,
+  9060,
+  9120,
+  9180,
+  9240,
+  9300
+ ],
+ "decoded_times": [
+  264.0,
+  266.0,
+  268.0,
+  270.0,
+  272.0,
+  274.0,
+  276.0,
+  278.0,
+  280.0,
+  282.0,
+  284.0,
+  286.0,
+  288.0,
+  290.0,
+  292.0,
+  294.0,
+  296.0,
+  298.0,
+  300.0,
+  302.0,
+  304.0,
+  306.0,
+  308.0,
+  310.0
+ ],
+ "decoded_fps": 30.0000041251862,
+ "raw_output_hash": "5033d614f5ccc07997765757efe14335467b15c2993c83a456aac20616b021c5",
+ "raw_output": "{\"events\": [{\"start_sec\": 264.0, \"end_sec\": 272.0, \"actor\": \"person\", \"action\": \"using chopsticks\", \"object_or_state\": \"lifting noodles from a bowl\"}, {\"start_sec\": 272.0, \"end_sec\": 280.0, \"actor\": \"person\", \"action\": \"eating\", \"object_or_state\": \"noodles with a spoon\"}, {\"start_sec\": 280.0, \"end_sec\": 288.0, \"actor\": \"person\", \"action\": \"using chopsticks\", \"object_or_state\": \"picking up a breaded food item\"}, {\"start_sec\": 288.0, \"end_sec\": 296.0, \"actor\": \"person\", \"action\": \"eating\", \"object_or_state\": \"breaded food item\"}, {\"start_sec\": 296.0, \"end_sec\": 304.0, \"actor\": \"person\", \"action\": \"using chopsticks\", \"object_or_state\": \"picking up a breaded food item\"}, {\"start_sec\": 304.0, \"end_sec\": 312.0, \"actor\": \"person\", \"action\": \"eating\", \"object_or_state\": \"breaded food item\"}]}",
+ "parsed": {
+  "status": "OK",
+  "events": [
+   {
+    "index": 0,
+    "start_sec": 264.0,
+    "end_sec": 272.0,
+    "actor": "person",
+    "action": "using chopsticks",
+    "object_or_state": "lifting noodles from a bowl",
+    "inside_window": true
+   },
+   {
+    "index": 1,
+    "start_sec": 272.0,
+    "end_sec": 280.0,
+    "actor": "person",
+    "action": "eating",
+    "object_or_state": "noodles with a spoon",
+    "inside_window": true
+   },
+   {
+    "index": 2,
+    "start_sec": 280.0,
+    "end_sec": 288.0,
+    "actor": "person",
+    "action": "using chopsticks",
+    "object_or_state": "picking up a breaded food item",
+    "inside_window": true
+   },
+   {
+    "index": 3,
+    "start_sec": 288.0,
+    "end_sec": 296.0,
+    "actor": "person",
+    "action": "eating",
+    "object_or_state": "breaded food item",
+    "inside_window": true
+   },
+   {
+    "index": 4,
+    "start_sec": 296.0,
+    "end_sec": 304.0,
+    "actor": "person",
+    "action": "using chopsticks",
+    "object_or_state": "picking up a breaded food item",
+    "inside_window": true
+   },
+   {
+    "index": 5,
+    "start_sec": 304.0,
+    "end_sec": 312.0,
+    "actor": "person",
+    "action": "eating",
+    "object_or_state": "breaded food item",
+    "inside_window": true
+   }
+  ],
+  "collapsed": [
+   {
+    "index": 0,
+    "start_sec": 264.0,
+    "end_sec": 272.0,
+    "actor": "person",
+    "action": "using chopsticks",
+    "object_or_state": "lifting noodles from a bowl",
+    "signature": [
+     "person",
+     "using chopsticks",
+     "lifting noodles from a bowl"
+    ],
+    "source_indices": [
+     0
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 1,
+    "start_sec": 272.0,
+    "end_sec": 280.0,
+    "actor": "person",
+    "action": "eating",
+    "object_or_state": "noodles with a spoon",
+    "signature": [
+     "person",
+     "eating",
+     "noodles with a spoon"
+    ],
+    "source_indices": [
+     1
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 2,
+    "start_sec": 280.0,
+    "end_sec": 288.0,
+    "actor": "person",
+    "action": "using chopsticks",
+    "object_or_state": "picking up a breaded food item",
+    "signature": [
+     "person",
+     "using chopsticks",
+     "picking up a breaded food item"
+    ],
+    "source_indices": [
+     2
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 3,
+    "start_sec": 288.0,
+    "end_sec": 296.0,
+    "actor": "person",
+    "action": "eating",
+    "object_or_state": "breaded food item",
+    "signature": [
+     "person",
+     "eating",
+     "breaded food item"
+    ],
+    "source_indices": [
+     3
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 4,
+    "start_sec": 296.0,
+    "end_sec": 304.0,
+    "actor": "person",
+    "action": "using chopsticks",
+    "object_or_state": "picking up a breaded food item",
+    "signature": [
+     "person",
+     "using chopsticks",
+     "picking up a breaded food item"
+    ],
+    "source_indices": [
+     4
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 5,
+    "start_sec": 304.0,
+    "end_sec": 312.0,
+    "actor": "person",
+    "action": "eating",
+    "object_or_state": "breaded food item",
+    "signature": [
+     "person",
+     "eating",
+     "breaded food item"
+    ],
+    "source_indices": [
+     5
+    ],
+    "collapsed_count": 1
+   }
+  ],
+  "violations": [],
+  "language": {
+   "contract": "ENGLISH_ONLY",
+   "satisfied": true,
+   "hangul_chars": 0,
+   "cjk_chars": 0,
+   "latin_chars": 219
+  },
+  "reason": ""
+ },
+ "parsed_output_hash": "4c502173f6d0f81c7523c904f5d19605be8cae946bc780918cce6bfc6fbb3644",
+ "representation": {
+  "collapsed_event_count": 6,
+  "unique_signature_count": 4,
+  "max_collapsed_run": 1,
+  "degenerate": false,
+  "reason": ""
+ },
+ "collapse_output_hash": "478a13d6fd43a5fa3a3ef63de5b4fa84c1dc64205f314cb554db12916a461fbc",
+ "arm_status": "OK",
+ "finish_reason": "stop",
+ "memory_stats": {
+  "allocated_bytes.all.peak": 18235517952,
+  "reserved_bytes.all.peak": 18584961024,
+  "requested_bytes.all.peak": 18219942274,
+  "active_bytes.all.peak": 18235517952,
+  "inactive_split_bytes.all.peak": 416349184,
+  "num_alloc_retries": 0,
+  "num_ooms": 0
+ },
+ "validity": {
+  "valid": true,
+  "reasons": [],
+  "status": "WINDOW_VALID",
+  "language": {
+   "contract": "ENGLISH_ONLY",
+   "satisfied": true,
+   "hangul_chars": 0,
+   "cjk_chars": 0,
+   "latin_chars": 219
+  }
+ }
+}
