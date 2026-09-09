@@ -60,12 +60,28 @@ def load_child(runs: Path, child_id: str) -> dict:
     return record
 
 
-def child_row(record: dict) -> dict:
+def raw_structure(record: dict, runs: Path) -> dict:
+    """구조 요약. record에 없으면 보존된 raw 파일에서 사후 계산한다.
+
+    추론을 다시 하지 않는다 — raw는 파싱 전에 저장된 원문 그대로다.
+    """
+    structure = record.get("structure")
+    if structure:
+        return {**structure, "structure_source": "record"}
+    raw_path = runs / (record.get("raw_path") or "")
+    if not record.get("raw_persisted") or not raw_path.is_file():
+        return {"structure_source": "UNAVAILABLE"}
+    return {**fx.raw_structure(raw_path.read_text(encoding="utf-8")),
+            "structure_source": "raw_file_post_hoc",
+            "raw_file_sha256": sha256_file(raw_path)}
+
+
+def child_row(record: dict, runs: Path) -> dict:
     metrics = record.get("metrics") or {}
     shape = record.get("representation") or {}
     parsed = record.get("parsed") or {}
     validity = record.get("validity") or {}
-    structure = record.get("structure") or {}
+    structure = raw_structure(record, runs)
     lineage = record.get("lineage") or {}
     return {
         "child_id": record["child"]["child_id"],
@@ -87,6 +103,15 @@ def child_row(record: dict) -> dict:
         "zero_duration_count": structure.get("zero_length_interval_count"),
         "max_signature_repeat": structure.get("max_signature_repeat"),
         "json_complete": structure.get("json_parse_ok"),
+        "positive_duration_count": (
+            structure["complete_object_count"]
+            - structure["zero_length_interval_count"]
+            if structure.get("complete_object_count") is not None
+            and structure.get("zero_length_interval_count") is not None
+            else None),
+        "first_repeat": structure.get("first_repeat"),
+        "top_signatures": structure.get("top_signatures"),
+        "structure_source": structure.get("structure_source"),
         "degenerate": shape.get("degenerate"),
         "parse_status": parsed.get("status"),
         "language_satisfied": (validity.get("language") or {}).get("satisfied"),
@@ -210,7 +235,7 @@ def packet_lines(packets) -> str:
 def build(runs: Path, prereg_sha: str) -> dict:
     records = {child_id: load_child(runs, child_id)
                for child_id in sd.CHILD_IDS}
-    rows = [child_row(records[child_id]) for child_id in sd.CHILD_IDS]
+    rows = [child_row(records[child_id], runs) for child_id in sd.CHILD_IDS]
     tables = frame_tables(records)
     identity = sd.shared_frame_identity(tables)
 

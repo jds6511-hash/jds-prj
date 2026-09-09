@@ -280,8 +280,7 @@ def run(video: Path, child_id: str, runs: Path) -> dict:
         record["collapse_output_hash"] = sha256_bytes(
             json.dumps(record["parsed"]["collapsed"], sort_keys=True,
                        ensure_ascii=False).encode("utf-8"))
-        record["structure"] = rp.structure_audit(raw_output, metrics) \
-            if False else None
+        record["structure"] = fx.raw_structure(raw_output)
         record["stage_status"]["INFERENCE"] = "OK"
         record["arm_status"] = record["parsed"]["status"]
         record["finish_reason"] = ("length" if metrics["generation_cap_hit"]

@@ -627,3 +627,37 @@ def test_wvr_l43_preflight_enforces_geometry_and_the_token_cap(tmp_path,
     monkeypatch.setattr(runner.events, "assert_allowed", _refuse)
     with pytest.raises(AssertionError):
         runner.preflight("C2", runs)
+
+
+def test_wvr_l44_the_summary_derives_structure_from_the_persisted_raw(tmp_path):
+    """record의 구조 필드가 비어도 raw 원문에서 사후 계산한다(추론 재실행 없이)."""
+    runs = tmp_path / "runs"
+    runs.mkdir()
+    raw = ('{"events": [{"start_sec": 0.0, "end_sec": 0.0, "actor": "a person",'
+           ' "action": "pouring", "object_or_state": "a bowl"},'
+           '{"start_sec": 0.0, "end_sec": 0.0, "actor": "a person",'
+           ' "action": "pouring", "object_or_state": "a bowl"}')
+    for child_id in sd.CHILD_IDS:
+        record = _record(child_id)
+        record["structure"] = None
+        record["raw_path"] = "%s_%s_raw.txt" % (sd.ARTIFACT_TAG, child_id)
+        record["validity"] = sd.child_validity(record, "v")
+        (runs / record["raw_path"]).write_text(raw, encoding="utf-8")
+        (runs / ("%s_%s.json" % (sd.ARTIFACT_TAG, child_id))).write_text(
+            json.dumps(record, ensure_ascii=False), encoding="utf-8")
+    built = summary_tool.build(runs, "e593914d")
+    row = built["summary"]["children"][0]
+    assert row["structure_source"] == "raw_file_post_hoc"
+    assert row["completed_object_count"] == 2
+    assert row["zero_duration_count"] == 2
+    assert row["positive_duration_count"] == 0
+    assert row["json_complete"] is False
+
+    record = json.loads((runs / "subdiv_v1_C0.json").read_text(
+        encoding="utf-8"))
+    record["raw_persisted"] = False
+    (runs / "subdiv_v1_C0.json").write_text(json.dumps(record,
+                                                       ensure_ascii=False),
+                                            encoding="utf-8")
+    again = summary_tool.build(runs, "e593914d")
+    assert again["summary"]["children"][0]["structure_source"] == "UNAVAILABLE"
