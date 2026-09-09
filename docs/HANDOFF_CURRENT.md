@@ -7,7 +7,7 @@
 
 ## git HEAD
 
-`9907a6430ad2cbe2f69396e5358e4431e2b67651`
+`2766cfb06b3761e7910dc78c2d50ed21630a5239`
 
 source: git rev-parse HEAD
 
@@ -20,58 +20,39 @@ source: git status --porcelain
 ## 최근 커밋
 
 ```
-9907a64 feat(infra): CANARY 커버리지·세션 인수·provenance registry·실행 상태 판독기
-ab73e1c fix(p2): 타이밍 플래그를 버전으로 추측하지 않고 실제로 돌려서 고른다
-e328823 fix(p2): AV1 입력을 H.264로 옮기고 CANARY가 입력 종류를 전부 밟게 한다
-5fd70b9 fix(p2): video_id가 하이픈으로 시작하면 argparse가 옵션으로 읽는다
-b6f4f65 fix(p2): 산출물 이름을 stage에 귀속시킨다
+2766cfb probe: SHADOW_V1 24창 실행 · 기술 게이트 INCONCLUSIVE (W00 INVALID)
+d3cef5e prereg: EVENT_EXTRACTION_SHADOW_V1 — C01 전체 48초/24초 overlap tiling shadow
+1ca93ab probe: FRAME_ADJUDICATION_V1 CLOSED / SAMPLING_LOSS_CONFIRMED
+937405c tool: frame packet에 KEEP/DROP 분리 대지와 판정 기록기 추가 (관찰 전 커밋)
+f8373a7 docs: 프로젝트 개요·현재 파이프라인 지도 추가
 ```
 
 source: git log -5 --oneline
 
 ## 기준 작업현황
 
-`docs\작업현황_2026-08-22.md`
+`docs\작업현황_2026-09-03.md`
 
 source: scripts/make_handoff.py latest_status_doc()
 note: 파일명 날짜가 가장 큰 작업현황이다
 
 ## GO
 
-```
-I1   83프레임 A labeling — label_kit/i1_validation/labels_v.csv
-P2   질의 315건 + GT 라벨 — docs/P2_질의쿼터_2026-08-20.md 배정표대로
-     허용 도구 label_contact_sheet · label_intake만
-     금지 3B/4B 캡션 · 검색 결과 · frame_human_kit
-P2   CANARY m4 완료 → validate
-P2   validator PASS 이후 FULL → 완주 후 validate → PASS면 RUN_COMPLETE → 산출물 요약
-```
+관측하지 못했다 (null)
 
-source: docs\작업현황_2026-08-22.md **GO**
+source: docs\작업현황_2026-09-03.md **GO**
 
 ## HOLD
 
-```
-CANARY validator PASS 전 FULL 진입 — 승인 문자열이 있어도 선행조건이 우선이다
-test 접촉·개방 (M9 실행 포함 — M8 확정만으로 권한이 생기지 않는다)
-4B 채택 — P2가 어떻게 나오든 자동으로 열리지 않는다
-결과를 보고 reservoir·질의·GT·config 수정
-I1 validation 결과 후 detector 재튜닝
-39 → 72 확장(신규 33건) — 준비돼 있으나 별도 test-opening 이벤트
-```
+관측하지 못했다 (null)
 
-source: docs\작업현황_2026-08-22.md **HOLD**
+source: docs\작업현황_2026-09-03.md **HOLD**
 
 ## 다음 승인 지점
 
-```
-1  FULL 완주 → validator PASS → 산출물 보고 (여기까지 자동)
-2  [승인 필요] P2 질의·GT 완성 후 평가 실행 여부는 승인 ② 범위 안이지만,
-   결과가 4B 채택 논의로 넘어가는 순간 별도 승인 사건이다
-3  [완전 별도 승인] test-opening — P2 결과와 무관하게 자동으로 열리지 않는다
-```
+관측하지 못했다 (null)
 
-source: docs\작업현황_2026-08-22.md 9. 다음 승인 지점
+source: docs\작업현황_2026-09-03.md None
 
 ## 현재 실행 상태
 
@@ -154,6 +135,19 @@ M8_dev예비실행_사전등록_2026-08-18.md
 M8_event지표_보충_2026-08-18.md
 M8_개선_사전등록_2026-08-14.md
 M8_구조변경_사전등록_2026-08-16.md
+STT_EVIDENCE_SANITATION_V1_2026-09-06.md
+STT_RETRANSCRIBE_V1_2026-09-08.md
+STT_VAD_ONLY_SHADOW_V1_2026-09-07.md
+WHOLE_VIDEO_REPORT_LIGHT_V1_2026-09-08.md
+WVR_CAPACITY_ALLOC_V1_2026-09-08.md
+WVR_CAPACITY_SAMPLING_V1_2026-09-08.md
+WVR_EVENT_EXTRACTION_SHADOW_V1_2026-09-09.md
+WVR_EVIDENCE_RESOLUTION_V1_2026-09-09.md
+WVR_FRAME_ADJUDICATION_V1_2026-09-09.md
+WVR_SAMPLING_SEMANTIC_DENSITY_V1B_2026-09-09.md
+WVR_SAMPLING_SEMANTIC_DENSITY_V1_2026-09-08.md
+WVR_SAMPLING_SEMANTIC_DENSITY_V2_2026-09-09.md
+WVR_SHORT_WINDOW_V1_2026-09-09.md
 alpha곡선_2x2_사전등록_2026-08-18.md
 caption_2x2_사전등록_2026-08-17.md
 dev_precision_3arm_보충_CI해석_2026-08-18.md
