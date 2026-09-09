@@ -26,6 +26,7 @@ import wvr_short_window as sw                               # noqa: E402
 PREREG = "docs/preregistration/WVR_FRAME_ADJUDICATION_V1_2026-09-09.md"
 PACKET_NAME = "frame_adjudication_packet.md"
 MANIFEST_NAME = "frame_adjudication_manifest.json"
+VERDICT_NAME = "frame_adjudication_verdicts.json"
 FRAME_DIR_NAME = "frames_adjudication"
 COLUMNS = 4
 LABEL_HEIGHT = 26
@@ -177,15 +178,104 @@ def build(video: Path, runs: Path) -> dict:
     }
 
 
+def split_sheets(video: Path, runs: Path) -> list:
+    """질문별로 KEEP-only · DROP-only 대지를 따로 만든다 (관찰 순서 계약용).
+
+    프레임 자체는 packet과 같은 경로·같은 픽셀이다. 새 판정 범주를 만들지 않는다.
+    """
+    frame_dir = runs / FRAME_DIR_NAME
+    rows_out = []
+    for question in fa.QUESTIONS:
+        rows = fa.frame_rows(question)
+        fa.assert_expected_counts(question["question_id"], rows)
+        fa.assert_keep_matches_s1(question, rows)
+        frames, _, _, _ = probe.sample_frames(
+            video, [row["time_sec"] for row in rows])
+        check_frames(frames, rows, question["question_id"])
+        made = {}
+        for role in (fa.KEEP, fa.DROP):
+            picked = [(frame, row) for frame, row in zip(frames, rows)
+                      if row["role"] == role]
+            out = frame_dir / ("%s_%s_sheet.png"
+                               % (question["question_id"], role.lower()))
+            sheet([frame for frame, _ in picked],
+                  [row for _, row in picked], out)
+            made[role] = out.name
+        rows_out.append({"question_id": question["question_id"],
+                         "sheets": made,
+                         "keep": list(fa.keep_times(rows)),
+                         "drop": list(fa.drop_times(rows))})
+    return rows_out
+
+
+def parse_verdicts(raw: str) -> dict:
+    """Q1=CAUSE:CORRESPONDENCE 형식. 사전등록 어휘 밖의 값은 거부한다."""
+    rows = {}
+    for chunk in raw.split(","):
+        question_id, _, values = chunk.strip().partition("=")
+        cause, _, correspondence = values.partition(":")
+        fa.question_verdict_valid(cause)
+        if correspondence not in fa.CLAIM_MATCHES:
+            raise PacketError("모르는 claim correspondence: %r" % correspondence)
+        rows[question_id] = {"cause": cause,
+                             "claim_correspondence": correspondence}
+    expected = [row["question_id"] for row in fa.QUESTIONS]
+    if sorted(rows) != sorted(expected):
+        raise PacketError("질문 %r 전부의 판정이 필요하다" % expected)
+    return rows
+
+
+def record_verdicts(runs: Path, verdicts: dict,
+                    observation_order: str) -> dict:
+    order = [row["question_id"] for row in fa.QUESTIONS]
+    record = {
+        "schema": "wvr_frame_adjudication_verdicts_v1", "event": fa.EVENT,
+        "prereg": PREREG, "code_git_head": git_head(),
+        "question_verdicts": verdicts,
+        "probe_verdict": fa.probe_verdict(
+            [verdicts[question_id]["cause"] for question_id in order]),
+        "observation_order": observation_order,
+        "semantic_sufficiency_claim_allowed":
+            fa.SEMANTIC_SUFFICIENCY_CLAIM_ALLOWED,
+        "gt_label_use_allowed": fa.GT_LABEL_USE_ALLOWED,
+        "event_extraction_approved": fa.EVENT_EXTRACTION_APPROVED,
+        "allowed_scope": fa.ALLOWED_SCOPE,
+    }
+    (runs / VERDICT_NAME).write_text(
+        json.dumps(record, ensure_ascii=False, indent=1), encoding="utf-8")
+    return record
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="KEEP·DROP 프레임 packet")
     parser.add_argument("--video", default="data/videos/full_xekZO4n4QuE.mp4")
     parser.add_argument("--runs", default="runs/wvr_light_v1")
+    parser.add_argument("--split", action="store_true",
+                        help="KEEP-only · DROP-only 대지를 만든다")
+    parser.add_argument("--verdicts", metavar="Q1=CAUSE:CORRESPONDENCE,…")
+    parser.add_argument("--observation-order", default="")
     args = parser.parse_args(argv)
 
     video, runs = Path(args.video), Path(args.runs)
     if not video.is_file():
         raise PacketError("영상이 없다: %s" % video)
+
+    if args.verdicts:
+        record = record_verdicts(runs, parse_verdicts(args.verdicts),
+                                 args.observation_order)
+        print("probe_verdict=%s" % record["probe_verdict"])
+        for question_id, row in sorted(record["question_verdicts"].items()):
+            print("  %s %s / %s" % (question_id, row["cause"],
+                                    row["claim_correspondence"]))
+        return 0
+
+    if args.split:
+        for row in split_sheets(video, runs):
+            print("%s keep=%s drop=%s" % (row["question_id"],
+                                          row["sheets"][fa.KEEP],
+                                          row["sheets"][fa.DROP]))
+        return 0
+
     built = build(video, runs)
     built["manifest"]["video_sha256"] = hashlib.sha256(
         video.read_bytes()).hexdigest()

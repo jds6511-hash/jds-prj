@@ -234,3 +234,50 @@ def test_wvr_f20_the_manifest_records_every_frame_with_a_hash():
             assert len(frame["sha256"]) == 64
             assert (RUNS / builder.FRAME_DIR_NAME / frame["file"]).is_file()
         assert (RUNS / builder.FRAME_DIR_NAME / row["sheet"]).is_file()
+
+# ── WVR-F21~F23 판정 기록기 · 분리 대지 ────────────────────────────
+def test_wvr_f21_the_recorder_refuses_vocabulary_outside_the_prereg():
+    good = builder.parse_verdicts(
+        "Q1=KEEP_FRAMES_SUFFICIENT:S0_CLAIM_MATCHES,"
+        "Q2=DROP_FRAMES_CARRY_MATERIAL_INFORMATION:S1_CLAIM_MATCHES,"
+        "Q3=GENERATION_ERROR_NOT_SAMPLING:NEITHER_MATCHES")
+    assert set(good) == {"Q1", "Q2", "Q3"}
+    assert good["Q2"]["cause"] == fa.DROP_MATERIAL
+
+    for bad in ("Q1=PASS:S0_CLAIM_MATCHES,Q2=KEEP_FRAMES_SUFFICIENT:"
+                "S0_CLAIM_MATCHES,Q3=KEEP_FRAMES_SUFFICIENT:S0_CLAIM_MATCHES",
+                "Q1=KEEP_FRAMES_SUFFICIENT:BEST_ARM,Q2=KEEP_FRAMES_SUFFICIENT:"
+                "S0_CLAIM_MATCHES,Q3=KEEP_FRAMES_SUFFICIENT:S0_CLAIM_MATCHES",
+                "Q1=KEEP_FRAMES_SUFFICIENT:S0_CLAIM_MATCHES"):
+        with pytest.raises((builder.PacketError, fa.FrameAdjudicationError)):
+            builder.parse_verdicts(bad)
+
+
+def test_wvr_f22_the_recorder_uses_the_frozen_priority(tmp_path):
+    verdicts = {
+        "Q1": {"cause": fa.KEEP_SUFFICIENT,
+               "claim_correspondence": fa.S0_MATCHES},
+        "Q2": {"cause": fa.GENERATION_ERROR,
+               "claim_correspondence": fa.S1_MATCHES},
+        "Q3": {"cause": fa.KEEP_SUFFICIENT,
+               "claim_correspondence": fa.S1_MATCHES},
+    }
+    record = builder.record_verdicts(tmp_path, verdicts, "KEEP_THEN_DROP")
+    assert record["probe_verdict"] == fa.PROBE_GENERATION_ERROR
+    assert record["observation_order"] == "KEEP_THEN_DROP"
+    assert record["semantic_sufficiency_claim_allowed"] is False
+    assert record["gt_label_use_allowed"] is False
+    assert (tmp_path / builder.VERDICT_NAME).is_file()
+
+
+def test_wvr_f23_split_sheets_never_mix_keep_and_drop():
+    source = BUILDER.read_text(encoding="utf-8")
+    assert "def split_sheets" in source
+    assert 'if row["role"] == role' in source
+    for question in fa.QUESTIONS:
+        rows = fa.frame_rows(question)
+        keep = [row for row in rows if row["role"] == fa.KEEP]
+        drop = [row for row in rows if row["role"] == fa.DROP]
+        assert keep and drop
+        assert not (set(row["time_sec"] for row in keep)
+                    & set(row["time_sec"] for row in drop))
