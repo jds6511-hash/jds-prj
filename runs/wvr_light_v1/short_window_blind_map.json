@@ -1,0 +1,20 @@
+{
+ "event": "WVR_SAMPLING_SEMANTIC_DENSITY_SHORT_WINDOW_V1",
+ "salt": "e3db67f247a7df8d6cf4cccec2aa4ba1",
+ "salt_sha256": "4a9d791e239519655aacc268d8b01b92794b0621e7a07c6f1c8e6bc87493a5d8",
+ "mapping": {
+  "P1": {
+   "B": "S0",
+   "A": "S1"
+  },
+  "P2": {
+   "B": "S0",
+   "A": "S1"
+  },
+  "P3": {
+   "A": "S0",
+   "B": "S1"
+  }
+ },
+ "note": "이 파일은 adjudication이 끝나기 전에 리뷰어에게 보여주지 않는다. packet에는 salt_sha256만 들어간다."
+}

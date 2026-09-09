@@ -1,0 +1,306 @@
+{
+ "schema": "wvr_short_window_v1",
+ "event": "WVR_SAMPLING_SEMANTIC_DENSITY_SHORT_WINDOW_V1",
+ "prereg": "docs/preregistration/WVR_SHORT_WINDOW_V1_2026-09-09.md",
+ "window": {
+  "window_id": "P2",
+  "cluster_id": "C2",
+  "source_pair": "D1",
+  "cluster": [
+   420.0,
+   460.0
+  ],
+  "start_sec": 416.0,
+  "end_sec": 464.0,
+  "length_sec": 48.0
+ },
+ "arm": "S1",
+ "requested": {
+  "fps": 0.25,
+  "frames": 12,
+  "frame_width": 512,
+  "frame_height": 288,
+  "model_id": "Qwen/Qwen3-VL-8B-Instruct",
+  "model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "dtype": "bfloat16",
+  "attn_implementation": "sdpa",
+  "quantization": null,
+  "device": "cuda:0",
+  "device_map": null,
+  "do_sample": false,
+  "num_beams": 1,
+  "max_new_tokens": 4096,
+  "repetition_penalty": 1.0,
+  "do_sample_frames": false,
+  "do_resize": false,
+  "prompt_contract": "SAMPLING_DIAG_PROMPT_V2",
+  "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+  "output_language": "en"
+ },
+ "single_change": {
+  "single_change": true,
+  "differences": {},
+  "changed_axis": "context_length_sec",
+  "from_sec": 180.0,
+  "to_sec": 48.0
+ },
+ "context_length_sec": 48.0,
+ "prompt_contract": "SAMPLING_DIAG_PROMPT_V2",
+ "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+ "is_production_contract": false,
+ "output_language": "en",
+ "timestamps_first_last": [
+  416.0,
+  460.0
+ ],
+ "automatic_matcher_role": "AUDIT_DIAGNOSTIC_ONLY",
+ "semantic_sufficiency_claim_allowed": false,
+ "event_extraction_approved": false,
+ "code_git_head": "db2413658668122698f855e016182df9af6871df",
+ "metrics": {
+  "load_wall_sec": 3.62,
+  "video_process_wall_sec": 1.66,
+  "delivered_frame_count": 12,
+  "frame_size": [
+   512,
+   288
+  ],
+  "frame_times_first_last": [
+   416.0,
+   460.0
+  ],
+  "input_token_count": 1229,
+  "video_token_count": 864,
+  "infer_wall_sec": 11.92,
+  "generated_token_count": 297,
+  "peak_vram_allocated_mib": 17105.4,
+  "peak_vram_reserved_mib": 17238.0,
+  "total_wall_sec": 19.09
+ },
+ "stage_status": {
+  "MODEL_LOAD": "OK",
+  "VIDEO_PROCESS": "OK",
+  "INFERENCE": "OK"
+ },
+ "allocator_observed": {
+  "backend": "native",
+  "env": "",
+  "segment_count": 268,
+  "expandable_segments_observed": false,
+  "expandable_flags_head": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ]
+ },
+ "frame_indices_first_last": [
+  12480,
+  13800
+ ],
+ "raw_output": "{\"events\": [{\"start_sec\": 416.0, \"end_sec\": 424.0, \"actor\": \"person\", \"action\": \"holding\", \"object_or_state\": \"orange pajama pants with carrot patterns\"}, {\"start_sec\": 424.0, \"end_sec\": 432.0, \"actor\": \"person\", \"action\": \"placing\", \"object_or_state\": \"orange pajama pants into a drawer\"}, {\"start_sec\": 432.0, \"end_sec\": 440.0, \"actor\": \"person\", \"action\": \"sewing\", \"object_or_state\": \"orange pajama pants using a sewing machine\"}, {\"start_sec\": 440.0, \"end_sec\": 448.0, \"actor\": \"person\", \"action\": \"holding\", \"object_or_state\": \"orange pajama pants with carrot patterns\"}, {\"start_sec\": 448.0, \"end_sec\": 456.0, \"actor\": \"person\", \"action\": \"hanging\", \"object_or_state\": \"orange pajama pants on a hanger\"}, {\"start_sec\": 456.0, \"end_sec\": 464.0, \"actor\": \"person\", \"action\": \"holding\", \"object_or_state\": \"orange pajama pants with carrot patterns\"}]}",
+ "parsed": {
+  "status": "OK",
+  "events": [
+   {
+    "index": 0,
+    "start_sec": 416.0,
+    "end_sec": 424.0,
+    "actor": "person",
+    "action": "holding",
+    "object_or_state": "orange pajama pants with carrot patterns",
+    "inside_window": true
+   },
+   {
+    "index": 1,
+    "start_sec": 424.0,
+    "end_sec": 432.0,
+    "actor": "person",
+    "action": "placing",
+    "object_or_state": "orange pajama pants into a drawer",
+    "inside_window": true
+   },
+   {
+    "index": 2,
+    "start_sec": 432.0,
+    "end_sec": 440.0,
+    "actor": "person",
+    "action": "sewing",
+    "object_or_state": "orange pajama pants using a sewing machine",
+    "inside_window": true
+   },
+   {
+    "index": 3,
+    "start_sec": 440.0,
+    "end_sec": 448.0,
+    "actor": "person",
+    "action": "holding",
+    "object_or_state": "orange pajama pants with carrot patterns",
+    "inside_window": true
+   },
+   {
+    "index": 4,
+    "start_sec": 448.0,
+    "end_sec": 456.0,
+    "actor": "person",
+    "action": "hanging",
+    "object_or_state": "orange pajama pants on a hanger",
+    "inside_window": true
+   },
+   {
+    "index": 5,
+    "start_sec": 456.0,
+    "end_sec": 464.0,
+    "actor": "person",
+    "action": "holding",
+    "object_or_state": "orange pajama pants with carrot patterns",
+    "inside_window": true
+   }
+  ],
+  "collapsed": [
+   {
+    "index": 0,
+    "start_sec": 416.0,
+    "end_sec": 424.0,
+    "actor": "person",
+    "action": "holding",
+    "object_or_state": "orange pajama pants with carrot patterns",
+    "signature": [
+     "person",
+     "holding",
+     "orange pajama pants with carrot patterns"
+    ],
+    "source_indices": [
+     0
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 1,
+    "start_sec": 424.0,
+    "end_sec": 432.0,
+    "actor": "person",
+    "action": "placing",
+    "object_or_state": "orange pajama pants into a drawer",
+    "signature": [
+     "person",
+     "placing",
+     "orange pajama pants into a drawer"
+    ],
+    "source_indices": [
+     1
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 2,
+    "start_sec": 432.0,
+    "end_sec": 440.0,
+    "actor": "person",
+    "action": "sewing",
+    "object_or_state": "orange pajama pants using a sewing machine",
+    "signature": [
+     "person",
+     "sewing",
+     "orange pajama pants using a sewing machine"
+    ],
+    "source_indices": [
+     2
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 3,
+    "start_sec": 440.0,
+    "end_sec": 448.0,
+    "actor": "person",
+    "action": "holding",
+    "object_or_state": "orange pajama pants with carrot patterns",
+    "signature": [
+     "person",
+     "holding",
+     "orange pajama pants with carrot patterns"
+    ],
+    "source_indices": [
+     3
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 4,
+    "start_sec": 448.0,
+    "end_sec": 456.0,
+    "actor": "person",
+    "action": "hanging",
+    "object_or_state": "orange pajama pants on a hanger",
+    "signature": [
+     "person",
+     "hanging",
+     "orange pajama pants on a hanger"
+    ],
+    "source_indices": [
+     4
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 5,
+    "start_sec": 456.0,
+    "end_sec": 464.0,
+    "actor": "person",
+    "action": "holding",
+    "object_or_state": "orange pajama pants with carrot patterns",
+    "signature": [
+     "person",
+     "holding",
+     "orange pajama pants with carrot patterns"
+    ],
+    "source_indices": [
+     5
+    ],
+    "collapsed_count": 1
+   }
+  ],
+  "violations": [],
+  "language": {
+   "contract": "ENGLISH_ONLY",
+   "satisfied": true,
+   "hangul_chars": 0,
+   "cjk_chars": 0,
+   "latin_chars": 272
+  },
+  "reason": ""
+ },
+ "representation": {
+  "collapsed_event_count": 6,
+  "unique_signature_count": 4,
+  "max_collapsed_run": 1,
+  "degenerate": false,
+  "reason": ""
+ },
+ "arm_validity": {
+  "valid": true,
+  "reasons": [],
+  "language": {
+   "contract": "ENGLISH_ONLY",
+   "satisfied": true,
+   "hangul_chars": 0,
+   "cjk_chars": 0,
+   "latin_chars": 272
+  }
+ },
+ "arm_status": "OK",
+ "memory_stats": {
+  "allocated_bytes.all.peak": 17936345088,
+  "reserved_bytes.all.peak": 18075353088,
+  "requested_bytes.all.peak": 17920170826,
+  "active_bytes.all.peak": 17936345088,
+  "inactive_split_bytes.all.peak": 274097152,
+  "num_alloc_retries": 0,
+  "num_ooms": 0
+ }
+}

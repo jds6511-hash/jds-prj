@@ -1,0 +1,102 @@
+{
+ "event": "WVR_SAMPLING_SEMANTIC_DENSITY_SHORT_WINDOW_V1",
+ "role": "AUDIT_DIAGNOSTIC_ONLY",
+ "salt_sha256": "4a9d791e239519655aacc268d8b01b92794b0621e7a07c6f1c8e6bc87493a5d8",
+ "windows": {
+  "P1": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 19,
+     "equivalent_count": 0,
+     "adjudication_count": 19,
+     "different_count": 0,
+     "reference_only": 0,
+     "arm_only": 0,
+     "reference_without_equivalent": 9,
+     "arm_without_equivalent": 5,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 24,
+     "equivalent_count": 0,
+     "adjudication_count": 24,
+     "different_count": 0,
+     "reference_only": 0,
+     "arm_only": 0,
+     "reference_without_equivalent": 9,
+     "arm_without_equivalent": 5,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "P2": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 18,
+     "equivalent_count": 0,
+     "adjudication_count": 18,
+     "different_count": 0,
+     "reference_only": 0,
+     "arm_only": 0,
+     "reference_without_equivalent": 7,
+     "arm_without_equivalent": 6,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 23,
+     "equivalent_count": 0,
+     "adjudication_count": 23,
+     "different_count": 0,
+     "reference_only": 0,
+     "arm_only": 0,
+     "reference_without_equivalent": 7,
+     "arm_without_equivalent": 6,
+     "merge_candidates": 0,
+     "split_candidates": 0,
+     "order_inversions": 0
+    }
+   }
+  },
+  "P3": {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "per_tolerance": {
+    "tol_4.0": {
+     "temporally_compatible_count": 12,
+     "equivalent_count": 2,
+     "adjudication_count": 10,
+     "different_count": 0,
+     "reference_only": 0,
+     "arm_only": 0,
+     "reference_without_equivalent": 3,
+     "arm_without_equivalent": 4,
+     "merge_candidates": 0,
+     "split_candidates": 1,
+     "order_inversions": 0
+    },
+    "tol_8.0": {
+     "temporally_compatible_count": 17,
+     "equivalent_count": 2,
+     "adjudication_count": 15,
+     "different_count": 0,
+     "reference_only": 0,
+     "arm_only": 0,
+     "reference_without_equivalent": 3,
+     "arm_without_equivalent": 4,
+     "merge_candidates": 0,
+     "split_candidates": 1,
+     "order_inversions": 0
+    }
+   }
+  }
+ },
+ "technical_failures": [],
+ "note": "자동 matcher는 판정 authority가 아니다(V2에서 exact-string matcher의 한계가 확인됐다). 사람 판정 후 대조용으로만 쓴다."
+}

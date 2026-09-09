@@ -1,0 +1,97 @@
++ BASE=/ssd/daeseok/jds-prj
++ VIDEO=/ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4
++ OUT_DIR=/ssd/daeseok/jds-prj/runs/wvr_light_v1
++ PY=/ssd/daeseok/envs/prj/bin/python
++ export HF_HOME=/ssd/daeseok/cache
++ HF_HOME=/ssd/daeseok/cache
++ export PYTHONUNBUFFERED=1
++ PYTHONUNBUFFERED=1
++ export PYTHONDONTWRITEBYTECODE=1
++ PYTHONDONTWRITEBYTECODE=1
+++ git -C /ssd/daeseok/jds-prj rev-parse HEAD
++ export WVR_CODE_GIT_HEAD=db2413658668122698f855e016182df9af6871df
++ WVR_CODE_GIT_HEAD=db2413658668122698f855e016182df9af6871df
+++ date
++ echo '=== short window batch 시작 (2026. 09. 09. (수) 09:15:56 KST) commit db2413658668122698f855e016182df9af6871df ==='
+=== short window batch 시작 (2026. 09. 09. (수) 09:15:56 KST) commit db2413658668122698f855e016182df9af6871df ===
++ nvidia-smi --query-gpu=memory.used,utilization.gpu --format=csv,noheader
+40 MiB, 0 %
++ for window in P1 P2 P3
++ for arm in S0 S1
+++ date
++ echo '=== P1 S0 시작 (2026. 09. 09. (수) 09:15:56 KST) ==='
+=== P1 S0 시작 (2026. 09. 09. (수) 09:15:56 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_short_window_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window P1 --arm S0 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 8083.73it/s]
+window=P1 arm=S0 status=OK frames=24 input_tok=2153 gen_tok=462
+  raw=10 collapsed=9 unique_sig=9 degenerate=False valid=True []
+++ date
++ echo '=== P1 S0 완료 (2026. 09. 09. (수) 09:16:27 KST) ==='
+=== P1 S0 완료 (2026. 09. 09. (수) 09:16:27 KST) ===
++ for arm in S0 S1
+++ date
++ echo '=== P1 S1 시작 (2026. 09. 09. (수) 09:16:27 KST) ==='
+=== P1 S1 시작 (2026. 09. 09. (수) 09:16:27 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_short_window_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window P1 --arm S1 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:  92%|█████████▏| 693/750 [00:00<00:00, 6929.38it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7288.95it/s]
+window=P1 arm=S1 status=OK frames=12 input_tok=1229 gen_tok=278
+  raw=6 collapsed=5 unique_sig=5 degenerate=False valid=True []
+++ date
++ echo '=== P1 S1 완료 (2026. 09. 09. (수) 09:16:51 KST) ==='
+=== P1 S1 완료 (2026. 09. 09. (수) 09:16:51 KST) ===
++ for window in P1 P2 P3
++ for arm in S0 S1
+++ date
++ echo '=== P2 S0 시작 (2026. 09. 09. (수) 09:16:51 KST) ==='
+=== P2 S0 시작 (2026. 09. 09. (수) 09:16:51 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_short_window_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window P2 --arm S0 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 8250.81it/s]
+window=P2 arm=S0 status=OK frames=24 input_tok=2153 gen_tok=592
+  raw=12 collapsed=7 unique_sig=6 degenerate=False valid=True []
+++ date
++ echo '=== P2 S0 완료 (2026. 09. 09. (수) 09:17:27 KST) ==='
+=== P2 S0 완료 (2026. 09. 09. (수) 09:17:27 KST) ===
++ for arm in S0 S1
+++ date
++ echo '=== P2 S1 시작 (2026. 09. 09. (수) 09:17:27 KST) ==='
+=== P2 S1 시작 (2026. 09. 09. (수) 09:17:27 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_short_window_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window P2 --arm S1 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:  87%|████████▋ | 650/750 [00:00<00:00, 6493.18it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7074.81it/s]
+window=P2 arm=S1 status=OK frames=12 input_tok=1229 gen_tok=297
+  raw=6 collapsed=6 unique_sig=4 degenerate=False valid=True []
+++ date
++ echo '=== P2 S1 완료 (2026. 09. 09. (수) 09:17:51 KST) ==='
+=== P2 S1 완료 (2026. 09. 09. (수) 09:17:51 KST) ===
++ for window in P1 P2 P3
++ for arm in S0 S1
+++ date
++ echo '=== P3 S0 시작 (2026. 09. 09. (수) 09:17:51 KST) ==='
+=== P3 S0 시작 (2026. 09. 09. (수) 09:17:51 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_short_window_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window P3 --arm S0 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7989.96it/s]
+window=P3 arm=S0 status=OK frames=24 input_tok=2153 gen_tok=273
+  raw=6 collapsed=4 unique_sig=4 degenerate=False valid=True []
+++ date
++ echo '=== P3 S0 완료 (2026. 09. 09. (수) 09:18:16 KST) ==='
+=== P3 S0 완료 (2026. 09. 09. (수) 09:18:16 KST) ===
++ for arm in S0 S1
+++ date
++ echo '=== P3 S1 시작 (2026. 09. 09. (수) 09:18:16 KST) ==='
+=== P3 S1 시작 (2026. 09. 09. (수) 09:18:16 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_short_window_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --window P3 --arm S1 --out-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 8011.45it/s]
+window=P3 arm=S1 status=OK frames=12 input_tok=1229 gen_tok=276
+  raw=6 collapsed=6 unique_sig=5 degenerate=False valid=True []
+++ date
++ echo '=== P3 S1 완료 (2026. 09. 09. (수) 09:18:39 KST) ==='
+=== P3 S1 완료 (2026. 09. 09. (수) 09:18:39 KST) ===
+++ date
++ echo '=== short window batch 완료 (2026. 09. 09. (수) 09:18:39 KST) ==='
+=== short window batch 완료 (2026. 09. 09. (수) 09:18:39 KST) ===
++ ls -l /ssd/daeseok/jds-prj/runs/wvr_light_v1/short_window_P1_S0.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/short_window_P1_S1.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/short_window_P2_S0.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/short_window_P2_S1.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/short_window_P3_S0.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/short_window_P3_S1.json
+-rw-rw-r-- 1 daeseok daeseok  9473  9월  9 09:16 /ssd/daeseok/jds-prj/runs/wvr_light_v1/short_window_P1_S0.json
+-rw-rw-r-- 1 daeseok daeseok  6868  9월  9 09:16 /ssd/daeseok/jds-prj/runs/wvr_light_v1/short_window_P1_S1.json
+-rw-rw-r-- 1 daeseok daeseok 10119  9월  9 09:17 /ssd/daeseok/jds-prj/runs/wvr_light_v1/short_window_P2_S0.json
+-rw-rw-r-- 1 daeseok daeseok  7646  9월  9 09:17 /ssd/daeseok/jds-prj/runs/wvr_light_v1/short_window_P2_S1.json
+-rw-rw-r-- 1 daeseok daeseok  6447  9월  9 09:18 /ssd/daeseok/jds-prj/runs/wvr_light_v1/short_window_P3_S0.json
+-rw-rw-r-- 1 daeseok daeseok  7036  9월  9 09:18 /ssd/daeseok/jds-prj/runs/wvr_light_v1/short_window_P3_S1.json
