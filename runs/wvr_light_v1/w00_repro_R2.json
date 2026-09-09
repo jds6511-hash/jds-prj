@@ -1,0 +1,344 @@
+{
+ "schema": "wvr_w00_repro_v1",
+ "event": "WVR_W00_DEGENERACY_REPRO_V1",
+ "prereg": "docs/preregistration/WVR_W00_DEGENERACY_REPRO_V1_2026-09-09.md",
+ "run_id": "R2",
+ "window": {
+  "window_id": "W00",
+  "index": 0,
+  "start_sec": 0.0,
+  "end_sec": 48.0
+ },
+ "requested": {
+  "sampling_fps": 0.5,
+  "frames": 24,
+  "frame_width": 512,
+  "frame_height": 288,
+  "model_id": "Qwen/Qwen3-VL-8B-Instruct",
+  "model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "dtype": "bfloat16",
+  "attn_implementation": "sdpa",
+  "quantization": null,
+  "device": "cuda:0",
+  "device_map": null,
+  "do_sample": false,
+  "num_beams": 1,
+  "max_new_tokens": 4096,
+  "repetition_penalty": 1.0,
+  "do_sample_frames": false,
+  "do_resize": false,
+  "prompt_contract": "SAMPLING_DIAG_PROMPT_V2",
+  "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+  "output_language": "en",
+  "window_sec": 48.0,
+  "frames_per_window": 24
+ },
+ "runtime_config_hash": "cb43ffd357d771ff2923f2d3e0dec0f48f85bba660171cfc3832a298f4fef5aa",
+ "frame_times": [
+  0.0,
+  2.0,
+  4.0,
+  6.0,
+  8.0,
+  10.0,
+  12.0,
+  14.0,
+  16.0,
+  18.0,
+  20.0,
+  22.0,
+  24.0,
+  26.0,
+  28.0,
+  30.0,
+  32.0,
+  34.0,
+  36.0,
+  38.0,
+  40.0,
+  42.0,
+  44.0,
+  46.0
+ ],
+ "prompt_contract": "SAMPLING_DIAG_PROMPT_V2",
+ "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+ "generation_config": {
+  "do_sample": false,
+  "num_beams": 1,
+  "max_new_tokens": 4096,
+  "repetition_penalty": 1.0
+ },
+ "video_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+ "original_unchanged": {
+  "unchanged": true,
+  "checks": {
+   "record": true,
+   "raw": true
+  },
+  "expected": {
+   "record": "c8e65b74b8c71aa97f85fc69c6ffdfb2c72fab18911e6e1565c8458e44daa074",
+   "raw": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6"
+  },
+  "observed": {
+   "record": "c8e65b74b8c71aa97f85fc69c6ffdfb2c72fab18911e6e1565c8458e44daa074",
+   "raw": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6"
+  },
+  "original_status_retained": "WINDOW_INVALID",
+  "may_be_revalidated": false
+ },
+ "code_git_head": "797f491bd3fe463b391d3c5a44d93b7e4386d57c",
+ "retry_allowed": false,
+ "production_selection_allowed": false,
+ "semantic_verdict_by_executor": false,
+ "raw_persisted": true,
+ "raw_path": "w00_repro_R2_raw.txt",
+ "metrics": {
+  "load_wall_sec": 3.59,
+  "delivered_frame_count": 24,
+  "frame_size": [
+   512,
+   288
+  ],
+  "input_token_count": 2135,
+  "infer_wall_sec": 144.72,
+  "generated_token_count": 4096,
+  "generation_cap_hit": true,
+  "finish_reason": "length",
+  "peak_vram_allocated_mib": 17673.2,
+  "total_wall_sec": 152.8
+ },
+ "stage_status": {
+  "MODEL_LOAD": "OK",
+  "VIDEO_PROCESS": "OK",
+  "RAW_PERSIST": "OK",
+  "INFERENCE": "OK"
+ },
+ "allocator_observed": {
+  "backend": "native",
+  "env": "",
+  "segment_count": 268,
+  "expandable_segments_observed": false,
+  "expandable_flags_head": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ]
+ },
+ "frame_hashes": [
+  "94a726164e2158a7cad2e8a7d1a9e3fb03c308e2a2592d176d2c8c52b1a6ad30",
+  "93f1e7fd2e64f9a52bfd04f31e627861fb590c733661f7767a3678122ab1e3af",
+  "3a63532ca1b1e086bd47fd1a4938595db39f12e24a58f35b365a3bbf6b1042b2",
+  "7236a0fb295fb5ed133b6a9f2646df1657d8724e6e4acca0126dacf2cd1c96cf",
+  "ac332e89006f1568ed20cbacd4edbdee97a14b114287f5e5144c74c799e2611c",
+  "1ad902f3719f744387e998a8999ff1a57da19b125661d1ef6a0cea3bccb77dd0",
+  "f7b78d2701f25c41888b8ec3559dd461053c7f67b53e74022c4dd1971135fb0a",
+  "17bdf4d20d9afeba483ae57bae2bfa6ede51ed7291b070cb37cbdb8fcaad3505",
+  "7a52c8fd00a9efbc9b23998cdbed59f32d13c8ad43909bfe9f7f15a6c1c17660",
+  "703cb2992adc200ab291a83e8b829a1d63c5717e81f77bb7517bd9c7216422d5",
+  "7ef670a6d833e65d3da2f511cba433e0b87df9b90edc92f1c28a748696cefbad",
+  "f2a457fe9cfd79079bd9bdac7e62f7aa563c8b9c20449ea41d4927a490e76074",
+  "c446332bad960066d2329633952601e15a8761a19aae8f992763df006ad2b8c8",
+  "7c4b5f9612afbf7f7640b7557cc32f09c92b1719830fc9f5ca3e134b68ea6110",
+  "2f9da79d4353a0368dba129a4f4fa657f54a692ba2080e49a0b5ea5b5d22e722",
+  "c95b3294c887b7868e86b9f8e75fd2cef0c28f816020ffad14046cec54cc2005",
+  "1f430683ed3a23161975eb853586f86277fe1caeffd5c954cc2a4f2420b1c13b",
+  "5d92b3421a25e688cf8de97d914c8e66a202c3ab58fc7990fd3f5a221d6e4604",
+  "5e9f28f3b739f3300afe461abc46464e9ebc87335ad5f52a1974e53c945cd5c6",
+  "a32eda960a50dcc953b5119eb32f1348ef18b88c59b44a29fc21625a2354b329",
+  "880a363875ce0c5b08d81a453bbaac68d467990cc574110a3663e8a40d6cdd3e",
+  "ee2d1343b4be65c169b9b554651c03d780b8f756d95e06d05903b727e3f5a2e3",
+  "7d45586b654482b844544f492c6754f9d152e163ae256eba3fa0aea901be8f42",
+  "8d2756e6a6c526967f273a7ac7c4082d226a4901925aeb40ff17d75599532dcd"
+ ],
+ "frame_indices": [
+  0,
+  60,
+  120,
+  180,
+  240,
+  300,
+  360,
+  420,
+  480,
+  540,
+  600,
+  660,
+  720,
+  780,
+  840,
+  900,
+  960,
+  1020,
+  1080,
+  1140,
+  1200,
+  1260,
+  1320,
+  1380
+ ],
+ "decoded_times": [
+  0.0,
+  2.0,
+  4.0,
+  6.0,
+  8.0,
+  10.0,
+  12.0,
+  14.0,
+  16.0,
+  18.0,
+  20.0,
+  22.0,
+  24.0,
+  26.0,
+  28.0,
+  30.0,
+  32.0,
+  34.0,
+  36.0,
+  38.0,
+  40.0,
+  42.0,
+  44.0,
+  46.0
+ ],
+ "decoded_fps": 30.0000041251862,
+ "identity": {
+  "fields": {
+   "video_sha256": {
+    "identical": true
+   },
+   "window": {
+    "identical": true
+   },
+   "frame_times": {
+    "identical": true
+   },
+   "frame_hashes": {
+    "identical": true
+   },
+   "prompt_text": {
+    "identical": true
+   },
+   "prompt_hash": {
+    "identical": true
+   },
+   "model_revision": {
+    "identical": true
+   },
+   "runtime_config_hash": {
+    "identical": true
+   },
+   "generation_config": {
+    "identical": true
+   }
+  },
+  "mismatched": [],
+  "status": "INPUT_IDENTITY_OK",
+  "identical": true
+ },
+ "raw_output_hash": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6",
+ "raw_output": "{\"events\": [{\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": ",
+ "parsed": {
+  "status": "PARSE_FAILURE",
+  "events": [],
+  "collapsed": [],
+  "violations": [],
+  "reason": "Expecting ',' delimiter: line 1 column 11518 (char 11517)"
+ },
+ "representation": {
+  "collapsed_event_count": 0,
+  "unique_signature_count": 0,
+  "max_collapsed_run": 0,
+  "degenerate": true,
+  "reason": "EVENT_REPRESENTATION_DEGENERACY"
+ },
+ "structure": {
+  "raw_length": 11533,
+  "complete_object_count": 95,
+  "unique_signature_count": 2,
+  "zero_length_interval_count": 95,
+  "first_repeat": {
+   "object_index": 2,
+   "first_seen_index": 0,
+   "offset": 254,
+   "signature": [
+    "a person",
+    "pouring",
+    "liquid from a bottle into a bowl"
+   ]
+  },
+  "max_signature_repeat": 48,
+  "top_signatures": [
+   {
+    "signature": [
+     "a person",
+     "pouring",
+     "liquid from a bottle into a bowl"
+    ],
+    "count": 48
+   },
+   {
+    "signature": [
+     "a person",
+     "holding",
+     "a bottle"
+    ],
+    "count": 47
+   }
+  ],
+  "json_parse_ok": false,
+  "json_parse_error": "Expecting value: line 1 column 11534 (char 11533)",
+  "truncation_tail": "\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": ",
+  "ends_mid_object": true,
+  "generated_tokens": 4096,
+  "finish_reason": "length",
+  "positive_duration_interval_count": 0,
+  "max_consecutive_signature_repeat": 1,
+  "reference_signature_hits": {
+   "S1": 48,
+   "S2": 47
+  },
+  "reference_note": "문구가 다르면 degeneracy가 아니라고 판단하지 않는다 — 무진행 반복·zero-length 지배·미완결 구조로 본다"
+ },
+ "degeneracy": {
+  "classification": "MODEL_OUTPUT_DEGENERACY",
+  "reasons": [
+   "DOMINANT_SIGNATURE_REPEAT",
+   "JSON_UNTERMINATED"
+  ],
+  "zero_progress": true
+ },
+ "arm_status": "PARSE_FAILURE",
+ "memory_stats": {
+  "allocated_bytes.all.peak": 18531663872,
+  "reserved_bytes.all.peak": 19096666112,
+  "requested_bytes.all.peak": 18517756537,
+  "active_bytes.all.peak": 18531663872,
+  "inactive_split_bytes.all.peak": 417245696,
+  "num_alloc_retries": 0,
+  "num_ooms": 0
+ },
+ "validity": {
+  "valid": false,
+  "reasons": [
+   "PARSE_FAILURE",
+   "NO_EVENT",
+   "TRUNCATED_AT_CAP",
+   "OUTPUT_LANGUAGE_CONTRACT_FAILURE"
+  ],
+  "status": "WINDOW_INVALID",
+  "language": {
+   "contract": "ENGLISH_ONLY",
+   "satisfied": false,
+   "hangul_chars": 0,
+   "cjk_chars": 0,
+   "latin_chars": 0
+  }
+ }
+}

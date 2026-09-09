@@ -1,0 +1,57 @@
++ BASE=/ssd/daeseok/jds-prj
++ VIDEO=/ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4
++ OUT_DIR=/ssd/daeseok/jds-prj/runs/wvr_light_v1
++ PY=/ssd/daeseok/envs/prj/bin/python
++ export HF_HOME=/ssd/daeseok/cache
++ HF_HOME=/ssd/daeseok/cache
++ export PYTHONUNBUFFERED=1
++ PYTHONUNBUFFERED=1
++ export PYTHONDONTWRITEBYTECODE=1
++ PYTHONDONTWRITEBYTECODE=1
+++ git -C /ssd/daeseok/jds-prj rev-parse HEAD
++ export WVR_CODE_GIT_HEAD=797f491bd3fe463b391d3c5a44d93b7e4386d57c
++ WVR_CODE_GIT_HEAD=797f491bd3fe463b391d3c5a44d93b7e4386d57c
+++ date
++ echo '=== w00 repro 시작 (2026. 09. 09. (수) 20:04:07 KST) commit 797f491bd3fe463b391d3c5a44d93b7e4386d57c ==='
+=== w00 repro 시작 (2026. 09. 09. (수) 20:04:07 KST) commit 797f491bd3fe463b391d3c5a44d93b7e4386d57c ===
++ nvidia-smi --query-gpu=memory.used,utilization.gpu --format=csv,noheader
+40 MiB, 0 %
++ for run in R1 R2 R3
+++ date
++ echo '=== R1 시작 (2026. 09. 09. (수) 20:04:07 KST) ==='
+=== R1 시작 (2026. 09. 09. (수) 20:04:07 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_w00_repro_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --run R1 --runs-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7664.26it/s]
+run=R1 status=PARSE_FAILURE gen=4096 cap=True identity=INPUT_IDENTITY_OK
+  raw_chars=11533 objects=95 uniq=2 zero_len=95 max_repeat=48 json_ok=False degeneracy=MODEL_OUTPUT_DEGENERACY
+++ date
++ echo '=== R1 완료 (2026. 09. 09. (수) 20:06:45 KST) ==='
+=== R1 완료 (2026. 09. 09. (수) 20:06:45 KST) ===
++ for run in R1 R2 R3
+++ date
++ echo '=== R2 시작 (2026. 09. 09. (수) 20:06:45 KST) ==='
+=== R2 시작 (2026. 09. 09. (수) 20:06:45 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_w00_repro_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --run R2 --runs-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 8377.88it/s]
+run=R2 status=PARSE_FAILURE gen=4096 cap=True identity=INPUT_IDENTITY_OK
+  raw_chars=11533 objects=95 uniq=2 zero_len=95 max_repeat=48 json_ok=False degeneracy=MODEL_OUTPUT_DEGENERACY
+++ date
++ echo '=== R2 완료 (2026. 09. 09. (수) 20:09:24 KST) ==='
+=== R2 완료 (2026. 09. 09. (수) 20:09:24 KST) ===
++ for run in R1 R2 R3
+++ date
++ echo '=== R3 시작 (2026. 09. 09. (수) 20:09:24 KST) ==='
+=== R3 시작 (2026. 09. 09. (수) 20:09:24 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_w00_repro_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --run R3 --runs-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:  95%|█████████▍| 709/750 [00:00<00:00, 7089.03it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7407.17it/s]
+run=R3 status=PARSE_FAILURE gen=4096 cap=True identity=INPUT_IDENTITY_OK
+  raw_chars=11533 objects=95 uniq=2 zero_len=95 max_repeat=48 json_ok=False degeneracy=MODEL_OUTPUT_DEGENERACY
+++ date
++ echo '=== R3 완료 (2026. 09. 09. (수) 20:12:03 KST) ==='
+=== R3 완료 (2026. 09. 09. (수) 20:12:03 KST) ===
+++ date
++ echo '=== w00 repro 완료 (2026. 09. 09. (수) 20:12:03 KST) ==='
+=== w00 repro 완료 (2026. 09. 09. (수) 20:12:03 KST) ===
++ wc -l
++ ls -l /ssd/daeseok/jds-prj/runs/wvr_light_v1/w00_repro_R1.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/w00_repro_R2.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/w00_repro_R3.json
+3

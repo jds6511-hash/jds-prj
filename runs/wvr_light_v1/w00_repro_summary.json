@@ -1,0 +1,311 @@
+{
+ "schema": "wvr_w00_repro_summary_v1",
+ "event": "WVR_W00_DEGENERACY_REPRO_V1",
+ "prereg": "docs/preregistration/WVR_W00_DEGENERACY_REPRO_V1_2026-09-09.md",
+ "code_git_head": "797f491bd3fe463b391d3c5a44d93b7e4386d57c",
+ "run_count": 3,
+ "runs": [
+  {
+   "run_id": "R1",
+   "technical_status": "PARSE_FAILURE",
+   "technical_valid": false,
+   "validity_reasons": [
+    "PARSE_FAILURE",
+    "NO_EVENT",
+    "TRUNCATED_AT_CAP",
+    "OUTPUT_LANGUAGE_CONTRACT_FAILURE"
+   ],
+   "identity_status": "INPUT_IDENTITY_OK",
+   "raw_persisted": true,
+   "generated_tokens": 4096,
+   "generation_cap_hit": true,
+   "finish_reason": "length",
+   "raw_chars": 11533,
+   "raw_output_hash": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6",
+   "completed_objects": 95,
+   "unique_signatures": 2,
+   "zero_length_intervals": 95,
+   "positive_duration_intervals": 0,
+   "max_signature_repeat": 48,
+   "max_consecutive_repeat": 1,
+   "first_repeat": {
+    "object_index": 2,
+    "first_seen_index": 0,
+    "offset": 254,
+    "signature": [
+     "a person",
+     "pouring",
+     "liquid from a bottle into a bowl"
+    ]
+   },
+   "json_complete": false,
+   "reference_signature_hits": {
+    "S1": 48,
+    "S2": 47
+   },
+   "degeneracy": "MODEL_OUTPUT_DEGENERACY",
+   "degeneracy_reasons": [
+    "DOMINANT_SIGNATURE_REPEAT",
+    "JSON_UNTERMINATED"
+   ],
+   "zero_progress": true,
+   "infer_wall_sec": 142.7
+  },
+  {
+   "run_id": "R2",
+   "technical_status": "PARSE_FAILURE",
+   "technical_valid": false,
+   "validity_reasons": [
+    "PARSE_FAILURE",
+    "NO_EVENT",
+    "TRUNCATED_AT_CAP",
+    "OUTPUT_LANGUAGE_CONTRACT_FAILURE"
+   ],
+   "identity_status": "INPUT_IDENTITY_OK",
+   "raw_persisted": true,
+   "generated_tokens": 4096,
+   "generation_cap_hit": true,
+   "finish_reason": "length",
+   "raw_chars": 11533,
+   "raw_output_hash": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6",
+   "completed_objects": 95,
+   "unique_signatures": 2,
+   "zero_length_intervals": 95,
+   "positive_duration_intervals": 0,
+   "max_signature_repeat": 48,
+   "max_consecutive_repeat": 1,
+   "first_repeat": {
+    "object_index": 2,
+    "first_seen_index": 0,
+    "offset": 254,
+    "signature": [
+     "a person",
+     "pouring",
+     "liquid from a bottle into a bowl"
+    ]
+   },
+   "json_complete": false,
+   "reference_signature_hits": {
+    "S1": 48,
+    "S2": 47
+   },
+   "degeneracy": "MODEL_OUTPUT_DEGENERACY",
+   "degeneracy_reasons": [
+    "DOMINANT_SIGNATURE_REPEAT",
+    "JSON_UNTERMINATED"
+   ],
+   "zero_progress": true,
+   "infer_wall_sec": 144.72
+  },
+  {
+   "run_id": "R3",
+   "technical_status": "PARSE_FAILURE",
+   "technical_valid": false,
+   "validity_reasons": [
+    "PARSE_FAILURE",
+    "NO_EVENT",
+    "TRUNCATED_AT_CAP",
+    "OUTPUT_LANGUAGE_CONTRACT_FAILURE"
+   ],
+   "identity_status": "INPUT_IDENTITY_OK",
+   "raw_persisted": true,
+   "generated_tokens": 4096,
+   "generation_cap_hit": true,
+   "finish_reason": "length",
+   "raw_chars": 11533,
+   "raw_output_hash": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6",
+   "completed_objects": 95,
+   "unique_signatures": 2,
+   "zero_length_intervals": 95,
+   "positive_duration_intervals": 0,
+   "max_signature_repeat": 48,
+   "max_consecutive_repeat": 1,
+   "first_repeat": {
+    "object_index": 2,
+    "first_seen_index": 0,
+    "offset": 254,
+    "signature": [
+     "a person",
+     "pouring",
+     "liquid from a bottle into a bowl"
+    ]
+   },
+   "json_complete": false,
+   "reference_signature_hits": {
+    "S1": 48,
+    "S2": 47
+   },
+   "degeneracy": "MODEL_OUTPUT_DEGENERACY",
+   "degeneracy_reasons": [
+    "DOMINANT_SIGNATURE_REPEAT",
+    "JSON_UNTERMINATED"
+   ],
+   "zero_progress": true,
+   "infer_wall_sec": 144.46
+  }
+ ],
+ "identity": {
+  "R1": {
+   "fields": {
+    "video_sha256": {
+     "identical": true
+    },
+    "window": {
+     "identical": true
+    },
+    "frame_times": {
+     "identical": true
+    },
+    "frame_hashes": {
+     "identical": true
+    },
+    "prompt_text": {
+     "identical": true
+    },
+    "prompt_hash": {
+     "identical": true
+    },
+    "model_revision": {
+     "identical": true
+    },
+    "runtime_config_hash": {
+     "identical": true
+    },
+    "generation_config": {
+     "identical": true
+    }
+   },
+   "mismatched": [],
+   "status": "INPUT_IDENTITY_OK",
+   "identical": true
+  },
+  "R2": {
+   "fields": {
+    "video_sha256": {
+     "identical": true
+    },
+    "window": {
+     "identical": true
+    },
+    "frame_times": {
+     "identical": true
+    },
+    "frame_hashes": {
+     "identical": true
+    },
+    "prompt_text": {
+     "identical": true
+    },
+    "prompt_hash": {
+     "identical": true
+    },
+    "model_revision": {
+     "identical": true
+    },
+    "runtime_config_hash": {
+     "identical": true
+    },
+    "generation_config": {
+     "identical": true
+    }
+   },
+   "mismatched": [],
+   "status": "INPUT_IDENTITY_OK",
+   "identical": true
+  },
+  "R3": {
+   "fields": {
+    "video_sha256": {
+     "identical": true
+    },
+    "window": {
+     "identical": true
+    },
+    "frame_times": {
+     "identical": true
+    },
+    "frame_hashes": {
+     "identical": true
+    },
+    "prompt_text": {
+     "identical": true
+    },
+    "prompt_hash": {
+     "identical": true
+    },
+    "model_revision": {
+     "identical": true
+    },
+    "runtime_config_hash": {
+     "identical": true
+    },
+    "generation_config": {
+     "identical": true
+    }
+   },
+   "mismatched": [],
+   "status": "INPUT_IDENTITY_OK",
+   "identical": true
+  }
+ },
+ "cross_run": {
+  "raw_hashes": [
+   "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6",
+   "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6",
+   "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6"
+  ],
+  "raw_hashes_identical": true,
+  "distinct_raw_hashes": 1,
+  "first_400_chars_identical": true,
+  "top_signature_sets_identical": true,
+  "failure_structure_identical": true,
+  "generated_token_spread": [
+   4096,
+   4096
+  ]
+ },
+ "reproducibility": {
+  "verdict": "REPRODUCIBLE",
+  "reason": "ALL_RUNS_DEGENERATE",
+  "degenerate_count": 3
+ },
+ "determinism_axis": {
+  "axis": "EXACT_RAW_REPRODUCTION",
+  "raw_hashes_identical": true,
+  "distinct_raw_hashes": 1,
+  "note": "이 축은 primary verdict를 바꾸지 않는다"
+ },
+ "original_w00": {
+  "unchanged": true,
+  "checks": {
+   "record": true,
+   "raw": true
+  },
+  "expected": {
+   "record": "c8e65b74b8c71aa97f85fc69c6ffdfb2c72fab18911e6e1565c8458e44daa074",
+   "raw": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6"
+  },
+  "observed": {
+   "record": "c8e65b74b8c71aa97f85fc69c6ffdfb2c72fab18911e6e1565c8458e44daa074",
+   "raw": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6"
+  },
+  "original_status_retained": "WINDOW_INVALID",
+  "may_be_revalidated": false
+ },
+ "retry_allowed": false,
+ "production_selection_allowed": false,
+ "recovery_experiment_allowed": false,
+ "subdivision_inference_allowed": false,
+ "mapping_reveal_allowed": false,
+ "semantic_verdict_by_executor": false,
+ "forbidden_conclusions": [
+  "원인이 48초 context다",
+  "원인이 영상 내용이다",
+  "prompt가 나쁘다",
+  "4096이 부족하다",
+  "문제가 해결됐다",
+  "original W00이 false alarm이다",
+  "single retry가 안전하다"
+ ],
+ "note": "primary verdict는 §9 게이트로만, determinism 축은 §10으로만 계산했다. 원본 W00은 WINDOW_INVALID를 유지한다."
+}
