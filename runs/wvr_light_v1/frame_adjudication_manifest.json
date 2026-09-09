@@ -1,0 +1,552 @@
+{
+ "schema": "wvr_frame_adjudication_manifest_v1",
+ "event": "WVR_SAMPLING_SEMANTIC_DENSITY_FRAME_ADJUDICATION_V1",
+ "prereg": "docs/preregistration/WVR_FRAME_ADJUDICATION_V1_2026-09-09.md",
+ "code_git_head": "2c989776140e90039ca7b5b385a2c24ae4c50dba",
+ "new_inference_allowed": false,
+ "gt_label_use_allowed": false,
+ "semantic_sufficiency_claim_allowed": false,
+ "video_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+ "frame_size": [
+  512,
+  288
+ ],
+ "questions": [
+  {
+   "question_id": "Q1",
+   "parent_window": "P2",
+   "span": [
+    448.0,
+    464.0
+   ],
+   "question": "garment/pajama sequence가 계속되는가, 아니면 food-on-plate 장면으로 전환되는가?",
+   "counts": {
+    "KEEP": 4,
+    "DROP": 4
+   },
+   "frames": [
+    {
+     "time_sec": 448.0,
+     "role": "KEEP",
+     "parent_offset_sec": 32.0,
+     "frame_index": 13440,
+     "decoded_time_sec": 448.0,
+     "file": "Q1_0448.0_KEEP.png",
+     "sha256": "2799a7e0fe81cd970c8fac9cc6c8839e84fce3c37ef78e8e208f7b8d9e7e926d"
+    },
+    {
+     "time_sec": 450.0,
+     "role": "DROP",
+     "parent_offset_sec": 34.0,
+     "frame_index": 13500,
+     "decoded_time_sec": 450.0,
+     "file": "Q1_0450.0_DROP.png",
+     "sha256": "cabbe49f3a6c2b70f6f91a3f40395c8d0991ecc08ed21bccc7529f6b376a3d88"
+    },
+    {
+     "time_sec": 452.0,
+     "role": "KEEP",
+     "parent_offset_sec": 36.0,
+     "frame_index": 13560,
+     "decoded_time_sec": 452.0,
+     "file": "Q1_0452.0_KEEP.png",
+     "sha256": "505e9160092a24bcf9eca0b250a20d9417b89ed64d090423e23fd46442fa1f30"
+    },
+    {
+     "time_sec": 454.0,
+     "role": "DROP",
+     "parent_offset_sec": 38.0,
+     "frame_index": 13620,
+     "decoded_time_sec": 454.0,
+     "file": "Q1_0454.0_DROP.png",
+     "sha256": "8da0ef4f3d5e5f2127ed6d366a541623abe3b81b44ed9ae37dc29e79d60cfba3"
+    },
+    {
+     "time_sec": 456.0,
+     "role": "KEEP",
+     "parent_offset_sec": 40.0,
+     "frame_index": 13680,
+     "decoded_time_sec": 456.0,
+     "file": "Q1_0456.0_KEEP.png",
+     "sha256": "2f620ec4e0094dd0cf267b801f2632dfbc30e3ca17585ed019099bf614f8404b"
+    },
+    {
+     "time_sec": 458.0,
+     "role": "DROP",
+     "parent_offset_sec": 42.0,
+     "frame_index": 13740,
+     "decoded_time_sec": 458.0,
+     "file": "Q1_0458.0_DROP.png",
+     "sha256": "566466a233a7fd544457886d06371fb7a8dbe16454aeab2b1475203e91108345"
+    },
+    {
+     "time_sec": 460.0,
+     "role": "KEEP",
+     "parent_offset_sec": 44.0,
+     "frame_index": 13800,
+     "decoded_time_sec": 460.0,
+     "file": "Q1_0460.0_KEEP.png",
+     "sha256": "1a69a1ee5b05e7cd8c64972ac3a4b0649633c54a5238124b76ef9ae8f797cb6d"
+    },
+    {
+     "time_sec": 462.0,
+     "role": "DROP",
+     "parent_offset_sec": 46.0,
+     "frame_index": 13860,
+     "decoded_time_sec": 462.0,
+     "file": "Q1_0462.0_DROP.png",
+     "sha256": "cae965175df9bf9fec59e62af8c8c419f4ddc8920c62710bb462b3825eaf040c"
+    }
+   ],
+   "sheet": "Q1_sheet.png",
+   "sheet_sha256": "aca0f2a8cb2d6a675dc4aaf5a3852dec1066e16e55072628f5a0779b147c467f",
+   "claims": {
+    "S0": [
+     {
+      "index": 5,
+      "start_sec": 437.0,
+      "end_sec": 453.0,
+      "actor": "a person",
+      "action": "holding",
+      "object_or_state": "a piece of fabric with carrot patterns",
+      "signature": [
+       "a person",
+       "holding",
+       "a piece of fabric with carrot patterns"
+      ],
+      "source_indices": [
+       5,
+       6,
+       7,
+       8
+      ],
+      "collapsed_count": 4
+     },
+     {
+      "index": 6,
+      "start_sec": 453.0,
+      "end_sec": 464.0,
+      "actor": "a person",
+      "action": "placing",
+      "object_or_state": "a piece of food on a plate",
+      "signature": [
+       "a person",
+       "placing",
+       "a piece of food on a plate"
+      ],
+      "source_indices": [
+       9,
+       10,
+       11
+      ],
+      "collapsed_count": 3
+     }
+    ],
+    "S1": [
+     {
+      "index": 4,
+      "start_sec": 448.0,
+      "end_sec": 456.0,
+      "actor": "person",
+      "action": "hanging",
+      "object_or_state": "orange pajama pants on a hanger",
+      "signature": [
+       "person",
+       "hanging",
+       "orange pajama pants on a hanger"
+      ],
+      "source_indices": [
+       4
+      ],
+      "collapsed_count": 1
+     },
+     {
+      "index": 5,
+      "start_sec": 456.0,
+      "end_sec": 464.0,
+      "actor": "person",
+      "action": "holding",
+      "object_or_state": "orange pajama pants with carrot patterns",
+      "signature": [
+       "person",
+       "holding",
+       "orange pajama pants with carrot patterns"
+      ],
+      "source_indices": [
+       5
+      ],
+      "collapsed_count": 1
+     }
+    ]
+   },
+   "decoded_fps": 30.0000041251862
+  },
+  {
+   "question_id": "Q2",
+   "parent_window": "P3",
+   "span": [
+    104.0,
+    128.0
+   ],
+   "question": "potato peeling인가, potato ricer/pressing/mixing인가?",
+   "counts": {
+    "KEEP": 6,
+    "DROP": 6
+   },
+   "frames": [
+    {
+     "time_sec": 104.0,
+     "role": "KEEP",
+     "parent_offset_sec": 0.0,
+     "frame_index": 3120,
+     "decoded_time_sec": 104.0,
+     "file": "Q2_0104.0_KEEP.png",
+     "sha256": "f1f1c0b66d75d8be1ed03cfb49dc03913b6ad7289ca75b9605ddac2e5a090d5c"
+    },
+    {
+     "time_sec": 106.0,
+     "role": "DROP",
+     "parent_offset_sec": 2.0,
+     "frame_index": 3180,
+     "decoded_time_sec": 106.0,
+     "file": "Q2_0106.0_DROP.png",
+     "sha256": "d9afbea6878e697b86affc96f941b1189217d70ec416abc45bbe48c3a414cb50"
+    },
+    {
+     "time_sec": 108.0,
+     "role": "KEEP",
+     "parent_offset_sec": 4.0,
+     "frame_index": 3240,
+     "decoded_time_sec": 108.0,
+     "file": "Q2_0108.0_KEEP.png",
+     "sha256": "b1d94c402f86b81417b422585090fb7b33875c6fa60331df0f3c15bc89045a84"
+    },
+    {
+     "time_sec": 110.0,
+     "role": "DROP",
+     "parent_offset_sec": 6.0,
+     "frame_index": 3300,
+     "decoded_time_sec": 110.0,
+     "file": "Q2_0110.0_DROP.png",
+     "sha256": "f6956e36b5defc37473950bee5ba4f67f104ee1001a90f68f7b4c187bd27feb2"
+    },
+    {
+     "time_sec": 112.0,
+     "role": "KEEP",
+     "parent_offset_sec": 8.0,
+     "frame_index": 3360,
+     "decoded_time_sec": 112.0,
+     "file": "Q2_0112.0_KEEP.png",
+     "sha256": "0cf2011b9c6f717054940a6f03bcf1b3ca4b9b3cd4111122d2befc36a1539f7c"
+    },
+    {
+     "time_sec": 114.0,
+     "role": "DROP",
+     "parent_offset_sec": 10.0,
+     "frame_index": 3420,
+     "decoded_time_sec": 114.0,
+     "file": "Q2_0114.0_DROP.png",
+     "sha256": "ef3633f918e79b310ad543f69b133535c688c41e5a3b3c6ea2e0e1d611a623d2"
+    },
+    {
+     "time_sec": 116.0,
+     "role": "KEEP",
+     "parent_offset_sec": 12.0,
+     "frame_index": 3480,
+     "decoded_time_sec": 116.0,
+     "file": "Q2_0116.0_KEEP.png",
+     "sha256": "a16bbbc1db24fad42cbb70afdd97c6f0431e2bbee613e8813d57b73d46074839"
+    },
+    {
+     "time_sec": 118.0,
+     "role": "DROP",
+     "parent_offset_sec": 14.0,
+     "frame_index": 3540,
+     "decoded_time_sec": 118.0,
+     "file": "Q2_0118.0_DROP.png",
+     "sha256": "b531917379705b30f101a42a3c7e33be0d05e90cb64024674cd3724beb2454b4"
+    },
+    {
+     "time_sec": 120.0,
+     "role": "KEEP",
+     "parent_offset_sec": 16.0,
+     "frame_index": 3600,
+     "decoded_time_sec": 120.0,
+     "file": "Q2_0120.0_KEEP.png",
+     "sha256": "2e00f29229bfdc72238676153e37795f86bb7492c4fe170d00808b8c452d4726"
+    },
+    {
+     "time_sec": 122.0,
+     "role": "DROP",
+     "parent_offset_sec": 18.0,
+     "frame_index": 3660,
+     "decoded_time_sec": 122.0,
+     "file": "Q2_0122.0_DROP.png",
+     "sha256": "ca7584296ad0fa6d421fd03755ff047bb8d92a3a9e1b226821274906d6d840a5"
+    },
+    {
+     "time_sec": 124.0,
+     "role": "KEEP",
+     "parent_offset_sec": 20.0,
+     "frame_index": 3720,
+     "decoded_time_sec": 124.0,
+     "file": "Q2_0124.0_KEEP.png",
+     "sha256": "4e09a9f54097b341879d6ce2f5557e0bb9b74d0b5bb70ac30468246b17c142f6"
+    },
+    {
+     "time_sec": 126.0,
+     "role": "DROP",
+     "parent_offset_sec": 22.0,
+     "frame_index": 3780,
+     "decoded_time_sec": 126.0,
+     "file": "Q2_0126.0_DROP.png",
+     "sha256": "058575a6b3129090a14ad3e7e9ff1b8f21b1e68c6e229bd997cdc2635ee50106"
+    }
+   ],
+   "sheet": "Q2_sheet.png",
+   "sheet_sha256": "6546afaaeb7fe7977d4824e10560136b4d39d0bbe99e01454edfacf0726718b9",
+   "claims": {
+    "S0": [
+     {
+      "index": 0,
+      "start_sec": 104.0,
+      "end_sec": 128.0,
+      "actor": "person",
+      "action": "peeling",
+      "object_or_state": "potato",
+      "signature": [
+       "person",
+       "peeling",
+       "potato"
+      ],
+      "source_indices": [
+       0,
+       1,
+       2
+      ],
+      "collapsed_count": 3
+     }
+    ],
+    "S1": [
+     {
+      "index": 0,
+      "start_sec": 104.0,
+      "end_sec": 112.0,
+      "actor": "person",
+      "action": "using",
+      "object_or_state": "potato ricer",
+      "signature": [
+       "person",
+       "using",
+       "potato ricer"
+      ],
+      "source_indices": [
+       0
+      ],
+      "collapsed_count": 1
+     },
+     {
+      "index": 1,
+      "start_sec": 112.0,
+      "end_sec": 120.0,
+      "actor": "person",
+      "action": "pressing",
+      "object_or_state": "potato ricer",
+      "signature": [
+       "person",
+       "pressing",
+       "potato ricer"
+      ],
+      "source_indices": [
+       1
+      ],
+      "collapsed_count": 1
+     },
+     {
+      "index": 2,
+      "start_sec": 120.0,
+      "end_sec": 128.0,
+      "actor": "person",
+      "action": "mixing",
+      "object_or_state": "potato mixture",
+      "signature": [
+       "person",
+       "mixing",
+       "potato mixture"
+      ],
+      "source_indices": [
+       2
+      ],
+      "collapsed_count": 1
+     }
+    ]
+   },
+   "decoded_fps": 30.0000041251862
+  },
+  {
+   "question_id": "Q3",
+   "parent_window": "P3",
+   "span": [
+    128.0,
+    144.0
+   ],
+   "question": "forming potato balls인가, gloves/mixing sequence인가?",
+   "counts": {
+    "KEEP": 4,
+    "DROP": 4
+   },
+   "frames": [
+    {
+     "time_sec": 128.0,
+     "role": "KEEP",
+     "parent_offset_sec": 24.0,
+     "frame_index": 3840,
+     "decoded_time_sec": 128.0,
+     "file": "Q3_0128.0_KEEP.png",
+     "sha256": "be01cd7183b2fb77f257cd82f656dc92808d65b256be6d82664787221a7e2496"
+    },
+    {
+     "time_sec": 130.0,
+     "role": "DROP",
+     "parent_offset_sec": 26.0,
+     "frame_index": 3900,
+     "decoded_time_sec": 130.0,
+     "file": "Q3_0130.0_DROP.png",
+     "sha256": "1e4ff3490ffdea4a09e1690c673947adc461e934ae220e71b238fea458253c89"
+    },
+    {
+     "time_sec": 132.0,
+     "role": "KEEP",
+     "parent_offset_sec": 28.0,
+     "frame_index": 3960,
+     "decoded_time_sec": 132.0,
+     "file": "Q3_0132.0_KEEP.png",
+     "sha256": "0d8fd2dd574d5cd38b66f2da2e64db67b31901ebe94c3d44091c7bd9f1428b7b"
+    },
+    {
+     "time_sec": 134.0,
+     "role": "DROP",
+     "parent_offset_sec": 30.0,
+     "frame_index": 4020,
+     "decoded_time_sec": 134.0,
+     "file": "Q3_0134.0_DROP.png",
+     "sha256": "8c6583da075b7ed34c8f33dc327e3c23b3da74a56cea23ef2ad1a42c0180dd93"
+    },
+    {
+     "time_sec": 136.0,
+     "role": "KEEP",
+     "parent_offset_sec": 32.0,
+     "frame_index": 4080,
+     "decoded_time_sec": 136.0,
+     "file": "Q3_0136.0_KEEP.png",
+     "sha256": "3d229aa4c0af51dc5182f4b3826c351c2effcce02adb891a4c6f67c3da0a8a93"
+    },
+    {
+     "time_sec": 138.0,
+     "role": "DROP",
+     "parent_offset_sec": 34.0,
+     "frame_index": 4140,
+     "decoded_time_sec": 138.0,
+     "file": "Q3_0138.0_DROP.png",
+     "sha256": "9ba66b8406a5ad87e712cea40611c96a84e33f9c3f064561d56b052bef22d36d"
+    },
+    {
+     "time_sec": 140.0,
+     "role": "KEEP",
+     "parent_offset_sec": 36.0,
+     "frame_index": 4200,
+     "decoded_time_sec": 140.0,
+     "file": "Q3_0140.0_KEEP.png",
+     "sha256": "5490be166562677e1bdbb7d07ce4da78696a8aaafb0760c2b8ef466580912b2a"
+    },
+    {
+     "time_sec": 142.0,
+     "role": "DROP",
+     "parent_offset_sec": 38.0,
+     "frame_index": 4260,
+     "decoded_time_sec": 142.0,
+     "file": "Q3_0142.0_DROP.png",
+     "sha256": "75ee5a9efdcadccfb1f01e00ed136c4b0ddbdaaea5d58271e240d445f9cfa83f"
+    }
+   ],
+   "sheet": "Q3_sheet.png",
+   "sheet_sha256": "2479148bf8205398a07ad5b1b51d39160f43328a2925c8a2c95b7c06c24fa993",
+   "claims": {
+    "S0": [
+     {
+      "index": 1,
+      "start_sec": 128.0,
+      "end_sec": 136.0,
+      "actor": "person",
+      "action": "mixing",
+      "object_or_state": "potato mixture",
+      "signature": [
+       "person",
+       "mixing",
+       "potato mixture"
+      ],
+      "source_indices": [
+       3
+      ],
+      "collapsed_count": 1
+     },
+     {
+      "index": 2,
+      "start_sec": 136.0,
+      "end_sec": 144.0,
+      "actor": "person",
+      "action": "forming",
+      "object_or_state": "potato balls",
+      "signature": [
+       "person",
+       "forming",
+       "potato balls"
+      ],
+      "source_indices": [
+       4
+      ],
+      "collapsed_count": 1
+     }
+    ],
+    "S1": [
+     {
+      "index": 3,
+      "start_sec": 128.0,
+      "end_sec": 136.0,
+      "actor": "person",
+      "action": "wearing",
+      "object_or_state": "gloves",
+      "signature": [
+       "person",
+       "wearing",
+       "gloves"
+      ],
+      "source_indices": [
+       3
+      ],
+      "collapsed_count": 1
+     },
+     {
+      "index": 4,
+      "start_sec": 136.0,
+      "end_sec": 144.0,
+      "actor": "person",
+      "action": "mixing",
+      "object_or_state": "potato mixture",
+      "signature": [
+       "person",
+       "mixing",
+       "potato mixture"
+      ],
+      "source_indices": [
+       4
+      ],
+      "collapsed_count": 1
+     }
+    ]
+   },
+   "decoded_fps": 30.0000041251862
+  }
+ ],
+ "allowed_scope": "영상 1편의 48초 창 2개에서 뽑은 3개 구간(합계 56초)에 대한 판정이다. 다른 영상·다른 구간·전체 파이프라인으로 일반화하지 않는다."
+}
