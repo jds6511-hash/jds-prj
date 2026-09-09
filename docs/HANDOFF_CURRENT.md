@@ -3,28 +3,26 @@
 > **직접 편집하지 마라.** `scripts/make_handoff.py`로 다시 생성한다. 이 도구는 수집기이고 해석기가 아니다 — 수치를 보고 판정을 만들지 않고, 각 항목에 출처를 붙인다.
 > 판정·근거는 출처 문서에서 읽어라.
 
-> **작업 트리가 dirty다.** 아래 사실은 커밋되지 않은 변경을 포함한 상태에서 수집됐다 — 재현하려면 `git status`를 먼저 봐라.
-
 ## git HEAD
 
-`2766cfb06b3761e7910dc78c2d50ed21630a5239`
+`41407554cb8c5520e887894cc13a805cb75fef01`
 
 source: git rev-parse HEAD
 
 ## 작업 트리 dirty
 
-`True`
+`False`
 
 source: git status --porcelain
 
 ## 최근 커밋
 
 ```
+4140755 docs: 지도·스냅샷·문서지도 최신화 (SHADOW_V1 CLOSED / INCONCLUSIVE 반영)
 2766cfb probe: SHADOW_V1 24창 실행 · 기술 게이트 INCONCLUSIVE (W00 INVALID)
 d3cef5e prereg: EVENT_EXTRACTION_SHADOW_V1 — C01 전체 48초/24초 overlap tiling shadow
 1ca93ab probe: FRAME_ADJUDICATION_V1 CLOSED / SAMPLING_LOSS_CONFIRMED
 937405c tool: frame packet에 KEEP/DROP 분리 대지와 판정 기록기 추가 (관찰 전 커밋)
-f8373a7 docs: 프로젝트 개요·현재 파이프라인 지도 추가
 ```
 
 source: git log -5 --oneline
