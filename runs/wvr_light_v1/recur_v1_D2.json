@@ -1,0 +1,392 @@
+{
+ "schema": "wvr_recursive_v1",
+ "event": "WVR_W00_RECURSIVE_SUBDIVISION_RECOVERY_V1",
+ "prereg": "docs/preregistration/WVR_W00_RECURSIVE_SUBDIVISION_RECOVERY_V1_2026-09-09.md",
+ "child": {
+  "child_id": "D2",
+  "index": 2,
+  "start_sec": 12.0,
+  "end_sec": 24.0
+ },
+ "parent_child": {
+  "child_id": "C0",
+  "index": 0,
+  "start_sec": 0.0,
+  "end_sec": 24.0
+ },
+ "grandparent_window": {
+  "window_id": "W00",
+  "index": 0,
+  "start_sec": 0.0,
+  "end_sec": 48.0
+ },
+ "subdivision_depth": 2,
+ "requested": {
+  "sampling_fps": 0.5,
+  "frames": 6,
+  "frame_width": 512,
+  "frame_height": 288,
+  "model_id": "Qwen/Qwen3-VL-8B-Instruct",
+  "model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "dtype": "bfloat16",
+  "attn_implementation": "sdpa",
+  "quantization": null,
+  "device": "cuda:0",
+  "device_map": null,
+  "do_sample": false,
+  "num_beams": 1,
+  "max_new_tokens": 4096,
+  "repetition_penalty": 1.0,
+  "do_sample_frames": false,
+  "do_resize": false,
+  "prompt_contract": "SAMPLING_DIAG_PROMPT_V2",
+  "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+  "output_language": "en",
+  "window_sec": 12.0,
+  "frames_per_window": 6
+ },
+ "inference_config_change": {
+  "inference_config_change": "NONE",
+  "differences": {},
+  "architecture_change": {
+   "from": "24-sec local window / 12 frames (failing C0)",
+   "to": "12-sec local windows / 6-sec overlap / 6 frames",
+   "scope": "실패 child C0 [0,24) 하나만 — C1·C2는 재실행하지 않는다",
+   "sole_recovery_mechanism": true,
+   "not_a_causal_claim": "12초가 안전하다·0초 boundary가 원인이다·24초가 원인이다는 주장을 하지 않는다 — recovery efficacy만 잰다"
+  },
+  "declared_geometry": {
+   "window_sec": 12.0,
+   "frames_per_window": 6
+  },
+  "observed_geometry": {
+   "window_sec": 12.0,
+   "frames_per_window": 6
+  },
+  "geometry_as_declared": true,
+  "subdivision_depth": 2,
+  "deeper_subdivision_allowed": false
+ },
+ "coverage": {
+  "parent": [
+   0.0,
+   24.0
+  ],
+  "union": [
+   0.0,
+   24.0
+  ],
+  "gaps": [],
+  "covered": true
+ },
+ "frame_times": [
+  12.0,
+  14.0,
+  16.0,
+  18.0,
+  20.0,
+  22.0
+ ],
+ "prompt_contract": "SAMPLING_DIAG_PROMPT_V2",
+ "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+ "is_production_contract": false,
+ "output_language": "en",
+ "video_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+ "code_git_head": "43e58521565715f34a76fca3435fec85c5d1fa66",
+ "runtime_config_hash": "cd98cb53c363b0047bc688e73474b33a2e4305b7f8c35012e5166505d2f3d175",
+ "frozen_artifacts_unchanged": {
+  "unchanged": true,
+  "checks": {
+   "shadow_v1_W00.json": {
+    "status": "OK",
+    "expected": "c8e65b74b8c71aa97f85fc69c6ffdfb2c72fab18911e6e1565c8458e44daa074",
+    "observed": "c8e65b74b8c71aa97f85fc69c6ffdfb2c72fab18911e6e1565c8458e44daa074"
+   },
+   "shadow_v1_W00_raw.txt": {
+    "status": "OK",
+    "expected": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6",
+    "observed": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6"
+   },
+   "subdiv_v1_C0.json": {
+    "status": "OK",
+    "expected": "7925172a83d3304730e6b21509bdc0c70dbe78ae0e5433e0809a7e074471d0f6",
+    "observed": "7925172a83d3304730e6b21509bdc0c70dbe78ae0e5433e0809a7e074471d0f6"
+   },
+   "subdiv_v1_C0_raw.txt": {
+    "status": "OK",
+    "expected": "7460a5b61821e41b15dd0281aa15580a2ac7752dab48be2bbf809f1d193105d0",
+    "observed": "7460a5b61821e41b15dd0281aa15580a2ac7752dab48be2bbf809f1d193105d0"
+   },
+   "subdiv_v1_C1.json": {
+    "status": "OK",
+    "expected": "44b7f96c1f23a0760f6cc8fa975d058b86d813878c75898136bd368979d75f11",
+    "observed": "44b7f96c1f23a0760f6cc8fa975d058b86d813878c75898136bd368979d75f11"
+   },
+   "subdiv_v1_C1_raw.txt": {
+    "status": "OK",
+    "expected": "9316f9f62b519ef0cc8a99a827fa71ed153b5efea3a673e5d53b2d084392f117",
+    "observed": "9316f9f62b519ef0cc8a99a827fa71ed153b5efea3a673e5d53b2d084392f117"
+   },
+   "subdiv_v1_C2.json": {
+    "status": "OK",
+    "expected": "cb77b4b283f988d150efcb1c780d4cc1c8c5ff6d7ce566517ca35b17cc68f126",
+    "observed": "cb77b4b283f988d150efcb1c780d4cc1c8c5ff6d7ce566517ca35b17cc68f126"
+   },
+   "subdiv_v1_C2_raw.txt": {
+    "status": "OK",
+    "expected": "70815aeee2408bd174d0a031a08200bf9e6b12fdff6d46a9c8a0ec36ef453b10",
+    "observed": "70815aeee2408bd174d0a031a08200bf9e6b12fdff6d46a9c8a0ec36ef453b10"
+   }
+  },
+  "changed": [],
+  "missing": [],
+  "parent_status_retained": "WINDOW_INVALID (유지 · 소급 VALID 금지)",
+  "c1_c2_rerun_allowed": false,
+  "may_be_revalidated": false
+ },
+ "lineage_sources": [
+  "subdiv_v1_C0.json",
+  "shadow_frame_bank.json"
+ ],
+ "reference_missing_times": [],
+ "raw_persisted": true,
+ "raw_path": "recur_v1_D2_raw.txt",
+ "retry_allowed": false,
+ "deeper_subdivision_allowed": false,
+ "semantic_verdict_by_executor": false,
+ "production_promotion_allowed": false,
+ "metrics": {
+  "load_wall_sec": 3.63,
+  "video_process_wall_sec": 0.58,
+  "delivered_frame_count": 6,
+  "frame_size": [
+   512,
+   288
+  ],
+  "input_token_count": 762,
+  "video_token_count": 432,
+  "infer_wall_sec": 7.5,
+  "generated_token_count": 179,
+  "generation_cap_hit": false,
+  "peak_vram_allocated_mib": 16963.6,
+  "peak_vram_reserved_mib": 17066.0,
+  "total_wall_sec": 13.61
+ },
+ "stage_status": {
+  "MODEL_LOAD": "OK",
+  "VIDEO_PROCESS": "OK",
+  "RAW_PERSIST": "OK",
+  "INFERENCE": "OK"
+ },
+ "allocator_observed": {
+  "backend": "native",
+  "env": "",
+  "segment_count": 268,
+  "expandable_segments_observed": false,
+  "expandable_flags_head": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ]
+ },
+ "frame_hashes": [
+  "f7b78d2701f25c41888b8ec3559dd461053c7f67b53e74022c4dd1971135fb0a",
+  "17bdf4d20d9afeba483ae57bae2bfa6ede51ed7291b070cb37cbdb8fcaad3505",
+  "7a52c8fd00a9efbc9b23998cdbed59f32d13c8ad43909bfe9f7f15a6c1c17660",
+  "703cb2992adc200ab291a83e8b829a1d63c5717e81f77bb7517bd9c7216422d5",
+  "7ef670a6d833e65d3da2f511cba433e0b87df9b90edc92f1c28a748696cefbad",
+  "f2a457fe9cfd79079bd9bdac7e62f7aa563c8b9c20449ea41d4927a490e76074"
+ ],
+ "frame_indices": [
+  360,
+  420,
+  480,
+  540,
+  600,
+  660
+ ],
+ "decoded_times": [
+  12.0,
+  14.0,
+  16.0,
+  18.0,
+  20.0,
+  22.0
+ ],
+ "decoded_fps": 30.0000041251862,
+ "lineage": {
+  "checked": 6,
+  "mismatches": [],
+  "uncovered": [],
+  "identity_ok": true,
+  "note": "대조 대상이 없으면 checked=0이고 일치를 주장하지 않는다"
+ },
+ "raw_output_hash": "a635354d0421de421c3737adac7ef2a835b53435e48ea480a919fe5ba25b4b0b",
+ "raw_output": "{\"events\": [{\"start_sec\": 12.0, \"end_sec\": 15.0, \"actor\": \"person\", \"action\": \"holds\", \"object_or_state\": \"sticker sheet\"}, {\"start_sec\": 15.0, \"end_sec\": 17.0, \"actor\": \"person\", \"action\": \"holds\", \"object_or_state\": \"plastic bag with rice\"}, {\"start_sec\": 17.0, \"end_sec\": 21.0, \"actor\": \"person\", \"action\": \"holds\", \"object_or_state\": \"plastic bag with rice\"}, {\"start_sec\": 21.0, \"end_sec\": 24.0, \"actor\": \"person\", \"action\": \"holds\", \"object_or_state\": \"plastic bag with rice\"}]}",
+ "parsed": {
+  "status": "OK",
+  "events": [
+   {
+    "index": 0,
+    "start_sec": 12.0,
+    "end_sec": 15.0,
+    "actor": "person",
+    "action": "holds",
+    "object_or_state": "sticker sheet",
+    "inside_window": true
+   },
+   {
+    "index": 1,
+    "start_sec": 15.0,
+    "end_sec": 17.0,
+    "actor": "person",
+    "action": "holds",
+    "object_or_state": "plastic bag with rice",
+    "inside_window": true
+   },
+   {
+    "index": 2,
+    "start_sec": 17.0,
+    "end_sec": 21.0,
+    "actor": "person",
+    "action": "holds",
+    "object_or_state": "plastic bag with rice",
+    "inside_window": true
+   },
+   {
+    "index": 3,
+    "start_sec": 21.0,
+    "end_sec": 24.0,
+    "actor": "person",
+    "action": "holds",
+    "object_or_state": "plastic bag with rice",
+    "inside_window": true
+   }
+  ],
+  "collapsed": [
+   {
+    "index": 0,
+    "start_sec": 12.0,
+    "end_sec": 15.0,
+    "actor": "person",
+    "action": "holds",
+    "object_or_state": "sticker sheet",
+    "signature": [
+     "person",
+     "holds",
+     "sticker sheet"
+    ],
+    "source_indices": [
+     0
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 1,
+    "start_sec": 15.0,
+    "end_sec": 24.0,
+    "actor": "person",
+    "action": "holds",
+    "object_or_state": "plastic bag with rice",
+    "signature": [
+     "person",
+     "holds",
+     "plastic bag with rice"
+    ],
+    "source_indices": [
+     1,
+     2,
+     3
+    ],
+    "collapsed_count": 3
+   }
+  ],
+  "violations": [],
+  "language": {
+   "contract": "ENGLISH_ONLY",
+   "satisfied": true,
+   "hangul_chars": 0,
+   "cjk_chars": 0,
+   "latin_chars": 110
+  },
+  "reason": ""
+ },
+ "parsed_output_hash": "131975e7eaa887c5cc2daa84440fb4233ff57a8df183b1da50c9a6488d965e98",
+ "representation": {
+  "collapsed_event_count": 2,
+  "unique_signature_count": 2,
+  "max_collapsed_run": 3,
+  "degenerate": false,
+  "reason": ""
+ },
+ "collapse_output_hash": "a8f87a10eb7d7907368fcdb21b105bec54e9d10810a377e9cccde78f0dfef398",
+ "structure": {
+  "raw_length": 484,
+  "complete_object_count": 4,
+  "unique_signature_count": 2,
+  "zero_length_interval_count": 0,
+  "first_repeat": {
+   "object_index": 2,
+   "first_seen_index": 1,
+   "offset": 244,
+   "signature": [
+    "person",
+    "holds",
+    "plastic bag with rice"
+   ]
+  },
+  "max_signature_repeat": 3,
+  "top_signatures": [
+   {
+    "signature": [
+     "person",
+     "holds",
+     "plastic bag with rice"
+    ],
+    "count": 3
+   },
+   {
+    "signature": [
+     "person",
+     "holds",
+     "sticker sheet"
+    ],
+    "count": 1
+   }
+  ],
+  "json_parse_ok": true,
+  "json_parse_error": null,
+  "truncation_tail": "{\"start_sec\": 21.0, \"end_sec\": 24.0, \"actor\": \"person\", \"action\": \"holds\", \"object_or_state\": \"plastic bag with rice\"}]}",
+  "ends_mid_object": false
+ },
+ "arm_status": "OK",
+ "finish_reason": "stop",
+ "memory_stats": {
+  "allocated_bytes.all.peak": 17787671040,
+  "reserved_bytes.all.peak": 17894998016,
+  "requested_bytes.all.peak": 17769012452,
+  "active_bytes.all.peak": 17787671040,
+  "inactive_split_bytes.all.peak": 208265216,
+  "num_alloc_retries": 0,
+  "num_ooms": 0
+ },
+ "validity": {
+  "valid": true,
+  "reasons": [],
+  "status": "WINDOW_VALID",
+  "language": {
+   "contract": "ENGLISH_ONLY",
+   "satisfied": true,
+   "hangul_chars": 0,
+   "cjk_chars": 0,
+   "latin_chars": 110
+  },
+  "blockers": [],
+  "output_failures": []
+ }
+}

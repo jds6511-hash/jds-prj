@@ -1,0 +1,81 @@
++ BASE=/ssd/daeseok/jds-prj
++ VIDEO=/ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4
++ OUT_DIR=/ssd/daeseok/jds-prj/runs/wvr_light_v1
++ PY=/ssd/daeseok/envs/prj/bin/python
++ export HF_HOME=/ssd/daeseok/cache
++ HF_HOME=/ssd/daeseok/cache
++ export PYTHONUNBUFFERED=1
++ PYTHONUNBUFFERED=1
++ export PYTHONDONTWRITEBYTECODE=1
++ PYTHONDONTWRITEBYTECODE=1
+++ git -C /ssd/daeseok/jds-prj rev-parse HEAD
++ export WVR_CODE_GIT_HEAD=43e58521565715f34a76fca3435fec85c5d1fa66
++ WVR_CODE_GIT_HEAD=43e58521565715f34a76fca3435fec85c5d1fa66
+++ date
++ echo '=== recursive validator (2026. 09. 10. (목) 03:50:11 KST) commit 43e58521565715f34a76fca3435fec85c5d1fa66 ==='
+=== recursive validator (2026. 09. 10. (목) 03:50:11 KST) commit 43e58521565715f34a76fca3435fec85c5d1fa66 ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_recur_validate.py --runs /ssd/daeseok/jds-prj/runs/wvr_light_v1
+validator=PASS
+  D0   0.0- 12.0 frames=6 change=NONE geom=True lineage_missing=0 frozen_ok=True
+  D1   6.0- 18.0 frames=6 change=NONE geom=True lineage_missing=0 frozen_ok=True
+  D2  12.0- 24.0 frames=6 change=NONE geom=True lineage_missing=0 frozen_ok=True
+  RR-O1   6.0- 12.0 shared=3  6, 8, 10
+  RR-O2  12.0- 18.0 shared=3  12, 14, 16
+  check child_count                    True
+  check coverage_no_gap                True
+  check frames_per_child               True
+  check config_change_none             True
+  check geometry_as_declared           True
+  check shared_frames                  True
+  check frozen_artifacts_unchanged     True
+  check lineage_reference_complete     True
+  check deeper_subdivision_blocked     True
+  check c1_c2_rerun_blocked            True
+++ date
++ echo '=== recursive 시작 (2026. 09. 10. (목) 03:50:11 KST) ==='
+=== recursive 시작 (2026. 09. 10. (목) 03:50:11 KST) ===
++ nvidia-smi --query-gpu=memory.used,utilization.gpu --format=csv,noheader
+40 MiB, 0 %
++ for child in D0 D1 D2
+++ date
++ echo '=== D0 시작 (2026. 09. 10. (목) 03:50:11 KST) ==='
+=== D0 시작 (2026. 09. 10. (목) 03:50:11 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_recur_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --child D0 --runs-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 8178.03it/s]
+child=D0 0-12 status=PARSE_FAILURE frames=6 in=758 gen=4096 cap=True
+  raw=0 obj=95 uniq_raw=23 zero=95 collapsed=0 uniq=0 degenerate=True json=False lineage=6/0 validity=WINDOW_INVALID ['PARSE_FAILURE', 'NO_EVENT', 'TRUNCATED_AT_CAP', 'OUTPUT_LANGUAGE_CONTRACT_FAILURE', 'EVENT_REPRESENTATION_DEGENERACY']
++ echo '=== D0 실패 기록됨 (재시도하지 않는다) ==='
+=== D0 실패 기록됨 (재시도하지 않는다) ===
+++ date
++ echo '=== D0 완료 (2026. 09. 10. (목) 03:52:47 KST) ==='
+=== D0 완료 (2026. 09. 10. (목) 03:52:47 KST) ===
++ for child in D0 D1 D2
+++ date
++ echo '=== D1 시작 (2026. 09. 10. (목) 03:52:47 KST) ==='
+=== D1 시작 (2026. 09. 10. (목) 03:52:47 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_recur_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --child D1 --runs-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:  87%|████████▋ | 656/750 [00:00<00:00, 6558.47it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7179.22it/s]
+child=D1 6-18 status=OK frames=6 in=760 gen=574 cap=False
+  raw=12 obj=12 uniq_raw=1 zero=0 collapsed=1 uniq=1 degenerate=True json=True lineage=6/0 validity=WINDOW_INVALID ['EVENT_REPRESENTATION_DEGENERACY']
++ echo '=== D1 실패 기록됨 (재시도하지 않는다) ==='
+=== D1 실패 기록됨 (재시도하지 않는다) ===
+++ date
++ echo '=== D1 완료 (2026. 09. 10. (목) 03:53:20 KST) ==='
+=== D1 완료 (2026. 09. 10. (목) 03:53:20 KST) ===
++ for child in D0 D1 D2
+++ date
++ echo '=== D2 시작 (2026. 09. 10. (목) 03:53:20 KST) ==='
+=== D2 시작 (2026. 09. 10. (목) 03:53:20 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_recur_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --child D2 --runs-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:  89%|████████▉ | 667/750 [00:00<00:00, 6668.21it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7195.96it/s]
+child=D2 12-24 status=OK frames=6 in=762 gen=179 cap=False
+  raw=4 obj=4 uniq_raw=2 zero=0 collapsed=2 uniq=2 degenerate=False json=True lineage=6/0 validity=WINDOW_VALID []
+++ date
++ echo '=== D2 완료 (2026. 09. 10. (목) 03:53:41 KST) ==='
+=== D2 완료 (2026. 09. 10. (목) 03:53:41 KST) ===
+++ date
++ echo '=== recursive 완료 (2026. 09. 10. (목) 03:53:41 KST) ==='
+=== recursive 완료 (2026. 09. 10. (목) 03:53:41 KST) ===
++ wc -l
++ ls -l /ssd/daeseok/jds-prj/runs/wvr_light_v1/recur_v1_D0.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/recur_v1_D1.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/recur_v1_D2.json
+3

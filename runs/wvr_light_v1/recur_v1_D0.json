@@ -1,0 +1,331 @@
+{
+ "schema": "wvr_recursive_v1",
+ "event": "WVR_W00_RECURSIVE_SUBDIVISION_RECOVERY_V1",
+ "prereg": "docs/preregistration/WVR_W00_RECURSIVE_SUBDIVISION_RECOVERY_V1_2026-09-09.md",
+ "child": {
+  "child_id": "D0",
+  "index": 0,
+  "start_sec": 0.0,
+  "end_sec": 12.0
+ },
+ "parent_child": {
+  "child_id": "C0",
+  "index": 0,
+  "start_sec": 0.0,
+  "end_sec": 24.0
+ },
+ "grandparent_window": {
+  "window_id": "W00",
+  "index": 0,
+  "start_sec": 0.0,
+  "end_sec": 48.0
+ },
+ "subdivision_depth": 2,
+ "requested": {
+  "sampling_fps": 0.5,
+  "frames": 6,
+  "frame_width": 512,
+  "frame_height": 288,
+  "model_id": "Qwen/Qwen3-VL-8B-Instruct",
+  "model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "dtype": "bfloat16",
+  "attn_implementation": "sdpa",
+  "quantization": null,
+  "device": "cuda:0",
+  "device_map": null,
+  "do_sample": false,
+  "num_beams": 1,
+  "max_new_tokens": 4096,
+  "repetition_penalty": 1.0,
+  "do_sample_frames": false,
+  "do_resize": false,
+  "prompt_contract": "SAMPLING_DIAG_PROMPT_V2",
+  "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+  "output_language": "en",
+  "window_sec": 12.0,
+  "frames_per_window": 6
+ },
+ "inference_config_change": {
+  "inference_config_change": "NONE",
+  "differences": {},
+  "architecture_change": {
+   "from": "24-sec local window / 12 frames (failing C0)",
+   "to": "12-sec local windows / 6-sec overlap / 6 frames",
+   "scope": "실패 child C0 [0,24) 하나만 — C1·C2는 재실행하지 않는다",
+   "sole_recovery_mechanism": true,
+   "not_a_causal_claim": "12초가 안전하다·0초 boundary가 원인이다·24초가 원인이다는 주장을 하지 않는다 — recovery efficacy만 잰다"
+  },
+  "declared_geometry": {
+   "window_sec": 12.0,
+   "frames_per_window": 6
+  },
+  "observed_geometry": {
+   "window_sec": 12.0,
+   "frames_per_window": 6
+  },
+  "geometry_as_declared": true,
+  "subdivision_depth": 2,
+  "deeper_subdivision_allowed": false
+ },
+ "coverage": {
+  "parent": [
+   0.0,
+   24.0
+  ],
+  "union": [
+   0.0,
+   24.0
+  ],
+  "gaps": [],
+  "covered": true
+ },
+ "frame_times": [
+  0.0,
+  2.0,
+  4.0,
+  6.0,
+  8.0,
+  10.0
+ ],
+ "prompt_contract": "SAMPLING_DIAG_PROMPT_V2",
+ "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+ "is_production_contract": false,
+ "output_language": "en",
+ "video_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+ "code_git_head": "43e58521565715f34a76fca3435fec85c5d1fa66",
+ "runtime_config_hash": "cd98cb53c363b0047bc688e73474b33a2e4305b7f8c35012e5166505d2f3d175",
+ "frozen_artifacts_unchanged": {
+  "unchanged": true,
+  "checks": {
+   "shadow_v1_W00.json": {
+    "status": "OK",
+    "expected": "c8e65b74b8c71aa97f85fc69c6ffdfb2c72fab18911e6e1565c8458e44daa074",
+    "observed": "c8e65b74b8c71aa97f85fc69c6ffdfb2c72fab18911e6e1565c8458e44daa074"
+   },
+   "shadow_v1_W00_raw.txt": {
+    "status": "OK",
+    "expected": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6",
+    "observed": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6"
+   },
+   "subdiv_v1_C0.json": {
+    "status": "OK",
+    "expected": "7925172a83d3304730e6b21509bdc0c70dbe78ae0e5433e0809a7e074471d0f6",
+    "observed": "7925172a83d3304730e6b21509bdc0c70dbe78ae0e5433e0809a7e074471d0f6"
+   },
+   "subdiv_v1_C0_raw.txt": {
+    "status": "OK",
+    "expected": "7460a5b61821e41b15dd0281aa15580a2ac7752dab48be2bbf809f1d193105d0",
+    "observed": "7460a5b61821e41b15dd0281aa15580a2ac7752dab48be2bbf809f1d193105d0"
+   },
+   "subdiv_v1_C1.json": {
+    "status": "OK",
+    "expected": "44b7f96c1f23a0760f6cc8fa975d058b86d813878c75898136bd368979d75f11",
+    "observed": "44b7f96c1f23a0760f6cc8fa975d058b86d813878c75898136bd368979d75f11"
+   },
+   "subdiv_v1_C1_raw.txt": {
+    "status": "OK",
+    "expected": "9316f9f62b519ef0cc8a99a827fa71ed153b5efea3a673e5d53b2d084392f117",
+    "observed": "9316f9f62b519ef0cc8a99a827fa71ed153b5efea3a673e5d53b2d084392f117"
+   },
+   "subdiv_v1_C2.json": {
+    "status": "OK",
+    "expected": "cb77b4b283f988d150efcb1c780d4cc1c8c5ff6d7ce566517ca35b17cc68f126",
+    "observed": "cb77b4b283f988d150efcb1c780d4cc1c8c5ff6d7ce566517ca35b17cc68f126"
+   },
+   "subdiv_v1_C2_raw.txt": {
+    "status": "OK",
+    "expected": "70815aeee2408bd174d0a031a08200bf9e6b12fdff6d46a9c8a0ec36ef453b10",
+    "observed": "70815aeee2408bd174d0a031a08200bf9e6b12fdff6d46a9c8a0ec36ef453b10"
+   }
+  },
+  "changed": [],
+  "missing": [],
+  "parent_status_retained": "WINDOW_INVALID (유지 · 소급 VALID 금지)",
+  "c1_c2_rerun_allowed": false,
+  "may_be_revalidated": false
+ },
+ "lineage_sources": [
+  "subdiv_v1_C0.json",
+  "shadow_frame_bank.json"
+ ],
+ "reference_missing_times": [],
+ "raw_persisted": true,
+ "raw_path": "recur_v1_D0_raw.txt",
+ "retry_allowed": false,
+ "deeper_subdivision_allowed": false,
+ "semantic_verdict_by_executor": false,
+ "production_promotion_allowed": false,
+ "metrics": {
+  "load_wall_sec": 3.62,
+  "video_process_wall_sec": 0.38,
+  "delivered_frame_count": 6,
+  "frame_size": [
+   512,
+   288
+  ],
+  "input_token_count": 758,
+  "video_token_count": 432,
+  "infer_wall_sec": 143.23,
+  "generated_token_count": 4096,
+  "generation_cap_hit": true,
+  "peak_vram_allocated_mib": 17446.0,
+  "peak_vram_reserved_mib": 17706.0,
+  "total_wall_sec": 149.16
+ },
+ "stage_status": {
+  "MODEL_LOAD": "OK",
+  "VIDEO_PROCESS": "OK",
+  "RAW_PERSIST": "OK",
+  "INFERENCE": "OK"
+ },
+ "allocator_observed": {
+  "backend": "native",
+  "env": "",
+  "segment_count": 268,
+  "expandable_segments_observed": false,
+  "expandable_flags_head": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ]
+ },
+ "frame_hashes": [
+  "94a726164e2158a7cad2e8a7d1a9e3fb03c308e2a2592d176d2c8c52b1a6ad30",
+  "93f1e7fd2e64f9a52bfd04f31e627861fb590c733661f7767a3678122ab1e3af",
+  "3a63532ca1b1e086bd47fd1a4938595db39f12e24a58f35b365a3bbf6b1042b2",
+  "7236a0fb295fb5ed133b6a9f2646df1657d8724e6e4acca0126dacf2cd1c96cf",
+  "ac332e89006f1568ed20cbacd4edbdee97a14b114287f5e5144c74c799e2611c",
+  "1ad902f3719f744387e998a8999ff1a57da19b125661d1ef6a0cea3bccb77dd0"
+ ],
+ "frame_indices": [
+  0,
+  60,
+  120,
+  180,
+  240,
+  300
+ ],
+ "decoded_times": [
+  0.0,
+  2.0,
+  4.0,
+  6.0,
+  8.0,
+  10.0
+ ],
+ "decoded_fps": 30.0000041251862,
+ "lineage": {
+  "checked": 6,
+  "mismatches": [],
+  "uncovered": [],
+  "identity_ok": true,
+  "note": "대조 대상이 없으면 checked=0이고 일치를 주장하지 않는다"
+ },
+ "raw_output_hash": "e8b6ac649450353d7c2f3ab9f3846f0c51ee2402b31b7f4a53f019be33afbe66",
+ "raw_output": "{\"events\": [{\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"pouring\", \"object_or_state\": \"liquid from a bottle into a bowl\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"holding\", \"object_or_state\": \"a bottle\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"standing\", \"object_or_state\": \"in front of a kitchen counter\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a checkered shirt\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a bow tie\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a white apron\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black glove\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a white glove\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hat\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black jacket\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black skirt\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black shoe\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black sock\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black belt\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black watch\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black ring\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black bracelet\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black necklace\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black earring\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hair clip\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hair band\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hair tie\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor",
+ "parsed": {
+  "status": "PARSE_FAILURE",
+  "events": [],
+  "collapsed": [],
+  "violations": [],
+  "reason": "Expecting ',' delimiter: line 1 column 11032 (char 11031)"
+ },
+ "parsed_output_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+ "representation": {
+  "collapsed_event_count": 0,
+  "unique_signature_count": 0,
+  "max_collapsed_run": 0,
+  "degenerate": true,
+  "reason": "EVENT_REPRESENTATION_DEGENERACY"
+ },
+ "collapse_output_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+ "structure": {
+  "raw_length": 11074,
+  "complete_object_count": 95,
+  "unique_signature_count": 23,
+  "zero_length_interval_count": 95,
+  "first_repeat": {
+   "object_index": 23,
+   "first_seen_index": 22,
+   "offset": 2681,
+   "signature": [
+    "a person",
+    "wearing",
+    "a black hairpin"
+   ]
+  },
+  "max_signature_repeat": 73,
+  "top_signatures": [
+   {
+    "signature": [
+     "a person",
+     "wearing",
+     "a black hairpin"
+    ],
+    "count": 73
+   },
+   {
+    "signature": [
+     "a person",
+     "pouring",
+     "liquid from a bottle into a bowl"
+    ],
+    "count": 1
+   },
+   {
+    "signature": [
+     "a person",
+     "holding",
+     "a bottle"
+    ],
+    "count": 1
+   }
+  ],
+  "json_parse_ok": false,
+  "json_parse_error": "Unterminated string starting at: line 1 column 11069 (char 11068)",
+  "truncation_tail": "ctor\": \"a person\", \"action\": \"wearing\", \"object_or_state\": \"a black hairpin\"}, {\"start_sec\": 0.0, \"end_sec\": 0.0, \"actor",
+  "ends_mid_object": true
+ },
+ "arm_status": "PARSE_FAILURE",
+ "finish_reason": "length",
+ "memory_stats": {
+  "allocated_bytes.all.peak": 18293454848,
+  "reserved_bytes.all.peak": 18566086656,
+  "requested_bytes.all.peak": 18279884809,
+  "active_bytes.all.peak": 18293454848,
+  "inactive_split_bytes.all.peak": 452902912,
+  "num_alloc_retries": 0,
+  "num_ooms": 0
+ },
+ "validity": {
+  "valid": false,
+  "reasons": [
+   "PARSE_FAILURE",
+   "NO_EVENT",
+   "TRUNCATED_AT_CAP",
+   "OUTPUT_LANGUAGE_CONTRACT_FAILURE",
+   "EVENT_REPRESENTATION_DEGENERACY"
+  ],
+  "status": "WINDOW_INVALID",
+  "language": {
+   "contract": "ENGLISH_ONLY",
+   "satisfied": false,
+   "hangul_chars": 0,
+   "cjk_chars": 0,
+   "latin_chars": 0
+  },
+  "blockers": [],
+  "output_failures": [
+   "PARSE_FAILURE",
+   "NO_EVENT",
+   "TRUNCATED_AT_CAP",
+   "OUTPUT_LANGUAGE_CONTRACT_FAILURE",
+   "EVENT_REPRESENTATION_DEGENERACY"
+  ]
+ }
+}
