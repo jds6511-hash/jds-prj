@@ -7,11 +7,17 @@
 실행        6/6 완료 (P1·P2·P3 × S0·S1) · 창×arm마다 fresh process 1회
 기술 게이트  6/6 통과 — 파싱 OK · 절단 0 · English-only 만족 · 표현 비축퇴 ·
                      runtime failure 0
-사건 판정    미정 — blinded adjudication 대기 (Claude는 판정하지 않는다)
+사건 판정    CLOSED / SHORT_WINDOW_PAIRED_STABILITY_HOLD
+             P1 GRANULARITY_SHIFT · P2 MATERIAL_DIVERGENCE · P3 MATERIAL_DIVERGENCE
+             (리뷰어가 packet 내용만 보고 판정 · 2026-09-09)
+long-context-only-collapse 가설   NOT SUPPORTED
+0.25fps semantic sufficiency       NOT ESTABLISHED
 ```
 
-**이 문서는 판정 전에 쓰였으므로 arm별 내용·생성 토큰 수를 싣지 않는다.**
-그 수치는 packet의 Arm A/B와 사건 순서로 대조하면 density mapping을 드러낸다.
+**48초로 줄여도 report-material divergence가 P2·P3에서 남았다.** 즉 180초
+long-context representation collapse만이 원인이었다는 가설은 지지되지 않는다.
+동시에 `0.25fps is worse`도 결론이 아니다 — 어느 arm이 프레임 실물과 맞는지는
+아직 판정되지 않았다.
 
 ## 1. 창 파생 (사전등록 §3 그대로 재현)
 
@@ -121,4 +127,74 @@ runs/wvr_light_v1/short_window.log
 src/wvr_short_window.py · scripts/wvr_short_window_run.py
 scripts/wvr_short_window_packet.py · scripts/wvr_short_window_batch.sh
 tests/test_wvr_short_window.py
+```
+
+## 8. 판정 결과와 blind mapping (판정 후 공개)
+
+```
+창   판정                  창 PASS   Arm A    Arm B
+P1   GRANULARITY_SHIFT     True      S1       S0
+P2   MATERIAL_DIVERGENCE   False     S1       S0
+P3   MATERIAL_DIVERGENCE   False     S0       S1
+사건 판정  SHORT_WINDOW_PAIRED_STABILITY_HOLD
+           (사전등록 §5-3 ②: MATERIAL_DIVERGENCE 하나라도 있으면 HOLD ·
+            기술 무효 0건이므로 ①은 발동하지 않았다)
+근거 파일  runs/wvr_light_v1/short_window_verdicts.json
+```
+
+리뷰어 판정 요지(원문 기준):
+
+```
+P1  두 arm 모두 sushi/food handling → chicken 관련 → cloth/garment holding으로
+    이어지고, 한쪽이 soup·noodles·chicken placement를 더 세분했다.
+    underwear ↔ orange/pink cloth도 모순으로 단정할 정도는 아니다 → granularity
+P2  416–453초는 사실상 같은 chain인데 마지막 구간에서 한쪽은 pajama pants holding,
+    다른 쪽은 food를 plate에 placing으로 바뀐다 → 흡수 불가
+P3  104–128초가 potato peeling ↔ potato ricer 사용·pressing·mixing으로 갈리고,
+    이후 forming potato balls ↔ wearing gloves·mixing이 같은 시간대에 대응한다
+    → 관찰된 action sequence 자체가 다르다
+```
+
+## 9. arm별 수치 (판정 후 공개)
+
+```
+창 arm  프레임  input tok  gen tok  raw  collapsed  unique sig  peak VRAM   wall
+P1 S0     24      2,153      462     10      9          9      17,390.7   26.0초
+P1 S1     12      1,229      278      6      5          5      17,105.4   18.3초
+P2 S0     24      2,153      592     12      7          6      17,390.7   31.1초
+P2 S1     12      1,229      297      6      6          4      17,105.4   19.1초
+P3 S0     24      2,153      273      6      4          4      17,390.7   20.1초
+P3 S1     12      1,229      276      6      6          5      17,105.4   18.3초
+```
+
+생성 토큰 상한 4,096에 도달한 arm은 없다(최대 592).
+
+**divergence의 방향은 대칭이 아니다.** P2에서 마지막 구간을 `food on a plate`로
+바꾼 쪽은 프레임이 더 많은 S0이고, P3에서 104–128초를 `peeling potato` 한 구간으로
+묶은 쪽도 S0다. 즉 이번 두 창에서 **고밀도 arm의 출력이 저밀도 arm의 상위집합이
+아니었다.** 어느 쪽이 프레임 실물과 맞는지는 이 사건이 답하지 않는다.
+
+## 10. 자동 matcher (AUDIT_DIAGNOSTIC_ONLY · 판정에 쓰지 않았다)
+
+허용오차 4.0초 기준.
+
+```
+창   시간정렬 후보  EQUIVALENT  ADJUDICATION  DIFFERENT  merge  split  순서뒤집힘
+P1        19            0            19          0        0      0        0
+P2        18            0            18          0        0      0        0
+P3        12            2            10          0        0      1        0
+```
+
+허용오차 8.0초에서도 EQUIVALENT는 0·0·2로 같았다(후보만 24·23·17로 늘었다).
+**V2에서 관측된 한계가 그대로 재현됐다** — exact-string matcher는 48초 창에서도
+표현 차이를 흡수하지 못한다. 사람 판정을 primary로 둔 사전등록 결정이 이 수치로
+정당화된다(자동 판정이었다면 P2·P3의 material divergence를 잡지 못했다).
+
+## 11. 다음 사건 (리뷰어 승인)
+
+```
+WVR_SAMPLING_SEMANTIC_DENSITY_FRAME_ADJUDICATION_V1   NEXT / APPROVED FOR PREREG
+대상   P2 448–464 · P3 104–128 · P3 128–144  (material divergence 구간만)
+방법   S0·S1 공통 KEEP 프레임 + S0에만 있는 DROP 프레임을 직접 본다
+금지   prompt · matcher · repetition penalty · context length 재조정
 ```

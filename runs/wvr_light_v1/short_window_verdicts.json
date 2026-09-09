@@ -1,0 +1,34 @@
+{
+ "event": "WVR_SAMPLING_SEMANTIC_DENSITY_SHORT_WINDOW_V1",
+ "probe_verdict": "SHORT_WINDOW_PAIRED_STABILITY_HOLD",
+ "window_verdicts": {
+  "P1": "GRANULARITY_SHIFT",
+  "P2": "MATERIAL_DIVERGENCE",
+  "P3": "MATERIAL_DIVERGENCE"
+ },
+ "window_pass": {
+  "P1": true,
+  "P2": false,
+  "P3": false
+ },
+ "blind_mapping": {
+  "P1": {
+   "B": "S0",
+   "A": "S1"
+  },
+  "P2": {
+   "B": "S0",
+   "A": "S1"
+  },
+  "P3": {
+   "A": "S0",
+   "B": "S1"
+  }
+ },
+ "salt_sha256": "4a9d791e239519655aacc268d8b01b92794b0621e7a07c6f1c8e6bc87493a5d8",
+ "technical_failures": [],
+ "automatic_matcher_role": "AUDIT_DIAGNOSTIC_ONLY",
+ "semantic_sufficiency_claim_allowed": false,
+ "allowed_pass_conclusion": "C01에서 180초 probe가 보여준 report-material divergence는 48초 conflict-focused window에서는 재현되지 않았고, 0.25fps 출력은 0.5fps higher-density reference에 대해 report-materially stable했다.",
+ "event_extraction_approved": false
+}
