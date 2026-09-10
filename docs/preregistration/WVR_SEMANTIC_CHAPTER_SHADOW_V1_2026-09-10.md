@@ -51,10 +51,17 @@ raw 보존          파싱 **전에** raw 문자열을 파일로 남긴다 (raw-
 ## 4. 동결 프롬프트 (`CHAPTER_PROMPT_V1`)
 
 ```
-템플릿 sha256        b1448e5f16781acf2e6ab6450de5cb8a7f4d2960b72aad9a46d8743966a3b9b6
-렌더된 프롬프트 sha256  ca7ec608894a7daee8ba9049f95fbdd6fe768edd04b07e9769055fa9ec882962
+템플릿 sha256        032fa497974b182a5a66afda5bc4b7a31251a9b8cd55c990bc26005756a1f39f
+렌더된 프롬프트 sha256  481a5f60630231ecee6935204326b1375b38eab5005d4fbde76a4a44601c7d9e
 렌더 입력            위 §2 map만 (digest는 map을 그대로 펼친 것 · 요약·추가 없음)
 ```
+
+**결과 산출 전 정정(errata · 생성 0회 시점):** 최초 동결본의 title 예시가
+`"Food preparation"`·`"Garment handling"`이었는데, 이는 §12가 프롬프트에 넣지 말라고
+한 expected macro-flow 항목과 겹친다. 생성 **전에** 예시를 이 영상과 무관한
+`"Vehicle maintenance"`·`"Whiteboard writing"`으로 교체하고 위 두 해시를 갱신했다.
+교체 전 해시는 템플릿 `b1448e5f…` · 렌더 `ca7ec608…`이었다. 결과를 본 뒤의 변경이
+아니다(정정 commit 시점에 raw·chapters 산출물 0건).
 
 전문(`src/wvr_chapter_v1.py`의 `CHAPTER_PROMPT_V1`과 바이트 동일):
 
@@ -90,9 +97,11 @@ Rules you must follow:
    disagree.
 3. For UNRESOLVED spans, do not invent content. A chapter may cover such a span,
    but its title and summary must not describe what happens there.
-4. Titles: short, broad, observable activity phrases, for example
-   "Food preparation" or "Garment handling". No emotion, no intent, no
-   speculation about who the person is or why they act.
+4. Titles: short, broad, observable activity phrases in the style of
+   "Vehicle maintenance" or "Whiteboard writing" — those two are style
+   examples only and are unrelated to this video. Name what the map shows.
+   No emotion, no intent, no speculation about who the person is or why
+   they act.
 5. Summaries: one to three sentences about the recurring activity of the
    chapter. State disagreement where the map shows conflict.
 6. confidence_class must be exactly one of: %(confidence)s.
