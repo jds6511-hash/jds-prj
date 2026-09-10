@@ -1,0 +1,856 @@
+{
+ "schema": "wvr_stitch_v1_blind_map",
+ "event": "WVR_OVERLAP_EVENT_STITCHING_SHADOW_V1",
+ "prereg": "docs/preregistration/WVR_OVERLAP_EVENT_STITCHING_SHADOW_V1_2026-09-10.md",
+ "prereg_sha_used_for_blinding": "41081254f9004d8bb4d9cfdd5b3bfaf5ee820165",
+ "derivation_script_commit": "41081254f9004d8bb4d9cfdd5b3bfaf5ee820165",
+ "registry_source": "event_map_v1_registry.json",
+ "registry_sha256": "1885cda9fd567ccfb9bea79383bcb89260225cafb228253e8efca2cf3cdc4073",
+ "registry_event_count": 160,
+ "source_manifest_sha256": "a0726a4b13b4bd0f6e1ea692eec55e8cd0343132e32b532283e6e68511680631",
+ "video_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+ "source_shadow_event": "WVR_EVENT_EXTRACTION_SHADOW_V1",
+ "new_inference_count": 0,
+ "new_llm_call_count": 0,
+ "prereg_sha_sha256": "57cd34ccb208a36f632967a540a337df7b4584340e5740d885c702351b667da4",
+ "mapping": {
+  "O02": {
+   "B": "W01",
+   "A": "W02",
+   "start_sec": 48.0,
+   "end_sec": 72.0,
+   "local_id_map": {
+    "O02_A01": {
+     "event_id": "W02_E001",
+     "source_window": "W02"
+    },
+    "O02_A02": {
+     "event_id": "W02_E002",
+     "source_window": "W02"
+    },
+    "O02_A03": {
+     "event_id": "W02_E003",
+     "source_window": "W02"
+    },
+    "O02_A04": {
+     "event_id": "W02_E004",
+     "source_window": "W02"
+    },
+    "O02_A05": {
+     "event_id": "W02_E005",
+     "source_window": "W02"
+    },
+    "O02_A06": {
+     "event_id": "W02_E006",
+     "source_window": "W02"
+    },
+    "O02_A07": {
+     "event_id": "W02_E007",
+     "source_window": "W02"
+    },
+    "O02_B01": {
+     "event_id": "W01_E008",
+     "source_window": "W01"
+    },
+    "O02_B02": {
+     "event_id": "W01_E009",
+     "source_window": "W01"
+    },
+    "O02_B03": {
+     "event_id": "W01_E010",
+     "source_window": "W01"
+    },
+    "O02_B04": {
+     "event_id": "W01_E011",
+     "source_window": "W01"
+    }
+   }
+  },
+  "O03": {
+   "A": "W02",
+   "B": "W03",
+   "start_sec": 72.0,
+   "end_sec": 96.0,
+   "local_id_map": {
+    "O03_A01": {
+     "event_id": "W02_E007",
+     "source_window": "W02"
+    },
+    "O03_A02": {
+     "event_id": "W02_E008",
+     "source_window": "W02"
+    },
+    "O03_A03": {
+     "event_id": "W02_E009",
+     "source_window": "W02"
+    },
+    "O03_A04": {
+     "event_id": "W02_E010",
+     "source_window": "W02"
+    },
+    "O03_B01": {
+     "event_id": "W03_E001",
+     "source_window": "W03"
+    },
+    "O03_B02": {
+     "event_id": "W03_E002",
+     "source_window": "W03"
+    },
+    "O03_B03": {
+     "event_id": "W03_E003",
+     "source_window": "W03"
+    },
+    "O03_B04": {
+     "event_id": "W03_E004",
+     "source_window": "W03"
+    },
+    "O03_B05": {
+     "event_id": "W03_E005",
+     "source_window": "W03"
+    },
+    "O03_B06": {
+     "event_id": "W03_E006",
+     "source_window": "W03"
+    }
+   }
+  },
+  "O04": {
+   "B": "W03",
+   "A": "W04",
+   "start_sec": 96.0,
+   "end_sec": 120.0,
+   "local_id_map": {
+    "O04_A01": {
+     "event_id": "W04_E001",
+     "source_window": "W04"
+    },
+    "O04_A02": {
+     "event_id": "W04_E002",
+     "source_window": "W04"
+    },
+    "O04_A03": {
+     "event_id": "W04_E003",
+     "source_window": "W04"
+    },
+    "O04_B01": {
+     "event_id": "W03_E007",
+     "source_window": "W03"
+    },
+    "O04_B02": {
+     "event_id": "W03_E008",
+     "source_window": "W03"
+    },
+    "O04_B03": {
+     "event_id": "W03_E009",
+     "source_window": "W03"
+    }
+   }
+  },
+  "O05": {
+   "A": "W04",
+   "B": "W05",
+   "start_sec": 120.0,
+   "end_sec": 144.0,
+   "local_id_map": {
+    "O05_A01": {
+     "event_id": "W04_E003",
+     "source_window": "W04"
+    },
+    "O05_A02": {
+     "event_id": "W04_E004",
+     "source_window": "W04"
+    },
+    "O05_A03": {
+     "event_id": "W04_E005",
+     "source_window": "W04"
+    },
+    "O05_A04": {
+     "event_id": "W04_E006",
+     "source_window": "W04"
+    },
+    "O05_B01": {
+     "event_id": "W05_E001",
+     "source_window": "W05"
+    },
+    "O05_B02": {
+     "event_id": "W05_E002",
+     "source_window": "W05"
+    },
+    "O05_B03": {
+     "event_id": "W05_E003",
+     "source_window": "W05"
+    },
+    "O05_B04": {
+     "event_id": "W05_E004",
+     "source_window": "W05"
+    },
+    "O05_B05": {
+     "event_id": "W05_E005",
+     "source_window": "W05"
+    }
+   }
+  },
+  "O06": {
+   "A": "W05",
+   "B": "W06",
+   "start_sec": 144.0,
+   "end_sec": 168.0,
+   "local_id_map": {
+    "O06_A01": {
+     "event_id": "W05_E005",
+     "source_window": "W05"
+    },
+    "O06_A02": {
+     "event_id": "W05_E006",
+     "source_window": "W05"
+    },
+    "O06_B01": {
+     "event_id": "W06_E001",
+     "source_window": "W06"
+    },
+    "O06_B02": {
+     "event_id": "W06_E002",
+     "source_window": "W06"
+    },
+    "O06_B03": {
+     "event_id": "W06_E003",
+     "source_window": "W06"
+    },
+    "O06_B04": {
+     "event_id": "W06_E004",
+     "source_window": "W06"
+    },
+    "O06_B05": {
+     "event_id": "W06_E005",
+     "source_window": "W06"
+    },
+    "O06_B06": {
+     "event_id": "W06_E006",
+     "source_window": "W06"
+    }
+   }
+  },
+  "O07": {
+   "B": "W06",
+   "A": "W07",
+   "start_sec": 168.0,
+   "end_sec": 192.0,
+   "local_id_map": {
+    "O07_A01": {
+     "event_id": "W07_E001",
+     "source_window": "W07"
+    },
+    "O07_A02": {
+     "event_id": "W07_E002",
+     "source_window": "W07"
+    },
+    "O07_A03": {
+     "event_id": "W07_E003",
+     "source_window": "W07"
+    },
+    "O07_A04": {
+     "event_id": "W07_E004",
+     "source_window": "W07"
+    },
+    "O07_A05": {
+     "event_id": "W07_E005",
+     "source_window": "W07"
+    },
+    "O07_B01": {
+     "event_id": "W06_E006",
+     "source_window": "W06"
+    },
+    "O07_B02": {
+     "event_id": "W06_E007",
+     "source_window": "W06"
+    },
+    "O07_B03": {
+     "event_id": "W06_E008",
+     "source_window": "W06"
+    },
+    "O07_B04": {
+     "event_id": "W06_E009",
+     "source_window": "W06"
+    },
+    "O07_B05": {
+     "event_id": "W06_E010",
+     "source_window": "W06"
+    }
+   }
+  },
+  "O08": {
+   "A": "W07",
+   "B": "W08",
+   "start_sec": 192.0,
+   "end_sec": 216.0,
+   "local_id_map": {
+    "O08_A01": {
+     "event_id": "W07_E005",
+     "source_window": "W07"
+    },
+    "O08_A02": {
+     "event_id": "W07_E006",
+     "source_window": "W07"
+    },
+    "O08_A03": {
+     "event_id": "W07_E007",
+     "source_window": "W07"
+    },
+    "O08_A04": {
+     "event_id": "W07_E008",
+     "source_window": "W07"
+    },
+    "O08_B01": {
+     "event_id": "W08_E001",
+     "source_window": "W08"
+    },
+    "O08_B02": {
+     "event_id": "W08_E002",
+     "source_window": "W08"
+    }
+   }
+  },
+  "O09": {
+   "A": "W08",
+   "B": "W09",
+   "start_sec": 216.0,
+   "end_sec": 240.0,
+   "local_id_map": {
+    "O09_A01": {
+     "event_id": "W08_E002",
+     "source_window": "W08"
+    },
+    "O09_B01": {
+     "event_id": "W09_E001",
+     "source_window": "W09"
+    },
+    "O09_B02": {
+     "event_id": "W09_E002",
+     "source_window": "W09"
+    },
+    "O09_B03": {
+     "event_id": "W09_E003",
+     "source_window": "W09"
+    },
+    "O09_B04": {
+     "event_id": "W09_E004",
+     "source_window": "W09"
+    },
+    "O09_B05": {
+     "event_id": "W09_E005",
+     "source_window": "W09"
+    },
+    "O09_B06": {
+     "event_id": "W09_E006",
+     "source_window": "W09"
+    }
+   }
+  },
+  "O10": {
+   "B": "W09",
+   "A": "W10",
+   "start_sec": 240.0,
+   "end_sec": 264.0,
+   "local_id_map": {
+    "O10_A01": {
+     "event_id": "W10_E001",
+     "source_window": "W10"
+    },
+    "O10_A02": {
+     "event_id": "W10_E002",
+     "source_window": "W10"
+    },
+    "O10_A03": {
+     "event_id": "W10_E003",
+     "source_window": "W10"
+    },
+    "O10_A04": {
+     "event_id": "W10_E004",
+     "source_window": "W10"
+    },
+    "O10_B01": {
+     "event_id": "W09_E006",
+     "source_window": "W09"
+    }
+   }
+  },
+  "O11": {
+   "B": "W10",
+   "A": "W11",
+   "start_sec": 264.0,
+   "end_sec": 288.0,
+   "local_id_map": {
+    "O11_A01": {
+     "event_id": "W11_E001",
+     "source_window": "W11"
+    },
+    "O11_A02": {
+     "event_id": "W11_E002",
+     "source_window": "W11"
+    },
+    "O11_A03": {
+     "event_id": "W11_E003",
+     "source_window": "W11"
+    },
+    "O11_B01": {
+     "event_id": "W10_E004",
+     "source_window": "W10"
+    }
+   }
+  },
+  "O12": {
+   "B": "W11",
+   "A": "W12",
+   "start_sec": 288.0,
+   "end_sec": 312.0,
+   "local_id_map": {
+    "O12_A01": {
+     "event_id": "W12_E001",
+     "source_window": "W12"
+    },
+    "O12_A02": {
+     "event_id": "W12_E002",
+     "source_window": "W12"
+    },
+    "O12_A03": {
+     "event_id": "W12_E003",
+     "source_window": "W12"
+    },
+    "O12_A04": {
+     "event_id": "W12_E004",
+     "source_window": "W12"
+    },
+    "O12_A05": {
+     "event_id": "W12_E005",
+     "source_window": "W12"
+    },
+    "O12_A06": {
+     "event_id": "W12_E006",
+     "source_window": "W12"
+    },
+    "O12_B01": {
+     "event_id": "W11_E004",
+     "source_window": "W11"
+    },
+    "O12_B02": {
+     "event_id": "W11_E005",
+     "source_window": "W11"
+    },
+    "O12_B03": {
+     "event_id": "W11_E006",
+     "source_window": "W11"
+    }
+   }
+  },
+  "O13": {
+   "B": "W12",
+   "A": "W13",
+   "start_sec": 312.0,
+   "end_sec": 336.0,
+   "local_id_map": {
+    "O13_A01": {
+     "event_id": "W13_E001",
+     "source_window": "W13"
+    },
+    "O13_A02": {
+     "event_id": "W13_E002",
+     "source_window": "W13"
+    },
+    "O13_B01": {
+     "event_id": "W12_E006",
+     "source_window": "W12"
+    }
+   }
+  },
+  "O14": {
+   "A": "W13",
+   "B": "W14",
+   "start_sec": 336.0,
+   "end_sec": 360.0,
+   "local_id_map": {
+    "O14_A01": {
+     "event_id": "W13_E002",
+     "source_window": "W13"
+    },
+    "O14_B01": {
+     "event_id": "W14_E001",
+     "source_window": "W14"
+    },
+    "O14_B02": {
+     "event_id": "W14_E002",
+     "source_window": "W14"
+    }
+   }
+  },
+  "O15": {
+   "B": "W14",
+   "A": "W15",
+   "start_sec": 360.0,
+   "end_sec": 384.0,
+   "local_id_map": {
+    "O15_A01": {
+     "event_id": "W15_E001",
+     "source_window": "W15"
+    },
+    "O15_A02": {
+     "event_id": "W15_E002",
+     "source_window": "W15"
+    },
+    "O15_A03": {
+     "event_id": "W15_E003",
+     "source_window": "W15"
+    },
+    "O15_A04": {
+     "event_id": "W15_E004",
+     "source_window": "W15"
+    },
+    "O15_A05": {
+     "event_id": "W15_E005",
+     "source_window": "W15"
+    },
+    "O15_B01": {
+     "event_id": "W14_E002",
+     "source_window": "W14"
+    },
+    "O15_B02": {
+     "event_id": "W14_E003",
+     "source_window": "W14"
+    },
+    "O15_B03": {
+     "event_id": "W14_E004",
+     "source_window": "W14"
+    }
+   }
+  },
+  "O16": {
+   "A": "W15",
+   "B": "W16",
+   "start_sec": 384.0,
+   "end_sec": 408.0,
+   "local_id_map": {
+    "O16_A01": {
+     "event_id": "W15_E005",
+     "source_window": "W15"
+    },
+    "O16_A02": {
+     "event_id": "W15_E006",
+     "source_window": "W15"
+    },
+    "O16_A03": {
+     "event_id": "W15_E007",
+     "source_window": "W15"
+    },
+    "O16_A04": {
+     "event_id": "W15_E008",
+     "source_window": "W15"
+    },
+    "O16_A05": {
+     "event_id": "W15_E009",
+     "source_window": "W15"
+    },
+    "O16_B01": {
+     "event_id": "W16_E001",
+     "source_window": "W16"
+    },
+    "O16_B02": {
+     "event_id": "W16_E002",
+     "source_window": "W16"
+    },
+    "O16_B03": {
+     "event_id": "W16_E003",
+     "source_window": "W16"
+    }
+   }
+  },
+  "O17": {
+   "B": "W16",
+   "A": "W17",
+   "start_sec": 408.0,
+   "end_sec": 432.0,
+   "local_id_map": {
+    "O17_A01": {
+     "event_id": "W17_E001",
+     "source_window": "W17"
+    },
+    "O17_A02": {
+     "event_id": "W17_E002",
+     "source_window": "W17"
+    },
+    "O17_A03": {
+     "event_id": "W17_E003",
+     "source_window": "W17"
+    },
+    "O17_A04": {
+     "event_id": "W17_E004",
+     "source_window": "W17"
+    },
+    "O17_B01": {
+     "event_id": "W16_E004",
+     "source_window": "W16"
+    },
+    "O17_B02": {
+     "event_id": "W16_E005",
+     "source_window": "W16"
+    },
+    "O17_B03": {
+     "event_id": "W16_E006",
+     "source_window": "W16"
+    },
+    "O17_B04": {
+     "event_id": "W16_E007",
+     "source_window": "W16"
+    }
+   }
+  },
+  "O18": {
+   "B": "W17",
+   "A": "W18",
+   "start_sec": 432.0,
+   "end_sec": 456.0,
+   "local_id_map": {
+    "O18_A01": {
+     "event_id": "W18_E001",
+     "source_window": "W18"
+    },
+    "O18_A02": {
+     "event_id": "W18_E002",
+     "source_window": "W18"
+    },
+    "O18_B01": {
+     "event_id": "W17_E004",
+     "source_window": "W17"
+    },
+    "O18_B02": {
+     "event_id": "W17_E005",
+     "source_window": "W17"
+    },
+    "O18_B03": {
+     "event_id": "W17_E006",
+     "source_window": "W17"
+    }
+   }
+  },
+  "O19": {
+   "B": "W18",
+   "A": "W19",
+   "start_sec": 456.0,
+   "end_sec": 480.0,
+   "local_id_map": {
+    "O19_A01": {
+     "event_id": "W19_E001",
+     "source_window": "W19"
+    },
+    "O19_A02": {
+     "event_id": "W19_E002",
+     "source_window": "W19"
+    },
+    "O19_A03": {
+     "event_id": "W19_E003",
+     "source_window": "W19"
+    },
+    "O19_A04": {
+     "event_id": "W19_E004",
+     "source_window": "W19"
+    },
+    "O19_A05": {
+     "event_id": "W19_E005",
+     "source_window": "W19"
+    },
+    "O19_A06": {
+     "event_id": "W19_E006",
+     "source_window": "W19"
+    },
+    "O19_B01": {
+     "event_id": "W18_E002",
+     "source_window": "W18"
+    },
+    "O19_B02": {
+     "event_id": "W18_E003",
+     "source_window": "W18"
+    },
+    "O19_B03": {
+     "event_id": "W18_E004",
+     "source_window": "W18"
+    },
+    "O19_B04": {
+     "event_id": "W18_E005",
+     "source_window": "W18"
+    }
+   }
+  },
+  "O20": {
+   "A": "W19",
+   "B": "W20",
+   "start_sec": 480.0,
+   "end_sec": 504.0,
+   "local_id_map": {
+    "O20_A01": {
+     "event_id": "W19_E007",
+     "source_window": "W19"
+    },
+    "O20_A02": {
+     "event_id": "W19_E008",
+     "source_window": "W19"
+    },
+    "O20_A03": {
+     "event_id": "W19_E009",
+     "source_window": "W19"
+    },
+    "O20_A04": {
+     "event_id": "W19_E010",
+     "source_window": "W19"
+    },
+    "O20_A05": {
+     "event_id": "W19_E011",
+     "source_window": "W19"
+    },
+    "O20_A06": {
+     "event_id": "W19_E012",
+     "source_window": "W19"
+    },
+    "O20_B01": {
+     "event_id": "W20_E001",
+     "source_window": "W20"
+    },
+    "O20_B02": {
+     "event_id": "W20_E002",
+     "source_window": "W20"
+    },
+    "O20_B03": {
+     "event_id": "W20_E003",
+     "source_window": "W20"
+    }
+   }
+  },
+  "O21": {
+   "A": "W20",
+   "B": "W21",
+   "start_sec": 504.0,
+   "end_sec": 528.0,
+   "local_id_map": {
+    "O21_A01": {
+     "event_id": "W20_E003",
+     "source_window": "W20"
+    },
+    "O21_B01": {
+     "event_id": "W21_E001",
+     "source_window": "W21"
+    },
+    "O21_B02": {
+     "event_id": "W21_E002",
+     "source_window": "W21"
+    },
+    "O21_B03": {
+     "event_id": "W21_E003",
+     "source_window": "W21"
+    },
+    "O21_B04": {
+     "event_id": "W21_E004",
+     "source_window": "W21"
+    },
+    "O21_B05": {
+     "event_id": "W21_E005",
+     "source_window": "W21"
+    }
+   }
+  },
+  "O22": {
+   "B": "W21",
+   "A": "W22",
+   "start_sec": 528.0,
+   "end_sec": 552.0,
+   "local_id_map": {
+    "O22_A01": {
+     "event_id": "W22_E001",
+     "source_window": "W22"
+    },
+    "O22_A02": {
+     "event_id": "W22_E002",
+     "source_window": "W22"
+    },
+    "O22_A03": {
+     "event_id": "W22_E003",
+     "source_window": "W22"
+    },
+    "O22_A04": {
+     "event_id": "W22_E004",
+     "source_window": "W22"
+    },
+    "O22_A05": {
+     "event_id": "W22_E005",
+     "source_window": "W22"
+    },
+    "O22_A06": {
+     "event_id": "W22_E006",
+     "source_window": "W22"
+    },
+    "O22_B01": {
+     "event_id": "W21_E005",
+     "source_window": "W21"
+    },
+    "O22_B02": {
+     "event_id": "W21_E006",
+     "source_window": "W21"
+    },
+    "O22_B03": {
+     "event_id": "W21_E007",
+     "source_window": "W21"
+    },
+    "O22_B04": {
+     "event_id": "W21_E008",
+     "source_window": "W21"
+    }
+   }
+  },
+  "O23": {
+   "B": "W22",
+   "A": "W23",
+   "start_sec": 552.0,
+   "end_sec": 576.0,
+   "local_id_map": {
+    "O23_A01": {
+     "event_id": "W23_E001",
+     "source_window": "W23"
+    },
+    "O23_A02": {
+     "event_id": "W23_E002",
+     "source_window": "W23"
+    },
+    "O23_A03": {
+     "event_id": "W23_E003",
+     "source_window": "W23"
+    },
+    "O23_A04": {
+     "event_id": "W23_E004",
+     "source_window": "W23"
+    },
+    "O23_A05": {
+     "event_id": "W23_E005",
+     "source_window": "W23"
+    },
+    "O23_B01": {
+     "event_id": "W22_E006",
+     "source_window": "W22"
+    },
+    "O23_B02": {
+     "event_id": "W22_E007",
+     "source_window": "W22"
+    },
+    "O23_B03": {
+     "event_id": "W22_E008",
+     "source_window": "W22"
+    },
+    "O23_B04": {
+     "event_id": "W22_E009",
+     "source_window": "W22"
+    },
+    "O23_B05": {
+     "event_id": "W22_E010",
+     "source_window": "W22"
+    }
+   }
+  }
+ },
+ "reveal_allowed_before_verdicts": false,
+ "note": "local_id → 실제 event id·창 id 대응은 이 파일에만 있다. 절차적 blinding이다 — 저장소에서 복원 가능하므로 packet만 읽는다는 규율에 의존한다. 모든 22 overlap 판정 기록 전에는 reveal하지 않는다."
+}

@@ -1,0 +1,93 @@
+{
+ "schema": "wvr_stitch_v1_summary",
+ "event": "WVR_OVERLAP_EVENT_STITCHING_SHADOW_V1",
+ "prereg": "docs/preregistration/WVR_OVERLAP_EVENT_STITCHING_SHADOW_V1_2026-09-10.md",
+ "prereg_sha_used_for_blinding": "41081254f9004d8bb4d9cfdd5b3bfaf5ee820165",
+ "derivation_script_commit": "41081254f9004d8bb4d9cfdd5b3bfaf5ee820165",
+ "registry_source": "event_map_v1_registry.json",
+ "registry_sha256": "1885cda9fd567ccfb9bea79383bcb89260225cafb228253e8efca2cf3cdc4073",
+ "registry_event_count": 160,
+ "source_manifest_sha256": "a0726a4b13b4bd0f6e1ea692eec55e8cd0343132e32b532283e6e68511680631",
+ "video_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+ "source_shadow_event": "WVR_EVENT_EXTRACTION_SHADOW_V1",
+ "new_inference_count": 0,
+ "new_llm_call_count": 0,
+ "executor_state": {
+  "state": "EXECUTED / REVIEW_PENDING",
+  "overlap_count": 22,
+  "expected_overlap_count": 22,
+  "comparison_unit": "overlap_local_event_sequence",
+  "new_inference_count": 0,
+  "new_llm_call_count": 0,
+  "relation_vocabulary": [
+   "SAME_EVENT",
+   "CONTINUATION",
+   "TRANSITION",
+   "CONFLICT",
+   "UNRESOLVED"
+  ],
+  "top_verdict_vocabulary": [
+   "STITCHABLE",
+   "MATERIAL_CONFLICT",
+   "UNRESOLVED"
+  ],
+  "final_verdict_vocabulary": [
+   "STITCHING_SHADOW_PASS",
+   "STITCHING_SHADOW_HOLD",
+   "STITCHING_SHADOW_INCONCLUSIVE"
+  ],
+  "verdict": null,
+  "verdict_by_executor": false,
+  "judgment_basis": "문자열 일치가 아니라 report-material contradiction으로 본다",
+  "allowed_max_conclusion": "사람이 22개 overlap 대부분을 stitchable로 판정했다면, Local Event 표현은 Adjudicated Event Map 구축을 시도할 최소 조건을 만족한다.",
+  "forbidden_conclusions": [
+   "Event Map이 검증됐다",
+   "stitching이 해결됐다",
+   "0.5fps sufficient",
+   "Semantic Chapter로 바로 간다",
+   "production ready",
+   "Local Event representation이 근본적으로 실패다",
+   "문자열 일치율이 곧 품질이다"
+  ],
+  "audit_role": "AUDIT_DIAGNOSTIC_ONLY",
+  "threshold_used": false,
+  "event_map_rebuild_allowed": false,
+  "adjudicated_map_build_allowed": false,
+  "semantic_chapter_allowed": false
+ },
+ "overlap_count": 22,
+ "arm_event_total": 165,
+ "audit_totals": {
+  "exact_signature_pairs": 1,
+  "pairwise_relations": {
+   "SEMANTICALLY_EQUIVALENT": 1,
+   "SEMANTICALLY_DIFFERENT": 44,
+   "ADJUDICATION_REQUIRED": 264
+  },
+  "overlaps_with_zero_shared_tokens": [],
+  "overlaps_with_empty_arm": [],
+  "max_event_count_difference": 5
+ },
+ "prior_state": {
+  "WVR_EVENT_MAP_COVERAGE_SHADOW_V1": "CLOSED / EVENT_MAP_SHADOW_HOLD",
+  "WVR_EVENT_EXTRACTION_SHADOW_V1": "CLOSED / INCONCLUSIVE",
+  "SUBDIVISION_family": "STOPPED / NOT SUFFICIENT",
+  "reviewer_answers": {
+   "Q1_FLOW_RECOVERABLE": "COARSELY YES",
+   "Q2_GAP_MATERIALITY": "NOT PRIMARY BLOCKER",
+   "Q3_EVENT_MAP_USABLE": "NO"
+  },
+  "bottleneck": "Local Events → ★ Event stitching → Event Map",
+  "W00": "WINDOW_INVALID (invalid source · 재실행 금지)"
+ },
+ "normative_authority": [
+  "WVR_OVERLAP_EVENT_STITCHING_SHADOW_V1 preregistration",
+  "frozen SHADOW_V1 execution artifacts",
+  "frozen parser/collapse rules (wvr_density_v2)",
+  "EVENT_MAP_COVERAGE_SHADOW_V1 registry lineage",
+  "PROJECT_OVERVIEW.md"
+ ],
+ "mapping_sealed": true,
+ "mapping_reveal_before_verdicts_allowed": false,
+ "note": "blinded packet과 audit 지표만 만들었다. relation·상위 판정·최종 verdict는 reviewer 전용이다."
+}

@@ -1,0 +1,1476 @@
+{
+ "schema": "wvr_stitch_v1_audit",
+ "event": "WVR_OVERLAP_EVENT_STITCHING_SHADOW_V1",
+ "prereg": "docs/preregistration/WVR_OVERLAP_EVENT_STITCHING_SHADOW_V1_2026-09-10.md",
+ "prereg_sha_used_for_blinding": "41081254f9004d8bb4d9cfdd5b3bfaf5ee820165",
+ "derivation_script_commit": "41081254f9004d8bb4d9cfdd5b3bfaf5ee820165",
+ "registry_source": "event_map_v1_registry.json",
+ "registry_sha256": "1885cda9fd567ccfb9bea79383bcb89260225cafb228253e8efca2cf3cdc4073",
+ "registry_event_count": 160,
+ "source_manifest_sha256": "a0726a4b13b4bd0f6e1ea692eec55e8cd0343132e32b532283e6e68511680631",
+ "video_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+ "source_shadow_event": "WVR_EVENT_EXTRACTION_SHADOW_V1",
+ "new_inference_count": 0,
+ "new_llm_call_count": 0,
+ "role": "AUDIT_DIAGNOSTIC_ONLY",
+ "threshold_used": false,
+ "overlaps": [
+  {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "arm_a_event_count": 7,
+   "arm_b_event_count": 4,
+   "event_count_difference": 3,
+   "arm_a_described_sec": 24.0,
+   "arm_b_described_sec": 24.0,
+   "pairwise_relation_counts": {
+    "SEMANTICALLY_EQUIVALENT": 0,
+    "SEMANTICALLY_DIFFERENT": 0,
+    "ADJUDICATION_REQUIRED": 28
+   },
+   "exact_signature_pairs": [],
+   "exact_signature_pair_count": 0,
+   "arm_a_actors": [
+    "person"
+   ],
+   "arm_b_actors": [
+    "person"
+   ],
+   "arm_a_actions": [
+    "chopping",
+    "placing",
+    "pouring",
+    "stirring"
+   ],
+   "arm_b_actions": [
+    "blending",
+    "chopping",
+    "mixing",
+    "pouring"
+   ],
+   "shared_token_count": 6,
+   "arm_a_only_token_count": 12,
+   "arm_b_only_token_count": 6,
+   "shared_tokens": [
+    "bowl",
+    "chopping",
+    "oil",
+    "onion",
+    "person",
+    "pouring"
+   ],
+   "arm_a_span": [
+    48.0,
+    72.0
+   ],
+   "arm_b_span": [
+    48.0,
+    72.0
+   ],
+   "threshold_used": false,
+   "note": "판정 authority가 아니다 — reviewer가 sequence 단위로 본다",
+   "overlap_id": "O02",
+   "shared_frame_times": [
+    48.0,
+    50.0,
+    52.0,
+    54.0,
+    56.0,
+    58.0,
+    60.0,
+    62.0,
+    64.0,
+    66.0,
+    68.0,
+    70.0
+   ]
+  },
+  {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "arm_a_event_count": 4,
+   "arm_b_event_count": 6,
+   "event_count_difference": 2,
+   "arm_a_described_sec": 14.0,
+   "arm_b_described_sec": 24.0,
+   "pairwise_relation_counts": {
+    "SEMANTICALLY_EQUIVALENT": 1,
+    "SEMANTICALLY_DIFFERENT": 0,
+    "ADJUDICATION_REQUIRED": 23
+   },
+   "exact_signature_pairs": [
+    [
+     "W02_E010",
+     "W03_E004"
+    ]
+   ],
+   "exact_signature_pair_count": 1,
+   "arm_a_actors": [
+    "person"
+   ],
+   "arm_b_actors": [
+    "person"
+   ],
+   "arm_a_actions": [
+    "placing",
+    "stirring",
+    "transferring"
+   ],
+   "arm_b_actions": [
+    "adding",
+    "peeling",
+    "placing",
+    "pouring",
+    "stirring",
+    "transferring"
+   ],
+   "shared_token_count": 10,
+   "arm_a_only_token_count": 1,
+   "arm_b_only_token_count": 7,
+   "shared_tokens": [
+    "beef",
+    "bowl",
+    "breadcrumbs",
+    "carrot",
+    "ground",
+    "onion",
+    "person",
+    "placing",
+    "stirring",
+    "transferring"
+   ],
+   "arm_a_span": [
+    72.0,
+    86.0
+   ],
+   "arm_b_span": [
+    72.0,
+    96.0
+   ],
+   "threshold_used": false,
+   "note": "판정 authority가 아니다 — reviewer가 sequence 단위로 본다",
+   "overlap_id": "O03",
+   "shared_frame_times": [
+    72.0,
+    74.0,
+    76.0,
+    78.0,
+    80.0,
+    82.0,
+    84.0,
+    86.0,
+    88.0,
+    90.0,
+    92.0,
+    94.0
+   ]
+  },
+  {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "arm_a_event_count": 3,
+   "arm_b_event_count": 3,
+   "event_count_difference": 0,
+   "arm_a_described_sec": 24.0,
+   "arm_b_described_sec": 24.0,
+   "pairwise_relation_counts": {
+    "SEMANTICALLY_EQUIVALENT": 0,
+    "SEMANTICALLY_DIFFERENT": 0,
+    "ADJUDICATION_REQUIRED": 9
+   },
+   "exact_signature_pairs": [],
+   "exact_signature_pair_count": 0,
+   "arm_a_actors": [
+    "person"
+   ],
+   "arm_b_actors": [
+    "person"
+   ],
+   "arm_a_actions": [
+    "cooking",
+    "peeling",
+    "stirring"
+   ],
+   "arm_b_actions": [
+    "cooking",
+    "mixing",
+    "peeling"
+   ],
+   "shared_token_count": 7,
+   "arm_a_only_token_count": 5,
+   "arm_b_only_token_count": 3,
+   "shared_tokens": [
+    "bowl",
+    "cooking",
+    "mixture",
+    "pan",
+    "peeler",
+    "peeling",
+    "person"
+   ],
+   "arm_a_span": [
+    96.0,
+    120.0
+   ],
+   "arm_b_span": [
+    96.0,
+    120.0
+   ],
+   "threshold_used": false,
+   "note": "판정 authority가 아니다 — reviewer가 sequence 단위로 본다",
+   "overlap_id": "O04",
+   "shared_frame_times": [
+    96.0,
+    98.0,
+    100.0,
+    102.0,
+    104.0,
+    106.0,
+    108.0,
+    110.0,
+    112.0,
+    114.0,
+    116.0,
+    118.0
+   ]
+  },
+  {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "arm_a_event_count": 4,
+   "arm_b_event_count": 5,
+   "event_count_difference": 1,
+   "arm_a_described_sec": 24.0,
+   "arm_b_described_sec": 24.0,
+   "pairwise_relation_counts": {
+    "SEMANTICALLY_EQUIVALENT": 0,
+    "SEMANTICALLY_DIFFERENT": 0,
+    "ADJUDICATION_REQUIRED": 20
+   },
+   "exact_signature_pairs": [],
+   "exact_signature_pair_count": 0,
+   "arm_a_actors": [
+    "person"
+   ],
+   "arm_b_actors": [
+    "person"
+   ],
+   "arm_a_actions": [
+    "forming",
+    "mixing",
+    "peeling",
+    "placing"
+   ],
+   "arm_b_actions": [
+    "coating",
+    "forming",
+    "grating",
+    "mixing",
+    "placing"
+   ],
+   "shared_token_count": 7,
+   "arm_a_only_token_count": 5,
+   "arm_b_only_token_count": 2,
+   "shared_tokens": [
+    "balls",
+    "forming",
+    "mixing",
+    "mixture",
+    "person",
+    "placing",
+    "potato"
+   ],
+   "arm_a_span": [
+    120.0,
+    144.0
+   ],
+   "arm_b_span": [
+    120.0,
+    144.0
+   ],
+   "threshold_used": false,
+   "note": "판정 authority가 아니다 — reviewer가 sequence 단위로 본다",
+   "overlap_id": "O05",
+   "shared_frame_times": [
+    120.0,
+    122.0,
+    124.0,
+    126.0,
+    128.0,
+    130.0,
+    132.0,
+    134.0,
+    136.0,
+    138.0,
+    140.0,
+    142.0
+   ]
+  },
+  {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "arm_a_event_count": 2,
+   "arm_b_event_count": 6,
+   "event_count_difference": 4,
+   "arm_a_described_sec": 24.0,
+   "arm_b_described_sec": 24.0,
+   "pairwise_relation_counts": {
+    "SEMANTICALLY_EQUIVALENT": 0,
+    "SEMANTICALLY_DIFFERENT": 0,
+    "ADJUDICATION_REQUIRED": 12
+   },
+   "exact_signature_pairs": [],
+   "exact_signature_pair_count": 0,
+   "arm_a_actors": [
+    "person"
+   ],
+   "arm_b_actors": [
+    "person"
+   ],
+   "arm_a_actions": [
+    "coating",
+    "placing"
+   ],
+   "arm_b_actions": [
+    "coating",
+    "dipping",
+    "mixing",
+    "placing",
+    "pouring"
+   ],
+   "shared_token_count": 4,
+   "arm_a_only_token_count": 1,
+   "arm_b_only_token_count": 12,
+   "shared_tokens": [
+    "coating",
+    "person",
+    "placing",
+    "potato"
+   ],
+   "arm_a_span": [
+    144.0,
+    168.0
+   ],
+   "arm_b_span": [
+    144.0,
+    168.0
+   ],
+   "threshold_used": false,
+   "note": "판정 authority가 아니다 — reviewer가 sequence 단위로 본다",
+   "overlap_id": "O06",
+   "shared_frame_times": [
+    144.0,
+    146.0,
+    148.0,
+    150.0,
+    152.0,
+    154.0,
+    156.0,
+    158.0,
+    160.0,
+    162.0,
+    164.0,
+    166.0
+   ]
+  },
+  {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "arm_a_event_count": 5,
+   "arm_b_event_count": 5,
+   "event_count_difference": 0,
+   "arm_a_described_sec": 24.0,
+   "arm_b_described_sec": 24.0,
+   "pairwise_relation_counts": {
+    "SEMANTICALLY_EQUIVALENT": 0,
+    "SEMANTICALLY_DIFFERENT": 0,
+    "ADJUDICATION_REQUIRED": 25
+   },
+   "exact_signature_pairs": [],
+   "exact_signature_pair_count": 0,
+   "arm_a_actors": [
+    "person"
+   ],
+   "arm_b_actors": [
+    "person"
+   ],
+   "arm_a_actions": [
+    "coating",
+    "placing",
+    "pouring",
+    "stirring"
+   ],
+   "arm_b_actions": [
+    "coating",
+    "placing",
+    "pouring"
+   ],
+   "shared_token_count": 8,
+   "arm_a_only_token_count": 6,
+   "arm_b_only_token_count": 3,
+   "shared_tokens": [
+    "breadcrumbs",
+    "coated",
+    "coating",
+    "pan",
+    "person",
+    "placing",
+    "plate",
+    "pouring"
+   ],
+   "arm_a_span": [
+    168.0,
+    192.0
+   ],
+   "arm_b_span": [
+    168.0,
+    192.0
+   ],
+   "threshold_used": false,
+   "note": "판정 authority가 아니다 — reviewer가 sequence 단위로 본다",
+   "overlap_id": "O07",
+   "shared_frame_times": [
+    168.0,
+    170.0,
+    172.0,
+    174.0,
+    176.0,
+    178.0,
+    180.0,
+    182.0,
+    184.0,
+    186.0,
+    188.0,
+    190.0
+   ]
+  },
+  {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "arm_a_event_count": 4,
+   "arm_b_event_count": 2,
+   "event_count_difference": 2,
+   "arm_a_described_sec": 24.0,
+   "arm_b_described_sec": 24.0,
+   "pairwise_relation_counts": {
+    "SEMANTICALLY_EQUIVALENT": 0,
+    "SEMANTICALLY_DIFFERENT": 0,
+    "ADJUDICATION_REQUIRED": 8
+   },
+   "exact_signature_pairs": [],
+   "exact_signature_pair_count": 0,
+   "arm_a_actors": [
+    "person"
+   ],
+   "arm_b_actors": [
+    "person"
+   ],
+   "arm_a_actions": [
+    "mixing",
+    "pouring"
+   ],
+   "arm_b_actions": [
+    "pouring"
+   ],
+   "shared_token_count": 4,
+   "arm_a_only_token_count": 4,
+   "arm_b_only_token_count": 2,
+   "shared_tokens": [
+    "liquid",
+    "pan",
+    "person",
+    "pouring"
+   ],
+   "arm_a_span": [
+    192.0,
+    216.0
+   ],
+   "arm_b_span": [
+    192.0,
+    216.0
+   ],
+   "threshold_used": false,
+   "note": "판정 authority가 아니다 — reviewer가 sequence 단위로 본다",
+   "overlap_id": "O08",
+   "shared_frame_times": [
+    192.0,
+    194.0,
+    196.0,
+    198.0,
+    200.0,
+    202.0,
+    204.0,
+    206.0,
+    208.0,
+    210.0,
+    212.0,
+    214.0
+   ]
+  },
+  {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "arm_a_event_count": 1,
+   "arm_b_event_count": 6,
+   "event_count_difference": 5,
+   "arm_a_described_sec": 24.0,
+   "arm_b_described_sec": 24.0,
+   "pairwise_relation_counts": {
+    "SEMANTICALLY_EQUIVALENT": 0,
+    "SEMANTICALLY_DIFFERENT": 0,
+    "ADJUDICATION_REQUIRED": 6
+   },
+   "exact_signature_pairs": [],
+   "exact_signature_pair_count": 0,
+   "arm_a_actors": [
+    "person"
+   ],
+   "arm_b_actors": [
+    "person"
+   ],
+   "arm_a_actions": [
+    "pouring"
+   ],
+   "arm_b_actions": [
+    "mixing",
+    "placing",
+    "pouring",
+    "transferring"
+   ],
+   "shared_token_count": 2,
+   "arm_a_only_token_count": 3,
+   "arm_b_only_token_count": 18,
+   "shared_tokens": [
+    "person",
+    "pouring"
+   ],
+   "arm_a_span": [
+    216.0,
+    240.0
+   ],
+   "arm_b_span": [
+    216.0,
+    240.0
+   ],
+   "threshold_used": false,
+   "note": "판정 authority가 아니다 — reviewer가 sequence 단위로 본다",
+   "overlap_id": "O09",
+   "shared_frame_times": [
+    216.0,
+    218.0,
+    220.0,
+    222.0,
+    224.0,
+    226.0,
+    228.0,
+    230.0,
+    232.0,
+    234.0,
+    236.0,
+    238.0
+   ]
+  },
+  {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "arm_a_event_count": 4,
+   "arm_b_event_count": 1,
+   "event_count_difference": 3,
+   "arm_a_described_sec": 24.0,
+   "arm_b_described_sec": 24.0,
+   "pairwise_relation_counts": {
+    "SEMANTICALLY_EQUIVALENT": 0,
+    "SEMANTICALLY_DIFFERENT": 0,
+    "ADJUDICATION_REQUIRED": 4
+   },
+   "exact_signature_pairs": [],
+   "exact_signature_pair_count": 0,
+   "arm_a_actors": [
+    "person"
+   ],
+   "arm_b_actors": [
+    "person"
+   ],
+   "arm_a_actions": [
+    "eating",
+    "serving"
+   ],
+   "arm_b_actions": [
+    "pouring"
+   ],
+   "shared_token_count": 1,
+   "arm_a_only_token_count": 6,
+   "arm_b_only_token_count": 3,
+   "shared_tokens": [
+    "person"
+   ],
+   "arm_a_span": [
+    240.0,
+    264.0
+   ],
+   "arm_b_span": [
+    240.0,
+    264.0
+   ],
+   "threshold_used": false,
+   "note": "판정 authority가 아니다 — reviewer가 sequence 단위로 본다",
+   "overlap_id": "O10",
+   "shared_frame_times": [
+    240.0,
+    242.0,
+    244.0,
+    246.0,
+    248.0,
+    250.0,
+    252.0,
+    254.0,
+    256.0,
+    258.0,
+    260.0,
+    262.0
+   ]
+  },
+  {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "arm_a_event_count": 3,
+   "arm_b_event_count": 1,
+   "event_count_difference": 2,
+   "arm_a_described_sec": 24.0,
+   "arm_b_described_sec": 24.0,
+   "pairwise_relation_counts": {
+    "SEMANTICALLY_EQUIVALENT": 0,
+    "SEMANTICALLY_DIFFERENT": 0,
+    "ADJUDICATION_REQUIRED": 3
+   },
+   "exact_signature_pairs": [],
+   "exact_signature_pair_count": 0,
+   "arm_a_actors": [
+    "person"
+   ],
+   "arm_b_actors": [
+    "person"
+   ],
+   "arm_a_actions": [
+    "eating",
+    "using chopsticks"
+   ],
+   "arm_b_actions": [
+    "eating"
+   ],
+   "shared_token_count": 3,
+   "arm_a_only_token_count": 9,
+   "arm_b_only_token_count": 0,
+   "shared_tokens": [
+    "eating",
+    "noodles",
+    "person"
+   ],
+   "arm_a_span": [
+    264.0,
+    288.0
+   ],
+   "arm_b_span": [
+    264.0,
+    288.0
+   ],
+   "threshold_used": false,
+   "note": "판정 authority가 아니다 — reviewer가 sequence 단위로 본다",
+   "overlap_id": "O11",
+   "shared_frame_times": [
+    264.0,
+    266.0,
+    268.0,
+    270.0,
+    272.0,
+    274.0,
+    276.0,
+    278.0,
+    280.0,
+    282.0,
+    284.0,
+    286.0
+   ]
+  },
+  {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "arm_a_event_count": 6,
+   "arm_b_event_count": 3,
+   "event_count_difference": 3,
+   "arm_a_described_sec": 24.0,
+   "arm_b_described_sec": 24.0,
+   "pairwise_relation_counts": {
+    "SEMANTICALLY_EQUIVALENT": 0,
+    "SEMANTICALLY_DIFFERENT": 0,
+    "ADJUDICATION_REQUIRED": 18
+   },
+   "exact_signature_pairs": [],
+   "exact_signature_pair_count": 0,
+   "arm_a_actors": [
+    "person"
+   ],
+   "arm_b_actors": [
+    "person"
+   ],
+   "arm_a_actions": [
+    "breaking apart",
+    "drinking",
+    "eating"
+   ],
+   "arm_b_actions": [
+    "eating",
+    "using chopsticks"
+   ],
+   "shared_token_count": 3,
+   "arm_a_only_token_count": 8,
+   "arm_b_only_token_count": 5,
+   "shared_tokens": [
+    "breaded",
+    "eating",
+    "person"
+   ],
+   "arm_a_span": [
+    288.0,
+    312.0
+   ],
+   "arm_b_span": [
+    288.0,
+    312.0
+   ],
+   "threshold_used": false,
+   "note": "판정 authority가 아니다 — reviewer가 sequence 단위로 본다",
+   "overlap_id": "O12",
+   "shared_frame_times": [
+    288.0,
+    290.0,
+    292.0,
+    294.0,
+    296.0,
+    298.0,
+    300.0,
+    302.0,
+    304.0,
+    306.0,
+    308.0,
+    310.0
+   ]
+  },
+  {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "arm_a_event_count": 2,
+   "arm_b_event_count": 1,
+   "event_count_difference": 1,
+   "arm_a_described_sec": 24.0,
+   "arm_b_described_sec": 24.0,
+   "pairwise_relation_counts": {
+    "SEMANTICALLY_EQUIVALENT": 0,
+    "SEMANTICALLY_DIFFERENT": 0,
+    "ADJUDICATION_REQUIRED": 2
+   },
+   "exact_signature_pairs": [],
+   "exact_signature_pair_count": 0,
+   "arm_a_actors": [
+    "a person"
+   ],
+   "arm_b_actors": [
+    "person"
+   ],
+   "arm_a_actions": [
+    "eating"
+   ],
+   "arm_b_actions": [
+    "eating"
+   ],
+   "shared_token_count": 4,
+   "arm_a_only_token_count": 3,
+   "arm_b_only_token_count": 0,
+   "shared_tokens": [
+    "curry",
+    "eating",
+    "person",
+    "udon"
+   ],
+   "arm_a_span": [
+    312.0,
+    336.0
+   ],
+   "arm_b_span": [
+    312.0,
+    336.0
+   ],
+   "threshold_used": false,
+   "note": "판정 authority가 아니다 — reviewer가 sequence 단위로 본다",
+   "overlap_id": "O13",
+   "shared_frame_times": [
+    312.0,
+    314.0,
+    316.0,
+    318.0,
+    320.0,
+    322.0,
+    324.0,
+    326.0,
+    328.0,
+    330.0,
+    332.0,
+    334.0
+   ]
+  },
+  {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "arm_a_event_count": 1,
+   "arm_b_event_count": 2,
+   "event_count_difference": 1,
+   "arm_a_described_sec": 24.0,
+   "arm_b_described_sec": 24.0,
+   "pairwise_relation_counts": {
+    "SEMANTICALLY_EQUIVALENT": 0,
+    "SEMANTICALLY_DIFFERENT": 0,
+    "ADJUDICATION_REQUIRED": 2
+   },
+   "exact_signature_pairs": [],
+   "exact_signature_pair_count": 0,
+   "arm_a_actors": [
+    "a person"
+   ],
+   "arm_b_actors": [
+    "person"
+   ],
+   "arm_a_actions": [
+    "eating"
+   ],
+   "arm_b_actions": [
+    "eating",
+    "preparing food"
+   ],
+   "shared_token_count": 2,
+   "arm_a_only_token_count": 2,
+   "arm_b_only_token_count": 7,
+   "shared_tokens": [
+    "eating",
+    "person"
+   ],
+   "arm_a_span": [
+    336.0,
+    360.0
+   ],
+   "arm_b_span": [
+    336.0,
+    360.0
+   ],
+   "threshold_used": false,
+   "note": "판정 authority가 아니다 — reviewer가 sequence 단위로 본다",
+   "overlap_id": "O14",
+   "shared_frame_times": [
+    336.0,
+    338.0,
+    340.0,
+    342.0,
+    344.0,
+    346.0,
+    348.0,
+    350.0,
+    352.0,
+    354.0,
+    356.0,
+    358.0
+   ]
+  },
+  {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "arm_a_event_count": 5,
+   "arm_b_event_count": 3,
+   "event_count_difference": 2,
+   "arm_a_described_sec": 24.0,
+   "arm_b_described_sec": 24.0,
+   "pairwise_relation_counts": {
+    "SEMANTICALLY_EQUIVALENT": 0,
+    "SEMANTICALLY_DIFFERENT": 0,
+    "ADJUDICATION_REQUIRED": 15
+   },
+   "exact_signature_pairs": [],
+   "exact_signature_pair_count": 0,
+   "arm_a_actors": [
+    "person"
+   ],
+   "arm_b_actors": [
+    "person"
+   ],
+   "arm_a_actions": [
+    "arranging",
+    "placing"
+   ],
+   "arm_b_actions": [
+    "eating",
+    "preparing food"
+   ],
+   "shared_token_count": 2,
+   "arm_a_only_token_count": 13,
+   "arm_b_only_token_count": 7,
+   "shared_tokens": [
+    "chicken",
+    "person"
+   ],
+   "arm_a_span": [
+    360.0,
+    384.0
+   ],
+   "arm_b_span": [
+    360.0,
+    384.0
+   ],
+   "threshold_used": false,
+   "note": "판정 authority가 아니다 — reviewer가 sequence 단위로 본다",
+   "overlap_id": "O15",
+   "shared_frame_times": [
+    360.0,
+    362.0,
+    364.0,
+    366.0,
+    368.0,
+    370.0,
+    372.0,
+    374.0,
+    376.0,
+    378.0,
+    380.0,
+    382.0
+   ]
+  },
+  {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "arm_a_event_count": 5,
+   "arm_b_event_count": 3,
+   "event_count_difference": 2,
+   "arm_a_described_sec": 24.0,
+   "arm_b_described_sec": 24.0,
+   "pairwise_relation_counts": {
+    "SEMANTICALLY_EQUIVALENT": 0,
+    "SEMANTICALLY_DIFFERENT": 0,
+    "ADJUDICATION_REQUIRED": 15
+   },
+   "exact_signature_pairs": [],
+   "exact_signature_pair_count": 0,
+   "arm_a_actors": [
+    "person"
+   ],
+   "arm_b_actors": [
+    "person"
+   ],
+   "arm_a_actions": [
+    "holding",
+    "placing"
+   ],
+   "arm_b_actions": [
+    "holding",
+    "placing"
+   ],
+   "shared_token_count": 8,
+   "arm_a_only_token_count": 3,
+   "arm_b_only_token_count": 2,
+   "shared_tokens": [
+    "bowl",
+    "chicken",
+    "holding",
+    "legs",
+    "noodles",
+    "orange",
+    "person",
+    "placing"
+   ],
+   "arm_a_span": [
+    384.0,
+    408.0
+   ],
+   "arm_b_span": [
+    384.0,
+    408.0
+   ],
+   "threshold_used": false,
+   "note": "판정 authority가 아니다 — reviewer가 sequence 단위로 본다",
+   "overlap_id": "O16",
+   "shared_frame_times": [
+    384.0,
+    386.0,
+    388.0,
+    390.0,
+    392.0,
+    394.0,
+    396.0,
+    398.0,
+    400.0,
+    402.0,
+    404.0,
+    406.0
+   ]
+  },
+  {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "arm_a_event_count": 4,
+   "arm_b_event_count": 4,
+   "event_count_difference": 0,
+   "arm_a_described_sec": 24.0,
+   "arm_b_described_sec": 24.0,
+   "pairwise_relation_counts": {
+    "SEMANTICALLY_EQUIVALENT": 0,
+    "SEMANTICALLY_DIFFERENT": 0,
+    "ADJUDICATION_REQUIRED": 16
+   },
+   "exact_signature_pairs": [],
+   "exact_signature_pair_count": 0,
+   "arm_a_actors": [
+    "person"
+   ],
+   "arm_b_actors": [
+    "person"
+   ],
+   "arm_a_actions": [
+    "holding",
+    "placing"
+   ],
+   "arm_b_actions": [
+    "holding",
+    "placing",
+    "pulling"
+   ],
+   "shared_token_count": 7,
+   "arm_a_only_token_count": 5,
+   "arm_b_only_token_count": 3,
+   "shared_tokens": [
+    "band",
+    "drawer",
+    "elastic",
+    "holding",
+    "orange",
+    "person",
+    "placing"
+   ],
+   "arm_a_span": [
+    408.0,
+    432.0
+   ],
+   "arm_b_span": [
+    408.0,
+    432.0
+   ],
+   "threshold_used": false,
+   "note": "판정 authority가 아니다 — reviewer가 sequence 단위로 본다",
+   "overlap_id": "O17",
+   "shared_frame_times": [
+    408.0,
+    410.0,
+    412.0,
+    414.0,
+    416.0,
+    418.0,
+    420.0,
+    422.0,
+    424.0,
+    426.0,
+    428.0,
+    430.0
+   ]
+  },
+  {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "arm_a_event_count": 2,
+   "arm_b_event_count": 3,
+   "event_count_difference": 1,
+   "arm_a_described_sec": 24.0,
+   "arm_b_described_sec": 24.0,
+   "pairwise_relation_counts": {
+    "SEMANTICALLY_EQUIVALENT": 0,
+    "SEMANTICALLY_DIFFERENT": 0,
+    "ADJUDICATION_REQUIRED": 6
+   },
+   "exact_signature_pairs": [],
+   "exact_signature_pair_count": 0,
+   "arm_a_actors": [
+    "person"
+   ],
+   "arm_b_actors": [
+    "person"
+   ],
+   "arm_a_actions": [
+    "holding up",
+    "sewing"
+   ],
+   "arm_b_actions": [
+    "holding",
+    "placing",
+    "sewing"
+   ],
+   "shared_token_count": 5,
+   "arm_a_only_token_count": 2,
+   "arm_b_only_token_count": 6,
+   "shared_tokens": [
+    "fabric",
+    "holding",
+    "orange",
+    "person",
+    "sewing"
+   ],
+   "arm_a_span": [
+    432.0,
+    456.0
+   ],
+   "arm_b_span": [
+    432.0,
+    456.0
+   ],
+   "threshold_used": false,
+   "note": "판정 authority가 아니다 — reviewer가 sequence 단위로 본다",
+   "overlap_id": "O18",
+   "shared_frame_times": [
+    432.0,
+    434.0,
+    436.0,
+    438.0,
+    440.0,
+    442.0,
+    444.0,
+    446.0,
+    448.0,
+    450.0,
+    452.0,
+    454.0
+   ]
+  },
+  {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "arm_a_event_count": 6,
+   "arm_b_event_count": 4,
+   "event_count_difference": 2,
+   "arm_a_described_sec": 24.0,
+   "arm_b_described_sec": 24.0,
+   "pairwise_relation_counts": {
+    "SEMANTICALLY_EQUIVALENT": 0,
+    "SEMANTICALLY_DIFFERENT": 15,
+    "ADJUDICATION_REQUIRED": 9
+   },
+   "exact_signature_pairs": [],
+   "exact_signature_pair_count": 0,
+   "arm_a_actors": [
+    "hand"
+   ],
+   "arm_b_actors": [
+    "person"
+   ],
+   "arm_a_actions": [
+    "chopping",
+    "cracking",
+    "placing",
+    "pouring",
+    "stirring"
+   ],
+   "arm_b_actions": [
+    "chopping",
+    "holding up",
+    "pouring",
+    "stirring"
+   ],
+   "shared_token_count": 7,
+   "arm_a_only_token_count": 8,
+   "arm_b_only_token_count": 7,
+   "shared_tokens": [
+    "chopping",
+    "cup",
+    "egg",
+    "measuring",
+    "pouring",
+    "stirring",
+    "tomato"
+   ],
+   "arm_a_span": [
+    456.0,
+    480.0
+   ],
+   "arm_b_span": [
+    456.0,
+    480.0
+   ],
+   "threshold_used": false,
+   "note": "판정 authority가 아니다 — reviewer가 sequence 단위로 본다",
+   "overlap_id": "O19",
+   "shared_frame_times": [
+    456.0,
+    458.0,
+    460.0,
+    462.0,
+    464.0,
+    466.0,
+    468.0,
+    470.0,
+    472.0,
+    474.0,
+    476.0,
+    478.0
+   ]
+  },
+  {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "arm_a_event_count": 6,
+   "arm_b_event_count": 3,
+   "event_count_difference": 3,
+   "arm_a_described_sec": 24.0,
+   "arm_b_described_sec": 24.0,
+   "pairwise_relation_counts": {
+    "SEMANTICALLY_EQUIVALENT": 0,
+    "SEMANTICALLY_DIFFERENT": 13,
+    "ADJUDICATION_REQUIRED": 5
+   },
+   "exact_signature_pairs": [],
+   "exact_signature_pair_count": 0,
+   "arm_a_actors": [
+    "hand",
+    "person"
+   ],
+   "arm_b_actors": [
+    "woman"
+   ],
+   "arm_a_actions": [
+    "adjusting",
+    "placing",
+    "pouring",
+    "transferring",
+    "tying"
+   ],
+   "arm_b_actions": [
+    "pouring",
+    "sprinkling"
+   ],
+   "shared_token_count": 5,
+   "arm_a_only_token_count": 13,
+   "arm_b_only_token_count": 6,
+   "shared_tokens": [
+    "oil",
+    "olive",
+    "onto",
+    "pouring",
+    "tofu"
+   ],
+   "arm_a_span": [
+    480.0,
+    504.0
+   ],
+   "arm_b_span": [
+    480.0,
+    504.0
+   ],
+   "threshold_used": false,
+   "note": "판정 authority가 아니다 — reviewer가 sequence 단위로 본다",
+   "overlap_id": "O20",
+   "shared_frame_times": [
+    480.0,
+    482.0,
+    484.0,
+    486.0,
+    488.0,
+    490.0,
+    492.0,
+    494.0,
+    496.0,
+    498.0,
+    500.0,
+    502.0
+   ]
+  },
+  {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "arm_a_event_count": 1,
+   "arm_b_event_count": 5,
+   "event_count_difference": 4,
+   "arm_a_described_sec": 24.0,
+   "arm_b_described_sec": 24.0,
+   "pairwise_relation_counts": {
+    "SEMANTICALLY_EQUIVALENT": 0,
+    "SEMANTICALLY_DIFFERENT": 0,
+    "ADJUDICATION_REQUIRED": 5
+   },
+   "exact_signature_pairs": [],
+   "exact_signature_pair_count": 0,
+   "arm_a_actors": [
+    "woman"
+   ],
+   "arm_b_actors": [
+    "a woman"
+   ],
+   "arm_a_actions": [
+    "sprinkling"
+   ],
+   "arm_b_actions": [
+    "holding",
+    "placing",
+    "walking",
+    "wrapping"
+   ],
+   "shared_token_count": 1,
+   "arm_a_only_token_count": 4,
+   "arm_b_only_token_count": 15,
+   "shared_tokens": [
+    "woman"
+   ],
+   "arm_a_span": [
+    504.0,
+    528.0
+   ],
+   "arm_b_span": [
+    504.0,
+    528.0
+   ],
+   "threshold_used": false,
+   "note": "판정 authority가 아니다 — reviewer가 sequence 단위로 본다",
+   "overlap_id": "O21",
+   "shared_frame_times": [
+    504.0,
+    506.0,
+    508.0,
+    510.0,
+    512.0,
+    514.0,
+    516.0,
+    518.0,
+    520.0,
+    522.0,
+    524.0,
+    526.0
+   ]
+  },
+  {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "arm_a_event_count": 6,
+   "arm_b_event_count": 4,
+   "event_count_difference": 2,
+   "arm_a_described_sec": 24.0,
+   "arm_b_described_sec": 24.0,
+   "pairwise_relation_counts": {
+    "SEMANTICALLY_EQUIVALENT": 0,
+    "SEMANTICALLY_DIFFERENT": 16,
+    "ADJUDICATION_REQUIRED": 8
+   },
+   "exact_signature_pairs": [],
+   "exact_signature_pair_count": 0,
+   "arm_a_actors": [
+    "person"
+   ],
+   "arm_b_actors": [
+    "a woman"
+   ],
+   "arm_a_actions": [
+    "adjusting",
+    "holding",
+    "placing",
+    "tying",
+    "unfolding",
+    "wrapping"
+   ],
+   "arm_b_actions": [
+    "holding",
+    "placing",
+    "tying",
+    "wrapping"
+   ],
+   "shared_token_count": 10,
+   "arm_a_only_token_count": 7,
+   "arm_b_only_token_count": 6,
+   "shared_tokens": [
+    "around",
+    "bag",
+    "holding",
+    "paper",
+    "placing",
+    "ribbon",
+    "stamp",
+    "tying",
+    "wrapped",
+    "wrapping"
+   ],
+   "arm_a_span": [
+    528.0,
+    552.0
+   ],
+   "arm_b_span": [
+    528.0,
+    552.0
+   ],
+   "threshold_used": false,
+   "note": "판정 authority가 아니다 — reviewer가 sequence 단위로 본다",
+   "overlap_id": "O22",
+   "shared_frame_times": [
+    528.0,
+    530.0,
+    532.0,
+    534.0,
+    536.0,
+    538.0,
+    540.0,
+    542.0,
+    544.0,
+    546.0,
+    548.0,
+    550.0
+   ]
+  },
+  {
+   "role": "AUDIT_DIAGNOSTIC_ONLY",
+   "arm_a_event_count": 5,
+   "arm_b_event_count": 5,
+   "event_count_difference": 0,
+   "arm_a_described_sec": 24.0,
+   "arm_b_described_sec": 24.0,
+   "pairwise_relation_counts": {
+    "SEMANTICALLY_EQUIVALENT": 0,
+    "SEMANTICALLY_DIFFERENT": 0,
+    "ADJUDICATION_REQUIRED": 25
+   },
+   "exact_signature_pairs": [],
+   "exact_signature_pair_count": 0,
+   "arm_a_actors": [
+    "person"
+   ],
+   "arm_b_actors": [
+    "person"
+   ],
+   "arm_a_actions": [
+    "adjusting clothing",
+    "holding and displaying fabric",
+    "picking up handbag",
+    "placing fabric on table",
+    "taking mirror selfie"
+   ],
+   "arm_b_actions": [
+    "adjusting",
+    "putting on",
+    "taking photo",
+    "unfolding"
+   ],
+   "shared_token_count": 7,
+   "arm_a_only_token_count": 11,
+   "arm_b_only_token_count": 3,
+   "shared_tokens": [
+    "adjusting",
+    "clothing",
+    "fabric",
+    "handbag",
+    "mirror",
+    "person",
+    "taking"
+   ],
+   "arm_a_span": [
+    552.0,
+    576.0
+   ],
+   "arm_b_span": [
+    552.0,
+    576.0
+   ],
+   "threshold_used": false,
+   "note": "판정 authority가 아니다 — reviewer가 sequence 단위로 본다",
+   "overlap_id": "O23",
+   "shared_frame_times": [
+    552.0,
+    554.0,
+    556.0,
+    558.0,
+    560.0,
+    562.0,
+    564.0,
+    566.0,
+    568.0,
+    570.0,
+    572.0,
+    574.0
+   ]
+  }
+ ]
+}

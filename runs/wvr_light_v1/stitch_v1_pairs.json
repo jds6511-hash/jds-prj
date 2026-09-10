@@ -1,0 +1,2515 @@
+{
+ "schema": "wvr_stitch_v1_pairs",
+ "event": "WVR_OVERLAP_EVENT_STITCHING_SHADOW_V1",
+ "prereg": "docs/preregistration/WVR_OVERLAP_EVENT_STITCHING_SHADOW_V1_2026-09-10.md",
+ "prereg_sha_used_for_blinding": "41081254f9004d8bb4d9cfdd5b3bfaf5ee820165",
+ "derivation_script_commit": "41081254f9004d8bb4d9cfdd5b3bfaf5ee820165",
+ "registry_source": "event_map_v1_registry.json",
+ "registry_sha256": "1885cda9fd567ccfb9bea79383bcb89260225cafb228253e8efca2cf3cdc4073",
+ "registry_event_count": 160,
+ "source_manifest_sha256": "a0726a4b13b4bd0f6e1ea692eec55e8cd0343132e32b532283e6e68511680631",
+ "video_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+ "source_shadow_event": "WVR_EVENT_EXTRACTION_SHADOW_V1",
+ "new_inference_count": 0,
+ "new_llm_call_count": 0,
+ "overlap_count": 22,
+ "pairs": [
+  {
+   "overlap_id": "O02",
+   "start_sec": 48.0,
+   "end_sec": 72.0,
+   "shared_frame_times": [
+    48.0,
+    50.0,
+    52.0,
+    54.0,
+    56.0,
+    58.0,
+    60.0,
+    62.0,
+    64.0,
+    66.0,
+    68.0,
+    70.0
+   ],
+   "shared_frame_count": 12,
+   "arms": {
+    "A": [
+     {
+      "local_id": "O02_A01",
+      "original_start": 48.0,
+      "original_end": 52.0,
+      "clipped_start": 48.0,
+      "clipped_end": 52.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "bread pieces into blender"
+     },
+     {
+      "local_id": "O02_A02",
+      "original_start": 52.0,
+      "original_end": 55.0,
+      "clipped_start": 52.0,
+      "clipped_end": 55.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "lid on blender"
+     },
+     {
+      "local_id": "O02_A03",
+      "original_start": 55.0,
+      "original_end": 58.0,
+      "clipped_start": 55.0,
+      "clipped_end": 58.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "oil into bowl of breadcrumbs"
+     },
+     {
+      "local_id": "O02_A04",
+      "original_start": 58.0,
+      "original_end": 62.0,
+      "clipped_start": 58.0,
+      "clipped_end": 62.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "stirring",
+      "object_or_state": "breadcrumbs with oil"
+     },
+     {
+      "local_id": "O02_A05",
+      "original_start": 62.0,
+      "original_end": 66.0,
+      "clipped_start": 62.0,
+      "clipped_end": 66.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "onion on cutting board"
+     },
+     {
+      "local_id": "O02_A06",
+      "original_start": 66.0,
+      "original_end": 70.0,
+      "clipped_start": 66.0,
+      "clipped_end": 70.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "carrot on cutting board"
+     },
+     {
+      "local_id": "O02_A07",
+      "original_start": 70.0,
+      "original_end": 74.0,
+      "clipped_start": 70.0,
+      "clipped_end": 72.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "ground beef into bowl"
+     }
+    ],
+    "B": [
+     {
+      "local_id": "O02_B01",
+      "original_start": 46.0,
+      "original_end": 49.0,
+      "clipped_start": 48.0,
+      "clipped_end": 49.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "blending",
+      "object_or_state": "potato slices"
+     },
+     {
+      "local_id": "O02_B02",
+      "original_start": 49.0,
+      "original_end": 52.0,
+      "clipped_start": 49.0,
+      "clipped_end": 52.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "oil into bowl with curry powder"
+     },
+     {
+      "local_id": "O02_B03",
+      "original_start": 52.0,
+      "original_end": 55.0,
+      "clipped_start": 52.0,
+      "clipped_end": 55.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "mixing",
+      "object_or_state": "curry powder and oil"
+     },
+     {
+      "local_id": "O02_B04",
+      "original_start": 55.0,
+      "original_end": 72.0,
+      "clipped_start": 55.0,
+      "clipped_end": 72.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "onion"
+     }
+    ]
+   },
+   "arm_event_counts": {
+    "A": 7,
+    "B": 4
+   },
+   "comparison_unit": "overlap_local_event_sequence"
+  },
+  {
+   "overlap_id": "O03",
+   "start_sec": 72.0,
+   "end_sec": 96.0,
+   "shared_frame_times": [
+    72.0,
+    74.0,
+    76.0,
+    78.0,
+    80.0,
+    82.0,
+    84.0,
+    86.0,
+    88.0,
+    90.0,
+    92.0,
+    94.0
+   ],
+   "shared_frame_count": 12,
+   "arms": {
+    "A": [
+     {
+      "local_id": "O03_A01",
+      "original_start": 70.0,
+      "original_end": 74.0,
+      "clipped_start": 72.0,
+      "clipped_end": 74.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "ground beef into bowl"
+     },
+     {
+      "local_id": "O03_A02",
+      "original_start": 74.0,
+      "original_end": 78.0,
+      "clipped_start": 74.0,
+      "clipped_end": 78.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "onion and carrot into bowl with beef"
+     },
+     {
+      "local_id": "O03_A03",
+      "original_start": 78.0,
+      "original_end": 82.0,
+      "clipped_start": 78.0,
+      "clipped_end": 82.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "transferring",
+      "object_or_state": "toasted breadcrumbs into bowl"
+     },
+     {
+      "local_id": "O03_A04",
+      "original_start": 82.0,
+      "original_end": 86.0,
+      "clipped_start": 82.0,
+      "clipped_end": 86.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "stirring",
+      "object_or_state": "breadcrumbs in bowl"
+     }
+    ],
+    "B": [
+     {
+      "local_id": "O03_B01",
+      "original_start": 72.0,
+      "original_end": 76.0,
+      "clipped_start": 72.0,
+      "clipped_end": 76.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "peeling",
+      "object_or_state": "carrot"
+     },
+     {
+      "local_id": "O03_B02",
+      "original_start": 76.0,
+      "original_end": 80.0,
+      "clipped_start": 76.0,
+      "clipped_end": 80.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "lid on pot"
+     },
+     {
+      "local_id": "O03_B03",
+      "original_start": 80.0,
+      "original_end": 84.0,
+      "clipped_start": 80.0,
+      "clipped_end": 84.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "breadcrumbs into bowl"
+     },
+     {
+      "local_id": "O03_B04",
+      "original_start": 84.0,
+      "original_end": 88.0,
+      "clipped_start": 84.0,
+      "clipped_end": 88.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "stirring",
+      "object_or_state": "breadcrumbs in bowl"
+     },
+     {
+      "local_id": "O03_B05",
+      "original_start": 88.0,
+      "original_end": 92.0,
+      "clipped_start": 88.0,
+      "clipped_end": 92.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "transferring",
+      "object_or_state": "ground beef into bowl"
+     },
+     {
+      "local_id": "O03_B06",
+      "original_start": 92.0,
+      "original_end": 96.0,
+      "clipped_start": 92.0,
+      "clipped_end": 96.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "adding",
+      "object_or_state": "onion and crab stick to bowl"
+     }
+    ]
+   },
+   "arm_event_counts": {
+    "A": 4,
+    "B": 6
+   },
+   "comparison_unit": "overlap_local_event_sequence"
+  },
+  {
+   "overlap_id": "O04",
+   "start_sec": 96.0,
+   "end_sec": 120.0,
+   "shared_frame_times": [
+    96.0,
+    98.0,
+    100.0,
+    102.0,
+    104.0,
+    106.0,
+    108.0,
+    110.0,
+    112.0,
+    114.0,
+    116.0,
+    118.0
+   ],
+   "shared_frame_count": 12,
+   "arms": {
+    "A": [
+     {
+      "local_id": "O04_A01",
+      "original_start": 96.0,
+      "original_end": 100.0,
+      "clipped_start": 96.0,
+      "clipped_end": 100.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "stirring",
+      "object_or_state": "mixture in a bowl with chopsticks"
+     },
+     {
+      "local_id": "O04_A02",
+      "original_start": 100.0,
+      "original_end": 103.0,
+      "clipped_start": 100.0,
+      "clipped_end": 103.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "cooking",
+      "object_or_state": "mixture in a pan over direct heat"
+     },
+     {
+      "local_id": "O04_A03",
+      "original_start": 103.0,
+      "original_end": 123.0,
+      "clipped_start": 103.0,
+      "clipped_end": 120.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "peeling",
+      "object_or_state": "potato with a peeler"
+     }
+    ],
+    "B": [
+     {
+      "local_id": "O04_B01",
+      "original_start": 96.0,
+      "original_end": 100.0,
+      "clipped_start": 96.0,
+      "clipped_end": 100.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "mixing",
+      "object_or_state": "ingredients in bowl"
+     },
+     {
+      "local_id": "O04_B02",
+      "original_start": 100.0,
+      "original_end": 104.0,
+      "clipped_start": 100.0,
+      "clipped_end": 104.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "cooking",
+      "object_or_state": "mixture in pan"
+     },
+     {
+      "local_id": "O04_B03",
+      "original_start": 104.0,
+      "original_end": 120.0,
+      "clipped_start": 104.0,
+      "clipped_end": 120.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "peeling",
+      "object_or_state": "potatoes with peeler"
+     }
+    ]
+   },
+   "arm_event_counts": {
+    "A": 3,
+    "B": 3
+   },
+   "comparison_unit": "overlap_local_event_sequence"
+  },
+  {
+   "overlap_id": "O05",
+   "start_sec": 120.0,
+   "end_sec": 144.0,
+   "shared_frame_times": [
+    120.0,
+    122.0,
+    124.0,
+    126.0,
+    128.0,
+    130.0,
+    132.0,
+    134.0,
+    136.0,
+    138.0,
+    140.0,
+    142.0
+   ],
+   "shared_frame_count": 12,
+   "arms": {
+    "A": [
+     {
+      "local_id": "O05_A01",
+      "original_start": 103.0,
+      "original_end": 123.0,
+      "clipped_start": 120.0,
+      "clipped_end": 123.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "peeling",
+      "object_or_state": "potato with a peeler"
+     },
+     {
+      "local_id": "O05_A02",
+      "original_start": 123.0,
+      "original_end": 127.0,
+      "clipped_start": 123.0,
+      "clipped_end": 127.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "mixing",
+      "object_or_state": "mixture in a bowl with chopsticks"
+     },
+     {
+      "local_id": "O05_A03",
+      "original_start": 127.0,
+      "original_end": 131.0,
+      "clipped_start": 127.0,
+      "clipped_end": 131.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "forming",
+      "object_or_state": "mixture into balls"
+     },
+     {
+      "local_id": "O05_A04",
+      "original_start": 131.0,
+      "original_end": 144.0,
+      "clipped_start": 131.0,
+      "clipped_end": 144.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "balls on a plate"
+     }
+    ],
+    "B": [
+     {
+      "local_id": "O05_B01",
+      "original_start": 120.0,
+      "original_end": 125.0,
+      "clipped_start": 120.0,
+      "clipped_end": 125.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "grating",
+      "object_or_state": "potato"
+     },
+     {
+      "local_id": "O05_B02",
+      "original_start": 125.0,
+      "original_end": 130.0,
+      "clipped_start": 125.0,
+      "clipped_end": 130.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "mixing",
+      "object_or_state": "potato mixture"
+     },
+     {
+      "local_id": "O05_B03",
+      "original_start": 130.0,
+      "original_end": 135.0,
+      "clipped_start": 130.0,
+      "clipped_end": 135.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "forming",
+      "object_or_state": "potato balls"
+     },
+     {
+      "local_id": "O05_B04",
+      "original_start": 135.0,
+      "original_end": 140.0,
+      "clipped_start": 135.0,
+      "clipped_end": 140.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "coating",
+      "object_or_state": "potato balls"
+     },
+     {
+      "local_id": "O05_B05",
+      "original_start": 140.0,
+      "original_end": 145.0,
+      "clipped_start": 140.0,
+      "clipped_end": 144.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "potato balls"
+     }
+    ]
+   },
+   "arm_event_counts": {
+    "A": 4,
+    "B": 5
+   },
+   "comparison_unit": "overlap_local_event_sequence"
+  },
+  {
+   "overlap_id": "O06",
+   "start_sec": 144.0,
+   "end_sec": 168.0,
+   "shared_frame_times": [
+    144.0,
+    146.0,
+    148.0,
+    150.0,
+    152.0,
+    154.0,
+    156.0,
+    158.0,
+    160.0,
+    162.0,
+    164.0,
+    166.0
+   ],
+   "shared_frame_count": 12,
+   "arms": {
+    "A": [
+     {
+      "local_id": "O06_A01",
+      "original_start": 140.0,
+      "original_end": 145.0,
+      "clipped_start": 144.0,
+      "clipped_end": 145.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "potato balls"
+     },
+     {
+      "local_id": "O06_A02",
+      "original_start": 145.0,
+      "original_end": 168.0,
+      "clipped_start": 145.0,
+      "clipped_end": 168.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "coating",
+      "object_or_state": "potato balls"
+     }
+    ],
+    "B": [
+     {
+      "local_id": "O06_B01",
+      "original_start": 144.0,
+      "original_end": 149.0,
+      "clipped_start": 144.0,
+      "clipped_end": 149.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "liquid into a bowl"
+     },
+     {
+      "local_id": "O06_B02",
+      "original_start": 149.0,
+      "original_end": 153.0,
+      "clipped_start": 149.0,
+      "clipped_end": 153.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "mixing",
+      "object_or_state": "ingredients in a bowl"
+     },
+     {
+      "local_id": "O06_B03",
+      "original_start": 153.0,
+      "original_end": 157.0,
+      "clipped_start": 153.0,
+      "clipped_end": 157.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "dipping",
+      "object_or_state": "potato dough in egg mixture"
+     },
+     {
+      "local_id": "O06_B04",
+      "original_start": 157.0,
+      "original_end": 161.0,
+      "clipped_start": 157.0,
+      "clipped_end": 161.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "coating",
+      "object_or_state": "potato dough in breadcrumbs"
+     },
+     {
+      "local_id": "O06_B05",
+      "original_start": 161.0,
+      "original_end": 165.0,
+      "clipped_start": 161.0,
+      "clipped_end": 165.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "coated potato dough on a plate"
+     },
+     {
+      "local_id": "O06_B06",
+      "original_start": 165.0,
+      "original_end": 170.0,
+      "clipped_start": 165.0,
+      "clipped_end": 168.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "coating",
+      "object_or_state": "potato dough in breadcrumbs"
+     }
+    ]
+   },
+   "arm_event_counts": {
+    "A": 2,
+    "B": 6
+   },
+   "comparison_unit": "overlap_local_event_sequence"
+  },
+  {
+   "overlap_id": "O07",
+   "start_sec": 168.0,
+   "end_sec": 192.0,
+   "shared_frame_times": [
+    168.0,
+    170.0,
+    172.0,
+    174.0,
+    176.0,
+    178.0,
+    180.0,
+    182.0,
+    184.0,
+    186.0,
+    188.0,
+    190.0
+   ],
+   "shared_frame_count": 12,
+   "arms": {
+    "A": [
+     {
+      "local_id": "O07_A01",
+      "original_start": 168.0,
+      "original_end": 175.0,
+      "clipped_start": 168.0,
+      "clipped_end": 175.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "coating",
+      "object_or_state": "ball in breadcrumbs"
+     },
+     {
+      "local_id": "O07_A02",
+      "original_start": 175.0,
+      "original_end": 184.0,
+      "clipped_start": 175.0,
+      "clipped_end": 184.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "coated balls on plate"
+     },
+     {
+      "local_id": "O07_A03",
+      "original_start": 184.0,
+      "original_end": 187.0,
+      "clipped_start": 184.0,
+      "clipped_end": 187.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "cream into pan"
+     },
+     {
+      "local_id": "O07_A04",
+      "original_start": 187.0,
+      "original_end": 190.0,
+      "clipped_start": 187.0,
+      "clipped_end": 190.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "stirring",
+      "object_or_state": "onions in pan"
+     },
+     {
+      "local_id": "O07_A05",
+      "original_start": 190.0,
+      "original_end": 193.0,
+      "clipped_start": 190.0,
+      "clipped_end": 192.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "sauce into pan"
+     }
+    ],
+    "B": [
+     {
+      "local_id": "O07_B01",
+      "original_start": 165.0,
+      "original_end": 170.0,
+      "clipped_start": 168.0,
+      "clipped_end": 170.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "coating",
+      "object_or_state": "potato dough in breadcrumbs"
+     },
+     {
+      "local_id": "O07_B02",
+      "original_start": 170.0,
+      "original_end": 175.0,
+      "clipped_start": 170.0,
+      "clipped_end": 175.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "coated potato dough on a plate"
+     },
+     {
+      "local_id": "O07_B03",
+      "original_start": 175.0,
+      "original_end": 180.0,
+      "clipped_start": 175.0,
+      "clipped_end": 180.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "coating",
+      "object_or_state": "potato dough in breadcrumbs"
+     },
+     {
+      "local_id": "O07_B04",
+      "original_start": 180.0,
+      "original_end": 185.0,
+      "clipped_start": 180.0,
+      "clipped_end": 185.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "coated potato dough on a plate"
+     },
+     {
+      "local_id": "O07_B05",
+      "original_start": 185.0,
+      "original_end": 192.0,
+      "clipped_start": 185.0,
+      "clipped_end": 192.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "liquid into a pan"
+     }
+    ]
+   },
+   "arm_event_counts": {
+    "A": 5,
+    "B": 5
+   },
+   "comparison_unit": "overlap_local_event_sequence"
+  },
+  {
+   "overlap_id": "O08",
+   "start_sec": 192.0,
+   "end_sec": 216.0,
+   "shared_frame_times": [
+    192.0,
+    194.0,
+    196.0,
+    198.0,
+    200.0,
+    202.0,
+    204.0,
+    206.0,
+    208.0,
+    210.0,
+    212.0,
+    214.0
+   ],
+   "shared_frame_count": 12,
+   "arms": {
+    "A": [
+     {
+      "local_id": "O08_A01",
+      "original_start": 190.0,
+      "original_end": 193.0,
+      "clipped_start": 192.0,
+      "clipped_end": 193.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "sauce into pan"
+     },
+     {
+      "local_id": "O08_A02",
+      "original_start": 193.0,
+      "original_end": 202.0,
+      "clipped_start": 193.0,
+      "clipped_end": 202.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "liquid into pan"
+     },
+     {
+      "local_id": "O08_A03",
+      "original_start": 202.0,
+      "original_end": 205.0,
+      "clipped_start": 202.0,
+      "clipped_end": 205.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "cream into bowl"
+     },
+     {
+      "local_id": "O08_A04",
+      "original_start": 205.0,
+      "original_end": 216.0,
+      "clipped_start": 205.0,
+      "clipped_end": 216.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "mixing",
+      "object_or_state": "cream in bowl"
+     }
+    ],
+    "B": [
+     {
+      "local_id": "O08_B01",
+      "original_start": 192.0,
+      "original_end": 195.0,
+      "clipped_start": 192.0,
+      "clipped_end": 195.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "powder from a bottle into a pan"
+     },
+     {
+      "local_id": "O08_B02",
+      "original_start": 195.0,
+      "original_end": 240.0,
+      "clipped_start": 195.0,
+      "clipped_end": 216.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "liquid from a bottle into a pan"
+     }
+    ]
+   },
+   "arm_event_counts": {
+    "A": 4,
+    "B": 2
+   },
+   "comparison_unit": "overlap_local_event_sequence"
+  },
+  {
+   "overlap_id": "O09",
+   "start_sec": 216.0,
+   "end_sec": 240.0,
+   "shared_frame_times": [
+    216.0,
+    218.0,
+    220.0,
+    222.0,
+    224.0,
+    226.0,
+    228.0,
+    230.0,
+    232.0,
+    234.0,
+    236.0,
+    238.0
+   ],
+   "shared_frame_count": 12,
+   "arms": {
+    "A": [
+     {
+      "local_id": "O09_A01",
+      "original_start": 195.0,
+      "original_end": 240.0,
+      "clipped_start": 216.0,
+      "clipped_end": 240.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "liquid from a bottle into a pan"
+     }
+    ],
+    "B": [
+     {
+      "local_id": "O09_B01",
+      "original_start": 216.0,
+      "original_end": 220.0,
+      "clipped_start": 216.0,
+      "clipped_end": 220.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "mashed potatoes into a bowl with a hand mixer"
+     },
+     {
+      "local_id": "O09_B02",
+      "original_start": 220.0,
+      "original_end": 224.0,
+      "clipped_start": 220.0,
+      "clipped_end": 224.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "mixing",
+      "object_or_state": "mashed potatoes with a hand mixer"
+     },
+     {
+      "local_id": "O09_B03",
+      "original_start": 224.0,
+      "original_end": 228.0,
+      "clipped_start": 224.0,
+      "clipped_end": 228.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "transferring",
+      "object_or_state": "mashed potatoes into a piping bag"
+     },
+     {
+      "local_id": "O09_B04",
+      "original_start": 228.0,
+      "original_end": 232.0,
+      "clipped_start": 228.0,
+      "clipped_end": 232.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "potato croquettes on a wire rack"
+     },
+     {
+      "local_id": "O09_B05",
+      "original_start": 232.0,
+      "original_end": 236.0,
+      "clipped_start": 232.0,
+      "clipped_end": 236.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "oil into a baking tray"
+     },
+     {
+      "local_id": "O09_B06",
+      "original_start": 236.0,
+      "original_end": 264.0,
+      "clipped_start": 236.0,
+      "clipped_end": 240.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "butter into a bowl"
+     }
+    ]
+   },
+   "arm_event_counts": {
+    "A": 1,
+    "B": 6
+   },
+   "comparison_unit": "overlap_local_event_sequence"
+  },
+  {
+   "overlap_id": "O10",
+   "start_sec": 240.0,
+   "end_sec": 264.0,
+   "shared_frame_times": [
+    240.0,
+    242.0,
+    244.0,
+    246.0,
+    248.0,
+    250.0,
+    252.0,
+    254.0,
+    256.0,
+    258.0,
+    260.0,
+    262.0
+   ],
+   "shared_frame_count": 12,
+   "arms": {
+    "A": [
+     {
+      "local_id": "O10_A01",
+      "original_start": 240.0,
+      "original_end": 245.0,
+      "clipped_start": 240.0,
+      "clipped_end": 245.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "serving",
+      "object_or_state": "noodles"
+     },
+     {
+      "local_id": "O10_A02",
+      "original_start": 245.0,
+      "original_end": 255.0,
+      "clipped_start": 245.0,
+      "clipped_end": 255.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "serving",
+      "object_or_state": "potato cream"
+     },
+     {
+      "local_id": "O10_A03",
+      "original_start": 255.0,
+      "original_end": 260.0,
+      "clipped_start": 255.0,
+      "clipped_end": 260.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "serving",
+      "object_or_state": "herbs"
+     },
+     {
+      "local_id": "O10_A04",
+      "original_start": 260.0,
+      "original_end": 288.0,
+      "clipped_start": 260.0,
+      "clipped_end": 264.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "eating",
+      "object_or_state": "noodles"
+     }
+    ],
+    "B": [
+     {
+      "local_id": "O10_B01",
+      "original_start": 236.0,
+      "original_end": 264.0,
+      "clipped_start": 240.0,
+      "clipped_end": 264.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "butter into a bowl"
+     }
+    ]
+   },
+   "arm_event_counts": {
+    "A": 4,
+    "B": 1
+   },
+   "comparison_unit": "overlap_local_event_sequence"
+  },
+  {
+   "overlap_id": "O11",
+   "start_sec": 264.0,
+   "end_sec": 288.0,
+   "shared_frame_times": [
+    264.0,
+    266.0,
+    268.0,
+    270.0,
+    272.0,
+    274.0,
+    276.0,
+    278.0,
+    280.0,
+    282.0,
+    284.0,
+    286.0
+   ],
+   "shared_frame_count": 12,
+   "arms": {
+    "A": [
+     {
+      "local_id": "O11_A01",
+      "original_start": 264.0,
+      "original_end": 272.0,
+      "clipped_start": 264.0,
+      "clipped_end": 272.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "using chopsticks",
+      "object_or_state": "lifting noodles from a bowl"
+     },
+     {
+      "local_id": "O11_A02",
+      "original_start": 272.0,
+      "original_end": 280.0,
+      "clipped_start": 272.0,
+      "clipped_end": 280.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "eating",
+      "object_or_state": "noodles with a spoon"
+     },
+     {
+      "local_id": "O11_A03",
+      "original_start": 280.0,
+      "original_end": 288.0,
+      "clipped_start": 280.0,
+      "clipped_end": 288.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "using chopsticks",
+      "object_or_state": "picking up a breaded food item"
+     }
+    ],
+    "B": [
+     {
+      "local_id": "O11_B01",
+      "original_start": 260.0,
+      "original_end": 288.0,
+      "clipped_start": 264.0,
+      "clipped_end": 288.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "eating",
+      "object_or_state": "noodles"
+     }
+    ]
+   },
+   "arm_event_counts": {
+    "A": 3,
+    "B": 1
+   },
+   "comparison_unit": "overlap_local_event_sequence"
+  },
+  {
+   "overlap_id": "O12",
+   "start_sec": 288.0,
+   "end_sec": 312.0,
+   "shared_frame_times": [
+    288.0,
+    290.0,
+    292.0,
+    294.0,
+    296.0,
+    298.0,
+    300.0,
+    302.0,
+    304.0,
+    306.0,
+    308.0,
+    310.0
+   ],
+   "shared_frame_count": 12,
+   "arms": {
+    "A": [
+     {
+      "local_id": "O12_A01",
+      "original_start": 288.0,
+      "original_end": 293.0,
+      "clipped_start": 288.0,
+      "clipped_end": 293.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "breaking apart",
+      "object_or_state": "breaded potato ball"
+     },
+     {
+      "local_id": "O12_A02",
+      "original_start": 293.0,
+      "original_end": 297.0,
+      "clipped_start": 293.0,
+      "clipped_end": 297.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "eating",
+      "object_or_state": "breaded potato ball"
+     },
+     {
+      "local_id": "O12_A03",
+      "original_start": 297.0,
+      "original_end": 301.0,
+      "clipped_start": 297.0,
+      "clipped_end": 301.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "eating",
+      "object_or_state": "curry udon"
+     },
+     {
+      "local_id": "O12_A04",
+      "original_start": 301.0,
+      "original_end": 305.0,
+      "clipped_start": 301.0,
+      "clipped_end": 305.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "eating",
+      "object_or_state": "breaded potato ball"
+     },
+     {
+      "local_id": "O12_A05",
+      "original_start": 305.0,
+      "original_end": 310.0,
+      "clipped_start": 305.0,
+      "clipped_end": 310.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "drinking",
+      "object_or_state": "water"
+     },
+     {
+      "local_id": "O12_A06",
+      "original_start": 310.0,
+      "original_end": 336.0,
+      "clipped_start": 310.0,
+      "clipped_end": 312.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "eating",
+      "object_or_state": "curry udon"
+     }
+    ],
+    "B": [
+     {
+      "local_id": "O12_B01",
+      "original_start": 288.0,
+      "original_end": 296.0,
+      "clipped_start": 288.0,
+      "clipped_end": 296.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "eating",
+      "object_or_state": "breaded food item"
+     },
+     {
+      "local_id": "O12_B02",
+      "original_start": 296.0,
+      "original_end": 304.0,
+      "clipped_start": 296.0,
+      "clipped_end": 304.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "using chopsticks",
+      "object_or_state": "picking up a breaded food item"
+     },
+     {
+      "local_id": "O12_B03",
+      "original_start": 304.0,
+      "original_end": 312.0,
+      "clipped_start": 304.0,
+      "clipped_end": 312.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "eating",
+      "object_or_state": "breaded food item"
+     }
+    ]
+   },
+   "arm_event_counts": {
+    "A": 6,
+    "B": 3
+   },
+   "comparison_unit": "overlap_local_event_sequence"
+  },
+  {
+   "overlap_id": "O13",
+   "start_sec": 312.0,
+   "end_sec": 336.0,
+   "shared_frame_times": [
+    312.0,
+    314.0,
+    316.0,
+    318.0,
+    320.0,
+    322.0,
+    324.0,
+    326.0,
+    328.0,
+    330.0,
+    332.0,
+    334.0
+   ],
+   "shared_frame_count": 12,
+   "arms": {
+    "A": [
+     {
+      "local_id": "O13_A01",
+      "original_start": 312.0,
+      "original_end": 317.0,
+      "clipped_start": 312.0,
+      "clipped_end": 317.0,
+      "clipped": false,
+      "actor": "a person",
+      "action": "eating",
+      "object_or_state": "cream curry udon"
+     },
+     {
+      "local_id": "O13_A02",
+      "original_start": 317.0,
+      "original_end": 360.0,
+      "clipped_start": 317.0,
+      "clipped_end": 336.0,
+      "clipped": true,
+      "actor": "a person",
+      "action": "eating",
+      "object_or_state": "rice with kimchi"
+     }
+    ],
+    "B": [
+     {
+      "local_id": "O13_B01",
+      "original_start": 310.0,
+      "original_end": 336.0,
+      "clipped_start": 312.0,
+      "clipped_end": 336.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "eating",
+      "object_or_state": "curry udon"
+     }
+    ]
+   },
+   "arm_event_counts": {
+    "A": 2,
+    "B": 1
+   },
+   "comparison_unit": "overlap_local_event_sequence"
+  },
+  {
+   "overlap_id": "O14",
+   "start_sec": 336.0,
+   "end_sec": 360.0,
+   "shared_frame_times": [
+    336.0,
+    338.0,
+    340.0,
+    342.0,
+    344.0,
+    346.0,
+    348.0,
+    350.0,
+    352.0,
+    354.0,
+    356.0,
+    358.0
+   ],
+   "shared_frame_count": 12,
+   "arms": {
+    "A": [
+     {
+      "local_id": "O14_A01",
+      "original_start": 317.0,
+      "original_end": 360.0,
+      "clipped_start": 336.0,
+      "clipped_end": 360.0,
+      "clipped": true,
+      "actor": "a person",
+      "action": "eating",
+      "object_or_state": "rice with kimchi"
+     }
+    ],
+    "B": [
+     {
+      "local_id": "O14_B01",
+      "original_start": 336.0,
+      "original_end": 348.0,
+      "clipped_start": 336.0,
+      "clipped_end": 348.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "eating",
+      "object_or_state": "noodles with chopsticks and spoon"
+     },
+     {
+      "local_id": "O14_B02",
+      "original_start": 348.0,
+      "original_end": 376.0,
+      "clipped_start": 348.0,
+      "clipped_end": 360.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "preparing food",
+      "object_or_state": "gimbal with gloves"
+     }
+    ]
+   },
+   "arm_event_counts": {
+    "A": 1,
+    "B": 2
+   },
+   "comparison_unit": "overlap_local_event_sequence"
+  },
+  {
+   "overlap_id": "O15",
+   "start_sec": 360.0,
+   "end_sec": 384.0,
+   "shared_frame_times": [
+    360.0,
+    362.0,
+    364.0,
+    366.0,
+    368.0,
+    370.0,
+    372.0,
+    374.0,
+    376.0,
+    378.0,
+    380.0,
+    382.0
+   ],
+   "shared_frame_count": 12,
+   "arms": {
+    "A": [
+     {
+      "local_id": "O15_A01",
+      "original_start": 360.0,
+      "original_end": 365.0,
+      "clipped_start": 360.0,
+      "clipped_end": 365.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "sushi roll on cutting board"
+     },
+     {
+      "local_id": "O15_A02",
+      "original_start": 365.0,
+      "original_end": 370.0,
+      "clipped_start": 365.0,
+      "clipped_end": 370.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "sushi rolls on plate"
+     },
+     {
+      "local_id": "O15_A03",
+      "original_start": 370.0,
+      "original_end": 375.0,
+      "clipped_start": 370.0,
+      "clipped_end": 375.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "arranging",
+      "object_or_state": "sushi rolls on plate"
+     },
+     {
+      "local_id": "O15_A04",
+      "original_start": 375.0,
+      "original_end": 380.0,
+      "clipped_start": 375.0,
+      "clipped_end": 380.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "bowl of soup on table"
+     },
+     {
+      "local_id": "O15_A05",
+      "original_start": 380.0,
+      "original_end": 385.0,
+      "clipped_start": 380.0,
+      "clipped_end": 384.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "chicken legs in steamer"
+     }
+    ],
+    "B": [
+     {
+      "local_id": "O15_B01",
+      "original_start": 348.0,
+      "original_end": 376.0,
+      "clipped_start": 360.0,
+      "clipped_end": 376.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "preparing food",
+      "object_or_state": "gimbal with gloves"
+     },
+     {
+      "local_id": "O15_B02",
+      "original_start": 376.0,
+      "original_end": 380.0,
+      "clipped_start": 376.0,
+      "clipped_end": 380.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "eating",
+      "object_or_state": "food with spoon"
+     },
+     {
+      "local_id": "O15_B03",
+      "original_start": 380.0,
+      "original_end": 384.0,
+      "clipped_start": 380.0,
+      "clipped_end": 384.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "preparing food",
+      "object_or_state": "chicken with sauce"
+     }
+    ]
+   },
+   "arm_event_counts": {
+    "A": 5,
+    "B": 3
+   },
+   "comparison_unit": "overlap_local_event_sequence"
+  },
+  {
+   "overlap_id": "O16",
+   "start_sec": 384.0,
+   "end_sec": 408.0,
+   "shared_frame_times": [
+    384.0,
+    386.0,
+    388.0,
+    390.0,
+    392.0,
+    394.0,
+    396.0,
+    398.0,
+    400.0,
+    402.0,
+    404.0,
+    406.0
+   ],
+   "shared_frame_count": 12,
+   "arms": {
+    "A": [
+     {
+      "local_id": "O16_A01",
+      "original_start": 380.0,
+      "original_end": 385.0,
+      "clipped_start": 384.0,
+      "clipped_end": 385.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "chicken legs in steamer"
+     },
+     {
+      "local_id": "O16_A02",
+      "original_start": 385.0,
+      "original_end": 390.0,
+      "clipped_start": 385.0,
+      "clipped_end": 390.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "noodles in bowl"
+     },
+     {
+      "local_id": "O16_A03",
+      "original_start": 390.0,
+      "original_end": 400.0,
+      "clipped_start": 390.0,
+      "clipped_end": 400.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "chicken legs in bowl"
+     },
+     {
+      "local_id": "O16_A04",
+      "original_start": 400.0,
+      "original_end": 405.0,
+      "clipped_start": 400.0,
+      "clipped_end": 405.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "holding",
+      "object_or_state": "orange cloth"
+     },
+     {
+      "local_id": "O16_A05",
+      "original_start": 405.0,
+      "original_end": 408.0,
+      "clipped_start": 405.0,
+      "clipped_end": 408.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "holding",
+      "object_or_state": "pink cloth"
+     }
+    ],
+    "B": [
+     {
+      "local_id": "O16_B01",
+      "original_start": 384.0,
+      "original_end": 389.0,
+      "clipped_start": 384.0,
+      "clipped_end": 389.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "noodles in a bowl"
+     },
+     {
+      "local_id": "O16_B02",
+      "original_start": 389.0,
+      "original_end": 400.0,
+      "clipped_start": 389.0,
+      "clipped_end": 400.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "chicken legs in a bowl"
+     },
+     {
+      "local_id": "O16_B03",
+      "original_start": 400.0,
+      "original_end": 408.0,
+      "clipped_start": 400.0,
+      "clipped_end": 408.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "holding",
+      "object_or_state": "orange pajama pants"
+     }
+    ]
+   },
+   "arm_event_counts": {
+    "A": 5,
+    "B": 3
+   },
+   "comparison_unit": "overlap_local_event_sequence"
+  },
+  {
+   "overlap_id": "O17",
+   "start_sec": 408.0,
+   "end_sec": 432.0,
+   "shared_frame_times": [
+    408.0,
+    410.0,
+    412.0,
+    414.0,
+    416.0,
+    418.0,
+    420.0,
+    422.0,
+    424.0,
+    426.0,
+    428.0,
+    430.0
+   ],
+   "shared_frame_count": 12,
+   "arms": {
+    "A": [
+     {
+      "local_id": "O17_A01",
+      "original_start": 408.0,
+      "original_end": 413.0,
+      "clipped_start": 408.0,
+      "clipped_end": 413.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "holding",
+      "object_or_state": "elastic band and orange fabric"
+     },
+     {
+      "local_id": "O17_A02",
+      "original_start": 413.0,
+      "original_end": 420.0,
+      "clipped_start": 413.0,
+      "clipped_end": 420.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "holding",
+      "object_or_state": "orange fabric with pattern"
+     },
+     {
+      "local_id": "O17_A03",
+      "original_start": 420.0,
+      "original_end": 426.0,
+      "clipped_start": 420.0,
+      "clipped_end": 426.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "orange fabric on drawer"
+     },
+     {
+      "local_id": "O17_A04",
+      "original_start": 426.0,
+      "original_end": 433.0,
+      "clipped_start": 426.0,
+      "clipped_end": 432.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "white elastic band on sewing machine"
+     }
+    ],
+    "B": [
+     {
+      "local_id": "O17_B01",
+      "original_start": 408.0,
+      "original_end": 412.0,
+      "clipped_start": 408.0,
+      "clipped_end": 412.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "pulling",
+      "object_or_state": "elastic band from pajama pants"
+     },
+     {
+      "local_id": "O17_B02",
+      "original_start": 412.0,
+      "original_end": 416.0,
+      "clipped_start": 412.0,
+      "clipped_end": 416.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "holding",
+      "object_or_state": "elastic band"
+     },
+     {
+      "local_id": "O17_B03",
+      "original_start": 416.0,
+      "original_end": 420.0,
+      "clipped_start": 416.0,
+      "clipped_end": 420.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "holding",
+      "object_or_state": "orange pajama pants"
+     },
+     {
+      "local_id": "O17_B04",
+      "original_start": 420.0,
+      "original_end": 432.0,
+      "clipped_start": 420.0,
+      "clipped_end": 432.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "orange pajama pants in a drawer"
+     }
+    ]
+   },
+   "arm_event_counts": {
+    "A": 4,
+    "B": 4
+   },
+   "comparison_unit": "overlap_local_event_sequence"
+  },
+  {
+   "overlap_id": "O18",
+   "start_sec": 432.0,
+   "end_sec": 456.0,
+   "shared_frame_times": [
+    432.0,
+    434.0,
+    436.0,
+    438.0,
+    440.0,
+    442.0,
+    444.0,
+    446.0,
+    448.0,
+    450.0,
+    452.0,
+    454.0
+   ],
+   "shared_frame_count": 12,
+   "arms": {
+    "A": [
+     {
+      "local_id": "O18_A01",
+      "original_start": 432.0,
+      "original_end": 440.0,
+      "clipped_start": 432.0,
+      "clipped_end": 440.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "sewing",
+      "object_or_state": "orange fabric with green dots"
+     },
+     {
+      "local_id": "O18_A02",
+      "original_start": 440.0,
+      "original_end": 460.0,
+      "clipped_start": 440.0,
+      "clipped_end": 456.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "holding up",
+      "object_or_state": "orange fabric with green dots"
+     }
+    ],
+    "B": [
+     {
+      "local_id": "O18_B01",
+      "original_start": 426.0,
+      "original_end": 433.0,
+      "clipped_start": 432.0,
+      "clipped_end": 433.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "white elastic band on sewing machine"
+     },
+     {
+      "local_id": "O18_B02",
+      "original_start": 433.0,
+      "original_end": 440.0,
+      "clipped_start": 433.0,
+      "clipped_end": 440.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "sewing",
+      "object_or_state": "orange fabric with pattern"
+     },
+     {
+      "local_id": "O18_B03",
+      "original_start": 440.0,
+      "original_end": 456.0,
+      "clipped_start": 440.0,
+      "clipped_end": 456.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "holding",
+      "object_or_state": "orange fabric with pattern"
+     }
+    ]
+   },
+   "arm_event_counts": {
+    "A": 2,
+    "B": 3
+   },
+   "comparison_unit": "overlap_local_event_sequence"
+  },
+  {
+   "overlap_id": "O19",
+   "start_sec": 456.0,
+   "end_sec": 480.0,
+   "shared_frame_times": [
+    456.0,
+    458.0,
+    460.0,
+    462.0,
+    464.0,
+    466.0,
+    468.0,
+    470.0,
+    472.0,
+    474.0,
+    476.0,
+    478.0
+   ],
+   "shared_frame_count": 12,
+   "arms": {
+    "A": [
+     {
+      "local_id": "O19_A01",
+      "original_start": 456.0,
+      "original_end": 460.0,
+      "clipped_start": 456.0,
+      "clipped_end": 460.0,
+      "clipped": false,
+      "actor": "hand",
+      "action": "placing",
+      "object_or_state": "crispy ball on plate"
+     },
+     {
+      "local_id": "O19_A02",
+      "original_start": 460.0,
+      "original_end": 464.0,
+      "clipped_start": 460.0,
+      "clipped_end": 464.0,
+      "clipped": false,
+      "actor": "hand",
+      "action": "chopping",
+      "object_or_state": "tomato"
+     },
+     {
+      "local_id": "O19_A03",
+      "original_start": 464.0,
+      "original_end": 468.0,
+      "clipped_start": 464.0,
+      "clipped_end": 468.0,
+      "clipped": false,
+      "actor": "hand",
+      "action": "cracking",
+      "object_or_state": "egg into measuring cup"
+     },
+     {
+      "local_id": "O19_A04",
+      "original_start": 468.0,
+      "original_end": 472.0,
+      "clipped_start": 468.0,
+      "clipped_end": 472.0,
+      "clipped": false,
+      "actor": "hand",
+      "action": "stirring",
+      "object_or_state": "egg mixture in measuring cup"
+     },
+     {
+      "local_id": "O19_A05",
+      "original_start": 472.0,
+      "original_end": 476.0,
+      "clipped_start": 472.0,
+      "clipped_end": 476.0,
+      "clipped": false,
+      "actor": "hand",
+      "action": "pouring",
+      "object_or_state": "egg mixture into pan"
+     },
+     {
+      "local_id": "O19_A06",
+      "original_start": 476.0,
+      "original_end": 480.0,
+      "clipped_start": 476.0,
+      "clipped_end": 480.0,
+      "clipped": false,
+      "actor": "hand",
+      "action": "stirring",
+      "object_or_state": "egg mixture in pan"
+     }
+    ],
+    "B": [
+     {
+      "local_id": "O19_B01",
+      "original_start": 440.0,
+      "original_end": 460.0,
+      "clipped_start": 456.0,
+      "clipped_end": 460.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "holding up",
+      "object_or_state": "orange fabric with green dots"
+     },
+     {
+      "local_id": "O19_B02",
+      "original_start": 460.0,
+      "original_end": 470.0,
+      "clipped_start": 460.0,
+      "clipped_end": 470.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "chopping",
+      "object_or_state": "tomato"
+     },
+     {
+      "local_id": "O19_B03",
+      "original_start": 470.0,
+      "original_end": 475.0,
+      "clipped_start": 470.0,
+      "clipped_end": 475.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "pouring",
+      "object_or_state": "egg yolk into measuring cup"
+     },
+     {
+      "local_id": "O19_B04",
+      "original_start": 475.0,
+      "original_end": 480.0,
+      "clipped_start": 475.0,
+      "clipped_end": 480.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "stirring",
+      "object_or_state": "egg yolk in measuring cup"
+     }
+    ]
+   },
+   "arm_event_counts": {
+    "A": 6,
+    "B": 4
+   },
+   "comparison_unit": "overlap_local_event_sequence"
+  },
+  {
+   "overlap_id": "O20",
+   "start_sec": 480.0,
+   "end_sec": 504.0,
+   "shared_frame_times": [
+    480.0,
+    482.0,
+    484.0,
+    486.0,
+    488.0,
+    490.0,
+    492.0,
+    494.0,
+    496.0,
+    498.0,
+    500.0,
+    502.0
+   ],
+   "shared_frame_count": 12,
+   "arms": {
+    "A": [
+     {
+      "local_id": "O20_A01",
+      "original_start": 480.0,
+      "original_end": 484.0,
+      "clipped_start": 480.0,
+      "clipped_end": 484.0,
+      "clipped": false,
+      "actor": "hand",
+      "action": "transferring",
+      "object_or_state": "egg mixture onto plate"
+     },
+     {
+      "local_id": "O20_A02",
+      "original_start": 484.0,
+      "original_end": 488.0,
+      "clipped_start": 484.0,
+      "clipped_end": 488.0,
+      "clipped": false,
+      "actor": "hand",
+      "action": "pouring",
+      "object_or_state": "olive oil onto tofu"
+     },
+     {
+      "local_id": "O20_A03",
+      "original_start": 488.0,
+      "original_end": 492.0,
+      "clipped_start": 488.0,
+      "clipped_end": 492.0,
+      "clipped": false,
+      "actor": "hand",
+      "action": "placing",
+      "object_or_state": "tofu on plate"
+     },
+     {
+      "local_id": "O20_A04",
+      "original_start": 492.0,
+      "original_end": 496.0,
+      "clipped_start": 492.0,
+      "clipped_end": 496.0,
+      "clipped": false,
+      "actor": "hand",
+      "action": "placing",
+      "object_or_state": "shredded cabbage on plate"
+     },
+     {
+      "local_id": "O20_A05",
+      "original_start": 496.0,
+      "original_end": 500.0,
+      "clipped_start": 496.0,
+      "clipped_end": 500.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "tying",
+      "object_or_state": "hair into bun"
+     },
+     {
+      "local_id": "O20_A06",
+      "original_start": 500.0,
+      "original_end": 504.0,
+      "clipped_start": 500.0,
+      "clipped_end": 504.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "adjusting",
+      "object_or_state": "hair bun"
+     }
+    ],
+    "B": [
+     {
+      "local_id": "O20_B01",
+      "original_start": 480.0,
+      "original_end": 483.0,
+      "clipped_start": 480.0,
+      "clipped_end": 483.0,
+      "clipped": false,
+      "actor": "woman",
+      "action": "pouring",
+      "object_or_state": "sauce onto food"
+     },
+     {
+      "local_id": "O20_B02",
+      "original_start": 483.0,
+      "original_end": 486.0,
+      "clipped_start": 483.0,
+      "clipped_end": 486.0,
+      "clipped": false,
+      "actor": "woman",
+      "action": "pouring",
+      "object_or_state": "olive oil onto tofu"
+     },
+     {
+      "local_id": "O20_B03",
+      "original_start": 486.0,
+      "original_end": 528.0,
+      "clipped_start": 486.0,
+      "clipped_end": 504.0,
+      "clipped": true,
+      "actor": "woman",
+      "action": "sprinkling",
+      "object_or_state": "black pepper on food"
+     }
+    ]
+   },
+   "arm_event_counts": {
+    "A": 6,
+    "B": 3
+   },
+   "comparison_unit": "overlap_local_event_sequence"
+  },
+  {
+   "overlap_id": "O21",
+   "start_sec": 504.0,
+   "end_sec": 528.0,
+   "shared_frame_times": [
+    504.0,
+    506.0,
+    508.0,
+    510.0,
+    512.0,
+    514.0,
+    516.0,
+    518.0,
+    520.0,
+    522.0,
+    524.0,
+    526.0
+   ],
+   "shared_frame_count": 12,
+   "arms": {
+    "A": [
+     {
+      "local_id": "O21_A01",
+      "original_start": 486.0,
+      "original_end": 528.0,
+      "clipped_start": 504.0,
+      "clipped_end": 528.0,
+      "clipped": true,
+      "actor": "woman",
+      "action": "sprinkling",
+      "object_or_state": "black pepper on food"
+     }
+    ],
+    "B": [
+     {
+      "local_id": "O21_B01",
+      "original_start": 504.0,
+      "original_end": 509.0,
+      "clipped_start": 504.0,
+      "clipped_end": 509.0,
+      "clipped": false,
+      "actor": "a woman",
+      "action": "walking",
+      "object_or_state": "through a room"
+     },
+     {
+      "local_id": "O21_B02",
+      "original_start": 509.0,
+      "original_end": 513.0,
+      "clipped_start": 509.0,
+      "clipped_end": 513.0,
+      "clipped": false,
+      "actor": "a woman",
+      "action": "placing",
+      "object_or_state": "a small box on a table"
+     },
+     {
+      "local_id": "O21_B03",
+      "original_start": 513.0,
+      "original_end": 520.0,
+      "clipped_start": 513.0,
+      "clipped_end": 520.0,
+      "clipped": false,
+      "actor": "a woman",
+      "action": "holding",
+      "object_or_state": "two small boxes"
+     },
+     {
+      "local_id": "O21_B04",
+      "original_start": 520.0,
+      "original_end": 524.0,
+      "clipped_start": 520.0,
+      "clipped_end": 524.0,
+      "clipped": false,
+      "actor": "a woman",
+      "action": "placing",
+      "object_or_state": "a small pouch on a table"
+     },
+     {
+      "local_id": "O21_B05",
+      "original_start": 524.0,
+      "original_end": 529.0,
+      "clipped_start": 524.0,
+      "clipped_end": 528.0,
+      "clipped": true,
+      "actor": "a woman",
+      "action": "wrapping",
+      "object_or_state": "a small pouch in a brown paper bag"
+     }
+    ]
+   },
+   "arm_event_counts": {
+    "A": 1,
+    "B": 5
+   },
+   "comparison_unit": "overlap_local_event_sequence"
+  },
+  {
+   "overlap_id": "O22",
+   "start_sec": 528.0,
+   "end_sec": 552.0,
+   "shared_frame_times": [
+    528.0,
+    530.0,
+    532.0,
+    534.0,
+    536.0,
+    538.0,
+    540.0,
+    542.0,
+    544.0,
+    546.0,
+    548.0,
+    550.0
+   ],
+   "shared_frame_count": 12,
+   "arms": {
+    "A": [
+     {
+      "local_id": "O22_A01",
+      "original_start": 528.0,
+      "original_end": 533.0,
+      "clipped_start": 528.0,
+      "clipped_end": 533.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "wrapping",
+      "object_or_state": "gift in kraft paper"
+     },
+     {
+      "local_id": "O22_A02",
+      "original_start": 533.0,
+      "original_end": 537.0,
+      "clipped_start": 533.0,
+      "clipped_end": 537.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "placing",
+      "object_or_state": "stamp on kraft paper bag"
+     },
+     {
+      "local_id": "O22_A03",
+      "original_start": 537.0,
+      "original_end": 541.0,
+      "clipped_start": 537.0,
+      "clipped_end": 541.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "tying",
+      "object_or_state": "ribbon around kraft paper bag"
+     },
+     {
+      "local_id": "O22_A04",
+      "original_start": 541.0,
+      "original_end": 545.0,
+      "clipped_start": 541.0,
+      "clipped_end": 545.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "adjusting",
+      "object_or_state": "bow on kraft paper bag"
+     },
+     {
+      "local_id": "O22_A05",
+      "original_start": 545.0,
+      "original_end": 550.0,
+      "clipped_start": 545.0,
+      "clipped_end": 550.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "holding",
+      "object_or_state": "wrapped gift"
+     },
+     {
+      "local_id": "O22_A06",
+      "original_start": 550.0,
+      "original_end": 555.0,
+      "clipped_start": 550.0,
+      "clipped_end": 552.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "unfolding",
+      "object_or_state": "fabric"
+     }
+    ],
+    "B": [
+     {
+      "local_id": "O22_B01",
+      "original_start": 524.0,
+      "original_end": 529.0,
+      "clipped_start": 528.0,
+      "clipped_end": 529.0,
+      "clipped": true,
+      "actor": "a woman",
+      "action": "wrapping",
+      "object_or_state": "a small pouch in a brown paper bag"
+     },
+     {
+      "local_id": "O22_B02",
+      "original_start": 529.0,
+      "original_end": 533.0,
+      "clipped_start": 529.0,
+      "clipped_end": 533.0,
+      "clipped": false,
+      "actor": "a woman",
+      "action": "placing",
+      "object_or_state": "a stamp on a table"
+     },
+     {
+      "local_id": "O22_B03",
+      "original_start": 533.0,
+      "original_end": 541.0,
+      "clipped_start": 533.0,
+      "clipped_end": 541.0,
+      "clipped": false,
+      "actor": "a woman",
+      "action": "tying",
+      "object_or_state": "a ribbon around a wrapped package"
+     },
+     {
+      "local_id": "O22_B04",
+      "original_start": 541.0,
+      "original_end": 552.0,
+      "clipped_start": 541.0,
+      "clipped_end": 552.0,
+      "clipped": false,
+      "actor": "a woman",
+      "action": "holding",
+      "object_or_state": "a wrapped package"
+     }
+    ]
+   },
+   "arm_event_counts": {
+    "A": 6,
+    "B": 4
+   },
+   "comparison_unit": "overlap_local_event_sequence"
+  },
+  {
+   "overlap_id": "O23",
+   "start_sec": 552.0,
+   "end_sec": 576.0,
+   "shared_frame_times": [
+    552.0,
+    554.0,
+    556.0,
+    558.0,
+    560.0,
+    562.0,
+    564.0,
+    566.0,
+    568.0,
+    570.0,
+    572.0,
+    574.0
+   ],
+   "shared_frame_count": 12,
+   "arms": {
+    "A": [
+     {
+      "local_id": "O23_A01",
+      "original_start": 552.0,
+      "original_end": 557.0,
+      "clipped_start": 552.0,
+      "clipped_end": 557.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "holding and displaying fabric",
+      "object_or_state": "white fabric"
+     },
+     {
+      "local_id": "O23_A02",
+      "original_start": 557.0,
+      "original_end": 561.0,
+      "clipped_start": 557.0,
+      "clipped_end": 561.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "placing fabric on table",
+      "object_or_state": "white fabric"
+     },
+     {
+      "local_id": "O23_A03",
+      "original_start": 561.0,
+      "original_end": 565.0,
+      "clipped_start": 561.0,
+      "clipped_end": 565.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "picking up handbag",
+      "object_or_state": "brown handbag"
+     },
+     {
+      "local_id": "O23_A04",
+      "original_start": 565.0,
+      "original_end": 573.0,
+      "clipped_start": 565.0,
+      "clipped_end": 573.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "taking mirror selfie",
+      "object_or_state": "camera"
+     },
+     {
+      "local_id": "O23_A05",
+      "original_start": 573.0,
+      "original_end": 580.0,
+      "clipped_start": 573.0,
+      "clipped_end": 576.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "adjusting clothing",
+      "object_or_state": "white shirt and shorts"
+     }
+    ],
+    "B": [
+     {
+      "local_id": "O23_B01",
+      "original_start": 550.0,
+      "original_end": 555.0,
+      "clipped_start": 552.0,
+      "clipped_end": 555.0,
+      "clipped": true,
+      "actor": "person",
+      "action": "unfolding",
+      "object_or_state": "fabric"
+     },
+     {
+      "local_id": "O23_B02",
+      "original_start": 555.0,
+      "original_end": 560.0,
+      "clipped_start": 555.0,
+      "clipped_end": 560.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "putting on",
+      "object_or_state": "fabric"
+     },
+     {
+      "local_id": "O23_B03",
+      "original_start": 560.0,
+      "original_end": 565.0,
+      "clipped_start": 560.0,
+      "clipped_end": 565.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "putting on",
+      "object_or_state": "handbag"
+     },
+     {
+      "local_id": "O23_B04",
+      "original_start": 565.0,
+      "original_end": 570.0,
+      "clipped_start": 565.0,
+      "clipped_end": 570.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "taking photo",
+      "object_or_state": "mirror"
+     },
+     {
+      "local_id": "O23_B05",
+      "original_start": 570.0,
+      "original_end": 576.0,
+      "clipped_start": 570.0,
+      "clipped_end": 576.0,
+      "clipped": false,
+      "actor": "person",
+      "action": "adjusting",
+      "object_or_state": "clothing"
+     }
+    ]
+   },
+   "arm_event_counts": {
+    "A": 5,
+    "B": 5
+   },
+   "comparison_unit": "overlap_local_event_sequence"
+  }
+ ]
+}
