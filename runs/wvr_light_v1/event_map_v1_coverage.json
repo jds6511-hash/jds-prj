@@ -1,0 +1,2913 @@
+{
+ "schema": "wvr_event_map_v1_coverage",
+ "event": "WVR_EVENT_MAP_COVERAGE_SHADOW_V1",
+ "prereg": "docs/preregistration/WVR_EVENT_MAP_COVERAGE_SHADOW_V1_2026-09-10.md",
+ "source_manifest_file": "docs/preregistration/WVR_EVENT_MAP_COVERAGE_SHADOW_V1_sources.json",
+ "source_manifest": {
+  "observed_count": 46,
+  "expected_count": 46,
+  "manifest_sha256": "a0726a4b13b4bd0f6e1ea692eec55e8cd0343132e32b532283e6e68511680631",
+  "expected_manifest_sha256": "a0726a4b13b4bd0f6e1ea692eec55e8cd0343132e32b532283e6e68511680631",
+  "unchanged": true
+ },
+ "derivation_script_commit": "7ba58dea1246688568af05598a7be9c897237689",
+ "source_shadow_event": "WVR_EVENT_EXTRACTION_SHADOW_V1",
+ "source_records": {
+  "W01": {
+   "record_sha256": "e179370f38d6bc0f6af15a1baf8c02b6aad45eb8a65f4e2d86341abff2a8cea5",
+   "raw_output_hash": "230b46efad477aa9db4ae3055699bf18259b5166e8c94eeb0c27ad996bde473e",
+   "collapse_output_hash": "6d9e476b18399fae581fd9083e5362e9e3e86419f7a0510581616b0cc44af105",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    24.0,
+    72.0
+   ]
+  },
+  "W02": {
+   "record_sha256": "1a5941b0e4084b5b95a57cef3d24cdaf1af7e4a1f55d896d1894d63daa007597",
+   "raw_output_hash": "a2bd8c578e039b041580011ff12db487ba8c3af5d273ff46747a14d5d16bfea4",
+   "collapse_output_hash": "de8aec324cfb6608b1126db09464744af8059e59c2ecff8d6194e6d08238d3ea",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    48.0,
+    96.0
+   ]
+  },
+  "W03": {
+   "record_sha256": "cb43803e5fd1bd63d89b9fc344b9300641b3642067fb35aa0d92961d04fbe137",
+   "raw_output_hash": "21b8cae95c1f84629fbb9d631f6698c424be8660ff54ad6baf5bd8150b83699a",
+   "collapse_output_hash": "026026f18903b18eb0f8d12fb7443a5b66dd24bbb6e2f0009730bbefd5f10c7d",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    72.0,
+    120.0
+   ]
+  },
+  "W04": {
+   "record_sha256": "ca8e34db2c037248d293ed902983c541e9382123151abe3359c83767ae1f8b43",
+   "raw_output_hash": "15ae681a275782513a74205e061a7613777ec09518c0d92216f8028037c3a4bc",
+   "collapse_output_hash": "171ea45bf5c54911453c861cb6b822d322928a1e84b5aaf560b4a0bf11d8154b",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    96.0,
+    144.0
+   ]
+  },
+  "W05": {
+   "record_sha256": "ebcd438d8ccd91b248622a626c2932b26e2787a95e31aee8a332fc45a92ee241",
+   "raw_output_hash": "38caf8e6cfde38ce8da49bc6fcdd68e7c85454f8db828fdf27906843758564eb",
+   "collapse_output_hash": "717c554a90967bba5170fe1f2869306d7cacab6503e29063110ab8b55a53b616",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    120.0,
+    168.0
+   ]
+  },
+  "W06": {
+   "record_sha256": "c815b7a1d4f53286f903ca742073abe6347351efc0171e533e55ed495e853fe5",
+   "raw_output_hash": "6d72c95b183ee22eed47eb2fab8e0beef47f970c96517618641b15afdebe36dd",
+   "collapse_output_hash": "013e58dd396267354e786c0849ffa4ac7e66c87ebd5192df0d058da4012aac5a",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    144.0,
+    192.0
+   ]
+  },
+  "W07": {
+   "record_sha256": "89014e736d27b9fd4b81d7d4f1c51123fbbe514c296815d689e0ab7aaedd71a1",
+   "raw_output_hash": "bc164f109ed86d900da13798a16c73edcc56ac8d58f41f053630cd2ffad4b683",
+   "collapse_output_hash": "180e9385b206283c92bf9f3f5524201c69550921ed0ede327033fb76e085b5e8",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    168.0,
+    216.0
+   ]
+  },
+  "W08": {
+   "record_sha256": "fc3c2981f0708d1e56732309f150404ed40f800814f97b87bd72eec1e104fa8d",
+   "raw_output_hash": "94bde949880f3bdd957b7e2d08bab2cb15de1c33cfe7f11ac1411d8fff0e72de",
+   "collapse_output_hash": "618078c6128e82cecf474a86ebd3eacdb9a6c39ebf69d25c37abeae97b6dfb7a",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    192.0,
+    240.0
+   ]
+  },
+  "W09": {
+   "record_sha256": "0ec0c6bb22bc16ec3b1c108053ccc042f5bf10e8996a527cd48fac433e4405a8",
+   "raw_output_hash": "a8c9fe682144d18cf166e874816e0258d7c1852f8ba3b595a22b0a4ffa7c74d2",
+   "collapse_output_hash": "6e4d432311ef6a8bda3c46ac8104f4e608b7ccc171d4817dcb83b715704f419b",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    216.0,
+    264.0
+   ]
+  },
+  "W10": {
+   "record_sha256": "c7464f8b16848b25dae7203c847b8d3d761e74abeb9b5697301e015cca8591cf",
+   "raw_output_hash": "453f2db29166bf3f93f69adb58f7f5292f5ff017b3c28a8c956d4ddc27d5d5d8",
+   "collapse_output_hash": "b23bf4a195a08b4367d229a00db833726a76fd352875e62c933b10af7adbd7bc",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    240.0,
+    288.0
+   ]
+  },
+  "W11": {
+   "record_sha256": "b634dc7a6a1192b45bae9aa05c35ce8828953006a8dab221093ed2012bb4c9b7",
+   "raw_output_hash": "5033d614f5ccc07997765757efe14335467b15c2993c83a456aac20616b021c5",
+   "collapse_output_hash": "478a13d6fd43a5fa3a3ef63de5b4fa84c1dc64205f314cb554db12916a461fbc",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    264.0,
+    312.0
+   ]
+  },
+  "W12": {
+   "record_sha256": "ba68ae6eb6666af07bd30370d8de5ab65cac9f65a3b2fce519d147a684e4a4dd",
+   "raw_output_hash": "a3d74b8b7162680f466e7621d244d3d6341162fcd43cb547ac7c88dcf8ee8c25",
+   "collapse_output_hash": "a3b5a83ea976fa1f4b429745c906995d351adbb40858db9839e768dd89326f8e",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    288.0,
+    336.0
+   ]
+  },
+  "W13": {
+   "record_sha256": "5a3111dd817024f1d7403e06d50d5499560aa30262b179888c5189a2e694aaea",
+   "raw_output_hash": "1bce25c6999934a31b22f21b0b64c6af26f85a37d4333abe81853d0ec3d0180f",
+   "collapse_output_hash": "bd3eb87d118950031f2ff03c5b9231b8f75da8a3d33235e9724faeb858ee7138",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    312.0,
+    360.0
+   ]
+  },
+  "W14": {
+   "record_sha256": "0c06274a563707c12ae4ffd83511e89b9b300e21b879555476e3979cfbcd887b",
+   "raw_output_hash": "a1d27f4bcae93552e769d41f6d4110cc3d0fcba4350be79ef4dfbf1fadba1902",
+   "collapse_output_hash": "e0439e058360096da9c70f736ad50a86e1e5ab875090a9c3266ea3ed6ec9b2bc",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    336.0,
+    384.0
+   ]
+  },
+  "W15": {
+   "record_sha256": "18a9dd7f14c134bf470bc8266ff6d65f61c5b277a785a6e40f754d195076710e",
+   "raw_output_hash": "00d4aa8b676f0e77b3d906e6b73ce61853f6030db53be185a0344c863880adbc",
+   "collapse_output_hash": "41a40bfc8ad22f03655d651c5977022345745b53fb17d32424e594ebc4b62359",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    360.0,
+    408.0
+   ]
+  },
+  "W16": {
+   "record_sha256": "31eff3445ca233bfef0c3bb9bebfc6c22287b9ac058809fb2001950f759b8fc5",
+   "raw_output_hash": "7b5f8a391fc430558cb2509f57af68983e1ca480332c99a96c5935ca5fbe0564",
+   "collapse_output_hash": "4a871a9c2734aaab51d13ee9ea15b98fdcaa03934a03712ca1eb0e7fbbca174a",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    384.0,
+    432.0
+   ]
+  },
+  "W17": {
+   "record_sha256": "82ebc6cec624c08170f983fbde2f379761c65085c8e10a16877bc48bf867cdf5",
+   "raw_output_hash": "68aa80fcbb88689769bc4ff59e5b6a9140518b9407ff35755e2e9b89af4de86c",
+   "collapse_output_hash": "a05c74b7cefa58c6460c75f086a0fb5c2fdef835de92c77b3dab3797ab984c8f",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    408.0,
+    456.0
+   ]
+  },
+  "W18": {
+   "record_sha256": "82f5cf35441a794695d4db6cf04848496f470c263652dfbb14003e01a9c27fdf",
+   "raw_output_hash": "fefaf157cfd63784b11e48b33c4096c67040dbd4525f9a35faeb788701309fe1",
+   "collapse_output_hash": "de665aa99b994e2a67d2cbc4cbf12a36dd7c4e56446c0d52ec0a9fd2c88c0ccf",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    432.0,
+    480.0
+   ]
+  },
+  "W19": {
+   "record_sha256": "a3137dd71e8d79ef646da8dee1d21f60496e2be1858ee0dce456cfbb2e0664af",
+   "raw_output_hash": "fff649512789311634cd1e32b48c87f230d7b4b37988b46b008718407669f9bf",
+   "collapse_output_hash": "9a4d2a2ae182a3fa93a8c4f25c5e62bcc4e97f421026b48391563e77ac1b8642",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    456.0,
+    504.0
+   ]
+  },
+  "W20": {
+   "record_sha256": "724da75d16db10f2fc44a03da0cb407d8d263a1872b89a1b7c194369448e2b31",
+   "raw_output_hash": "50e6e956f621b589a9b73008f3235b6537ba7e371bde8c6566a880e4782a2d4c",
+   "collapse_output_hash": "3c502102f40a498fd6aed92bb7de193dfb9ee3c0d28a4bc2a30405da5469cbcb",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    480.0,
+    528.0
+   ]
+  },
+  "W21": {
+   "record_sha256": "0b440582dbe8b562b88c8705f685ba5e07a36ec6cf772ef668d36060075fd7e5",
+   "raw_output_hash": "de64a49ae3352baf322f510dec8a7dbbff0fcb3f31c21abbdedfab1fdb4ab8f2",
+   "collapse_output_hash": "85808a6e04afa9a4c81a8a3e6359b20695169f7b466c67ba39f6b3d046af7240",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    504.0,
+    552.0
+   ]
+  },
+  "W22": {
+   "record_sha256": "18a7743f5eec48fe3fe018cf0b3afb9c7a965c964efe9e318082bcc404fefd24",
+   "raw_output_hash": "225e0fc86a62122b09d8ae4683a741ea76e21e0029bf8d001ff521abfa1dada0",
+   "collapse_output_hash": "770e7c3b45110b7dd69b0728f5f770d4f1214c2448d74f6bdc790e793a839a2f",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    528.0,
+    576.0
+   ]
+  },
+  "W23": {
+   "record_sha256": "051fecc02db5cbc1af7ff2ec6739ba50005fa83a34ed19520689321d979b98df",
+   "raw_output_hash": "29657ce21052b465ddacbdeb440e601605c1561a6fd9ffeb532f8a3263bd748b",
+   "collapse_output_hash": "d7cc147c643970ecad8c41e2db2b9c0b1398f9b35d6317d3162100b6d30936c1",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    552.0,
+    600.0
+   ]
+  }
+ },
+ "video_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+ "invalid_sources": {
+  "W00": {
+   "status": "WINDOW_INVALID",
+   "span": [
+    0.0,
+    48.0
+   ],
+   "record_sha256": "c8e65b74b8c71aa97f85fc69c6ffdfb2c72fab18911e6e1565c8458e44daa074",
+   "used_as_event_source": false,
+   "rerun_allowed": false
+  }
+ },
+ "new_inference_count": 0,
+ "video_sec": 600.0,
+ "window_coverage_sec": 576.0,
+ "window_coverage_pct": 96.0,
+ "event_coverage_sec": 576.0,
+ "event_coverage_pct": 96.0,
+ "redundant_window_coverage_sec": 528.0,
+ "redundant_window_coverage_pct": 88.0,
+ "redundant_event_coverage_sec": 518.0,
+ "redundant_event_coverage_pct": 86.33,
+ "unresolved_sec": 24.0,
+ "unresolved_pct": 4.0,
+ "event_coverage_intervals": [
+  [
+   24.0,
+   600.0
+  ]
+ ],
+ "unresolved_intervals": [
+  [
+   0.0,
+   24.0
+  ]
+ ],
+ "invalid_window_only_intervals": [
+  [
+   0.0,
+   24.0
+  ]
+ ],
+ "single_window_intervals": [
+  [
+   24.0,
+   48.0
+  ],
+  [
+   86.0,
+   96.0
+  ],
+  [
+   576.0,
+   600.0
+  ]
+ ],
+ "multi_window_intervals": [
+  [
+   48.0,
+   86.0
+  ],
+  [
+   96.0,
+   576.0
+  ]
+ ],
+ "segments": [
+  {
+   "start_sec": 0.0,
+   "end_sec": 24.0,
+   "duration_sec": 24.0,
+   "status": "INVALID_WINDOW_ONLY",
+   "valid_windows": [],
+   "event_source_windows": [],
+   "event_ids": []
+  },
+  {
+   "start_sec": 24.0,
+   "end_sec": 28.0,
+   "duration_sec": 4.0,
+   "status": "SINGLE_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W01"
+   ],
+   "event_source_windows": [
+    "W01"
+   ],
+   "event_ids": [
+    "W01_E001"
+   ]
+  },
+  {
+   "start_sec": 28.0,
+   "end_sec": 31.0,
+   "duration_sec": 3.0,
+   "status": "SINGLE_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W01"
+   ],
+   "event_source_windows": [
+    "W01"
+   ],
+   "event_ids": [
+    "W01_E002"
+   ]
+  },
+  {
+   "start_sec": 31.0,
+   "end_sec": 34.0,
+   "duration_sec": 3.0,
+   "status": "SINGLE_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W01"
+   ],
+   "event_source_windows": [
+    "W01"
+   ],
+   "event_ids": [
+    "W01_E003"
+   ]
+  },
+  {
+   "start_sec": 34.0,
+   "end_sec": 37.0,
+   "duration_sec": 3.0,
+   "status": "SINGLE_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W01"
+   ],
+   "event_source_windows": [
+    "W01"
+   ],
+   "event_ids": [
+    "W01_E004"
+   ]
+  },
+  {
+   "start_sec": 37.0,
+   "end_sec": 40.0,
+   "duration_sec": 3.0,
+   "status": "SINGLE_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W01"
+   ],
+   "event_source_windows": [
+    "W01"
+   ],
+   "event_ids": [
+    "W01_E005"
+   ]
+  },
+  {
+   "start_sec": 40.0,
+   "end_sec": 43.0,
+   "duration_sec": 3.0,
+   "status": "SINGLE_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W01"
+   ],
+   "event_source_windows": [
+    "W01"
+   ],
+   "event_ids": [
+    "W01_E006"
+   ]
+  },
+  {
+   "start_sec": 43.0,
+   "end_sec": 46.0,
+   "duration_sec": 3.0,
+   "status": "SINGLE_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W01"
+   ],
+   "event_source_windows": [
+    "W01"
+   ],
+   "event_ids": [
+    "W01_E007"
+   ]
+  },
+  {
+   "start_sec": 46.0,
+   "end_sec": 48.0,
+   "duration_sec": 2.0,
+   "status": "SINGLE_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W01"
+   ],
+   "event_source_windows": [
+    "W01"
+   ],
+   "event_ids": [
+    "W01_E008"
+   ]
+  },
+  {
+   "start_sec": 48.0,
+   "end_sec": 49.0,
+   "duration_sec": 1.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W01",
+    "W02"
+   ],
+   "event_source_windows": [
+    "W01",
+    "W02"
+   ],
+   "event_ids": [
+    "W01_E008",
+    "W02_E001"
+   ]
+  },
+  {
+   "start_sec": 49.0,
+   "end_sec": 52.0,
+   "duration_sec": 3.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W01",
+    "W02"
+   ],
+   "event_source_windows": [
+    "W01",
+    "W02"
+   ],
+   "event_ids": [
+    "W01_E009",
+    "W02_E001"
+   ]
+  },
+  {
+   "start_sec": 52.0,
+   "end_sec": 55.0,
+   "duration_sec": 3.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W01",
+    "W02"
+   ],
+   "event_source_windows": [
+    "W01",
+    "W02"
+   ],
+   "event_ids": [
+    "W01_E010",
+    "W02_E002"
+   ]
+  },
+  {
+   "start_sec": 55.0,
+   "end_sec": 58.0,
+   "duration_sec": 3.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W01",
+    "W02"
+   ],
+   "event_source_windows": [
+    "W01",
+    "W02"
+   ],
+   "event_ids": [
+    "W01_E011",
+    "W02_E003"
+   ]
+  },
+  {
+   "start_sec": 58.0,
+   "end_sec": 62.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W01",
+    "W02"
+   ],
+   "event_source_windows": [
+    "W01",
+    "W02"
+   ],
+   "event_ids": [
+    "W01_E011",
+    "W02_E004"
+   ]
+  },
+  {
+   "start_sec": 62.0,
+   "end_sec": 66.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W01",
+    "W02"
+   ],
+   "event_source_windows": [
+    "W01",
+    "W02"
+   ],
+   "event_ids": [
+    "W01_E011",
+    "W02_E005"
+   ]
+  },
+  {
+   "start_sec": 66.0,
+   "end_sec": 70.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W01",
+    "W02"
+   ],
+   "event_source_windows": [
+    "W01",
+    "W02"
+   ],
+   "event_ids": [
+    "W01_E011",
+    "W02_E006"
+   ]
+  },
+  {
+   "start_sec": 70.0,
+   "end_sec": 72.0,
+   "duration_sec": 2.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W01",
+    "W02"
+   ],
+   "event_source_windows": [
+    "W01",
+    "W02"
+   ],
+   "event_ids": [
+    "W01_E011",
+    "W02_E007"
+   ]
+  },
+  {
+   "start_sec": 72.0,
+   "end_sec": 74.0,
+   "duration_sec": 2.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W02",
+    "W03"
+   ],
+   "event_source_windows": [
+    "W02",
+    "W03"
+   ],
+   "event_ids": [
+    "W02_E007",
+    "W03_E001"
+   ]
+  },
+  {
+   "start_sec": 74.0,
+   "end_sec": 76.0,
+   "duration_sec": 2.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W02",
+    "W03"
+   ],
+   "event_source_windows": [
+    "W02",
+    "W03"
+   ],
+   "event_ids": [
+    "W02_E008",
+    "W03_E001"
+   ]
+  },
+  {
+   "start_sec": 76.0,
+   "end_sec": 78.0,
+   "duration_sec": 2.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W02",
+    "W03"
+   ],
+   "event_source_windows": [
+    "W02",
+    "W03"
+   ],
+   "event_ids": [
+    "W02_E008",
+    "W03_E002"
+   ]
+  },
+  {
+   "start_sec": 78.0,
+   "end_sec": 80.0,
+   "duration_sec": 2.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W02",
+    "W03"
+   ],
+   "event_source_windows": [
+    "W02",
+    "W03"
+   ],
+   "event_ids": [
+    "W02_E009",
+    "W03_E002"
+   ]
+  },
+  {
+   "start_sec": 80.0,
+   "end_sec": 82.0,
+   "duration_sec": 2.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W02",
+    "W03"
+   ],
+   "event_source_windows": [
+    "W02",
+    "W03"
+   ],
+   "event_ids": [
+    "W02_E009",
+    "W03_E003"
+   ]
+  },
+  {
+   "start_sec": 82.0,
+   "end_sec": 84.0,
+   "duration_sec": 2.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W02",
+    "W03"
+   ],
+   "event_source_windows": [
+    "W02",
+    "W03"
+   ],
+   "event_ids": [
+    "W02_E010",
+    "W03_E003"
+   ]
+  },
+  {
+   "start_sec": 84.0,
+   "end_sec": 86.0,
+   "duration_sec": 2.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W02",
+    "W03"
+   ],
+   "event_source_windows": [
+    "W02",
+    "W03"
+   ],
+   "event_ids": [
+    "W02_E010",
+    "W03_E004"
+   ]
+  },
+  {
+   "start_sec": 86.0,
+   "end_sec": 88.0,
+   "duration_sec": 2.0,
+   "status": "SINGLE_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W02",
+    "W03"
+   ],
+   "event_source_windows": [
+    "W03"
+   ],
+   "event_ids": [
+    "W03_E004"
+   ]
+  },
+  {
+   "start_sec": 88.0,
+   "end_sec": 92.0,
+   "duration_sec": 4.0,
+   "status": "SINGLE_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W02",
+    "W03"
+   ],
+   "event_source_windows": [
+    "W03"
+   ],
+   "event_ids": [
+    "W03_E005"
+   ]
+  },
+  {
+   "start_sec": 92.0,
+   "end_sec": 96.0,
+   "duration_sec": 4.0,
+   "status": "SINGLE_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W02",
+    "W03"
+   ],
+   "event_source_windows": [
+    "W03"
+   ],
+   "event_ids": [
+    "W03_E006"
+   ]
+  },
+  {
+   "start_sec": 96.0,
+   "end_sec": 100.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W03",
+    "W04"
+   ],
+   "event_source_windows": [
+    "W03",
+    "W04"
+   ],
+   "event_ids": [
+    "W03_E007",
+    "W04_E001"
+   ]
+  },
+  {
+   "start_sec": 100.0,
+   "end_sec": 103.0,
+   "duration_sec": 3.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W03",
+    "W04"
+   ],
+   "event_source_windows": [
+    "W03",
+    "W04"
+   ],
+   "event_ids": [
+    "W03_E008",
+    "W04_E002"
+   ]
+  },
+  {
+   "start_sec": 103.0,
+   "end_sec": 104.0,
+   "duration_sec": 1.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W03",
+    "W04"
+   ],
+   "event_source_windows": [
+    "W03",
+    "W04"
+   ],
+   "event_ids": [
+    "W03_E008",
+    "W04_E003"
+   ]
+  },
+  {
+   "start_sec": 104.0,
+   "end_sec": 120.0,
+   "duration_sec": 16.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W03",
+    "W04"
+   ],
+   "event_source_windows": [
+    "W03",
+    "W04"
+   ],
+   "event_ids": [
+    "W03_E009",
+    "W04_E003"
+   ]
+  },
+  {
+   "start_sec": 120.0,
+   "end_sec": 123.0,
+   "duration_sec": 3.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W04",
+    "W05"
+   ],
+   "event_source_windows": [
+    "W04",
+    "W05"
+   ],
+   "event_ids": [
+    "W04_E003",
+    "W05_E001"
+   ]
+  },
+  {
+   "start_sec": 123.0,
+   "end_sec": 125.0,
+   "duration_sec": 2.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W04",
+    "W05"
+   ],
+   "event_source_windows": [
+    "W04",
+    "W05"
+   ],
+   "event_ids": [
+    "W04_E004",
+    "W05_E001"
+   ]
+  },
+  {
+   "start_sec": 125.0,
+   "end_sec": 127.0,
+   "duration_sec": 2.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W04",
+    "W05"
+   ],
+   "event_source_windows": [
+    "W04",
+    "W05"
+   ],
+   "event_ids": [
+    "W04_E004",
+    "W05_E002"
+   ]
+  },
+  {
+   "start_sec": 127.0,
+   "end_sec": 130.0,
+   "duration_sec": 3.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W04",
+    "W05"
+   ],
+   "event_source_windows": [
+    "W04",
+    "W05"
+   ],
+   "event_ids": [
+    "W04_E005",
+    "W05_E002"
+   ]
+  },
+  {
+   "start_sec": 130.0,
+   "end_sec": 131.0,
+   "duration_sec": 1.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W04",
+    "W05"
+   ],
+   "event_source_windows": [
+    "W04",
+    "W05"
+   ],
+   "event_ids": [
+    "W04_E005",
+    "W05_E003"
+   ]
+  },
+  {
+   "start_sec": 131.0,
+   "end_sec": 135.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W04",
+    "W05"
+   ],
+   "event_source_windows": [
+    "W04",
+    "W05"
+   ],
+   "event_ids": [
+    "W04_E006",
+    "W05_E003"
+   ]
+  },
+  {
+   "start_sec": 135.0,
+   "end_sec": 140.0,
+   "duration_sec": 5.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W04",
+    "W05"
+   ],
+   "event_source_windows": [
+    "W04",
+    "W05"
+   ],
+   "event_ids": [
+    "W04_E006",
+    "W05_E004"
+   ]
+  },
+  {
+   "start_sec": 140.0,
+   "end_sec": 144.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W04",
+    "W05"
+   ],
+   "event_source_windows": [
+    "W04",
+    "W05"
+   ],
+   "event_ids": [
+    "W04_E006",
+    "W05_E005"
+   ]
+  },
+  {
+   "start_sec": 144.0,
+   "end_sec": 145.0,
+   "duration_sec": 1.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W05",
+    "W06"
+   ],
+   "event_source_windows": [
+    "W05",
+    "W06"
+   ],
+   "event_ids": [
+    "W05_E005",
+    "W06_E001"
+   ]
+  },
+  {
+   "start_sec": 145.0,
+   "end_sec": 149.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W05",
+    "W06"
+   ],
+   "event_source_windows": [
+    "W05",
+    "W06"
+   ],
+   "event_ids": [
+    "W05_E006",
+    "W06_E001"
+   ]
+  },
+  {
+   "start_sec": 149.0,
+   "end_sec": 153.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W05",
+    "W06"
+   ],
+   "event_source_windows": [
+    "W05",
+    "W06"
+   ],
+   "event_ids": [
+    "W05_E006",
+    "W06_E002"
+   ]
+  },
+  {
+   "start_sec": 153.0,
+   "end_sec": 157.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W05",
+    "W06"
+   ],
+   "event_source_windows": [
+    "W05",
+    "W06"
+   ],
+   "event_ids": [
+    "W05_E006",
+    "W06_E003"
+   ]
+  },
+  {
+   "start_sec": 157.0,
+   "end_sec": 161.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W05",
+    "W06"
+   ],
+   "event_source_windows": [
+    "W05",
+    "W06"
+   ],
+   "event_ids": [
+    "W05_E006",
+    "W06_E004"
+   ]
+  },
+  {
+   "start_sec": 161.0,
+   "end_sec": 165.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W05",
+    "W06"
+   ],
+   "event_source_windows": [
+    "W05",
+    "W06"
+   ],
+   "event_ids": [
+    "W05_E006",
+    "W06_E005"
+   ]
+  },
+  {
+   "start_sec": 165.0,
+   "end_sec": 168.0,
+   "duration_sec": 3.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W05",
+    "W06"
+   ],
+   "event_source_windows": [
+    "W05",
+    "W06"
+   ],
+   "event_ids": [
+    "W05_E006",
+    "W06_E006"
+   ]
+  },
+  {
+   "start_sec": 168.0,
+   "end_sec": 170.0,
+   "duration_sec": 2.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W06",
+    "W07"
+   ],
+   "event_source_windows": [
+    "W06",
+    "W07"
+   ],
+   "event_ids": [
+    "W06_E006",
+    "W07_E001"
+   ]
+  },
+  {
+   "start_sec": 170.0,
+   "end_sec": 175.0,
+   "duration_sec": 5.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W06",
+    "W07"
+   ],
+   "event_source_windows": [
+    "W06",
+    "W07"
+   ],
+   "event_ids": [
+    "W06_E007",
+    "W07_E001"
+   ]
+  },
+  {
+   "start_sec": 175.0,
+   "end_sec": 180.0,
+   "duration_sec": 5.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W06",
+    "W07"
+   ],
+   "event_source_windows": [
+    "W06",
+    "W07"
+   ],
+   "event_ids": [
+    "W06_E008",
+    "W07_E002"
+   ]
+  },
+  {
+   "start_sec": 180.0,
+   "end_sec": 184.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W06",
+    "W07"
+   ],
+   "event_source_windows": [
+    "W06",
+    "W07"
+   ],
+   "event_ids": [
+    "W06_E009",
+    "W07_E002"
+   ]
+  },
+  {
+   "start_sec": 184.0,
+   "end_sec": 185.0,
+   "duration_sec": 1.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W06",
+    "W07"
+   ],
+   "event_source_windows": [
+    "W06",
+    "W07"
+   ],
+   "event_ids": [
+    "W06_E009",
+    "W07_E003"
+   ]
+  },
+  {
+   "start_sec": 185.0,
+   "end_sec": 187.0,
+   "duration_sec": 2.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W06",
+    "W07"
+   ],
+   "event_source_windows": [
+    "W06",
+    "W07"
+   ],
+   "event_ids": [
+    "W06_E010",
+    "W07_E003"
+   ]
+  },
+  {
+   "start_sec": 187.0,
+   "end_sec": 190.0,
+   "duration_sec": 3.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W06",
+    "W07"
+   ],
+   "event_source_windows": [
+    "W06",
+    "W07"
+   ],
+   "event_ids": [
+    "W06_E010",
+    "W07_E004"
+   ]
+  },
+  {
+   "start_sec": 190.0,
+   "end_sec": 192.0,
+   "duration_sec": 2.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W06",
+    "W07"
+   ],
+   "event_source_windows": [
+    "W06",
+    "W07"
+   ],
+   "event_ids": [
+    "W06_E010",
+    "W07_E005"
+   ]
+  },
+  {
+   "start_sec": 192.0,
+   "end_sec": 193.0,
+   "duration_sec": 1.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W07",
+    "W08"
+   ],
+   "event_source_windows": [
+    "W07",
+    "W08"
+   ],
+   "event_ids": [
+    "W07_E005",
+    "W08_E001"
+   ]
+  },
+  {
+   "start_sec": 193.0,
+   "end_sec": 195.0,
+   "duration_sec": 2.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W07",
+    "W08"
+   ],
+   "event_source_windows": [
+    "W07",
+    "W08"
+   ],
+   "event_ids": [
+    "W07_E006",
+    "W08_E001"
+   ]
+  },
+  {
+   "start_sec": 195.0,
+   "end_sec": 202.0,
+   "duration_sec": 7.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W07",
+    "W08"
+   ],
+   "event_source_windows": [
+    "W07",
+    "W08"
+   ],
+   "event_ids": [
+    "W07_E006",
+    "W08_E002"
+   ]
+  },
+  {
+   "start_sec": 202.0,
+   "end_sec": 205.0,
+   "duration_sec": 3.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W07",
+    "W08"
+   ],
+   "event_source_windows": [
+    "W07",
+    "W08"
+   ],
+   "event_ids": [
+    "W07_E007",
+    "W08_E002"
+   ]
+  },
+  {
+   "start_sec": 205.0,
+   "end_sec": 216.0,
+   "duration_sec": 11.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W07",
+    "W08"
+   ],
+   "event_source_windows": [
+    "W07",
+    "W08"
+   ],
+   "event_ids": [
+    "W07_E008",
+    "W08_E002"
+   ]
+  },
+  {
+   "start_sec": 216.0,
+   "end_sec": 220.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W08",
+    "W09"
+   ],
+   "event_source_windows": [
+    "W08",
+    "W09"
+   ],
+   "event_ids": [
+    "W08_E002",
+    "W09_E001"
+   ]
+  },
+  {
+   "start_sec": 220.0,
+   "end_sec": 224.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W08",
+    "W09"
+   ],
+   "event_source_windows": [
+    "W08",
+    "W09"
+   ],
+   "event_ids": [
+    "W08_E002",
+    "W09_E002"
+   ]
+  },
+  {
+   "start_sec": 224.0,
+   "end_sec": 228.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W08",
+    "W09"
+   ],
+   "event_source_windows": [
+    "W08",
+    "W09"
+   ],
+   "event_ids": [
+    "W08_E002",
+    "W09_E003"
+   ]
+  },
+  {
+   "start_sec": 228.0,
+   "end_sec": 232.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W08",
+    "W09"
+   ],
+   "event_source_windows": [
+    "W08",
+    "W09"
+   ],
+   "event_ids": [
+    "W08_E002",
+    "W09_E004"
+   ]
+  },
+  {
+   "start_sec": 232.0,
+   "end_sec": 236.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W08",
+    "W09"
+   ],
+   "event_source_windows": [
+    "W08",
+    "W09"
+   ],
+   "event_ids": [
+    "W08_E002",
+    "W09_E005"
+   ]
+  },
+  {
+   "start_sec": 236.0,
+   "end_sec": 240.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W08",
+    "W09"
+   ],
+   "event_source_windows": [
+    "W08",
+    "W09"
+   ],
+   "event_ids": [
+    "W08_E002",
+    "W09_E006"
+   ]
+  },
+  {
+   "start_sec": 240.0,
+   "end_sec": 245.0,
+   "duration_sec": 5.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W09",
+    "W10"
+   ],
+   "event_source_windows": [
+    "W09",
+    "W10"
+   ],
+   "event_ids": [
+    "W09_E006",
+    "W10_E001"
+   ]
+  },
+  {
+   "start_sec": 245.0,
+   "end_sec": 255.0,
+   "duration_sec": 10.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W09",
+    "W10"
+   ],
+   "event_source_windows": [
+    "W09",
+    "W10"
+   ],
+   "event_ids": [
+    "W09_E006",
+    "W10_E002"
+   ]
+  },
+  {
+   "start_sec": 255.0,
+   "end_sec": 260.0,
+   "duration_sec": 5.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W09",
+    "W10"
+   ],
+   "event_source_windows": [
+    "W09",
+    "W10"
+   ],
+   "event_ids": [
+    "W09_E006",
+    "W10_E003"
+   ]
+  },
+  {
+   "start_sec": 260.0,
+   "end_sec": 264.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W09",
+    "W10"
+   ],
+   "event_source_windows": [
+    "W09",
+    "W10"
+   ],
+   "event_ids": [
+    "W09_E006",
+    "W10_E004"
+   ]
+  },
+  {
+   "start_sec": 264.0,
+   "end_sec": 272.0,
+   "duration_sec": 8.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W10",
+    "W11"
+   ],
+   "event_source_windows": [
+    "W10",
+    "W11"
+   ],
+   "event_ids": [
+    "W10_E004",
+    "W11_E001"
+   ]
+  },
+  {
+   "start_sec": 272.0,
+   "end_sec": 280.0,
+   "duration_sec": 8.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W10",
+    "W11"
+   ],
+   "event_source_windows": [
+    "W10",
+    "W11"
+   ],
+   "event_ids": [
+    "W10_E004",
+    "W11_E002"
+   ]
+  },
+  {
+   "start_sec": 280.0,
+   "end_sec": 288.0,
+   "duration_sec": 8.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W10",
+    "W11"
+   ],
+   "event_source_windows": [
+    "W10",
+    "W11"
+   ],
+   "event_ids": [
+    "W10_E004",
+    "W11_E003"
+   ]
+  },
+  {
+   "start_sec": 288.0,
+   "end_sec": 293.0,
+   "duration_sec": 5.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W11",
+    "W12"
+   ],
+   "event_source_windows": [
+    "W11",
+    "W12"
+   ],
+   "event_ids": [
+    "W11_E004",
+    "W12_E001"
+   ]
+  },
+  {
+   "start_sec": 293.0,
+   "end_sec": 296.0,
+   "duration_sec": 3.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W11",
+    "W12"
+   ],
+   "event_source_windows": [
+    "W11",
+    "W12"
+   ],
+   "event_ids": [
+    "W11_E004",
+    "W12_E002"
+   ]
+  },
+  {
+   "start_sec": 296.0,
+   "end_sec": 297.0,
+   "duration_sec": 1.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W11",
+    "W12"
+   ],
+   "event_source_windows": [
+    "W11",
+    "W12"
+   ],
+   "event_ids": [
+    "W11_E005",
+    "W12_E002"
+   ]
+  },
+  {
+   "start_sec": 297.0,
+   "end_sec": 301.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W11",
+    "W12"
+   ],
+   "event_source_windows": [
+    "W11",
+    "W12"
+   ],
+   "event_ids": [
+    "W11_E005",
+    "W12_E003"
+   ]
+  },
+  {
+   "start_sec": 301.0,
+   "end_sec": 304.0,
+   "duration_sec": 3.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W11",
+    "W12"
+   ],
+   "event_source_windows": [
+    "W11",
+    "W12"
+   ],
+   "event_ids": [
+    "W11_E005",
+    "W12_E004"
+   ]
+  },
+  {
+   "start_sec": 304.0,
+   "end_sec": 305.0,
+   "duration_sec": 1.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W11",
+    "W12"
+   ],
+   "event_source_windows": [
+    "W11",
+    "W12"
+   ],
+   "event_ids": [
+    "W11_E006",
+    "W12_E004"
+   ]
+  },
+  {
+   "start_sec": 305.0,
+   "end_sec": 310.0,
+   "duration_sec": 5.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W11",
+    "W12"
+   ],
+   "event_source_windows": [
+    "W11",
+    "W12"
+   ],
+   "event_ids": [
+    "W11_E006",
+    "W12_E005"
+   ]
+  },
+  {
+   "start_sec": 310.0,
+   "end_sec": 312.0,
+   "duration_sec": 2.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W11",
+    "W12"
+   ],
+   "event_source_windows": [
+    "W11",
+    "W12"
+   ],
+   "event_ids": [
+    "W11_E006",
+    "W12_E006"
+   ]
+  },
+  {
+   "start_sec": 312.0,
+   "end_sec": 317.0,
+   "duration_sec": 5.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W12",
+    "W13"
+   ],
+   "event_source_windows": [
+    "W12",
+    "W13"
+   ],
+   "event_ids": [
+    "W12_E006",
+    "W13_E001"
+   ]
+  },
+  {
+   "start_sec": 317.0,
+   "end_sec": 336.0,
+   "duration_sec": 19.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W12",
+    "W13"
+   ],
+   "event_source_windows": [
+    "W12",
+    "W13"
+   ],
+   "event_ids": [
+    "W12_E006",
+    "W13_E002"
+   ]
+  },
+  {
+   "start_sec": 336.0,
+   "end_sec": 348.0,
+   "duration_sec": 12.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W13",
+    "W14"
+   ],
+   "event_source_windows": [
+    "W13",
+    "W14"
+   ],
+   "event_ids": [
+    "W13_E002",
+    "W14_E001"
+   ]
+  },
+  {
+   "start_sec": 348.0,
+   "end_sec": 360.0,
+   "duration_sec": 12.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W13",
+    "W14"
+   ],
+   "event_source_windows": [
+    "W13",
+    "W14"
+   ],
+   "event_ids": [
+    "W13_E002",
+    "W14_E002"
+   ]
+  },
+  {
+   "start_sec": 360.0,
+   "end_sec": 365.0,
+   "duration_sec": 5.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W14",
+    "W15"
+   ],
+   "event_source_windows": [
+    "W14",
+    "W15"
+   ],
+   "event_ids": [
+    "W14_E002",
+    "W15_E001"
+   ]
+  },
+  {
+   "start_sec": 365.0,
+   "end_sec": 370.0,
+   "duration_sec": 5.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W14",
+    "W15"
+   ],
+   "event_source_windows": [
+    "W14",
+    "W15"
+   ],
+   "event_ids": [
+    "W14_E002",
+    "W15_E002"
+   ]
+  },
+  {
+   "start_sec": 370.0,
+   "end_sec": 375.0,
+   "duration_sec": 5.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W14",
+    "W15"
+   ],
+   "event_source_windows": [
+    "W14",
+    "W15"
+   ],
+   "event_ids": [
+    "W14_E002",
+    "W15_E003"
+   ]
+  },
+  {
+   "start_sec": 375.0,
+   "end_sec": 376.0,
+   "duration_sec": 1.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W14",
+    "W15"
+   ],
+   "event_source_windows": [
+    "W14",
+    "W15"
+   ],
+   "event_ids": [
+    "W14_E002",
+    "W15_E004"
+   ]
+  },
+  {
+   "start_sec": 376.0,
+   "end_sec": 380.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W14",
+    "W15"
+   ],
+   "event_source_windows": [
+    "W14",
+    "W15"
+   ],
+   "event_ids": [
+    "W14_E003",
+    "W15_E004"
+   ]
+  },
+  {
+   "start_sec": 380.0,
+   "end_sec": 384.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W14",
+    "W15"
+   ],
+   "event_source_windows": [
+    "W14",
+    "W15"
+   ],
+   "event_ids": [
+    "W14_E004",
+    "W15_E005"
+   ]
+  },
+  {
+   "start_sec": 384.0,
+   "end_sec": 385.0,
+   "duration_sec": 1.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W15",
+    "W16"
+   ],
+   "event_source_windows": [
+    "W15",
+    "W16"
+   ],
+   "event_ids": [
+    "W15_E005",
+    "W16_E001"
+   ]
+  },
+  {
+   "start_sec": 385.0,
+   "end_sec": 389.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W15",
+    "W16"
+   ],
+   "event_source_windows": [
+    "W15",
+    "W16"
+   ],
+   "event_ids": [
+    "W15_E006",
+    "W16_E001"
+   ]
+  },
+  {
+   "start_sec": 389.0,
+   "end_sec": 390.0,
+   "duration_sec": 1.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W15",
+    "W16"
+   ],
+   "event_source_windows": [
+    "W15",
+    "W16"
+   ],
+   "event_ids": [
+    "W15_E006",
+    "W16_E002"
+   ]
+  },
+  {
+   "start_sec": 390.0,
+   "end_sec": 400.0,
+   "duration_sec": 10.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W15",
+    "W16"
+   ],
+   "event_source_windows": [
+    "W15",
+    "W16"
+   ],
+   "event_ids": [
+    "W15_E007",
+    "W16_E002"
+   ]
+  },
+  {
+   "start_sec": 400.0,
+   "end_sec": 405.0,
+   "duration_sec": 5.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W15",
+    "W16"
+   ],
+   "event_source_windows": [
+    "W15",
+    "W16"
+   ],
+   "event_ids": [
+    "W15_E008",
+    "W16_E003"
+   ]
+  },
+  {
+   "start_sec": 405.0,
+   "end_sec": 408.0,
+   "duration_sec": 3.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W15",
+    "W16"
+   ],
+   "event_source_windows": [
+    "W15",
+    "W16"
+   ],
+   "event_ids": [
+    "W15_E009",
+    "W16_E003"
+   ]
+  },
+  {
+   "start_sec": 408.0,
+   "end_sec": 412.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W16",
+    "W17"
+   ],
+   "event_source_windows": [
+    "W16",
+    "W17"
+   ],
+   "event_ids": [
+    "W16_E004",
+    "W17_E001"
+   ]
+  },
+  {
+   "start_sec": 412.0,
+   "end_sec": 413.0,
+   "duration_sec": 1.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W16",
+    "W17"
+   ],
+   "event_source_windows": [
+    "W16",
+    "W17"
+   ],
+   "event_ids": [
+    "W16_E005",
+    "W17_E001"
+   ]
+  },
+  {
+   "start_sec": 413.0,
+   "end_sec": 416.0,
+   "duration_sec": 3.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W16",
+    "W17"
+   ],
+   "event_source_windows": [
+    "W16",
+    "W17"
+   ],
+   "event_ids": [
+    "W16_E005",
+    "W17_E002"
+   ]
+  },
+  {
+   "start_sec": 416.0,
+   "end_sec": 420.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W16",
+    "W17"
+   ],
+   "event_source_windows": [
+    "W16",
+    "W17"
+   ],
+   "event_ids": [
+    "W16_E006",
+    "W17_E002"
+   ]
+  },
+  {
+   "start_sec": 420.0,
+   "end_sec": 426.0,
+   "duration_sec": 6.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W16",
+    "W17"
+   ],
+   "event_source_windows": [
+    "W16",
+    "W17"
+   ],
+   "event_ids": [
+    "W16_E007",
+    "W17_E003"
+   ]
+  },
+  {
+   "start_sec": 426.0,
+   "end_sec": 432.0,
+   "duration_sec": 6.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W16",
+    "W17"
+   ],
+   "event_source_windows": [
+    "W16",
+    "W17"
+   ],
+   "event_ids": [
+    "W16_E007",
+    "W17_E004"
+   ]
+  },
+  {
+   "start_sec": 432.0,
+   "end_sec": 433.0,
+   "duration_sec": 1.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W17",
+    "W18"
+   ],
+   "event_source_windows": [
+    "W17",
+    "W18"
+   ],
+   "event_ids": [
+    "W17_E004",
+    "W18_E001"
+   ]
+  },
+  {
+   "start_sec": 433.0,
+   "end_sec": 440.0,
+   "duration_sec": 7.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W17",
+    "W18"
+   ],
+   "event_source_windows": [
+    "W17",
+    "W18"
+   ],
+   "event_ids": [
+    "W17_E005",
+    "W18_E001"
+   ]
+  },
+  {
+   "start_sec": 440.0,
+   "end_sec": 456.0,
+   "duration_sec": 16.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W17",
+    "W18"
+   ],
+   "event_source_windows": [
+    "W17",
+    "W18"
+   ],
+   "event_ids": [
+    "W17_E006",
+    "W18_E002"
+   ]
+  },
+  {
+   "start_sec": 456.0,
+   "end_sec": 460.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W18",
+    "W19"
+   ],
+   "event_source_windows": [
+    "W18",
+    "W19"
+   ],
+   "event_ids": [
+    "W18_E002",
+    "W19_E001"
+   ]
+  },
+  {
+   "start_sec": 460.0,
+   "end_sec": 464.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W18",
+    "W19"
+   ],
+   "event_source_windows": [
+    "W18",
+    "W19"
+   ],
+   "event_ids": [
+    "W18_E003",
+    "W19_E002"
+   ]
+  },
+  {
+   "start_sec": 464.0,
+   "end_sec": 468.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W18",
+    "W19"
+   ],
+   "event_source_windows": [
+    "W18",
+    "W19"
+   ],
+   "event_ids": [
+    "W18_E003",
+    "W19_E003"
+   ]
+  },
+  {
+   "start_sec": 468.0,
+   "end_sec": 470.0,
+   "duration_sec": 2.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W18",
+    "W19"
+   ],
+   "event_source_windows": [
+    "W18",
+    "W19"
+   ],
+   "event_ids": [
+    "W18_E003",
+    "W19_E004"
+   ]
+  },
+  {
+   "start_sec": 470.0,
+   "end_sec": 472.0,
+   "duration_sec": 2.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W18",
+    "W19"
+   ],
+   "event_source_windows": [
+    "W18",
+    "W19"
+   ],
+   "event_ids": [
+    "W18_E004",
+    "W19_E004"
+   ]
+  },
+  {
+   "start_sec": 472.0,
+   "end_sec": 475.0,
+   "duration_sec": 3.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W18",
+    "W19"
+   ],
+   "event_source_windows": [
+    "W18",
+    "W19"
+   ],
+   "event_ids": [
+    "W18_E004",
+    "W19_E005"
+   ]
+  },
+  {
+   "start_sec": 475.0,
+   "end_sec": 476.0,
+   "duration_sec": 1.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W18",
+    "W19"
+   ],
+   "event_source_windows": [
+    "W18",
+    "W19"
+   ],
+   "event_ids": [
+    "W18_E005",
+    "W19_E005"
+   ]
+  },
+  {
+   "start_sec": 476.0,
+   "end_sec": 480.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W18",
+    "W19"
+   ],
+   "event_source_windows": [
+    "W18",
+    "W19"
+   ],
+   "event_ids": [
+    "W18_E005",
+    "W19_E006"
+   ]
+  },
+  {
+   "start_sec": 480.0,
+   "end_sec": 483.0,
+   "duration_sec": 3.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W19",
+    "W20"
+   ],
+   "event_source_windows": [
+    "W19",
+    "W20"
+   ],
+   "event_ids": [
+    "W19_E007",
+    "W20_E001"
+   ]
+  },
+  {
+   "start_sec": 483.0,
+   "end_sec": 484.0,
+   "duration_sec": 1.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W19",
+    "W20"
+   ],
+   "event_source_windows": [
+    "W19",
+    "W20"
+   ],
+   "event_ids": [
+    "W19_E007",
+    "W20_E002"
+   ]
+  },
+  {
+   "start_sec": 484.0,
+   "end_sec": 486.0,
+   "duration_sec": 2.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W19",
+    "W20"
+   ],
+   "event_source_windows": [
+    "W19",
+    "W20"
+   ],
+   "event_ids": [
+    "W19_E008",
+    "W20_E002"
+   ]
+  },
+  {
+   "start_sec": 486.0,
+   "end_sec": 488.0,
+   "duration_sec": 2.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W19",
+    "W20"
+   ],
+   "event_source_windows": [
+    "W19",
+    "W20"
+   ],
+   "event_ids": [
+    "W19_E008",
+    "W20_E003"
+   ]
+  },
+  {
+   "start_sec": 488.0,
+   "end_sec": 492.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W19",
+    "W20"
+   ],
+   "event_source_windows": [
+    "W19",
+    "W20"
+   ],
+   "event_ids": [
+    "W19_E009",
+    "W20_E003"
+   ]
+  },
+  {
+   "start_sec": 492.0,
+   "end_sec": 496.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W19",
+    "W20"
+   ],
+   "event_source_windows": [
+    "W19",
+    "W20"
+   ],
+   "event_ids": [
+    "W19_E010",
+    "W20_E003"
+   ]
+  },
+  {
+   "start_sec": 496.0,
+   "end_sec": 500.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W19",
+    "W20"
+   ],
+   "event_source_windows": [
+    "W19",
+    "W20"
+   ],
+   "event_ids": [
+    "W19_E011",
+    "W20_E003"
+   ]
+  },
+  {
+   "start_sec": 500.0,
+   "end_sec": 504.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W19",
+    "W20"
+   ],
+   "event_source_windows": [
+    "W19",
+    "W20"
+   ],
+   "event_ids": [
+    "W19_E012",
+    "W20_E003"
+   ]
+  },
+  {
+   "start_sec": 504.0,
+   "end_sec": 509.0,
+   "duration_sec": 5.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W20",
+    "W21"
+   ],
+   "event_source_windows": [
+    "W20",
+    "W21"
+   ],
+   "event_ids": [
+    "W20_E003",
+    "W21_E001"
+   ]
+  },
+  {
+   "start_sec": 509.0,
+   "end_sec": 513.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W20",
+    "W21"
+   ],
+   "event_source_windows": [
+    "W20",
+    "W21"
+   ],
+   "event_ids": [
+    "W20_E003",
+    "W21_E002"
+   ]
+  },
+  {
+   "start_sec": 513.0,
+   "end_sec": 520.0,
+   "duration_sec": 7.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W20",
+    "W21"
+   ],
+   "event_source_windows": [
+    "W20",
+    "W21"
+   ],
+   "event_ids": [
+    "W20_E003",
+    "W21_E003"
+   ]
+  },
+  {
+   "start_sec": 520.0,
+   "end_sec": 524.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W20",
+    "W21"
+   ],
+   "event_source_windows": [
+    "W20",
+    "W21"
+   ],
+   "event_ids": [
+    "W20_E003",
+    "W21_E004"
+   ]
+  },
+  {
+   "start_sec": 524.0,
+   "end_sec": 528.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W20",
+    "W21"
+   ],
+   "event_source_windows": [
+    "W20",
+    "W21"
+   ],
+   "event_ids": [
+    "W20_E003",
+    "W21_E005"
+   ]
+  },
+  {
+   "start_sec": 528.0,
+   "end_sec": 529.0,
+   "duration_sec": 1.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W21",
+    "W22"
+   ],
+   "event_source_windows": [
+    "W21",
+    "W22"
+   ],
+   "event_ids": [
+    "W21_E005",
+    "W22_E001"
+   ]
+  },
+  {
+   "start_sec": 529.0,
+   "end_sec": 533.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W21",
+    "W22"
+   ],
+   "event_source_windows": [
+    "W21",
+    "W22"
+   ],
+   "event_ids": [
+    "W21_E006",
+    "W22_E001"
+   ]
+  },
+  {
+   "start_sec": 533.0,
+   "end_sec": 537.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W21",
+    "W22"
+   ],
+   "event_source_windows": [
+    "W21",
+    "W22"
+   ],
+   "event_ids": [
+    "W21_E007",
+    "W22_E002"
+   ]
+  },
+  {
+   "start_sec": 537.0,
+   "end_sec": 541.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W21",
+    "W22"
+   ],
+   "event_source_windows": [
+    "W21",
+    "W22"
+   ],
+   "event_ids": [
+    "W21_E007",
+    "W22_E003"
+   ]
+  },
+  {
+   "start_sec": 541.0,
+   "end_sec": 545.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W21",
+    "W22"
+   ],
+   "event_source_windows": [
+    "W21",
+    "W22"
+   ],
+   "event_ids": [
+    "W21_E008",
+    "W22_E004"
+   ]
+  },
+  {
+   "start_sec": 545.0,
+   "end_sec": 550.0,
+   "duration_sec": 5.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W21",
+    "W22"
+   ],
+   "event_source_windows": [
+    "W21",
+    "W22"
+   ],
+   "event_ids": [
+    "W21_E008",
+    "W22_E005"
+   ]
+  },
+  {
+   "start_sec": 550.0,
+   "end_sec": 552.0,
+   "duration_sec": 2.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W21",
+    "W22"
+   ],
+   "event_source_windows": [
+    "W21",
+    "W22"
+   ],
+   "event_ids": [
+    "W21_E008",
+    "W22_E006"
+   ]
+  },
+  {
+   "start_sec": 552.0,
+   "end_sec": 555.0,
+   "duration_sec": 3.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W22",
+    "W23"
+   ],
+   "event_source_windows": [
+    "W22",
+    "W23"
+   ],
+   "event_ids": [
+    "W22_E006",
+    "W23_E001"
+   ]
+  },
+  {
+   "start_sec": 555.0,
+   "end_sec": 557.0,
+   "duration_sec": 2.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W22",
+    "W23"
+   ],
+   "event_source_windows": [
+    "W22",
+    "W23"
+   ],
+   "event_ids": [
+    "W22_E007",
+    "W23_E001"
+   ]
+  },
+  {
+   "start_sec": 557.0,
+   "end_sec": 560.0,
+   "duration_sec": 3.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W22",
+    "W23"
+   ],
+   "event_source_windows": [
+    "W22",
+    "W23"
+   ],
+   "event_ids": [
+    "W22_E007",
+    "W23_E002"
+   ]
+  },
+  {
+   "start_sec": 560.0,
+   "end_sec": 561.0,
+   "duration_sec": 1.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W22",
+    "W23"
+   ],
+   "event_source_windows": [
+    "W22",
+    "W23"
+   ],
+   "event_ids": [
+    "W22_E008",
+    "W23_E002"
+   ]
+  },
+  {
+   "start_sec": 561.0,
+   "end_sec": 565.0,
+   "duration_sec": 4.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W22",
+    "W23"
+   ],
+   "event_source_windows": [
+    "W22",
+    "W23"
+   ],
+   "event_ids": [
+    "W22_E008",
+    "W23_E003"
+   ]
+  },
+  {
+   "start_sec": 565.0,
+   "end_sec": 570.0,
+   "duration_sec": 5.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W22",
+    "W23"
+   ],
+   "event_source_windows": [
+    "W22",
+    "W23"
+   ],
+   "event_ids": [
+    "W22_E009",
+    "W23_E004"
+   ]
+  },
+  {
+   "start_sec": 570.0,
+   "end_sec": 573.0,
+   "duration_sec": 3.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W22",
+    "W23"
+   ],
+   "event_source_windows": [
+    "W22",
+    "W23"
+   ],
+   "event_ids": [
+    "W22_E010",
+    "W23_E004"
+   ]
+  },
+  {
+   "start_sec": 573.0,
+   "end_sec": 576.0,
+   "duration_sec": 3.0,
+   "status": "MULTI_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W22",
+    "W23"
+   ],
+   "event_source_windows": [
+    "W22",
+    "W23"
+   ],
+   "event_ids": [
+    "W22_E010",
+    "W23_E005"
+   ]
+  },
+  {
+   "start_sec": 576.0,
+   "end_sec": 580.0,
+   "duration_sec": 4.0,
+   "status": "SINGLE_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W23"
+   ],
+   "event_source_windows": [
+    "W23"
+   ],
+   "event_ids": [
+    "W23_E005"
+   ]
+  },
+  {
+   "start_sec": 580.0,
+   "end_sec": 585.0,
+   "duration_sec": 5.0,
+   "status": "SINGLE_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W23"
+   ],
+   "event_source_windows": [
+    "W23"
+   ],
+   "event_ids": [
+    "W23_E006"
+   ]
+  },
+  {
+   "start_sec": 585.0,
+   "end_sec": 590.0,
+   "duration_sec": 5.0,
+   "status": "SINGLE_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W23"
+   ],
+   "event_source_windows": [
+    "W23"
+   ],
+   "event_ids": [
+    "W23_E007"
+   ]
+  },
+  {
+   "start_sec": 590.0,
+   "end_sec": 593.0,
+   "duration_sec": 3.0,
+   "status": "SINGLE_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W23"
+   ],
+   "event_source_windows": [
+    "W23"
+   ],
+   "event_ids": [
+    "W23_E008"
+   ]
+  },
+  {
+   "start_sec": 593.0,
+   "end_sec": 597.0,
+   "duration_sec": 4.0,
+   "status": "SINGLE_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W23"
+   ],
+   "event_source_windows": [
+    "W23"
+   ],
+   "event_ids": [
+    "W23_E009"
+   ]
+  },
+  {
+   "start_sec": 597.0,
+   "end_sec": 600.0,
+   "duration_sec": 3.0,
+   "status": "SINGLE_WINDOW_OBSERVED",
+   "valid_windows": [
+    "W23"
+   ],
+   "event_source_windows": [
+    "W23"
+   ],
+   "event_ids": [
+    "W23_E010"
+   ]
+  }
+ ],
+ "status_seconds": {
+  "MULTI_WINDOW_OBSERVED": 518.0,
+  "SINGLE_WINDOW_OBSERVED": 58.0,
+  "INVALID_WINDOW_ONLY": 24.0,
+  "UNRESOLVED": 0
+ },
+ "caveat": "coverage percentage ≠ semantic correctness",
+ "synthetic_event_inserted": false
+}

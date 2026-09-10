@@ -1,0 +1,7963 @@
+{
+ "schema": "wvr_event_map_v1_candidate_map",
+ "event": "WVR_EVENT_MAP_COVERAGE_SHADOW_V1",
+ "prereg": "docs/preregistration/WVR_EVENT_MAP_COVERAGE_SHADOW_V1_2026-09-10.md",
+ "source_manifest_file": "docs/preregistration/WVR_EVENT_MAP_COVERAGE_SHADOW_V1_sources.json",
+ "source_manifest": {
+  "observed_count": 46,
+  "expected_count": 46,
+  "manifest_sha256": "a0726a4b13b4bd0f6e1ea692eec55e8cd0343132e32b532283e6e68511680631",
+  "expected_manifest_sha256": "a0726a4b13b4bd0f6e1ea692eec55e8cd0343132e32b532283e6e68511680631",
+  "unchanged": true
+ },
+ "derivation_script_commit": "7ba58dea1246688568af05598a7be9c897237689",
+ "source_shadow_event": "WVR_EVENT_EXTRACTION_SHADOW_V1",
+ "source_records": {
+  "W01": {
+   "record_sha256": "e179370f38d6bc0f6af15a1baf8c02b6aad45eb8a65f4e2d86341abff2a8cea5",
+   "raw_output_hash": "230b46efad477aa9db4ae3055699bf18259b5166e8c94eeb0c27ad996bde473e",
+   "collapse_output_hash": "6d9e476b18399fae581fd9083e5362e9e3e86419f7a0510581616b0cc44af105",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    24.0,
+    72.0
+   ]
+  },
+  "W02": {
+   "record_sha256": "1a5941b0e4084b5b95a57cef3d24cdaf1af7e4a1f55d896d1894d63daa007597",
+   "raw_output_hash": "a2bd8c578e039b041580011ff12db487ba8c3af5d273ff46747a14d5d16bfea4",
+   "collapse_output_hash": "de8aec324cfb6608b1126db09464744af8059e59c2ecff8d6194e6d08238d3ea",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    48.0,
+    96.0
+   ]
+  },
+  "W03": {
+   "record_sha256": "cb43803e5fd1bd63d89b9fc344b9300641b3642067fb35aa0d92961d04fbe137",
+   "raw_output_hash": "21b8cae95c1f84629fbb9d631f6698c424be8660ff54ad6baf5bd8150b83699a",
+   "collapse_output_hash": "026026f18903b18eb0f8d12fb7443a5b66dd24bbb6e2f0009730bbefd5f10c7d",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    72.0,
+    120.0
+   ]
+  },
+  "W04": {
+   "record_sha256": "ca8e34db2c037248d293ed902983c541e9382123151abe3359c83767ae1f8b43",
+   "raw_output_hash": "15ae681a275782513a74205e061a7613777ec09518c0d92216f8028037c3a4bc",
+   "collapse_output_hash": "171ea45bf5c54911453c861cb6b822d322928a1e84b5aaf560b4a0bf11d8154b",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    96.0,
+    144.0
+   ]
+  },
+  "W05": {
+   "record_sha256": "ebcd438d8ccd91b248622a626c2932b26e2787a95e31aee8a332fc45a92ee241",
+   "raw_output_hash": "38caf8e6cfde38ce8da49bc6fcdd68e7c85454f8db828fdf27906843758564eb",
+   "collapse_output_hash": "717c554a90967bba5170fe1f2869306d7cacab6503e29063110ab8b55a53b616",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    120.0,
+    168.0
+   ]
+  },
+  "W06": {
+   "record_sha256": "c815b7a1d4f53286f903ca742073abe6347351efc0171e533e55ed495e853fe5",
+   "raw_output_hash": "6d72c95b183ee22eed47eb2fab8e0beef47f970c96517618641b15afdebe36dd",
+   "collapse_output_hash": "013e58dd396267354e786c0849ffa4ac7e66c87ebd5192df0d058da4012aac5a",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    144.0,
+    192.0
+   ]
+  },
+  "W07": {
+   "record_sha256": "89014e736d27b9fd4b81d7d4f1c51123fbbe514c296815d689e0ab7aaedd71a1",
+   "raw_output_hash": "bc164f109ed86d900da13798a16c73edcc56ac8d58f41f053630cd2ffad4b683",
+   "collapse_output_hash": "180e9385b206283c92bf9f3f5524201c69550921ed0ede327033fb76e085b5e8",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    168.0,
+    216.0
+   ]
+  },
+  "W08": {
+   "record_sha256": "fc3c2981f0708d1e56732309f150404ed40f800814f97b87bd72eec1e104fa8d",
+   "raw_output_hash": "94bde949880f3bdd957b7e2d08bab2cb15de1c33cfe7f11ac1411d8fff0e72de",
+   "collapse_output_hash": "618078c6128e82cecf474a86ebd3eacdb9a6c39ebf69d25c37abeae97b6dfb7a",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    192.0,
+    240.0
+   ]
+  },
+  "W09": {
+   "record_sha256": "0ec0c6bb22bc16ec3b1c108053ccc042f5bf10e8996a527cd48fac433e4405a8",
+   "raw_output_hash": "a8c9fe682144d18cf166e874816e0258d7c1852f8ba3b595a22b0a4ffa7c74d2",
+   "collapse_output_hash": "6e4d432311ef6a8bda3c46ac8104f4e608b7ccc171d4817dcb83b715704f419b",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    216.0,
+    264.0
+   ]
+  },
+  "W10": {
+   "record_sha256": "c7464f8b16848b25dae7203c847b8d3d761e74abeb9b5697301e015cca8591cf",
+   "raw_output_hash": "453f2db29166bf3f93f69adb58f7f5292f5ff017b3c28a8c956d4ddc27d5d5d8",
+   "collapse_output_hash": "b23bf4a195a08b4367d229a00db833726a76fd352875e62c933b10af7adbd7bc",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    240.0,
+    288.0
+   ]
+  },
+  "W11": {
+   "record_sha256": "b634dc7a6a1192b45bae9aa05c35ce8828953006a8dab221093ed2012bb4c9b7",
+   "raw_output_hash": "5033d614f5ccc07997765757efe14335467b15c2993c83a456aac20616b021c5",
+   "collapse_output_hash": "478a13d6fd43a5fa3a3ef63de5b4fa84c1dc64205f314cb554db12916a461fbc",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    264.0,
+    312.0
+   ]
+  },
+  "W12": {
+   "record_sha256": "ba68ae6eb6666af07bd30370d8de5ab65cac9f65a3b2fce519d147a684e4a4dd",
+   "raw_output_hash": "a3d74b8b7162680f466e7621d244d3d6341162fcd43cb547ac7c88dcf8ee8c25",
+   "collapse_output_hash": "a3b5a83ea976fa1f4b429745c906995d351adbb40858db9839e768dd89326f8e",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    288.0,
+    336.0
+   ]
+  },
+  "W13": {
+   "record_sha256": "5a3111dd817024f1d7403e06d50d5499560aa30262b179888c5189a2e694aaea",
+   "raw_output_hash": "1bce25c6999934a31b22f21b0b64c6af26f85a37d4333abe81853d0ec3d0180f",
+   "collapse_output_hash": "bd3eb87d118950031f2ff03c5b9231b8f75da8a3d33235e9724faeb858ee7138",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    312.0,
+    360.0
+   ]
+  },
+  "W14": {
+   "record_sha256": "0c06274a563707c12ae4ffd83511e89b9b300e21b879555476e3979cfbcd887b",
+   "raw_output_hash": "a1d27f4bcae93552e769d41f6d4110cc3d0fcba4350be79ef4dfbf1fadba1902",
+   "collapse_output_hash": "e0439e058360096da9c70f736ad50a86e1e5ab875090a9c3266ea3ed6ec9b2bc",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    336.0,
+    384.0
+   ]
+  },
+  "W15": {
+   "record_sha256": "18a9dd7f14c134bf470bc8266ff6d65f61c5b277a785a6e40f754d195076710e",
+   "raw_output_hash": "00d4aa8b676f0e77b3d906e6b73ce61853f6030db53be185a0344c863880adbc",
+   "collapse_output_hash": "41a40bfc8ad22f03655d651c5977022345745b53fb17d32424e594ebc4b62359",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    360.0,
+    408.0
+   ]
+  },
+  "W16": {
+   "record_sha256": "31eff3445ca233bfef0c3bb9bebfc6c22287b9ac058809fb2001950f759b8fc5",
+   "raw_output_hash": "7b5f8a391fc430558cb2509f57af68983e1ca480332c99a96c5935ca5fbe0564",
+   "collapse_output_hash": "4a871a9c2734aaab51d13ee9ea15b98fdcaa03934a03712ca1eb0e7fbbca174a",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    384.0,
+    432.0
+   ]
+  },
+  "W17": {
+   "record_sha256": "82ebc6cec624c08170f983fbde2f379761c65085c8e10a16877bc48bf867cdf5",
+   "raw_output_hash": "68aa80fcbb88689769bc4ff59e5b6a9140518b9407ff35755e2e9b89af4de86c",
+   "collapse_output_hash": "a05c74b7cefa58c6460c75f086a0fb5c2fdef835de92c77b3dab3797ab984c8f",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    408.0,
+    456.0
+   ]
+  },
+  "W18": {
+   "record_sha256": "82f5cf35441a794695d4db6cf04848496f470c263652dfbb14003e01a9c27fdf",
+   "raw_output_hash": "fefaf157cfd63784b11e48b33c4096c67040dbd4525f9a35faeb788701309fe1",
+   "collapse_output_hash": "de665aa99b994e2a67d2cbc4cbf12a36dd7c4e56446c0d52ec0a9fd2c88c0ccf",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    432.0,
+    480.0
+   ]
+  },
+  "W19": {
+   "record_sha256": "a3137dd71e8d79ef646da8dee1d21f60496e2be1858ee0dce456cfbb2e0664af",
+   "raw_output_hash": "fff649512789311634cd1e32b48c87f230d7b4b37988b46b008718407669f9bf",
+   "collapse_output_hash": "9a4d2a2ae182a3fa93a8c4f25c5e62bcc4e97f421026b48391563e77ac1b8642",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    456.0,
+    504.0
+   ]
+  },
+  "W20": {
+   "record_sha256": "724da75d16db10f2fc44a03da0cb407d8d263a1872b89a1b7c194369448e2b31",
+   "raw_output_hash": "50e6e956f621b589a9b73008f3235b6537ba7e371bde8c6566a880e4782a2d4c",
+   "collapse_output_hash": "3c502102f40a498fd6aed92bb7de193dfb9ee3c0d28a4bc2a30405da5469cbcb",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    480.0,
+    528.0
+   ]
+  },
+  "W21": {
+   "record_sha256": "0b440582dbe8b562b88c8705f685ba5e07a36ec6cf772ef668d36060075fd7e5",
+   "raw_output_hash": "de64a49ae3352baf322f510dec8a7dbbff0fcb3f31c21abbdedfab1fdb4ab8f2",
+   "collapse_output_hash": "85808a6e04afa9a4c81a8a3e6359b20695169f7b466c67ba39f6b3d046af7240",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    504.0,
+    552.0
+   ]
+  },
+  "W22": {
+   "record_sha256": "18a7743f5eec48fe3fe018cf0b3afb9c7a965c964efe9e318082bcc404fefd24",
+   "raw_output_hash": "225e0fc86a62122b09d8ae4683a741ea76e21e0029bf8d001ff521abfa1dada0",
+   "collapse_output_hash": "770e7c3b45110b7dd69b0728f5f770d4f1214c2448d74f6bdc790e793a839a2f",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    528.0,
+    576.0
+   ]
+  },
+  "W23": {
+   "record_sha256": "051fecc02db5cbc1af7ff2ec6739ba50005fa83a34ed19520689321d979b98df",
+   "raw_output_hash": "29657ce21052b465ddacbdeb440e601605c1561a6fd9ffeb532f8a3263bd748b",
+   "collapse_output_hash": "d7cc147c643970ecad8c41e2db2b9c0b1398f9b35d6317d3162100b6d30936c1",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    552.0,
+    600.0
+   ]
+  }
+ },
+ "video_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+ "invalid_sources": {
+  "W00": {
+   "status": "WINDOW_INVALID",
+   "span": [
+    0.0,
+    48.0
+   ],
+   "record_sha256": "c8e65b74b8c71aa97f85fc69c6ffdfb2c72fab18911e6e1565c8458e44daa074",
+   "used_as_event_source": false,
+   "rerun_allowed": false
+  }
+ },
+ "new_inference_count": 0,
+ "artifact_name": "CANDIDATE_EVENT_MAP",
+ "relation_role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY",
+ "adjacent_window_pairs": [
+  {
+   "earlier": "W01",
+   "later": "W02",
+   "shared_start_sec": 48.0,
+   "shared_end_sec": 72.0
+  },
+  {
+   "earlier": "W02",
+   "later": "W03",
+   "shared_start_sec": 72.0,
+   "shared_end_sec": 96.0
+  },
+  {
+   "earlier": "W03",
+   "later": "W04",
+   "shared_start_sec": 96.0,
+   "shared_end_sec": 120.0
+  },
+  {
+   "earlier": "W04",
+   "later": "W05",
+   "shared_start_sec": 120.0,
+   "shared_end_sec": 144.0
+  },
+  {
+   "earlier": "W05",
+   "later": "W06",
+   "shared_start_sec": 144.0,
+   "shared_end_sec": 168.0
+  },
+  {
+   "earlier": "W06",
+   "later": "W07",
+   "shared_start_sec": 168.0,
+   "shared_end_sec": 192.0
+  },
+  {
+   "earlier": "W07",
+   "later": "W08",
+   "shared_start_sec": 192.0,
+   "shared_end_sec": 216.0
+  },
+  {
+   "earlier": "W08",
+   "later": "W09",
+   "shared_start_sec": 216.0,
+   "shared_end_sec": 240.0
+  },
+  {
+   "earlier": "W09",
+   "later": "W10",
+   "shared_start_sec": 240.0,
+   "shared_end_sec": 264.0
+  },
+  {
+   "earlier": "W10",
+   "later": "W11",
+   "shared_start_sec": 264.0,
+   "shared_end_sec": 288.0
+  },
+  {
+   "earlier": "W11",
+   "later": "W12",
+   "shared_start_sec": 288.0,
+   "shared_end_sec": 312.0
+  },
+  {
+   "earlier": "W12",
+   "later": "W13",
+   "shared_start_sec": 312.0,
+   "shared_end_sec": 336.0
+  },
+  {
+   "earlier": "W13",
+   "later": "W14",
+   "shared_start_sec": 336.0,
+   "shared_end_sec": 360.0
+  },
+  {
+   "earlier": "W14",
+   "later": "W15",
+   "shared_start_sec": 360.0,
+   "shared_end_sec": 384.0
+  },
+  {
+   "earlier": "W15",
+   "later": "W16",
+   "shared_start_sec": 384.0,
+   "shared_end_sec": 408.0
+  },
+  {
+   "earlier": "W16",
+   "later": "W17",
+   "shared_start_sec": 408.0,
+   "shared_end_sec": 432.0
+  },
+  {
+   "earlier": "W17",
+   "later": "W18",
+   "shared_start_sec": 432.0,
+   "shared_end_sec": 456.0
+  },
+  {
+   "earlier": "W18",
+   "later": "W19",
+   "shared_start_sec": 456.0,
+   "shared_end_sec": 480.0
+  },
+  {
+   "earlier": "W19",
+   "later": "W20",
+   "shared_start_sec": 480.0,
+   "shared_end_sec": 504.0
+  },
+  {
+   "earlier": "W20",
+   "later": "W21",
+   "shared_start_sec": 504.0,
+   "shared_end_sec": 528.0
+  },
+  {
+   "earlier": "W21",
+   "later": "W22",
+   "shared_start_sec": 528.0,
+   "shared_end_sec": 552.0
+  },
+  {
+   "earlier": "W22",
+   "later": "W23",
+   "shared_start_sec": 552.0,
+   "shared_end_sec": 576.0
+  }
+ ],
+ "relation_count": 160,
+ "relation_counts": {
+  "POSSIBLE_SAME_EVENT": 1,
+  "POSSIBLE_CONTINUATION": 0,
+  "POSSIBLE_TRANSITION": 31,
+  "POSSIBLE_CONFLICT": 12,
+  "UNRESOLVED": 116
+ },
+ "relations": [
+  {
+   "earlier_event": "W01_E008",
+   "later_event": "W02_E001",
+   "earlier_window": "W01",
+   "later_window": "W02",
+   "shared_start_sec": 48.0,
+   "shared_end_sec": 72.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 1.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W01_E009",
+   "later_event": "W02_E001",
+   "earlier_window": "W01",
+   "later_window": "W02",
+   "shared_start_sec": 48.0,
+   "shared_end_sec": 72.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 3.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W01_E009",
+   "later_event": "W02_E002",
+   "earlier_window": "W01",
+   "later_window": "W02",
+   "shared_start_sec": 48.0,
+   "shared_end_sec": 72.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W01_E010",
+   "later_event": "W02_E001",
+   "earlier_window": "W01",
+   "later_window": "W02",
+   "shared_start_sec": 48.0,
+   "shared_end_sec": 72.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W01_E010",
+   "later_event": "W02_E002",
+   "earlier_window": "W01",
+   "later_window": "W02",
+   "shared_start_sec": 48.0,
+   "shared_end_sec": 72.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 3.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W01_E010",
+   "later_event": "W02_E003",
+   "earlier_window": "W01",
+   "later_window": "W02",
+   "shared_start_sec": 48.0,
+   "shared_end_sec": 72.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W01_E011",
+   "later_event": "W02_E002",
+   "earlier_window": "W01",
+   "later_window": "W02",
+   "shared_start_sec": 48.0,
+   "shared_end_sec": 72.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W01_E011",
+   "later_event": "W02_E003",
+   "earlier_window": "W01",
+   "later_window": "W02",
+   "shared_start_sec": 48.0,
+   "shared_end_sec": 72.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 3.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W01_E011",
+   "later_event": "W02_E004",
+   "earlier_window": "W01",
+   "later_window": "W02",
+   "shared_start_sec": 48.0,
+   "shared_end_sec": 72.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W01_E011",
+   "later_event": "W02_E005",
+   "earlier_window": "W01",
+   "later_window": "W02",
+   "shared_start_sec": 48.0,
+   "shared_end_sec": 72.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W01_E011",
+   "later_event": "W02_E006",
+   "earlier_window": "W01",
+   "later_window": "W02",
+   "shared_start_sec": 48.0,
+   "shared_end_sec": 72.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W01_E011",
+   "later_event": "W02_E007",
+   "earlier_window": "W01",
+   "later_window": "W02",
+   "shared_start_sec": 48.0,
+   "shared_end_sec": 72.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 2.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W02_E007",
+   "later_event": "W03_E001",
+   "earlier_window": "W02",
+   "later_window": "W03",
+   "shared_start_sec": 72.0,
+   "shared_end_sec": 96.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 2.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W02_E008",
+   "later_event": "W03_E001",
+   "earlier_window": "W02",
+   "later_window": "W03",
+   "shared_start_sec": 72.0,
+   "shared_end_sec": 96.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 2.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W02_E008",
+   "later_event": "W03_E002",
+   "earlier_window": "W02",
+   "later_window": "W03",
+   "shared_start_sec": 72.0,
+   "shared_end_sec": 96.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 2.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W02_E009",
+   "later_event": "W03_E002",
+   "earlier_window": "W02",
+   "later_window": "W03",
+   "shared_start_sec": 72.0,
+   "shared_end_sec": 96.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 2.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W02_E009",
+   "later_event": "W03_E003",
+   "earlier_window": "W02",
+   "later_window": "W03",
+   "shared_start_sec": 72.0,
+   "shared_end_sec": 96.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 2.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W02_E010",
+   "later_event": "W03_E003",
+   "earlier_window": "W02",
+   "later_window": "W03",
+   "shared_start_sec": 72.0,
+   "shared_end_sec": 96.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 2.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W02_E010",
+   "later_event": "W03_E004",
+   "earlier_window": "W02",
+   "later_window": "W03",
+   "shared_start_sec": 72.0,
+   "shared_end_sec": 96.0,
+   "relation": "POSSIBLE_SAME_EVENT",
+   "overlap_sec": 2.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "SEMANTICALLY_EQUIVALENT",
+   "shared_token_count": 4,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W03_E006",
+   "later_event": "W04_E001",
+   "earlier_window": "W03",
+   "later_window": "W04",
+   "shared_start_sec": 96.0,
+   "shared_end_sec": 120.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W03_E007",
+   "later_event": "W04_E001",
+   "earlier_window": "W03",
+   "later_window": "W04",
+   "shared_start_sec": 96.0,
+   "shared_end_sec": 120.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W03_E007",
+   "later_event": "W04_E002",
+   "earlier_window": "W03",
+   "later_window": "W04",
+   "shared_start_sec": 96.0,
+   "shared_end_sec": 120.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W03_E008",
+   "later_event": "W04_E001",
+   "earlier_window": "W03",
+   "later_window": "W04",
+   "shared_start_sec": 96.0,
+   "shared_end_sec": 120.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W03_E008",
+   "later_event": "W04_E002",
+   "earlier_window": "W03",
+   "later_window": "W04",
+   "shared_start_sec": 96.0,
+   "shared_end_sec": 120.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 3.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 4,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W03_E008",
+   "later_event": "W04_E003",
+   "earlier_window": "W03",
+   "later_window": "W04",
+   "shared_start_sec": 96.0,
+   "shared_end_sec": 120.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 1.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W03_E009",
+   "later_event": "W04_E003",
+   "earlier_window": "W03",
+   "later_window": "W04",
+   "shared_start_sec": 96.0,
+   "shared_end_sec": 120.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 16.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W04_E003",
+   "later_event": "W05_E001",
+   "earlier_window": "W04",
+   "later_window": "W05",
+   "shared_start_sec": 120.0,
+   "shared_end_sec": 144.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 3.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W04_E004",
+   "later_event": "W05_E001",
+   "earlier_window": "W04",
+   "later_window": "W05",
+   "shared_start_sec": 120.0,
+   "shared_end_sec": 144.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 2.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W04_E004",
+   "later_event": "W05_E002",
+   "earlier_window": "W04",
+   "later_window": "W05",
+   "shared_start_sec": 120.0,
+   "shared_end_sec": 144.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 2.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W04_E005",
+   "later_event": "W05_E002",
+   "earlier_window": "W04",
+   "later_window": "W05",
+   "shared_start_sec": 120.0,
+   "shared_end_sec": 144.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 3.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W04_E005",
+   "later_event": "W05_E003",
+   "earlier_window": "W04",
+   "later_window": "W05",
+   "shared_start_sec": 120.0,
+   "shared_end_sec": 144.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 1.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W04_E006",
+   "later_event": "W05_E003",
+   "earlier_window": "W04",
+   "later_window": "W05",
+   "shared_start_sec": 120.0,
+   "shared_end_sec": 144.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W04_E006",
+   "later_event": "W05_E004",
+   "earlier_window": "W04",
+   "later_window": "W05",
+   "shared_start_sec": 120.0,
+   "shared_end_sec": 144.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 5.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W04_E006",
+   "later_event": "W05_E005",
+   "earlier_window": "W04",
+   "later_window": "W05",
+   "shared_start_sec": 120.0,
+   "shared_end_sec": 144.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W05_E005",
+   "later_event": "W06_E001",
+   "earlier_window": "W05",
+   "later_window": "W06",
+   "shared_start_sec": 144.0,
+   "shared_end_sec": 168.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 1.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W05_E006",
+   "later_event": "W06_E001",
+   "earlier_window": "W05",
+   "later_window": "W06",
+   "shared_start_sec": 144.0,
+   "shared_end_sec": 168.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W05_E006",
+   "later_event": "W06_E002",
+   "earlier_window": "W05",
+   "later_window": "W06",
+   "shared_start_sec": 144.0,
+   "shared_end_sec": 168.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W05_E006",
+   "later_event": "W06_E003",
+   "earlier_window": "W05",
+   "later_window": "W06",
+   "shared_start_sec": 144.0,
+   "shared_end_sec": 168.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W05_E006",
+   "later_event": "W06_E004",
+   "earlier_window": "W05",
+   "later_window": "W06",
+   "shared_start_sec": 144.0,
+   "shared_end_sec": 168.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W05_E006",
+   "later_event": "W06_E005",
+   "earlier_window": "W05",
+   "later_window": "W06",
+   "shared_start_sec": 144.0,
+   "shared_end_sec": 168.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W05_E006",
+   "later_event": "W06_E006",
+   "earlier_window": "W05",
+   "later_window": "W06",
+   "shared_start_sec": 144.0,
+   "shared_end_sec": 168.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 3.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W06_E006",
+   "later_event": "W07_E001",
+   "earlier_window": "W06",
+   "later_window": "W07",
+   "shared_start_sec": 168.0,
+   "shared_end_sec": 192.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 2.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W06_E007",
+   "later_event": "W07_E001",
+   "earlier_window": "W06",
+   "later_window": "W07",
+   "shared_start_sec": 168.0,
+   "shared_end_sec": 192.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 5.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W06_E007",
+   "later_event": "W07_E002",
+   "earlier_window": "W06",
+   "later_window": "W07",
+   "shared_start_sec": 168.0,
+   "shared_end_sec": 192.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 4,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W06_E008",
+   "later_event": "W07_E001",
+   "earlier_window": "W06",
+   "later_window": "W07",
+   "shared_start_sec": 168.0,
+   "shared_end_sec": 192.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W06_E008",
+   "later_event": "W07_E002",
+   "earlier_window": "W06",
+   "later_window": "W07",
+   "shared_start_sec": 168.0,
+   "shared_end_sec": 192.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 5.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W06_E009",
+   "later_event": "W07_E002",
+   "earlier_window": "W06",
+   "later_window": "W07",
+   "shared_start_sec": 168.0,
+   "shared_end_sec": 192.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 4,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W06_E009",
+   "later_event": "W07_E003",
+   "earlier_window": "W06",
+   "later_window": "W07",
+   "shared_start_sec": 168.0,
+   "shared_end_sec": 192.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 1.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W06_E010",
+   "later_event": "W07_E003",
+   "earlier_window": "W06",
+   "later_window": "W07",
+   "shared_start_sec": 168.0,
+   "shared_end_sec": 192.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 2.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W06_E010",
+   "later_event": "W07_E004",
+   "earlier_window": "W06",
+   "later_window": "W07",
+   "shared_start_sec": 168.0,
+   "shared_end_sec": 192.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 3.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W06_E010",
+   "later_event": "W07_E005",
+   "earlier_window": "W06",
+   "later_window": "W07",
+   "shared_start_sec": 168.0,
+   "shared_end_sec": 192.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 2.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W07_E005",
+   "later_event": "W08_E001",
+   "earlier_window": "W07",
+   "later_window": "W08",
+   "shared_start_sec": 192.0,
+   "shared_end_sec": 216.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 1.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W07_E006",
+   "later_event": "W08_E001",
+   "earlier_window": "W07",
+   "later_window": "W08",
+   "shared_start_sec": 192.0,
+   "shared_end_sec": 216.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 2.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W07_E006",
+   "later_event": "W08_E002",
+   "earlier_window": "W07",
+   "later_window": "W08",
+   "shared_start_sec": 192.0,
+   "shared_end_sec": 216.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 7.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 4,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W07_E007",
+   "later_event": "W08_E002",
+   "earlier_window": "W07",
+   "later_window": "W08",
+   "shared_start_sec": 192.0,
+   "shared_end_sec": 216.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 3.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W07_E008",
+   "later_event": "W08_E002",
+   "earlier_window": "W07",
+   "later_window": "W08",
+   "shared_start_sec": 192.0,
+   "shared_end_sec": 216.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 11.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W08_E002",
+   "later_event": "W09_E001",
+   "earlier_window": "W08",
+   "later_window": "W09",
+   "shared_start_sec": 216.0,
+   "shared_end_sec": 240.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W08_E002",
+   "later_event": "W09_E002",
+   "earlier_window": "W08",
+   "later_window": "W09",
+   "shared_start_sec": 216.0,
+   "shared_end_sec": 240.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W08_E002",
+   "later_event": "W09_E003",
+   "earlier_window": "W08",
+   "later_window": "W09",
+   "shared_start_sec": 216.0,
+   "shared_end_sec": 240.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W08_E002",
+   "later_event": "W09_E004",
+   "earlier_window": "W08",
+   "later_window": "W09",
+   "shared_start_sec": 216.0,
+   "shared_end_sec": 240.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W08_E002",
+   "later_event": "W09_E005",
+   "earlier_window": "W08",
+   "later_window": "W09",
+   "shared_start_sec": 216.0,
+   "shared_end_sec": 240.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W08_E002",
+   "later_event": "W09_E006",
+   "earlier_window": "W08",
+   "later_window": "W09",
+   "shared_start_sec": 216.0,
+   "shared_end_sec": 240.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W09_E006",
+   "later_event": "W10_E001",
+   "earlier_window": "W09",
+   "later_window": "W10",
+   "shared_start_sec": 240.0,
+   "shared_end_sec": 264.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 5.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W09_E006",
+   "later_event": "W10_E002",
+   "earlier_window": "W09",
+   "later_window": "W10",
+   "shared_start_sec": 240.0,
+   "shared_end_sec": 264.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 10.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W09_E006",
+   "later_event": "W10_E003",
+   "earlier_window": "W09",
+   "later_window": "W10",
+   "shared_start_sec": 240.0,
+   "shared_end_sec": 264.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 5.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W09_E006",
+   "later_event": "W10_E004",
+   "earlier_window": "W09",
+   "later_window": "W10",
+   "shared_start_sec": 240.0,
+   "shared_end_sec": 264.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W10_E004",
+   "later_event": "W11_E001",
+   "earlier_window": "W10",
+   "later_window": "W11",
+   "shared_start_sec": 264.0,
+   "shared_end_sec": 288.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 8.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W10_E004",
+   "later_event": "W11_E002",
+   "earlier_window": "W10",
+   "later_window": "W11",
+   "shared_start_sec": 264.0,
+   "shared_end_sec": 288.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 8.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W10_E004",
+   "later_event": "W11_E003",
+   "earlier_window": "W10",
+   "later_window": "W11",
+   "shared_start_sec": 264.0,
+   "shared_end_sec": 288.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 8.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W10_E004",
+   "later_event": "W11_E004",
+   "earlier_window": "W10",
+   "later_window": "W11",
+   "shared_start_sec": 264.0,
+   "shared_end_sec": 288.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W11_E003",
+   "later_event": "W12_E001",
+   "earlier_window": "W11",
+   "later_window": "W12",
+   "shared_start_sec": 288.0,
+   "shared_end_sec": 312.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W11_E004",
+   "later_event": "W12_E001",
+   "earlier_window": "W11",
+   "later_window": "W12",
+   "shared_start_sec": 288.0,
+   "shared_end_sec": 312.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 5.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W11_E004",
+   "later_event": "W12_E002",
+   "earlier_window": "W11",
+   "later_window": "W12",
+   "shared_start_sec": 288.0,
+   "shared_end_sec": 312.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 3.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W11_E005",
+   "later_event": "W12_E002",
+   "earlier_window": "W11",
+   "later_window": "W12",
+   "shared_start_sec": 288.0,
+   "shared_end_sec": 312.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 1.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W11_E005",
+   "later_event": "W12_E003",
+   "earlier_window": "W11",
+   "later_window": "W12",
+   "shared_start_sec": 288.0,
+   "shared_end_sec": 312.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W11_E005",
+   "later_event": "W12_E004",
+   "earlier_window": "W11",
+   "later_window": "W12",
+   "shared_start_sec": 288.0,
+   "shared_end_sec": 312.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 3.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W11_E006",
+   "later_event": "W12_E004",
+   "earlier_window": "W11",
+   "later_window": "W12",
+   "shared_start_sec": 288.0,
+   "shared_end_sec": 312.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 1.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W11_E006",
+   "later_event": "W12_E005",
+   "earlier_window": "W11",
+   "later_window": "W12",
+   "shared_start_sec": 288.0,
+   "shared_end_sec": 312.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 5.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W11_E006",
+   "later_event": "W12_E006",
+   "earlier_window": "W11",
+   "later_window": "W12",
+   "shared_start_sec": 288.0,
+   "shared_end_sec": 312.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 2.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W12_E006",
+   "later_event": "W13_E001",
+   "earlier_window": "W12",
+   "later_window": "W13",
+   "shared_start_sec": 312.0,
+   "shared_end_sec": 336.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 5.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 4,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W12_E006",
+   "later_event": "W13_E002",
+   "earlier_window": "W12",
+   "later_window": "W13",
+   "shared_start_sec": 312.0,
+   "shared_end_sec": 336.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 19.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W13_E002",
+   "later_event": "W14_E001",
+   "earlier_window": "W13",
+   "later_window": "W14",
+   "shared_start_sec": 336.0,
+   "shared_end_sec": 360.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 12.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W13_E002",
+   "later_event": "W14_E002",
+   "earlier_window": "W13",
+   "later_window": "W14",
+   "shared_start_sec": 336.0,
+   "shared_end_sec": 360.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 12.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W14_E002",
+   "later_event": "W15_E001",
+   "earlier_window": "W14",
+   "later_window": "W15",
+   "shared_start_sec": 360.0,
+   "shared_end_sec": 384.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 5.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W14_E002",
+   "later_event": "W15_E002",
+   "earlier_window": "W14",
+   "later_window": "W15",
+   "shared_start_sec": 360.0,
+   "shared_end_sec": 384.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 5.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W14_E002",
+   "later_event": "W15_E003",
+   "earlier_window": "W14",
+   "later_window": "W15",
+   "shared_start_sec": 360.0,
+   "shared_end_sec": 384.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 5.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W14_E002",
+   "later_event": "W15_E004",
+   "earlier_window": "W14",
+   "later_window": "W15",
+   "shared_start_sec": 360.0,
+   "shared_end_sec": 384.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 1.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W14_E003",
+   "later_event": "W15_E004",
+   "earlier_window": "W14",
+   "later_window": "W15",
+   "shared_start_sec": 360.0,
+   "shared_end_sec": 384.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W14_E003",
+   "later_event": "W15_E005",
+   "earlier_window": "W14",
+   "later_window": "W15",
+   "shared_start_sec": 360.0,
+   "shared_end_sec": 384.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W14_E004",
+   "later_event": "W15_E004",
+   "earlier_window": "W14",
+   "later_window": "W15",
+   "shared_start_sec": 360.0,
+   "shared_end_sec": 384.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W14_E004",
+   "later_event": "W15_E005",
+   "earlier_window": "W14",
+   "later_window": "W15",
+   "shared_start_sec": 360.0,
+   "shared_end_sec": 384.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W15_E005",
+   "later_event": "W16_E001",
+   "earlier_window": "W15",
+   "later_window": "W16",
+   "shared_start_sec": 384.0,
+   "shared_end_sec": 408.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 1.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W15_E006",
+   "later_event": "W16_E001",
+   "earlier_window": "W15",
+   "later_window": "W16",
+   "shared_start_sec": 384.0,
+   "shared_end_sec": 408.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 4,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W15_E006",
+   "later_event": "W16_E002",
+   "earlier_window": "W15",
+   "later_window": "W16",
+   "shared_start_sec": 384.0,
+   "shared_end_sec": 408.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 1.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W15_E007",
+   "later_event": "W16_E002",
+   "earlier_window": "W15",
+   "later_window": "W16",
+   "shared_start_sec": 384.0,
+   "shared_end_sec": 408.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 10.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 5,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W15_E007",
+   "later_event": "W16_E003",
+   "earlier_window": "W15",
+   "later_window": "W16",
+   "shared_start_sec": 384.0,
+   "shared_end_sec": 408.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W15_E008",
+   "later_event": "W16_E002",
+   "earlier_window": "W15",
+   "later_window": "W16",
+   "shared_start_sec": 384.0,
+   "shared_end_sec": 408.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W15_E008",
+   "later_event": "W16_E003",
+   "earlier_window": "W15",
+   "later_window": "W16",
+   "shared_start_sec": 384.0,
+   "shared_end_sec": 408.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 5.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W15_E009",
+   "later_event": "W16_E003",
+   "earlier_window": "W15",
+   "later_window": "W16",
+   "shared_start_sec": 384.0,
+   "shared_end_sec": 408.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 3.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W15_E009",
+   "later_event": "W16_E004",
+   "earlier_window": "W15",
+   "later_window": "W16",
+   "shared_start_sec": 384.0,
+   "shared_end_sec": 408.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W16_E003",
+   "later_event": "W17_E001",
+   "earlier_window": "W16",
+   "later_window": "W17",
+   "shared_start_sec": 408.0,
+   "shared_end_sec": 432.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W16_E004",
+   "later_event": "W17_E001",
+   "earlier_window": "W16",
+   "later_window": "W17",
+   "shared_start_sec": 408.0,
+   "shared_end_sec": 432.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W16_E005",
+   "later_event": "W17_E001",
+   "earlier_window": "W16",
+   "later_window": "W17",
+   "shared_start_sec": 408.0,
+   "shared_end_sec": 432.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 1.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 4,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W16_E005",
+   "later_event": "W17_E002",
+   "earlier_window": "W16",
+   "later_window": "W17",
+   "shared_start_sec": 408.0,
+   "shared_end_sec": 432.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 3.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W16_E006",
+   "later_event": "W17_E002",
+   "earlier_window": "W16",
+   "later_window": "W17",
+   "shared_start_sec": 408.0,
+   "shared_end_sec": 432.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W16_E006",
+   "later_event": "W17_E003",
+   "earlier_window": "W16",
+   "later_window": "W17",
+   "shared_start_sec": 408.0,
+   "shared_end_sec": 432.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W16_E007",
+   "later_event": "W17_E002",
+   "earlier_window": "W16",
+   "later_window": "W17",
+   "shared_start_sec": 408.0,
+   "shared_end_sec": 432.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W16_E007",
+   "later_event": "W17_E003",
+   "earlier_window": "W16",
+   "later_window": "W17",
+   "shared_start_sec": 408.0,
+   "shared_end_sec": 432.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 6.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 4,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W16_E007",
+   "later_event": "W17_E004",
+   "earlier_window": "W16",
+   "later_window": "W17",
+   "shared_start_sec": 408.0,
+   "shared_end_sec": 432.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 6.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W17_E004",
+   "later_event": "W18_E001",
+   "earlier_window": "W17",
+   "later_window": "W18",
+   "shared_start_sec": 432.0,
+   "shared_end_sec": 456.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 1.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W17_E005",
+   "later_event": "W18_E001",
+   "earlier_window": "W17",
+   "later_window": "W18",
+   "shared_start_sec": 432.0,
+   "shared_end_sec": 456.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 7.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 4,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W17_E005",
+   "later_event": "W18_E002",
+   "earlier_window": "W17",
+   "later_window": "W18",
+   "shared_start_sec": 432.0,
+   "shared_end_sec": 456.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W17_E006",
+   "later_event": "W18_E001",
+   "earlier_window": "W17",
+   "later_window": "W18",
+   "shared_start_sec": 432.0,
+   "shared_end_sec": 456.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W17_E006",
+   "later_event": "W18_E002",
+   "earlier_window": "W17",
+   "later_window": "W18",
+   "shared_start_sec": 432.0,
+   "shared_end_sec": 456.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 16.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 4,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W18_E002",
+   "later_event": "W19_E001",
+   "earlier_window": "W18",
+   "later_window": "W19",
+   "shared_start_sec": 456.0,
+   "shared_end_sec": 480.0,
+   "relation": "POSSIBLE_CONFLICT",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "shared_token_count": 0,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W18_E002",
+   "later_event": "W19_E002",
+   "earlier_window": "W18",
+   "later_window": "W19",
+   "shared_start_sec": 456.0,
+   "shared_end_sec": 480.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "shared_token_count": 0,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W18_E003",
+   "later_event": "W19_E001",
+   "earlier_window": "W18",
+   "later_window": "W19",
+   "shared_start_sec": 456.0,
+   "shared_end_sec": 480.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "shared_token_count": 0,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W18_E003",
+   "later_event": "W19_E002",
+   "earlier_window": "W18",
+   "later_window": "W19",
+   "shared_start_sec": 456.0,
+   "shared_end_sec": 480.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W18_E003",
+   "later_event": "W19_E003",
+   "earlier_window": "W18",
+   "later_window": "W19",
+   "shared_start_sec": 456.0,
+   "shared_end_sec": 480.0,
+   "relation": "POSSIBLE_CONFLICT",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "shared_token_count": 0,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W18_E003",
+   "later_event": "W19_E004",
+   "earlier_window": "W18",
+   "later_window": "W19",
+   "shared_start_sec": 456.0,
+   "shared_end_sec": 480.0,
+   "relation": "POSSIBLE_CONFLICT",
+   "overlap_sec": 2.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "shared_token_count": 0,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W18_E004",
+   "later_event": "W19_E004",
+   "earlier_window": "W18",
+   "later_window": "W19",
+   "shared_start_sec": 456.0,
+   "shared_end_sec": 480.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 2.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W18_E004",
+   "later_event": "W19_E005",
+   "earlier_window": "W18",
+   "later_window": "W19",
+   "shared_start_sec": 456.0,
+   "shared_end_sec": 480.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 3.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W18_E005",
+   "later_event": "W19_E005",
+   "earlier_window": "W18",
+   "later_window": "W19",
+   "shared_start_sec": 456.0,
+   "shared_end_sec": 480.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 1.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W18_E005",
+   "later_event": "W19_E006",
+   "earlier_window": "W18",
+   "later_window": "W19",
+   "shared_start_sec": 456.0,
+   "shared_end_sec": 480.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W18_E005",
+   "later_event": "W19_E007",
+   "earlier_window": "W18",
+   "later_window": "W19",
+   "shared_start_sec": 456.0,
+   "shared_end_sec": 480.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W19_E006",
+   "later_event": "W20_E001",
+   "earlier_window": "W19",
+   "later_window": "W20",
+   "shared_start_sec": 480.0,
+   "shared_end_sec": 504.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "shared_token_count": 0,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W19_E007",
+   "later_event": "W20_E001",
+   "earlier_window": "W19",
+   "later_window": "W20",
+   "shared_start_sec": 480.0,
+   "shared_end_sec": 504.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 3.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W19_E007",
+   "later_event": "W20_E002",
+   "earlier_window": "W19",
+   "later_window": "W20",
+   "shared_start_sec": 480.0,
+   "shared_end_sec": 504.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 1.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W19_E008",
+   "later_event": "W20_E002",
+   "earlier_window": "W19",
+   "later_window": "W20",
+   "shared_start_sec": 480.0,
+   "shared_end_sec": 504.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 2.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 5,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W19_E008",
+   "later_event": "W20_E003",
+   "earlier_window": "W19",
+   "later_window": "W20",
+   "shared_start_sec": 480.0,
+   "shared_end_sec": 504.0,
+   "relation": "POSSIBLE_CONFLICT",
+   "overlap_sec": 2.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "shared_token_count": 0,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W19_E009",
+   "later_event": "W20_E003",
+   "earlier_window": "W19",
+   "later_window": "W20",
+   "shared_start_sec": 480.0,
+   "shared_end_sec": 504.0,
+   "relation": "POSSIBLE_CONFLICT",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "shared_token_count": 0,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W19_E010",
+   "later_event": "W20_E003",
+   "earlier_window": "W19",
+   "later_window": "W20",
+   "shared_start_sec": 480.0,
+   "shared_end_sec": 504.0,
+   "relation": "POSSIBLE_CONFLICT",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "shared_token_count": 0,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W19_E011",
+   "later_event": "W20_E003",
+   "earlier_window": "W19",
+   "later_window": "W20",
+   "shared_start_sec": 480.0,
+   "shared_end_sec": 504.0,
+   "relation": "POSSIBLE_CONFLICT",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "shared_token_count": 0,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W19_E012",
+   "later_event": "W20_E003",
+   "earlier_window": "W19",
+   "later_window": "W20",
+   "shared_start_sec": 480.0,
+   "shared_end_sec": 504.0,
+   "relation": "POSSIBLE_CONFLICT",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "shared_token_count": 0,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W20_E003",
+   "later_event": "W21_E001",
+   "earlier_window": "W20",
+   "later_window": "W21",
+   "shared_start_sec": 504.0,
+   "shared_end_sec": 528.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 5.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W20_E003",
+   "later_event": "W21_E002",
+   "earlier_window": "W20",
+   "later_window": "W21",
+   "shared_start_sec": 504.0,
+   "shared_end_sec": 528.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W20_E003",
+   "later_event": "W21_E003",
+   "earlier_window": "W20",
+   "later_window": "W21",
+   "shared_start_sec": 504.0,
+   "shared_end_sec": 528.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 7.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W20_E003",
+   "later_event": "W21_E004",
+   "earlier_window": "W20",
+   "later_window": "W21",
+   "shared_start_sec": 504.0,
+   "shared_end_sec": 528.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W20_E003",
+   "later_event": "W21_E005",
+   "earlier_window": "W20",
+   "later_window": "W21",
+   "shared_start_sec": 504.0,
+   "shared_end_sec": 528.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W21_E005",
+   "later_event": "W22_E001",
+   "earlier_window": "W21",
+   "later_window": "W22",
+   "shared_start_sec": 528.0,
+   "shared_end_sec": 552.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 1.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W21_E006",
+   "later_event": "W22_E001",
+   "earlier_window": "W21",
+   "later_window": "W22",
+   "shared_start_sec": 528.0,
+   "shared_end_sec": 552.0,
+   "relation": "POSSIBLE_CONFLICT",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "shared_token_count": 0,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W21_E006",
+   "later_event": "W22_E002",
+   "earlier_window": "W21",
+   "later_window": "W22",
+   "shared_start_sec": 528.0,
+   "shared_end_sec": 552.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W21_E007",
+   "later_event": "W22_E001",
+   "earlier_window": "W21",
+   "later_window": "W22",
+   "shared_start_sec": 528.0,
+   "shared_end_sec": 552.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "shared_token_count": 0,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W21_E007",
+   "later_event": "W22_E002",
+   "earlier_window": "W21",
+   "later_window": "W22",
+   "shared_start_sec": 528.0,
+   "shared_end_sec": 552.0,
+   "relation": "POSSIBLE_CONFLICT",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "shared_token_count": 0,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W21_E007",
+   "later_event": "W22_E003",
+   "earlier_window": "W21",
+   "later_window": "W22",
+   "shared_start_sec": 528.0,
+   "shared_end_sec": 552.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W21_E007",
+   "later_event": "W22_E004",
+   "earlier_window": "W21",
+   "later_window": "W22",
+   "shared_start_sec": 528.0,
+   "shared_end_sec": 552.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "shared_token_count": 0,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W21_E008",
+   "later_event": "W22_E003",
+   "earlier_window": "W21",
+   "later_window": "W22",
+   "shared_start_sec": 528.0,
+   "shared_end_sec": 552.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "shared_token_count": 0,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W21_E008",
+   "later_event": "W22_E004",
+   "earlier_window": "W21",
+   "later_window": "W22",
+   "shared_start_sec": 528.0,
+   "shared_end_sec": 552.0,
+   "relation": "POSSIBLE_CONFLICT",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "shared_token_count": 0,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W21_E008",
+   "later_event": "W22_E005",
+   "earlier_window": "W21",
+   "later_window": "W22",
+   "shared_start_sec": 528.0,
+   "shared_end_sec": 552.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 5.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W21_E008",
+   "later_event": "W22_E006",
+   "earlier_window": "W21",
+   "later_window": "W22",
+   "shared_start_sec": 528.0,
+   "shared_end_sec": 552.0,
+   "relation": "POSSIBLE_CONFLICT",
+   "overlap_sec": 2.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "shared_token_count": 0,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W22_E006",
+   "later_event": "W23_E001",
+   "earlier_window": "W22",
+   "later_window": "W23",
+   "shared_start_sec": 552.0,
+   "shared_end_sec": 576.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 3.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W22_E007",
+   "later_event": "W23_E001",
+   "earlier_window": "W22",
+   "later_window": "W23",
+   "shared_start_sec": 552.0,
+   "shared_end_sec": 576.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 2.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W22_E007",
+   "later_event": "W23_E002",
+   "earlier_window": "W22",
+   "later_window": "W23",
+   "shared_start_sec": 552.0,
+   "shared_end_sec": 576.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 3.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W22_E008",
+   "later_event": "W23_E002",
+   "earlier_window": "W22",
+   "later_window": "W23",
+   "shared_start_sec": 552.0,
+   "shared_end_sec": 576.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 1.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W22_E008",
+   "later_event": "W23_E003",
+   "earlier_window": "W22",
+   "later_window": "W23",
+   "shared_start_sec": 552.0,
+   "shared_end_sec": 576.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 4.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 2,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W22_E008",
+   "later_event": "W23_E004",
+   "earlier_window": "W22",
+   "later_window": "W23",
+   "shared_start_sec": 552.0,
+   "shared_end_sec": 576.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W22_E009",
+   "later_event": "W23_E003",
+   "earlier_window": "W22",
+   "later_window": "W23",
+   "shared_start_sec": 552.0,
+   "shared_end_sec": 576.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "overlap_sec": 0.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W22_E009",
+   "later_event": "W23_E004",
+   "earlier_window": "W22",
+   "later_window": "W23",
+   "shared_start_sec": 552.0,
+   "shared_end_sec": 576.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 5.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W22_E010",
+   "later_event": "W23_E004",
+   "earlier_window": "W22",
+   "later_window": "W23",
+   "shared_start_sec": 552.0,
+   "shared_end_sec": 576.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 3.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 1,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "earlier_event": "W22_E010",
+   "later_event": "W23_E005",
+   "earlier_window": "W22",
+   "later_window": "W23",
+   "shared_start_sec": 552.0,
+   "shared_end_sec": 576.0,
+   "relation": "UNRESOLVED",
+   "overlap_sec": 3.0,
+   "gap_sec": 0.0,
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "shared_token_count": 3,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  }
+ ],
+ "group_count": 159,
+ "groups": [
+  {
+   "members": [
+    "W01_E001"
+   ],
+   "member_count": 1,
+   "start_sec": 24.0,
+   "end_sec": 28.0,
+   "source_windows": [
+    "W01"
+   ],
+   "actor": "person",
+   "action": "selecting",
+   "object_or_state": "bottle of soy sauce",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G001"
+  },
+  {
+   "members": [
+    "W01_E002"
+   ],
+   "member_count": 1,
+   "start_sec": 28.0,
+   "end_sec": 31.0,
+   "source_windows": [
+    "W01"
+   ],
+   "actor": "person",
+   "action": "selecting",
+   "object_or_state": "packet of curry",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G002"
+  },
+  {
+   "members": [
+    "W01_E003"
+   ],
+   "member_count": 1,
+   "start_sec": 31.0,
+   "end_sec": 34.0,
+   "source_windows": [
+    "W01"
+   ],
+   "actor": "person",
+   "action": "selecting",
+   "object_or_state": "bag of potatoes",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G003"
+  },
+  {
+   "members": [
+    "W01_E004"
+   ],
+   "member_count": 1,
+   "start_sec": 34.0,
+   "end_sec": 37.0,
+   "source_windows": [
+    "W01"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "potatoes in steamer",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G004"
+  },
+  {
+   "members": [
+    "W01_E005"
+   ],
+   "member_count": 1,
+   "start_sec": 37.0,
+   "end_sec": 40.0,
+   "source_windows": [
+    "W01"
+   ],
+   "actor": "person",
+   "action": "covering",
+   "object_or_state": "steamer",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G005"
+  },
+  {
+   "members": [
+    "W01_E006"
+   ],
+   "member_count": 1,
+   "start_sec": 40.0,
+   "end_sec": 43.0,
+   "source_windows": [
+    "W01"
+   ],
+   "actor": "person",
+   "action": "pouring",
+   "object_or_state": "curry powder into bowl",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G006"
+  },
+  {
+   "members": [
+    "W01_E007"
+   ],
+   "member_count": 1,
+   "start_sec": 43.0,
+   "end_sec": 46.0,
+   "source_windows": [
+    "W01"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "potato slices in blender",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G007"
+  },
+  {
+   "members": [
+    "W01_E008"
+   ],
+   "member_count": 1,
+   "start_sec": 46.0,
+   "end_sec": 49.0,
+   "source_windows": [
+    "W01"
+   ],
+   "actor": "person",
+   "action": "blending",
+   "object_or_state": "potato slices",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G008"
+  },
+  {
+   "members": [
+    "W02_E001"
+   ],
+   "member_count": 1,
+   "start_sec": 48.0,
+   "end_sec": 52.0,
+   "source_windows": [
+    "W02"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "bread pieces into blender",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G009"
+  },
+  {
+   "members": [
+    "W01_E009"
+   ],
+   "member_count": 1,
+   "start_sec": 49.0,
+   "end_sec": 52.0,
+   "source_windows": [
+    "W01"
+   ],
+   "actor": "person",
+   "action": "pouring",
+   "object_or_state": "oil into bowl with curry powder",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G010"
+  },
+  {
+   "members": [
+    "W01_E010"
+   ],
+   "member_count": 1,
+   "start_sec": 52.0,
+   "end_sec": 55.0,
+   "source_windows": [
+    "W01"
+   ],
+   "actor": "person",
+   "action": "mixing",
+   "object_or_state": "curry powder and oil",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G011"
+  },
+  {
+   "members": [
+    "W02_E002"
+   ],
+   "member_count": 1,
+   "start_sec": 52.0,
+   "end_sec": 55.0,
+   "source_windows": [
+    "W02"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "lid on blender",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G012"
+  },
+  {
+   "members": [
+    "W01_E011"
+   ],
+   "member_count": 1,
+   "start_sec": 55.0,
+   "end_sec": 72.0,
+   "source_windows": [
+    "W01"
+   ],
+   "actor": "person",
+   "action": "chopping",
+   "object_or_state": "onion",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G013"
+  },
+  {
+   "members": [
+    "W02_E003"
+   ],
+   "member_count": 1,
+   "start_sec": 55.0,
+   "end_sec": 58.0,
+   "source_windows": [
+    "W02"
+   ],
+   "actor": "person",
+   "action": "pouring",
+   "object_or_state": "oil into bowl of breadcrumbs",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G014"
+  },
+  {
+   "members": [
+    "W02_E004"
+   ],
+   "member_count": 1,
+   "start_sec": 58.0,
+   "end_sec": 62.0,
+   "source_windows": [
+    "W02"
+   ],
+   "actor": "person",
+   "action": "stirring",
+   "object_or_state": "breadcrumbs with oil",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G015"
+  },
+  {
+   "members": [
+    "W02_E005"
+   ],
+   "member_count": 1,
+   "start_sec": 62.0,
+   "end_sec": 66.0,
+   "source_windows": [
+    "W02"
+   ],
+   "actor": "person",
+   "action": "chopping",
+   "object_or_state": "onion on cutting board",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G016"
+  },
+  {
+   "members": [
+    "W02_E006"
+   ],
+   "member_count": 1,
+   "start_sec": 66.0,
+   "end_sec": 70.0,
+   "source_windows": [
+    "W02"
+   ],
+   "actor": "person",
+   "action": "chopping",
+   "object_or_state": "carrot on cutting board",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G017"
+  },
+  {
+   "members": [
+    "W02_E007"
+   ],
+   "member_count": 1,
+   "start_sec": 70.0,
+   "end_sec": 74.0,
+   "source_windows": [
+    "W02"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "ground beef into bowl",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G018"
+  },
+  {
+   "members": [
+    "W03_E001"
+   ],
+   "member_count": 1,
+   "start_sec": 72.0,
+   "end_sec": 76.0,
+   "source_windows": [
+    "W03"
+   ],
+   "actor": "person",
+   "action": "peeling",
+   "object_or_state": "carrot",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G019"
+  },
+  {
+   "members": [
+    "W02_E008"
+   ],
+   "member_count": 1,
+   "start_sec": 74.0,
+   "end_sec": 78.0,
+   "source_windows": [
+    "W02"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "onion and carrot into bowl with beef",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G020"
+  },
+  {
+   "members": [
+    "W03_E002"
+   ],
+   "member_count": 1,
+   "start_sec": 76.0,
+   "end_sec": 80.0,
+   "source_windows": [
+    "W03"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "lid on pot",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G021"
+  },
+  {
+   "members": [
+    "W02_E009"
+   ],
+   "member_count": 1,
+   "start_sec": 78.0,
+   "end_sec": 82.0,
+   "source_windows": [
+    "W02"
+   ],
+   "actor": "person",
+   "action": "transferring",
+   "object_or_state": "toasted breadcrumbs into bowl",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G022"
+  },
+  {
+   "members": [
+    "W03_E003"
+   ],
+   "member_count": 1,
+   "start_sec": 80.0,
+   "end_sec": 84.0,
+   "source_windows": [
+    "W03"
+   ],
+   "actor": "person",
+   "action": "pouring",
+   "object_or_state": "breadcrumbs into bowl",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G023"
+  },
+  {
+   "members": [
+    "W02_E010",
+    "W03_E004"
+   ],
+   "member_count": 2,
+   "start_sec": 82.0,
+   "end_sec": 88.0,
+   "source_windows": [
+    "W02",
+    "W03"
+   ],
+   "actor": "person",
+   "action": "stirring",
+   "object_or_state": "breadcrumbs in bowl",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G024"
+  },
+  {
+   "members": [
+    "W03_E005"
+   ],
+   "member_count": 1,
+   "start_sec": 88.0,
+   "end_sec": 92.0,
+   "source_windows": [
+    "W03"
+   ],
+   "actor": "person",
+   "action": "transferring",
+   "object_or_state": "ground beef into bowl",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G025"
+  },
+  {
+   "members": [
+    "W03_E006"
+   ],
+   "member_count": 1,
+   "start_sec": 92.0,
+   "end_sec": 96.0,
+   "source_windows": [
+    "W03"
+   ],
+   "actor": "person",
+   "action": "adding",
+   "object_or_state": "onion and crab stick to bowl",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G026"
+  },
+  {
+   "members": [
+    "W03_E007"
+   ],
+   "member_count": 1,
+   "start_sec": 96.0,
+   "end_sec": 100.0,
+   "source_windows": [
+    "W03"
+   ],
+   "actor": "person",
+   "action": "mixing",
+   "object_or_state": "ingredients in bowl",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G027"
+  },
+  {
+   "members": [
+    "W04_E001"
+   ],
+   "member_count": 1,
+   "start_sec": 96.0,
+   "end_sec": 100.0,
+   "source_windows": [
+    "W04"
+   ],
+   "actor": "person",
+   "action": "stirring",
+   "object_or_state": "mixture in a bowl with chopsticks",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G028"
+  },
+  {
+   "members": [
+    "W03_E008"
+   ],
+   "member_count": 1,
+   "start_sec": 100.0,
+   "end_sec": 104.0,
+   "source_windows": [
+    "W03"
+   ],
+   "actor": "person",
+   "action": "cooking",
+   "object_or_state": "mixture in pan",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G029"
+  },
+  {
+   "members": [
+    "W04_E002"
+   ],
+   "member_count": 1,
+   "start_sec": 100.0,
+   "end_sec": 103.0,
+   "source_windows": [
+    "W04"
+   ],
+   "actor": "person",
+   "action": "cooking",
+   "object_or_state": "mixture in a pan over direct heat",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G030"
+  },
+  {
+   "members": [
+    "W04_E003"
+   ],
+   "member_count": 1,
+   "start_sec": 103.0,
+   "end_sec": 123.0,
+   "source_windows": [
+    "W04"
+   ],
+   "actor": "person",
+   "action": "peeling",
+   "object_or_state": "potato with a peeler",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G031"
+  },
+  {
+   "members": [
+    "W03_E009"
+   ],
+   "member_count": 1,
+   "start_sec": 104.0,
+   "end_sec": 120.0,
+   "source_windows": [
+    "W03"
+   ],
+   "actor": "person",
+   "action": "peeling",
+   "object_or_state": "potatoes with peeler",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G032"
+  },
+  {
+   "members": [
+    "W05_E001"
+   ],
+   "member_count": 1,
+   "start_sec": 120.0,
+   "end_sec": 125.0,
+   "source_windows": [
+    "W05"
+   ],
+   "actor": "person",
+   "action": "grating",
+   "object_or_state": "potato",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G033"
+  },
+  {
+   "members": [
+    "W04_E004"
+   ],
+   "member_count": 1,
+   "start_sec": 123.0,
+   "end_sec": 127.0,
+   "source_windows": [
+    "W04"
+   ],
+   "actor": "person",
+   "action": "mixing",
+   "object_or_state": "mixture in a bowl with chopsticks",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G034"
+  },
+  {
+   "members": [
+    "W05_E002"
+   ],
+   "member_count": 1,
+   "start_sec": 125.0,
+   "end_sec": 130.0,
+   "source_windows": [
+    "W05"
+   ],
+   "actor": "person",
+   "action": "mixing",
+   "object_or_state": "potato mixture",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G035"
+  },
+  {
+   "members": [
+    "W04_E005"
+   ],
+   "member_count": 1,
+   "start_sec": 127.0,
+   "end_sec": 131.0,
+   "source_windows": [
+    "W04"
+   ],
+   "actor": "person",
+   "action": "forming",
+   "object_or_state": "mixture into balls",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G036"
+  },
+  {
+   "members": [
+    "W05_E003"
+   ],
+   "member_count": 1,
+   "start_sec": 130.0,
+   "end_sec": 135.0,
+   "source_windows": [
+    "W05"
+   ],
+   "actor": "person",
+   "action": "forming",
+   "object_or_state": "potato balls",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G037"
+  },
+  {
+   "members": [
+    "W04_E006"
+   ],
+   "member_count": 1,
+   "start_sec": 131.0,
+   "end_sec": 144.0,
+   "source_windows": [
+    "W04"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "balls on a plate",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G038"
+  },
+  {
+   "members": [
+    "W05_E004"
+   ],
+   "member_count": 1,
+   "start_sec": 135.0,
+   "end_sec": 140.0,
+   "source_windows": [
+    "W05"
+   ],
+   "actor": "person",
+   "action": "coating",
+   "object_or_state": "potato balls",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G039"
+  },
+  {
+   "members": [
+    "W05_E005"
+   ],
+   "member_count": 1,
+   "start_sec": 140.0,
+   "end_sec": 145.0,
+   "source_windows": [
+    "W05"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "potato balls",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G040"
+  },
+  {
+   "members": [
+    "W06_E001"
+   ],
+   "member_count": 1,
+   "start_sec": 144.0,
+   "end_sec": 149.0,
+   "source_windows": [
+    "W06"
+   ],
+   "actor": "person",
+   "action": "pouring",
+   "object_or_state": "liquid into a bowl",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G041"
+  },
+  {
+   "members": [
+    "W05_E006"
+   ],
+   "member_count": 1,
+   "start_sec": 145.0,
+   "end_sec": 168.0,
+   "source_windows": [
+    "W05"
+   ],
+   "actor": "person",
+   "action": "coating",
+   "object_or_state": "potato balls",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G042"
+  },
+  {
+   "members": [
+    "W06_E002"
+   ],
+   "member_count": 1,
+   "start_sec": 149.0,
+   "end_sec": 153.0,
+   "source_windows": [
+    "W06"
+   ],
+   "actor": "person",
+   "action": "mixing",
+   "object_or_state": "ingredients in a bowl",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G043"
+  },
+  {
+   "members": [
+    "W06_E003"
+   ],
+   "member_count": 1,
+   "start_sec": 153.0,
+   "end_sec": 157.0,
+   "source_windows": [
+    "W06"
+   ],
+   "actor": "person",
+   "action": "dipping",
+   "object_or_state": "potato dough in egg mixture",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G044"
+  },
+  {
+   "members": [
+    "W06_E004"
+   ],
+   "member_count": 1,
+   "start_sec": 157.0,
+   "end_sec": 161.0,
+   "source_windows": [
+    "W06"
+   ],
+   "actor": "person",
+   "action": "coating",
+   "object_or_state": "potato dough in breadcrumbs",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G045"
+  },
+  {
+   "members": [
+    "W06_E005"
+   ],
+   "member_count": 1,
+   "start_sec": 161.0,
+   "end_sec": 165.0,
+   "source_windows": [
+    "W06"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "coated potato dough on a plate",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G046"
+  },
+  {
+   "members": [
+    "W06_E006"
+   ],
+   "member_count": 1,
+   "start_sec": 165.0,
+   "end_sec": 170.0,
+   "source_windows": [
+    "W06"
+   ],
+   "actor": "person",
+   "action": "coating",
+   "object_or_state": "potato dough in breadcrumbs",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G047"
+  },
+  {
+   "members": [
+    "W07_E001"
+   ],
+   "member_count": 1,
+   "start_sec": 168.0,
+   "end_sec": 175.0,
+   "source_windows": [
+    "W07"
+   ],
+   "actor": "person",
+   "action": "coating",
+   "object_or_state": "ball in breadcrumbs",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G048"
+  },
+  {
+   "members": [
+    "W06_E007"
+   ],
+   "member_count": 1,
+   "start_sec": 170.0,
+   "end_sec": 175.0,
+   "source_windows": [
+    "W06"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "coated potato dough on a plate",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G049"
+  },
+  {
+   "members": [
+    "W06_E008"
+   ],
+   "member_count": 1,
+   "start_sec": 175.0,
+   "end_sec": 180.0,
+   "source_windows": [
+    "W06"
+   ],
+   "actor": "person",
+   "action": "coating",
+   "object_or_state": "potato dough in breadcrumbs",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G050"
+  },
+  {
+   "members": [
+    "W07_E002"
+   ],
+   "member_count": 1,
+   "start_sec": 175.0,
+   "end_sec": 184.0,
+   "source_windows": [
+    "W07"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "coated balls on plate",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G051"
+  },
+  {
+   "members": [
+    "W06_E009"
+   ],
+   "member_count": 1,
+   "start_sec": 180.0,
+   "end_sec": 185.0,
+   "source_windows": [
+    "W06"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "coated potato dough on a plate",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G052"
+  },
+  {
+   "members": [
+    "W07_E003"
+   ],
+   "member_count": 1,
+   "start_sec": 184.0,
+   "end_sec": 187.0,
+   "source_windows": [
+    "W07"
+   ],
+   "actor": "person",
+   "action": "pouring",
+   "object_or_state": "cream into pan",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G053"
+  },
+  {
+   "members": [
+    "W06_E010"
+   ],
+   "member_count": 1,
+   "start_sec": 185.0,
+   "end_sec": 192.0,
+   "source_windows": [
+    "W06"
+   ],
+   "actor": "person",
+   "action": "pouring",
+   "object_or_state": "liquid into a pan",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G054"
+  },
+  {
+   "members": [
+    "W07_E004"
+   ],
+   "member_count": 1,
+   "start_sec": 187.0,
+   "end_sec": 190.0,
+   "source_windows": [
+    "W07"
+   ],
+   "actor": "person",
+   "action": "stirring",
+   "object_or_state": "onions in pan",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G055"
+  },
+  {
+   "members": [
+    "W07_E005"
+   ],
+   "member_count": 1,
+   "start_sec": 190.0,
+   "end_sec": 193.0,
+   "source_windows": [
+    "W07"
+   ],
+   "actor": "person",
+   "action": "pouring",
+   "object_or_state": "sauce into pan",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G056"
+  },
+  {
+   "members": [
+    "W08_E001"
+   ],
+   "member_count": 1,
+   "start_sec": 192.0,
+   "end_sec": 195.0,
+   "source_windows": [
+    "W08"
+   ],
+   "actor": "person",
+   "action": "pouring",
+   "object_or_state": "powder from a bottle into a pan",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G057"
+  },
+  {
+   "members": [
+    "W07_E006"
+   ],
+   "member_count": 1,
+   "start_sec": 193.0,
+   "end_sec": 202.0,
+   "source_windows": [
+    "W07"
+   ],
+   "actor": "person",
+   "action": "pouring",
+   "object_or_state": "liquid into pan",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G058"
+  },
+  {
+   "members": [
+    "W08_E002"
+   ],
+   "member_count": 1,
+   "start_sec": 195.0,
+   "end_sec": 240.0,
+   "source_windows": [
+    "W08"
+   ],
+   "actor": "person",
+   "action": "pouring",
+   "object_or_state": "liquid from a bottle into a pan",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G059"
+  },
+  {
+   "members": [
+    "W07_E007"
+   ],
+   "member_count": 1,
+   "start_sec": 202.0,
+   "end_sec": 205.0,
+   "source_windows": [
+    "W07"
+   ],
+   "actor": "person",
+   "action": "pouring",
+   "object_or_state": "cream into bowl",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G060"
+  },
+  {
+   "members": [
+    "W07_E008"
+   ],
+   "member_count": 1,
+   "start_sec": 205.0,
+   "end_sec": 216.0,
+   "source_windows": [
+    "W07"
+   ],
+   "actor": "person",
+   "action": "mixing",
+   "object_or_state": "cream in bowl",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G061"
+  },
+  {
+   "members": [
+    "W09_E001"
+   ],
+   "member_count": 1,
+   "start_sec": 216.0,
+   "end_sec": 220.0,
+   "source_windows": [
+    "W09"
+   ],
+   "actor": "person",
+   "action": "pouring",
+   "object_or_state": "mashed potatoes into a bowl with a hand mixer",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G062"
+  },
+  {
+   "members": [
+    "W09_E002"
+   ],
+   "member_count": 1,
+   "start_sec": 220.0,
+   "end_sec": 224.0,
+   "source_windows": [
+    "W09"
+   ],
+   "actor": "person",
+   "action": "mixing",
+   "object_or_state": "mashed potatoes with a hand mixer",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G063"
+  },
+  {
+   "members": [
+    "W09_E003"
+   ],
+   "member_count": 1,
+   "start_sec": 224.0,
+   "end_sec": 228.0,
+   "source_windows": [
+    "W09"
+   ],
+   "actor": "person",
+   "action": "transferring",
+   "object_or_state": "mashed potatoes into a piping bag",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G064"
+  },
+  {
+   "members": [
+    "W09_E004"
+   ],
+   "member_count": 1,
+   "start_sec": 228.0,
+   "end_sec": 232.0,
+   "source_windows": [
+    "W09"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "potato croquettes on a wire rack",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G065"
+  },
+  {
+   "members": [
+    "W09_E005"
+   ],
+   "member_count": 1,
+   "start_sec": 232.0,
+   "end_sec": 236.0,
+   "source_windows": [
+    "W09"
+   ],
+   "actor": "person",
+   "action": "pouring",
+   "object_or_state": "oil into a baking tray",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G066"
+  },
+  {
+   "members": [
+    "W09_E006"
+   ],
+   "member_count": 1,
+   "start_sec": 236.0,
+   "end_sec": 264.0,
+   "source_windows": [
+    "W09"
+   ],
+   "actor": "person",
+   "action": "pouring",
+   "object_or_state": "butter into a bowl",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G067"
+  },
+  {
+   "members": [
+    "W10_E001"
+   ],
+   "member_count": 1,
+   "start_sec": 240.0,
+   "end_sec": 245.0,
+   "source_windows": [
+    "W10"
+   ],
+   "actor": "person",
+   "action": "serving",
+   "object_or_state": "noodles",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G068"
+  },
+  {
+   "members": [
+    "W10_E002"
+   ],
+   "member_count": 1,
+   "start_sec": 245.0,
+   "end_sec": 255.0,
+   "source_windows": [
+    "W10"
+   ],
+   "actor": "person",
+   "action": "serving",
+   "object_or_state": "potato cream",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G069"
+  },
+  {
+   "members": [
+    "W10_E003"
+   ],
+   "member_count": 1,
+   "start_sec": 255.0,
+   "end_sec": 260.0,
+   "source_windows": [
+    "W10"
+   ],
+   "actor": "person",
+   "action": "serving",
+   "object_or_state": "herbs",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G070"
+  },
+  {
+   "members": [
+    "W10_E004"
+   ],
+   "member_count": 1,
+   "start_sec": 260.0,
+   "end_sec": 288.0,
+   "source_windows": [
+    "W10"
+   ],
+   "actor": "person",
+   "action": "eating",
+   "object_or_state": "noodles",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G071"
+  },
+  {
+   "members": [
+    "W11_E001"
+   ],
+   "member_count": 1,
+   "start_sec": 264.0,
+   "end_sec": 272.0,
+   "source_windows": [
+    "W11"
+   ],
+   "actor": "person",
+   "action": "using chopsticks",
+   "object_or_state": "lifting noodles from a bowl",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G072"
+  },
+  {
+   "members": [
+    "W11_E002"
+   ],
+   "member_count": 1,
+   "start_sec": 272.0,
+   "end_sec": 280.0,
+   "source_windows": [
+    "W11"
+   ],
+   "actor": "person",
+   "action": "eating",
+   "object_or_state": "noodles with a spoon",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G073"
+  },
+  {
+   "members": [
+    "W11_E003"
+   ],
+   "member_count": 1,
+   "start_sec": 280.0,
+   "end_sec": 288.0,
+   "source_windows": [
+    "W11"
+   ],
+   "actor": "person",
+   "action": "using chopsticks",
+   "object_or_state": "picking up a breaded food item",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G074"
+  },
+  {
+   "members": [
+    "W11_E004"
+   ],
+   "member_count": 1,
+   "start_sec": 288.0,
+   "end_sec": 296.0,
+   "source_windows": [
+    "W11"
+   ],
+   "actor": "person",
+   "action": "eating",
+   "object_or_state": "breaded food item",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G075"
+  },
+  {
+   "members": [
+    "W12_E001"
+   ],
+   "member_count": 1,
+   "start_sec": 288.0,
+   "end_sec": 293.0,
+   "source_windows": [
+    "W12"
+   ],
+   "actor": "person",
+   "action": "breaking apart",
+   "object_or_state": "breaded potato ball",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G076"
+  },
+  {
+   "members": [
+    "W12_E002"
+   ],
+   "member_count": 1,
+   "start_sec": 293.0,
+   "end_sec": 297.0,
+   "source_windows": [
+    "W12"
+   ],
+   "actor": "person",
+   "action": "eating",
+   "object_or_state": "breaded potato ball",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G077"
+  },
+  {
+   "members": [
+    "W11_E005"
+   ],
+   "member_count": 1,
+   "start_sec": 296.0,
+   "end_sec": 304.0,
+   "source_windows": [
+    "W11"
+   ],
+   "actor": "person",
+   "action": "using chopsticks",
+   "object_or_state": "picking up a breaded food item",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G078"
+  },
+  {
+   "members": [
+    "W12_E003"
+   ],
+   "member_count": 1,
+   "start_sec": 297.0,
+   "end_sec": 301.0,
+   "source_windows": [
+    "W12"
+   ],
+   "actor": "person",
+   "action": "eating",
+   "object_or_state": "curry udon",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G079"
+  },
+  {
+   "members": [
+    "W12_E004"
+   ],
+   "member_count": 1,
+   "start_sec": 301.0,
+   "end_sec": 305.0,
+   "source_windows": [
+    "W12"
+   ],
+   "actor": "person",
+   "action": "eating",
+   "object_or_state": "breaded potato ball",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G080"
+  },
+  {
+   "members": [
+    "W11_E006"
+   ],
+   "member_count": 1,
+   "start_sec": 304.0,
+   "end_sec": 312.0,
+   "source_windows": [
+    "W11"
+   ],
+   "actor": "person",
+   "action": "eating",
+   "object_or_state": "breaded food item",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G081"
+  },
+  {
+   "members": [
+    "W12_E005"
+   ],
+   "member_count": 1,
+   "start_sec": 305.0,
+   "end_sec": 310.0,
+   "source_windows": [
+    "W12"
+   ],
+   "actor": "person",
+   "action": "drinking",
+   "object_or_state": "water",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G082"
+  },
+  {
+   "members": [
+    "W12_E006"
+   ],
+   "member_count": 1,
+   "start_sec": 310.0,
+   "end_sec": 336.0,
+   "source_windows": [
+    "W12"
+   ],
+   "actor": "person",
+   "action": "eating",
+   "object_or_state": "curry udon",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G083"
+  },
+  {
+   "members": [
+    "W13_E001"
+   ],
+   "member_count": 1,
+   "start_sec": 312.0,
+   "end_sec": 317.0,
+   "source_windows": [
+    "W13"
+   ],
+   "actor": "a person",
+   "action": "eating",
+   "object_or_state": "cream curry udon",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G084"
+  },
+  {
+   "members": [
+    "W13_E002"
+   ],
+   "member_count": 1,
+   "start_sec": 317.0,
+   "end_sec": 360.0,
+   "source_windows": [
+    "W13"
+   ],
+   "actor": "a person",
+   "action": "eating",
+   "object_or_state": "rice with kimchi",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G085"
+  },
+  {
+   "members": [
+    "W14_E001"
+   ],
+   "member_count": 1,
+   "start_sec": 336.0,
+   "end_sec": 348.0,
+   "source_windows": [
+    "W14"
+   ],
+   "actor": "person",
+   "action": "eating",
+   "object_or_state": "noodles with chopsticks and spoon",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G086"
+  },
+  {
+   "members": [
+    "W14_E002"
+   ],
+   "member_count": 1,
+   "start_sec": 348.0,
+   "end_sec": 376.0,
+   "source_windows": [
+    "W14"
+   ],
+   "actor": "person",
+   "action": "preparing food",
+   "object_or_state": "gimbal with gloves",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G087"
+  },
+  {
+   "members": [
+    "W15_E001"
+   ],
+   "member_count": 1,
+   "start_sec": 360.0,
+   "end_sec": 365.0,
+   "source_windows": [
+    "W15"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "sushi roll on cutting board",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G088"
+  },
+  {
+   "members": [
+    "W15_E002"
+   ],
+   "member_count": 1,
+   "start_sec": 365.0,
+   "end_sec": 370.0,
+   "source_windows": [
+    "W15"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "sushi rolls on plate",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G089"
+  },
+  {
+   "members": [
+    "W15_E003"
+   ],
+   "member_count": 1,
+   "start_sec": 370.0,
+   "end_sec": 375.0,
+   "source_windows": [
+    "W15"
+   ],
+   "actor": "person",
+   "action": "arranging",
+   "object_or_state": "sushi rolls on plate",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G090"
+  },
+  {
+   "members": [
+    "W15_E004"
+   ],
+   "member_count": 1,
+   "start_sec": 375.0,
+   "end_sec": 380.0,
+   "source_windows": [
+    "W15"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "bowl of soup on table",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G091"
+  },
+  {
+   "members": [
+    "W14_E003"
+   ],
+   "member_count": 1,
+   "start_sec": 376.0,
+   "end_sec": 380.0,
+   "source_windows": [
+    "W14"
+   ],
+   "actor": "person",
+   "action": "eating",
+   "object_or_state": "food with spoon",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G092"
+  },
+  {
+   "members": [
+    "W14_E004"
+   ],
+   "member_count": 1,
+   "start_sec": 380.0,
+   "end_sec": 384.0,
+   "source_windows": [
+    "W14"
+   ],
+   "actor": "person",
+   "action": "preparing food",
+   "object_or_state": "chicken with sauce",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G093"
+  },
+  {
+   "members": [
+    "W15_E005"
+   ],
+   "member_count": 1,
+   "start_sec": 380.0,
+   "end_sec": 385.0,
+   "source_windows": [
+    "W15"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "chicken legs in steamer",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G094"
+  },
+  {
+   "members": [
+    "W16_E001"
+   ],
+   "member_count": 1,
+   "start_sec": 384.0,
+   "end_sec": 389.0,
+   "source_windows": [
+    "W16"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "noodles in a bowl",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G095"
+  },
+  {
+   "members": [
+    "W15_E006"
+   ],
+   "member_count": 1,
+   "start_sec": 385.0,
+   "end_sec": 390.0,
+   "source_windows": [
+    "W15"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "noodles in bowl",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G096"
+  },
+  {
+   "members": [
+    "W16_E002"
+   ],
+   "member_count": 1,
+   "start_sec": 389.0,
+   "end_sec": 400.0,
+   "source_windows": [
+    "W16"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "chicken legs in a bowl",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G097"
+  },
+  {
+   "members": [
+    "W15_E007"
+   ],
+   "member_count": 1,
+   "start_sec": 390.0,
+   "end_sec": 400.0,
+   "source_windows": [
+    "W15"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "chicken legs in bowl",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G098"
+  },
+  {
+   "members": [
+    "W15_E008"
+   ],
+   "member_count": 1,
+   "start_sec": 400.0,
+   "end_sec": 405.0,
+   "source_windows": [
+    "W15"
+   ],
+   "actor": "person",
+   "action": "holding",
+   "object_or_state": "orange cloth",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G099"
+  },
+  {
+   "members": [
+    "W16_E003"
+   ],
+   "member_count": 1,
+   "start_sec": 400.0,
+   "end_sec": 408.0,
+   "source_windows": [
+    "W16"
+   ],
+   "actor": "person",
+   "action": "holding",
+   "object_or_state": "orange pajama pants",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G100"
+  },
+  {
+   "members": [
+    "W15_E009"
+   ],
+   "member_count": 1,
+   "start_sec": 405.0,
+   "end_sec": 408.0,
+   "source_windows": [
+    "W15"
+   ],
+   "actor": "person",
+   "action": "holding",
+   "object_or_state": "pink cloth",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G101"
+  },
+  {
+   "members": [
+    "W16_E004"
+   ],
+   "member_count": 1,
+   "start_sec": 408.0,
+   "end_sec": 412.0,
+   "source_windows": [
+    "W16"
+   ],
+   "actor": "person",
+   "action": "pulling",
+   "object_or_state": "elastic band from pajama pants",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G102"
+  },
+  {
+   "members": [
+    "W17_E001"
+   ],
+   "member_count": 1,
+   "start_sec": 408.0,
+   "end_sec": 413.0,
+   "source_windows": [
+    "W17"
+   ],
+   "actor": "person",
+   "action": "holding",
+   "object_or_state": "elastic band and orange fabric",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G103"
+  },
+  {
+   "members": [
+    "W16_E005"
+   ],
+   "member_count": 1,
+   "start_sec": 412.0,
+   "end_sec": 416.0,
+   "source_windows": [
+    "W16"
+   ],
+   "actor": "person",
+   "action": "holding",
+   "object_or_state": "elastic band",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G104"
+  },
+  {
+   "members": [
+    "W17_E002"
+   ],
+   "member_count": 1,
+   "start_sec": 413.0,
+   "end_sec": 420.0,
+   "source_windows": [
+    "W17"
+   ],
+   "actor": "person",
+   "action": "holding",
+   "object_or_state": "orange fabric with pattern",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G105"
+  },
+  {
+   "members": [
+    "W16_E006"
+   ],
+   "member_count": 1,
+   "start_sec": 416.0,
+   "end_sec": 420.0,
+   "source_windows": [
+    "W16"
+   ],
+   "actor": "person",
+   "action": "holding",
+   "object_or_state": "orange pajama pants",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G106"
+  },
+  {
+   "members": [
+    "W16_E007"
+   ],
+   "member_count": 1,
+   "start_sec": 420.0,
+   "end_sec": 432.0,
+   "source_windows": [
+    "W16"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "orange pajama pants in a drawer",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G107"
+  },
+  {
+   "members": [
+    "W17_E003"
+   ],
+   "member_count": 1,
+   "start_sec": 420.0,
+   "end_sec": 426.0,
+   "source_windows": [
+    "W17"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "orange fabric on drawer",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G108"
+  },
+  {
+   "members": [
+    "W17_E004"
+   ],
+   "member_count": 1,
+   "start_sec": 426.0,
+   "end_sec": 433.0,
+   "source_windows": [
+    "W17"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "white elastic band on sewing machine",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G109"
+  },
+  {
+   "members": [
+    "W18_E001"
+   ],
+   "member_count": 1,
+   "start_sec": 432.0,
+   "end_sec": 440.0,
+   "source_windows": [
+    "W18"
+   ],
+   "actor": "person",
+   "action": "sewing",
+   "object_or_state": "orange fabric with green dots",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G110"
+  },
+  {
+   "members": [
+    "W17_E005"
+   ],
+   "member_count": 1,
+   "start_sec": 433.0,
+   "end_sec": 440.0,
+   "source_windows": [
+    "W17"
+   ],
+   "actor": "person",
+   "action": "sewing",
+   "object_or_state": "orange fabric with pattern",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G111"
+  },
+  {
+   "members": [
+    "W17_E006"
+   ],
+   "member_count": 1,
+   "start_sec": 440.0,
+   "end_sec": 456.0,
+   "source_windows": [
+    "W17"
+   ],
+   "actor": "person",
+   "action": "holding",
+   "object_or_state": "orange fabric with pattern",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G112"
+  },
+  {
+   "members": [
+    "W18_E002"
+   ],
+   "member_count": 1,
+   "start_sec": 440.0,
+   "end_sec": 460.0,
+   "source_windows": [
+    "W18"
+   ],
+   "actor": "person",
+   "action": "holding up",
+   "object_or_state": "orange fabric with green dots",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G113"
+  },
+  {
+   "members": [
+    "W19_E001"
+   ],
+   "member_count": 1,
+   "start_sec": 456.0,
+   "end_sec": 460.0,
+   "source_windows": [
+    "W19"
+   ],
+   "actor": "hand",
+   "action": "placing",
+   "object_or_state": "crispy ball on plate",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G114"
+  },
+  {
+   "members": [
+    "W18_E003"
+   ],
+   "member_count": 1,
+   "start_sec": 460.0,
+   "end_sec": 470.0,
+   "source_windows": [
+    "W18"
+   ],
+   "actor": "person",
+   "action": "chopping",
+   "object_or_state": "tomato",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G115"
+  },
+  {
+   "members": [
+    "W19_E002"
+   ],
+   "member_count": 1,
+   "start_sec": 460.0,
+   "end_sec": 464.0,
+   "source_windows": [
+    "W19"
+   ],
+   "actor": "hand",
+   "action": "chopping",
+   "object_or_state": "tomato",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G116"
+  },
+  {
+   "members": [
+    "W19_E003"
+   ],
+   "member_count": 1,
+   "start_sec": 464.0,
+   "end_sec": 468.0,
+   "source_windows": [
+    "W19"
+   ],
+   "actor": "hand",
+   "action": "cracking",
+   "object_or_state": "egg into measuring cup",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G117"
+  },
+  {
+   "members": [
+    "W19_E004"
+   ],
+   "member_count": 1,
+   "start_sec": 468.0,
+   "end_sec": 472.0,
+   "source_windows": [
+    "W19"
+   ],
+   "actor": "hand",
+   "action": "stirring",
+   "object_or_state": "egg mixture in measuring cup",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G118"
+  },
+  {
+   "members": [
+    "W18_E004"
+   ],
+   "member_count": 1,
+   "start_sec": 470.0,
+   "end_sec": 475.0,
+   "source_windows": [
+    "W18"
+   ],
+   "actor": "person",
+   "action": "pouring",
+   "object_or_state": "egg yolk into measuring cup",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G119"
+  },
+  {
+   "members": [
+    "W19_E005"
+   ],
+   "member_count": 1,
+   "start_sec": 472.0,
+   "end_sec": 476.0,
+   "source_windows": [
+    "W19"
+   ],
+   "actor": "hand",
+   "action": "pouring",
+   "object_or_state": "egg mixture into pan",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G120"
+  },
+  {
+   "members": [
+    "W18_E005"
+   ],
+   "member_count": 1,
+   "start_sec": 475.0,
+   "end_sec": 480.0,
+   "source_windows": [
+    "W18"
+   ],
+   "actor": "person",
+   "action": "stirring",
+   "object_or_state": "egg yolk in measuring cup",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G121"
+  },
+  {
+   "members": [
+    "W19_E006"
+   ],
+   "member_count": 1,
+   "start_sec": 476.0,
+   "end_sec": 480.0,
+   "source_windows": [
+    "W19"
+   ],
+   "actor": "hand",
+   "action": "stirring",
+   "object_or_state": "egg mixture in pan",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G122"
+  },
+  {
+   "members": [
+    "W19_E007"
+   ],
+   "member_count": 1,
+   "start_sec": 480.0,
+   "end_sec": 484.0,
+   "source_windows": [
+    "W19"
+   ],
+   "actor": "hand",
+   "action": "transferring",
+   "object_or_state": "egg mixture onto plate",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G123"
+  },
+  {
+   "members": [
+    "W20_E001"
+   ],
+   "member_count": 1,
+   "start_sec": 480.0,
+   "end_sec": 483.0,
+   "source_windows": [
+    "W20"
+   ],
+   "actor": "woman",
+   "action": "pouring",
+   "object_or_state": "sauce onto food",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G124"
+  },
+  {
+   "members": [
+    "W20_E002"
+   ],
+   "member_count": 1,
+   "start_sec": 483.0,
+   "end_sec": 486.0,
+   "source_windows": [
+    "W20"
+   ],
+   "actor": "woman",
+   "action": "pouring",
+   "object_or_state": "olive oil onto tofu",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G125"
+  },
+  {
+   "members": [
+    "W19_E008"
+   ],
+   "member_count": 1,
+   "start_sec": 484.0,
+   "end_sec": 488.0,
+   "source_windows": [
+    "W19"
+   ],
+   "actor": "hand",
+   "action": "pouring",
+   "object_or_state": "olive oil onto tofu",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G126"
+  },
+  {
+   "members": [
+    "W20_E003"
+   ],
+   "member_count": 1,
+   "start_sec": 486.0,
+   "end_sec": 528.0,
+   "source_windows": [
+    "W20"
+   ],
+   "actor": "woman",
+   "action": "sprinkling",
+   "object_or_state": "black pepper on food",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G127"
+  },
+  {
+   "members": [
+    "W19_E009"
+   ],
+   "member_count": 1,
+   "start_sec": 488.0,
+   "end_sec": 492.0,
+   "source_windows": [
+    "W19"
+   ],
+   "actor": "hand",
+   "action": "placing",
+   "object_or_state": "tofu on plate",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G128"
+  },
+  {
+   "members": [
+    "W19_E010"
+   ],
+   "member_count": 1,
+   "start_sec": 492.0,
+   "end_sec": 496.0,
+   "source_windows": [
+    "W19"
+   ],
+   "actor": "hand",
+   "action": "placing",
+   "object_or_state": "shredded cabbage on plate",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G129"
+  },
+  {
+   "members": [
+    "W19_E011"
+   ],
+   "member_count": 1,
+   "start_sec": 496.0,
+   "end_sec": 500.0,
+   "source_windows": [
+    "W19"
+   ],
+   "actor": "person",
+   "action": "tying",
+   "object_or_state": "hair into bun",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G130"
+  },
+  {
+   "members": [
+    "W19_E012"
+   ],
+   "member_count": 1,
+   "start_sec": 500.0,
+   "end_sec": 504.0,
+   "source_windows": [
+    "W19"
+   ],
+   "actor": "person",
+   "action": "adjusting",
+   "object_or_state": "hair bun",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G131"
+  },
+  {
+   "members": [
+    "W21_E001"
+   ],
+   "member_count": 1,
+   "start_sec": 504.0,
+   "end_sec": 509.0,
+   "source_windows": [
+    "W21"
+   ],
+   "actor": "a woman",
+   "action": "walking",
+   "object_or_state": "through a room",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G132"
+  },
+  {
+   "members": [
+    "W21_E002"
+   ],
+   "member_count": 1,
+   "start_sec": 509.0,
+   "end_sec": 513.0,
+   "source_windows": [
+    "W21"
+   ],
+   "actor": "a woman",
+   "action": "placing",
+   "object_or_state": "a small box on a table",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G133"
+  },
+  {
+   "members": [
+    "W21_E003"
+   ],
+   "member_count": 1,
+   "start_sec": 513.0,
+   "end_sec": 520.0,
+   "source_windows": [
+    "W21"
+   ],
+   "actor": "a woman",
+   "action": "holding",
+   "object_or_state": "two small boxes",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G134"
+  },
+  {
+   "members": [
+    "W21_E004"
+   ],
+   "member_count": 1,
+   "start_sec": 520.0,
+   "end_sec": 524.0,
+   "source_windows": [
+    "W21"
+   ],
+   "actor": "a woman",
+   "action": "placing",
+   "object_or_state": "a small pouch on a table",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G135"
+  },
+  {
+   "members": [
+    "W21_E005"
+   ],
+   "member_count": 1,
+   "start_sec": 524.0,
+   "end_sec": 529.0,
+   "source_windows": [
+    "W21"
+   ],
+   "actor": "a woman",
+   "action": "wrapping",
+   "object_or_state": "a small pouch in a brown paper bag",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G136"
+  },
+  {
+   "members": [
+    "W22_E001"
+   ],
+   "member_count": 1,
+   "start_sec": 528.0,
+   "end_sec": 533.0,
+   "source_windows": [
+    "W22"
+   ],
+   "actor": "person",
+   "action": "wrapping",
+   "object_or_state": "gift in kraft paper",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G137"
+  },
+  {
+   "members": [
+    "W21_E006"
+   ],
+   "member_count": 1,
+   "start_sec": 529.0,
+   "end_sec": 533.0,
+   "source_windows": [
+    "W21"
+   ],
+   "actor": "a woman",
+   "action": "placing",
+   "object_or_state": "a stamp on a table",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G138"
+  },
+  {
+   "members": [
+    "W21_E007"
+   ],
+   "member_count": 1,
+   "start_sec": 533.0,
+   "end_sec": 541.0,
+   "source_windows": [
+    "W21"
+   ],
+   "actor": "a woman",
+   "action": "tying",
+   "object_or_state": "a ribbon around a wrapped package",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G139"
+  },
+  {
+   "members": [
+    "W22_E002"
+   ],
+   "member_count": 1,
+   "start_sec": 533.0,
+   "end_sec": 537.0,
+   "source_windows": [
+    "W22"
+   ],
+   "actor": "person",
+   "action": "placing",
+   "object_or_state": "stamp on kraft paper bag",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G140"
+  },
+  {
+   "members": [
+    "W22_E003"
+   ],
+   "member_count": 1,
+   "start_sec": 537.0,
+   "end_sec": 541.0,
+   "source_windows": [
+    "W22"
+   ],
+   "actor": "person",
+   "action": "tying",
+   "object_or_state": "ribbon around kraft paper bag",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G141"
+  },
+  {
+   "members": [
+    "W21_E008"
+   ],
+   "member_count": 1,
+   "start_sec": 541.0,
+   "end_sec": 552.0,
+   "source_windows": [
+    "W21"
+   ],
+   "actor": "a woman",
+   "action": "holding",
+   "object_or_state": "a wrapped package",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G142"
+  },
+  {
+   "members": [
+    "W22_E004"
+   ],
+   "member_count": 1,
+   "start_sec": 541.0,
+   "end_sec": 545.0,
+   "source_windows": [
+    "W22"
+   ],
+   "actor": "person",
+   "action": "adjusting",
+   "object_or_state": "bow on kraft paper bag",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G143"
+  },
+  {
+   "members": [
+    "W22_E005"
+   ],
+   "member_count": 1,
+   "start_sec": 545.0,
+   "end_sec": 550.0,
+   "source_windows": [
+    "W22"
+   ],
+   "actor": "person",
+   "action": "holding",
+   "object_or_state": "wrapped gift",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G144"
+  },
+  {
+   "members": [
+    "W22_E006"
+   ],
+   "member_count": 1,
+   "start_sec": 550.0,
+   "end_sec": 555.0,
+   "source_windows": [
+    "W22"
+   ],
+   "actor": "person",
+   "action": "unfolding",
+   "object_or_state": "fabric",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G145"
+  },
+  {
+   "members": [
+    "W23_E001"
+   ],
+   "member_count": 1,
+   "start_sec": 552.0,
+   "end_sec": 557.0,
+   "source_windows": [
+    "W23"
+   ],
+   "actor": "person",
+   "action": "holding and displaying fabric",
+   "object_or_state": "white fabric",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G146"
+  },
+  {
+   "members": [
+    "W22_E007"
+   ],
+   "member_count": 1,
+   "start_sec": 555.0,
+   "end_sec": 560.0,
+   "source_windows": [
+    "W22"
+   ],
+   "actor": "person",
+   "action": "putting on",
+   "object_or_state": "fabric",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G147"
+  },
+  {
+   "members": [
+    "W23_E002"
+   ],
+   "member_count": 1,
+   "start_sec": 557.0,
+   "end_sec": 561.0,
+   "source_windows": [
+    "W23"
+   ],
+   "actor": "person",
+   "action": "placing fabric on table",
+   "object_or_state": "white fabric",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G148"
+  },
+  {
+   "members": [
+    "W22_E008"
+   ],
+   "member_count": 1,
+   "start_sec": 560.0,
+   "end_sec": 565.0,
+   "source_windows": [
+    "W22"
+   ],
+   "actor": "person",
+   "action": "putting on",
+   "object_or_state": "handbag",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G149"
+  },
+  {
+   "members": [
+    "W23_E003"
+   ],
+   "member_count": 1,
+   "start_sec": 561.0,
+   "end_sec": 565.0,
+   "source_windows": [
+    "W23"
+   ],
+   "actor": "person",
+   "action": "picking up handbag",
+   "object_or_state": "brown handbag",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G150"
+  },
+  {
+   "members": [
+    "W22_E009"
+   ],
+   "member_count": 1,
+   "start_sec": 565.0,
+   "end_sec": 570.0,
+   "source_windows": [
+    "W22"
+   ],
+   "actor": "person",
+   "action": "taking photo",
+   "object_or_state": "mirror",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G151"
+  },
+  {
+   "members": [
+    "W23_E004"
+   ],
+   "member_count": 1,
+   "start_sec": 565.0,
+   "end_sec": 573.0,
+   "source_windows": [
+    "W23"
+   ],
+   "actor": "person",
+   "action": "taking mirror selfie",
+   "object_or_state": "camera",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G152"
+  },
+  {
+   "members": [
+    "W22_E010"
+   ],
+   "member_count": 1,
+   "start_sec": 570.0,
+   "end_sec": 576.0,
+   "source_windows": [
+    "W22"
+   ],
+   "actor": "person",
+   "action": "adjusting",
+   "object_or_state": "clothing",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G153"
+  },
+  {
+   "members": [
+    "W23_E005"
+   ],
+   "member_count": 1,
+   "start_sec": 573.0,
+   "end_sec": 580.0,
+   "source_windows": [
+    "W23"
+   ],
+   "actor": "person",
+   "action": "adjusting clothing",
+   "object_or_state": "white shirt and shorts",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G154"
+  },
+  {
+   "members": [
+    "W23_E006"
+   ],
+   "member_count": 1,
+   "start_sec": 580.0,
+   "end_sec": 585.0,
+   "source_windows": [
+    "W23"
+   ],
+   "actor": "person",
+   "action": "looking at phone",
+   "object_or_state": "phone displaying weather",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G155"
+  },
+  {
+   "members": [
+    "W23_E007"
+   ],
+   "member_count": 1,
+   "start_sec": 585.0,
+   "end_sec": 590.0,
+   "source_windows": [
+    "W23"
+   ],
+   "actor": "person",
+   "action": "walking through train window",
+   "object_or_state": "train window showing cityscape",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G156"
+  },
+  {
+   "members": [
+    "W23_E008"
+   ],
+   "member_count": 1,
+   "start_sec": 590.0,
+   "end_sec": 593.0,
+   "source_windows": [
+    "W23"
+   ],
+   "actor": "person",
+   "action": "looking at train station sign",
+   "object_or_state": "train station sign with text",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G157"
+  },
+  {
+   "members": [
+    "W23_E009"
+   ],
+   "member_count": 1,
+   "start_sec": 593.0,
+   "end_sec": 597.0,
+   "source_windows": [
+    "W23"
+   ],
+   "actor": "person",
+   "action": "walking outside",
+   "object_or_state": "building with signage",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G158"
+  },
+  {
+   "members": [
+    "W23_E010"
+   ],
+   "member_count": 1,
+   "start_sec": 597.0,
+   "end_sec": 600.0,
+   "source_windows": [
+    "W23"
+   ],
+   "actor": "person",
+   "action": "entering shop",
+   "object_or_state": "shop entrance with sign",
+   "distinct_signature_count": 1,
+   "mixed_signature": false,
+   "group_id": "G159"
+  }
+ ],
+ "transitions": [
+  {
+   "from_group": "G001",
+   "to_group": "G002",
+   "at_sec": 28.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G002",
+   "to_group": "G003",
+   "at_sec": 31.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G003",
+   "to_group": "G004",
+   "at_sec": 34.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G004",
+   "to_group": "G005",
+   "at_sec": 37.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G005",
+   "to_group": "G006",
+   "at_sec": 40.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G006",
+   "to_group": "G007",
+   "at_sec": 43.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G007",
+   "to_group": "G008",
+   "at_sec": 46.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G008",
+   "to_group": "G009",
+   "at_sec": 48.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 1.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G009",
+   "to_group": "G010",
+   "at_sec": 49.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 3.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G010",
+   "to_group": "G011",
+   "at_sec": 52.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G011",
+   "to_group": "G012",
+   "at_sec": 52.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 3.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G012",
+   "to_group": "G013",
+   "at_sec": 55.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G013",
+   "to_group": "G014",
+   "at_sec": 55.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 3.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G014",
+   "to_group": "G015",
+   "at_sec": 58.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G015",
+   "to_group": "G016",
+   "at_sec": 62.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G016",
+   "to_group": "G017",
+   "at_sec": 66.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G017",
+   "to_group": "G018",
+   "at_sec": 70.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G018",
+   "to_group": "G019",
+   "at_sec": 72.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 2.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G019",
+   "to_group": "G020",
+   "at_sec": 74.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 2.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G020",
+   "to_group": "G021",
+   "at_sec": 76.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 2.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G021",
+   "to_group": "G022",
+   "at_sec": 78.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 2.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G022",
+   "to_group": "G023",
+   "at_sec": 80.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 2.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G023",
+   "to_group": "G024",
+   "at_sec": 82.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 2.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G024",
+   "to_group": "G025",
+   "at_sec": 88.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G025",
+   "to_group": "G026",
+   "at_sec": 92.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G026",
+   "to_group": "G027",
+   "at_sec": 96.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G027",
+   "to_group": "G028",
+   "at_sec": 96.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 4.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G028",
+   "to_group": "G029",
+   "at_sec": 100.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G029",
+   "to_group": "G030",
+   "at_sec": 100.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 3.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G030",
+   "to_group": "G031",
+   "at_sec": 103.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G031",
+   "to_group": "G032",
+   "at_sec": 104.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 16.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G032",
+   "to_group": "G033",
+   "at_sec": 120.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G033",
+   "to_group": "G034",
+   "at_sec": 123.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 2.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G034",
+   "to_group": "G035",
+   "at_sec": 125.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 2.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G035",
+   "to_group": "G036",
+   "at_sec": 127.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 3.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G036",
+   "to_group": "G037",
+   "at_sec": 130.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 1.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G037",
+   "to_group": "G038",
+   "at_sec": 131.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 4.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G038",
+   "to_group": "G039",
+   "at_sec": 135.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 5.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G039",
+   "to_group": "G040",
+   "at_sec": 140.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G040",
+   "to_group": "G041",
+   "at_sec": 144.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 1.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G041",
+   "to_group": "G042",
+   "at_sec": 145.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 4.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G042",
+   "to_group": "G043",
+   "at_sec": 149.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 4.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G043",
+   "to_group": "G044",
+   "at_sec": 153.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G044",
+   "to_group": "G045",
+   "at_sec": 157.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G045",
+   "to_group": "G046",
+   "at_sec": 161.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G046",
+   "to_group": "G047",
+   "at_sec": 165.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G047",
+   "to_group": "G048",
+   "at_sec": 168.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 2.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G048",
+   "to_group": "G049",
+   "at_sec": 170.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 5.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G049",
+   "to_group": "G050",
+   "at_sec": 175.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G050",
+   "to_group": "G051",
+   "at_sec": 175.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 5.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G051",
+   "to_group": "G052",
+   "at_sec": 180.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 4.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G052",
+   "to_group": "G053",
+   "at_sec": 184.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 1.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G053",
+   "to_group": "G054",
+   "at_sec": 185.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 2.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G054",
+   "to_group": "G055",
+   "at_sec": 187.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 3.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G055",
+   "to_group": "G056",
+   "at_sec": 190.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G056",
+   "to_group": "G057",
+   "at_sec": 192.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 1.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G057",
+   "to_group": "G058",
+   "at_sec": 193.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 2.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G058",
+   "to_group": "G059",
+   "at_sec": 195.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 7.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G059",
+   "to_group": "G060",
+   "at_sec": 202.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 3.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G060",
+   "to_group": "G061",
+   "at_sec": 205.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G061",
+   "to_group": "G062",
+   "at_sec": 216.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G062",
+   "to_group": "G063",
+   "at_sec": 220.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G063",
+   "to_group": "G064",
+   "at_sec": 224.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G064",
+   "to_group": "G065",
+   "at_sec": 228.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G065",
+   "to_group": "G066",
+   "at_sec": 232.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G066",
+   "to_group": "G067",
+   "at_sec": 236.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G067",
+   "to_group": "G068",
+   "at_sec": 240.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 5.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G068",
+   "to_group": "G069",
+   "at_sec": 245.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G069",
+   "to_group": "G070",
+   "at_sec": 255.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G070",
+   "to_group": "G071",
+   "at_sec": 260.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G071",
+   "to_group": "G072",
+   "at_sec": 264.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 8.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G072",
+   "to_group": "G073",
+   "at_sec": 272.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G073",
+   "to_group": "G074",
+   "at_sec": 280.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G074",
+   "to_group": "G075",
+   "at_sec": 288.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G075",
+   "to_group": "G076",
+   "at_sec": 288.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 5.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G076",
+   "to_group": "G077",
+   "at_sec": 293.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G077",
+   "to_group": "G078",
+   "at_sec": 296.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 1.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G078",
+   "to_group": "G079",
+   "at_sec": 297.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 4.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G079",
+   "to_group": "G080",
+   "at_sec": 301.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G080",
+   "to_group": "G081",
+   "at_sec": 304.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 1.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G081",
+   "to_group": "G082",
+   "at_sec": 305.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 5.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G082",
+   "to_group": "G083",
+   "at_sec": 310.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G083",
+   "to_group": "G084",
+   "at_sec": 312.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 5.0,
+   "actor_changed": true,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G084",
+   "to_group": "G085",
+   "at_sec": 317.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G085",
+   "to_group": "G086",
+   "at_sec": 336.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 12.0,
+   "actor_changed": true,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G086",
+   "to_group": "G087",
+   "at_sec": 348.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G087",
+   "to_group": "G088",
+   "at_sec": 360.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 5.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G088",
+   "to_group": "G089",
+   "at_sec": 365.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G089",
+   "to_group": "G090",
+   "at_sec": 370.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G090",
+   "to_group": "G091",
+   "at_sec": 375.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G091",
+   "to_group": "G092",
+   "at_sec": 376.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 4.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G092",
+   "to_group": "G093",
+   "at_sec": 380.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G093",
+   "to_group": "G094",
+   "at_sec": 380.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 4.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G094",
+   "to_group": "G095",
+   "at_sec": 384.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 1.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G095",
+   "to_group": "G096",
+   "at_sec": 385.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 4.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G096",
+   "to_group": "G097",
+   "at_sec": 389.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 1.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G097",
+   "to_group": "G098",
+   "at_sec": 390.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 10.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G098",
+   "to_group": "G099",
+   "at_sec": 400.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G099",
+   "to_group": "G100",
+   "at_sec": 400.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 5.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G100",
+   "to_group": "G101",
+   "at_sec": 405.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 3.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G101",
+   "to_group": "G102",
+   "at_sec": 408.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G102",
+   "to_group": "G103",
+   "at_sec": 408.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 4.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G103",
+   "to_group": "G104",
+   "at_sec": 412.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 1.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G104",
+   "to_group": "G105",
+   "at_sec": 413.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 3.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G105",
+   "to_group": "G106",
+   "at_sec": 416.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 4.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G106",
+   "to_group": "G107",
+   "at_sec": 420.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G107",
+   "to_group": "G108",
+   "at_sec": 420.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 6.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G108",
+   "to_group": "G109",
+   "at_sec": 426.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G109",
+   "to_group": "G110",
+   "at_sec": 432.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 1.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G110",
+   "to_group": "G111",
+   "at_sec": 433.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 7.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G111",
+   "to_group": "G112",
+   "at_sec": 440.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G112",
+   "to_group": "G113",
+   "at_sec": 440.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 16.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G113",
+   "to_group": "G114",
+   "at_sec": 456.0,
+   "relation": "POSSIBLE_CONFLICT",
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "gap_sec": 0.0,
+   "overlap_sec": 4.0,
+   "actor_changed": true,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G114",
+   "to_group": "G115",
+   "at_sec": 460.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": true,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G115",
+   "to_group": "G116",
+   "at_sec": 460.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 4.0,
+   "actor_changed": true,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G116",
+   "to_group": "G117",
+   "at_sec": 464.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G117",
+   "to_group": "G118",
+   "at_sec": 468.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G118",
+   "to_group": "G119",
+   "at_sec": 470.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 2.0,
+   "actor_changed": true,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G119",
+   "to_group": "G120",
+   "at_sec": 472.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 3.0,
+   "actor_changed": true,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G120",
+   "to_group": "G121",
+   "at_sec": 475.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 1.0,
+   "actor_changed": true,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G121",
+   "to_group": "G122",
+   "at_sec": 476.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 4.0,
+   "actor_changed": true,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G122",
+   "to_group": "G123",
+   "at_sec": 480.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G123",
+   "to_group": "G124",
+   "at_sec": 480.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 3.0,
+   "actor_changed": true,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G124",
+   "to_group": "G125",
+   "at_sec": 483.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G125",
+   "to_group": "G126",
+   "at_sec": 484.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 2.0,
+   "actor_changed": true,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G126",
+   "to_group": "G127",
+   "at_sec": 486.0,
+   "relation": "POSSIBLE_CONFLICT",
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "gap_sec": 0.0,
+   "overlap_sec": 2.0,
+   "actor_changed": true,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G127",
+   "to_group": "G128",
+   "at_sec": 488.0,
+   "relation": "POSSIBLE_CONFLICT",
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "gap_sec": 0.0,
+   "overlap_sec": 4.0,
+   "actor_changed": true,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G128",
+   "to_group": "G129",
+   "at_sec": 492.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G129",
+   "to_group": "G130",
+   "at_sec": 496.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": true,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G130",
+   "to_group": "G131",
+   "at_sec": 500.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G131",
+   "to_group": "G132",
+   "at_sec": 504.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": true,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G132",
+   "to_group": "G133",
+   "at_sec": 509.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G133",
+   "to_group": "G134",
+   "at_sec": 513.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G134",
+   "to_group": "G135",
+   "at_sec": 520.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G135",
+   "to_group": "G136",
+   "at_sec": 524.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G136",
+   "to_group": "G137",
+   "at_sec": 528.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 1.0,
+   "actor_changed": true,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G137",
+   "to_group": "G138",
+   "at_sec": 529.0,
+   "relation": "POSSIBLE_CONFLICT",
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "gap_sec": 0.0,
+   "overlap_sec": 4.0,
+   "actor_changed": true,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G138",
+   "to_group": "G139",
+   "at_sec": 533.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G139",
+   "to_group": "G140",
+   "at_sec": 533.0,
+   "relation": "POSSIBLE_CONFLICT",
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "gap_sec": 0.0,
+   "overlap_sec": 4.0,
+   "actor_changed": true,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G140",
+   "to_group": "G141",
+   "at_sec": 537.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G141",
+   "to_group": "G142",
+   "at_sec": 541.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": true,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G142",
+   "to_group": "G143",
+   "at_sec": 541.0,
+   "relation": "POSSIBLE_CONFLICT",
+   "semantic_relation": "SEMANTICALLY_DIFFERENT",
+   "gap_sec": 0.0,
+   "overlap_sec": 4.0,
+   "actor_changed": true,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G143",
+   "to_group": "G144",
+   "at_sec": 545.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G144",
+   "to_group": "G145",
+   "at_sec": 550.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G145",
+   "to_group": "G146",
+   "at_sec": 552.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 3.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G146",
+   "to_group": "G147",
+   "at_sec": 555.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 2.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G147",
+   "to_group": "G148",
+   "at_sec": 557.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 3.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G148",
+   "to_group": "G149",
+   "at_sec": 560.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 1.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G149",
+   "to_group": "G150",
+   "at_sec": 561.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 4.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G150",
+   "to_group": "G151",
+   "at_sec": 565.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G151",
+   "to_group": "G152",
+   "at_sec": 565.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 5.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G152",
+   "to_group": "G153",
+   "at_sec": 570.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 3.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G153",
+   "to_group": "G154",
+   "at_sec": 573.0,
+   "relation": "UNRESOLVED",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 3.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G154",
+   "to_group": "G155",
+   "at_sec": 580.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G155",
+   "to_group": "G156",
+   "at_sec": 585.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G156",
+   "to_group": "G157",
+   "at_sec": 590.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G157",
+   "to_group": "G158",
+   "at_sec": 593.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  },
+  {
+   "from_group": "G158",
+   "to_group": "G159",
+   "at_sec": 597.0,
+   "relation": "POSSIBLE_TRANSITION",
+   "semantic_relation": "ADJUDICATION_REQUIRED",
+   "gap_sec": 0.0,
+   "overlap_sec": 0.0,
+   "actor_changed": false,
+   "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+  }
+ ],
+ "frame_stamps": {
+  "G001": [
+   24.0,
+   26.0
+  ],
+  "G002": [
+   28.0,
+   30.0
+  ],
+  "G003": [
+   32.0
+  ],
+  "G004": [
+   34.0,
+   36.0
+  ],
+  "G005": [
+   38.0
+  ],
+  "G006": [
+   40.0,
+   42.0
+  ],
+  "G007": [
+   44.0
+  ],
+  "G008": [
+   46.0,
+   48.0
+  ],
+  "G009": [
+   48.0,
+   50.0
+  ],
+  "G010": [
+   50.0
+  ],
+  "G011": [
+   52.0,
+   54.0
+  ],
+  "G012": [
+   52.0,
+   54.0
+  ],
+  "G013": [
+   56.0,
+   58.0,
+   60.0,
+   62.0,
+   64.0,
+   66.0,
+   68.0,
+   70.0
+  ],
+  "G014": [
+   56.0
+  ],
+  "G015": [
+   58.0,
+   60.0
+  ],
+  "G016": [
+   62.0,
+   64.0
+  ],
+  "G017": [
+   66.0,
+   68.0
+  ],
+  "G018": [
+   70.0,
+   72.0
+  ],
+  "G019": [
+   72.0,
+   74.0
+  ],
+  "G020": [
+   74.0,
+   76.0
+  ],
+  "G021": [
+   76.0,
+   78.0
+  ],
+  "G022": [
+   78.0,
+   80.0
+  ],
+  "G023": [
+   80.0,
+   82.0
+  ],
+  "G024": [
+   82.0,
+   84.0,
+   86.0
+  ],
+  "G025": [
+   88.0,
+   90.0
+  ],
+  "G026": [
+   92.0,
+   94.0
+  ],
+  "G027": [
+   96.0,
+   98.0
+  ],
+  "G028": [
+   96.0,
+   98.0
+  ],
+  "G029": [
+   100.0,
+   102.0
+  ],
+  "G030": [
+   100.0,
+   102.0
+  ],
+  "G031": [
+   104.0,
+   106.0,
+   108.0,
+   110.0,
+   112.0,
+   114.0,
+   116.0,
+   118.0,
+   120.0,
+   122.0
+  ],
+  "G032": [
+   104.0,
+   106.0,
+   108.0,
+   110.0,
+   112.0,
+   114.0,
+   116.0,
+   118.0
+  ],
+  "G033": [
+   120.0,
+   122.0,
+   124.0
+  ],
+  "G034": [
+   124.0,
+   126.0
+  ],
+  "G035": [
+   126.0,
+   128.0
+  ],
+  "G036": [
+   128.0,
+   130.0
+  ],
+  "G037": [
+   130.0,
+   132.0,
+   134.0
+  ],
+  "G038": [
+   132.0,
+   134.0,
+   136.0,
+   138.0,
+   140.0,
+   142.0
+  ],
+  "G039": [
+   136.0,
+   138.0
+  ],
+  "G040": [
+   140.0,
+   142.0,
+   144.0
+  ],
+  "G041": [
+   144.0,
+   146.0,
+   148.0
+  ],
+  "G042": [
+   146.0,
+   148.0,
+   150.0,
+   152.0,
+   154.0,
+   156.0,
+   158.0,
+   160.0,
+   162.0,
+   164.0,
+   166.0
+  ],
+  "G043": [
+   150.0,
+   152.0
+  ],
+  "G044": [
+   154.0,
+   156.0
+  ],
+  "G045": [
+   158.0,
+   160.0
+  ],
+  "G046": [
+   162.0,
+   164.0
+  ],
+  "G047": [
+   166.0,
+   168.0
+  ],
+  "G048": [
+   168.0,
+   170.0,
+   172.0,
+   174.0
+  ],
+  "G049": [
+   170.0,
+   172.0,
+   174.0
+  ],
+  "G050": [
+   176.0,
+   178.0
+  ],
+  "G051": [
+   176.0,
+   178.0,
+   180.0,
+   182.0
+  ],
+  "G052": [
+   180.0,
+   182.0,
+   184.0
+  ],
+  "G053": [
+   184.0,
+   186.0
+  ],
+  "G054": [
+   186.0,
+   188.0,
+   190.0
+  ],
+  "G055": [
+   188.0
+  ],
+  "G056": [
+   190.0,
+   192.0
+  ],
+  "G057": [
+   192.0,
+   194.0
+  ],
+  "G058": [
+   194.0,
+   196.0,
+   198.0,
+   200.0
+  ],
+  "G059": [
+   196.0,
+   198.0,
+   200.0,
+   202.0,
+   204.0,
+   206.0,
+   208.0,
+   210.0,
+   212.0,
+   214.0,
+   216.0,
+   218.0,
+   220.0,
+   222.0,
+   224.0,
+   226.0,
+   228.0,
+   230.0,
+   232.0,
+   234.0,
+   236.0,
+   238.0
+  ],
+  "G060": [
+   202.0,
+   204.0
+  ],
+  "G061": [
+   206.0,
+   208.0,
+   210.0,
+   212.0,
+   214.0
+  ],
+  "G062": [
+   216.0,
+   218.0
+  ],
+  "G063": [
+   220.0,
+   222.0
+  ],
+  "G064": [
+   224.0,
+   226.0
+  ],
+  "G065": [
+   228.0,
+   230.0
+  ],
+  "G066": [
+   232.0,
+   234.0
+  ],
+  "G067": [
+   236.0,
+   238.0,
+   240.0,
+   242.0,
+   244.0,
+   246.0,
+   248.0,
+   250.0,
+   252.0,
+   254.0,
+   256.0,
+   258.0,
+   260.0,
+   262.0
+  ],
+  "G068": [
+   240.0,
+   242.0,
+   244.0
+  ],
+  "G069": [
+   246.0,
+   248.0,
+   250.0,
+   252.0,
+   254.0
+  ],
+  "G070": [
+   256.0,
+   258.0
+  ],
+  "G071": [
+   260.0,
+   262.0,
+   264.0,
+   266.0,
+   268.0,
+   270.0,
+   272.0,
+   274.0,
+   276.0,
+   278.0,
+   280.0,
+   282.0,
+   284.0,
+   286.0
+  ],
+  "G072": [
+   264.0,
+   266.0,
+   268.0,
+   270.0
+  ],
+  "G073": [
+   272.0,
+   274.0,
+   276.0,
+   278.0
+  ],
+  "G074": [
+   280.0,
+   282.0,
+   284.0,
+   286.0
+  ],
+  "G075": [
+   288.0,
+   290.0,
+   292.0,
+   294.0
+  ],
+  "G076": [
+   288.0,
+   290.0,
+   292.0
+  ],
+  "G077": [
+   294.0,
+   296.0
+  ],
+  "G078": [
+   296.0,
+   298.0,
+   300.0,
+   302.0
+  ],
+  "G079": [
+   298.0,
+   300.0
+  ],
+  "G080": [
+   302.0,
+   304.0
+  ],
+  "G081": [
+   304.0,
+   306.0,
+   308.0,
+   310.0
+  ],
+  "G082": [
+   306.0,
+   308.0
+  ],
+  "G083": [
+   310.0,
+   312.0,
+   314.0,
+   316.0,
+   318.0,
+   320.0,
+   322.0,
+   324.0,
+   326.0,
+   328.0,
+   330.0,
+   332.0,
+   334.0
+  ],
+  "G084": [
+   312.0,
+   314.0,
+   316.0
+  ],
+  "G085": [
+   318.0,
+   320.0,
+   322.0,
+   324.0,
+   326.0,
+   328.0,
+   330.0,
+   332.0,
+   334.0,
+   336.0,
+   338.0,
+   340.0,
+   342.0,
+   344.0,
+   346.0,
+   348.0,
+   350.0,
+   352.0,
+   354.0,
+   356.0,
+   358.0
+  ],
+  "G086": [
+   336.0,
+   338.0,
+   340.0,
+   342.0,
+   344.0,
+   346.0
+  ],
+  "G087": [
+   348.0,
+   350.0,
+   352.0,
+   354.0,
+   356.0,
+   358.0,
+   360.0,
+   362.0,
+   364.0,
+   366.0,
+   368.0,
+   370.0,
+   372.0,
+   374.0
+  ],
+  "G088": [
+   360.0,
+   362.0,
+   364.0
+  ],
+  "G089": [
+   366.0,
+   368.0
+  ],
+  "G090": [
+   370.0,
+   372.0,
+   374.0
+  ],
+  "G091": [
+   376.0,
+   378.0
+  ],
+  "G092": [
+   376.0,
+   378.0
+  ],
+  "G093": [
+   380.0,
+   382.0
+  ],
+  "G094": [
+   380.0,
+   382.0,
+   384.0
+  ],
+  "G095": [
+   384.0,
+   386.0,
+   388.0
+  ],
+  "G096": [
+   386.0,
+   388.0
+  ],
+  "G097": [
+   390.0,
+   392.0,
+   394.0,
+   396.0,
+   398.0
+  ],
+  "G098": [
+   390.0,
+   392.0,
+   394.0,
+   396.0,
+   398.0
+  ],
+  "G099": [
+   400.0,
+   402.0,
+   404.0
+  ],
+  "G100": [
+   400.0,
+   402.0,
+   404.0,
+   406.0
+  ],
+  "G101": [
+   406.0
+  ],
+  "G102": [
+   408.0,
+   410.0
+  ],
+  "G103": [
+   408.0,
+   410.0,
+   412.0
+  ],
+  "G104": [
+   412.0,
+   414.0
+  ],
+  "G105": [
+   414.0,
+   416.0,
+   418.0
+  ],
+  "G106": [
+   416.0,
+   418.0
+  ],
+  "G107": [
+   420.0,
+   422.0,
+   424.0,
+   426.0,
+   428.0,
+   430.0
+  ],
+  "G108": [
+   420.0,
+   422.0,
+   424.0
+  ],
+  "G109": [
+   426.0,
+   428.0,
+   430.0,
+   432.0
+  ],
+  "G110": [
+   432.0,
+   434.0,
+   436.0,
+   438.0
+  ],
+  "G111": [
+   434.0,
+   436.0,
+   438.0
+  ],
+  "G112": [
+   440.0,
+   442.0,
+   444.0,
+   446.0,
+   448.0,
+   450.0,
+   452.0,
+   454.0
+  ],
+  "G113": [
+   440.0,
+   442.0,
+   444.0,
+   446.0,
+   448.0,
+   450.0,
+   452.0,
+   454.0,
+   456.0,
+   458.0
+  ],
+  "G114": [
+   456.0,
+   458.0
+  ],
+  "G115": [
+   460.0,
+   462.0,
+   464.0,
+   466.0,
+   468.0
+  ],
+  "G116": [
+   460.0,
+   462.0
+  ],
+  "G117": [
+   464.0,
+   466.0
+  ],
+  "G118": [
+   468.0,
+   470.0
+  ],
+  "G119": [
+   470.0,
+   472.0,
+   474.0
+  ],
+  "G120": [
+   472.0,
+   474.0
+  ],
+  "G121": [
+   476.0,
+   478.0
+  ],
+  "G122": [
+   476.0,
+   478.0
+  ],
+  "G123": [
+   480.0,
+   482.0
+  ],
+  "G124": [
+   480.0,
+   482.0
+  ],
+  "G125": [
+   484.0
+  ],
+  "G126": [
+   484.0,
+   486.0
+  ],
+  "G127": [
+   486.0,
+   488.0,
+   490.0,
+   492.0,
+   494.0,
+   496.0,
+   498.0,
+   500.0,
+   502.0,
+   504.0,
+   506.0,
+   508.0,
+   510.0,
+   512.0,
+   514.0,
+   516.0,
+   518.0,
+   520.0,
+   522.0,
+   524.0,
+   526.0
+  ],
+  "G128": [
+   488.0,
+   490.0
+  ],
+  "G129": [
+   492.0,
+   494.0
+  ],
+  "G130": [
+   496.0,
+   498.0
+  ],
+  "G131": [
+   500.0,
+   502.0
+  ],
+  "G132": [
+   504.0,
+   506.0,
+   508.0
+  ],
+  "G133": [
+   510.0,
+   512.0
+  ],
+  "G134": [
+   514.0,
+   516.0,
+   518.0
+  ],
+  "G135": [
+   520.0,
+   522.0
+  ],
+  "G136": [
+   524.0,
+   526.0,
+   528.0
+  ],
+  "G137": [
+   528.0,
+   530.0,
+   532.0
+  ],
+  "G138": [
+   530.0,
+   532.0
+  ],
+  "G139": [
+   534.0,
+   536.0,
+   538.0,
+   540.0
+  ],
+  "G140": [
+   534.0,
+   536.0
+  ],
+  "G141": [
+   538.0,
+   540.0
+  ],
+  "G142": [
+   542.0,
+   544.0,
+   546.0,
+   548.0,
+   550.0
+  ],
+  "G143": [
+   542.0,
+   544.0
+  ],
+  "G144": [
+   546.0,
+   548.0
+  ],
+  "G145": [
+   550.0,
+   552.0,
+   554.0
+  ],
+  "G146": [
+   552.0,
+   554.0,
+   556.0
+  ],
+  "G147": [
+   556.0,
+   558.0
+  ],
+  "G148": [
+   558.0,
+   560.0
+  ],
+  "G149": [
+   560.0,
+   562.0,
+   564.0
+  ],
+  "G150": [
+   562.0,
+   564.0
+  ],
+  "G151": [
+   566.0,
+   568.0
+  ],
+  "G152": [
+   566.0,
+   568.0,
+   570.0,
+   572.0
+  ],
+  "G153": [
+   570.0,
+   572.0,
+   574.0
+  ],
+  "G154": [
+   574.0,
+   576.0,
+   578.0
+  ],
+  "G155": [
+   580.0,
+   582.0,
+   584.0
+  ],
+  "G156": [
+   586.0,
+   588.0
+  ],
+  "G157": [
+   590.0,
+   592.0
+  ],
+  "G158": [
+   594.0,
+   596.0
+  ],
+  "G159": [
+   598.0
+  ]
+ },
+ "frame_traceability_note": "frame available = event supported로 판정하지 않는다",
+ "concat_fallback_allowed": false
+}

@@ -1,0 +1,554 @@
+{
+ "schema": "wvr_event_map_v1_summary",
+ "event": "WVR_EVENT_MAP_COVERAGE_SHADOW_V1",
+ "prereg": "docs/preregistration/WVR_EVENT_MAP_COVERAGE_SHADOW_V1_2026-09-10.md",
+ "source_manifest_file": "docs/preregistration/WVR_EVENT_MAP_COVERAGE_SHADOW_V1_sources.json",
+ "source_manifest": {
+  "observed_count": 46,
+  "expected_count": 46,
+  "manifest_sha256": "a0726a4b13b4bd0f6e1ea692eec55e8cd0343132e32b532283e6e68511680631",
+  "expected_manifest_sha256": "a0726a4b13b4bd0f6e1ea692eec55e8cd0343132e32b532283e6e68511680631",
+  "unchanged": true
+ },
+ "derivation_script_commit": "7ba58dea1246688568af05598a7be9c897237689",
+ "source_shadow_event": "WVR_EVENT_EXTRACTION_SHADOW_V1",
+ "source_records": {
+  "W01": {
+   "record_sha256": "e179370f38d6bc0f6af15a1baf8c02b6aad45eb8a65f4e2d86341abff2a8cea5",
+   "raw_output_hash": "230b46efad477aa9db4ae3055699bf18259b5166e8c94eeb0c27ad996bde473e",
+   "collapse_output_hash": "6d9e476b18399fae581fd9083e5362e9e3e86419f7a0510581616b0cc44af105",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    24.0,
+    72.0
+   ]
+  },
+  "W02": {
+   "record_sha256": "1a5941b0e4084b5b95a57cef3d24cdaf1af7e4a1f55d896d1894d63daa007597",
+   "raw_output_hash": "a2bd8c578e039b041580011ff12db487ba8c3af5d273ff46747a14d5d16bfea4",
+   "collapse_output_hash": "de8aec324cfb6608b1126db09464744af8059e59c2ecff8d6194e6d08238d3ea",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    48.0,
+    96.0
+   ]
+  },
+  "W03": {
+   "record_sha256": "cb43803e5fd1bd63d89b9fc344b9300641b3642067fb35aa0d92961d04fbe137",
+   "raw_output_hash": "21b8cae95c1f84629fbb9d631f6698c424be8660ff54ad6baf5bd8150b83699a",
+   "collapse_output_hash": "026026f18903b18eb0f8d12fb7443a5b66dd24bbb6e2f0009730bbefd5f10c7d",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    72.0,
+    120.0
+   ]
+  },
+  "W04": {
+   "record_sha256": "ca8e34db2c037248d293ed902983c541e9382123151abe3359c83767ae1f8b43",
+   "raw_output_hash": "15ae681a275782513a74205e061a7613777ec09518c0d92216f8028037c3a4bc",
+   "collapse_output_hash": "171ea45bf5c54911453c861cb6b822d322928a1e84b5aaf560b4a0bf11d8154b",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    96.0,
+    144.0
+   ]
+  },
+  "W05": {
+   "record_sha256": "ebcd438d8ccd91b248622a626c2932b26e2787a95e31aee8a332fc45a92ee241",
+   "raw_output_hash": "38caf8e6cfde38ce8da49bc6fcdd68e7c85454f8db828fdf27906843758564eb",
+   "collapse_output_hash": "717c554a90967bba5170fe1f2869306d7cacab6503e29063110ab8b55a53b616",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    120.0,
+    168.0
+   ]
+  },
+  "W06": {
+   "record_sha256": "c815b7a1d4f53286f903ca742073abe6347351efc0171e533e55ed495e853fe5",
+   "raw_output_hash": "6d72c95b183ee22eed47eb2fab8e0beef47f970c96517618641b15afdebe36dd",
+   "collapse_output_hash": "013e58dd396267354e786c0849ffa4ac7e66c87ebd5192df0d058da4012aac5a",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    144.0,
+    192.0
+   ]
+  },
+  "W07": {
+   "record_sha256": "89014e736d27b9fd4b81d7d4f1c51123fbbe514c296815d689e0ab7aaedd71a1",
+   "raw_output_hash": "bc164f109ed86d900da13798a16c73edcc56ac8d58f41f053630cd2ffad4b683",
+   "collapse_output_hash": "180e9385b206283c92bf9f3f5524201c69550921ed0ede327033fb76e085b5e8",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    168.0,
+    216.0
+   ]
+  },
+  "W08": {
+   "record_sha256": "fc3c2981f0708d1e56732309f150404ed40f800814f97b87bd72eec1e104fa8d",
+   "raw_output_hash": "94bde949880f3bdd957b7e2d08bab2cb15de1c33cfe7f11ac1411d8fff0e72de",
+   "collapse_output_hash": "618078c6128e82cecf474a86ebd3eacdb9a6c39ebf69d25c37abeae97b6dfb7a",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    192.0,
+    240.0
+   ]
+  },
+  "W09": {
+   "record_sha256": "0ec0c6bb22bc16ec3b1c108053ccc042f5bf10e8996a527cd48fac433e4405a8",
+   "raw_output_hash": "a8c9fe682144d18cf166e874816e0258d7c1852f8ba3b595a22b0a4ffa7c74d2",
+   "collapse_output_hash": "6e4d432311ef6a8bda3c46ac8104f4e608b7ccc171d4817dcb83b715704f419b",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    216.0,
+    264.0
+   ]
+  },
+  "W10": {
+   "record_sha256": "c7464f8b16848b25dae7203c847b8d3d761e74abeb9b5697301e015cca8591cf",
+   "raw_output_hash": "453f2db29166bf3f93f69adb58f7f5292f5ff017b3c28a8c956d4ddc27d5d5d8",
+   "collapse_output_hash": "b23bf4a195a08b4367d229a00db833726a76fd352875e62c933b10af7adbd7bc",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    240.0,
+    288.0
+   ]
+  },
+  "W11": {
+   "record_sha256": "b634dc7a6a1192b45bae9aa05c35ce8828953006a8dab221093ed2012bb4c9b7",
+   "raw_output_hash": "5033d614f5ccc07997765757efe14335467b15c2993c83a456aac20616b021c5",
+   "collapse_output_hash": "478a13d6fd43a5fa3a3ef63de5b4fa84c1dc64205f314cb554db12916a461fbc",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    264.0,
+    312.0
+   ]
+  },
+  "W12": {
+   "record_sha256": "ba68ae6eb6666af07bd30370d8de5ab65cac9f65a3b2fce519d147a684e4a4dd",
+   "raw_output_hash": "a3d74b8b7162680f466e7621d244d3d6341162fcd43cb547ac7c88dcf8ee8c25",
+   "collapse_output_hash": "a3b5a83ea976fa1f4b429745c906995d351adbb40858db9839e768dd89326f8e",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    288.0,
+    336.0
+   ]
+  },
+  "W13": {
+   "record_sha256": "5a3111dd817024f1d7403e06d50d5499560aa30262b179888c5189a2e694aaea",
+   "raw_output_hash": "1bce25c6999934a31b22f21b0b64c6af26f85a37d4333abe81853d0ec3d0180f",
+   "collapse_output_hash": "bd3eb87d118950031f2ff03c5b9231b8f75da8a3d33235e9724faeb858ee7138",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    312.0,
+    360.0
+   ]
+  },
+  "W14": {
+   "record_sha256": "0c06274a563707c12ae4ffd83511e89b9b300e21b879555476e3979cfbcd887b",
+   "raw_output_hash": "a1d27f4bcae93552e769d41f6d4110cc3d0fcba4350be79ef4dfbf1fadba1902",
+   "collapse_output_hash": "e0439e058360096da9c70f736ad50a86e1e5ab875090a9c3266ea3ed6ec9b2bc",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    336.0,
+    384.0
+   ]
+  },
+  "W15": {
+   "record_sha256": "18a9dd7f14c134bf470bc8266ff6d65f61c5b277a785a6e40f754d195076710e",
+   "raw_output_hash": "00d4aa8b676f0e77b3d906e6b73ce61853f6030db53be185a0344c863880adbc",
+   "collapse_output_hash": "41a40bfc8ad22f03655d651c5977022345745b53fb17d32424e594ebc4b62359",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    360.0,
+    408.0
+   ]
+  },
+  "W16": {
+   "record_sha256": "31eff3445ca233bfef0c3bb9bebfc6c22287b9ac058809fb2001950f759b8fc5",
+   "raw_output_hash": "7b5f8a391fc430558cb2509f57af68983e1ca480332c99a96c5935ca5fbe0564",
+   "collapse_output_hash": "4a871a9c2734aaab51d13ee9ea15b98fdcaa03934a03712ca1eb0e7fbbca174a",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    384.0,
+    432.0
+   ]
+  },
+  "W17": {
+   "record_sha256": "82ebc6cec624c08170f983fbde2f379761c65085c8e10a16877bc48bf867cdf5",
+   "raw_output_hash": "68aa80fcbb88689769bc4ff59e5b6a9140518b9407ff35755e2e9b89af4de86c",
+   "collapse_output_hash": "a05c74b7cefa58c6460c75f086a0fb5c2fdef835de92c77b3dab3797ab984c8f",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    408.0,
+    456.0
+   ]
+  },
+  "W18": {
+   "record_sha256": "82f5cf35441a794695d4db6cf04848496f470c263652dfbb14003e01a9c27fdf",
+   "raw_output_hash": "fefaf157cfd63784b11e48b33c4096c67040dbd4525f9a35faeb788701309fe1",
+   "collapse_output_hash": "de665aa99b994e2a67d2cbc4cbf12a36dd7c4e56446c0d52ec0a9fd2c88c0ccf",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    432.0,
+    480.0
+   ]
+  },
+  "W19": {
+   "record_sha256": "a3137dd71e8d79ef646da8dee1d21f60496e2be1858ee0dce456cfbb2e0664af",
+   "raw_output_hash": "fff649512789311634cd1e32b48c87f230d7b4b37988b46b008718407669f9bf",
+   "collapse_output_hash": "9a4d2a2ae182a3fa93a8c4f25c5e62bcc4e97f421026b48391563e77ac1b8642",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    456.0,
+    504.0
+   ]
+  },
+  "W20": {
+   "record_sha256": "724da75d16db10f2fc44a03da0cb407d8d263a1872b89a1b7c194369448e2b31",
+   "raw_output_hash": "50e6e956f621b589a9b73008f3235b6537ba7e371bde8c6566a880e4782a2d4c",
+   "collapse_output_hash": "3c502102f40a498fd6aed92bb7de193dfb9ee3c0d28a4bc2a30405da5469cbcb",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    480.0,
+    528.0
+   ]
+  },
+  "W21": {
+   "record_sha256": "0b440582dbe8b562b88c8705f685ba5e07a36ec6cf772ef668d36060075fd7e5",
+   "raw_output_hash": "de64a49ae3352baf322f510dec8a7dbbff0fcb3f31c21abbdedfab1fdb4ab8f2",
+   "collapse_output_hash": "85808a6e04afa9a4c81a8a3e6359b20695169f7b466c67ba39f6b3d046af7240",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    504.0,
+    552.0
+   ]
+  },
+  "W22": {
+   "record_sha256": "18a7743f5eec48fe3fe018cf0b3afb9c7a965c964efe9e318082bcc404fefd24",
+   "raw_output_hash": "225e0fc86a62122b09d8ae4683a741ea76e21e0029bf8d001ff521abfa1dada0",
+   "collapse_output_hash": "770e7c3b45110b7dd69b0728f5f770d4f1214c2448d74f6bdc790e793a839a2f",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    528.0,
+    576.0
+   ]
+  },
+  "W23": {
+   "record_sha256": "051fecc02db5cbc1af7ff2ec6739ba50005fa83a34ed19520689321d979b98df",
+   "raw_output_hash": "29657ce21052b465ddacbdeb440e601605c1561a6fd9ffeb532f8a3263bd748b",
+   "collapse_output_hash": "d7cc147c643970ecad8c41e2db2b9c0b1398f9b35d6317d3162100b6d30936c1",
+   "code_git_head": "d3cef5e18d3b4e103af2354cd3f4fe1c5d9f8c1c",
+   "span": [
+    552.0,
+    600.0
+   ]
+  }
+ },
+ "video_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+ "invalid_sources": {
+  "W00": {
+   "status": "WINDOW_INVALID",
+   "span": [
+    0.0,
+    48.0
+   ],
+   "record_sha256": "c8e65b74b8c71aa97f85fc69c6ffdfb2c72fab18911e6e1565c8458e44daa074",
+   "used_as_event_source": false,
+   "rerun_allowed": false
+  }
+ },
+ "new_inference_count": 0,
+ "executor_state": {
+  "state": "EXECUTED / REVIEW_PENDING",
+  "artifact_name": "CANDIDATE_EVENT_MAP",
+  "event_count": 160,
+  "group_count": 159,
+  "source_window_count": 23,
+  "new_inference_count": 0,
+  "reviewer_questions": [
+   "FLOW_RECOVERABLE",
+   "GAP_MATERIALITY",
+   "EVENT_MAP_USABLE"
+  ],
+  "reviewer_verdicts": [
+   "EVENT_MAP_SHADOW_PASS",
+   "EVENT_MAP_SHADOW_HOLD",
+   "EVENT_MAP_SHADOW_INCONCLUSIVE"
+  ],
+  "semantic_verdict": null,
+  "semantic_verdict_by_executor": false,
+  "allowed_max_conclusion": "Existing valid C01 local-window observations were sufficient to construct a usable shadow candidate of the video's global event flow despite explicitly preserved unresolved coverage.",
+  "forbidden_conclusions": [
+   "Event extraction solved",
+   "0.5fps sufficient",
+   "all events factual",
+   "production ready",
+   "SHADOW_V1이 PASS로 바뀐다",
+   "unresolved 구간을 추정으로 채웠다",
+   "chapter boundary가 확정됐다"
+  ],
+  "coverage_caveat": "coverage percentage ≠ semantic correctness",
+  "boundary_contract": "local window boundary ≠ event boundary ≠ chapter boundary ≠ report boundary",
+  "unresolved_pct": 4.0,
+  "shadow_v1_retroactive_pass_allowed": false
+ },
+ "inventory": {
+  "total_windows": 24,
+  "valid_source_windows": 23,
+  "invalid_windows": 1,
+  "event_count": 160,
+  "group_count": 159,
+  "chapter_candidate_count": 8,
+  "relation_counts": {
+   "POSSIBLE_SAME_EVENT": 1,
+   "POSSIBLE_CONTINUATION": 0,
+   "POSSIBLE_TRANSITION": 31,
+   "POSSIBLE_CONFLICT": 12,
+   "UNRESOLVED": 116
+  }
+ },
+ "coverage": {
+  "window_coverage_sec": 576.0,
+  "window_coverage_pct": 96.0,
+  "event_coverage_sec": 576.0,
+  "event_coverage_pct": 96.0,
+  "redundant_window_coverage_sec": 528.0,
+  "redundant_window_coverage_pct": 88.0,
+  "redundant_event_coverage_sec": 518.0,
+  "redundant_event_coverage_pct": 86.33,
+  "unresolved_sec": 24.0,
+  "unresolved_pct": 4.0,
+  "unresolved_intervals": [
+   [
+    0.0,
+    24.0
+   ]
+  ],
+  "invalid_window_only_intervals": [
+   [
+    0.0,
+    24.0
+   ]
+  ],
+  "status_seconds": {
+   "MULTI_WINDOW_OBSERVED": 518.0,
+   "SINGLE_WINDOW_OBSERVED": 58.0,
+   "INVALID_WINDOW_ONLY": 24.0,
+   "UNRESOLVED": 0
+  }
+ },
+ "anomalies": {
+  "conflicting_relation_count": 12,
+  "conflicting_relations": [
+   {
+    "earlier_event": "W18_E002",
+    "later_event": "W19_E001",
+    "earlier_window": "W18",
+    "later_window": "W19",
+    "shared_start_sec": 456.0,
+    "shared_end_sec": 480.0,
+    "relation": "POSSIBLE_CONFLICT",
+    "overlap_sec": 4.0,
+    "gap_sec": 0.0,
+    "semantic_relation": "SEMANTICALLY_DIFFERENT",
+    "shared_token_count": 0,
+    "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+   },
+   {
+    "earlier_event": "W18_E003",
+    "later_event": "W19_E003",
+    "earlier_window": "W18",
+    "later_window": "W19",
+    "shared_start_sec": 456.0,
+    "shared_end_sec": 480.0,
+    "relation": "POSSIBLE_CONFLICT",
+    "overlap_sec": 4.0,
+    "gap_sec": 0.0,
+    "semantic_relation": "SEMANTICALLY_DIFFERENT",
+    "shared_token_count": 0,
+    "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+   },
+   {
+    "earlier_event": "W18_E003",
+    "later_event": "W19_E004",
+    "earlier_window": "W18",
+    "later_window": "W19",
+    "shared_start_sec": 456.0,
+    "shared_end_sec": 480.0,
+    "relation": "POSSIBLE_CONFLICT",
+    "overlap_sec": 2.0,
+    "gap_sec": 0.0,
+    "semantic_relation": "SEMANTICALLY_DIFFERENT",
+    "shared_token_count": 0,
+    "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+   },
+   {
+    "earlier_event": "W19_E008",
+    "later_event": "W20_E003",
+    "earlier_window": "W19",
+    "later_window": "W20",
+    "shared_start_sec": 480.0,
+    "shared_end_sec": 504.0,
+    "relation": "POSSIBLE_CONFLICT",
+    "overlap_sec": 2.0,
+    "gap_sec": 0.0,
+    "semantic_relation": "SEMANTICALLY_DIFFERENT",
+    "shared_token_count": 0,
+    "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+   },
+   {
+    "earlier_event": "W19_E009",
+    "later_event": "W20_E003",
+    "earlier_window": "W19",
+    "later_window": "W20",
+    "shared_start_sec": 480.0,
+    "shared_end_sec": 504.0,
+    "relation": "POSSIBLE_CONFLICT",
+    "overlap_sec": 4.0,
+    "gap_sec": 0.0,
+    "semantic_relation": "SEMANTICALLY_DIFFERENT",
+    "shared_token_count": 0,
+    "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+   },
+   {
+    "earlier_event": "W19_E010",
+    "later_event": "W20_E003",
+    "earlier_window": "W19",
+    "later_window": "W20",
+    "shared_start_sec": 480.0,
+    "shared_end_sec": 504.0,
+    "relation": "POSSIBLE_CONFLICT",
+    "overlap_sec": 4.0,
+    "gap_sec": 0.0,
+    "semantic_relation": "SEMANTICALLY_DIFFERENT",
+    "shared_token_count": 0,
+    "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+   },
+   {
+    "earlier_event": "W19_E011",
+    "later_event": "W20_E003",
+    "earlier_window": "W19",
+    "later_window": "W20",
+    "shared_start_sec": 480.0,
+    "shared_end_sec": 504.0,
+    "relation": "POSSIBLE_CONFLICT",
+    "overlap_sec": 4.0,
+    "gap_sec": 0.0,
+    "semantic_relation": "SEMANTICALLY_DIFFERENT",
+    "shared_token_count": 0,
+    "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+   },
+   {
+    "earlier_event": "W19_E012",
+    "later_event": "W20_E003",
+    "earlier_window": "W19",
+    "later_window": "W20",
+    "shared_start_sec": 480.0,
+    "shared_end_sec": 504.0,
+    "relation": "POSSIBLE_CONFLICT",
+    "overlap_sec": 4.0,
+    "gap_sec": 0.0,
+    "semantic_relation": "SEMANTICALLY_DIFFERENT",
+    "shared_token_count": 0,
+    "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+   },
+   {
+    "earlier_event": "W21_E006",
+    "later_event": "W22_E001",
+    "earlier_window": "W21",
+    "later_window": "W22",
+    "shared_start_sec": 528.0,
+    "shared_end_sec": 552.0,
+    "relation": "POSSIBLE_CONFLICT",
+    "overlap_sec": 4.0,
+    "gap_sec": 0.0,
+    "semantic_relation": "SEMANTICALLY_DIFFERENT",
+    "shared_token_count": 0,
+    "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+   },
+   {
+    "earlier_event": "W21_E007",
+    "later_event": "W22_E002",
+    "earlier_window": "W21",
+    "later_window": "W22",
+    "shared_start_sec": 528.0,
+    "shared_end_sec": 552.0,
+    "relation": "POSSIBLE_CONFLICT",
+    "overlap_sec": 4.0,
+    "gap_sec": 0.0,
+    "semantic_relation": "SEMANTICALLY_DIFFERENT",
+    "shared_token_count": 0,
+    "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+   },
+   {
+    "earlier_event": "W21_E008",
+    "later_event": "W22_E004",
+    "earlier_window": "W21",
+    "later_window": "W22",
+    "shared_start_sec": 528.0,
+    "shared_end_sec": 552.0,
+    "relation": "POSSIBLE_CONFLICT",
+    "overlap_sec": 4.0,
+    "gap_sec": 0.0,
+    "semantic_relation": "SEMANTICALLY_DIFFERENT",
+    "shared_token_count": 0,
+    "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+   },
+   {
+    "earlier_event": "W21_E008",
+    "later_event": "W22_E006",
+    "earlier_window": "W21",
+    "later_window": "W22",
+    "shared_start_sec": 528.0,
+    "shared_end_sec": 552.0,
+    "relation": "POSSIBLE_CONFLICT",
+    "overlap_sec": 2.0,
+    "gap_sec": 0.0,
+    "semantic_relation": "SEMANTICALLY_DIFFERENT",
+    "shared_token_count": 0,
+    "role": "CANDIDATE_LABEL_NOT_FACTUAL_AUTHORITY"
+   }
+  ],
+  "unresolved_relation_count": 116,
+  "single_window_only_intervals": [
+   [
+    24.0,
+    48.0
+   ],
+   [
+    86.0,
+    96.0
+   ],
+   [
+    576.0,
+    600.0
+   ]
+  ],
+  "single_window_only_sec": 58.0,
+  "invalid_source_dependencies": [],
+  "mixed_signature_groups": [],
+  "uncovered_intervals": [
+   [
+    0.0,
+    24.0
+   ]
+  ]
+ },
+ "prior_state": {
+  "WVR_EVENT_EXTRACTION_SHADOW_V1": "CLOSED / INCONCLUSIVE",
+  "WVR_W00_TRIGGER_ISOLATION_V1": "CLOSED / JOINT_OR_INTERACTION_EFFECT_SUPPORTED",
+  "WVR_W00_VISUAL_CONTENT_ISOLATION_V1": "CLOSED / VISUAL_CONTENT_X_TIME_INTERACTION_SUPPORTED",
+  "SUBDIVISION_family": "STOPPED / NOT SUFFICIENT",
+  "WVR_W00_ZERO_DURATION_EXEMPLAR_ISOLATION_V1": "NOT EXECUTED / SUPERSEDED (추론 0회 · 산출물 0건)",
+  "W00": "WINDOW_INVALID (invalid source · 재실행 금지)"
+ },
+ "normative_authority": [
+  "WVR_EVENT_MAP_COVERAGE_SHADOW_V1 preregistration",
+  "frozen SHADOW_V1 execution artifacts",
+  "frozen parser/collapse/relation rules (wvr_density_v2)",
+  "prior isolation results",
+  "PROJECT_OVERVIEW.md"
+ ],
+ "blind_map_reveal_allowed": false,
+ "note": "deterministic post-processing이다. 새 추론·새 LLM 호출이 없고 reviewer verdict를 계산하지 않았다."
+}
