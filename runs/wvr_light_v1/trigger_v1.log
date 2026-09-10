@@ -1,0 +1,116 @@
++ BASE=/ssd/daeseok/jds-prj
++ VIDEO=/ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4
++ OUT_DIR=/ssd/daeseok/jds-prj/runs/wvr_light_v1
++ PY=/ssd/daeseok/envs/prj/bin/python
++ export HF_HOME=/ssd/daeseok/cache
++ HF_HOME=/ssd/daeseok/cache
++ export PYTHONUNBUFFERED=1
++ PYTHONUNBUFFERED=1
++ export PYTHONDONTWRITEBYTECODE=1
++ PYTHONDONTWRITEBYTECODE=1
+++ git -C /ssd/daeseok/jds-prj rev-parse HEAD
++ export WVR_CODE_GIT_HEAD=0165524687e1a6fd8dc73187d69f5c46de8ab058
++ WVR_CODE_GIT_HEAD=0165524687e1a6fd8dc73187d69f5c46de8ab058
+++ date
++ echo '=== trigger validator (2026. 09. 10. (목) 10:26:20 KST) commit 0165524687e1a6fd8dc73187d69f5c46de8ab058 ==='
+=== trigger validator (2026. 09. 10. (목) 10:26:20 KST) commit 0165524687e1a6fd8dc73187d69f5c46de8ab058 ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_trigger_validate.py --runs /ssd/daeseok/jds-prj/runs/wvr_light_v1
+validator=PASS
+  A P0/M0 window=[0.0, 48.0] meta_times=[0.0, 46.0] indices=[0, 1380]
+  B P0/M1 window=[0.0, 48.0] meta_times=[120.0, 166.0] indices=[3600, 4980]
+  C P1/M0 window=[120.0, 168.0] meta_times=[0.0, 46.0] indices=[0, 1380]
+  D P1/M1 window=[120.0, 168.0] meta_times=[120.0, 166.0] indices=[3600, 4980]
+  check arm_count                      True
+  check pixel_times_identical          True
+  check shift_is_120                   True
+  check prompt_A_equals_B              True
+  check prompt_C_equals_D              True
+  check prompt_A_differs_C             True
+  check prompt_template_single         True
+  check indices_A_equal_C              True
+  check indices_B_equal_D              True
+  check indices_A_differ_B             True
+  check config_change_none             True
+  check token_cap_frozen               True
+  check frozen_artifacts_unchanged     True
+  check reference_pixels_present       True
+  check prompt_mutation_blocked        True
+  check recovery_blocked               True
+++ date
++ echo '=== trigger self-check (2026. 09. 10. (목) 10:26:20 KST) ==='
+=== trigger self-check (2026. 09. 10. (목) 10:26:20 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_trigger_selfcheck.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --runs /ssd/daeseok/jds-prj/runs/wvr_light_v1
+status=SEPARABLE separable=True
+  check pixel_values_identical_across_arms     True
+  check pixel_hashes_count                     True
+  check markers_differ_between_M0_and_M1       True
+  check markers_same_within_mode               True
+  check prompt_A_equals_B                      True
+  check prompt_C_equals_D                      True
+  check prompt_A_differs_C                     True
+  check M0_indices_equal_decoded               True
+  A P0/M0 window=[0.0, 48.0] indices=[0, 1380] markers=['1.0', '45.0'] tokens=2135 px=860adccd0ade
+  B P0/M1 window=[0.0, 48.0] indices=[3600, 4980] markers=['121.0', '165.0'] tokens=2150 px=860adccd0ade
+  C P1/M0 window=[120.0, 168.0] indices=[0, 1380] markers=['1.0', '45.0'] tokens=2138 px=860adccd0ade
+  D P1/M1 window=[120.0, 168.0] indices=[3600, 4980] markers=['121.0', '165.0'] tokens=2153 px=860adccd0ade
+++ date
++ echo '=== trigger 시작 (2026. 09. 10. (목) 10:26:31 KST) ==='
+=== trigger 시작 (2026. 09. 10. (목) 10:26:31 KST) ===
++ nvidia-smi --query-gpu=memory.used,utilization.gpu --format=csv,noheader
+40 MiB, 0 %
++ for arm in A B C D
+++ date
++ echo '=== A 시작 (2026. 09. 10. (목) 10:26:31 KST) ==='
+=== A 시작 (2026. 09. 10. (목) 10:26:31 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_trigger_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --arm A --runs-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:  99%|█████████▉| 744/750 [00:00<00:00, 7439.28it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7464.10it/s]
+arm=A P0/M0 status=PARSE_FAILURE frames=24 in=2135 gen=4096 cap=True
+  window=[0.0, 48.0] markers=1.0..45.0 obj=95 uniq=2 zero=95 coll=0 json=False pixel_ok=True WINDOW_INVALID ['PARSE_FAILURE', 'NO_EVENT', 'TRUNCATED_AT_CAP', 'OUTPUT_LANGUAGE_CONTRACT_FAILURE', 'EVENT_REPRESENTATION_DEGENERACY']
++ echo '=== A 실패 기록됨 (재시도하지 않는다) ==='
+=== A 실패 기록됨 (재시도하지 않는다) ===
+++ date
++ echo '=== A 완료 (2026. 09. 10. (목) 10:29:08 KST) ==='
+=== A 완료 (2026. 09. 10. (목) 10:29:08 KST) ===
++ for arm in A B C D
+++ date
++ echo '=== B 시작 (2026. 09. 10. (목) 10:29:08 KST) ==='
+=== B 시작 (2026. 09. 10. (목) 10:29:08 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_trigger_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --arm B --runs-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7714.49it/s]
+arm=B P0/M1 status=OK frames=24 in=2150 gen=530 cap=False
+  window=[0.0, 48.0] markers=121.0..165.0 obj=11 uniq=1 zero=0 coll=1 json=True pixel_ok=True WINDOW_INVALID ['EVENT_REPRESENTATION_DEGENERACY']
++ echo '=== B 실패 기록됨 (재시도하지 않는다) ==='
+=== B 실패 기록됨 (재시도하지 않는다) ===
+++ date
++ echo '=== B 완료 (2026. 09. 10. (목) 10:29:42 KST) ==='
+=== B 완료 (2026. 09. 10. (목) 10:29:42 KST) ===
++ for arm in A B C D
+++ date
++ echo '=== C 시작 (2026. 09. 10. (목) 10:29:42 KST) ==='
+=== C 시작 (2026. 09. 10. (목) 10:29:42 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_trigger_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --arm C --runs-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7947.33it/s]
+arm=C P1/M0 status=CONTRACT_VIOLATION frames=24 in=2138 gen=6 cap=False
+  window=[120.0, 168.0] markers=1.0..45.0 obj=0 uniq=0 zero=0 coll=0 json=True pixel_ok=True WINDOW_INVALID ['CONTRACT_VIOLATION', 'NO_EVENT', 'OUTPUT_LANGUAGE_CONTRACT_FAILURE', 'EVENT_REPRESENTATION_DEGENERACY']
++ echo '=== C 실패 기록됨 (재시도하지 않는다) ==='
+=== C 실패 기록됨 (재시도하지 않는다) ===
+++ date
++ echo '=== C 완료 (2026. 09. 10. (목) 10:29:59 KST) ==='
+=== C 완료 (2026. 09. 10. (목) 10:29:59 KST) ===
++ for arm in A B C D
+++ date
++ echo '=== D 시작 (2026. 09. 10. (목) 10:29:59 KST) ==='
+=== D 시작 (2026. 09. 10. (목) 10:29:59 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_trigger_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --arm D --runs-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:  90%|████████▉ | 672/750 [00:00<00:00, 6716.74it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7202.22it/s]
+arm=D P1/M1 status=OK frames=24 in=2153 gen=745 cap=False
+  window=[120.0, 168.0] markers=121.0..165.0 obj=16 uniq=9 zero=0 coll=9 json=True pixel_ok=True WINDOW_VALID []
+++ date
++ echo '=== D 완료 (2026. 09. 10. (목) 10:30:42 KST) ==='
+=== D 완료 (2026. 09. 10. (목) 10:30:42 KST) ===
+++ date
++ echo '=== trigger 완료 (2026. 09. 10. (목) 10:30:42 KST) ==='
+=== trigger 완료 (2026. 09. 10. (목) 10:30:42 KST) ===
++ wc -l
++ ls -l /ssd/daeseok/jds-prj/runs/wvr_light_v1/trigger_v1_A.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/trigger_v1_B.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/trigger_v1_C.json /ssd/daeseok/jds-prj/runs/wvr_light_v1/trigger_v1_D.json
+4

@@ -1,0 +1,633 @@
+{
+ "schema": "wvr_trigger_v1_summary",
+ "event": "WVR_W00_TRIGGER_ISOLATION_V1",
+ "prereg": "docs/preregistration/WVR_W00_TRIGGER_ISOLATION_V1_2026-09-10.md",
+ "code_git_head": "0165524687e1a6fd8dc73187d69f5c46de8ab058",
+ "event_kind": "behavioral trigger isolation (causal mechanism proof 아님)",
+ "source_window": {
+  "window_id": "W00",
+  "index": 0,
+  "start_sec": 0.0,
+  "end_sec": 48.0
+ },
+ "shift_sec": 120.0,
+ "pixel_times": [
+  0.0,
+  2.0,
+  4.0,
+  6.0,
+  8.0,
+  10.0,
+  12.0,
+  14.0,
+  16.0,
+  18.0,
+  20.0,
+  22.0,
+  24.0,
+  26.0,
+  28.0,
+  30.0,
+  32.0,
+  34.0,
+  36.0,
+  38.0,
+  40.0,
+  42.0,
+  44.0,
+  46.0
+ ],
+ "arm_count": 4,
+ "arms": [
+  {
+   "arm_id": "A",
+   "prompt_mode": "P0",
+   "metadata_mode": "M0",
+   "prompt_window": [
+    0.0,
+    48.0
+   ],
+   "rendered_prompt_hash": "c936901940b8d1c48d242e701ab4b0c3d6f722a9cfe12dde7dbd26c8f556d053",
+   "prompt_template_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+   "frames_indices_first_last": [
+    0,
+    1380
+   ],
+   "timestamp_marker_first_last": [
+    "1.0",
+    "45.0"
+   ],
+   "duration": 2424.186485,
+   "total_num_frames": 72724,
+   "fps": 30.0000041251862,
+   "width": 1920,
+   "height": 1080,
+   "video_backend": "pyav",
+   "frames": 24,
+   "pixel_identity": true,
+   "pixel_values_sha256": "860adccd0adecb9fdeb3f7a4a105670d2a31cadf168e0dba1fabf8a24f27d0d4",
+   "input_tokens": 2135,
+   "video_tokens": 1728,
+   "generated_tokens": 4096,
+   "generation_cap_hit": true,
+   "finish_reason": "length",
+   "raw_chars": 11533,
+   "completed_object_count": 95,
+   "raw_unique_signature_count": 2,
+   "zero_duration_count": 95,
+   "positive_duration_count": 0,
+   "max_signature_repeat": 48,
+   "max_consecutive_repeat": 1,
+   "first_repeat": {
+    "object_index": 2,
+    "first_seen_index": 0,
+    "offset": 254,
+    "signature": [
+     "a person",
+     "pouring",
+     "liquid from a bottle into a bowl"
+    ]
+   },
+   "top_signatures": [
+    {
+     "signature": [
+      "a person",
+      "pouring",
+      "liquid from a bottle into a bowl"
+     ],
+     "count": 48
+    },
+    {
+     "signature": [
+      "a person",
+      "holding",
+      "a bottle"
+     ],
+     "count": 47
+    }
+   ],
+   "json_complete": false,
+   "structure_source": "record",
+   "raw_event_count": 0,
+   "collapsed_event_count": 0,
+   "unique_signature_count": 0,
+   "degenerate": true,
+   "parse_status": "PARSE_FAILURE",
+   "language_satisfied": false,
+   "raw_persisted": true,
+   "arm_status": "PARSE_FAILURE",
+   "valid": false,
+   "status": "WINDOW_INVALID",
+   "reasons": [
+    "PARSE_FAILURE",
+    "NO_EVENT",
+    "TRUNCATED_AT_CAP",
+    "OUTPUT_LANGUAGE_CONTRACT_FAILURE",
+    "EVENT_REPRESENTATION_DEGENERACY"
+   ],
+   "blockers": [],
+   "output_failures": [
+    "PARSE_FAILURE",
+    "NO_EVENT",
+    "TRUNCATED_AT_CAP",
+    "OUTPUT_LANGUAGE_CONTRACT_FAILURE",
+    "EVENT_REPRESENTATION_DEGENERACY"
+   ],
+   "raw_output_hash": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6",
+   "runtime_config_hash": "cb43ffd357d771ff2923f2d3e0dec0f48f85bba660171cfc3832a298f4fef5aa",
+   "infer_wall_sec": 142.17,
+   "peak_vram_allocated_mib": 17673.2,
+   "code_git_head": "0165524687e1a6fd8dc73187d69f5c46de8ab058"
+  },
+  {
+   "arm_id": "B",
+   "prompt_mode": "P0",
+   "metadata_mode": "M1",
+   "prompt_window": [
+    0.0,
+    48.0
+   ],
+   "rendered_prompt_hash": "c936901940b8d1c48d242e701ab4b0c3d6f722a9cfe12dde7dbd26c8f556d053",
+   "prompt_template_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+   "frames_indices_first_last": [
+    3600,
+    4980
+   ],
+   "timestamp_marker_first_last": [
+    "121.0",
+    "165.0"
+   ],
+   "duration": 2424.186485,
+   "total_num_frames": 72724,
+   "fps": 30.0000041251862,
+   "width": 1920,
+   "height": 1080,
+   "video_backend": "pyav",
+   "frames": 24,
+   "pixel_identity": true,
+   "pixel_values_sha256": "860adccd0adecb9fdeb3f7a4a105670d2a31cadf168e0dba1fabf8a24f27d0d4",
+   "input_tokens": 2150,
+   "video_tokens": 1728,
+   "generated_tokens": 530,
+   "generation_cap_hit": false,
+   "finish_reason": "stop",
+   "raw_chars": 1505,
+   "completed_object_count": 11,
+   "raw_unique_signature_count": 1,
+   "zero_duration_count": 0,
+   "positive_duration_count": 11,
+   "max_signature_repeat": 11,
+   "max_consecutive_repeat": 11,
+   "first_repeat": {
+    "object_index": 1,
+    "first_seen_index": 0,
+    "offset": 146,
+    "signature": [
+     "a person",
+     "pouring",
+     "liquid from a bottle into a glass"
+    ]
+   },
+   "top_signatures": [
+    {
+     "signature": [
+      "a person",
+      "pouring",
+      "liquid from a bottle into a glass"
+     ],
+     "count": 11
+    }
+   ],
+   "json_complete": true,
+   "structure_source": "record",
+   "raw_event_count": 11,
+   "collapsed_event_count": 1,
+   "unique_signature_count": 1,
+   "degenerate": true,
+   "parse_status": "OK",
+   "language_satisfied": true,
+   "raw_persisted": true,
+   "arm_status": "OK",
+   "valid": false,
+   "status": "WINDOW_INVALID",
+   "reasons": [
+    "EVENT_REPRESENTATION_DEGENERACY"
+   ],
+   "blockers": [],
+   "output_failures": [
+    "EVENT_REPRESENTATION_DEGENERACY"
+   ],
+   "raw_output_hash": "09104f0f0e27734af30480dc1315075b2194152b836f3820e1df9e5810fcc641",
+   "runtime_config_hash": "cb43ffd357d771ff2923f2d3e0dec0f48f85bba660171cfc3832a298f4fef5aa",
+   "infer_wall_sec": 19.97,
+   "peak_vram_allocated_mib": 17389.1,
+   "code_git_head": "0165524687e1a6fd8dc73187d69f5c46de8ab058"
+  },
+  {
+   "arm_id": "C",
+   "prompt_mode": "P1",
+   "metadata_mode": "M0",
+   "prompt_window": [
+    120.0,
+    168.0
+   ],
+   "rendered_prompt_hash": "374a86118e0e2cad79c4f462c4b7dafa009c2dec00d5ea7103356b02ae079b7a",
+   "prompt_template_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+   "frames_indices_first_last": [
+    0,
+    1380
+   ],
+   "timestamp_marker_first_last": [
+    "1.0",
+    "45.0"
+   ],
+   "duration": 2424.186485,
+   "total_num_frames": 72724,
+   "fps": 30.0000041251862,
+   "width": 1920,
+   "height": 1080,
+   "video_backend": "pyav",
+   "frames": 24,
+   "pixel_identity": true,
+   "pixel_values_sha256": "860adccd0adecb9fdeb3f7a4a105670d2a31cadf168e0dba1fabf8a24f27d0d4",
+   "input_tokens": 2138,
+   "video_tokens": 1728,
+   "generated_tokens": 6,
+   "generation_cap_hit": false,
+   "finish_reason": "stop",
+   "raw_chars": 14,
+   "completed_object_count": 0,
+   "raw_unique_signature_count": 0,
+   "zero_duration_count": 0,
+   "positive_duration_count": 0,
+   "max_signature_repeat": 0,
+   "max_consecutive_repeat": 0,
+   "first_repeat": null,
+   "top_signatures": [],
+   "json_complete": true,
+   "structure_source": "record",
+   "raw_event_count": 0,
+   "collapsed_event_count": 0,
+   "unique_signature_count": 0,
+   "degenerate": true,
+   "parse_status": "CONTRACT_VIOLATION",
+   "language_satisfied": false,
+   "raw_persisted": true,
+   "arm_status": "CONTRACT_VIOLATION",
+   "valid": false,
+   "status": "WINDOW_INVALID",
+   "reasons": [
+    "CONTRACT_VIOLATION",
+    "NO_EVENT",
+    "OUTPUT_LANGUAGE_CONTRACT_FAILURE",
+    "EVENT_REPRESENTATION_DEGENERACY"
+   ],
+   "blockers": [],
+   "output_failures": [
+    "CONTRACT_VIOLATION",
+    "NO_EVENT",
+    "OUTPUT_LANGUAGE_CONTRACT_FAILURE",
+    "EVENT_REPRESENTATION_DEGENERACY"
+   ],
+   "raw_output_hash": "8aed54634d462f368d193ef01f789bc1fdc74724fc6476d3ba7f87c91e1df7c5",
+   "runtime_config_hash": "cb43ffd357d771ff2923f2d3e0dec0f48f85bba660171cfc3832a298f4fef5aa",
+   "infer_wall_sec": 1.83,
+   "peak_vram_allocated_mib": 17385.2,
+   "code_git_head": "0165524687e1a6fd8dc73187d69f5c46de8ab058"
+  },
+  {
+   "arm_id": "D",
+   "prompt_mode": "P1",
+   "metadata_mode": "M1",
+   "prompt_window": [
+    120.0,
+    168.0
+   ],
+   "rendered_prompt_hash": "374a86118e0e2cad79c4f462c4b7dafa009c2dec00d5ea7103356b02ae079b7a",
+   "prompt_template_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+   "frames_indices_first_last": [
+    3600,
+    4980
+   ],
+   "timestamp_marker_first_last": [
+    "121.0",
+    "165.0"
+   ],
+   "duration": 2424.186485,
+   "total_num_frames": 72724,
+   "fps": 30.0000041251862,
+   "width": 1920,
+   "height": 1080,
+   "video_backend": "pyav",
+   "frames": 24,
+   "pixel_identity": true,
+   "pixel_values_sha256": "860adccd0adecb9fdeb3f7a4a105670d2a31cadf168e0dba1fabf8a24f27d0d4",
+   "input_tokens": 2153,
+   "video_tokens": 1728,
+   "generated_tokens": 745,
+   "generation_cap_hit": false,
+   "finish_reason": "stop",
+   "raw_chars": 1930,
+   "completed_object_count": 16,
+   "raw_unique_signature_count": 9,
+   "zero_duration_count": 0,
+   "positive_duration_count": 16,
+   "max_signature_repeat": 6,
+   "max_consecutive_repeat": 6,
+   "first_repeat": {
+    "object_index": 6,
+    "first_seen_index": 5,
+    "offset": 753,
+    "signature": [
+     "person",
+     "holding",
+     "a bag of rice"
+    ]
+   },
+   "top_signatures": [
+    {
+     "signature": [
+      "person",
+      "holding",
+      "a bag of rice"
+     ],
+     "count": 6
+    },
+    {
+     "signature": [
+      "person",
+      "pouring",
+      "powder into a pan"
+     ],
+     "count": 3
+    },
+    {
+     "signature": [
+      "person",
+      "pouring",
+      "liquid from a bottle into a bowl"
+     ],
+     "count": 1
+    }
+   ],
+   "json_complete": true,
+   "structure_source": "record",
+   "raw_event_count": 16,
+   "collapsed_event_count": 9,
+   "unique_signature_count": 9,
+   "degenerate": false,
+   "parse_status": "OK",
+   "language_satisfied": true,
+   "raw_persisted": true,
+   "arm_status": "OK",
+   "valid": true,
+   "status": "WINDOW_VALID",
+   "reasons": [],
+   "blockers": [],
+   "output_failures": [],
+   "raw_output_hash": "01496012501858fb0a6f3668194a5e936819d59efb588d5792680d55e591f1a5",
+   "runtime_config_hash": "cb43ffd357d771ff2923f2d3e0dec0f48f85bba660171cfc3832a298f4fef5aa",
+   "infer_wall_sec": 28.32,
+   "peak_vram_allocated_mib": 17390.7,
+   "code_git_head": "0165524687e1a6fd8dc73187d69f5c46de8ab058"
+  }
+ ],
+ "manipulation_audit": {
+  "ok": true,
+  "reasons": [],
+  "checks": {
+   "A_indices_equal_C": true,
+   "B_indices_equal_D": true,
+   "A_indices_differ_B": true,
+   "prompt_A_equals_B": true,
+   "prompt_C_equals_D": true,
+   "prompt_A_differs_C": true,
+   "prompt_template_single": true,
+   "prompt_template_frozen": true,
+   "metadata_total_num_frames_identical": true,
+   "metadata_fps_identical": true,
+   "metadata_width_identical": true,
+   "metadata_height_identical": true,
+   "metadata_duration_identical": true,
+   "metadata_video_backend_identical": true
+  },
+  "indices_first_last": {
+   "A": [
+    0,
+    1380
+   ],
+   "B": [
+    3600,
+    4980
+   ],
+   "C": [
+    0,
+    1380
+   ],
+   "D": [
+    3600,
+    4980
+   ]
+  },
+  "rendered_prompt_hashes": {
+   "A": "c936901940b8d1c48d242e701ab4b0c3d6f722a9cfe12dde7dbd26c8f556d053",
+   "B": "c936901940b8d1c48d242e701ab4b0c3d6f722a9cfe12dde7dbd26c8f556d053",
+   "C": "374a86118e0e2cad79c4f462c4b7dafa009c2dec00d5ea7103356b02ae079b7a",
+   "D": "374a86118e0e2cad79c4f462c4b7dafa009c2dec00d5ea7103356b02ae079b7a"
+  },
+  "prompt_template_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273"
+ },
+ "pixel_agreement": {
+  "identical": true,
+  "reference_arm": "A",
+  "compared": 4,
+  "differing_arms": [],
+  "frame_count": 24,
+  "reason": ""
+ },
+ "selfcheck": {
+  "status": "SEPARABLE",
+  "separable": true,
+  "checks": {
+   "pixel_values_identical_across_arms": true,
+   "pixel_hashes_count": true,
+   "markers_differ_between_M0_and_M1": true,
+   "markers_same_within_mode": true,
+   "prompt_A_equals_B": true,
+   "prompt_C_equals_D": true,
+   "prompt_A_differs_C": true,
+   "M0_indices_equal_decoded": true
+  },
+  "transformers_version": "5.14.1"
+ },
+ "extra_blockers": [],
+ "verdict": {
+  "verdict": "JOINT_OR_INTERACTION_EFFECT_SUPPORTED",
+  "reason": "MIXED_PATTERN",
+  "pattern": {
+   "A": "WINDOW_INVALID",
+   "B": "WINDOW_INVALID",
+   "C": "WINDOW_INVALID",
+   "D": "WINDOW_VALID"
+  },
+  "valid_arms": [
+   "D"
+  ],
+  "blockers": [],
+  "allowed_claim": null,
+  "forbidden_conclusions": [
+   "근본 원인을 규명했다",
+   "Qwen 내부 메커니즘을 규명했다",
+   "start_sec=0 bug를 증명했다",
+   "metadata가 모델을 망가뜨린다",
+   "prompt가 잘못됐다",
+   "recovery 방법을 찾았다",
+   "12초/24초 subdivision이 해결책이다"
+  ],
+  "event_kind": "behavioral trigger isolation (causal mechanism proof 아님)",
+  "mechanism_claimed": false,
+  "recovery_attempt_allowed": false
+ },
+ "cross_arm_audit": {
+  "role": "AUDIT_DIAGNOSTIC_ONLY",
+  "pairs": {
+   "A_vs_B": {
+    "raw_identical": false,
+    "first_divergence_offset": 42,
+    "raw_chars": [
+     11533,
+     1505
+    ],
+    "raw_hash": [
+     "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6",
+     "09104f0f0e27734af30480dc1315075b2194152b836f3820e1df9e5810fcc641"
+    ]
+   },
+   "A_vs_C": {
+    "raw_identical": false,
+    "first_divergence_offset": 12,
+    "raw_chars": [
+     11533,
+     14
+    ],
+    "raw_hash": [
+     "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6",
+     "8aed54634d462f368d193ef01f789bc1fdc74724fc6476d3ba7f87c91e1df7c5"
+    ]
+   },
+   "A_vs_D": {
+    "raw_identical": false,
+    "first_divergence_offset": 26,
+    "raw_chars": [
+     11533,
+     1930
+    ],
+    "raw_hash": [
+     "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6",
+     "01496012501858fb0a6f3668194a5e936819d59efb588d5792680d55e591f1a5"
+    ]
+   },
+   "B_vs_D": {
+    "raw_identical": false,
+    "first_divergence_offset": 26,
+    "raw_chars": [
+     1505,
+     1930
+    ],
+    "raw_hash": [
+     "09104f0f0e27734af30480dc1315075b2194152b836f3820e1df9e5810fcc641",
+     "01496012501858fb0a6f3668194a5e936819d59efb588d5792680d55e591f1a5"
+    ]
+   },
+   "C_vs_D": {
+    "raw_identical": false,
+    "first_divergence_offset": 12,
+    "raw_chars": [
+     14,
+     1930
+    ],
+    "raw_hash": [
+     "8aed54634d462f368d193ef01f789bc1fdc74724fc6476d3ba7f87c91e1df7c5",
+     "01496012501858fb0a6f3668194a5e936819d59efb588d5792680d55e591f1a5"
+    ]
+   }
+  },
+  "note": "semantic 우열·사실성을 판정하지 않는다"
+ },
+ "frozen_artifacts": {
+  "unchanged": true,
+  "checks": {
+   "shadow_v1_W00.json": {
+    "status": "OK",
+    "expected": "c8e65b74b8c71aa97f85fc69c6ffdfb2c72fab18911e6e1565c8458e44daa074",
+    "observed": "c8e65b74b8c71aa97f85fc69c6ffdfb2c72fab18911e6e1565c8458e44daa074"
+   },
+   "shadow_v1_W00_raw.txt": {
+    "status": "OK",
+    "expected": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6",
+    "observed": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6"
+   },
+   "subdiv_v1_C0.json": {
+    "status": "OK",
+    "expected": "7925172a83d3304730e6b21509bdc0c70dbe78ae0e5433e0809a7e074471d0f6",
+    "observed": "7925172a83d3304730e6b21509bdc0c70dbe78ae0e5433e0809a7e074471d0f6"
+   },
+   "subdiv_v1_C0_raw.txt": {
+    "status": "OK",
+    "expected": "7460a5b61821e41b15dd0281aa15580a2ac7752dab48be2bbf809f1d193105d0",
+    "observed": "7460a5b61821e41b15dd0281aa15580a2ac7752dab48be2bbf809f1d193105d0"
+   },
+   "subdiv_v1_C1.json": {
+    "status": "OK",
+    "expected": "44b7f96c1f23a0760f6cc8fa975d058b86d813878c75898136bd368979d75f11",
+    "observed": "44b7f96c1f23a0760f6cc8fa975d058b86d813878c75898136bd368979d75f11"
+   },
+   "subdiv_v1_C1_raw.txt": {
+    "status": "OK",
+    "expected": "9316f9f62b519ef0cc8a99a827fa71ed153b5efea3a673e5d53b2d084392f117",
+    "observed": "9316f9f62b519ef0cc8a99a827fa71ed153b5efea3a673e5d53b2d084392f117"
+   },
+   "subdiv_v1_C2.json": {
+    "status": "OK",
+    "expected": "cb77b4b283f988d150efcb1c780d4cc1c8c5ff6d7ce566517ca35b17cc68f126",
+    "observed": "cb77b4b283f988d150efcb1c780d4cc1c8c5ff6d7ce566517ca35b17cc68f126"
+   },
+   "subdiv_v1_C2_raw.txt": {
+    "status": "OK",
+    "expected": "70815aeee2408bd174d0a031a08200bf9e6b12fdff6d46a9c8a0ec36ef453b10",
+    "observed": "70815aeee2408bd174d0a031a08200bf9e6b12fdff6d46a9c8a0ec36ef453b10"
+   }
+  },
+  "changed": [],
+  "missing": [],
+  "original_status_retained": "WINDOW_INVALID (유지 · 소급 VALID 금지)",
+  "may_be_revalidated": false
+ },
+ "prior_state": {
+  "WVR_EVENT_EXTRACTION_SHADOW_V1": "CLOSED / INCONCLUSIVE",
+  "WVR_W00_DEGENERACY_FORENSIC_V1": "CLOSED / MODEL_OUTPUT_DEGENERACY",
+  "WVR_W00_DEGENERACY_REPRO_V1": "CLOSED / REPRODUCIBLE",
+  "WVR_W00_SUBDIVISION_RECOVERY_V1": "CLOSED / SUBDIVISION_RECOVERY_FAIL",
+  "WVR_W00_RECURSIVE_SUBDIVISION_RECOVERY_V1": "CLOSED / RECOVERY_FAIL",
+  "original_W00": "WINDOW_INVALID (유지 · 소급 VALID 금지)"
+ },
+ "normative_authority": [
+  "WVR_W00_TRIGGER_ISOLATION_V1 preregistration",
+  "frozen model/prompt/runtime configuration",
+  "raw execution artifacts",
+  "prior forensic/repro/recovery results",
+  "PROJECT_OVERVIEW.md"
+ ],
+ "forbidden_conclusions": [
+  "근본 원인을 규명했다",
+  "Qwen 내부 메커니즘을 규명했다",
+  "start_sec=0 bug를 증명했다",
+  "metadata가 모델을 망가뜨린다",
+  "prompt가 잘못됐다",
+  "recovery 방법을 찾았다",
+  "12초/24초 subdivision이 해결책이다"
+ ],
+ "visual_content_manipulation_allowed": false,
+ "recovery_attempt_allowed": false,
+ "note": "behavioral trigger isolation이다. causal mechanism proof가 아니며 recovery를 시도하지 않았다."
+}
