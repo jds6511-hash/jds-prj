@@ -1,0 +1,558 @@
+{
+ "schema": "wvr_visual_v1_summary",
+ "event": "WVR_W00_VISUAL_CONTENT_ISOLATION_V1",
+ "prereg": "docs/preregistration/WVR_W00_VISUAL_CONTENT_ISOLATION_V1_2026-09-10.md",
+ "code_git_head": "161227d5a8104c416de4303c3af1c06c3594d78b",
+ "event_kind": "visual-content isolation — 2×2의 남은 한 칸만 채운다. causal mechanism proof가 아니다",
+ "new_inference_count": 1,
+ "arm": {
+  "label": "E (X1T0)",
+  "frames": 24,
+  "input_tokens": 2135,
+  "generated_tokens": 303,
+  "generation_cap_hit": false,
+  "finish_reason": "stop",
+  "raw_chars": 818,
+  "completed_object_count": 7,
+  "raw_unique_signature_count": 6,
+  "zero_duration_count": 0,
+  "positive_duration_count": 7,
+  "max_signature_repeat": 2,
+  "max_consecutive_repeat": 2,
+  "first_repeat": {
+   "object_index": 1,
+   "first_seen_index": 0,
+   "offset": 117,
+   "signature": [
+    "person",
+    "grating",
+    "potato"
+   ]
+  },
+  "top_signatures": [
+   {
+    "signature": [
+     "person",
+     "grating",
+     "potato"
+    ],
+    "count": 2
+   },
+   {
+    "signature": [
+     "person",
+     "mixing",
+     "potato mixture"
+    ],
+    "count": 1
+   },
+   {
+    "signature": [
+     "person",
+     "forming",
+     "potato balls"
+    ],
+    "count": 1
+   }
+  ],
+  "json_complete": true,
+  "collapsed_event_count": 6,
+  "unique_signature_count": 6,
+  "degenerate": false,
+  "status": "WINDOW_VALID",
+  "reasons": [],
+  "raw_output_hash": "b4a30e0e8ba03eb6bff8c7a6273ddda3127290601579205f5d9c7dfc076ba793",
+  "structure_source": "record",
+  "arm_id": "E",
+  "cell": "X1T0",
+  "pixel_source": "W05",
+  "time_encoding": "T0",
+  "prompt_window": [
+   0.0,
+   48.0
+  ],
+  "rendered_prompt_hash": "c936901940b8d1c48d242e701ab4b0c3d6f722a9cfe12dde7dbd26c8f556d053",
+  "prompt_template_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+  "frames_indices_first_last": [
+   0,
+   1380
+  ],
+  "timestamp_marker_first_last": [
+   "1.0",
+   "45.0"
+  ],
+  "pixel_times_first_last": [
+   120.0,
+   166.0
+  ],
+  "pixel_identity": true,
+  "time_encoding_identity": true,
+  "pixel_values_sha256": "c200ea5242210acf6606e85af8df0d706da18a73dbf320bd7ac43b7681a34299",
+  "video_tokens": 1728,
+  "duration": 2424.186485,
+  "total_num_frames": 72724,
+  "fps": 30.0000041251862,
+  "parse_status": "OK",
+  "raw_event_count": 7,
+  "language_satisfied": true,
+  "raw_persisted": true,
+  "arm_status": "OK",
+  "valid": true,
+  "blockers": [],
+  "output_failures": [],
+  "runtime_config_hash": "cb43ffd357d771ff2923f2d3e0dec0f48f85bba660171cfc3832a298f4fef5aa",
+  "infer_wall_sec": 11.9,
+  "code_git_head": "161227d5a8104c416de4303c3af1c06c3594d78b"
+ },
+ "reference_cells": {
+  "X0T0": {
+   "label": "X0T0",
+   "frames": 24,
+   "input_tokens": 2135,
+   "generated_tokens": 4096,
+   "generation_cap_hit": true,
+   "finish_reason": "length",
+   "raw_chars": 11533,
+   "completed_object_count": 95,
+   "raw_unique_signature_count": 2,
+   "zero_duration_count": 95,
+   "positive_duration_count": 0,
+   "max_signature_repeat": 48,
+   "max_consecutive_repeat": 1,
+   "first_repeat": {
+    "object_index": 2,
+    "first_seen_index": 0,
+    "offset": 254,
+    "signature": [
+     "a person",
+     "pouring",
+     "liquid from a bottle into a bowl"
+    ]
+   },
+   "top_signatures": [
+    {
+     "signature": [
+      "a person",
+      "pouring",
+      "liquid from a bottle into a bowl"
+     ],
+     "count": 48
+    },
+    {
+     "signature": [
+      "a person",
+      "holding",
+      "a bottle"
+     ],
+     "count": 47
+    }
+   ],
+   "json_complete": false,
+   "collapsed_event_count": 0,
+   "unique_signature_count": 0,
+   "degenerate": true,
+   "status": "WINDOW_INVALID",
+   "reasons": [
+    "PARSE_FAILURE",
+    "NO_EVENT",
+    "TRUNCATED_AT_CAP",
+    "OUTPUT_LANGUAGE_CONTRACT_FAILURE",
+    "EVENT_REPRESENTATION_DEGENERACY"
+   ],
+   "raw_output_hash": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6",
+   "structure_source": null,
+   "available": true,
+   "source_record": "trigger_v1_A.json",
+   "record_sha256": "6de08ac56322a25edea8dd3294b039e8f942d5ec2ae63720b634074bcc2c0180",
+   "raw_sha256": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6"
+  },
+  "X0T1": {
+   "label": "X0T1",
+   "frames": 24,
+   "input_tokens": 2153,
+   "generated_tokens": 745,
+   "generation_cap_hit": false,
+   "finish_reason": "stop",
+   "raw_chars": 1930,
+   "completed_object_count": 16,
+   "raw_unique_signature_count": 9,
+   "zero_duration_count": 0,
+   "positive_duration_count": 16,
+   "max_signature_repeat": 6,
+   "max_consecutive_repeat": 6,
+   "first_repeat": {
+    "object_index": 6,
+    "first_seen_index": 5,
+    "offset": 753,
+    "signature": [
+     "person",
+     "holding",
+     "a bag of rice"
+    ]
+   },
+   "top_signatures": [
+    {
+     "signature": [
+      "person",
+      "holding",
+      "a bag of rice"
+     ],
+     "count": 6
+    },
+    {
+     "signature": [
+      "person",
+      "pouring",
+      "powder into a pan"
+     ],
+     "count": 3
+    },
+    {
+     "signature": [
+      "person",
+      "pouring",
+      "liquid from a bottle into a bowl"
+     ],
+     "count": 1
+    }
+   ],
+   "json_complete": true,
+   "collapsed_event_count": 9,
+   "unique_signature_count": 9,
+   "degenerate": false,
+   "status": "WINDOW_VALID",
+   "reasons": [],
+   "raw_output_hash": "01496012501858fb0a6f3668194a5e936819d59efb588d5792680d55e591f1a5",
+   "structure_source": null,
+   "available": true,
+   "source_record": "trigger_v1_D.json",
+   "record_sha256": "e406ae2520e63739d8758fa23590bbe0c443d6bc4f8a6512cee9f0de240a86b3",
+   "raw_sha256": "01496012501858fb0a6f3668194a5e936819d59efb588d5792680d55e591f1a5"
+  },
+  "X1T1": {
+   "label": "X1T1",
+   "frames": 24,
+   "input_tokens": 2153,
+   "generated_tokens": 452,
+   "generation_cap_hit": false,
+   "finish_reason": "stop",
+   "raw_chars": 1157,
+   "completed_object_count": 10,
+   "raw_unique_signature_count": 5,
+   "zero_duration_count": 0,
+   "positive_duration_count": 10,
+   "max_signature_repeat": 6,
+   "max_consecutive_repeat": 5,
+   "first_repeat": {
+    "object_index": 5,
+    "first_seen_index": 3,
+    "offset": 582,
+    "signature": [
+     "person",
+     "coating",
+     "potato balls"
+    ]
+   },
+   "top_signatures": [
+    {
+     "signature": [
+      "person",
+      "coating",
+      "potato balls"
+     ],
+     "count": 6
+    },
+    {
+     "signature": [
+      "person",
+      "grating",
+      "potato"
+     ],
+     "count": 1
+    },
+    {
+     "signature": [
+      "person",
+      "mixing",
+      "potato mixture"
+     ],
+     "count": 1
+    }
+   ],
+   "json_complete": true,
+   "collapsed_event_count": 6,
+   "unique_signature_count": 5,
+   "degenerate": false,
+   "status": "WINDOW_VALID",
+   "reasons": [],
+   "raw_output_hash": "38caf8e6cfde38ce8da49bc6fcdd68e7c85454f8db828fdf27906843758564eb",
+   "structure_source": null,
+   "available": true,
+   "source_record": "shadow_v1_W05.json",
+   "record_sha256": "ebcd438d8ccd91b248622a626c2932b26e2787a95e31aee8a332fc45a92ee241",
+   "raw_sha256": "38caf8e6cfde38ce8da49bc6fcdd68e7c85454f8db828fdf27906843758564eb"
+  }
+ },
+ "verdict": {
+  "verdict": "VISUAL_CONTENT_X_TIME_INTERACTION_SUPPORTED",
+  "reason": "E_VALID",
+  "arm_status": "WINDOW_VALID",
+  "blockers": [],
+  "table": {
+   "X0T0": {
+    "cell": "X0T0",
+    "pixels": "W00 [0,48)",
+    "time": "T0 (0–48)",
+    "source": "trigger_v1_A",
+    "status": "WINDOW_INVALID"
+   },
+   "X0T1": {
+    "cell": "X0T1",
+    "pixels": "W00 [0,48)",
+    "time": "T1 (120–168)",
+    "source": "trigger_v1_D",
+    "status": "WINDOW_VALID"
+   },
+   "X1T1": {
+    "cell": "X1T1",
+    "pixels": "W05 [120,168)",
+    "time": "T1 (120–168)",
+    "source": "shadow_v1_W05",
+    "status": "WINDOW_VALID"
+   },
+   "X1T0": {
+    "cell": "X1T0",
+    "pixels": "W05 [120,168)",
+    "time": "T0 (0–48)",
+    "source": "visual_v1_E",
+    "status": "WINDOW_VALID",
+    "valid": true
+   },
+   "axes": {
+    "pixels": [
+     "W00 [0,48)",
+     "W05 [120,168)"
+    ],
+    "time_encoding": [
+     "T0 (0–48)",
+     "T1 (120–168)"
+    ]
+   },
+   "rerun_of_frozen_cells": false
+  },
+  "allowed_claim": "W00 초반 visual content 자체가 아니라 그것이 0–48 time encoding과 결합될 때만 이번 failure가 관찰됨",
+  "forbidden_conclusions": [
+   "0초 버그의 내부 원인을 증명했다",
+   "Qwen 내부 메커니즘을 규명했다",
+   "prompt가 잘못됐다",
+   "metadata가 모델을 망가뜨린다",
+   "두 채널을 +120초로 옮기면 무조건 해결된다",
+   "recovery 방법을 찾았다",
+   "production Event extraction이 가능해졌다",
+   "다른 창·다른 영상·다른 shift에서도 같다"
+  ],
+  "measurement_scope": "pixel set 2개 · time encoding 2개 · shift 1개(+120초)",
+  "event_kind": "visual-content isolation — 2×2의 남은 한 칸만 채운다. causal mechanism proof가 아니다",
+  "mechanism_claimed": false,
+  "new_inference_count": 1
+ },
+ "extra_blockers": [],
+ "frozen_cells": {
+  "unchanged": true,
+  "checks": {
+   "shadow_v1_W00.json": {
+    "status": "OK",
+    "expected": "c8e65b74b8c71aa97f85fc69c6ffdfb2c72fab18911e6e1565c8458e44daa074",
+    "observed": "c8e65b74b8c71aa97f85fc69c6ffdfb2c72fab18911e6e1565c8458e44daa074"
+   },
+   "shadow_v1_W00_raw.txt": {
+    "status": "OK",
+    "expected": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6",
+    "observed": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6"
+   },
+   "shadow_v1_W05.json": {
+    "status": "OK",
+    "expected": "ebcd438d8ccd91b248622a626c2932b26e2787a95e31aee8a332fc45a92ee241",
+    "observed": "ebcd438d8ccd91b248622a626c2932b26e2787a95e31aee8a332fc45a92ee241"
+   },
+   "shadow_v1_W05_raw.txt": {
+    "status": "OK",
+    "expected": "38caf8e6cfde38ce8da49bc6fcdd68e7c85454f8db828fdf27906843758564eb",
+    "observed": "38caf8e6cfde38ce8da49bc6fcdd68e7c85454f8db828fdf27906843758564eb"
+   },
+   "trigger_v1_A.json": {
+    "status": "OK",
+    "expected": "6de08ac56322a25edea8dd3294b039e8f942d5ec2ae63720b634074bcc2c0180",
+    "observed": "6de08ac56322a25edea8dd3294b039e8f942d5ec2ae63720b634074bcc2c0180"
+   },
+   "trigger_v1_A_raw.txt": {
+    "status": "OK",
+    "expected": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6",
+    "observed": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6"
+   },
+   "trigger_v1_D.json": {
+    "status": "OK",
+    "expected": "e406ae2520e63739d8758fa23590bbe0c443d6bc4f8a6512cee9f0de240a86b3",
+    "observed": "e406ae2520e63739d8758fa23590bbe0c443d6bc4f8a6512cee9f0de240a86b3"
+   },
+   "trigger_v1_D_raw.txt": {
+    "status": "OK",
+    "expected": "01496012501858fb0a6f3668194a5e936819d59efb588d5792680d55e591f1a5",
+    "observed": "01496012501858fb0a6f3668194a5e936819d59efb588d5792680d55e591f1a5"
+   }
+  },
+  "changed": [],
+  "missing": [],
+  "rerun_allowed": false,
+  "frozen_cells": [
+   {
+    "cell": "X0T0",
+    "pixels": "W00 [0,48)",
+    "time": "T0 (0–48)",
+    "source": "trigger_v1_A",
+    "status": "WINDOW_INVALID"
+   },
+   {
+    "cell": "X0T1",
+    "pixels": "W00 [0,48)",
+    "time": "T1 (120–168)",
+    "source": "trigger_v1_D",
+    "status": "WINDOW_VALID"
+   },
+   {
+    "cell": "X1T1",
+    "pixels": "W05 [120,168)",
+    "time": "T1 (120–168)",
+    "source": "shadow_v1_W05",
+    "status": "WINDOW_VALID"
+   }
+  ]
+ },
+ "selfcheck": {
+  "ok": true,
+  "checks": {
+   "pixels_match_w05": true,
+   "pixel_count": true,
+   "pixel_values_differ_from_trigger_A": true,
+   "markers_are_T0": true,
+   "rendered_prompt_matches_trigger_A": true,
+   "indices_match_trigger_A": true,
+   "pixel_times_are_120_to_166": true,
+   "decoded_indices_are_w05_range": true
+  }
+ },
+ "cross_comparison": {
+  "role": "AUDIT_DIAGNOSTIC_ONLY",
+  "fields": [
+   "generated_tokens",
+   "generation_cap_hit",
+   "raw_chars",
+   "completed_object_count",
+   "raw_unique_signature_count",
+   "zero_duration_count",
+   "positive_duration_count",
+   "max_signature_repeat",
+   "json_complete",
+   "collapsed_event_count",
+   "unique_signature_count",
+   "degenerate",
+   "status",
+   "raw_output_hash"
+  ],
+  "rows": {
+   "E (X1T0)": {
+    "generated_tokens": 303,
+    "generation_cap_hit": false,
+    "raw_chars": 818,
+    "completed_object_count": 7,
+    "raw_unique_signature_count": 6,
+    "zero_duration_count": 0,
+    "positive_duration_count": 7,
+    "max_signature_repeat": 2,
+    "json_complete": true,
+    "collapsed_event_count": 6,
+    "unique_signature_count": 6,
+    "degenerate": false,
+    "status": "WINDOW_VALID",
+    "raw_output_hash": "b4a30e0e8ba03eb6bff8c7a6273ddda3127290601579205f5d9c7dfc076ba793"
+   },
+   "X0T0": {
+    "generated_tokens": 4096,
+    "generation_cap_hit": true,
+    "raw_chars": 11533,
+    "completed_object_count": 95,
+    "raw_unique_signature_count": 2,
+    "zero_duration_count": 95,
+    "positive_duration_count": 0,
+    "max_signature_repeat": 48,
+    "json_complete": false,
+    "collapsed_event_count": 0,
+    "unique_signature_count": 0,
+    "degenerate": true,
+    "status": "WINDOW_INVALID",
+    "raw_output_hash": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6"
+   },
+   "X0T1": {
+    "generated_tokens": 745,
+    "generation_cap_hit": false,
+    "raw_chars": 1930,
+    "completed_object_count": 16,
+    "raw_unique_signature_count": 9,
+    "zero_duration_count": 0,
+    "positive_duration_count": 16,
+    "max_signature_repeat": 6,
+    "json_complete": true,
+    "collapsed_event_count": 9,
+    "unique_signature_count": 9,
+    "degenerate": false,
+    "status": "WINDOW_VALID",
+    "raw_output_hash": "01496012501858fb0a6f3668194a5e936819d59efb588d5792680d55e591f1a5"
+   },
+   "X1T1": {
+    "generated_tokens": 452,
+    "generation_cap_hit": false,
+    "raw_chars": 1157,
+    "completed_object_count": 10,
+    "raw_unique_signature_count": 5,
+    "zero_duration_count": 0,
+    "positive_duration_count": 10,
+    "max_signature_repeat": 6,
+    "json_complete": true,
+    "collapsed_event_count": 6,
+    "unique_signature_count": 5,
+    "degenerate": false,
+    "status": "WINDOW_VALID",
+    "raw_output_hash": "38caf8e6cfde38ce8da49bc6fcdd68e7c85454f8db828fdf27906843758564eb"
+   }
+  },
+  "note": "semantic 우열·사실성을 판정하지 않는다"
+ },
+ "prior_state": {
+  "WVR_W00_TRIGGER_ISOLATION_V1": "CLOSED / JOINT_OR_INTERACTION_EFFECT_SUPPORTED",
+  "WVR_W00_RECURSIVE_SUBDIVISION_RECOVERY_V1": "CLOSED / RECOVERY_FAIL",
+  "WVR_W00_SUBDIVISION_RECOVERY_V1": "CLOSED / SUBDIVISION_RECOVERY_FAIL",
+  "WVR_W00_DEGENERACY_REPRO_V1": "CLOSED / REPRODUCIBLE",
+  "WVR_W00_DEGENERACY_FORENSIC_V1": "CLOSED / MODEL_OUTPUT_DEGENERACY",
+  "WVR_EVENT_EXTRACTION_SHADOW_V1": "CLOSED / INCONCLUSIVE",
+  "recursive_subdivision_hypothesis": "STOPPED / NOT SUFFICIENT"
+ },
+ "normative_authority": [
+  "WVR_W00_VISUAL_CONTENT_ISOLATION_V1 preregistration",
+  "frozen model/prompt/runtime configuration",
+  "raw execution artifacts",
+  "prior trigger/forensic/repro/recovery results",
+  "PROJECT_OVERVIEW.md"
+ ],
+ "forbidden_conclusions": [
+  "0초 버그의 내부 원인을 증명했다",
+  "Qwen 내부 메커니즘을 규명했다",
+  "prompt가 잘못됐다",
+  "metadata가 모델을 망가뜨린다",
+  "두 채널을 +120초로 옮기면 무조건 해결된다",
+  "recovery 방법을 찾았다",
+  "production Event extraction이 가능해졌다",
+  "다른 창·다른 영상·다른 shift에서도 같다"
+ ],
+ "measurement_scope": "pixel set 2개 · time encoding 2개 · shift 1개(+120초)",
+ "note": "2×2의 남은 한 칸만 새로 측정했다. 기존 세 칸은 읽기만 했고 재실행하지 않았다."
+}

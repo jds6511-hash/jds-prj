@@ -1,0 +1,707 @@
+{
+ "schema": "wvr_visual_v1",
+ "event": "WVR_W00_VISUAL_CONTENT_ISOLATION_V1",
+ "prereg": "docs/preregistration/WVR_W00_VISUAL_CONTENT_ISOLATION_V1_2026-09-10.md",
+ "arm": {
+  "arm_id": "E",
+  "cell": "X1T0",
+  "pixel_source": "W05",
+  "time_encoding": "T0",
+  "prompt_mode": "P0",
+  "metadata_mode": "M0"
+ },
+ "pixel_source_window": {
+  "window_id": "W05",
+  "index": 5,
+  "start_sec": 120.0,
+  "end_sec": 168.0
+ },
+ "requested": {
+  "sampling_fps": 0.5,
+  "frames": 24,
+  "frame_width": 512,
+  "frame_height": 288,
+  "model_id": "Qwen/Qwen3-VL-8B-Instruct",
+  "model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "dtype": "bfloat16",
+  "attn_implementation": "sdpa",
+  "quantization": null,
+  "device": "cuda:0",
+  "device_map": null,
+  "do_sample": false,
+  "num_beams": 1,
+  "max_new_tokens": 4096,
+  "repetition_penalty": 1.0,
+  "do_sample_frames": false,
+  "do_resize": false,
+  "prompt_contract": "SAMPLING_DIAG_PROMPT_V2",
+  "prompt_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+  "output_language": "en",
+  "window_sec": 48.0,
+  "frames_per_window": 24
+ },
+ "inference_config_change": {
+  "inference_config_change": "NONE",
+  "differences": {},
+  "architecture_under_characterization": "deterministic 48s / 24s-overlap tiling of C01",
+  "new_measurement_instrumentation": "overlap comparison + preregistered frame audit (7 overlaps)",
+  "not_an_ablation": true
+ },
+ "pixel_times": [
+  120.0,
+  122.0,
+  124.0,
+  126.0,
+  128.0,
+  130.0,
+  132.0,
+  134.0,
+  136.0,
+  138.0,
+  140.0,
+  142.0,
+  144.0,
+  146.0,
+  148.0,
+  150.0,
+  152.0,
+  154.0,
+  156.0,
+  158.0,
+  160.0,
+  162.0,
+  164.0,
+  166.0
+ ],
+ "prompt_contract": "SAMPLING_DIAG_PROMPT_V2",
+ "prompt_template_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+ "is_production_contract": false,
+ "output_language": "en",
+ "video_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+ "code_git_head": "161227d5a8104c416de4303c3af1c06c3594d78b",
+ "runtime_config_hash": "cb43ffd357d771ff2923f2d3e0dec0f48f85bba660171cfc3832a298f4fef5aa",
+ "frozen_cells_unchanged": {
+  "unchanged": true,
+  "checks": {
+   "shadow_v1_W00.json": {
+    "status": "OK",
+    "expected": "c8e65b74b8c71aa97f85fc69c6ffdfb2c72fab18911e6e1565c8458e44daa074",
+    "observed": "c8e65b74b8c71aa97f85fc69c6ffdfb2c72fab18911e6e1565c8458e44daa074"
+   },
+   "shadow_v1_W00_raw.txt": {
+    "status": "OK",
+    "expected": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6",
+    "observed": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6"
+   },
+   "shadow_v1_W05.json": {
+    "status": "OK",
+    "expected": "ebcd438d8ccd91b248622a626c2932b26e2787a95e31aee8a332fc45a92ee241",
+    "observed": "ebcd438d8ccd91b248622a626c2932b26e2787a95e31aee8a332fc45a92ee241"
+   },
+   "shadow_v1_W05_raw.txt": {
+    "status": "OK",
+    "expected": "38caf8e6cfde38ce8da49bc6fcdd68e7c85454f8db828fdf27906843758564eb",
+    "observed": "38caf8e6cfde38ce8da49bc6fcdd68e7c85454f8db828fdf27906843758564eb"
+   },
+   "trigger_v1_A.json": {
+    "status": "OK",
+    "expected": "6de08ac56322a25edea8dd3294b039e8f942d5ec2ae63720b634074bcc2c0180",
+    "observed": "6de08ac56322a25edea8dd3294b039e8f942d5ec2ae63720b634074bcc2c0180"
+   },
+   "trigger_v1_A_raw.txt": {
+    "status": "OK",
+    "expected": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6",
+    "observed": "c5e4f7526eb83d95544c34189a5f83569cd27b4811c2f28b5ab12b0b2b36b7e6"
+   },
+   "trigger_v1_D.json": {
+    "status": "OK",
+    "expected": "e406ae2520e63739d8758fa23590bbe0c443d6bc4f8a6512cee9f0de240a86b3",
+    "observed": "e406ae2520e63739d8758fa23590bbe0c443d6bc4f8a6512cee9f0de240a86b3"
+   },
+   "trigger_v1_D_raw.txt": {
+    "status": "OK",
+    "expected": "01496012501858fb0a6f3668194a5e936819d59efb588d5792680d55e591f1a5",
+    "observed": "01496012501858fb0a6f3668194a5e936819d59efb588d5792680d55e591f1a5"
+   }
+  },
+  "changed": [],
+  "missing": [],
+  "rerun_allowed": false,
+  "frozen_cells": [
+   {
+    "cell": "X0T0",
+    "pixels": "W00 [0,48)",
+    "time": "T0 (0–48)",
+    "source": "trigger_v1_A",
+    "status": "WINDOW_INVALID"
+   },
+   {
+    "cell": "X0T1",
+    "pixels": "W00 [0,48)",
+    "time": "T1 (120–168)",
+    "source": "trigger_v1_D",
+    "status": "WINDOW_VALID"
+   },
+   {
+    "cell": "X1T1",
+    "pixels": "W05 [120,168)",
+    "time": "T1 (120–168)",
+    "source": "shadow_v1_W05",
+    "status": "WINDOW_VALID"
+   }
+  ]
+ },
+ "raw_persisted": true,
+ "raw_path": "visual_v1_E_raw.txt",
+ "retry_allowed": false,
+ "rerun_of_frozen_cells_allowed": false,
+ "semantic_verdict_by_executor": false,
+ "event_kind": "visual-content isolation — 2×2의 남은 한 칸만 채운다. causal mechanism proof가 아니다",
+ "metrics": {
+  "load_wall_sec": 3.63,
+  "delivered_frame_count": 24,
+  "frame_size": [
+   512,
+   288
+  ],
+  "input_token_count": 2135,
+  "video_token_count": 1728,
+  "infer_wall_sec": 11.9,
+  "generated_token_count": 303,
+  "generation_cap_hit": false,
+  "peak_vram_allocated_mib": 17384.5,
+  "total_wall_sec": 20.58
+ },
+ "stage_status": {
+  "MODEL_LOAD": "OK",
+  "VIDEO_PROCESS": "OK",
+  "PROMPT_BUILD": "OK",
+  "RAW_PERSIST": "OK",
+  "INFERENCE": "OK"
+ },
+ "allocator_observed": {
+  "backend": "native",
+  "env": "",
+  "segment_count": 268,
+  "expandable_segments_observed": false,
+  "expandable_flags_head": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ]
+ },
+ "frame_hashes": [
+  "eeefa70531455a8bd24b800eeaac7b42aedc828f0eba7a0d45d62e4b6256be5a",
+  "73136438f4e7320c85512110e5e374d6c2bfbbecbad4aff2466d28e31b6e0fad",
+  "57782f29cf0ea0e5a8a673beaa592eb1edb780653a40781bf7e615e14152de2b",
+  "849c7d6dfe48c25ad0de2e99c6eb94808ff4e6aa11823d14eb9a61ad18abbc91",
+  "fe98bbc93c3c0f857ef6aca15d409f9067fec28928486344cb883eb110fc5440",
+  "e45303ac389038359cab351484c3da44755a2febad0ce575e81b91c8258134d6",
+  "0d99ac0119ebc9a5856ebe057d958b6887e98e375ebc3246470f3f3b81c4064a",
+  "66b4719c284dabb71d0e1b559f0ef51588a8a6c90844a3661b4500e07f971f86",
+  "0c5a18b10ad29270742a3964ada2253d58b5bd337f2f8da3f57b1822ac18f654",
+  "0bd1819d1e618fbd1ae172305b478a23e5cc4540fa174571b4950f2e8172041d",
+  "a35b5937bafc101030f7a541c0d5f2928ee569b04d380a73007806b3ab2e081e",
+  "a49200a0dfa6f5a367d06aed8bea0e71df8e00e1ca78608c4820b73190381930",
+  "a8905b7fe4b9af62a6fce669ac61c2bffdda2bac084a0bd875cda027ba99f8e7",
+  "494a284eaf230f59b9248458b3d7c3193d033feea24756c437208088207aed0d",
+  "53f257bf3de4b01fcfa2186434cb2730eb0070c18d59cf2cf23775c287a544f7",
+  "13c5de76bfefcbd1270c429fae682e94a5d494849a10ecca574263faef5ab5b1",
+  "806bdbb54d3a635485721c95f43fe2b4cbf50e948d2c7b541aef467dd0afc4cc",
+  "b26a0d395759ec22b7ec3ce172f383bf03a8f14a4122931ce8ff5084858691de",
+  "86b6ca525052770a8279a0b33ad3abbd4770cfa984c2fd1766e91d4f857782f2",
+  "36112014225473d2c4e55615c51d2b485f660b9171711465c642e0ee6e498da9",
+  "2fdeb88edecafecdcd32c5774f2cfd498f0481947ab66ecff12539721570edf5",
+  "38f651a20950d7de2daedfbbf697ba2b96ab20ef5bfe1b8984fbb3e10ea5ff71",
+  "1cc013b590da7dffa50e07d795928e70d4f89f7e0fb0bca248d96cd2ca15e139",
+  "dbd7cd686c30a159aeef2e2f2b9be4c45796b1abbfdaac2b73cc78f1d46f7542"
+ ],
+ "decoded_frame_indices": [
+  3600,
+  3660,
+  3720,
+  3780,
+  3840,
+  3900,
+  3960,
+  4020,
+  4080,
+  4140,
+  4200,
+  4260,
+  4320,
+  4380,
+  4440,
+  4500,
+  4560,
+  4620,
+  4680,
+  4740,
+  4800,
+  4860,
+  4920,
+  4980
+ ],
+ "decoded_times": [
+  120.0,
+  122.0,
+  124.0,
+  126.0,
+  128.0,
+  130.0,
+  132.0,
+  134.0,
+  136.0,
+  138.0,
+  140.0,
+  142.0,
+  144.0,
+  146.0,
+  148.0,
+  150.0,
+  152.0,
+  154.0,
+  156.0,
+  158.0,
+  160.0,
+  162.0,
+  164.0,
+  166.0
+ ],
+ "decoded_fps": 30.0000041251862,
+ "pixel_identity": {
+  "identical": true,
+  "checked": 24,
+  "expected_count": 24,
+  "observed_count": 24,
+  "mismatched_positions": [],
+  "reason": ""
+ },
+ "arm_plan": {
+  "arm_id": "E",
+  "time_encoding": "T0",
+  "reference_arm": "A",
+  "prompt_mode": "P0",
+  "metadata_mode": "M0",
+  "prompt_window": [
+   0.0,
+   48.0
+  ],
+  "rendered_prompt_hash": "c936901940b8d1c48d242e701ab4b0c3d6f722a9cfe12dde7dbd26c8f556d053",
+  "prompt_template_hash": "37f9588e58d0cb96e9a81e8842cbc3e8707404d0346f4aa5e2f4bc273075d273",
+  "pixel_source_window": {
+   "window_id": "W05",
+   "index": 5,
+   "start_sec": 120.0,
+   "end_sec": 168.0
+  },
+  "pixel_times": [
+   120.0,
+   122.0,
+   124.0,
+   126.0,
+   128.0,
+   130.0,
+   132.0,
+   134.0,
+   136.0,
+   138.0,
+   140.0,
+   142.0,
+   144.0,
+   146.0,
+   148.0,
+   150.0,
+   152.0,
+   154.0,
+   156.0,
+   158.0,
+   160.0,
+   162.0,
+   164.0,
+   166.0
+  ],
+  "frames_indices": [
+   0,
+   60,
+   120,
+   180,
+   240,
+   300,
+   360,
+   420,
+   480,
+   540,
+   600,
+   660,
+   720,
+   780,
+   840,
+   900,
+   960,
+   1020,
+   1080,
+   1140,
+   1200,
+   1260,
+   1320,
+   1380
+  ],
+  "cell": "X1T0",
+  "fixed_metadata_fields": [
+   "total_num_frames",
+   "fps",
+   "width",
+   "height",
+   "duration",
+   "video_backend"
+  ],
+  "manipulated_metadata_field": "frames_indices"
+ },
+ "prompt_window": [
+  0.0,
+  48.0
+ ],
+ "rendered_prompt_hash": "c936901940b8d1c48d242e701ab4b0c3d6f722a9cfe12dde7dbd26c8f556d053",
+ "metadata": {
+  "total_num_frames": 72724,
+  "fps": 30.0000041251862,
+  "width": 1920,
+  "height": 1080,
+  "duration": 2424.186485,
+  "video_backend": "pyav",
+  "frames_indices": [
+   0,
+   60,
+   120,
+   180,
+   240,
+   300,
+   360,
+   420,
+   480,
+   540,
+   600,
+   660,
+   720,
+   780,
+   840,
+   900,
+   960,
+   1020,
+   1080,
+   1140,
+   1200,
+   1260,
+   1320,
+   1380
+  ]
+ },
+ "time_encoding_identity": {
+  "identical": true,
+  "checks": {
+   "rendered_prompt_hash": true,
+   "prompt_window": true,
+   "frames_indices": true,
+   "prompt_template_hash": true,
+   "metadata_total_num_frames": true,
+   "metadata_fps": true,
+   "metadata_width": true,
+   "metadata_height": true,
+   "metadata_duration": true,
+   "metadata_video_backend": true
+  },
+  "mismatched": [],
+  "reason": "",
+  "reference_arm": "A"
+ },
+ "pixel_values_sha256": "c200ea5242210acf6606e85af8df0d706da18a73dbf320bd7ac43b7681a34299",
+ "timestamp_markers": [
+  "1.0",
+  "5.0",
+  "9.0",
+  "13.0",
+  "17.0",
+  "21.0",
+  "25.0",
+  "29.0",
+  "33.0",
+  "37.0",
+  "41.0",
+  "45.0"
+ ],
+ "raw_output_hash": "b4a30e0e8ba03eb6bff8c7a6273ddda3127290601579205f5d9c7dfc076ba793",
+ "raw_output": "{\"events\": [{\"start_sec\": 0.0, \"end_sec\": 3.0, \"actor\": \"person\", \"action\": \"grating\", \"object_or_state\": \"potato\"}, {\"start_sec\": 3.0, \"end_sec\": 7.0, \"actor\": \"person\", \"action\": \"grating\", \"object_or_state\": \"potato\"}, {\"start_sec\": 7.0, \"end_sec\": 11.0, \"actor\": \"person\", \"action\": \"mixing\", \"object_or_state\": \"potato mixture\"}, {\"start_sec\": 11.0, \"end_sec\": 15.0, \"actor\": \"person\", \"action\": \"forming\", \"object_or_state\": \"potato balls\"}, {\"start_sec\": 15.0, \"end_sec\": 19.0, \"actor\": \"person\", \"action\": \"placing\", \"object_or_state\": \"potato balls on plate\"}, {\"start_sec\": 19.0, \"end_sec\": 23.0, \"actor\": \"person\", \"action\": \"coating\", \"object_or_state\": \"potato balls in egg\"}, {\"start_sec\": 23.0, \"end_sec\": 27.0, \"actor\": \"person\", \"action\": \"coating\", \"object_or_state\": \"potato balls in breadcrumbs\"}]}",
+ "parse_window": {
+  "start_sec": 0.0,
+  "end_sec": 48.0
+ },
+ "parsed": {
+  "status": "OK",
+  "events": [
+   {
+    "index": 0,
+    "start_sec": 0.0,
+    "end_sec": 3.0,
+    "actor": "person",
+    "action": "grating",
+    "object_or_state": "potato",
+    "inside_window": true
+   },
+   {
+    "index": 1,
+    "start_sec": 3.0,
+    "end_sec": 7.0,
+    "actor": "person",
+    "action": "grating",
+    "object_or_state": "potato",
+    "inside_window": true
+   },
+   {
+    "index": 2,
+    "start_sec": 7.0,
+    "end_sec": 11.0,
+    "actor": "person",
+    "action": "mixing",
+    "object_or_state": "potato mixture",
+    "inside_window": true
+   },
+   {
+    "index": 3,
+    "start_sec": 11.0,
+    "end_sec": 15.0,
+    "actor": "person",
+    "action": "forming",
+    "object_or_state": "potato balls",
+    "inside_window": true
+   },
+   {
+    "index": 4,
+    "start_sec": 15.0,
+    "end_sec": 19.0,
+    "actor": "person",
+    "action": "placing",
+    "object_or_state": "potato balls on plate",
+    "inside_window": true
+   },
+   {
+    "index": 5,
+    "start_sec": 19.0,
+    "end_sec": 23.0,
+    "actor": "person",
+    "action": "coating",
+    "object_or_state": "potato balls in egg",
+    "inside_window": true
+   },
+   {
+    "index": 6,
+    "start_sec": 23.0,
+    "end_sec": 27.0,
+    "actor": "person",
+    "action": "coating",
+    "object_or_state": "potato balls in breadcrumbs",
+    "inside_window": true
+   }
+  ],
+  "collapsed": [
+   {
+    "index": 0,
+    "start_sec": 0.0,
+    "end_sec": 7.0,
+    "actor": "person",
+    "action": "grating",
+    "object_or_state": "potato",
+    "signature": [
+     "person",
+     "grating",
+     "potato"
+    ],
+    "source_indices": [
+     0,
+     1
+    ],
+    "collapsed_count": 2
+   },
+   {
+    "index": 1,
+    "start_sec": 7.0,
+    "end_sec": 11.0,
+    "actor": "person",
+    "action": "mixing",
+    "object_or_state": "potato mixture",
+    "signature": [
+     "person",
+     "mixing",
+     "potato mixture"
+    ],
+    "source_indices": [
+     2
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 2,
+    "start_sec": 11.0,
+    "end_sec": 15.0,
+    "actor": "person",
+    "action": "forming",
+    "object_or_state": "potato balls",
+    "signature": [
+     "person",
+     "forming",
+     "potato balls"
+    ],
+    "source_indices": [
+     3
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 3,
+    "start_sec": 15.0,
+    "end_sec": 19.0,
+    "actor": "person",
+    "action": "placing",
+    "object_or_state": "potato balls on plate",
+    "signature": [
+     "person",
+     "placing",
+     "potato balls on plate"
+    ],
+    "source_indices": [
+     4
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 4,
+    "start_sec": 19.0,
+    "end_sec": 23.0,
+    "actor": "person",
+    "action": "coating",
+    "object_or_state": "potato balls in egg",
+    "signature": [
+     "person",
+     "coating",
+     "potato balls in egg"
+    ],
+    "source_indices": [
+     5
+    ],
+    "collapsed_count": 1
+   },
+   {
+    "index": 5,
+    "start_sec": 23.0,
+    "end_sec": 27.0,
+    "actor": "person",
+    "action": "coating",
+    "object_or_state": "potato balls in breadcrumbs",
+    "signature": [
+     "person",
+     "coating",
+     "potato balls in breadcrumbs"
+    ],
+    "source_indices": [
+     6
+    ],
+    "collapsed_count": 1
+   }
+  ],
+  "violations": [],
+  "language": {
+   "contract": "ENGLISH_ONLY",
+   "satisfied": true,
+   "hangul_chars": 0,
+   "cjk_chars": 0,
+   "latin_chars": 184
+  },
+  "reason": ""
+ },
+ "parsed_output_hash": "d08e067074bd99a2e8ce985499d8b73f637e37241a5301b62a3ffcccb01c0259",
+ "representation": {
+  "collapsed_event_count": 6,
+  "unique_signature_count": 6,
+  "max_collapsed_run": 2,
+  "degenerate": false,
+  "reason": ""
+ },
+ "collapse_output_hash": "79c7bfa0807894006b02e708a1c10efe2ae581c2564ee11d2d2b1e61a544bab7",
+ "structure": {
+  "raw_length": 818,
+  "complete_object_count": 7,
+  "unique_signature_count": 6,
+  "zero_length_interval_count": 0,
+  "first_repeat": {
+   "object_index": 1,
+   "first_seen_index": 0,
+   "offset": 117,
+   "signature": [
+    "person",
+    "grating",
+    "potato"
+   ]
+  },
+  "max_signature_repeat": 2,
+  "top_signatures": [
+   {
+    "signature": [
+     "person",
+     "grating",
+     "potato"
+    ],
+    "count": 2
+   },
+   {
+    "signature": [
+     "person",
+     "mixing",
+     "potato mixture"
+    ],
+    "count": 1
+   },
+   {
+    "signature": [
+     "person",
+     "forming",
+     "potato balls"
+    ],
+    "count": 1
+   }
+  ],
+  "json_parse_ok": true,
+  "json_parse_error": null,
+  "truncation_tail": "sec\": 23.0, \"end_sec\": 27.0, \"actor\": \"person\", \"action\": \"coating\", \"object_or_state\": \"potato balls in breadcrumbs\"}]}",
+  "ends_mid_object": false
+ },
+ "arm_status": "OK",
+ "finish_reason": "stop",
+ "memory_stats": {
+  "allocated_bytes.all.peak": 18228930048,
+  "reserved_bytes.all.peak": 18584961024,
+  "requested_bytes.all.peak": 18215360734,
+  "active_bytes.all.peak": 18228930048,
+  "inactive_split_bytes.all.peak": 417245696,
+  "num_alloc_retries": 0,
+  "num_ooms": 0
+ },
+ "validity": {
+  "valid": true,
+  "reasons": [],
+  "status": "WINDOW_VALID",
+  "language": {
+   "contract": "ENGLISH_ONLY",
+   "satisfied": true,
+   "hangul_chars": 0,
+   "cjk_chars": 0,
+   "latin_chars": 184
+  },
+  "blockers": [],
+  "output_failures": []
+ }
+}

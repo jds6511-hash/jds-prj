@@ -1,0 +1,66 @@
++ BASE=/ssd/daeseok/jds-prj
++ VIDEO=/ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4
++ OUT_DIR=/ssd/daeseok/jds-prj/runs/wvr_light_v1
++ PY=/ssd/daeseok/envs/prj/bin/python
++ export HF_HOME=/ssd/daeseok/cache
++ HF_HOME=/ssd/daeseok/cache
++ export PYTHONUNBUFFERED=1
++ PYTHONUNBUFFERED=1
++ export PYTHONDONTWRITEBYTECODE=1
++ PYTHONDONTWRITEBYTECODE=1
+++ git -C /ssd/daeseok/jds-prj rev-parse HEAD
++ export WVR_CODE_GIT_HEAD=161227d5a8104c416de4303c3af1c06c3594d78b
++ WVR_CODE_GIT_HEAD=161227d5a8104c416de4303c3af1c06c3594d78b
+++ date
++ echo '=== visual validator (2026. 09. 10. (목) 13:25:14 KST) commit 161227d5a8104c416de4303c3af1c06c3594d78b ==='
+=== visual validator (2026. 09. 10. (목) 13:25:14 KST) commit 161227d5a8104c416de4303c3af1c06c3594d78b ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_visual_validate.py --runs /ssd/daeseok/jds-prj/runs/wvr_light_v1
+validator=PASS
+  E X1T0 pixels=120.0..166.0 window=[0.0, 48.0] indices=[0, 1380]
+  frozen X0T0 W00 [0,48)       T0 (0–48)      WINDOW_INVALID
+  frozen X0T1 W00 [0,48)       T1 (120–168)   WINDOW_VALID
+  frozen X1T1 W05 [120,168)    T1 (120–168)   WINDOW_VALID
+  check one_new_inference                    True
+  check pixels_are_w05_grid                  True
+  check pixel_frame_count_24                 True
+  check prompt_window_is_T0                  True
+  check rendered_prompt_matches_trigger_A    True
+  check indices_match_trigger_A              True
+  check prompt_template_frozen               True
+  check config_change_none                   True
+  check token_cap_frozen                     True
+  check frozen_cells_unchanged               True
+  check reference_pixels_present             True
+  check rerun_of_frozen_cells_blocked        True
+  check prompt_mutation_blocked              True
+  check zero_duration_example_frozen         True
+  check subdivision_restart_blocked          True
+++ date
++ echo '=== visual self-check (2026. 09. 10. (목) 13:25:14 KST) ==='
+=== visual self-check (2026. 09. 10. (목) 13:25:14 KST) ===
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_visual_selfcheck.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --runs /ssd/daeseok/jds-prj/runs/wvr_light_v1
+status=OK ok=True
+  check pixels_match_w05                       True
+  check pixel_count                            True
+  check pixel_values_differ_from_trigger_A     True
+  check markers_are_T0                         True
+  check rendered_prompt_matches_trigger_A      True
+  check indices_match_trigger_A                True
+  check pixel_times_are_120_to_166             True
+  check decoded_indices_are_w05_range          True
+  pixels=120.0..166.0 markers=['1.0', '45.0'] indices=[0, 1380] tokens=2135 px=c200ea524221
+++ date
++ echo '=== visual E 시작 (2026. 09. 10. (목) 13:25:24 KST) ==='
+=== visual E 시작 (2026. 09. 10. (목) 13:25:24 KST) ===
++ nvidia-smi --query-gpu=memory.used,utilization.gpu --format=csv,noheader
+40 MiB, 0 %
++ /ssd/daeseok/envs/prj/bin/python /ssd/daeseok/jds-prj/scripts/wvr_visual_run.py --video /ssd/daeseok/jds-prj/data/videos/full_xekZO4n4QuE.mp4 --runs-dir /ssd/daeseok/jds-prj/runs/wvr_light_v1
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:  98%|█████████▊| 735/750 [00:00<00:00, 7349.15it/s]Loading weights: 100%|██████████| 750/750 [00:00<00:00, 7432.63it/s]
+arm=E cell=X1T0 pixels=W05 time=T0 status=OK frames=24 in=2135 gen=303 cap=False
+  window=[0.0, 48.0] markers=1.0..45.0 obj=7 uniq=6 zero=0 coll=6 json=True pixel_ok=True time_ok=True WINDOW_VALID []
+++ date
++ echo '=== visual 완료 (2026. 09. 10. (목) 13:25:51 KST) ==='
+=== visual 완료 (2026. 09. 10. (목) 13:25:51 KST) ===
++ ls -l /ssd/daeseok/jds-prj/runs/wvr_light_v1/visual_v1_E.json
++ wc -l
+1

@@ -1,0 +1,76 @@
+{
+ "schema": "wvr_visual_v1_selfcheck",
+ "event": "WVR_W00_VISUAL_CONTENT_ISOLATION_V1",
+ "prereg": "docs/preregistration/WVR_W00_VISUAL_CONTENT_ISOLATION_V1_2026-09-10.md",
+ "code_git_head": "161227d5a8104c416de4303c3af1c06c3594d78b",
+ "transformers_version": "5.14.1",
+ "decoded_fps": 30.0000041251862,
+ "pixel_frame_count": 24,
+ "pixel_times_first_last": [
+  120.0,
+  166.0
+ ],
+ "pixel_hashes": [
+  "eeefa70531455a8bd24b800eeaac7b42aedc828f0eba7a0d45d62e4b6256be5a",
+  "73136438f4e7320c85512110e5e374d6c2bfbbecbad4aff2466d28e31b6e0fad",
+  "57782f29cf0ea0e5a8a673beaa592eb1edb780653a40781bf7e615e14152de2b",
+  "849c7d6dfe48c25ad0de2e99c6eb94808ff4e6aa11823d14eb9a61ad18abbc91",
+  "fe98bbc93c3c0f857ef6aca15d409f9067fec28928486344cb883eb110fc5440",
+  "e45303ac389038359cab351484c3da44755a2febad0ce575e81b91c8258134d6",
+  "0d99ac0119ebc9a5856ebe057d958b6887e98e375ebc3246470f3f3b81c4064a",
+  "66b4719c284dabb71d0e1b559f0ef51588a8a6c90844a3661b4500e07f971f86",
+  "0c5a18b10ad29270742a3964ada2253d58b5bd337f2f8da3f57b1822ac18f654",
+  "0bd1819d1e618fbd1ae172305b478a23e5cc4540fa174571b4950f2e8172041d",
+  "a35b5937bafc101030f7a541c0d5f2928ee569b04d380a73007806b3ab2e081e",
+  "a49200a0dfa6f5a367d06aed8bea0e71df8e00e1ca78608c4820b73190381930",
+  "a8905b7fe4b9af62a6fce669ac61c2bffdda2bac084a0bd875cda027ba99f8e7",
+  "494a284eaf230f59b9248458b3d7c3193d033feea24756c437208088207aed0d",
+  "53f257bf3de4b01fcfa2186434cb2730eb0070c18d59cf2cf23775c287a544f7",
+  "13c5de76bfefcbd1270c429fae682e94a5d494849a10ecca574263faef5ab5b1",
+  "806bdbb54d3a635485721c95f43fe2b4cbf50e948d2c7b541aef467dd0afc4cc",
+  "b26a0d395759ec22b7ec3ce172f383bf03a8f14a4122931ce8ff5084858691de",
+  "86b6ca525052770a8279a0b33ad3abbd4770cfa984c2fd1766e91d4f857782f2",
+  "36112014225473d2c4e55615c51d2b485f660b9171711465c642e0ee6e498da9",
+  "2fdeb88edecafecdcd32c5774f2cfd498f0481947ab66ecff12539721570edf5",
+  "38f651a20950d7de2daedfbbf697ba2b96ab20ef5bfe1b8984fbb3e10ea5ff71",
+  "1cc013b590da7dffa50e07d795928e70d4f89f7e0fb0bca248d96cd2ca15e139",
+  "dbd7cd686c30a159aeef2e2f2b9be4c45796b1abbfdaac2b73cc78f1d46f7542"
+ ],
+ "pixel_values_sha256": "c200ea5242210acf6606e85af8df0d706da18a73dbf320bd7ac43b7681a34299",
+ "trigger_A_pixel_values_sha256": "860adccd0adecb9fdeb3f7a4a105670d2a31cadf168e0dba1fabf8a24f27d0d4",
+ "decoded_frame_indices_first_last": [
+  3600,
+  4980
+ ],
+ "metadata_frames_indices_first_last": [
+  0,
+  1380
+ ],
+ "timestamp_markers_first_last": [
+  "1.0",
+  "45.0"
+ ],
+ "rendered_prompt_hash": "c936901940b8d1c48d242e701ab4b0c3d6f722a9cfe12dde7dbd26c8f556d053",
+ "input_token_count": 2135,
+ "pixel_identity_vs_w05": {
+  "identical": true,
+  "checked": 24,
+  "expected_count": 24,
+  "observed_count": 24,
+  "mismatched_positions": [],
+  "reason": ""
+ },
+ "checks": {
+  "pixels_match_w05": true,
+  "pixel_count": true,
+  "pixel_values_differ_from_trigger_A": true,
+  "markers_are_T0": true,
+  "rendered_prompt_matches_trigger_A": true,
+  "indices_match_trigger_A": true,
+  "pixel_times_are_120_to_166": true,
+  "decoded_indices_are_w05_range": true
+ },
+ "ok": true,
+ "status": "OK",
+ "note": "E는 W05 픽셀 + Trigger A의 시간 인코딩이다 — 픽셀은 바뀌고 시간 채널은 그대로여야 한다"
+}
