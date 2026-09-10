@@ -1,0 +1,62 @@
+```json
+{
+  "candidates": [
+    {
+      "candidate_id": "C025",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Woman engaged in various tasks such as placing items on tables, wrapping small pouches, and tying hair.",
+      "after_activity": "Person is wrapping gifts and preparing them for presentation, including placing stamps and tying ribbons.",
+      "rationale": "The before and after activities show a clear shift from handling small items to gift-wrapping, indicating a significant change in the broad activity."
+    },
+    {
+      "candidate_id": "C026",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Woman engaging in gift-wrapping tasks and personal grooming.",
+      "after_activity": "Person is wrapping a gift and preparing it for presentation, including placing stamps and tying ribbons.",
+      "rationale": "The before and after activities show a clear shift from gift-wrapping to gift-preparation, indicating a significant change in the broad activity."
+    },
+    {
+      "candidate_id": "C027",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person chopping vegetables and pouring sauces.",
+      "after_activity": "Woman sprinkling black pepper on food, which overlaps with the before activity.",
+      "rationale": "The before and after activities show similar tasks related to food preparation, indicating that the broad activity continues without a significant change."
+    },
+    {
+      "candidate_id": "C028",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person peeling carrots, placing bread pieces into a blender, and chopping onions.",
+      "after_activity": "Person peeling potatoes, transferring ground beef into a bowl, and mixing ingredients.",
+      "rationale": "The before and after activities show similar tasks related to food preparation, indicating that the broad activity continues without a significant change."
+    },
+    {
+      "candidate_id": "C029",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person placing bread pieces into a blender, pouring oil into a bowl of breadcrumbs, and chopping onions.",
+      "after_activity": "Person peeling carrots, placing lid on a pot, and stirring breadcrumbs in a bowl.",
+      "rationale": "The before and after activities show similar tasks related to food preparation, indicating that the broad activity continues without a significant change."
+    },
+    {
+      "candidate_id": "C030",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person serving noodles and potato cream.",
+      "after_activity": "Person serving herbs and eating noodles, with some overlapping tasks like pouring butter into a bowl.",
+      "rationale": "The before and after activities show similar tasks related to serving and eating, indicating that the broad activity continues without a significant change."
+    },
+    {
+      "candidate_id": "C031",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person pouring liquids and coating potato dough in breadcrumbs.",
+      "after_activity": "Person pouring liquids and mixing cream in a bowl.",
+      "rationale": "The before and after activities show similar tasks related to food preparation, indicating that the broad activity continues without a significant change."
+    },
+    {
+      "candidate_id": "C032",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Person selecting ingredients.",
+      "after_activity": "Person preparing a dish involving potatoes, curry powder, and other ingredients.",
+      "rationale": "The before and after activities show a clear shift from selecting ingredients to actively preparing a dish, indicating a significant change in the broad activity."
+    }
+  ]
+}
+```

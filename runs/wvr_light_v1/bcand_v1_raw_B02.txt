@@ -1,0 +1,62 @@
+```json
+{
+  "candidates": [
+    {
+      "candidate_id": "C009",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Chopping vegetables, placing ingredients in a bowl, transferring and stirring breadcrumbs, adding ground beef and onion/crab stick.",
+      "after_activity": "Mixing ingredients, cooking the mixture, peeling potatoes, and mixing potato mixture.",
+      "rationale": "There is a clear shift from preparing ingredients for a dish to cooking and serving it. The activities before involve preparation, while after involve cooking and finalizing the dish."
+    },
+    {
+      "candidate_id": "C010",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Putting on a handbag, taking photos, adjusting clothing, and observing the surroundings.",
+      "after_activity": "Walking outside and entering a shop.",
+      "rationale": "The broad activity continues without a significant change. The person is moving from one location to another but the main activity (observing and interacting with the environment) remains similar."
+    },
+    {
+      "candidate_id": "C011",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Selecting ingredients and placing them in a steamer.",
+      "after_activity": "Covering the steamer, pouring and mixing curry powder and oil, placing and blending potato slices, and chopping onion and carrot.",
+      "rationale": "The transition involves moving from steaming potatoes to preparing a curry-based dish, indicating a significant change in the cooking process."
+    },
+    {
+      "candidate_id": "C012",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Blending potato slices, pouring and mixing curry powder and oil, and chopping onion.",
+      "after_activity": "Placing ingredients in a bowl, transferring and stirring breadcrumbs, and cooking the mixture.",
+      "rationale": "The activities before and after are closely related, both involving the preparation and cooking of a dish. There is no significant change in the broad activity."
+    },
+    {
+      "candidate_id": "C013",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Holding and placing chicken legs and fabrics, pulling and holding an elastic band, and placing pajama pants in a drawer.",
+      "after_activity": "Sewing and holding orange fabric with green dots, and placing and sewing orange fabric with pattern.",
+      "rationale": "The transition involves moving from handling clothes and fabrics to sewing them, indicating a significant change in the activity."
+    },
+    {
+      "candidate_id": "C014",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Handling and placing pajama pants and elastic bands, and placing fabrics on a drawer.",
+      "after_activity": "Placing a crispy ball on a plate, chopping a tomato, and sewing and holding orange fabric with pattern.",
+      "rationale": "The activities before and after are closely related, both involving handling and sewing fabrics. There is no significant change in the broad activity."
+    },
+    {
+      "candidate_id": "C015",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Placing chicken legs and noodles in bowls and drawers, and holding fabrics.",
+      "after_activity": "Sewing and holding orange fabric with green dots, and placing and sewing orange fabric with pattern.",
+      "rationale": "The activities before and after are closely related, both involving handling and sewing fabrics. There is no significant change in the broad activity."
+    },
+    {
+      "candidate_id": "C016",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Selecting and placing ingredients in a steamer, and pouring and mixing curry powder and oil.",
+      "after_activity": "Peeling carrots, placing a lid on a pot, and chopping vegetables.",
+      "rationale": "The transition involves moving from steaming and mixing ingredients to peeling and chopping vegetables, indicating a significant change in the cooking process."
+    }
+  ]
+}
+```

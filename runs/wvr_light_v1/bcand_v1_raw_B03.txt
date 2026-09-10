@@ -1,0 +1,62 @@
+```json
+{
+  "candidates": [
+    {
+      "candidate_id": "C017",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Preparing and eating various foods including chicken, sushi, and soup.",
+      "after_activity": "Eating rice with kimchi and handling clothing items like pajama pants and fabric.",
+      "rationale": "The before and after activities show a significant change in the type of tasks being performed, moving from food preparation and consumption to handling clothing items."
+    },
+    {
+      "candidate_id": "C018",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Eating various types of noodles and breaded food items.",
+      "after_activity": "Eating curry udon and rice with kimchi.",
+      "rationale": "The before and after activities indicate a clear shift in the type of food being consumed, from a variety of dishes to specific items like curry udon and rice with kimchi."
+    },
+    {
+      "candidate_id": "C019",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Pouring and mixing ingredients for a cream-based dish.",
+      "after_activity": "Serving and preparing a potato-based dish including mashed potatoes and potato croquettes.",
+      "rationale": "The before and after activities show a significant change in the type of dish being prepared, moving from a cream-based dish to a potato-based dish."
+    },
+    {
+      "candidate_id": "C020",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Preparing a meal involving potatoes, soy sauce, curry, and blending.",
+      "after_activity": "Preparing a meal involving breadcrumbs, onions, carrots, and ground beef.",
+      "rationale": "The before and after activities indicate a clear transition from preparing a potato-based dish to preparing a meat-based dish involving breadcrumbs and vegetables."
+    },
+    {
+      "candidate_id": "C021",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "",
+      "after_activity": "Preparing a meal involving potatoes, soy sauce, curry, and blending.",
+      "rationale": "No before observations are provided, but the after observations show a meal preparation activity, indicating that the broad activity continues without a significant change."
+    },
+    {
+      "candidate_id": "C022",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Wrapping and packaging a gift.",
+      "after_activity": "Displaying and adjusting clothing and accessories.",
+      "rationale": "The before and after activities show a continuation of gift-wrapping and packaging, followed by a change to personal grooming and display activities, which can be considered as part of the same broad activity."
+    },
+    {
+      "candidate_id": "C023",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Eating various types of food including breaded items, curry udon, and rice with kimchi.",
+      "after_activity": "Eating noodles with chopsticks and spoon and preparing food with gloves.",
+      "rationale": "The before and after activities show a continuation of food consumption, with a slight change in the method of eating and preparation, which does not constitute a significant broad activity change."
+    },
+    {
+      "candidate_id": "C024",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Selecting and preparing ingredients for a meal involving potatoes, soy sauce, and curry.",
+      "after_activity": "Peeling a carrot and preparing a meal involving breadcrumbs, onions, carrots, and ground beef.",
+      "rationale": "The before and after activities indicate a significant change in the type of meal being prepared, moving from a potato-based dish to a meat-based dish involving breadcrumbs and vegetables."
+    }
+  ]
+}
+```

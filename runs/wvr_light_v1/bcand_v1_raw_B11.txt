@@ -1,0 +1,62 @@
+```json
+{
+  "candidates": [
+    {
+      "candidate_id": "C081",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is preparing a meal involving tofu, eggs, and vegetables. Woman is adding finishing touches like sauce and seasoning.",
+      "after_activity": "Woman is performing tasks related to packaging and mailing a gift. Person is wrapping a gift in kraft paper and applying stamps.",
+      "rationale": "The activities before and after are different but both involve preparation and packaging tasks. The broad activity of preparation continues without a significant change."
+    },
+    {
+      "candidate_id": "C082",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is making mashed potatoes and preparing them for cooking. Woman is adding toppings and seasonings to the food.",
+      "after_activity": "Person is serving and eating the prepared dish. Woman is also involved in serving and eating the dish.",
+      "rationale": "The activities before and after are different but both involve food preparation and consumption. The broad activity of food preparation and serving continues without a significant change."
+    },
+    {
+      "candidate_id": "C083",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is coating and frying potato dough. Woman is pouring and cooking liquids in a pan.",
+      "after_activity": "Person is pouring and cooking liquids in a pan. Woman is pouring and cooking liquids in a pan.",
+      "rationale": "The activities before and after are similar but involve different ingredients. The broad activity of cooking continues without a significant change."
+    },
+    {
+      "candidate_id": "C084",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is preparing a dish involving coating and frying. Woman is pouring and cooking liquids in a pan.",
+      "after_activity": "Person is mixing cream in a bowl. Woman is pouring and cooking liquids in a pan.",
+      "rationale": "The activities before and after are different but both involve cooking and mixing. The broad activity of cooking continues without a significant change."
+    },
+    {
+      "candidate_id": "C085",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is sewing orange fabric. Woman is handling and placing fabric and elastic bands.",
+      "after_activity": "Person is holding and displaying fabric. Woman is sewing and holding fabric.",
+      "rationale": "The activities before and after are different but both involve fabric work. The broad activity of fabric work continues without a significant change."
+    },
+    {
+      "candidate_id": "C086",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is sewing orange fabric. Woman is handling and placing fabric and elastic bands.",
+      "after_activity": "Person is holding and displaying fabric. Woman is sewing and holding fabric.",
+      "rationale": "The activities before and after are different but both involve fabric work. The broad activity of fabric work continues without a significant change."
+    },
+    {
+      "candidate_id": "C087",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is preparing a potato dish with curry and oil. Woman is adding toppings and seasonings to the food.",
+      "after_activity": "Person is mixing curry powder and oil. Woman is preparing a new dish with breadcrumbs and oil.",
+      "rationale": "The activities before and after are different but both involve food preparation. The broad activity of food preparation continues without a significant change."
+    },
+    {
+      "candidate_id": "C088",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is preparing a gift. Woman is wrapping and mailing a package.",
+      "after_activity": "Person is holding and displaying a wrapped gift. Woman is tying and holding a wrapped gift.",
+      "rationale": "The activities before and after are different but both involve gift preparation and packaging. The broad activity of gift preparation and packaging continues without a significant change."
+    }
+  ]
+}
+```

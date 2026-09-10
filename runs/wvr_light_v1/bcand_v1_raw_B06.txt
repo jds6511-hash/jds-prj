@@ -1,0 +1,62 @@
+```json
+{
+  "candidates": [
+    {
+      "candidate_id": "C041",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is preparing a wrapped gift and a kraft paper bag, including placing a stamp, tying a ribbon, adjusting a bow, and holding a wrapped gift. Also, person is handling fabric and a handbag.",
+      "after_activity": "Person is performing various activities related to personal grooming and travel, such as taking selfies, adjusting clothing, looking at a phone, and walking through a cityscape.",
+      "rationale": "The broad activity continues with similar tasks but shifts from gift wrapping to personal grooming and travel."
+    },
+    {
+      "candidate_id": "C042",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is pouring powder and liquid into a pan, and then mixing cream and mashed potatoes.",
+      "after_activity": "Person is continuing to pour liquid into a pan, transferring mashed potatoes into a piping bag, placing potato croquettes on a wire rack, and pouring oil and butter into bowls.",
+      "rationale": "The broad activity continues with similar tasks of cooking and preparing food, though the specific items being prepared have changed."
+    },
+    {
+      "candidate_id": "C043",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is preparing and eating food, including chicken with sauce and sushi rolls.",
+      "after_activity": "Person is placing noodles in a bowl, holding orange pajama pants, and holding orange and pink cloths.",
+      "rationale": "The broad activity continues with similar tasks of preparing and eating food, though the specific items being prepared have changed."
+    },
+    {
+      "candidate_id": "C044",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is grating potatoes, adding ingredients to a bowl, mixing, and cooking a mixture.",
+      "after_activity": "Person is pouring liquid into a bowl, mixing ingredients, forming mixture into balls, and placing them on a plate.",
+      "rationale": "The broad activity continues with similar tasks of preparing and cooking food, though the specific items being prepared have changed."
+    },
+    {
+      "candidate_id": "C045",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is pouring mashed potatoes, sauce, and liquid into pans and mixing creams.",
+      "after_activity": "Person is mixing mashed potatoes, transferring them into a piping bag, placing potato croquettes on a wire rack, and pouring oil and butter into bowls.",
+      "rationale": "The broad activity continues with similar tasks of preparing and cooking food, though the specific items being prepared have changed."
+    },
+    {
+      "candidate_id": "C046",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is eating breaded food items and curry udon, and drinking water.",
+      "after_activity": "Person is eating cream curry udon and rice with kimchi, or eating noodles with chopsticks and spoon, or eating curry udon.",
+      "rationale": "The broad activity continues with similar tasks of eating different types of food."
+    },
+    {
+      "candidate_id": "C047",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is peeling potatoes, mixing a mixture, and forming balls.",
+      "after_activity": "Person is pouring liquid into a bowl, mixing ingredients, dipping potato dough in an egg mixture, coating it in breadcrumbs, and placing it on a plate.",
+      "rationale": "The broad activity continues with similar tasks of preparing and cooking food, though the specific items being prepared have changed."
+    },
+    {
+      "candidate_id": "C048",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is selecting and preparing potatoes for steaming.",
+      "after_activity": "Person is placing bread pieces into a blender, placing potato slices in a blender, blending them, and preparing a curry dish.",
+      "rationale": "The broad activity continues with similar tasks of preparing and cooking food, though the specific items being prepared have changed."
+    }
+  ]
+}
+```

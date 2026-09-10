@@ -1,0 +1,261 @@
+{
+ "batch_count": 18,
+ "batch_size": 8,
+ "batches": [
+  {
+   "batch_id": "B01",
+   "candidate_ids": [
+    "C001",
+    "C002",
+    "C003",
+    "C004",
+    "C005",
+    "C006",
+    "C007",
+    "C008"
+   ],
+   "prompt_sha256": "c03cdfe03a2f19c2804d9f689576062e930d8d7096ea6b9d2dc558fe4863ebff"
+  },
+  {
+   "batch_id": "B02",
+   "candidate_ids": [
+    "C009",
+    "C010",
+    "C011",
+    "C012",
+    "C013",
+    "C014",
+    "C015",
+    "C016"
+   ],
+   "prompt_sha256": "2ad5dcacb0502744f178cd96107ba8972ac7c3ce888067ff25370ab370e78813"
+  },
+  {
+   "batch_id": "B03",
+   "candidate_ids": [
+    "C017",
+    "C018",
+    "C019",
+    "C020",
+    "C021",
+    "C022",
+    "C023",
+    "C024"
+   ],
+   "prompt_sha256": "223e0dcaf5af379e9d1672df07665ed56a42dad47f03eb37f74dc5e0a55cb677"
+  },
+  {
+   "batch_id": "B04",
+   "candidate_ids": [
+    "C025",
+    "C026",
+    "C027",
+    "C028",
+    "C029",
+    "C030",
+    "C031",
+    "C032"
+   ],
+   "prompt_sha256": "58cc697eb205d58740160df054958c51755ced816b50d4e7312483a81ecdcd6e"
+  },
+  {
+   "batch_id": "B05",
+   "candidate_ids": [
+    "C033",
+    "C034",
+    "C035",
+    "C036",
+    "C037",
+    "C038",
+    "C039",
+    "C040"
+   ],
+   "prompt_sha256": "d7ad2fda983d43c76eba46dd015713b6824a3c8d358e396b9a1302520e997a6c"
+  },
+  {
+   "batch_id": "B06",
+   "candidate_ids": [
+    "C041",
+    "C042",
+    "C043",
+    "C044",
+    "C045",
+    "C046",
+    "C047",
+    "C048"
+   ],
+   "prompt_sha256": "6c30c1601306d07cf4fb46c53e5c5e380d26e7b862c60bf657f564d9780ad557"
+  },
+  {
+   "batch_id": "B07",
+   "candidate_ids": [
+    "C049",
+    "C050",
+    "C051",
+    "C052",
+    "C053",
+    "C054",
+    "C055",
+    "C056"
+   ],
+   "prompt_sha256": "156b5585b5023800966b3561e48b6a658efb02dbb4c4bbba87ae4887503f87eb"
+  },
+  {
+   "batch_id": "B08",
+   "candidate_ids": [
+    "C057",
+    "C058",
+    "C059",
+    "C060",
+    "C061",
+    "C062",
+    "C063",
+    "C064"
+   ],
+   "prompt_sha256": "9ee935e9fbf40019ae7f6824962cb07dd5377d7e6767b990b8aac4d05f9e8153"
+  },
+  {
+   "batch_id": "B09",
+   "candidate_ids": [
+    "C065",
+    "C066",
+    "C067",
+    "C068",
+    "C069",
+    "C070",
+    "C071",
+    "C072"
+   ],
+   "prompt_sha256": "7f261616ed7ca83305fc1d6bbf84fa1295c7f0f788d3d0e7a299e6e9b6aa9d5c"
+  },
+  {
+   "batch_id": "B10",
+   "candidate_ids": [
+    "C073",
+    "C074",
+    "C075",
+    "C076",
+    "C077",
+    "C078",
+    "C079",
+    "C080"
+   ],
+   "prompt_sha256": "447e2f42108ddd93abcd42ab65beaceea9d3769d2f1cb9c3f6891cc1f20144e0"
+  },
+  {
+   "batch_id": "B11",
+   "candidate_ids": [
+    "C081",
+    "C082",
+    "C083",
+    "C084",
+    "C085",
+    "C086",
+    "C087",
+    "C088"
+   ],
+   "prompt_sha256": "10f24ba8603b3417d04aab2564f9f39c80209582ebe68bdaac0b1b5060f1d4b2"
+  },
+  {
+   "batch_id": "B12",
+   "candidate_ids": [
+    "C089",
+    "C090",
+    "C091",
+    "C092",
+    "C093",
+    "C094",
+    "C095",
+    "C096"
+   ],
+   "prompt_sha256": "c66e2890252776c85456f8a08d7ed6fa6ba69f73bc6d071e1bb24130d20d5f0c"
+  },
+  {
+   "batch_id": "B13",
+   "candidate_ids": [
+    "C097",
+    "C098",
+    "C099",
+    "C100",
+    "C101",
+    "C102",
+    "C103",
+    "C104"
+   ],
+   "prompt_sha256": "7b4c6a0f7344333e82400a2b397bb0f29a0911c89a8939da2e0b3f2e29b62558"
+  },
+  {
+   "batch_id": "B14",
+   "candidate_ids": [
+    "C105",
+    "C106",
+    "C107",
+    "C108",
+    "C109",
+    "C110",
+    "C111",
+    "C112"
+   ],
+   "prompt_sha256": "86f9fc2fb6ad2a3f678edfbc2ce0f7dde2bd87a7741a15910a1809804c86047a"
+  },
+  {
+   "batch_id": "B15",
+   "candidate_ids": [
+    "C113",
+    "C114",
+    "C115",
+    "C116",
+    "C117",
+    "C118",
+    "C119",
+    "C120"
+   ],
+   "prompt_sha256": "25de9cdcaaac8d03ea8cb06e9525d9dd6796c966aa479958b131275581e723ed"
+  },
+  {
+   "batch_id": "B16",
+   "candidate_ids": [
+    "C121",
+    "C122",
+    "C123",
+    "C124",
+    "C125",
+    "C126",
+    "C127",
+    "C128"
+   ],
+   "prompt_sha256": "2ccf4895d81db49c08df4f71a188326a49bb55c3b9849e711743787e9a03dc52"
+  },
+  {
+   "batch_id": "B17",
+   "candidate_ids": [
+    "C129",
+    "C130",
+    "C131",
+    "C132",
+    "C133",
+    "C134",
+    "C135",
+    "C136"
+   ],
+   "prompt_sha256": "a8ee3e80f9f810b1692c4db27be2f82c6de030c09bbd106edf84bd7bb9619ff8"
+  },
+  {
+   "batch_id": "B18",
+   "candidate_ids": [
+    "C137",
+    "C138",
+    "C139",
+    "C140",
+    "C141",
+    "C142",
+    "C143",
+    "C144"
+   ],
+   "prompt_sha256": "2b13832fc7333cd7fa257f3cc7079c64bca75460bd1f4853c6ed8267c6b3bb01"
+  }
+ ],
+ "event": "WVR_SEMANTIC_BOUNDARY_CANDIDATE_SHADOW_V1",
+ "prompt_template_sha256": "7782ebb4925d924592c115c7664d6f54c49ba9a61667100f2cd31be6e0f5aa49",
+ "schema": "wvr_bcand_v1_batches"
+}

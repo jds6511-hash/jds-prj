@@ -1,0 +1,234 @@
+You assess material changes in broad activity or task.
+
+For each opaque candidate, compare BEFORE and AFTER observations. Choose one
+proposal label. A strong proposal requires clear evidence of a broad material
+change. A weak proposal has limited evidence of change. Use NO_CHAPTER_TRANSITION
+when the broad activity continues. Use AMBIGUOUS when observations differ or
+are insufficient. Do not choose among alternative observation sets.
+
+Allowed proposal labels:
+STRONG_TRANSITION_CANDIDATE
+WEAK_TRANSITION_CANDIDATE
+NO_CHAPTER_TRANSITION
+AMBIGUOUS
+
+Return JSON only with this shape and no additional fields:
+{"candidates":[{"candidate_id":"Cxxx","proposal":"LABEL","before_activity":"TEXT","after_activity":"TEXT","rationale":"TEXT"}]}
+
+OBSERVATIONS
+Candidate C049
+BEFORE
+Observation Set A
+person | serving | herbs
+person | eating | noodles
+Observation Set B
+person | using chopsticks | lifting noodles from a bowl
+person | eating | noodles with a spoon
+person | using chopsticks | picking up a breaded food item
+Observation Set C
+person | pouring | butter into a bowl
+AFTER
+Observation Set A
+person | breaking apart | breaded potato ball
+person | eating | breaded potato ball
+person | eating | curry udon
+person | eating | breaded potato ball
+person | drinking | water
+person | eating | curry udon
+Observation Set B
+person | eating | breaded food item
+person | using chopsticks | picking up a breaded food item
+person | eating | breaded food item
+Observation Set C
+a person | eating | cream curry udon
+a person | eating | rice with kimchi
+
+Candidate C050
+BEFORE
+person | selecting | bottle of soy sauce
+person | selecting | packet of curry
+person | selecting | bag of potatoes
+person | placing | potatoes in steamer
+person | covering | steamer
+person | pouring | curry powder into bowl
+AFTER
+Observation Set A
+person | placing | potato slices in blender
+person | blending | potato slices
+person | pouring | oil into bowl with curry powder
+person | mixing | curry powder and oil
+person | chopping | onion
+Observation Set B
+person | placing | bread pieces into blender
+person | placing | lid on blender
+person | pouring | oil into bowl of breadcrumbs
+person | stirring | breadcrumbs with oil
+person | chopping | onion on cutting board
+person | chopping | carrot on cutting board
+person | placing | ground beef into bowl
+Observation Set C
+person | peeling | carrot
+
+Candidate C051
+BEFORE
+Observation Set A
+person | holding | elastic band and orange fabric
+person | holding | orange fabric with pattern
+Observation Set B
+person | placing | chicken legs in a bowl
+person | holding | orange pajama pants
+person | pulling | elastic band from pajama pants
+person | holding | elastic band
+person | holding | orange pajama pants
+Observation Set C
+person | placing | chicken legs in bowl
+person | holding | orange cloth
+person | holding | pink cloth
+AFTER
+Observation Set A
+person | sewing | orange fabric with green dots
+person | holding up | orange fabric with green dots
+Observation Set B
+person | placing | orange pajama pants in a drawer
+Observation Set C
+person | placing | orange fabric on drawer
+person | placing | white elastic band on sewing machine
+person | sewing | orange fabric with pattern
+person | holding | orange fabric with pattern
+
+Candidate C052
+BEFORE
+Observation Set A
+person | putting on | fabric
+person | putting on | handbag
+person | taking photo | mirror
+person | adjusting | clothing
+Observation Set B
+person | holding and displaying fabric | white fabric
+person | placing fabric on table | white fabric
+person | picking up handbag | brown handbag
+person | taking mirror selfie | camera
+person | adjusting clothing | white shirt and shorts
+person | looking at phone | phone displaying weather
+AFTER
+person | walking through train window | train window showing cityscape
+person | looking at train station sign | train station sign with text
+person | walking outside | building with signage
+person | entering shop | shop entrance with sign
+
+Candidate C053
+BEFORE
+Observation Set A
+person | using chopsticks | lifting noodles from a bowl
+person | eating | noodles with a spoon
+Observation Set B
+person | pouring | butter into a bowl
+Observation Set C
+person | serving | potato cream
+person | serving | herbs
+person | eating | noodles
+AFTER
+Observation Set A
+person | eating | noodles
+Observation Set B
+person | breaking apart | breaded potato ball
+person | eating | breaded potato ball
+person | eating | curry udon
+person | eating | breaded potato ball
+person | drinking | water
+Observation Set C
+person | using chopsticks | picking up a breaded food item
+person | eating | breaded food item
+person | using chopsticks | picking up a breaded food item
+person | eating | breaded food item
+
+Candidate C054
+BEFORE
+Observation Set A
+person | coating | ball in breadcrumbs
+person | placing | coated balls on plate
+Observation Set B
+person | coating | potato balls
+Observation Set C
+person | dipping | potato dough in egg mixture
+person | coating | potato dough in breadcrumbs
+person | placing | coated potato dough on a plate
+person | coating | potato dough in breadcrumbs
+person | placing | coated potato dough on a plate
+person | coating | potato dough in breadcrumbs
+person | placing | coated potato dough on a plate
+AFTER
+Observation Set A
+person | pouring | cream into pan
+person | stirring | onions in pan
+person | pouring | sauce into pan
+person | pouring | liquid into pan
+person | pouring | cream into bowl
+person | mixing | cream in bowl
+Observation Set B
+person | pouring | powder from a bottle into a pan
+person | pouring | liquid from a bottle into a pan
+Observation Set C
+person | placing | coated potato dough on a plate
+person | pouring | liquid into a pan
+
+Candidate C055
+BEFORE
+Observation Set A
+person | holding | elastic band and orange fabric
+person | holding | orange fabric with pattern
+person | placing | orange fabric on drawer
+person | placing | white elastic band on sewing machine
+person | sewing | orange fabric with pattern
+Observation Set B
+person | pulling | elastic band from pajama pants
+person | holding | elastic band
+person | holding | orange pajama pants
+person | placing | orange pajama pants in a drawer
+Observation Set C
+person | sewing | orange fabric with green dots
+AFTER
+Observation Set A
+person | holding | orange fabric with pattern
+Observation Set B
+hand | placing | crispy ball on plate
+hand | chopping | tomato
+hand | cracking | egg into measuring cup
+hand | stirring | egg mixture in measuring cup
+Observation Set C
+person | holding up | orange fabric with green dots
+person | chopping | tomato
+
+Candidate C056
+BEFORE
+Observation Set A
+person | preparing food | gimbal with gloves
+person | eating | food with spoon
+person | preparing food | chicken with sauce
+Observation Set B
+person | placing | sushi roll on cutting board
+person | placing | sushi rolls on plate
+person | arranging | sushi rolls on plate
+person | placing | bowl of soup on table
+person | placing | chicken legs in steamer
+person | placing | noodles in bowl
+Observation Set C
+a person | eating | rice with kimchi
+Observation Set D
+person | placing | noodles in a bowl
+AFTER
+Observation Set A
+person | holding | elastic band and orange fabric
+person | holding | orange fabric with pattern
+Observation Set B
+person | placing | chicken legs in a bowl
+person | holding | orange pajama pants
+person | pulling | elastic band from pajama pants
+person | holding | elastic band
+person | holding | orange pajama pants
+Observation Set C
+person | placing | noodles in bowl
+person | placing | chicken legs in bowl
+person | holding | orange cloth
+person | holding | pink cloth
+END OBSERVATIONS

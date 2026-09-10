@@ -1,0 +1,62 @@
+```json
+{
+  "candidates": [
+    {
+      "candidate_id": "C033",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Preparing a curry dish involving blending potatoes, mixing curry powder, and chopping vegetables.",
+      "after_activity": "Mixing and cooking various ingredients including ground beef, onions, and possibly crab sticks.",
+      "rationale": "The before and after activities show a clear transition from preparing a curry to mixing and cooking a different set of ingredients, indicating a significant change in the overall task."
+    },
+    {
+      "candidate_id": "C034",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Arranging sushi rolls and preparing chicken for steaming.",
+      "after_activity": "Putting on and organizing pajamas.",
+      "rationale": "The activities before and after do not show a significant change in the broad activity. The person is either preparing food or getting ready to sleep, which can be considered as part of the same general activity."
+    },
+    {
+      "candidate_id": "C035",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Chopping tomatoes, cracking eggs, and stirring egg mixtures.",
+      "after_activity": "Cooking egg and tofu mixtures, and preparing a salad.",
+      "rationale": "The before and after activities show a clear transition from preparing an egg-based dish to cooking and assembling a salad, indicating a significant change in the overall task."
+    },
+    {
+      "candidate_id": "C036",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Preparing a curry dish involving blending potatoes, mixing curry powder, and chopping vegetables.",
+      "after_activity": "Mixing and cooking ground beef, onions, and carrots.",
+      "rationale": "The before and after activities show a clear transition from preparing a curry to mixing and cooking a different set of ingredients, indicating a significant change in the overall task."
+    },
+    {
+      "candidate_id": "C037",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Preparing potato croquettes and serving dishes.",
+      "after_activity": "Pouring butter into a bowl and serving dishes.",
+      "rationale": "The activities before and after do not show a significant change in the broad activity. The person is either preparing and serving food, which can be considered as part of the same general activity."
+    },
+    {
+      "candidate_id": "C038",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Mixing cream and mashed potatoes.",
+      "after_activity": "Preparing and serving potato croquettes and potato cream.",
+      "rationale": "The activities before and after do not show a significant change in the broad activity. The person is either mixing and serving dishes, which can be considered as part of the same general activity."
+    },
+    {
+      "candidate_id": "C039",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Cooking a mixture and peeling potatoes.",
+      "after_activity": "Forming and coating potato balls.",
+      "rationale": "The before and after activities show a clear transition from cooking a mixture to forming and coating potato balls, indicating a significant change in the overall task."
+    },
+    {
+      "candidate_id": "C040",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Grating potatoes and mixing ingredients.",
+      "after_activity": "Forming and placing potato balls.",
+      "rationale": "The before and after activities show a clear transition from grating and mixing potatoes to forming and placing potato balls, indicating a significant change in the overall task."
+    }
+  ]
+}
+```

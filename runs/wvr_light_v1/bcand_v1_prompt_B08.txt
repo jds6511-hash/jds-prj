@@ -1,0 +1,247 @@
+You assess material changes in broad activity or task.
+
+For each opaque candidate, compare BEFORE and AFTER observations. Choose one
+proposal label. A strong proposal requires clear evidence of a broad material
+change. A weak proposal has limited evidence of change. Use NO_CHAPTER_TRANSITION
+when the broad activity continues. Use AMBIGUOUS when observations differ or
+are insufficient. Do not choose among alternative observation sets.
+
+Allowed proposal labels:
+STRONG_TRANSITION_CANDIDATE
+WEAK_TRANSITION_CANDIDATE
+NO_CHAPTER_TRANSITION
+AMBIGUOUS
+
+Return JSON only with this shape and no additional fields:
+{"candidates":[{"candidate_id":"Cxxx","proposal":"LABEL","before_activity":"TEXT","after_activity":"TEXT","rationale":"TEXT"}]}
+
+OBSERVATIONS
+Candidate C057
+BEFORE
+Observation Set A
+a woman | tying | a ribbon around a wrapped package
+a woman | holding | a wrapped package
+Observation Set B
+person | holding and displaying fabric | white fabric
+person | placing fabric on table | white fabric
+person | picking up handbag | brown handbag
+person | taking mirror selfie | camera
+Observation Set C
+person | tying | ribbon around kraft paper bag
+person | adjusting | bow on kraft paper bag
+person | holding | wrapped gift
+person | unfolding | fabric
+person | putting on | fabric
+person | putting on | handbag
+person | taking photo | mirror
+AFTER
+Observation Set A
+person | taking mirror selfie | camera
+person | adjusting clothing | white shirt and shorts
+person | looking at phone | phone displaying weather
+person | walking through train window | train window showing cityscape
+person | looking at train station sign | train station sign with text
+person | walking outside | building with signage
+person | entering shop | shop entrance with sign
+Observation Set B
+person | adjusting | clothing
+
+Candidate C058
+BEFORE
+Observation Set A
+a person | eating | rice with kimchi
+Observation Set B
+person | eating | noodles with chopsticks and spoon
+person | preparing food | gimbal with gloves
+Observation Set C
+person | placing | sushi roll on cutting board
+person | placing | sushi rolls on plate
+person | arranging | sushi rolls on plate
+person | placing | bowl of soup on table
+AFTER
+Observation Set A
+person | placing | bowl of soup on table
+person | placing | chicken legs in steamer
+person | placing | noodles in bowl
+person | placing | chicken legs in bowl
+person | holding | orange cloth
+person | holding | pink cloth
+Observation Set B
+person | eating | food with spoon
+person | preparing food | chicken with sauce
+Observation Set C
+person | placing | noodles in a bowl
+person | placing | chicken legs in a bowl
+person | holding | orange pajama pants
+
+Candidate C059
+BEFORE
+Observation Set A
+hand | placing | crispy ball on plate
+Observation Set B
+person | sewing | orange fabric with green dots
+person | holding up | orange fabric with green dots
+Observation Set C
+person | placing | white elastic band on sewing machine
+person | sewing | orange fabric with pattern
+person | holding | orange fabric with pattern
+Observation Set D
+person | placing | orange pajama pants in a drawer
+AFTER
+Observation Set A
+person | chopping | tomato
+person | pouring | egg yolk into measuring cup
+person | stirring | egg yolk in measuring cup
+Observation Set B
+woman | pouring | sauce onto food
+woman | pouring | olive oil onto tofu
+woman | sprinkling | black pepper on food
+Observation Set C
+hand | chopping | tomato
+hand | cracking | egg into measuring cup
+hand | stirring | egg mixture in measuring cup
+hand | pouring | egg mixture into pan
+hand | stirring | egg mixture in pan
+hand | transferring | egg mixture onto plate
+hand | pouring | olive oil onto tofu
+hand | placing | tofu on plate
+
+Candidate C060
+BEFORE
+Observation Set A
+person | coating | potato balls
+person | placing | potato balls
+person | coating | potato balls
+Observation Set B
+person | pouring | liquid into a bowl
+person | mixing | ingredients in a bowl
+person | dipping | potato dough in egg mixture
+person | coating | potato dough in breadcrumbs
+person | placing | coated potato dough on a plate
+person | coating | potato dough in breadcrumbs
+Observation Set C
+person | placing | balls on a plate
+AFTER
+Observation Set A
+person | coating | ball in breadcrumbs
+person | placing | coated balls on plate
+person | pouring | cream into pan
+person | stirring | onions in pan
+person | pouring | sauce into pan
+person | pouring | liquid into pan
+Observation Set B
+person | coating | potato dough in breadcrumbs
+person | placing | coated potato dough on a plate
+person | coating | potato dough in breadcrumbs
+person | placing | coated potato dough on a plate
+person | pouring | liquid into a pan
+Observation Set C
+person | pouring | powder from a bottle into a pan
+person | pouring | liquid from a bottle into a pan
+
+Candidate C061
+BEFORE
+Observation Set A
+person | serving | noodles
+Observation Set B
+person | pouring | mashed potatoes into a bowl with a hand mixer
+person | mixing | mashed potatoes with a hand mixer
+person | transferring | mashed potatoes into a piping bag
+person | placing | potato croquettes on a wire rack
+person | pouring | oil into a baking tray
+person | pouring | butter into a bowl
+Observation Set C
+person | pouring | liquid from a bottle into a pan
+Observation Set D
+person | mixing | cream in bowl
+AFTER
+Observation Set A
+person | pouring | butter into a bowl
+Observation Set B
+person | using chopsticks | lifting noodles from a bowl
+person | eating | noodles with a spoon
+Observation Set C
+person | serving | potato cream
+person | serving | herbs
+person | eating | noodles
+
+Candidate C062
+BEFORE
+person | selecting | bottle of soy sauce
+person | selecting | packet of curry
+AFTER
+Observation Set A
+person | placing | bread pieces into blender
+person | placing | lid on blender
+person | pouring | oil into bowl of breadcrumbs
+person | stirring | breadcrumbs with oil
+Observation Set B
+person | selecting | bag of potatoes
+person | placing | potatoes in steamer
+person | covering | steamer
+person | pouring | curry powder into bowl
+person | placing | potato slices in blender
+person | blending | potato slices
+person | pouring | oil into bowl with curry powder
+person | mixing | curry powder and oil
+person | chopping | onion
+
+Candidate C063
+BEFORE
+Observation Set A
+person | holding and displaying fabric | white fabric
+person | placing fabric on table | white fabric
+person | picking up handbag | brown handbag
+person | taking mirror selfie | camera
+Observation Set B
+person | adjusting | bow on kraft paper bag
+person | holding | wrapped gift
+person | unfolding | fabric
+person | putting on | fabric
+person | putting on | handbag
+person | taking photo | mirror
+person | adjusting | clothing
+Observation Set C
+a woman | holding | a wrapped package
+AFTER
+Observation Set A
+person | adjusting | clothing
+Observation Set B
+person | adjusting clothing | white shirt and shorts
+person | looking at phone | phone displaying weather
+person | walking through train window | train window showing cityscape
+person | looking at train station sign | train station sign with text
+person | walking outside | building with signage
+person | entering shop | shop entrance with sign
+
+Candidate C064
+BEFORE
+Observation Set A
+person | forming | mixture into balls
+person | placing | balls on a plate
+Observation Set B
+person | pouring | liquid into a bowl
+person | mixing | ingredients in a bowl
+person | dipping | potato dough in egg mixture
+Observation Set C
+person | mixing | potato mixture
+person | forming | potato balls
+person | coating | potato balls
+person | placing | potato balls
+person | coating | potato balls
+AFTER
+Observation Set A
+person | coating | potato balls
+Observation Set B
+person | coating | potato dough in breadcrumbs
+person | placing | coated potato dough on a plate
+person | coating | potato dough in breadcrumbs
+person | placing | coated potato dough on a plate
+person | coating | potato dough in breadcrumbs
+person | placing | coated potato dough on a plate
+person | pouring | liquid into a pan
+Observation Set C
+person | coating | ball in breadcrumbs
+person | placing | coated balls on plate
+person | pouring | cream into pan
+END OBSERVATIONS

@@ -1,0 +1,62 @@
+```json
+{
+  "candidates": [
+    {
+      "candidate_id": "C121",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is involved in food preparation activities such as chopping tomatoes, stirring egg mixtures, and pouring sauces. Hand is also seen placing crispy balls on plates.",
+      "after_activity": "Person is seen walking through a room, placing small boxes, and holding two small boxes. Hand is seen placing tofu and shredded cabbage on plates.",
+      "rationale": "The broad activity of food preparation continues without a significant change in the overall task."
+    },
+    {
+      "candidate_id": "C122",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is involved in making potato balls, including grating, mixing, forming, coating, and placing them.",
+      "after_activity": "Person is seen placing potato balls, coating them in breadcrumbs, and placing them on a plate. Additional steps like pouring liquid into a bowl and mixing ingredients are introduced.",
+      "rationale": "The broad activity of making potato balls continues, but there are additional steps in the process."
+    },
+    {
+      "candidate_id": "C123",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is involved in cooking a mixture in a pan, peeling potatoes, and mixing ingredients.",
+      "after_activity": "Person is seen mixing potato mixture, forming potato balls, coating them, and placing them. Additional steps like pouring liquid into a bowl and mixing ingredients are introduced.",
+      "rationale": "The broad activity of cooking and preparing a mixture continues, but there are additional steps in the process."
+    },
+    {
+      "candidate_id": "C124",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is involved in sewing and handling orange fabric with patterns, chopping tomatoes, and holding orange fabric with patterns.",
+      "after_activity": "Person is seen chopping tomatoes, pouring egg yolk into a measuring cup, and stirring it. Additional actions like placing tofu and shredded cabbage on plates are introduced.",
+      "rationale": "The broad activity of handling fabric and preparing an egg dish continues, but there are additional steps in the process."
+    },
+    {
+      "candidate_id": "C125",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is involved in stirring a mixture, placing ground beef, onions, and carrots into a bowl, and stirring breadcrumbs.",
+      "after_activity": "Person is seen cooking a mixture in a pan, peeling potatoes, and mixing ingredients. Additional steps like grating potatoes and mixing potato mixture are introduced.",
+      "rationale": "The broad activity of preparing a mixture for cooking continues, but there are additional steps in the process."
+    },
+    {
+      "candidate_id": "C126",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is involved in preparing and eating food, placing sushi rolls on a plate, and arranging them.",
+      "after_activity": "Person is seen placing chicken legs in a bowl, holding orange pajama pants, and pulling an elastic band from them. Additional actions like holding fabric and placing chicken legs in a bowl are introduced.",
+      "rationale": "The broad activity of preparing and eating food continues, but there are additional steps in the process."
+    },
+    {
+      "candidate_id": "C127",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is involved in selecting and placing ingredients for a dish, including potatoes, soy sauce, and curry powder.",
+      "after_activity": "Person is seen pouring oil into a bowl with curry powder, chopping onions, and carrots. Additional steps like placing bread pieces in a blender are introduced.",
+      "rationale": "The broad activity of preparing a dish continues, but there are additional steps in the process."
+    },
+    {
+      "candidate_id": "C128",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is involved in placing food items on plates and preparing to eat.",
+      "after_activity": "Person is seen placing a small pouch on a table, wrapping it, and tying a ribbon around it. Additional actions like sprinkling black pepper on food are introduced.",
+      "rationale": "The broad activity of preparing and packaging items continues, but there are additional steps in the process."
+    }
+  ]
+}
+```

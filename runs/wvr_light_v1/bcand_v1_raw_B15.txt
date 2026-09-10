@@ -1,0 +1,62 @@
+```json
+{
+  "candidates": [
+    {
+      "candidate_id": "C113",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Person was eating various foods like noodles, breaded food items, and curry udon.",
+      "after_activity": "Person is now eating different foods like breaded potato balls, curry udon, and noodles, and also drinking water.",
+      "rationale": "The type of food being eaten has changed significantly, indicating a clear transition in the activity."
+    },
+    {
+      "candidate_id": "C114",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Person was preparing and coating potato balls in breadcrumbs.",
+      "after_activity": "Person is now preparing and cooking a mixture in a pan, which involves different actions and ingredients.",
+      "rationale": "The preparation process has shifted from coating potato balls to cooking a new mixture, showing a significant change in the activity."
+    },
+    {
+      "candidate_id": "C115",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person was serving and eating noodles and potato cream, and also pouring oil and butter.",
+      "after_activity": "Person is now eating noodles and handling other food items like breaded potato balls.",
+      "rationale": "The broad activity of eating and serving continues without a clear transition in the main task."
+    },
+    {
+      "candidate_id": "C116",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Person was preparing a mixture for cooking, including peeling potatoes and carrots, and mixing ingredients.",
+      "after_activity": "Person is now preparing and cooking a new mixture involving potatoes, which is a different set of actions and ingredients.",
+      "rationale": "The preparation process has shifted from a meat-based mixture to a potato-based mixture, indicating a significant change in the activity."
+    },
+    {
+      "candidate_id": "C117",
+      "proposal": "AMBIGUOUS",
+      "before_activity": "Woman was wrapping and packaging gifts and food items.",
+      "after_activity": "Person is now adjusting and displaying fabric, and handling personal items like a handbag and mirror.",
+      "rationale": "The activities before and after differ but are not clearly related, making it difficult to determine a strong transition."
+    },
+    {
+      "candidate_id": "C118",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person was preparing a mixture for cooking, including chopping vegetables and placing ingredients in a bowl.",
+      "after_activity": "Person is now grating potatoes and cooking a new mixture, which involves similar actions but with different ingredients.",
+      "rationale": "The broad activity of preparing and cooking a mixture continues without a clear transition in the main task."
+    },
+    {
+      "candidate_id": "C119",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person was cooking a mixture, peeling potatoes, and forming potato balls.",
+      "after_activity": "Person is now mixing ingredients, dipping and coating potato dough, and forming potato balls.",
+      "rationale": "The broad activity of preparing and cooking a mixture continues without a clear transition in the main task."
+    },
+    {
+      "candidate_id": "C120",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person was chopping tomatoes, pouring and stirring egg mixtures, and cooking them.",
+      "after_activity": "Person is now placing shredded cabbage on a plate and adjusting their hair.",
+      "rationale": "The broad activity of cooking and preparing food continues without a clear transition in the main task."
+    }
+  ]
+}
+```

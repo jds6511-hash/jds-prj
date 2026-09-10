@@ -1,0 +1,62 @@
+```json
+{
+  "candidates": [
+    {
+      "candidate_id": "C129",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is preparing for a photo session involving fabric, handbag, and clothing adjustments. The person then takes a mirror selfie.",
+      "after_activity": "Person is moving through a train station environment, looking at signs and entering a shop.",
+      "rationale": "The broad activity (preparing for a photo session) continues without a significant change in the overall task or environment."
+    },
+    {
+      "candidate_id": "C130",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Person is preparing to make a dish involving chicken, noodles, and orange fabric (likely pajamas).",
+      "after_activity": "Person is engaged in sewing activities with the same fabric and is also placing orange pajama pants in a drawer.",
+      "rationale": "There is a clear shift from food preparation to sewing tasks, indicating a broad material change in the activity."
+    },
+    {
+      "candidate_id": "C131",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is making potato balls by coating them in breadcrumbs and placing them on a plate.",
+      "after_activity": "Person continues to coat potato balls in breadcrumbs and place them on a plate, but also starts cooking them in a pan.",
+      "rationale": "The broad activity (coating and preparing potato balls) continues without a significant change in the overall task."
+    },
+    {
+      "candidate_id": "C132",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is preparing potato balls by peeling, mixing, and coating them in breadcrumbs.",
+      "after_activity": "Person is coating potato balls in breadcrumbs and placing them on a plate, similar to the before activity.",
+      "rationale": "The broad activity (preparing potato balls) continues without a significant change in the overall task."
+    },
+    {
+      "candidate_id": "C133",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is preparing a meal involving potatoes, curry, and onions.",
+      "after_activity": "Person is continuing to prepare the meal by chopping onions and carrots, and mixing ingredients.",
+      "rationale": "The broad activity (meal preparation) continues without a significant change in the overall task."
+    },
+    {
+      "candidate_id": "C134",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is handling food items and personal grooming tasks.",
+      "after_activity": "Person is wrapping a gift and handling fabric, which is a different set of tasks.",
+      "rationale": "The broad activity (handling food and personal grooming) continues without a significant change in the overall task."
+    },
+    {
+      "candidate_id": "C135",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is preparing mashed potatoes and coating potato croquettes.",
+      "after_activity": "Person is preparing mashed potatoes and pouring liquids into pans, which is a continuation of the same task.",
+      "rationale": "The broad activity (preparing mashed potatoes) continues without a significant change in the overall task."
+    },
+    {
+      "candidate_id": "C136",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is coating potato balls and preparing them for cooking.",
+      "after_activity": "Person is preparing mashed potatoes and pouring liquids into pans, which is a continuation of the same task.",
+      "rationale": "The broad activity (preparing mashed potatoes and coating potato balls) continues without a significant change in the overall task."
+    }
+  ]
+}
+```

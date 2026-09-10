@@ -1,0 +1,62 @@
+```json
+{
+  "candidates": [
+    {
+      "candidate_id": "C137",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "The person was eating breaded potato balls and curry udon, using chopsticks to pick up food items.",
+      "after_activity": "The person is now eating breaded food items and noodles, using chopsticks and a spoon.",
+      "rationale": "There is a clear shift in the type of food being consumed and the method of consumption, indicating a significant change in the activity."
+    },
+    {
+      "candidate_id": "C138",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "The person was preparing mashed potatoes, including mixing and piping them into a bag.",
+      "after_activity": "The person is now serving and eating various dishes, including noodles and potato cream.",
+      "rationale": "The preparation of mashed potatoes has been replaced with serving and eating different dishes, showing a substantial change in the activity."
+    },
+    {
+      "candidate_id": "C139",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "The person was forming and coating potato balls, and placing them on a plate.",
+      "after_activity": "The person is now coating and placing potato dough on a plate, and dipping it in an egg mixture before coating it in breadcrumbs.",
+      "rationale": "The process of making potato balls has evolved to include additional steps, indicating a significant change in the activity."
+    },
+    {
+      "candidate_id": "C140",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "The woman was preparing a gift, including wrapping and tying a package.",
+      "after_activity": "The person is now handling fabric, putting on a handbag, and taking a mirror selfie.",
+      "rationale": "The broad activity of gift preparation continues, though the specific actions have changed, so there is no chapter transition."
+    },
+    {
+      "candidate_id": "C141",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "The person was preparing potato balls, including grating, mixing, forming, and coating them.",
+      "after_activity": "The person is now coating and placing potato dough on a plate, and dipping it in an egg mixture before coating it in breadcrumbs.",
+      "rationale": "The process of making potato balls has evolved to include additional steps, indicating a significant change in the activity."
+    },
+    {
+      "candidate_id": "C142",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "The woman was preparing food, including pouring sauces, sprinkling pepper, and stirring egg mixtures.",
+      "after_activity": "The person is now wrapping a gift and handling a package, while the woman is still involved in food preparation.",
+      "rationale": "The broad activity of food preparation continues, though the specific actions have changed, so there is no chapter transition."
+    },
+    {
+      "candidate_id": "C143",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "The person was coating and placing potato dough on a plate, and preparing a pan with liquid and cream.",
+      "after_activity": "The person is now stirring onions, pouring and mixing liquids, and preparing a pan with cream.",
+      "rationale": "The process of preparing potato dough has been replaced with a new set of cooking activities, indicating a significant change in the activity."
+    },
+    {
+      "candidate_id": "C144",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "The person was holding fabric, chopping tomatoes, and cracking eggs.",
+      "after_activity": "The person is now stirring egg yolks, pouring and stirring egg mixtures, and handling food items.",
+      "rationale": "The broad activity of food preparation continues, though the specific actions have changed, so there is no chapter transition."
+    }
+  ]
+}
+```

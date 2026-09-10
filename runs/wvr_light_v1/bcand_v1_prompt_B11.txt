@@ -1,0 +1,259 @@
+You assess material changes in broad activity or task.
+
+For each opaque candidate, compare BEFORE and AFTER observations. Choose one
+proposal label. A strong proposal requires clear evidence of a broad material
+change. A weak proposal has limited evidence of change. Use NO_CHAPTER_TRANSITION
+when the broad activity continues. Use AMBIGUOUS when observations differ or
+are insufficient. Do not choose among alternative observation sets.
+
+Allowed proposal labels:
+STRONG_TRANSITION_CANDIDATE
+WEAK_TRANSITION_CANDIDATE
+NO_CHAPTER_TRANSITION
+AMBIGUOUS
+
+Return JSON only with this shape and no additional fields:
+{"candidates":[{"candidate_id":"Cxxx","proposal":"LABEL","before_activity":"TEXT","after_activity":"TEXT","rationale":"TEXT"}]}
+
+OBSERVATIONS
+Candidate C081
+BEFORE
+Observation Set A
+hand | pouring | egg mixture into pan
+hand | stirring | egg mixture in pan
+hand | transferring | egg mixture onto plate
+hand | pouring | olive oil onto tofu
+hand | placing | tofu on plate
+hand | placing | shredded cabbage on plate
+person | tying | hair into bun
+person | adjusting | hair bun
+Observation Set B
+woman | pouring | sauce onto food
+woman | pouring | olive oil onto tofu
+woman | sprinkling | black pepper on food
+Observation Set C
+person | pouring | egg yolk into measuring cup
+person | stirring | egg yolk in measuring cup
+AFTER
+Observation Set A
+a woman | walking | through a room
+a woman | placing | a small box on a table
+a woman | holding | two small boxes
+a woman | placing | a small pouch on a table
+a woman | wrapping | a small pouch in a brown paper bag
+a woman | placing | a stamp on a table
+a woman | tying | a ribbon around a wrapped package
+Observation Set B
+woman | sprinkling | black pepper on food
+Observation Set C
+person | wrapping | gift in kraft paper
+person | placing | stamp on kraft paper bag
+
+Candidate C082
+BEFORE
+Observation Set A
+person | mixing | cream in bowl
+Observation Set B
+person | pouring | mashed potatoes into a bowl with a hand mixer
+person | mixing | mashed potatoes with a hand mixer
+person | transferring | mashed potatoes into a piping bag
+person | placing | potato croquettes on a wire rack
+person | pouring | oil into a baking tray
+person | pouring | butter into a bowl
+Observation Set C
+person | pouring | liquid from a bottle into a pan
+AFTER
+Observation Set A
+person | pouring | butter into a bowl
+Observation Set B
+person | serving | noodles
+person | serving | potato cream
+person | serving | herbs
+person | eating | noodles
+Observation Set C
+person | using chopsticks | lifting noodles from a bowl
+
+Candidate C083
+BEFORE
+Observation Set A
+person | coating | ball in breadcrumbs
+person | placing | coated balls on plate
+person | pouring | cream into pan
+person | stirring | onions in pan
+Observation Set B
+person | coating | potato dough in breadcrumbs
+person | placing | coated potato dough on a plate
+person | coating | potato dough in breadcrumbs
+person | placing | coated potato dough on a plate
+person | coating | potato dough in breadcrumbs
+person | placing | coated potato dough on a plate
+person | pouring | liquid into a pan
+Observation Set C
+person | coating | potato balls
+AFTER
+Observation Set A
+person | pouring | sauce into pan
+person | pouring | liquid into pan
+person | pouring | cream into bowl
+person | mixing | cream in bowl
+Observation Set B
+person | pouring | powder from a bottle into a pan
+person | pouring | liquid from a bottle into a pan
+Observation Set C
+person | pouring | mashed potatoes into a bowl with a hand mixer
+Observation Set D
+person | pouring | liquid into a pan
+
+Candidate C084
+BEFORE
+Observation Set A
+person | pouring | powder from a bottle into a pan
+person | pouring | liquid from a bottle into a pan
+Observation Set B
+person | coating | ball in breadcrumbs
+person | placing | coated balls on plate
+person | pouring | cream into pan
+person | stirring | onions in pan
+person | pouring | sauce into pan
+person | pouring | liquid into pan
+Observation Set C
+person | placing | coated potato dough on a plate
+person | coating | potato dough in breadcrumbs
+person | placing | coated potato dough on a plate
+person | pouring | liquid into a pan
+AFTER
+Observation Set A
+person | pouring | cream into bowl
+person | mixing | cream in bowl
+Observation Set B
+person | pouring | liquid from a bottle into a pan
+Observation Set C
+person | pouring | mashed potatoes into a bowl with a hand mixer
+person | mixing | mashed potatoes with a hand mixer
+person | transferring | mashed potatoes into a piping bag
+person | placing | potato croquettes on a wire rack
+
+Candidate C085
+BEFORE
+Observation Set A
+person | sewing | orange fabric with green dots
+Observation Set B
+person | holding | elastic band and orange fabric
+person | holding | orange fabric with pattern
+person | placing | orange fabric on drawer
+person | placing | white elastic band on sewing machine
+Observation Set C
+person | holding | orange pajama pants
+person | pulling | elastic band from pajama pants
+person | holding | elastic band
+person | holding | orange pajama pants
+person | placing | orange pajama pants in a drawer
+Observation Set D
+person | holding | orange cloth
+person | holding | pink cloth
+AFTER
+Observation Set A
+hand | placing | crispy ball on plate
+hand | chopping | tomato
+Observation Set B
+person | sewing | orange fabric with green dots
+person | holding up | orange fabric with green dots
+person | chopping | tomato
+Observation Set C
+person | sewing | orange fabric with pattern
+person | holding | orange fabric with pattern
+
+Candidate C086
+BEFORE
+Observation Set A
+person | placing | white elastic band on sewing machine
+person | sewing | orange fabric with pattern
+person | holding | orange fabric with pattern
+Observation Set B
+person | placing | orange pajama pants in a drawer
+Observation Set C
+person | sewing | orange fabric with green dots
+person | holding up | orange fabric with green dots
+AFTER
+Observation Set A
+person | holding up | orange fabric with green dots
+person | chopping | tomato
+person | pouring | egg yolk into measuring cup
+person | stirring | egg yolk in measuring cup
+Observation Set B
+hand | placing | crispy ball on plate
+hand | chopping | tomato
+hand | cracking | egg into measuring cup
+hand | stirring | egg mixture in measuring cup
+hand | pouring | egg mixture into pan
+hand | stirring | egg mixture in pan
+hand | transferring | egg mixture onto plate
+hand | pouring | olive oil onto tofu
+Observation Set C
+woman | pouring | sauce onto food
+woman | pouring | olive oil onto tofu
+
+Candidate C087
+BEFORE
+Observation Set A
+person | selecting | bottle of soy sauce
+person | selecting | packet of curry
+person | selecting | bag of potatoes
+person | placing | potatoes in steamer
+person | covering | steamer
+person | pouring | curry powder into bowl
+person | placing | potato slices in blender
+person | blending | potato slices
+person | pouring | oil into bowl with curry powder
+Observation Set B
+person | placing | bread pieces into blender
+AFTER
+Observation Set A
+person | mixing | curry powder and oil
+person | chopping | onion
+Observation Set B
+person | placing | lid on blender
+person | pouring | oil into bowl of breadcrumbs
+person | stirring | breadcrumbs with oil
+person | chopping | onion on cutting board
+person | chopping | carrot on cutting board
+person | placing | ground beef into bowl
+person | placing | onion and carrot into bowl with beef
+person | transferring | toasted breadcrumbs into bowl
+Observation Set C
+person | peeling | carrot
+person | placing | lid on pot
+person | pouring | breadcrumbs into bowl
+
+Candidate C088
+BEFORE
+Observation Set A
+person | adjusting | hair bun
+Observation Set B
+person | wrapping | gift in kraft paper
+Observation Set C
+woman | sprinkling | black pepper on food
+Observation Set D
+a woman | walking | through a room
+a woman | placing | a small box on a table
+a woman | holding | two small boxes
+a woman | placing | a small pouch on a table
+a woman | wrapping | a small pouch in a brown paper bag
+a woman | placing | a stamp on a table
+AFTER
+Observation Set A
+a woman | tying | a ribbon around a wrapped package
+a woman | holding | a wrapped package
+Observation Set B
+person | placing | stamp on kraft paper bag
+person | tying | ribbon around kraft paper bag
+person | adjusting | bow on kraft paper bag
+person | holding | wrapped gift
+person | unfolding | fabric
+person | putting on | fabric
+person | putting on | handbag
+Observation Set C
+person | holding and displaying fabric | white fabric
+person | placing fabric on table | white fabric
+person | picking up handbag | brown handbag
+END OBSERVATIONS

@@ -1,0 +1,62 @@
+```json
+{
+  "candidates": [
+    {
+      "candidate_id": "C049",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "person | serving | herbs\nperson | eating | noodles\nperson | using chopsticks | lifting noodles from a bowl\nperson | eating | noodles with a spoon\nperson | using chopsticks | picking up a breaded food item\nperson | pouring | butter into a bowl",
+      "after_activity": "person | breaking apart | breaded potato ball\nperson | eating | breaded potato ball\nperson | eating | curry udon\nperson | eating | breaded potato ball\nperson | drinking | water\nperson | eating | curry udon\nperson | eating | breaded food item\nperson | eating | breaded food item\na person | eating | cream curry udon\na person | eating | rice with kimchi",
+      "rationale": "The before and after activities show a clear transition from eating noodles and breaded items to eating different types of breaded foods and curry dishes, indicating a broad material change in the task."
+    },
+    {
+      "candidate_id": "C050",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "person | selecting | bottle of soy sauce\nperson | selecting | packet of curry\nperson | selecting | bag of potatoes\nperson | placing | potatoes in steamer\nperson | covering | steamer\nperson | pouring | curry powder into bowl",
+      "after_activity": "person | placing | potato slices in blender\nperson | blending | potato slices\nperson | pouring | oil into bowl with curry powder\nperson | mixing | curry powder and oil\nperson | chopping | onion\nperson | placing | bread pieces into blender\nperson | placing | lid on blender\nperson | pouring | oil into bowl of breadcrumbs\nperson | stirring | breadcrumbs with oil\nperson | chopping | onion on cutting board\nperson | chopping | carrot on cutting board\nperson | placing | ground beef into bowl",
+      "rationale": "The before and after activities show a clear transition from preparing ingredients for a curry dish to preparing ingredients for a different type of dish, indicating a broad material change in the task."
+    },
+    {
+      "candidate_id": "C051",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "person | holding | elastic band and orange fabric\nperson | holding | orange fabric with pattern\nperson | placing | chicken legs in a bowl\nperson | holding | orange pajama pants\nperson | pulling | elastic band from pajama pants\nperson | holding | elastic band\nperson | holding | orange pajama pants\nperson | placing | chicken legs in bowl\nperson | holding | orange cloth\nperson | holding | pink cloth",
+      "after_activity": "person | sewing | orange fabric with green dots\nperson | holding up | orange fabric with green dots\nperson | placing | orange pajama pants in a drawer\nperson | placing | orange fabric on drawer\nperson | placing | white elastic band on sewing machine\nperson | sewing | orange fabric with pattern\nperson | holding | orange fabric with pattern",
+      "rationale": "The before and after activities show a clear transition from handling fabric and chicken legs to sewing and organizing fabric, indicating a broad material change in the task."
+    },
+    {
+      "candidate_id": "C052",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "person | putting on | fabric\nperson | putting on | handbag\nperson | taking photo | mirror\nperson | adjusting | clothing\nperson | holding and displaying fabric | white fabric\nperson | placing fabric on table | white fabric\nperson | picking up handbag | brown handbag\nperson | taking mirror selfie | camera\nperson | adjusting clothing | white shirt and shorts\nperson | looking at phone | phone displaying weather",
+      "after_activity": "person | walking through train window | train window showing cityscape\nperson | looking at train station sign | train station sign with text\nperson | walking outside | building with signage\nperson | entering shop | shop entrance with sign",
+      "rationale": "The broad activity continues without a significant change in the task, as the person transitions from dressing and posing to moving through different environments."
+    },
+    {
+      "candidate_id": "C053",
+      "proposal": "AMBIGUOUS",
+      "before_activity": "person | using chopsticks | lifting noodles from a bowl\nperson | eating | noodles with a spoon\nperson | pouring | butter into a bowl\nperson | serving | potato cream\nperson | serving | herbs\nperson | eating | noodles",
+      "after_activity": "person | eating | noodles\nperson | breaking apart | breaded potato ball\nperson | eating | breaded potato ball\nperson | eating | curry udon\nperson | eating | breaded potato ball\nperson | drinking | water\nperson | using chopsticks | picking up a breaded food item\nperson | eating | breaded food item",
+      "rationale": "The observations differ between the before and after activities, making it unclear if there is a consistent broad material change in the task."
+    },
+    {
+      "candidate_id": "C054",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "person | coating | ball in breadcrumbs\nperson | placing | coated balls on plate\nperson | coating | potato balls\nperson | dipping | potato dough in egg mixture\nperson | coating | potato dough in breadcrumbs\nperson | placing | coated potato dough on a plate\nperson | coating | potato dough in breadcrumbs\nperson | placing | coated potato dough on a plate\nperson | coating | potato dough in breadcrumbs\nperson | placing | coated potato dough on a plate",
+      "after_activity": "person | pouring | cream into pan\nperson | stirring | onions in pan\nperson | pouring | sauce into pan\nperson | pouring | liquid into pan\nperson | pouring | cream into bowl\nperson | mixing | cream in bowl\nperson | pouring | powder from a bottle into a pan\nperson | pouring | liquid from a bottle into a pan\nperson | placing | coated potato dough on a plate",
+      "rationale": "The broad activity continues without a significant change in the task, as the person transitions from coating and placing potato dough to cooking and mixing ingredients."
+    },
+    {
+      "candidate_id": "C055",
+      "proposal": "AMBIGUOUS",
+      "before_activity": "person | holding | elastic band and orange fabric\nperson | holding | orange fabric with pattern\nperson | placing | orange fabric on drawer\nperson | placing | white elastic band on sewing machine\nperson | sewing | orange fabric with pattern\nperson | pulling | elastic band from pajama pants\nperson | holding | elastic band\nperson | holding | orange pajama pants\nperson | placing | orange pajama pants in a drawer\nperson | sewing | orange fabric with green dots",
+      "after_activity": "person | holding | orange fabric with pattern\nhand | placing | crispy ball on plate\nhand | chopping | tomato\nhand | cracking | egg into measuring cup\nhand | stirring | egg mixture in measuring cup\nperson | holding up | orange fabric with green dots\nperson | chopping | tomato",
+      "rationale": "The observations differ between the before and after activities, making it unclear if there is a consistent broad material change in the task."
+    },
+    {
+      "candidate_id": "C056",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "person | preparing food | gimbal with gloves\nperson | eating | food with spoon\nperson | preparing food | chicken with sauce\nperson | placing | sushi roll on cutting board\nperson | placing | sushi rolls on plate\nperson | arranging | sushi rolls on plate\nperson | placing | bowl of soup on table\nperson | placing | chicken legs in steamer\nperson | placing | noodles in bowl\nperson | placing | noodles in a bowl",
+      "after_activity": "person | holding | elastic band and orange fabric\nperson | holding | orange fabric with pattern\nperson | placing | chicken legs in bowl\nperson | holding | orange pajama pants\nperson | pulling | elastic band from pajama pants\nperson | holding | elastic band\nperson | holding | orange pajama pants\nperson | placing | noodles in bowl\nperson | placing | chicken legs in bowl\nperson | holding | orange cloth\nperson | holding | pink cloth",
+      "rationale": "The broad activity continues without a significant change in the task, as the person transitions from preparing and eating food to handling fabric and clothing."
+    }
+  ]
+}
+```

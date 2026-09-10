@@ -1,0 +1,62 @@
+```json
+{
+  "candidates": [
+    {
+      "candidate_id": "C089",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "coating and placing potato balls, pouring and mixing ingredients",
+      "after_activity": "pouring powder and liquid into a pan, placing and coating potato dough",
+      "rationale": "The broad activity of preparing and cooking potato balls continues without a significant change in the overall process."
+    },
+    {
+      "candidate_id": "C090",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "placing and chopping tomatoes, cracking and stirring eggs",
+      "after_activity": "walking through a room, pouring and stirring egg mixtures",
+      "rationale": "The broad activity of preparing and cooking an egg dish continues without a significant change in the overall process."
+    },
+    {
+      "candidate_id": "C091",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "wrapping and adjusting gifts, holding and displaying fabric",
+      "after_activity": "taking selfies and adjusting clothing, putting on handbags",
+      "rationale": "The broad activity of gift-wrapping and fabric handling continues without a significant change in the overall process."
+    },
+    {
+      "candidate_id": "C092",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "chopping and peeling vegetables, stirring and placing ingredients",
+      "after_activity": "transferring and adding ingredients, cooking and peeling potatoes",
+      "rationale": "There is a clear shift from preparing ingredients for a dish to actually cooking it, indicating a strong transition in the activity."
+    },
+    {
+      "candidate_id": "C093",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "mixing and chopping vegetables, placing and pouring ingredients",
+      "after_activity": "stirring and transferring ingredients, cooking and peeling potatoes",
+      "rationale": "The broad activity of preparing and cooking a dish continues without a significant change in the overall process."
+    },
+    {
+      "candidate_id": "C094",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "eating breaded potato balls and curry udon, using chopsticks to pick up food",
+      "after_activity": "eating noodles with chopsticks and spoon, eating cream curry udon",
+      "rationale": "The broad activity of eating continues without a significant change in the overall process."
+    },
+    {
+      "candidate_id": "C095",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "eating breaded potato balls and noodles, using chopsticks to lift noodles",
+      "after_activity": "using chopsticks to pick up breaded food items, eating breaded potato balls and curry udon",
+      "rationale": "The broad activity of eating continues without a significant change in the overall process."
+    },
+    {
+      "candidate_id": "C096",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "placing and wrapping gifts, sprinkling black pepper",
+      "after_activity": "holding and displaying fabric, putting on handbags",
+      "rationale": "The broad activity of gift-wrapping and fabric handling continues without a significant change in the overall process."
+    }
+  ]
+}
+```

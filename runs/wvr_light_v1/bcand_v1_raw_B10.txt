@@ -1,0 +1,62 @@
+```json
+{
+  "candidates": [
+    {
+      "candidate_id": "C073",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Preparing and eating various foods including sushi, soup, rice, and chicken.",
+      "after_activity": "Preparing and eating different foods such as chicken legs, noodles, and curry udon.",
+      "rationale": "The before and after activities show a significant change in the type of food being prepared and consumed, indicating a strong transition."
+    },
+    {
+      "candidate_id": "C074",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Breaking apart and eating breaded potato balls, using chopsticks to pick up food items, and pouring butter.",
+      "after_activity": "Eating cream curry udon, rice with kimchi, and breaded food items, still using chopsticks.",
+      "rationale": "The broad activity of eating and preparing food continues without a significant change in the type of food or preparation method."
+    },
+    {
+      "candidate_id": "C075",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Eating curry udon, rice with kimchi, and preparing food with gloves.",
+      "after_activity": "Placing noodles and chicken legs in bowls, preparing food with gloves, and eating food with spoon.",
+      "rationale": "The broad activity of preparing and eating food continues without a significant change in the type of food or preparation method."
+    },
+    {
+      "candidate_id": "C076",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Breaking apart and eating breaded potato balls, eating and using chopsticks to pick up food items, and pouring butter.",
+      "after_activity": "Eating breaded food items, curry udon, and drinking water, still using chopsticks to pick up food items.",
+      "rationale": "The broad activity of eating and preparing food continues without a significant change in the type of food or preparation method."
+    },
+    {
+      "candidate_id": "C077",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Taking selfies, adjusting clothing, and looking at various objects.",
+      "after_activity": "Entering a shop.",
+      "rationale": "The broad activity of interacting with the environment continues without a significant change in the type of activity."
+    },
+    {
+      "candidate_id": "C078",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Pouring butter, serving and eating various foods.",
+      "after_activity": "Eating noodles, using chopsticks to pick up food items, and eating breaded potato balls and curry udon.",
+      "rationale": "The broad activity of eating and preparing food continues without a significant change in the type of food or preparation method."
+    },
+    {
+      "candidate_id": "C079",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Holding and placing various fabrics and clothes.",
+      "after_activity": "Sewing and holding fabrics.",
+      "rationale": "The broad activity of handling fabrics continues without a significant change in the type of activity."
+    },
+    {
+      "candidate_id": "C080",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Handling ingredients for cooking and preparing food.",
+      "after_activity": "Walking and placing items in a room.",
+      "rationale": "The broad activity of handling ingredients and preparing food continues without a significant change in the type of activity."
+    }
+  ]
+}
+```

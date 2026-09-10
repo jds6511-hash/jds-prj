@@ -1,0 +1,245 @@
+You assess material changes in broad activity or task.
+
+For each opaque candidate, compare BEFORE and AFTER observations. Choose one
+proposal label. A strong proposal requires clear evidence of a broad material
+change. A weak proposal has limited evidence of change. Use NO_CHAPTER_TRANSITION
+when the broad activity continues. Use AMBIGUOUS when observations differ or
+are insufficient. Do not choose among alternative observation sets.
+
+Allowed proposal labels:
+STRONG_TRANSITION_CANDIDATE
+WEAK_TRANSITION_CANDIDATE
+NO_CHAPTER_TRANSITION
+AMBIGUOUS
+
+Return JSON only with this shape and no additional fields:
+{"candidates":[{"candidate_id":"Cxxx","proposal":"LABEL","before_activity":"TEXT","after_activity":"TEXT","rationale":"TEXT"}]}
+
+OBSERVATIONS
+Candidate C009
+BEFORE
+Observation Set A
+person | chopping | carrot on cutting board
+person | placing | ground beef into bowl
+person | placing | onion and carrot into bowl with beef
+person | transferring | toasted breadcrumbs into bowl
+person | stirring | breadcrumbs in bowl
+Observation Set B
+person | chopping | onion
+Observation Set C
+person | peeling | carrot
+person | placing | lid on pot
+person | pouring | breadcrumbs into bowl
+person | stirring | breadcrumbs in bowl
+person | transferring | ground beef into bowl
+person | adding | onion and crab stick to bowl
+AFTER
+Observation Set A
+person | mixing | ingredients in bowl
+person | cooking | mixture in pan
+person | peeling | potatoes with peeler
+Observation Set B
+person | stirring | mixture in a bowl with chopsticks
+person | cooking | mixture in a pan over direct heat
+person | peeling | potato with a peeler
+person | mixing | mixture in a bowl with chopsticks
+Observation Set C
+person | grating | potato
+person | mixing | potato mixture
+
+Candidate C010
+BEFORE
+Observation Set A
+person | putting on | handbag
+person | taking photo | mirror
+person | adjusting | clothing
+Observation Set B
+person | picking up handbag | brown handbag
+person | taking mirror selfie | camera
+person | adjusting clothing | white shirt and shorts
+person | looking at phone | phone displaying weather
+person | walking through train window | train window showing cityscape
+person | looking at train station sign | train station sign with text
+AFTER
+person | walking outside | building with signage
+person | entering shop | shop entrance with sign
+
+Candidate C011
+BEFORE
+person | selecting | bottle of soy sauce
+person | selecting | packet of curry
+person | selecting | bag of potatoes
+person | placing | potatoes in steamer
+AFTER
+Observation Set A
+person | covering | steamer
+person | pouring | curry powder into bowl
+person | placing | potato slices in blender
+person | blending | potato slices
+person | pouring | oil into bowl with curry powder
+person | mixing | curry powder and oil
+person | chopping | onion
+Observation Set B
+person | placing | bread pieces into blender
+person | placing | lid on blender
+person | pouring | oil into bowl of breadcrumbs
+person | stirring | breadcrumbs with oil
+person | chopping | onion on cutting board
+person | chopping | carrot on cutting board
+
+Candidate C012
+BEFORE
+Observation Set A
+person | blending | potato slices
+person | pouring | oil into bowl with curry powder
+person | mixing | curry powder and oil
+person | chopping | onion
+Observation Set B
+person | placing | bread pieces into blender
+person | placing | lid on blender
+person | pouring | oil into bowl of breadcrumbs
+person | stirring | breadcrumbs with oil
+person | chopping | onion on cutting board
+person | chopping | carrot on cutting board
+person | placing | ground beef into bowl
+person | placing | onion and carrot into bowl with beef
+Observation Set C
+person | peeling | carrot
+AFTER
+Observation Set A
+person | placing | onion and carrot into bowl with beef
+person | transferring | toasted breadcrumbs into bowl
+person | stirring | breadcrumbs in bowl
+Observation Set B
+person | stirring | mixture in a bowl with chopsticks
+person | cooking | mixture in a pan over direct heat
+person | peeling | potato with a peeler
+Observation Set C
+person | placing | lid on pot
+person | pouring | breadcrumbs into bowl
+person | stirring | breadcrumbs in bowl
+person | transferring | ground beef into bowl
+person | adding | onion and crab stick to bowl
+person | mixing | ingredients in bowl
+person | cooking | mixture in pan
+person | peeling | potatoes with peeler
+
+Candidate C013
+BEFORE
+Observation Set A
+person | holding | elastic band and orange fabric
+person | holding | orange fabric with pattern
+person | placing | orange fabric on drawer
+Observation Set B
+person | placing | chicken legs in bowl
+person | holding | orange cloth
+person | holding | pink cloth
+Observation Set C
+person | placing | chicken legs in a bowl
+person | holding | orange pajama pants
+person | pulling | elastic band from pajama pants
+person | holding | elastic band
+person | holding | orange pajama pants
+person | placing | orange pajama pants in a drawer
+AFTER
+Observation Set A
+person | sewing | orange fabric with green dots
+person | holding up | orange fabric with green dots
+Observation Set B
+person | placing | orange pajama pants in a drawer
+Observation Set C
+person | placing | white elastic band on sewing machine
+person | sewing | orange fabric with pattern
+person | holding | orange fabric with pattern
+
+Candidate C014
+BEFORE
+Observation Set A
+person | holding | orange pajama pants
+person | pulling | elastic band from pajama pants
+person | holding | elastic band
+person | holding | orange pajama pants
+person | placing | orange pajama pants in a drawer
+Observation Set B
+person | holding | elastic band and orange fabric
+person | holding | orange fabric with pattern
+person | placing | orange fabric on drawer
+person | placing | white elastic band on sewing machine
+Observation Set C
+person | holding | orange cloth
+person | holding | pink cloth
+AFTER
+Observation Set A
+hand | placing | crispy ball on plate
+hand | chopping | tomato
+Observation Set B
+person | placing | white elastic band on sewing machine
+person | sewing | orange fabric with pattern
+person | holding | orange fabric with pattern
+Observation Set C
+person | sewing | orange fabric with green dots
+person | holding up | orange fabric with green dots
+person | chopping | tomato
+
+Candidate C015
+BEFORE
+Observation Set A
+person | placing | chicken legs in steamer
+person | placing | noodles in bowl
+person | placing | chicken legs in bowl
+person | holding | orange cloth
+person | holding | pink cloth
+Observation Set B
+person | placing | noodles in a bowl
+person | placing | chicken legs in a bowl
+person | holding | orange pajama pants
+person | pulling | elastic band from pajama pants
+person | holding | elastic band
+Observation Set C
+person | holding | elastic band and orange fabric
+Observation Set D
+person | preparing food | chicken with sauce
+AFTER
+Observation Set A
+person | sewing | orange fabric with green dots
+person | holding up | orange fabric with green dots
+Observation Set B
+person | holding | elastic band
+person | holding | orange pajama pants
+person | placing | orange pajama pants in a drawer
+Observation Set C
+person | holding | orange fabric with pattern
+person | placing | orange fabric on drawer
+person | placing | white elastic band on sewing machine
+person | sewing | orange fabric with pattern
+person | holding | orange fabric with pattern
+
+Candidate C016
+BEFORE
+person | selecting | bottle of soy sauce
+person | selecting | packet of curry
+person | selecting | bag of potatoes
+person | placing | potatoes in steamer
+person | covering | steamer
+person | pouring | curry powder into bowl
+person | placing | potato slices in blender
+person | blending | potato slices
+AFTER
+Observation Set A
+person | peeling | carrot
+person | placing | lid on pot
+Observation Set B
+person | blending | potato slices
+person | pouring | oil into bowl with curry powder
+person | mixing | curry powder and oil
+person | chopping | onion
+Observation Set C
+person | placing | bread pieces into blender
+person | placing | lid on blender
+person | pouring | oil into bowl of breadcrumbs
+person | stirring | breadcrumbs with oil
+person | chopping | onion on cutting board
+person | chopping | carrot on cutting board
+person | placing | ground beef into bowl
+person | placing | onion and carrot into bowl with beef
+END OBSERVATIONS

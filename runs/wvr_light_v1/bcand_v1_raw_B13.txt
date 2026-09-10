@@ -1,0 +1,62 @@
+```json
+{
+  "candidates": [
+    {
+      "candidate_id": "C097",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "peeling potato, mixing, forming, coating, placing; grating potato, mixing, forming, coating, placing",
+      "after_activity": "coating balls in breadcrumbs, placing coated balls on plate; mixing ingredients, dipping in egg, coating in breadcrumbs, placing coated dough on plate",
+      "rationale": "The before and after activities show a clear transition from preparing potato balls to preparing a different type of coated food item (potato dough). The steps and materials used are distinctly different."
+    },
+    {
+      "candidate_id": "C098",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "eating noodles, preparing food, eating rice, placing sushi rolls",
+      "after_activity": "arranging sushi rolls, placing bowls, preparing food, eating food, placing noodles, placing chicken legs",
+      "rationale": "The before and after activities show a clear transition from preparing and eating sushi to preparing and eating other foods. The context and types of food preparation have changed significantly."
+    },
+    {
+      "candidate_id": "C099",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "sprinkling pepper, wrapping gift, placing stamp, tying ribbon, holding wrapped gift, unfolding fabric, putting on fabric",
+      "after_activity": "placing fabric on table, picking up handbag, taking mirror selfie, adjusting clothing, looking at phone, walking through train window; putting on fabric, putting on handbag, taking photo, adjusting clothing",
+      "rationale": "The before and after activities show a clear transition from wrapping gifts and preparing for an event to getting ready for travel. The activities and context have changed significantly."
+    },
+    {
+      "candidate_id": "C100",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "placing potato slices, blending, pouring oil, mixing, chopping onion, placing bread pieces, placing lid, pouring oil, stirring breadcrumbs, chopping onion, carrot, placing ground beef",
+      "after_activity": "placing onion and carrot, transferring breadcrumbs, stirring, stirring mixture, cooking, peeling carrot, placing lid, pouring breadcrumbs, stirring, transferring ground beef, adding onion and crab stick, mixing, cooking",
+      "rationale": "The before and after activities show a clear transition from preparing potato and onion dishes to preparing a more complex dish involving multiple ingredients. The steps and ingredients have changed significantly."
+    },
+    {
+      "candidate_id": "C101",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "coating potato balls, placing potato balls, coating potato balls",
+      "after_activity": "coating potato balls, coating ball in breadcrumbs, placing coated balls on plate, pouring cream into pan, stirring onions, pouring sauce into pan, pouring liquid into pan",
+      "rationale": "The before and after activities show similar steps but with a slight variation in the final step. The broad activity of coating and placing potato balls remains consistent."
+    },
+    {
+      "candidate_id": "C102",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "coating ball in breadcrumbs, placing coated balls on plate, pouring cream into pan",
+      "after_activity": "pouring powder from a bottle into a pan, pouring liquid from a bottle into a pan, pouring cream into pan, stirring onions, pouring sauce into pan, pouring liquid into pan, pouring cream into bowl, mixing cream in bowl",
+      "rationale": "The before and after activities show similar steps but with a slight variation in the final step. The broad activity of coating and placing coated balls on a plate remains consistent."
+    },
+    {
+      "candidate_id": "C103",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "preparing food, eating, preparing food, placing bowl of soup, placing chicken legs, placing noodles, placing chicken legs, holding orange cloth",
+      "after_activity": "holding elastic band and orange fabric, holding orange fabric with pattern, placing orange fabric on drawer, placing white elastic band on sewing machine, sewing orange fabric with pattern, sewing orange fabric with green dots, holding orange pajama pants, pulling elastic band from pajama pants, holding elastic band, holding orange pajama pants, placing orange pajama pants in a drawer",
+      "rationale": "The before and after activities show a clear transition from preparing and eating food to sewing and organizing clothes. The context and types of activities have changed significantly."
+    },
+    {
+      "candidate_id": "C104",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "placing coated potato dough on a plate, coating potato dough in breadcrumbs, placing coated potato dough on a plate, pouring liquid into a pan",
+      "after_activity": "pouring liquid into pan, pouring cream into bowl, mixing cream in bowl, pouring mashed potatoes into a bowl with a hand mixer, mixing mashed potatoes with a hand mixer, pouring powder from a bottle into a pan, pouring liquid from a bottle into a pan",
+      "rationale": "The before and after activities show similar steps but with a slight variation in the final step. The broad activity of coating and placing coated dough on a plate remains consistent."
+    }
+  ]
+}
+```

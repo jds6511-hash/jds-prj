@@ -1,0 +1,62 @@
+```json
+{
+  "candidates": [
+    {
+      "candidate_id": "C001",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Preparing a curry dish involving chopping vegetables, blending potatoes, and mixing ingredients.",
+      "after_activity": "Cooking a mixture in a pan and preparing a different meal involving ground beef, onions, and crab sticks.",
+      "rationale": "The before and after activities show a significant change in the type of meal being prepared, from a curry to a different dish."
+    },
+    {
+      "candidate_id": "C002",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Wrapping a gift and preparing to tie a bow.",
+      "after_activity": "Putting on a handbag and taking photos, indicating a shift in activity but not a complete transition.",
+      "rationale": "The activities continue in the same context of gift wrapping, but there is a shift to personal grooming and photography, which does not constitute a new chapter."
+    },
+    {
+      "candidate_id": "C003",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "Preparing a curry dish involving chopping vegetables, blending potatoes, and mixing ingredients.",
+      "after_activity": "Cooking a mixture in a pan and preparing a different meal involving ground beef, onions, and crab sticks.",
+      "rationale": "The before and after activities show a significant change in the type of meal being prepared, from a curry to a different dish."
+    },
+    {
+      "candidate_id": "C004",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Cooking a mixture in a pan and preparing a meal involving ground beef, onions, and crab sticks.",
+      "after_activity": "Cooking a mixture in a pan and preparing a meal involving ground beef, onions, and crab sticks.",
+      "rationale": "The activities continue in the same context of cooking and preparing a meal, without a significant change in the overall activity."
+    },
+    {
+      "candidate_id": "C005",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Putting on a handbag and taking photos, adjusting clothing, and looking at a phone.",
+      "after_activity": "Looking at a train station sign and walking outside, entering a shop.",
+      "rationale": "The activities continue in the same context of personal grooming and travel, without a significant change in the overall activity."
+    },
+    {
+      "candidate_id": "C006",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Preparing an egg dish and arranging food on a plate.",
+      "after_activity": "Pouring sauce and olive oil, and wrapping a gift.",
+      "rationale": "The activities continue in the same context of food preparation and personal grooming, without a significant change in the overall activity."
+    },
+    {
+      "candidate_id": "C007",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Selecting a bottle of soy sauce.",
+      "after_activity": "Preparing a curry dish involving chopping vegetables, blending potatoes, and mixing ingredients.",
+      "rationale": "The activities continue in the same context of food preparation, without a significant change in the overall activity."
+    },
+    {
+      "candidate_id": "C008",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Chopping tomatoes, pouring and stirring egg yolk, and placing crispy balls on a plate.",
+      "after_activity": "Pouring sauce and olive oil, and stirring egg yolk in a measuring cup.",
+      "rationale": "The activities continue in the same context of food preparation, without a significant change in the overall activity."
+    }
+  ]
+}
+```

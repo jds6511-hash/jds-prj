@@ -1,0 +1,62 @@
+```json
+{
+  "candidates": [
+    {
+      "candidate_id": "C105",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "eating rice with kimchi, eating noodles with chopsticks and spoon, preparing food, eating curry udon",
+      "after_activity": "placing sushi rolls, arranging sushi rolls, placing bowl of soup, placing chicken legs in steamer, placing noodles in bowl, preparing food, eating food with spoon, preparing food",
+      "rationale": "The before activity involves eating various dishes, while the after activity focuses on preparing and placing sushi rolls and other items. This indicates a significant change in the broad activity."
+    },
+    {
+      "candidate_id": "C106",
+      "proposal": "AMBIGUOUS",
+      "before_activity": "eating cream curry udon, breaking apart breaded potato ball, eating breaded potato ball, eating curry udon, drinking water, eating breaded food item",
+      "after_activity": "eating rice with kimchi, eating curry udon, eating noodles with chopsticks and spoon",
+      "rationale": "The before and after activities show some overlap (eating curry udon) but also significant differences. The exact nature of the transition is unclear."
+    },
+    {
+      "candidate_id": "C107",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "stirring mixture, cooking mixture, peeling potato, transferring ground beef, adding onion and crab stick, mixing ingredients, cooking mixture, peeling potatoes",
+      "after_activity": "peeling potato, mixing mixture, forming mixture into balls, placing balls on plate, grating potato, mixing potato mixture, forming potato balls, coating potato balls, pouring liquid into bowl, mixing ingredients",
+      "rationale": "The broad activity of preparing and cooking a dish continues without a clear break or change in the overall process."
+    },
+    {
+      "candidate_id": "C108",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "transferring egg mixture, pouring olive oil onto tofu, placing tofu on plate, placing shredded cabbage on plate, tying hair into bun, adjusting hair bun",
+      "after_activity": "wrapping gift, placing stamp, tying ribbon, adjusting bow, sprinkling black pepper on food, holding two small boxes, placing a small pouch on a table, wrapping a small pouch, placing a stamp, tying a ribbon around a wrapped package, holding a wrapped package",
+      "rationale": "The before activity involves food preparation and personal grooming, while the after activity focuses on gift-wrapping and packaging. This represents a significant change in the broad activity."
+    },
+    {
+      "candidate_id": "C109",
+      "proposal": "AMBIGUOUS",
+      "before_activity": "placing sushi rolls, arranging sushi rolls, eating rice with kimchi, eating noodles with chopsticks and spoon, preparing food",
+      "after_activity": "placing bowl of soup, placing chicken legs in steamer, placing noodles in bowl, holding orange cloth, placing noodles in a bowl, holding orange pajama pants, preparing food, eating food with spoon, preparing food",
+      "rationale": "There is some overlap in the activities (e.g., preparing food), but the specific details of the activities before and after are not clearly different enough to determine a strong transition."
+    },
+    {
+      "candidate_id": "C110",
+      "proposal": "STRONG_TRANSITION_CANDIDATE",
+      "before_activity": "mixing curry powder and oil, chopping onion, peeling carrot, placing lid on pot, pouring breadcrumbs into bowl, stirring breadcrumbs with oil, chopping onion, chopping carrot, placing ground beef into bowl, adding onion and carrot to bowl, transferring toasted breadcrumbs into bowl",
+      "after_activity": "pouring breadcrumbs into bowl, stirring breadcrumbs, transferring ground beef into bowl, adding onion and crab stick to bowl, mixing ingredients, cooking mixture in pan, peeling potatoes",
+      "rationale": "The before activity involves preparing ingredients for a dish, while the after activity focuses on mixing and cooking the ingredients. This represents a significant change in the broad activity."
+    },
+    {
+      "candidate_id": "C111",
+      "proposal": "AMBIGUOUS",
+      "before_activity": "pouring sauce onto food, pouring olive oil onto tofu, placing crispy ball on plate, chopping tomato, cracking egg into measuring cup, stirring egg mixture in pan, transferring egg mixture onto plate, pouring olive oil onto tofu",
+      "after_activity": "pouring olive oil onto tofu, placing tofu on plate, placing shredded cabbage on plate, tying hair into bun, adjusting hair bun, sprinkling black pepper on food, walking through a room, placing a small box on a table, holding two small boxes",
+      "rationale": "The before and after activities show some overlap (pouring olive oil onto tofu) but also significant differences. The exact nature of the transition is unclear."
+    },
+    {
+      "candidate_id": "C112",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "eating rice with kimchi, eating curry udon, eating noodles with chopsticks and spoon",
+      "after_activity": "placing sushi rolls, arranging sushi rolls, placing bowl of soup, placing chicken legs in steamer, placing noodles in bowl, preparing food, eating food with spoon, eating rice with kimchi",
+      "rationale": "The broad activity of eating various dishes continues without a clear break or change in the overall process."
+    }
+  ]
+}
+```

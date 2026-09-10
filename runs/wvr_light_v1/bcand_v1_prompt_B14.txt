@@ -1,0 +1,243 @@
+You assess material changes in broad activity or task.
+
+For each opaque candidate, compare BEFORE and AFTER observations. Choose one
+proposal label. A strong proposal requires clear evidence of a broad material
+change. A weak proposal has limited evidence of change. Use NO_CHAPTER_TRANSITION
+when the broad activity continues. Use AMBIGUOUS when observations differ or
+are insufficient. Do not choose among alternative observation sets.
+
+Allowed proposal labels:
+STRONG_TRANSITION_CANDIDATE
+WEAK_TRANSITION_CANDIDATE
+NO_CHAPTER_TRANSITION
+AMBIGUOUS
+
+Return JSON only with this shape and no additional fields:
+{"candidates":[{"candidate_id":"Cxxx","proposal":"LABEL","before_activity":"TEXT","after_activity":"TEXT","rationale":"TEXT"}]}
+
+OBSERVATIONS
+Candidate C105
+BEFORE
+Observation Set A
+a person | eating | rice with kimchi
+Observation Set B
+person | eating | noodles with chopsticks and spoon
+person | preparing food | gimbal with gloves
+Observation Set C
+person | eating | curry udon
+AFTER
+Observation Set A
+person | placing | sushi roll on cutting board
+person | placing | sushi rolls on plate
+person | arranging | sushi rolls on plate
+person | placing | bowl of soup on table
+person | placing | chicken legs in steamer
+person | placing | noodles in bowl
+Observation Set B
+person | preparing food | gimbal with gloves
+person | eating | food with spoon
+person | preparing food | chicken with sauce
+Observation Set C
+person | placing | noodles in a bowl
+person | placing | chicken legs in a bowl
+
+Candidate C106
+BEFORE
+Observation Set A
+a person | eating | cream curry udon
+Observation Set B
+person | breaking apart | breaded potato ball
+person | eating | breaded potato ball
+person | eating | curry udon
+person | eating | breaded potato ball
+person | drinking | water
+person | eating | curry udon
+Observation Set C
+person | eating | noodles
+Observation Set D
+person | using chopsticks | picking up a breaded food item
+person | eating | breaded food item
+person | using chopsticks | picking up a breaded food item
+person | eating | breaded food item
+AFTER
+Observation Set A
+a person | eating | rice with kimchi
+Observation Set B
+person | eating | curry udon
+Observation Set C
+person | eating | noodles with chopsticks and spoon
+
+Candidate C107
+BEFORE
+Observation Set A
+person | stirring | mixture in a bowl with chopsticks
+person | cooking | mixture in a pan over direct heat
+person | peeling | potato with a peeler
+Observation Set B
+person | transferring | ground beef into bowl
+person | adding | onion and crab stick to bowl
+person | mixing | ingredients in bowl
+person | cooking | mixture in pan
+person | peeling | potatoes with peeler
+AFTER
+Observation Set A
+person | peeling | potato with a peeler
+person | mixing | mixture in a bowl with chopsticks
+person | forming | mixture into balls
+person | placing | balls on a plate
+Observation Set B
+person | grating | potato
+person | mixing | potato mixture
+person | forming | potato balls
+person | coating | potato balls
+person | placing | potato balls
+person | coating | potato balls
+Observation Set C
+person | pouring | liquid into a bowl
+person | mixing | ingredients in a bowl
+
+Candidate C108
+BEFORE
+Observation Set A
+hand | transferring | egg mixture onto plate
+hand | pouring | olive oil onto tofu
+hand | placing | tofu on plate
+hand | placing | shredded cabbage on plate
+person | tying | hair into bun
+person | adjusting | hair bun
+Observation Set B
+a woman | walking | through a room
+a woman | placing | a small box on a table
+Observation Set C
+woman | pouring | olive oil onto tofu
+woman | sprinkling | black pepper on food
+AFTER
+Observation Set A
+person | wrapping | gift in kraft paper
+person | placing | stamp on kraft paper bag
+person | tying | ribbon around kraft paper bag
+person | adjusting | bow on kraft paper bag
+Observation Set B
+woman | sprinkling | black pepper on food
+Observation Set C
+a woman | holding | two small boxes
+a woman | placing | a small pouch on a table
+a woman | wrapping | a small pouch in a brown paper bag
+a woman | placing | a stamp on a table
+a woman | tying | a ribbon around a wrapped package
+a woman | holding | a wrapped package
+
+Candidate C109
+BEFORE
+Observation Set A
+person | placing | sushi roll on cutting board
+person | placing | sushi rolls on plate
+person | arranging | sushi rolls on plate
+Observation Set B
+a person | eating | rice with kimchi
+Observation Set C
+person | eating | noodles with chopsticks and spoon
+person | preparing food | gimbal with gloves
+AFTER
+Observation Set A
+person | placing | bowl of soup on table
+person | placing | chicken legs in steamer
+person | placing | noodles in bowl
+person | placing | chicken legs in bowl
+person | holding | orange cloth
+Observation Set B
+person | placing | noodles in a bowl
+person | placing | chicken legs in a bowl
+person | holding | orange pajama pants
+Observation Set C
+person | preparing food | gimbal with gloves
+person | eating | food with spoon
+person | preparing food | chicken with sauce
+
+Candidate C110
+BEFORE
+Observation Set A
+person | mixing | curry powder and oil
+person | chopping | onion
+Observation Set B
+person | peeling | carrot
+person | placing | lid on pot
+person | pouring | breadcrumbs into bowl
+Observation Set C
+person | placing | lid on blender
+person | pouring | oil into bowl of breadcrumbs
+person | stirring | breadcrumbs with oil
+person | chopping | onion on cutting board
+person | chopping | carrot on cutting board
+person | placing | ground beef into bowl
+person | placing | onion and carrot into bowl with beef
+person | transferring | toasted breadcrumbs into bowl
+AFTER
+Observation Set A
+person | pouring | breadcrumbs into bowl
+person | stirring | breadcrumbs in bowl
+person | transferring | ground beef into bowl
+person | adding | onion and crab stick to bowl
+person | mixing | ingredients in bowl
+person | cooking | mixture in pan
+person | peeling | potatoes with peeler
+Observation Set B
+person | stirring | breadcrumbs in bowl
+Observation Set C
+person | stirring | mixture in a bowl with chopsticks
+person | cooking | mixture in a pan over direct heat
+person | peeling | potato with a peeler
+
+Candidate C111
+BEFORE
+Observation Set A
+woman | pouring | sauce onto food
+woman | pouring | olive oil onto tofu
+Observation Set B
+hand | placing | crispy ball on plate
+hand | chopping | tomato
+hand | cracking | egg into measuring cup
+hand | stirring | egg mixture in measuring cup
+hand | pouring | egg mixture into pan
+hand | stirring | egg mixture in pan
+hand | transferring | egg mixture onto plate
+hand | pouring | olive oil onto tofu
+Observation Set C
+person | holding up | orange fabric with green dots
+person | chopping | tomato
+person | pouring | egg yolk into measuring cup
+person | stirring | egg yolk in measuring cup
+AFTER
+Observation Set A
+hand | pouring | olive oil onto tofu
+hand | placing | tofu on plate
+hand | placing | shredded cabbage on plate
+person | tying | hair into bun
+person | adjusting | hair bun
+Observation Set B
+woman | sprinkling | black pepper on food
+Observation Set C
+a woman | walking | through a room
+a woman | placing | a small box on a table
+a woman | holding | two small boxes
+
+Candidate C112
+BEFORE
+Observation Set A
+a person | eating | rice with kimchi
+Observation Set B
+person | eating | curry udon
+Observation Set C
+person | eating | noodles with chopsticks and spoon
+AFTER
+Observation Set A
+person | placing | sushi roll on cutting board
+person | placing | sushi rolls on plate
+person | arranging | sushi rolls on plate
+person | placing | bowl of soup on table
+Observation Set B
+person | preparing food | gimbal with gloves
+person | eating | food with spoon
+Observation Set C
+a person | eating | rice with kimchi
+END OBSERVATIONS

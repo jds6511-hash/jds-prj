@@ -95,3 +95,8 @@ runs/casestudy_caption_retrieval/*/frames_for_discussion/
 # 재생성: scripts/aar_view.py (해시·수치는 final_report_facts JSON에 기록돼 있다)
 docs/finalization/AAR_SAMPLE_*.md
 docs/finalization/aar_sample_*.json
+
+# WVR boundary-candidate V1 sealed candidate-to-time artifacts. Keep local/server
+# copies for provenance, but never publish them before an authorized reveal.
+runs/wvr_light_v1/bcand_v1_blind_map.json
+runs/wvr_light_v1/bcand_v1_candidates.json

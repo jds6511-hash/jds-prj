@@ -1,0 +1,62 @@
+```json
+{
+  "candidates": [
+    {
+      "candidate_id": "C065",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is involved in food preparation activities such as chopping tomatoes, pouring egg yolk, and stirring egg mixtures. Hand is also seen placing crispy balls on a plate.",
+      "after_activity": "Woman is seen pouring olive oil onto tofu and placing tofu and shredded cabbage on plates. Person is also seen tying their hair into a bun.",
+      "rationale": "The broad activity of food preparation continues, but the specific tasks have changed from before to after."
+    },
+    {
+      "candidate_id": "C066",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Woman is wrapping a gift, placing a stamp, and tying a ribbon around a gift bag.",
+      "after_activity": "Person is holding a wrapped gift, unfolding and putting on fabric, and putting on a handbag. Woman is also holding a wrapped package.",
+      "rationale": "The broad activity of gift wrapping continues, but the specific tasks have changed from before to after."
+    },
+    {
+      "candidate_id": "C067",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is coating potato dough in breadcrumbs and pouring liquid into a pan.",
+      "after_activity": "Person is pouring mashed potatoes into a bowl with a hand mixer and mixing mashed potatoes. Also, person is pouring cream into a pan and mixing it in a bowl.",
+      "rationale": "The broad activity of cooking continues, but the specific tasks have changed from before to after."
+    },
+    {
+      "candidate_id": "C068",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is forming and coating potato balls, placing them, and coating them again. Also, person is pouring liquid into a bowl and mixing ingredients.",
+      "after_activity": "Person is coating potato balls, placing them on a plate, and pouring cream into a pan. Also, person is pouring liquid into a pan and mixing cream in a bowl.",
+      "rationale": "The broad activity of preparing and cooking potato balls continues, but the specific tasks have changed from before to after."
+    },
+    {
+      "candidate_id": "C069",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Woman is sprinkling black pepper on food, wrapping a small pouch, and tying a ribbon around a wrapped package.",
+      "after_activity": "Person is unfolding and putting on fabric, putting on a handbag, and taking a mirror selfie. Woman is also holding a wrapped package.",
+      "rationale": "The broad activity of gift wrapping and food preparation continues, but the specific tasks have changed from before to after."
+    },
+    {
+      "candidate_id": "C070",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Hand is placing a crispy ball on a plate, chopping tomato, cracking an egg into a measuring cup, and stirring an egg mixture. Person is sewing orange fabric with green dots and holding it up.",
+      "after_activity": "Woman is pouring sauce and olive oil onto food, sprinkling black pepper on food. Person is chopping tomato, pouring egg yolk, and stirring it. Hand is stirring and pouring egg mixture into a pan.",
+      "rationale": "The broad activity of food preparation continues, but the specific tasks have changed from before to after."
+    },
+    {
+      "candidate_id": "C071",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is eating food with a spoon, preparing chicken with sauce, placing bowls and chicken legs, and holding orange and pink cloths.",
+      "after_activity": "Person is pulling an elastic band from pajama pants, holding it and the pants, and placing them in a drawer. Person is also sewing orange fabric with a pattern.",
+      "rationale": "The broad activity of food preparation and sewing continues, but the specific tasks have changed from before to after."
+    },
+    {
+      "candidate_id": "C072",
+      "proposal": "NO_CHAPTER_TRANSITION",
+      "before_activity": "Person is holding orange fabric with a pattern, placing crispy balls on a plate, chopping tomato, cracking an egg, and stirring an egg mixture. Hand is also holding up orange fabric with green dots, chopping tomato, and pouring egg yolk.",
+      "after_activity": "Woman is pouring sauce and olive oil onto food, sprinkling black pepper on food. Hand is transferring egg mixture onto a plate, pouring olive oil onto tofu, and placing tofu and shredded cabbage on plates. Person is also tying their hair into a bun.",
+      "rationale": "The broad activity of food preparation continues, but the specific tasks have changed from before to after."
+    }
+  ]
+}
+```
