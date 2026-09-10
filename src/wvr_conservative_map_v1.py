@@ -115,6 +115,9 @@ EXPECTED_EVENTS_PER_WINDOW = {
     "W15": 9, "W16": 7, "W17": 6, "W18": 5, "W19": 12, "W20": 3, "W21": 8,
     "W22": 10, "W23": 10}
 
+if sum(EXPECTED_EVENTS_PER_WINDOW.values()) != EXPECTED_SOURCE_EVENT_COUNT:
+    raise RuntimeError("동결 event 수가 창별 합과 다르다")
+
 # 동결 verdict에서 §5 규칙으로 유도되는 region 구조 (tamper 감지용)
 EXPECTED_REGION_SCHEDULE = (
     ("R01", 0.0, 24.0, UNRESOLVED, ()),
@@ -324,9 +327,6 @@ def assert_source_events(events) -> None:
                            % event.get("event_id"))
         if window not in VALID_SOURCE_WINDOWS:
             raise MapError("모르는 source 창: %r" % window)
-    if len(events) != EXPECTED_SOURCE_EVENT_COUNT:
-        raise MapError("source event 수가 %d가 아니다: %d"
-                       % (EXPECTED_SOURCE_EVENT_COUNT, len(events)))
     per_window = {}
     for event in events:
         per_window[event["source_window"]] = \
@@ -641,9 +641,6 @@ def false_resolutions(document) -> list:
         if node.get("preferred_source") is not None:
             violations.append({"node_id": node["node_id"],
                                "reason": "선호 source가 지정됐다"})
-        if node["overlap_id"] in stitched:
-            violations.append({"node_id": node["node_id"],
-                               "reason": "conflict가 stitch group으로도 있다"})
     for overlap_id, node_id in stitched.items():
         if overlap_id in conflict_overlaps:
             violations.append({"node_id": node_id,

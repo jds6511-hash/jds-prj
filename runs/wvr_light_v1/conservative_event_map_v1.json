@@ -1,0 +1,5649 @@
+{
+ "artifact_name": "CONSERVATIVE_EVENT_MAP",
+ "coverage": {
+  "conflict_duration_sec": 240.0,
+  "conflict_intervals": [
+   [
+    48.0,
+    96.0
+   ],
+   [
+    192.0,
+    264.0
+   ],
+   [
+    312.0,
+    384.0
+   ],
+   [
+    480.0,
+    528.0
+   ]
+  ],
+  "note": "구간 길이는 coverage일 뿐 semantic 정확도가 아니다",
+  "semantic_truth_percentage": null,
+  "single_source_duration_sec": 48.0,
+  "stitchable_duration_sec": 288.0,
+  "stitchable_intervals": [
+   [
+    96.0,
+    192.0
+   ],
+   [
+    264.0,
+    312.0
+   ],
+   [
+    384.0,
+    480.0
+   ],
+   [
+    528.0,
+    576.0
+   ]
+  ],
+  "total_sec": 600.0,
+  "unresolved_duration_sec": 24.0,
+  "unresolved_intervals": [
+   [
+    0.0,
+    24.0
+   ]
+  ]
+ },
+ "event": "WVR_CONSERVATIVE_EVENT_MAP_SHADOW_V1",
+ "executor_state": {
+  "allowed_max_conclusion": "리뷰어가 PASS로 판정하면, 이 표현은 conflict를 숨기지 않은 채 Semantic Chapter 입력으로 쓸 수 있는 최소 조건을 만족한다.",
+  "chapter_generated": false,
+  "final_verdict_vocabulary": "CONSERVATIVE_EVENT_MAP_PASS / HOLD / INCONCLUSIVE",
+  "narrative_generated": false,
+  "new_inference_count": 0,
+  "new_llm_call_count": 0,
+  "region_count": 11,
+  "state": "EXECUTED / REVIEW_PENDING",
+  "verdict": null,
+  "verdict_by_executor": false
+ },
+ "lineage": [
+  {
+   "also_in_regions": [],
+   "end_sec": 28.0,
+   "event_id": "W01_E001",
+   "lineage_type": "single_source_event",
+   "node_memberships": [
+    "SS01"
+   ],
+   "primary_region": "R02",
+   "primary_region_class": "SINGLE_SOURCE",
+   "source_window": "W01",
+   "start_sec": 24.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 31.0,
+   "event_id": "W01_E002",
+   "lineage_type": "single_source_event",
+   "node_memberships": [
+    "SS01"
+   ],
+   "primary_region": "R02",
+   "primary_region_class": "SINGLE_SOURCE",
+   "source_window": "W01",
+   "start_sec": 28.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 34.0,
+   "event_id": "W01_E003",
+   "lineage_type": "single_source_event",
+   "node_memberships": [
+    "SS01"
+   ],
+   "primary_region": "R02",
+   "primary_region_class": "SINGLE_SOURCE",
+   "source_window": "W01",
+   "start_sec": 31.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 37.0,
+   "event_id": "W01_E004",
+   "lineage_type": "single_source_event",
+   "node_memberships": [
+    "SS01"
+   ],
+   "primary_region": "R02",
+   "primary_region_class": "SINGLE_SOURCE",
+   "source_window": "W01",
+   "start_sec": 34.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 40.0,
+   "event_id": "W01_E005",
+   "lineage_type": "single_source_event",
+   "node_memberships": [
+    "SS01"
+   ],
+   "primary_region": "R02",
+   "primary_region_class": "SINGLE_SOURCE",
+   "source_window": "W01",
+   "start_sec": 37.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 43.0,
+   "event_id": "W01_E006",
+   "lineage_type": "single_source_event",
+   "node_memberships": [
+    "SS01"
+   ],
+   "primary_region": "R02",
+   "primary_region_class": "SINGLE_SOURCE",
+   "source_window": "W01",
+   "start_sec": 40.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 46.0,
+   "event_id": "W01_E007",
+   "lineage_type": "single_source_event",
+   "node_memberships": [
+    "SS01"
+   ],
+   "primary_region": "R02",
+   "primary_region_class": "SINGLE_SOURCE",
+   "source_window": "W01",
+   "start_sec": 43.0
+  },
+  {
+   "also_in_regions": [
+    "R03"
+   ],
+   "end_sec": 49.0,
+   "event_id": "W01_E008",
+   "lineage_type": "single_source_event",
+   "node_memberships": [
+    "CB001",
+    "SS01"
+   ],
+   "primary_region": "R02",
+   "primary_region_class": "SINGLE_SOURCE",
+   "source_window": "W01",
+   "start_sec": 46.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 52.0,
+   "event_id": "W01_E009",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB001"
+   ],
+   "primary_region": "R03",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W01",
+   "start_sec": 49.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 55.0,
+   "event_id": "W01_E010",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB001"
+   ],
+   "primary_region": "R03",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W01",
+   "start_sec": 52.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 72.0,
+   "event_id": "W01_E011",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB001"
+   ],
+   "primary_region": "R03",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W01",
+   "start_sec": 55.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 52.0,
+   "event_id": "W02_E001",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB001"
+   ],
+   "primary_region": "R03",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W02",
+   "start_sec": 48.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 55.0,
+   "event_id": "W02_E002",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB001"
+   ],
+   "primary_region": "R03",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W02",
+   "start_sec": 52.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 58.0,
+   "event_id": "W02_E003",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB001"
+   ],
+   "primary_region": "R03",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W02",
+   "start_sec": 55.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 62.0,
+   "event_id": "W02_E004",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB001"
+   ],
+   "primary_region": "R03",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W02",
+   "start_sec": 58.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 66.0,
+   "event_id": "W02_E005",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB001"
+   ],
+   "primary_region": "R03",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W02",
+   "start_sec": 62.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 70.0,
+   "event_id": "W02_E006",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB001"
+   ],
+   "primary_region": "R03",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W02",
+   "start_sec": 66.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 74.0,
+   "event_id": "W02_E007",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB001",
+    "CB002"
+   ],
+   "primary_region": "R03",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W02",
+   "start_sec": 70.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 78.0,
+   "event_id": "W02_E008",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB002"
+   ],
+   "primary_region": "R03",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W02",
+   "start_sec": 74.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 82.0,
+   "event_id": "W02_E009",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB002"
+   ],
+   "primary_region": "R03",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W02",
+   "start_sec": 78.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 86.0,
+   "event_id": "W02_E010",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB002"
+   ],
+   "primary_region": "R03",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W02",
+   "start_sec": 82.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 76.0,
+   "event_id": "W03_E001",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB002"
+   ],
+   "primary_region": "R03",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W03",
+   "start_sec": 72.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 80.0,
+   "event_id": "W03_E002",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB002"
+   ],
+   "primary_region": "R03",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W03",
+   "start_sec": 76.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 84.0,
+   "event_id": "W03_E003",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB002"
+   ],
+   "primary_region": "R03",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W03",
+   "start_sec": 80.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 88.0,
+   "event_id": "W03_E004",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB002"
+   ],
+   "primary_region": "R03",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W03",
+   "start_sec": 84.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 92.0,
+   "event_id": "W03_E005",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB002"
+   ],
+   "primary_region": "R03",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W03",
+   "start_sec": 88.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 96.0,
+   "event_id": "W03_E006",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB002"
+   ],
+   "primary_region": "R03",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W03",
+   "start_sec": 92.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 100.0,
+   "event_id": "W03_E007",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG001"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W03",
+   "start_sec": 96.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 104.0,
+   "event_id": "W03_E008",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG001"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W03",
+   "start_sec": 100.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 120.0,
+   "event_id": "W03_E009",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG001"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W03",
+   "start_sec": 104.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 100.0,
+   "event_id": "W04_E001",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG001"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W04",
+   "start_sec": 96.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 103.0,
+   "event_id": "W04_E002",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG001"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W04",
+   "start_sec": 100.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 123.0,
+   "event_id": "W04_E003",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG001",
+    "SG002"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W04",
+   "start_sec": 103.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 127.0,
+   "event_id": "W04_E004",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG002"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W04",
+   "start_sec": 123.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 131.0,
+   "event_id": "W04_E005",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG002"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W04",
+   "start_sec": 127.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 144.0,
+   "event_id": "W04_E006",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG002"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W04",
+   "start_sec": 131.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 125.0,
+   "event_id": "W05_E001",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG002"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W05",
+   "start_sec": 120.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 130.0,
+   "event_id": "W05_E002",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG002"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W05",
+   "start_sec": 125.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 135.0,
+   "event_id": "W05_E003",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG002"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W05",
+   "start_sec": 130.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 140.0,
+   "event_id": "W05_E004",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG002"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W05",
+   "start_sec": 135.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 145.0,
+   "event_id": "W05_E005",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG002",
+    "SG003"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W05",
+   "start_sec": 140.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 168.0,
+   "event_id": "W05_E006",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG003"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W05",
+   "start_sec": 145.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 149.0,
+   "event_id": "W06_E001",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG003"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W06",
+   "start_sec": 144.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 153.0,
+   "event_id": "W06_E002",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG003"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W06",
+   "start_sec": 149.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 157.0,
+   "event_id": "W06_E003",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG003"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W06",
+   "start_sec": 153.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 161.0,
+   "event_id": "W06_E004",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG003"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W06",
+   "start_sec": 157.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 165.0,
+   "event_id": "W06_E005",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG003"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W06",
+   "start_sec": 161.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 170.0,
+   "event_id": "W06_E006",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG003",
+    "SG004"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W06",
+   "start_sec": 165.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 175.0,
+   "event_id": "W06_E007",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG004"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W06",
+   "start_sec": 170.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 180.0,
+   "event_id": "W06_E008",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG004"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W06",
+   "start_sec": 175.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 185.0,
+   "event_id": "W06_E009",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG004"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W06",
+   "start_sec": 180.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 192.0,
+   "event_id": "W06_E010",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG004"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W06",
+   "start_sec": 185.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 175.0,
+   "event_id": "W07_E001",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG004"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W07",
+   "start_sec": 168.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 184.0,
+   "event_id": "W07_E002",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG004"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W07",
+   "start_sec": 175.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 187.0,
+   "event_id": "W07_E003",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG004"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W07",
+   "start_sec": 184.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 190.0,
+   "event_id": "W07_E004",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG004"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W07",
+   "start_sec": 187.0
+  },
+  {
+   "also_in_regions": [
+    "R05"
+   ],
+   "end_sec": 193.0,
+   "event_id": "W07_E005",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "CB003",
+    "SG004"
+   ],
+   "primary_region": "R04",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W07",
+   "start_sec": 190.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 202.0,
+   "event_id": "W07_E006",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB003"
+   ],
+   "primary_region": "R05",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W07",
+   "start_sec": 193.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 205.0,
+   "event_id": "W07_E007",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB003"
+   ],
+   "primary_region": "R05",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W07",
+   "start_sec": 202.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 216.0,
+   "event_id": "W07_E008",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB003"
+   ],
+   "primary_region": "R05",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W07",
+   "start_sec": 205.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 195.0,
+   "event_id": "W08_E001",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB003"
+   ],
+   "primary_region": "R05",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W08",
+   "start_sec": 192.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 240.0,
+   "event_id": "W08_E002",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB003",
+    "CB004"
+   ],
+   "primary_region": "R05",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W08",
+   "start_sec": 195.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 220.0,
+   "event_id": "W09_E001",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB004"
+   ],
+   "primary_region": "R05",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W09",
+   "start_sec": 216.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 224.0,
+   "event_id": "W09_E002",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB004"
+   ],
+   "primary_region": "R05",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W09",
+   "start_sec": 220.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 228.0,
+   "event_id": "W09_E003",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB004"
+   ],
+   "primary_region": "R05",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W09",
+   "start_sec": 224.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 232.0,
+   "event_id": "W09_E004",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB004"
+   ],
+   "primary_region": "R05",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W09",
+   "start_sec": 228.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 236.0,
+   "event_id": "W09_E005",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB004"
+   ],
+   "primary_region": "R05",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W09",
+   "start_sec": 232.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 264.0,
+   "event_id": "W09_E006",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB004",
+    "CB005"
+   ],
+   "primary_region": "R05",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W09",
+   "start_sec": 236.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 245.0,
+   "event_id": "W10_E001",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB005"
+   ],
+   "primary_region": "R05",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W10",
+   "start_sec": 240.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 255.0,
+   "event_id": "W10_E002",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB005"
+   ],
+   "primary_region": "R05",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W10",
+   "start_sec": 245.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 260.0,
+   "event_id": "W10_E003",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB005"
+   ],
+   "primary_region": "R05",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W10",
+   "start_sec": 255.0
+  },
+  {
+   "also_in_regions": [
+    "R05"
+   ],
+   "end_sec": 288.0,
+   "event_id": "W10_E004",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "CB005",
+    "SG005"
+   ],
+   "primary_region": "R06",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W10",
+   "start_sec": 260.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 272.0,
+   "event_id": "W11_E001",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG005"
+   ],
+   "primary_region": "R06",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W11",
+   "start_sec": 264.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 280.0,
+   "event_id": "W11_E002",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG005"
+   ],
+   "primary_region": "R06",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W11",
+   "start_sec": 272.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 288.0,
+   "event_id": "W11_E003",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG005"
+   ],
+   "primary_region": "R06",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W11",
+   "start_sec": 280.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 296.0,
+   "event_id": "W11_E004",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG006"
+   ],
+   "primary_region": "R06",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W11",
+   "start_sec": 288.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 304.0,
+   "event_id": "W11_E005",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG006"
+   ],
+   "primary_region": "R06",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W11",
+   "start_sec": 296.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 312.0,
+   "event_id": "W11_E006",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG006"
+   ],
+   "primary_region": "R06",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W11",
+   "start_sec": 304.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 293.0,
+   "event_id": "W12_E001",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG006"
+   ],
+   "primary_region": "R06",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W12",
+   "start_sec": 288.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 297.0,
+   "event_id": "W12_E002",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG006"
+   ],
+   "primary_region": "R06",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W12",
+   "start_sec": 293.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 301.0,
+   "event_id": "W12_E003",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG006"
+   ],
+   "primary_region": "R06",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W12",
+   "start_sec": 297.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 305.0,
+   "event_id": "W12_E004",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG006"
+   ],
+   "primary_region": "R06",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W12",
+   "start_sec": 301.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 310.0,
+   "event_id": "W12_E005",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG006"
+   ],
+   "primary_region": "R06",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W12",
+   "start_sec": 305.0
+  },
+  {
+   "also_in_regions": [
+    "R06"
+   ],
+   "end_sec": 336.0,
+   "event_id": "W12_E006",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB006",
+    "SG006"
+   ],
+   "primary_region": "R07",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W12",
+   "start_sec": 310.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 317.0,
+   "event_id": "W13_E001",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB006"
+   ],
+   "primary_region": "R07",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W13",
+   "start_sec": 312.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 360.0,
+   "event_id": "W13_E002",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB006",
+    "CB007"
+   ],
+   "primary_region": "R07",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W13",
+   "start_sec": 317.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 348.0,
+   "event_id": "W14_E001",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB007"
+   ],
+   "primary_region": "R07",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W14",
+   "start_sec": 336.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 376.0,
+   "event_id": "W14_E002",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB007",
+    "CB008"
+   ],
+   "primary_region": "R07",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W14",
+   "start_sec": 348.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 380.0,
+   "event_id": "W14_E003",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB008"
+   ],
+   "primary_region": "R07",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W14",
+   "start_sec": 376.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 384.0,
+   "event_id": "W14_E004",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB008"
+   ],
+   "primary_region": "R07",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W14",
+   "start_sec": 380.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 365.0,
+   "event_id": "W15_E001",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB008"
+   ],
+   "primary_region": "R07",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W15",
+   "start_sec": 360.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 370.0,
+   "event_id": "W15_E002",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB008"
+   ],
+   "primary_region": "R07",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W15",
+   "start_sec": 365.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 375.0,
+   "event_id": "W15_E003",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB008"
+   ],
+   "primary_region": "R07",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W15",
+   "start_sec": 370.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 380.0,
+   "event_id": "W15_E004",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB008"
+   ],
+   "primary_region": "R07",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W15",
+   "start_sec": 375.0
+  },
+  {
+   "also_in_regions": [
+    "R08"
+   ],
+   "end_sec": 385.0,
+   "event_id": "W15_E005",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB008",
+    "SG007"
+   ],
+   "primary_region": "R07",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W15",
+   "start_sec": 380.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 390.0,
+   "event_id": "W15_E006",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG007"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W15",
+   "start_sec": 385.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 400.0,
+   "event_id": "W15_E007",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG007"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W15",
+   "start_sec": 390.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 405.0,
+   "event_id": "W15_E008",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG007"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W15",
+   "start_sec": 400.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 408.0,
+   "event_id": "W15_E009",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG007"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W15",
+   "start_sec": 405.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 389.0,
+   "event_id": "W16_E001",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG007"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W16",
+   "start_sec": 384.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 400.0,
+   "event_id": "W16_E002",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG007"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W16",
+   "start_sec": 389.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 408.0,
+   "event_id": "W16_E003",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG007"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W16",
+   "start_sec": 400.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 412.0,
+   "event_id": "W16_E004",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG008"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W16",
+   "start_sec": 408.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 416.0,
+   "event_id": "W16_E005",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG008"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W16",
+   "start_sec": 412.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 420.0,
+   "event_id": "W16_E006",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG008"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W16",
+   "start_sec": 416.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 432.0,
+   "event_id": "W16_E007",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG008"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W16",
+   "start_sec": 420.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 413.0,
+   "event_id": "W17_E001",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG008"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W17",
+   "start_sec": 408.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 420.0,
+   "event_id": "W17_E002",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG008"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W17",
+   "start_sec": 413.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 426.0,
+   "event_id": "W17_E003",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG008"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W17",
+   "start_sec": 420.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 433.0,
+   "event_id": "W17_E004",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG008",
+    "SG009"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W17",
+   "start_sec": 426.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 440.0,
+   "event_id": "W17_E005",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG009"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W17",
+   "start_sec": 433.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 456.0,
+   "event_id": "W17_E006",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG009"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W17",
+   "start_sec": 440.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 440.0,
+   "event_id": "W18_E001",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG009"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W18",
+   "start_sec": 432.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 460.0,
+   "event_id": "W18_E002",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG009",
+    "SG010"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W18",
+   "start_sec": 440.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 470.0,
+   "event_id": "W18_E003",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG010"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W18",
+   "start_sec": 460.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 475.0,
+   "event_id": "W18_E004",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG010"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W18",
+   "start_sec": 470.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 480.0,
+   "event_id": "W18_E005",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG010"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W18",
+   "start_sec": 475.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 460.0,
+   "event_id": "W19_E001",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG010"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W19",
+   "start_sec": 456.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 464.0,
+   "event_id": "W19_E002",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG010"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W19",
+   "start_sec": 460.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 468.0,
+   "event_id": "W19_E003",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG010"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W19",
+   "start_sec": 464.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 472.0,
+   "event_id": "W19_E004",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG010"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W19",
+   "start_sec": 468.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 476.0,
+   "event_id": "W19_E005",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG010"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W19",
+   "start_sec": 472.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 480.0,
+   "event_id": "W19_E006",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG010"
+   ],
+   "primary_region": "R08",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W19",
+   "start_sec": 476.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 484.0,
+   "event_id": "W19_E007",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB009"
+   ],
+   "primary_region": "R09",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W19",
+   "start_sec": 480.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 488.0,
+   "event_id": "W19_E008",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB009"
+   ],
+   "primary_region": "R09",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W19",
+   "start_sec": 484.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 492.0,
+   "event_id": "W19_E009",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB009"
+   ],
+   "primary_region": "R09",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W19",
+   "start_sec": 488.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 496.0,
+   "event_id": "W19_E010",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB009"
+   ],
+   "primary_region": "R09",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W19",
+   "start_sec": 492.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 500.0,
+   "event_id": "W19_E011",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB009"
+   ],
+   "primary_region": "R09",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W19",
+   "start_sec": 496.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 504.0,
+   "event_id": "W19_E012",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB009"
+   ],
+   "primary_region": "R09",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W19",
+   "start_sec": 500.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 483.0,
+   "event_id": "W20_E001",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB009"
+   ],
+   "primary_region": "R09",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W20",
+   "start_sec": 480.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 486.0,
+   "event_id": "W20_E002",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB009"
+   ],
+   "primary_region": "R09",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W20",
+   "start_sec": 483.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 528.0,
+   "event_id": "W20_E003",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB009",
+    "CB010"
+   ],
+   "primary_region": "R09",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W20",
+   "start_sec": 486.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 509.0,
+   "event_id": "W21_E001",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB010"
+   ],
+   "primary_region": "R09",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W21",
+   "start_sec": 504.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 513.0,
+   "event_id": "W21_E002",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB010"
+   ],
+   "primary_region": "R09",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W21",
+   "start_sec": 509.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 520.0,
+   "event_id": "W21_E003",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB010"
+   ],
+   "primary_region": "R09",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W21",
+   "start_sec": 513.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 524.0,
+   "event_id": "W21_E004",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB010"
+   ],
+   "primary_region": "R09",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W21",
+   "start_sec": 520.0
+  },
+  {
+   "also_in_regions": [
+    "R10"
+   ],
+   "end_sec": 529.0,
+   "event_id": "W21_E005",
+   "lineage_type": "conflict_observation_member",
+   "node_memberships": [
+    "CB010",
+    "SG011"
+   ],
+   "primary_region": "R09",
+   "primary_region_class": "CONFLICT",
+   "source_window": "W21",
+   "start_sec": 524.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 533.0,
+   "event_id": "W21_E006",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG011"
+   ],
+   "primary_region": "R10",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W21",
+   "start_sec": 529.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 541.0,
+   "event_id": "W21_E007",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG011"
+   ],
+   "primary_region": "R10",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W21",
+   "start_sec": 533.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 552.0,
+   "event_id": "W21_E008",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG011"
+   ],
+   "primary_region": "R10",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W21",
+   "start_sec": 541.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 533.0,
+   "event_id": "W22_E001",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG011"
+   ],
+   "primary_region": "R10",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W22",
+   "start_sec": 528.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 537.0,
+   "event_id": "W22_E002",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG011"
+   ],
+   "primary_region": "R10",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W22",
+   "start_sec": 533.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 541.0,
+   "event_id": "W22_E003",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG011"
+   ],
+   "primary_region": "R10",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W22",
+   "start_sec": 537.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 545.0,
+   "event_id": "W22_E004",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG011"
+   ],
+   "primary_region": "R10",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W22",
+   "start_sec": 541.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 550.0,
+   "event_id": "W22_E005",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG011"
+   ],
+   "primary_region": "R10",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W22",
+   "start_sec": 545.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 555.0,
+   "event_id": "W22_E006",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG011",
+    "SG012"
+   ],
+   "primary_region": "R10",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W22",
+   "start_sec": 550.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 560.0,
+   "event_id": "W22_E007",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG012"
+   ],
+   "primary_region": "R10",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W22",
+   "start_sec": 555.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 565.0,
+   "event_id": "W22_E008",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG012"
+   ],
+   "primary_region": "R10",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W22",
+   "start_sec": 560.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 570.0,
+   "event_id": "W22_E009",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG012"
+   ],
+   "primary_region": "R10",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W22",
+   "start_sec": 565.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 576.0,
+   "event_id": "W22_E010",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG012"
+   ],
+   "primary_region": "R10",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W22",
+   "start_sec": 570.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 557.0,
+   "event_id": "W23_E001",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG012"
+   ],
+   "primary_region": "R10",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W23",
+   "start_sec": 552.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 561.0,
+   "event_id": "W23_E002",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG012"
+   ],
+   "primary_region": "R10",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W23",
+   "start_sec": 557.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 565.0,
+   "event_id": "W23_E003",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG012"
+   ],
+   "primary_region": "R10",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W23",
+   "start_sec": 561.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 573.0,
+   "event_id": "W23_E004",
+   "lineage_type": "stitch_group_member",
+   "node_memberships": [
+    "SG012"
+   ],
+   "primary_region": "R10",
+   "primary_region_class": "STITCHABLE",
+   "source_window": "W23",
+   "start_sec": 565.0
+  },
+  {
+   "also_in_regions": [
+    "R10"
+   ],
+   "end_sec": 580.0,
+   "event_id": "W23_E005",
+   "lineage_type": "single_source_event",
+   "node_memberships": [
+    "SG012",
+    "SS02"
+   ],
+   "primary_region": "R11",
+   "primary_region_class": "SINGLE_SOURCE",
+   "source_window": "W23",
+   "start_sec": 573.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 585.0,
+   "event_id": "W23_E006",
+   "lineage_type": "single_source_event",
+   "node_memberships": [
+    "SS02"
+   ],
+   "primary_region": "R11",
+   "primary_region_class": "SINGLE_SOURCE",
+   "source_window": "W23",
+   "start_sec": 580.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 590.0,
+   "event_id": "W23_E007",
+   "lineage_type": "single_source_event",
+   "node_memberships": [
+    "SS02"
+   ],
+   "primary_region": "R11",
+   "primary_region_class": "SINGLE_SOURCE",
+   "source_window": "W23",
+   "start_sec": 585.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 593.0,
+   "event_id": "W23_E008",
+   "lineage_type": "single_source_event",
+   "node_memberships": [
+    "SS02"
+   ],
+   "primary_region": "R11",
+   "primary_region_class": "SINGLE_SOURCE",
+   "source_window": "W23",
+   "start_sec": 590.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 597.0,
+   "event_id": "W23_E009",
+   "lineage_type": "single_source_event",
+   "node_memberships": [
+    "SS02"
+   ],
+   "primary_region": "R11",
+   "primary_region_class": "SINGLE_SOURCE",
+   "source_window": "W23",
+   "start_sec": 593.0
+  },
+  {
+   "also_in_regions": [],
+   "end_sec": 600.0,
+   "event_id": "W23_E010",
+   "lineage_type": "single_source_event",
+   "node_memberships": [
+    "SS02"
+   ],
+   "primary_region": "R11",
+   "primary_region_class": "SINGLE_SOURCE",
+   "source_window": "W23",
+   "start_sec": 597.0
+  }
+ ],
+ "lineage_summary": {
+  "events_missing": 0,
+  "events_represented": 160,
+  "missing_event_ids": [],
+  "source_events_total": 160,
+  "straddling_event_count": 7
+ },
+ "nodes": {
+  "conflict_blocks": [
+   {
+    "end_sec": 72.0,
+    "frame_stamps": [
+     48.0,
+     50.0,
+     52.0,
+     54.0,
+     56.0,
+     58.0,
+     60.0,
+     62.0,
+     64.0,
+     66.0,
+     68.0,
+     70.0
+    ],
+    "node_id": "CB001",
+    "node_type": "CONFLICT_BLOCK",
+    "observation_set_1": {
+     "event_count": 4,
+     "events": [
+      {
+       "action": "blending",
+       "actor": "person",
+       "clipped": true,
+       "clipped_end": 49.0,
+       "clipped_start": 48.0,
+       "event_id": "W01_E008",
+       "object_or_state": "potato slices",
+       "original_end": 49.0,
+       "original_start": 46.0,
+       "source_window": "W01"
+      },
+      {
+       "action": "pouring",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 52.0,
+       "clipped_start": 49.0,
+       "event_id": "W01_E009",
+       "object_or_state": "oil into bowl with curry powder",
+       "original_end": 52.0,
+       "original_start": 49.0,
+       "source_window": "W01"
+      },
+      {
+       "action": "mixing",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 55.0,
+       "clipped_start": 52.0,
+       "event_id": "W01_E010",
+       "object_or_state": "curry powder and oil",
+       "original_end": 55.0,
+       "original_start": 52.0,
+       "source_window": "W01"
+      },
+      {
+       "action": "chopping",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 72.0,
+       "clipped_start": 55.0,
+       "event_id": "W01_E011",
+       "object_or_state": "onion",
+       "original_end": 72.0,
+       "original_start": 55.0,
+       "source_window": "W01"
+      }
+     ],
+     "source": "W01"
+    },
+    "observation_set_2": {
+     "event_count": 7,
+     "events": [
+      {
+       "action": "placing",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 52.0,
+       "clipped_start": 48.0,
+       "event_id": "W02_E001",
+       "object_or_state": "bread pieces into blender",
+       "original_end": 52.0,
+       "original_start": 48.0,
+       "source_window": "W02"
+      },
+      {
+       "action": "placing",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 55.0,
+       "clipped_start": 52.0,
+       "event_id": "W02_E002",
+       "object_or_state": "lid on blender",
+       "original_end": 55.0,
+       "original_start": 52.0,
+       "source_window": "W02"
+      },
+      {
+       "action": "pouring",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 58.0,
+       "clipped_start": 55.0,
+       "event_id": "W02_E003",
+       "object_or_state": "oil into bowl of breadcrumbs",
+       "original_end": 58.0,
+       "original_start": 55.0,
+       "source_window": "W02"
+      },
+      {
+       "action": "stirring",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 62.0,
+       "clipped_start": 58.0,
+       "event_id": "W02_E004",
+       "object_or_state": "breadcrumbs with oil",
+       "original_end": 62.0,
+       "original_start": 58.0,
+       "source_window": "W02"
+      },
+      {
+       "action": "chopping",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 66.0,
+       "clipped_start": 62.0,
+       "event_id": "W02_E005",
+       "object_or_state": "onion on cutting board",
+       "original_end": 66.0,
+       "original_start": 62.0,
+       "source_window": "W02"
+      },
+      {
+       "action": "chopping",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 70.0,
+       "clipped_start": 66.0,
+       "event_id": "W02_E006",
+       "object_or_state": "carrot on cutting board",
+       "original_end": 70.0,
+       "original_start": 66.0,
+       "source_window": "W02"
+      },
+      {
+       "action": "placing",
+       "actor": "person",
+       "clipped": true,
+       "clipped_end": 72.0,
+       "clipped_start": 70.0,
+       "event_id": "W02_E007",
+       "object_or_state": "ground beef into bowl",
+       "original_end": 74.0,
+       "original_start": 70.0,
+       "source_window": "W02"
+      }
+     ],
+     "source": "W02"
+    },
+    "ordering_basis": "source 창 id 오름차순 — 선호·우선순위가 아니다",
+    "overlap_id": "O02",
+    "preferred_source": null,
+    "region_id": "R03",
+    "resolution": "NONE",
+    "reviewer_relation": "CONFLICT",
+    "reviewer_status": "MATERIAL_CONFLICT",
+    "start_sec": 48.0
+   },
+   {
+    "end_sec": 96.0,
+    "frame_stamps": [
+     72.0,
+     74.0,
+     76.0,
+     78.0,
+     80.0,
+     82.0,
+     84.0,
+     86.0,
+     88.0,
+     90.0,
+     92.0,
+     94.0
+    ],
+    "node_id": "CB002",
+    "node_type": "CONFLICT_BLOCK",
+    "observation_set_1": {
+     "event_count": 4,
+     "events": [
+      {
+       "action": "placing",
+       "actor": "person",
+       "clipped": true,
+       "clipped_end": 74.0,
+       "clipped_start": 72.0,
+       "event_id": "W02_E007",
+       "object_or_state": "ground beef into bowl",
+       "original_end": 74.0,
+       "original_start": 70.0,
+       "source_window": "W02"
+      },
+      {
+       "action": "placing",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 78.0,
+       "clipped_start": 74.0,
+       "event_id": "W02_E008",
+       "object_or_state": "onion and carrot into bowl with beef",
+       "original_end": 78.0,
+       "original_start": 74.0,
+       "source_window": "W02"
+      },
+      {
+       "action": "transferring",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 82.0,
+       "clipped_start": 78.0,
+       "event_id": "W02_E009",
+       "object_or_state": "toasted breadcrumbs into bowl",
+       "original_end": 82.0,
+       "original_start": 78.0,
+       "source_window": "W02"
+      },
+      {
+       "action": "stirring",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 86.0,
+       "clipped_start": 82.0,
+       "event_id": "W02_E010",
+       "object_or_state": "breadcrumbs in bowl",
+       "original_end": 86.0,
+       "original_start": 82.0,
+       "source_window": "W02"
+      }
+     ],
+     "source": "W02"
+    },
+    "observation_set_2": {
+     "event_count": 6,
+     "events": [
+      {
+       "action": "peeling",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 76.0,
+       "clipped_start": 72.0,
+       "event_id": "W03_E001",
+       "object_or_state": "carrot",
+       "original_end": 76.0,
+       "original_start": 72.0,
+       "source_window": "W03"
+      },
+      {
+       "action": "placing",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 80.0,
+       "clipped_start": 76.0,
+       "event_id": "W03_E002",
+       "object_or_state": "lid on pot",
+       "original_end": 80.0,
+       "original_start": 76.0,
+       "source_window": "W03"
+      },
+      {
+       "action": "pouring",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 84.0,
+       "clipped_start": 80.0,
+       "event_id": "W03_E003",
+       "object_or_state": "breadcrumbs into bowl",
+       "original_end": 84.0,
+       "original_start": 80.0,
+       "source_window": "W03"
+      },
+      {
+       "action": "stirring",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 88.0,
+       "clipped_start": 84.0,
+       "event_id": "W03_E004",
+       "object_or_state": "breadcrumbs in bowl",
+       "original_end": 88.0,
+       "original_start": 84.0,
+       "source_window": "W03"
+      },
+      {
+       "action": "transferring",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 92.0,
+       "clipped_start": 88.0,
+       "event_id": "W03_E005",
+       "object_or_state": "ground beef into bowl",
+       "original_end": 92.0,
+       "original_start": 88.0,
+       "source_window": "W03"
+      },
+      {
+       "action": "adding",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 96.0,
+       "clipped_start": 92.0,
+       "event_id": "W03_E006",
+       "object_or_state": "onion and crab stick to bowl",
+       "original_end": 96.0,
+       "original_start": 92.0,
+       "source_window": "W03"
+      }
+     ],
+     "source": "W03"
+    },
+    "ordering_basis": "source 창 id 오름차순 — 선호·우선순위가 아니다",
+    "overlap_id": "O03",
+    "preferred_source": null,
+    "region_id": "R03",
+    "resolution": "NONE",
+    "reviewer_relation": "CONFLICT",
+    "reviewer_status": "MATERIAL_CONFLICT",
+    "start_sec": 72.0
+   },
+   {
+    "end_sec": 216.0,
+    "frame_stamps": [
+     192.0,
+     194.0,
+     196.0,
+     198.0,
+     200.0,
+     202.0,
+     204.0,
+     206.0,
+     208.0,
+     210.0,
+     212.0,
+     214.0
+    ],
+    "node_id": "CB003",
+    "node_type": "CONFLICT_BLOCK",
+    "observation_set_1": {
+     "event_count": 4,
+     "events": [
+      {
+       "action": "pouring",
+       "actor": "person",
+       "clipped": true,
+       "clipped_end": 193.0,
+       "clipped_start": 192.0,
+       "event_id": "W07_E005",
+       "object_or_state": "sauce into pan",
+       "original_end": 193.0,
+       "original_start": 190.0,
+       "source_window": "W07"
+      },
+      {
+       "action": "pouring",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 202.0,
+       "clipped_start": 193.0,
+       "event_id": "W07_E006",
+       "object_or_state": "liquid into pan",
+       "original_end": 202.0,
+       "original_start": 193.0,
+       "source_window": "W07"
+      },
+      {
+       "action": "pouring",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 205.0,
+       "clipped_start": 202.0,
+       "event_id": "W07_E007",
+       "object_or_state": "cream into bowl",
+       "original_end": 205.0,
+       "original_start": 202.0,
+       "source_window": "W07"
+      },
+      {
+       "action": "mixing",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 216.0,
+       "clipped_start": 205.0,
+       "event_id": "W07_E008",
+       "object_or_state": "cream in bowl",
+       "original_end": 216.0,
+       "original_start": 205.0,
+       "source_window": "W07"
+      }
+     ],
+     "source": "W07"
+    },
+    "observation_set_2": {
+     "event_count": 2,
+     "events": [
+      {
+       "action": "pouring",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 195.0,
+       "clipped_start": 192.0,
+       "event_id": "W08_E001",
+       "object_or_state": "powder from a bottle into a pan",
+       "original_end": 195.0,
+       "original_start": 192.0,
+       "source_window": "W08"
+      },
+      {
+       "action": "pouring",
+       "actor": "person",
+       "clipped": true,
+       "clipped_end": 216.0,
+       "clipped_start": 195.0,
+       "event_id": "W08_E002",
+       "object_or_state": "liquid from a bottle into a pan",
+       "original_end": 240.0,
+       "original_start": 195.0,
+       "source_window": "W08"
+      }
+     ],
+     "source": "W08"
+    },
+    "ordering_basis": "source 창 id 오름차순 — 선호·우선순위가 아니다",
+    "overlap_id": "O08",
+    "preferred_source": null,
+    "region_id": "R05",
+    "resolution": "NONE",
+    "reviewer_relation": "CONFLICT",
+    "reviewer_status": "MATERIAL_CONFLICT",
+    "start_sec": 192.0
+   },
+   {
+    "end_sec": 240.0,
+    "frame_stamps": [
+     216.0,
+     218.0,
+     220.0,
+     222.0,
+     224.0,
+     226.0,
+     228.0,
+     230.0,
+     232.0,
+     234.0,
+     236.0,
+     238.0
+    ],
+    "node_id": "CB004",
+    "node_type": "CONFLICT_BLOCK",
+    "observation_set_1": {
+     "event_count": 1,
+     "events": [
+      {
+       "action": "pouring",
+       "actor": "person",
+       "clipped": true,
+       "clipped_end": 240.0,
+       "clipped_start": 216.0,
+       "event_id": "W08_E002",
+       "object_or_state": "liquid from a bottle into a pan",
+       "original_end": 240.0,
+       "original_start": 195.0,
+       "source_window": "W08"
+      }
+     ],
+     "source": "W08"
+    },
+    "observation_set_2": {
+     "event_count": 6,
+     "events": [
+      {
+       "action": "pouring",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 220.0,
+       "clipped_start": 216.0,
+       "event_id": "W09_E001",
+       "object_or_state": "mashed potatoes into a bowl with a hand mixer",
+       "original_end": 220.0,
+       "original_start": 216.0,
+       "source_window": "W09"
+      },
+      {
+       "action": "mixing",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 224.0,
+       "clipped_start": 220.0,
+       "event_id": "W09_E002",
+       "object_or_state": "mashed potatoes with a hand mixer",
+       "original_end": 224.0,
+       "original_start": 220.0,
+       "source_window": "W09"
+      },
+      {
+       "action": "transferring",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 228.0,
+       "clipped_start": 224.0,
+       "event_id": "W09_E003",
+       "object_or_state": "mashed potatoes into a piping bag",
+       "original_end": 228.0,
+       "original_start": 224.0,
+       "source_window": "W09"
+      },
+      {
+       "action": "placing",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 232.0,
+       "clipped_start": 228.0,
+       "event_id": "W09_E004",
+       "object_or_state": "potato croquettes on a wire rack",
+       "original_end": 232.0,
+       "original_start": 228.0,
+       "source_window": "W09"
+      },
+      {
+       "action": "pouring",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 236.0,
+       "clipped_start": 232.0,
+       "event_id": "W09_E005",
+       "object_or_state": "oil into a baking tray",
+       "original_end": 236.0,
+       "original_start": 232.0,
+       "source_window": "W09"
+      },
+      {
+       "action": "pouring",
+       "actor": "person",
+       "clipped": true,
+       "clipped_end": 240.0,
+       "clipped_start": 236.0,
+       "event_id": "W09_E006",
+       "object_or_state": "butter into a bowl",
+       "original_end": 264.0,
+       "original_start": 236.0,
+       "source_window": "W09"
+      }
+     ],
+     "source": "W09"
+    },
+    "ordering_basis": "source 창 id 오름차순 — 선호·우선순위가 아니다",
+    "overlap_id": "O09",
+    "preferred_source": null,
+    "region_id": "R05",
+    "resolution": "NONE",
+    "reviewer_relation": "CONFLICT",
+    "reviewer_status": "MATERIAL_CONFLICT",
+    "start_sec": 216.0
+   },
+   {
+    "end_sec": 264.0,
+    "frame_stamps": [
+     240.0,
+     242.0,
+     244.0,
+     246.0,
+     248.0,
+     250.0,
+     252.0,
+     254.0,
+     256.0,
+     258.0,
+     260.0,
+     262.0
+    ],
+    "node_id": "CB005",
+    "node_type": "CONFLICT_BLOCK",
+    "observation_set_1": {
+     "event_count": 1,
+     "events": [
+      {
+       "action": "pouring",
+       "actor": "person",
+       "clipped": true,
+       "clipped_end": 264.0,
+       "clipped_start": 240.0,
+       "event_id": "W09_E006",
+       "object_or_state": "butter into a bowl",
+       "original_end": 264.0,
+       "original_start": 236.0,
+       "source_window": "W09"
+      }
+     ],
+     "source": "W09"
+    },
+    "observation_set_2": {
+     "event_count": 4,
+     "events": [
+      {
+       "action": "serving",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 245.0,
+       "clipped_start": 240.0,
+       "event_id": "W10_E001",
+       "object_or_state": "noodles",
+       "original_end": 245.0,
+       "original_start": 240.0,
+       "source_window": "W10"
+      },
+      {
+       "action": "serving",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 255.0,
+       "clipped_start": 245.0,
+       "event_id": "W10_E002",
+       "object_or_state": "potato cream",
+       "original_end": 255.0,
+       "original_start": 245.0,
+       "source_window": "W10"
+      },
+      {
+       "action": "serving",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 260.0,
+       "clipped_start": 255.0,
+       "event_id": "W10_E003",
+       "object_or_state": "herbs",
+       "original_end": 260.0,
+       "original_start": 255.0,
+       "source_window": "W10"
+      },
+      {
+       "action": "eating",
+       "actor": "person",
+       "clipped": true,
+       "clipped_end": 264.0,
+       "clipped_start": 260.0,
+       "event_id": "W10_E004",
+       "object_or_state": "noodles",
+       "original_end": 288.0,
+       "original_start": 260.0,
+       "source_window": "W10"
+      }
+     ],
+     "source": "W10"
+    },
+    "ordering_basis": "source 창 id 오름차순 — 선호·우선순위가 아니다",
+    "overlap_id": "O10",
+    "preferred_source": null,
+    "region_id": "R05",
+    "resolution": "NONE",
+    "reviewer_relation": "CONFLICT",
+    "reviewer_status": "MATERIAL_CONFLICT",
+    "start_sec": 240.0
+   },
+   {
+    "end_sec": 336.0,
+    "frame_stamps": [
+     312.0,
+     314.0,
+     316.0,
+     318.0,
+     320.0,
+     322.0,
+     324.0,
+     326.0,
+     328.0,
+     330.0,
+     332.0,
+     334.0
+    ],
+    "node_id": "CB006",
+    "node_type": "CONFLICT_BLOCK",
+    "observation_set_1": {
+     "event_count": 1,
+     "events": [
+      {
+       "action": "eating",
+       "actor": "person",
+       "clipped": true,
+       "clipped_end": 336.0,
+       "clipped_start": 312.0,
+       "event_id": "W12_E006",
+       "object_or_state": "curry udon",
+       "original_end": 336.0,
+       "original_start": 310.0,
+       "source_window": "W12"
+      }
+     ],
+     "source": "W12"
+    },
+    "observation_set_2": {
+     "event_count": 2,
+     "events": [
+      {
+       "action": "eating",
+       "actor": "a person",
+       "clipped": false,
+       "clipped_end": 317.0,
+       "clipped_start": 312.0,
+       "event_id": "W13_E001",
+       "object_or_state": "cream curry udon",
+       "original_end": 317.0,
+       "original_start": 312.0,
+       "source_window": "W13"
+      },
+      {
+       "action": "eating",
+       "actor": "a person",
+       "clipped": true,
+       "clipped_end": 336.0,
+       "clipped_start": 317.0,
+       "event_id": "W13_E002",
+       "object_or_state": "rice with kimchi",
+       "original_end": 360.0,
+       "original_start": 317.0,
+       "source_window": "W13"
+      }
+     ],
+     "source": "W13"
+    },
+    "ordering_basis": "source 창 id 오름차순 — 선호·우선순위가 아니다",
+    "overlap_id": "O13",
+    "preferred_source": null,
+    "region_id": "R07",
+    "resolution": "NONE",
+    "reviewer_relation": "CONFLICT",
+    "reviewer_status": "MATERIAL_CONFLICT",
+    "start_sec": 312.0
+   },
+   {
+    "end_sec": 360.0,
+    "frame_stamps": [
+     336.0,
+     338.0,
+     340.0,
+     342.0,
+     344.0,
+     346.0,
+     348.0,
+     350.0,
+     352.0,
+     354.0,
+     356.0,
+     358.0
+    ],
+    "node_id": "CB007",
+    "node_type": "CONFLICT_BLOCK",
+    "observation_set_1": {
+     "event_count": 1,
+     "events": [
+      {
+       "action": "eating",
+       "actor": "a person",
+       "clipped": true,
+       "clipped_end": 360.0,
+       "clipped_start": 336.0,
+       "event_id": "W13_E002",
+       "object_or_state": "rice with kimchi",
+       "original_end": 360.0,
+       "original_start": 317.0,
+       "source_window": "W13"
+      }
+     ],
+     "source": "W13"
+    },
+    "observation_set_2": {
+     "event_count": 2,
+     "events": [
+      {
+       "action": "eating",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 348.0,
+       "clipped_start": 336.0,
+       "event_id": "W14_E001",
+       "object_or_state": "noodles with chopsticks and spoon",
+       "original_end": 348.0,
+       "original_start": 336.0,
+       "source_window": "W14"
+      },
+      {
+       "action": "preparing food",
+       "actor": "person",
+       "clipped": true,
+       "clipped_end": 360.0,
+       "clipped_start": 348.0,
+       "event_id": "W14_E002",
+       "object_or_state": "gimbal with gloves",
+       "original_end": 376.0,
+       "original_start": 348.0,
+       "source_window": "W14"
+      }
+     ],
+     "source": "W14"
+    },
+    "ordering_basis": "source 창 id 오름차순 — 선호·우선순위가 아니다",
+    "overlap_id": "O14",
+    "preferred_source": null,
+    "region_id": "R07",
+    "resolution": "NONE",
+    "reviewer_relation": "CONFLICT",
+    "reviewer_status": "MATERIAL_CONFLICT",
+    "start_sec": 336.0
+   },
+   {
+    "end_sec": 384.0,
+    "frame_stamps": [
+     360.0,
+     362.0,
+     364.0,
+     366.0,
+     368.0,
+     370.0,
+     372.0,
+     374.0,
+     376.0,
+     378.0,
+     380.0,
+     382.0
+    ],
+    "node_id": "CB008",
+    "node_type": "CONFLICT_BLOCK",
+    "observation_set_1": {
+     "event_count": 3,
+     "events": [
+      {
+       "action": "preparing food",
+       "actor": "person",
+       "clipped": true,
+       "clipped_end": 376.0,
+       "clipped_start": 360.0,
+       "event_id": "W14_E002",
+       "object_or_state": "gimbal with gloves",
+       "original_end": 376.0,
+       "original_start": 348.0,
+       "source_window": "W14"
+      },
+      {
+       "action": "eating",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 380.0,
+       "clipped_start": 376.0,
+       "event_id": "W14_E003",
+       "object_or_state": "food with spoon",
+       "original_end": 380.0,
+       "original_start": 376.0,
+       "source_window": "W14"
+      },
+      {
+       "action": "preparing food",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 384.0,
+       "clipped_start": 380.0,
+       "event_id": "W14_E004",
+       "object_or_state": "chicken with sauce",
+       "original_end": 384.0,
+       "original_start": 380.0,
+       "source_window": "W14"
+      }
+     ],
+     "source": "W14"
+    },
+    "observation_set_2": {
+     "event_count": 5,
+     "events": [
+      {
+       "action": "placing",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 365.0,
+       "clipped_start": 360.0,
+       "event_id": "W15_E001",
+       "object_or_state": "sushi roll on cutting board",
+       "original_end": 365.0,
+       "original_start": 360.0,
+       "source_window": "W15"
+      },
+      {
+       "action": "placing",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 370.0,
+       "clipped_start": 365.0,
+       "event_id": "W15_E002",
+       "object_or_state": "sushi rolls on plate",
+       "original_end": 370.0,
+       "original_start": 365.0,
+       "source_window": "W15"
+      },
+      {
+       "action": "arranging",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 375.0,
+       "clipped_start": 370.0,
+       "event_id": "W15_E003",
+       "object_or_state": "sushi rolls on plate",
+       "original_end": 375.0,
+       "original_start": 370.0,
+       "source_window": "W15"
+      },
+      {
+       "action": "placing",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 380.0,
+       "clipped_start": 375.0,
+       "event_id": "W15_E004",
+       "object_or_state": "bowl of soup on table",
+       "original_end": 380.0,
+       "original_start": 375.0,
+       "source_window": "W15"
+      },
+      {
+       "action": "placing",
+       "actor": "person",
+       "clipped": true,
+       "clipped_end": 384.0,
+       "clipped_start": 380.0,
+       "event_id": "W15_E005",
+       "object_or_state": "chicken legs in steamer",
+       "original_end": 385.0,
+       "original_start": 380.0,
+       "source_window": "W15"
+      }
+     ],
+     "source": "W15"
+    },
+    "ordering_basis": "source 창 id 오름차순 — 선호·우선순위가 아니다",
+    "overlap_id": "O15",
+    "preferred_source": null,
+    "region_id": "R07",
+    "resolution": "NONE",
+    "reviewer_relation": "CONFLICT",
+    "reviewer_status": "MATERIAL_CONFLICT",
+    "start_sec": 360.0
+   },
+   {
+    "end_sec": 504.0,
+    "frame_stamps": [
+     480.0,
+     482.0,
+     484.0,
+     486.0,
+     488.0,
+     490.0,
+     492.0,
+     494.0,
+     496.0,
+     498.0,
+     500.0,
+     502.0
+    ],
+    "node_id": "CB009",
+    "node_type": "CONFLICT_BLOCK",
+    "observation_set_1": {
+     "event_count": 6,
+     "events": [
+      {
+       "action": "transferring",
+       "actor": "hand",
+       "clipped": false,
+       "clipped_end": 484.0,
+       "clipped_start": 480.0,
+       "event_id": "W19_E007",
+       "object_or_state": "egg mixture onto plate",
+       "original_end": 484.0,
+       "original_start": 480.0,
+       "source_window": "W19"
+      },
+      {
+       "action": "pouring",
+       "actor": "hand",
+       "clipped": false,
+       "clipped_end": 488.0,
+       "clipped_start": 484.0,
+       "event_id": "W19_E008",
+       "object_or_state": "olive oil onto tofu",
+       "original_end": 488.0,
+       "original_start": 484.0,
+       "source_window": "W19"
+      },
+      {
+       "action": "placing",
+       "actor": "hand",
+       "clipped": false,
+       "clipped_end": 492.0,
+       "clipped_start": 488.0,
+       "event_id": "W19_E009",
+       "object_or_state": "tofu on plate",
+       "original_end": 492.0,
+       "original_start": 488.0,
+       "source_window": "W19"
+      },
+      {
+       "action": "placing",
+       "actor": "hand",
+       "clipped": false,
+       "clipped_end": 496.0,
+       "clipped_start": 492.0,
+       "event_id": "W19_E010",
+       "object_or_state": "shredded cabbage on plate",
+       "original_end": 496.0,
+       "original_start": 492.0,
+       "source_window": "W19"
+      },
+      {
+       "action": "tying",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 500.0,
+       "clipped_start": 496.0,
+       "event_id": "W19_E011",
+       "object_or_state": "hair into bun",
+       "original_end": 500.0,
+       "original_start": 496.0,
+       "source_window": "W19"
+      },
+      {
+       "action": "adjusting",
+       "actor": "person",
+       "clipped": false,
+       "clipped_end": 504.0,
+       "clipped_start": 500.0,
+       "event_id": "W19_E012",
+       "object_or_state": "hair bun",
+       "original_end": 504.0,
+       "original_start": 500.0,
+       "source_window": "W19"
+      }
+     ],
+     "source": "W19"
+    },
+    "observation_set_2": {
+     "event_count": 3,
+     "events": [
+      {
+       "action": "pouring",
+       "actor": "woman",
+       "clipped": false,
+       "clipped_end": 483.0,
+       "clipped_start": 480.0,
+       "event_id": "W20_E001",
+       "object_or_state": "sauce onto food",
+       "original_end": 483.0,
+       "original_start": 480.0,
+       "source_window": "W20"
+      },
+      {
+       "action": "pouring",
+       "actor": "woman",
+       "clipped": false,
+       "clipped_end": 486.0,
+       "clipped_start": 483.0,
+       "event_id": "W20_E002",
+       "object_or_state": "olive oil onto tofu",
+       "original_end": 486.0,
+       "original_start": 483.0,
+       "source_window": "W20"
+      },
+      {
+       "action": "sprinkling",
+       "actor": "woman",
+       "clipped": true,
+       "clipped_end": 504.0,
+       "clipped_start": 486.0,
+       "event_id": "W20_E003",
+       "object_or_state": "black pepper on food",
+       "original_end": 528.0,
+       "original_start": 486.0,
+       "source_window": "W20"
+      }
+     ],
+     "source": "W20"
+    },
+    "ordering_basis": "source 창 id 오름차순 — 선호·우선순위가 아니다",
+    "overlap_id": "O20",
+    "preferred_source": null,
+    "region_id": "R09",
+    "resolution": "NONE",
+    "reviewer_relation": "CONFLICT",
+    "reviewer_status": "MATERIAL_CONFLICT",
+    "start_sec": 480.0
+   },
+   {
+    "end_sec": 528.0,
+    "frame_stamps": [
+     504.0,
+     506.0,
+     508.0,
+     510.0,
+     512.0,
+     514.0,
+     516.0,
+     518.0,
+     520.0,
+     522.0,
+     524.0,
+     526.0
+    ],
+    "node_id": "CB010",
+    "node_type": "CONFLICT_BLOCK",
+    "observation_set_1": {
+     "event_count": 1,
+     "events": [
+      {
+       "action": "sprinkling",
+       "actor": "woman",
+       "clipped": true,
+       "clipped_end": 528.0,
+       "clipped_start": 504.0,
+       "event_id": "W20_E003",
+       "object_or_state": "black pepper on food",
+       "original_end": 528.0,
+       "original_start": 486.0,
+       "source_window": "W20"
+      }
+     ],
+     "source": "W20"
+    },
+    "observation_set_2": {
+     "event_count": 5,
+     "events": [
+      {
+       "action": "walking",
+       "actor": "a woman",
+       "clipped": false,
+       "clipped_end": 509.0,
+       "clipped_start": 504.0,
+       "event_id": "W21_E001",
+       "object_or_state": "through a room",
+       "original_end": 509.0,
+       "original_start": 504.0,
+       "source_window": "W21"
+      },
+      {
+       "action": "placing",
+       "actor": "a woman",
+       "clipped": false,
+       "clipped_end": 513.0,
+       "clipped_start": 509.0,
+       "event_id": "W21_E002",
+       "object_or_state": "a small box on a table",
+       "original_end": 513.0,
+       "original_start": 509.0,
+       "source_window": "W21"
+      },
+      {
+       "action": "holding",
+       "actor": "a woman",
+       "clipped": false,
+       "clipped_end": 520.0,
+       "clipped_start": 513.0,
+       "event_id": "W21_E003",
+       "object_or_state": "two small boxes",
+       "original_end": 520.0,
+       "original_start": 513.0,
+       "source_window": "W21"
+      },
+      {
+       "action": "placing",
+       "actor": "a woman",
+       "clipped": false,
+       "clipped_end": 524.0,
+       "clipped_start": 520.0,
+       "event_id": "W21_E004",
+       "object_or_state": "a small pouch on a table",
+       "original_end": 524.0,
+       "original_start": 520.0,
+       "source_window": "W21"
+      },
+      {
+       "action": "wrapping",
+       "actor": "a woman",
+       "clipped": true,
+       "clipped_end": 528.0,
+       "clipped_start": 524.0,
+       "event_id": "W21_E005",
+       "object_or_state": "a small pouch in a brown paper bag",
+       "original_end": 529.0,
+       "original_start": 524.0,
+       "source_window": "W21"
+      }
+     ],
+     "source": "W21"
+    },
+    "ordering_basis": "source 창 id 오름차순 — 선호·우선순위가 아니다",
+    "overlap_id": "O21",
+    "preferred_source": null,
+    "region_id": "R09",
+    "resolution": "NONE",
+    "reviewer_relation": "CONFLICT",
+    "reviewer_status": "MATERIAL_CONFLICT",
+    "start_sec": 504.0
+   }
+  ],
+  "conflict_regions": [
+   {
+    "end_sec": 96.0,
+    "group_type": "CONFLICT_REGION",
+    "member_blocks": [
+     "CB001",
+     "CB002"
+    ],
+    "member_overlaps": [
+     "O02",
+     "O03"
+    ],
+    "node_id": "CR01",
+    "note": "내부 block·관측 구조를 그대로 유지한다",
+    "region_id": "R03",
+    "resolution": "NONE",
+    "reviewer_status": "MATERIAL_CONFLICT",
+    "start_sec": 48.0
+   },
+   {
+    "end_sec": 264.0,
+    "group_type": "CONFLICT_REGION",
+    "member_blocks": [
+     "CB003",
+     "CB004",
+     "CB005"
+    ],
+    "member_overlaps": [
+     "O08",
+     "O09",
+     "O10"
+    ],
+    "node_id": "CR02",
+    "note": "내부 block·관측 구조를 그대로 유지한다",
+    "region_id": "R05",
+    "resolution": "NONE",
+    "reviewer_status": "MATERIAL_CONFLICT",
+    "start_sec": 192.0
+   },
+   {
+    "end_sec": 384.0,
+    "group_type": "CONFLICT_REGION",
+    "member_blocks": [
+     "CB006",
+     "CB007",
+     "CB008"
+    ],
+    "member_overlaps": [
+     "O13",
+     "O14",
+     "O15"
+    ],
+    "node_id": "CR03",
+    "note": "내부 block·관측 구조를 그대로 유지한다",
+    "region_id": "R07",
+    "resolution": "NONE",
+    "reviewer_status": "MATERIAL_CONFLICT",
+    "start_sec": 312.0
+   },
+   {
+    "end_sec": 528.0,
+    "group_type": "CONFLICT_REGION",
+    "member_blocks": [
+     "CB009",
+     "CB010"
+    ],
+    "member_overlaps": [
+     "O20",
+     "O21"
+    ],
+    "node_id": "CR04",
+    "note": "내부 block·관측 구조를 그대로 유지한다",
+    "region_id": "R09",
+    "resolution": "NONE",
+    "reviewer_status": "MATERIAL_CONFLICT",
+    "start_sec": 480.0
+   }
+  ],
+  "single_source": [
+   {
+    "end_sec": 48.0,
+    "event_count": 8,
+    "events": [
+     {
+      "action": "selecting",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 28.0,
+      "clipped_start": 24.0,
+      "event_id": "W01_E001",
+      "object_or_state": "bottle of soy sauce",
+      "original_end": 28.0,
+      "original_start": 24.0,
+      "source_window": "W01"
+     },
+     {
+      "action": "selecting",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 31.0,
+      "clipped_start": 28.0,
+      "event_id": "W01_E002",
+      "object_or_state": "packet of curry",
+      "original_end": 31.0,
+      "original_start": 28.0,
+      "source_window": "W01"
+     },
+     {
+      "action": "selecting",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 34.0,
+      "clipped_start": 31.0,
+      "event_id": "W01_E003",
+      "object_or_state": "bag of potatoes",
+      "original_end": 34.0,
+      "original_start": 31.0,
+      "source_window": "W01"
+     },
+     {
+      "action": "placing",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 37.0,
+      "clipped_start": 34.0,
+      "event_id": "W01_E004",
+      "object_or_state": "potatoes in steamer",
+      "original_end": 37.0,
+      "original_start": 34.0,
+      "source_window": "W01"
+     },
+     {
+      "action": "covering",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 40.0,
+      "clipped_start": 37.0,
+      "event_id": "W01_E005",
+      "object_or_state": "steamer",
+      "original_end": 40.0,
+      "original_start": 37.0,
+      "source_window": "W01"
+     },
+     {
+      "action": "pouring",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 43.0,
+      "clipped_start": 40.0,
+      "event_id": "W01_E006",
+      "object_or_state": "curry powder into bowl",
+      "original_end": 43.0,
+      "original_start": 40.0,
+      "source_window": "W01"
+     },
+     {
+      "action": "placing",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 46.0,
+      "clipped_start": 43.0,
+      "event_id": "W01_E007",
+      "object_or_state": "potato slices in blender",
+      "original_end": 46.0,
+      "original_start": 43.0,
+      "source_window": "W01"
+     },
+     {
+      "action": "blending",
+      "actor": "person",
+      "clipped": true,
+      "clipped_end": 48.0,
+      "clipped_start": 46.0,
+      "event_id": "W01_E008",
+      "object_or_state": "potato slices",
+      "original_end": 49.0,
+      "original_start": 46.0,
+      "source_window": "W01"
+     }
+    ],
+    "frame_stamps": [
+     24.0,
+     26.0,
+     28.0,
+     30.0,
+     32.0,
+     34.0,
+     36.0,
+     38.0,
+     40.0,
+     42.0,
+     44.0,
+     46.0
+    ],
+    "node_id": "SS01",
+    "node_type": "SINGLE_SOURCE_EVENT",
+    "note": "valid 창 하나만 관측한 구간 — 교차 검증 없음",
+    "region_id": "R02",
+    "source_window": "W01",
+    "start_sec": 24.0
+   },
+   {
+    "end_sec": 600.0,
+    "event_count": 6,
+    "events": [
+     {
+      "action": "adjusting clothing",
+      "actor": "person",
+      "clipped": true,
+      "clipped_end": 580.0,
+      "clipped_start": 576.0,
+      "event_id": "W23_E005",
+      "object_or_state": "white shirt and shorts",
+      "original_end": 580.0,
+      "original_start": 573.0,
+      "source_window": "W23"
+     },
+     {
+      "action": "looking at phone",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 585.0,
+      "clipped_start": 580.0,
+      "event_id": "W23_E006",
+      "object_or_state": "phone displaying weather",
+      "original_end": 585.0,
+      "original_start": 580.0,
+      "source_window": "W23"
+     },
+     {
+      "action": "walking through train window",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 590.0,
+      "clipped_start": 585.0,
+      "event_id": "W23_E007",
+      "object_or_state": "train window showing cityscape",
+      "original_end": 590.0,
+      "original_start": 585.0,
+      "source_window": "W23"
+     },
+     {
+      "action": "looking at train station sign",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 593.0,
+      "clipped_start": 590.0,
+      "event_id": "W23_E008",
+      "object_or_state": "train station sign with text",
+      "original_end": 593.0,
+      "original_start": 590.0,
+      "source_window": "W23"
+     },
+     {
+      "action": "walking outside",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 597.0,
+      "clipped_start": 593.0,
+      "event_id": "W23_E009",
+      "object_or_state": "building with signage",
+      "original_end": 597.0,
+      "original_start": 593.0,
+      "source_window": "W23"
+     },
+     {
+      "action": "entering shop",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 600.0,
+      "clipped_start": 597.0,
+      "event_id": "W23_E010",
+      "object_or_state": "shop entrance with sign",
+      "original_end": 600.0,
+      "original_start": 597.0,
+      "source_window": "W23"
+     }
+    ],
+    "frame_stamps": [
+     576.0,
+     578.0,
+     580.0,
+     582.0,
+     584.0,
+     586.0,
+     588.0,
+     590.0,
+     592.0,
+     594.0,
+     596.0,
+     598.0
+    ],
+    "node_id": "SS02",
+    "node_type": "SINGLE_SOURCE_EVENT",
+    "note": "valid 창 하나만 관측한 구간 — 교차 검증 없음",
+    "region_id": "R11",
+    "source_window": "W23",
+    "start_sec": 576.0
+   }
+  ],
+  "stitch_groups": [
+   {
+    "description_generated": false,
+    "end_sec": 120.0,
+    "frame_stamps": [
+     96.0,
+     98.0,
+     100.0,
+     102.0,
+     104.0,
+     106.0,
+     108.0,
+     110.0,
+     112.0,
+     114.0,
+     116.0,
+     118.0
+    ],
+    "group_type": "STITCH_GROUP",
+    "member_count": 6,
+    "node_id": "SG001",
+    "node_type": "CONSENSUS_EVENT",
+    "ordered_members": [
+     {
+      "action": "mixing",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 100.0,
+      "clipped_start": 96.0,
+      "event_id": "W03_E007",
+      "object_or_state": "ingredients in bowl",
+      "original_end": 100.0,
+      "original_start": 96.0,
+      "source_window": "W03"
+     },
+     {
+      "action": "stirring",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 100.0,
+      "clipped_start": 96.0,
+      "event_id": "W04_E001",
+      "object_or_state": "mixture in a bowl with chopsticks",
+      "original_end": 100.0,
+      "original_start": 96.0,
+      "source_window": "W04"
+     },
+     {
+      "action": "cooking",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 104.0,
+      "clipped_start": 100.0,
+      "event_id": "W03_E008",
+      "object_or_state": "mixture in pan",
+      "original_end": 104.0,
+      "original_start": 100.0,
+      "source_window": "W03"
+     },
+     {
+      "action": "cooking",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 103.0,
+      "clipped_start": 100.0,
+      "event_id": "W04_E002",
+      "object_or_state": "mixture in a pan over direct heat",
+      "original_end": 103.0,
+      "original_start": 100.0,
+      "source_window": "W04"
+     },
+     {
+      "action": "peeling",
+      "actor": "person",
+      "clipped": true,
+      "clipped_end": 120.0,
+      "clipped_start": 103.0,
+      "event_id": "W04_E003",
+      "object_or_state": "potato with a peeler",
+      "original_end": 123.0,
+      "original_start": 103.0,
+      "source_window": "W04"
+     },
+     {
+      "action": "peeling",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 120.0,
+      "clipped_start": 104.0,
+      "event_id": "W03_E009",
+      "object_or_state": "potatoes with peeler",
+      "original_end": 120.0,
+      "original_start": 104.0,
+      "source_window": "W03"
+     }
+    ],
+    "overlap_id": "O04",
+    "region_id": "R04",
+    "relation": "SAME_EVENT",
+    "reviewer_status": "STITCHABLE",
+    "sources": [
+     "W03",
+     "W04"
+    ],
+    "start_sec": 96.0
+   },
+   {
+    "description_generated": false,
+    "end_sec": 144.0,
+    "frame_stamps": [
+     120.0,
+     122.0,
+     124.0,
+     126.0,
+     128.0,
+     130.0,
+     132.0,
+     134.0,
+     136.0,
+     138.0,
+     140.0,
+     142.0
+    ],
+    "group_type": "STITCH_GROUP",
+    "member_count": 9,
+    "node_id": "SG002",
+    "node_type": "CONTINUATION_GROUP",
+    "ordered_members": [
+     {
+      "action": "peeling",
+      "actor": "person",
+      "clipped": true,
+      "clipped_end": 123.0,
+      "clipped_start": 120.0,
+      "event_id": "W04_E003",
+      "object_or_state": "potato with a peeler",
+      "original_end": 123.0,
+      "original_start": 103.0,
+      "source_window": "W04"
+     },
+     {
+      "action": "grating",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 125.0,
+      "clipped_start": 120.0,
+      "event_id": "W05_E001",
+      "object_or_state": "potato",
+      "original_end": 125.0,
+      "original_start": 120.0,
+      "source_window": "W05"
+     },
+     {
+      "action": "mixing",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 127.0,
+      "clipped_start": 123.0,
+      "event_id": "W04_E004",
+      "object_or_state": "mixture in a bowl with chopsticks",
+      "original_end": 127.0,
+      "original_start": 123.0,
+      "source_window": "W04"
+     },
+     {
+      "action": "mixing",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 130.0,
+      "clipped_start": 125.0,
+      "event_id": "W05_E002",
+      "object_or_state": "potato mixture",
+      "original_end": 130.0,
+      "original_start": 125.0,
+      "source_window": "W05"
+     },
+     {
+      "action": "forming",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 131.0,
+      "clipped_start": 127.0,
+      "event_id": "W04_E005",
+      "object_or_state": "mixture into balls",
+      "original_end": 131.0,
+      "original_start": 127.0,
+      "source_window": "W04"
+     },
+     {
+      "action": "forming",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 135.0,
+      "clipped_start": 130.0,
+      "event_id": "W05_E003",
+      "object_or_state": "potato balls",
+      "original_end": 135.0,
+      "original_start": 130.0,
+      "source_window": "W05"
+     },
+     {
+      "action": "placing",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 144.0,
+      "clipped_start": 131.0,
+      "event_id": "W04_E006",
+      "object_or_state": "balls on a plate",
+      "original_end": 144.0,
+      "original_start": 131.0,
+      "source_window": "W04"
+     },
+     {
+      "action": "coating",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 140.0,
+      "clipped_start": 135.0,
+      "event_id": "W05_E004",
+      "object_or_state": "potato balls",
+      "original_end": 140.0,
+      "original_start": 135.0,
+      "source_window": "W05"
+     },
+     {
+      "action": "placing",
+      "actor": "person",
+      "clipped": true,
+      "clipped_end": 144.0,
+      "clipped_start": 140.0,
+      "event_id": "W05_E005",
+      "object_or_state": "potato balls",
+      "original_end": 145.0,
+      "original_start": 140.0,
+      "source_window": "W05"
+     }
+    ],
+    "overlap_id": "O05",
+    "region_id": "R04",
+    "relation": "CONTINUATION",
+    "reviewer_status": "STITCHABLE",
+    "sources": [
+     "W04",
+     "W05"
+    ],
+    "start_sec": 120.0
+   },
+   {
+    "description_generated": false,
+    "end_sec": 168.0,
+    "frame_stamps": [
+     144.0,
+     146.0,
+     148.0,
+     150.0,
+     152.0,
+     154.0,
+     156.0,
+     158.0,
+     160.0,
+     162.0,
+     164.0,
+     166.0
+    ],
+    "group_type": "STITCH_GROUP",
+    "member_count": 8,
+    "node_id": "SG003",
+    "node_type": "CONTINUATION_GROUP",
+    "ordered_members": [
+     {
+      "action": "placing",
+      "actor": "person",
+      "clipped": true,
+      "clipped_end": 145.0,
+      "clipped_start": 144.0,
+      "event_id": "W05_E005",
+      "object_or_state": "potato balls",
+      "original_end": 145.0,
+      "original_start": 140.0,
+      "source_window": "W05"
+     },
+     {
+      "action": "pouring",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 149.0,
+      "clipped_start": 144.0,
+      "event_id": "W06_E001",
+      "object_or_state": "liquid into a bowl",
+      "original_end": 149.0,
+      "original_start": 144.0,
+      "source_window": "W06"
+     },
+     {
+      "action": "coating",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 168.0,
+      "clipped_start": 145.0,
+      "event_id": "W05_E006",
+      "object_or_state": "potato balls",
+      "original_end": 168.0,
+      "original_start": 145.0,
+      "source_window": "W05"
+     },
+     {
+      "action": "mixing",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 153.0,
+      "clipped_start": 149.0,
+      "event_id": "W06_E002",
+      "object_or_state": "ingredients in a bowl",
+      "original_end": 153.0,
+      "original_start": 149.0,
+      "source_window": "W06"
+     },
+     {
+      "action": "dipping",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 157.0,
+      "clipped_start": 153.0,
+      "event_id": "W06_E003",
+      "object_or_state": "potato dough in egg mixture",
+      "original_end": 157.0,
+      "original_start": 153.0,
+      "source_window": "W06"
+     },
+     {
+      "action": "coating",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 161.0,
+      "clipped_start": 157.0,
+      "event_id": "W06_E004",
+      "object_or_state": "potato dough in breadcrumbs",
+      "original_end": 161.0,
+      "original_start": 157.0,
+      "source_window": "W06"
+     },
+     {
+      "action": "placing",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 165.0,
+      "clipped_start": 161.0,
+      "event_id": "W06_E005",
+      "object_or_state": "coated potato dough on a plate",
+      "original_end": 165.0,
+      "original_start": 161.0,
+      "source_window": "W06"
+     },
+     {
+      "action": "coating",
+      "actor": "person",
+      "clipped": true,
+      "clipped_end": 168.0,
+      "clipped_start": 165.0,
+      "event_id": "W06_E006",
+      "object_or_state": "potato dough in breadcrumbs",
+      "original_end": 170.0,
+      "original_start": 165.0,
+      "source_window": "W06"
+     }
+    ],
+    "overlap_id": "O06",
+    "region_id": "R04",
+    "relation": "CONTINUATION",
+    "reviewer_status": "STITCHABLE",
+    "sources": [
+     "W05",
+     "W06"
+    ],
+    "start_sec": 144.0
+   },
+   {
+    "description_generated": false,
+    "end_sec": 192.0,
+    "frame_stamps": [
+     168.0,
+     170.0,
+     172.0,
+     174.0,
+     176.0,
+     178.0,
+     180.0,
+     182.0,
+     184.0,
+     186.0,
+     188.0,
+     190.0
+    ],
+    "group_type": "STITCH_GROUP",
+    "member_count": 10,
+    "node_id": "SG004",
+    "node_type": "CONTINUATION_GROUP",
+    "ordered_members": [
+     {
+      "action": "coating",
+      "actor": "person",
+      "clipped": true,
+      "clipped_end": 170.0,
+      "clipped_start": 168.0,
+      "event_id": "W06_E006",
+      "object_or_state": "potato dough in breadcrumbs",
+      "original_end": 170.0,
+      "original_start": 165.0,
+      "source_window": "W06"
+     },
+     {
+      "action": "coating",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 175.0,
+      "clipped_start": 168.0,
+      "event_id": "W07_E001",
+      "object_or_state": "ball in breadcrumbs",
+      "original_end": 175.0,
+      "original_start": 168.0,
+      "source_window": "W07"
+     },
+     {
+      "action": "placing",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 175.0,
+      "clipped_start": 170.0,
+      "event_id": "W06_E007",
+      "object_or_state": "coated potato dough on a plate",
+      "original_end": 175.0,
+      "original_start": 170.0,
+      "source_window": "W06"
+     },
+     {
+      "action": "coating",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 180.0,
+      "clipped_start": 175.0,
+      "event_id": "W06_E008",
+      "object_or_state": "potato dough in breadcrumbs",
+      "original_end": 180.0,
+      "original_start": 175.0,
+      "source_window": "W06"
+     },
+     {
+      "action": "placing",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 184.0,
+      "clipped_start": 175.0,
+      "event_id": "W07_E002",
+      "object_or_state": "coated balls on plate",
+      "original_end": 184.0,
+      "original_start": 175.0,
+      "source_window": "W07"
+     },
+     {
+      "action": "placing",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 185.0,
+      "clipped_start": 180.0,
+      "event_id": "W06_E009",
+      "object_or_state": "coated potato dough on a plate",
+      "original_end": 185.0,
+      "original_start": 180.0,
+      "source_window": "W06"
+     },
+     {
+      "action": "pouring",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 187.0,
+      "clipped_start": 184.0,
+      "event_id": "W07_E003",
+      "object_or_state": "cream into pan",
+      "original_end": 187.0,
+      "original_start": 184.0,
+      "source_window": "W07"
+     },
+     {
+      "action": "pouring",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 192.0,
+      "clipped_start": 185.0,
+      "event_id": "W06_E010",
+      "object_or_state": "liquid into a pan",
+      "original_end": 192.0,
+      "original_start": 185.0,
+      "source_window": "W06"
+     },
+     {
+      "action": "stirring",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 190.0,
+      "clipped_start": 187.0,
+      "event_id": "W07_E004",
+      "object_or_state": "onions in pan",
+      "original_end": 190.0,
+      "original_start": 187.0,
+      "source_window": "W07"
+     },
+     {
+      "action": "pouring",
+      "actor": "person",
+      "clipped": true,
+      "clipped_end": 192.0,
+      "clipped_start": 190.0,
+      "event_id": "W07_E005",
+      "object_or_state": "sauce into pan",
+      "original_end": 193.0,
+      "original_start": 190.0,
+      "source_window": "W07"
+     }
+    ],
+    "overlap_id": "O07",
+    "region_id": "R04",
+    "relation": "CONTINUATION",
+    "reviewer_status": "STITCHABLE",
+    "sources": [
+     "W06",
+     "W07"
+    ],
+    "start_sec": 168.0
+   },
+   {
+    "description_generated": false,
+    "end_sec": 288.0,
+    "frame_stamps": [
+     264.0,
+     266.0,
+     268.0,
+     270.0,
+     272.0,
+     274.0,
+     276.0,
+     278.0,
+     280.0,
+     282.0,
+     284.0,
+     286.0
+    ],
+    "group_type": "STITCH_GROUP",
+    "member_count": 4,
+    "node_id": "SG005",
+    "node_type": "CONTINUATION_GROUP",
+    "ordered_members": [
+     {
+      "action": "eating",
+      "actor": "person",
+      "clipped": true,
+      "clipped_end": 288.0,
+      "clipped_start": 264.0,
+      "event_id": "W10_E004",
+      "object_or_state": "noodles",
+      "original_end": 288.0,
+      "original_start": 260.0,
+      "source_window": "W10"
+     },
+     {
+      "action": "using chopsticks",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 272.0,
+      "clipped_start": 264.0,
+      "event_id": "W11_E001",
+      "object_or_state": "lifting noodles from a bowl",
+      "original_end": 272.0,
+      "original_start": 264.0,
+      "source_window": "W11"
+     },
+     {
+      "action": "eating",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 280.0,
+      "clipped_start": 272.0,
+      "event_id": "W11_E002",
+      "object_or_state": "noodles with a spoon",
+      "original_end": 280.0,
+      "original_start": 272.0,
+      "source_window": "W11"
+     },
+     {
+      "action": "using chopsticks",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 288.0,
+      "clipped_start": 280.0,
+      "event_id": "W11_E003",
+      "object_or_state": "picking up a breaded food item",
+      "original_end": 288.0,
+      "original_start": 280.0,
+      "source_window": "W11"
+     }
+    ],
+    "overlap_id": "O11",
+    "region_id": "R06",
+    "relation": "CONTINUATION",
+    "reviewer_status": "STITCHABLE",
+    "sources": [
+     "W10",
+     "W11"
+    ],
+    "start_sec": 264.0
+   },
+   {
+    "description_generated": false,
+    "end_sec": 312.0,
+    "frame_stamps": [
+     288.0,
+     290.0,
+     292.0,
+     294.0,
+     296.0,
+     298.0,
+     300.0,
+     302.0,
+     304.0,
+     306.0,
+     308.0,
+     310.0
+    ],
+    "group_type": "STITCH_GROUP",
+    "member_count": 9,
+    "node_id": "SG006",
+    "node_type": "CONTINUATION_GROUP",
+    "ordered_members": [
+     {
+      "action": "eating",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 296.0,
+      "clipped_start": 288.0,
+      "event_id": "W11_E004",
+      "object_or_state": "breaded food item",
+      "original_end": 296.0,
+      "original_start": 288.0,
+      "source_window": "W11"
+     },
+     {
+      "action": "breaking apart",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 293.0,
+      "clipped_start": 288.0,
+      "event_id": "W12_E001",
+      "object_or_state": "breaded potato ball",
+      "original_end": 293.0,
+      "original_start": 288.0,
+      "source_window": "W12"
+     },
+     {
+      "action": "eating",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 297.0,
+      "clipped_start": 293.0,
+      "event_id": "W12_E002",
+      "object_or_state": "breaded potato ball",
+      "original_end": 297.0,
+      "original_start": 293.0,
+      "source_window": "W12"
+     },
+     {
+      "action": "using chopsticks",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 304.0,
+      "clipped_start": 296.0,
+      "event_id": "W11_E005",
+      "object_or_state": "picking up a breaded food item",
+      "original_end": 304.0,
+      "original_start": 296.0,
+      "source_window": "W11"
+     },
+     {
+      "action": "eating",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 301.0,
+      "clipped_start": 297.0,
+      "event_id": "W12_E003",
+      "object_or_state": "curry udon",
+      "original_end": 301.0,
+      "original_start": 297.0,
+      "source_window": "W12"
+     },
+     {
+      "action": "eating",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 305.0,
+      "clipped_start": 301.0,
+      "event_id": "W12_E004",
+      "object_or_state": "breaded potato ball",
+      "original_end": 305.0,
+      "original_start": 301.0,
+      "source_window": "W12"
+     },
+     {
+      "action": "eating",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 312.0,
+      "clipped_start": 304.0,
+      "event_id": "W11_E006",
+      "object_or_state": "breaded food item",
+      "original_end": 312.0,
+      "original_start": 304.0,
+      "source_window": "W11"
+     },
+     {
+      "action": "drinking",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 310.0,
+      "clipped_start": 305.0,
+      "event_id": "W12_E005",
+      "object_or_state": "water",
+      "original_end": 310.0,
+      "original_start": 305.0,
+      "source_window": "W12"
+     },
+     {
+      "action": "eating",
+      "actor": "person",
+      "clipped": true,
+      "clipped_end": 312.0,
+      "clipped_start": 310.0,
+      "event_id": "W12_E006",
+      "object_or_state": "curry udon",
+      "original_end": 336.0,
+      "original_start": 310.0,
+      "source_window": "W12"
+     }
+    ],
+    "overlap_id": "O12",
+    "region_id": "R06",
+    "relation": "CONTINUATION",
+    "reviewer_status": "STITCHABLE",
+    "sources": [
+     "W11",
+     "W12"
+    ],
+    "start_sec": 288.0
+   },
+   {
+    "description_generated": false,
+    "end_sec": 408.0,
+    "frame_stamps": [
+     384.0,
+     386.0,
+     388.0,
+     390.0,
+     392.0,
+     394.0,
+     396.0,
+     398.0,
+     400.0,
+     402.0,
+     404.0,
+     406.0
+    ],
+    "group_type": "STITCH_GROUP",
+    "member_count": 8,
+    "node_id": "SG007",
+    "node_type": "CONSENSUS_EVENT",
+    "ordered_members": [
+     {
+      "action": "placing",
+      "actor": "person",
+      "clipped": true,
+      "clipped_end": 385.0,
+      "clipped_start": 384.0,
+      "event_id": "W15_E005",
+      "object_or_state": "chicken legs in steamer",
+      "original_end": 385.0,
+      "original_start": 380.0,
+      "source_window": "W15"
+     },
+     {
+      "action": "placing",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 389.0,
+      "clipped_start": 384.0,
+      "event_id": "W16_E001",
+      "object_or_state": "noodles in a bowl",
+      "original_end": 389.0,
+      "original_start": 384.0,
+      "source_window": "W16"
+     },
+     {
+      "action": "placing",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 390.0,
+      "clipped_start": 385.0,
+      "event_id": "W15_E006",
+      "object_or_state": "noodles in bowl",
+      "original_end": 390.0,
+      "original_start": 385.0,
+      "source_window": "W15"
+     },
+     {
+      "action": "placing",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 400.0,
+      "clipped_start": 389.0,
+      "event_id": "W16_E002",
+      "object_or_state": "chicken legs in a bowl",
+      "original_end": 400.0,
+      "original_start": 389.0,
+      "source_window": "W16"
+     },
+     {
+      "action": "placing",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 400.0,
+      "clipped_start": 390.0,
+      "event_id": "W15_E007",
+      "object_or_state": "chicken legs in bowl",
+      "original_end": 400.0,
+      "original_start": 390.0,
+      "source_window": "W15"
+     },
+     {
+      "action": "holding",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 405.0,
+      "clipped_start": 400.0,
+      "event_id": "W15_E008",
+      "object_or_state": "orange cloth",
+      "original_end": 405.0,
+      "original_start": 400.0,
+      "source_window": "W15"
+     },
+     {
+      "action": "holding",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 408.0,
+      "clipped_start": 400.0,
+      "event_id": "W16_E003",
+      "object_or_state": "orange pajama pants",
+      "original_end": 408.0,
+      "original_start": 400.0,
+      "source_window": "W16"
+     },
+     {
+      "action": "holding",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 408.0,
+      "clipped_start": 405.0,
+      "event_id": "W15_E009",
+      "object_or_state": "pink cloth",
+      "original_end": 408.0,
+      "original_start": 405.0,
+      "source_window": "W15"
+     }
+    ],
+    "overlap_id": "O16",
+    "region_id": "R08",
+    "relation": "SAME_EVENT",
+    "reviewer_status": "STITCHABLE",
+    "sources": [
+     "W15",
+     "W16"
+    ],
+    "start_sec": 384.0
+   },
+   {
+    "description_generated": false,
+    "end_sec": 432.0,
+    "frame_stamps": [
+     408.0,
+     410.0,
+     412.0,
+     414.0,
+     416.0,
+     418.0,
+     420.0,
+     422.0,
+     424.0,
+     426.0,
+     428.0,
+     430.0
+    ],
+    "group_type": "STITCH_GROUP",
+    "member_count": 8,
+    "node_id": "SG008",
+    "node_type": "CONSENSUS_EVENT",
+    "ordered_members": [
+     {
+      "action": "pulling",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 412.0,
+      "clipped_start": 408.0,
+      "event_id": "W16_E004",
+      "object_or_state": "elastic band from pajama pants",
+      "original_end": 412.0,
+      "original_start": 408.0,
+      "source_window": "W16"
+     },
+     {
+      "action": "holding",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 413.0,
+      "clipped_start": 408.0,
+      "event_id": "W17_E001",
+      "object_or_state": "elastic band and orange fabric",
+      "original_end": 413.0,
+      "original_start": 408.0,
+      "source_window": "W17"
+     },
+     {
+      "action": "holding",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 416.0,
+      "clipped_start": 412.0,
+      "event_id": "W16_E005",
+      "object_or_state": "elastic band",
+      "original_end": 416.0,
+      "original_start": 412.0,
+      "source_window": "W16"
+     },
+     {
+      "action": "holding",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 420.0,
+      "clipped_start": 413.0,
+      "event_id": "W17_E002",
+      "object_or_state": "orange fabric with pattern",
+      "original_end": 420.0,
+      "original_start": 413.0,
+      "source_window": "W17"
+     },
+     {
+      "action": "holding",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 420.0,
+      "clipped_start": 416.0,
+      "event_id": "W16_E006",
+      "object_or_state": "orange pajama pants",
+      "original_end": 420.0,
+      "original_start": 416.0,
+      "source_window": "W16"
+     },
+     {
+      "action": "placing",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 432.0,
+      "clipped_start": 420.0,
+      "event_id": "W16_E007",
+      "object_or_state": "orange pajama pants in a drawer",
+      "original_end": 432.0,
+      "original_start": 420.0,
+      "source_window": "W16"
+     },
+     {
+      "action": "placing",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 426.0,
+      "clipped_start": 420.0,
+      "event_id": "W17_E003",
+      "object_or_state": "orange fabric on drawer",
+      "original_end": 426.0,
+      "original_start": 420.0,
+      "source_window": "W17"
+     },
+     {
+      "action": "placing",
+      "actor": "person",
+      "clipped": true,
+      "clipped_end": 432.0,
+      "clipped_start": 426.0,
+      "event_id": "W17_E004",
+      "object_or_state": "white elastic band on sewing machine",
+      "original_end": 433.0,
+      "original_start": 426.0,
+      "source_window": "W17"
+     }
+    ],
+    "overlap_id": "O17",
+    "region_id": "R08",
+    "relation": "SAME_EVENT",
+    "reviewer_status": "STITCHABLE",
+    "sources": [
+     "W16",
+     "W17"
+    ],
+    "start_sec": 408.0
+   },
+   {
+    "description_generated": false,
+    "end_sec": 456.0,
+    "frame_stamps": [
+     432.0,
+     434.0,
+     436.0,
+     438.0,
+     440.0,
+     442.0,
+     444.0,
+     446.0,
+     448.0,
+     450.0,
+     452.0,
+     454.0
+    ],
+    "group_type": "STITCH_GROUP",
+    "member_count": 5,
+    "node_id": "SG009",
+    "node_type": "CONSENSUS_EVENT",
+    "ordered_members": [
+     {
+      "action": "placing",
+      "actor": "person",
+      "clipped": true,
+      "clipped_end": 433.0,
+      "clipped_start": 432.0,
+      "event_id": "W17_E004",
+      "object_or_state": "white elastic band on sewing machine",
+      "original_end": 433.0,
+      "original_start": 426.0,
+      "source_window": "W17"
+     },
+     {
+      "action": "sewing",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 440.0,
+      "clipped_start": 432.0,
+      "event_id": "W18_E001",
+      "object_or_state": "orange fabric with green dots",
+      "original_end": 440.0,
+      "original_start": 432.0,
+      "source_window": "W18"
+     },
+     {
+      "action": "sewing",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 440.0,
+      "clipped_start": 433.0,
+      "event_id": "W17_E005",
+      "object_or_state": "orange fabric with pattern",
+      "original_end": 440.0,
+      "original_start": 433.0,
+      "source_window": "W17"
+     },
+     {
+      "action": "holding",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 456.0,
+      "clipped_start": 440.0,
+      "event_id": "W17_E006",
+      "object_or_state": "orange fabric with pattern",
+      "original_end": 456.0,
+      "original_start": 440.0,
+      "source_window": "W17"
+     },
+     {
+      "action": "holding up",
+      "actor": "person",
+      "clipped": true,
+      "clipped_end": 456.0,
+      "clipped_start": 440.0,
+      "event_id": "W18_E002",
+      "object_or_state": "orange fabric with green dots",
+      "original_end": 460.0,
+      "original_start": 440.0,
+      "source_window": "W18"
+     }
+    ],
+    "overlap_id": "O18",
+    "region_id": "R08",
+    "relation": "SAME_EVENT",
+    "reviewer_status": "STITCHABLE",
+    "sources": [
+     "W17",
+     "W18"
+    ],
+    "start_sec": 432.0
+   },
+   {
+    "description_generated": false,
+    "end_sec": 480.0,
+    "frame_stamps": [
+     456.0,
+     458.0,
+     460.0,
+     462.0,
+     464.0,
+     466.0,
+     468.0,
+     470.0,
+     472.0,
+     474.0,
+     476.0,
+     478.0
+    ],
+    "group_type": "STITCH_GROUP",
+    "member_count": 10,
+    "node_id": "SG010",
+    "node_type": "TRANSITION",
+    "ordered_members": [
+     {
+      "action": "holding up",
+      "actor": "person",
+      "clipped": true,
+      "clipped_end": 460.0,
+      "clipped_start": 456.0,
+      "event_id": "W18_E002",
+      "object_or_state": "orange fabric with green dots",
+      "original_end": 460.0,
+      "original_start": 440.0,
+      "source_window": "W18"
+     },
+     {
+      "action": "placing",
+      "actor": "hand",
+      "clipped": false,
+      "clipped_end": 460.0,
+      "clipped_start": 456.0,
+      "event_id": "W19_E001",
+      "object_or_state": "crispy ball on plate",
+      "original_end": 460.0,
+      "original_start": 456.0,
+      "source_window": "W19"
+     },
+     {
+      "action": "chopping",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 470.0,
+      "clipped_start": 460.0,
+      "event_id": "W18_E003",
+      "object_or_state": "tomato",
+      "original_end": 470.0,
+      "original_start": 460.0,
+      "source_window": "W18"
+     },
+     {
+      "action": "chopping",
+      "actor": "hand",
+      "clipped": false,
+      "clipped_end": 464.0,
+      "clipped_start": 460.0,
+      "event_id": "W19_E002",
+      "object_or_state": "tomato",
+      "original_end": 464.0,
+      "original_start": 460.0,
+      "source_window": "W19"
+     },
+     {
+      "action": "cracking",
+      "actor": "hand",
+      "clipped": false,
+      "clipped_end": 468.0,
+      "clipped_start": 464.0,
+      "event_id": "W19_E003",
+      "object_or_state": "egg into measuring cup",
+      "original_end": 468.0,
+      "original_start": 464.0,
+      "source_window": "W19"
+     },
+     {
+      "action": "stirring",
+      "actor": "hand",
+      "clipped": false,
+      "clipped_end": 472.0,
+      "clipped_start": 468.0,
+      "event_id": "W19_E004",
+      "object_or_state": "egg mixture in measuring cup",
+      "original_end": 472.0,
+      "original_start": 468.0,
+      "source_window": "W19"
+     },
+     {
+      "action": "pouring",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 475.0,
+      "clipped_start": 470.0,
+      "event_id": "W18_E004",
+      "object_or_state": "egg yolk into measuring cup",
+      "original_end": 475.0,
+      "original_start": 470.0,
+      "source_window": "W18"
+     },
+     {
+      "action": "pouring",
+      "actor": "hand",
+      "clipped": false,
+      "clipped_end": 476.0,
+      "clipped_start": 472.0,
+      "event_id": "W19_E005",
+      "object_or_state": "egg mixture into pan",
+      "original_end": 476.0,
+      "original_start": 472.0,
+      "source_window": "W19"
+     },
+     {
+      "action": "stirring",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 480.0,
+      "clipped_start": 475.0,
+      "event_id": "W18_E005",
+      "object_or_state": "egg yolk in measuring cup",
+      "original_end": 480.0,
+      "original_start": 475.0,
+      "source_window": "W18"
+     },
+     {
+      "action": "stirring",
+      "actor": "hand",
+      "clipped": false,
+      "clipped_end": 480.0,
+      "clipped_start": 476.0,
+      "event_id": "W19_E006",
+      "object_or_state": "egg mixture in pan",
+      "original_end": 480.0,
+      "original_start": 476.0,
+      "source_window": "W19"
+     }
+    ],
+    "overlap_id": "O19",
+    "region_id": "R08",
+    "relation": "TRANSITION",
+    "reviewer_status": "STITCHABLE",
+    "sources": [
+     "W18",
+     "W19"
+    ],
+    "start_sec": 456.0
+   },
+   {
+    "description_generated": false,
+    "end_sec": 552.0,
+    "frame_stamps": [
+     528.0,
+     530.0,
+     532.0,
+     534.0,
+     536.0,
+     538.0,
+     540.0,
+     542.0,
+     544.0,
+     546.0,
+     548.0,
+     550.0
+    ],
+    "group_type": "STITCH_GROUP",
+    "member_count": 10,
+    "node_id": "SG011",
+    "node_type": "CONSENSUS_EVENT",
+    "ordered_members": [
+     {
+      "action": "wrapping",
+      "actor": "a woman",
+      "clipped": true,
+      "clipped_end": 529.0,
+      "clipped_start": 528.0,
+      "event_id": "W21_E005",
+      "object_or_state": "a small pouch in a brown paper bag",
+      "original_end": 529.0,
+      "original_start": 524.0,
+      "source_window": "W21"
+     },
+     {
+      "action": "wrapping",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 533.0,
+      "clipped_start": 528.0,
+      "event_id": "W22_E001",
+      "object_or_state": "gift in kraft paper",
+      "original_end": 533.0,
+      "original_start": 528.0,
+      "source_window": "W22"
+     },
+     {
+      "action": "placing",
+      "actor": "a woman",
+      "clipped": false,
+      "clipped_end": 533.0,
+      "clipped_start": 529.0,
+      "event_id": "W21_E006",
+      "object_or_state": "a stamp on a table",
+      "original_end": 533.0,
+      "original_start": 529.0,
+      "source_window": "W21"
+     },
+     {
+      "action": "tying",
+      "actor": "a woman",
+      "clipped": false,
+      "clipped_end": 541.0,
+      "clipped_start": 533.0,
+      "event_id": "W21_E007",
+      "object_or_state": "a ribbon around a wrapped package",
+      "original_end": 541.0,
+      "original_start": 533.0,
+      "source_window": "W21"
+     },
+     {
+      "action": "placing",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 537.0,
+      "clipped_start": 533.0,
+      "event_id": "W22_E002",
+      "object_or_state": "stamp on kraft paper bag",
+      "original_end": 537.0,
+      "original_start": 533.0,
+      "source_window": "W22"
+     },
+     {
+      "action": "tying",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 541.0,
+      "clipped_start": 537.0,
+      "event_id": "W22_E003",
+      "object_or_state": "ribbon around kraft paper bag",
+      "original_end": 541.0,
+      "original_start": 537.0,
+      "source_window": "W22"
+     },
+     {
+      "action": "holding",
+      "actor": "a woman",
+      "clipped": false,
+      "clipped_end": 552.0,
+      "clipped_start": 541.0,
+      "event_id": "W21_E008",
+      "object_or_state": "a wrapped package",
+      "original_end": 552.0,
+      "original_start": 541.0,
+      "source_window": "W21"
+     },
+     {
+      "action": "adjusting",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 545.0,
+      "clipped_start": 541.0,
+      "event_id": "W22_E004",
+      "object_or_state": "bow on kraft paper bag",
+      "original_end": 545.0,
+      "original_start": 541.0,
+      "source_window": "W22"
+     },
+     {
+      "action": "holding",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 550.0,
+      "clipped_start": 545.0,
+      "event_id": "W22_E005",
+      "object_or_state": "wrapped gift",
+      "original_end": 550.0,
+      "original_start": 545.0,
+      "source_window": "W22"
+     },
+     {
+      "action": "unfolding",
+      "actor": "person",
+      "clipped": true,
+      "clipped_end": 552.0,
+      "clipped_start": 550.0,
+      "event_id": "W22_E006",
+      "object_or_state": "fabric",
+      "original_end": 555.0,
+      "original_start": 550.0,
+      "source_window": "W22"
+     }
+    ],
+    "overlap_id": "O22",
+    "region_id": "R10",
+    "relation": "SAME_EVENT",
+    "reviewer_status": "STITCHABLE",
+    "sources": [
+     "W21",
+     "W22"
+    ],
+    "start_sec": 528.0
+   },
+   {
+    "description_generated": false,
+    "end_sec": 576.0,
+    "frame_stamps": [
+     552.0,
+     554.0,
+     556.0,
+     558.0,
+     560.0,
+     562.0,
+     564.0,
+     566.0,
+     568.0,
+     570.0,
+     572.0,
+     574.0
+    ],
+    "group_type": "STITCH_GROUP",
+    "member_count": 10,
+    "node_id": "SG012",
+    "node_type": "CONSENSUS_EVENT",
+    "ordered_members": [
+     {
+      "action": "unfolding",
+      "actor": "person",
+      "clipped": true,
+      "clipped_end": 555.0,
+      "clipped_start": 552.0,
+      "event_id": "W22_E006",
+      "object_or_state": "fabric",
+      "original_end": 555.0,
+      "original_start": 550.0,
+      "source_window": "W22"
+     },
+     {
+      "action": "holding and displaying fabric",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 557.0,
+      "clipped_start": 552.0,
+      "event_id": "W23_E001",
+      "object_or_state": "white fabric",
+      "original_end": 557.0,
+      "original_start": 552.0,
+      "source_window": "W23"
+     },
+     {
+      "action": "putting on",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 560.0,
+      "clipped_start": 555.0,
+      "event_id": "W22_E007",
+      "object_or_state": "fabric",
+      "original_end": 560.0,
+      "original_start": 555.0,
+      "source_window": "W22"
+     },
+     {
+      "action": "placing fabric on table",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 561.0,
+      "clipped_start": 557.0,
+      "event_id": "W23_E002",
+      "object_or_state": "white fabric",
+      "original_end": 561.0,
+      "original_start": 557.0,
+      "source_window": "W23"
+     },
+     {
+      "action": "putting on",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 565.0,
+      "clipped_start": 560.0,
+      "event_id": "W22_E008",
+      "object_or_state": "handbag",
+      "original_end": 565.0,
+      "original_start": 560.0,
+      "source_window": "W22"
+     },
+     {
+      "action": "picking up handbag",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 565.0,
+      "clipped_start": 561.0,
+      "event_id": "W23_E003",
+      "object_or_state": "brown handbag",
+      "original_end": 565.0,
+      "original_start": 561.0,
+      "source_window": "W23"
+     },
+     {
+      "action": "taking photo",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 570.0,
+      "clipped_start": 565.0,
+      "event_id": "W22_E009",
+      "object_or_state": "mirror",
+      "original_end": 570.0,
+      "original_start": 565.0,
+      "source_window": "W22"
+     },
+     {
+      "action": "taking mirror selfie",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 573.0,
+      "clipped_start": 565.0,
+      "event_id": "W23_E004",
+      "object_or_state": "camera",
+      "original_end": 573.0,
+      "original_start": 565.0,
+      "source_window": "W23"
+     },
+     {
+      "action": "adjusting",
+      "actor": "person",
+      "clipped": false,
+      "clipped_end": 576.0,
+      "clipped_start": 570.0,
+      "event_id": "W22_E010",
+      "object_or_state": "clothing",
+      "original_end": 576.0,
+      "original_start": 570.0,
+      "source_window": "W22"
+     },
+     {
+      "action": "adjusting clothing",
+      "actor": "person",
+      "clipped": true,
+      "clipped_end": 576.0,
+      "clipped_start": 573.0,
+      "event_id": "W23_E005",
+      "object_or_state": "white shirt and shorts",
+      "original_end": 580.0,
+      "original_start": 573.0,
+      "source_window": "W23"
+     }
+    ],
+    "overlap_id": "O23",
+    "region_id": "R10",
+    "relation": "SAME_EVENT",
+    "reviewer_status": "STITCHABLE",
+    "sources": [
+     "W22",
+     "W23"
+    ],
+    "start_sec": 552.0
+   }
+  ],
+  "unresolved_gaps": [
+   {
+    "end_sec": 24.0,
+    "events": [],
+    "filled": false,
+    "frame_stamps": [
+     0.0,
+     2.0,
+     4.0,
+     6.0,
+     8.0,
+     10.0,
+     12.0,
+     14.0,
+     16.0,
+     18.0,
+     20.0,
+     22.0
+    ],
+    "invalid_source_windows": [
+     "W00"
+    ],
+    "node_id": "UG01",
+    "node_type": "UNRESOLVED_GAP",
+    "reason": "이 구간을 덮는 창은 W00뿐이고 W00은 WINDOW_INVALID다 — 대체 생성 금지",
+    "region_id": "R01",
+    "resolution": "NONE",
+    "start_sec": 0.0
+   }
+  ]
+ },
+ "policy": {
+  "allowed_max_conclusion": "리뷰어가 PASS로 판정하면, 이 표현은 conflict를 숨기지 않은 채 Semantic Chapter 입력으로 쓸 수 있는 최소 조건을 만족한다.",
+  "conflict_resolution": "NONE",
+  "final_verdict_vocabulary": "CONSERVATIVE_EVENT_MAP_PASS / HOLD / INCONCLUSIVE",
+  "flags": {
+   "CHAPTER_ALLOWED": false,
+   "CONFLICT_RESOLUTION_ALLOWED": false,
+   "EVENT_DELETION_ALLOWED": false,
+   "EVENT_TEXT_MUTATION_ALLOWED": false,
+   "NARRATIVE_GENERATION_ALLOWED": false,
+   "NEW_INFERENCE_ALLOWED": false,
+   "NEW_LLM_CALL_ALLOWED": false,
+   "PREFERRED_SOURCE_ALLOWED": false,
+   "PRODUCTION_PROMOTION_ALLOWED": false,
+   "SYNTHETIC_FILL_ALLOWED": false,
+   "TRACK_A_EVIDENCE_ALLOWED": false,
+   "VERDICT_BY_EXECUTOR": false
+  },
+  "forbidden_conclusions": [
+   "conflict가 해결됐다",
+   "Event Map이 검증됐다",
+   "어느 창이 맞다",
+   "0.5fps sufficient",
+   "Chapter/Overview를 만들어도 된다",
+   "production ready"
+  ],
+  "group_types": [
+   "STITCH_GROUP",
+   "CONFLICT_REGION"
+  ],
+  "node_types": [
+   "CONSENSUS_EVENT",
+   "CONTINUATION_GROUP",
+   "TRANSITION",
+   "CONFLICT_BLOCK",
+   "SINGLE_SOURCE_EVENT",
+   "UNRESOLVED_GAP"
+  ],
+  "ordering_basis": "source 창 id 오름차순 — 선호·우선순위가 아니다",
+  "preferred_source": null,
+  "verdict_by_executor": false
+ },
+ "prereg": "docs/preregistration/WVR_CONSERVATIVE_EVENT_MAP_SHADOW_V1_2026-09-10.md",
+ "prior_state": {
+  "W00": "WINDOW_INVALID (invalid source · 재실행 금지)",
+  "WVR_EVENT_EXTRACTION_SHADOW_V1": "CLOSED / INCONCLUSIVE",
+  "WVR_EVENT_MAP_COVERAGE_SHADOW_V1": "CLOSED / EVENT_MAP_SHADOW_HOLD",
+  "WVR_OVERLAP_EVENT_STITCHING_SHADOW_V1": "CLOSED / EVENT_STITCHING_SHADOW_HOLD"
+ },
+ "provenance": {
+  "code_git_head": "7a568d71ae342c4a9f5493be032e574d3bbfe414",
+  "event": "WVR_CONSERVATIVE_EVENT_MAP_SHADOW_V1",
+  "gpu_used": false,
+  "new_inference_count": 0,
+  "new_llm_call_count": 0,
+  "prereg": "docs/preregistration/WVR_CONSERVATIVE_EVENT_MAP_SHADOW_V1_2026-09-10.md",
+  "prereg_commit": "061aacc589cb5ea145ecdf3691b9e942e66f84b7",
+  "source_hashes": {
+   "event_map_v1_coverage.json": "c7281388585d2c62a325e1bbd4ba65c4d8b813d1a91be340f1bd9e7942b41fdd",
+   "event_map_v1_registry.json": "1885cda9fd567ccfb9bea79383bcb89260225cafb228253e8efca2cf3cdc4073",
+   "shadow_frame_bank.json": "64fb207a0617a371385a3736c224c6983f82deb035401f68448ff042f1eefcd3",
+   "stitch_v1_blind_map.json": "5b19b177efedaad1b989bf2b99be5f283096637a949bbd6a61b3993e6167aba9",
+   "stitch_v1_verdicts.json": "b27ef299057e807174c2f12ddbee84e294e94482810881a29fda66b70071338b"
+  },
+  "source_manifest_sha256": "a0726a4b13b4bd0f6e1ea692eec55e8cd0343132e32b532283e6e68511680631",
+  "source_registry_event_count": 160,
+  "source_shadow_event": "WVR_EVENT_EXTRACTION_SHADOW_V1",
+  "stitch_event": "WVR_OVERLAP_EVENT_STITCHING_SHADOW_V1",
+  "video_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc"
+ },
+ "regions": [
+  {
+   "end_sec": 24.0,
+   "frame_stamp_count": 12,
+   "node_class": "UNRESOLVED",
+   "node_ids": [
+    "UG01"
+   ],
+   "overlap_ids": [],
+   "region_id": "R01",
+   "reviewer_relations": [],
+   "source_windows": [],
+   "start_sec": 0.0,
+   "status": "UNRESOLVED (valid 관측 없음)"
+  },
+  {
+   "end_sec": 48.0,
+   "frame_stamp_count": 12,
+   "node_class": "SINGLE_SOURCE",
+   "node_ids": [
+    "SS01"
+   ],
+   "overlap_ids": [],
+   "region_id": "R02",
+   "reviewer_relations": [],
+   "source_windows": [
+    "W01"
+   ],
+   "start_sec": 24.0,
+   "status": "SINGLE_SOURCE (교차 검증 없음)"
+  },
+  {
+   "end_sec": 96.0,
+   "frame_stamp_count": 24,
+   "node_class": "CONFLICT",
+   "node_ids": [
+    "CB001",
+    "CB002"
+   ],
+   "overlap_ids": [
+    "O02",
+    "O03"
+   ],
+   "region_id": "R03",
+   "reviewer_relations": [
+    "CONFLICT",
+    "CONFLICT"
+   ],
+   "source_windows": [
+    "W01",
+    "W02",
+    "W03"
+   ],
+   "start_sec": 48.0,
+   "status": "MATERIAL_CONFLICT / RESOLUTION NONE"
+  },
+  {
+   "end_sec": 192.0,
+   "frame_stamp_count": 48,
+   "node_class": "STITCHABLE",
+   "node_ids": [
+    "SG001",
+    "SG002",
+    "SG003",
+    "SG004"
+   ],
+   "overlap_ids": [
+    "O04",
+    "O05",
+    "O06",
+    "O07"
+   ],
+   "region_id": "R04",
+   "reviewer_relations": [
+    "SAME_EVENT",
+    "CONTINUATION",
+    "CONTINUATION",
+    "CONTINUATION"
+   ],
+   "source_windows": [
+    "W03",
+    "W04",
+    "W05",
+    "W06",
+    "W07"
+   ],
+   "start_sec": 96.0,
+   "status": "STITCHABLE (리뷰어 판정)"
+  },
+  {
+   "end_sec": 264.0,
+   "frame_stamp_count": 36,
+   "node_class": "CONFLICT",
+   "node_ids": [
+    "CB003",
+    "CB004",
+    "CB005"
+   ],
+   "overlap_ids": [
+    "O08",
+    "O09",
+    "O10"
+   ],
+   "region_id": "R05",
+   "reviewer_relations": [
+    "CONFLICT",
+    "CONFLICT",
+    "CONFLICT"
+   ],
+   "source_windows": [
+    "W07",
+    "W08",
+    "W09",
+    "W10"
+   ],
+   "start_sec": 192.0,
+   "status": "MATERIAL_CONFLICT / RESOLUTION NONE"
+  },
+  {
+   "end_sec": 312.0,
+   "frame_stamp_count": 24,
+   "node_class": "STITCHABLE",
+   "node_ids": [
+    "SG005",
+    "SG006"
+   ],
+   "overlap_ids": [
+    "O11",
+    "O12"
+   ],
+   "region_id": "R06",
+   "reviewer_relations": [
+    "CONTINUATION",
+    "CONTINUATION"
+   ],
+   "source_windows": [
+    "W10",
+    "W11",
+    "W12"
+   ],
+   "start_sec": 264.0,
+   "status": "STITCHABLE (리뷰어 판정)"
+  },
+  {
+   "end_sec": 384.0,
+   "frame_stamp_count": 36,
+   "node_class": "CONFLICT",
+   "node_ids": [
+    "CB006",
+    "CB007",
+    "CB008"
+   ],
+   "overlap_ids": [
+    "O13",
+    "O14",
+    "O15"
+   ],
+   "region_id": "R07",
+   "reviewer_relations": [
+    "CONFLICT",
+    "CONFLICT",
+    "CONFLICT"
+   ],
+   "source_windows": [
+    "W12",
+    "W13",
+    "W14",
+    "W15"
+   ],
+   "start_sec": 312.0,
+   "status": "MATERIAL_CONFLICT / RESOLUTION NONE"
+  },
+  {
+   "end_sec": 480.0,
+   "frame_stamp_count": 48,
+   "node_class": "STITCHABLE",
+   "node_ids": [
+    "SG007",
+    "SG008",
+    "SG009",
+    "SG010"
+   ],
+   "overlap_ids": [
+    "O16",
+    "O17",
+    "O18",
+    "O19"
+   ],
+   "region_id": "R08",
+   "reviewer_relations": [
+    "SAME_EVENT",
+    "SAME_EVENT",
+    "SAME_EVENT",
+    "TRANSITION"
+   ],
+   "source_windows": [
+    "W15",
+    "W16",
+    "W17",
+    "W18",
+    "W19"
+   ],
+   "start_sec": 384.0,
+   "status": "STITCHABLE (리뷰어 판정)"
+  },
+  {
+   "end_sec": 528.0,
+   "frame_stamp_count": 24,
+   "node_class": "CONFLICT",
+   "node_ids": [
+    "CB009",
+    "CB010"
+   ],
+   "overlap_ids": [
+    "O20",
+    "O21"
+   ],
+   "region_id": "R09",
+   "reviewer_relations": [
+    "CONFLICT",
+    "CONFLICT"
+   ],
+   "source_windows": [
+    "W19",
+    "W20",
+    "W21"
+   ],
+   "start_sec": 480.0,
+   "status": "MATERIAL_CONFLICT / RESOLUTION NONE"
+  },
+  {
+   "end_sec": 576.0,
+   "frame_stamp_count": 24,
+   "node_class": "STITCHABLE",
+   "node_ids": [
+    "SG011",
+    "SG012"
+   ],
+   "overlap_ids": [
+    "O22",
+    "O23"
+   ],
+   "region_id": "R10",
+   "reviewer_relations": [
+    "SAME_EVENT",
+    "SAME_EVENT"
+   ],
+   "source_windows": [
+    "W21",
+    "W22",
+    "W23"
+   ],
+   "start_sec": 528.0,
+   "status": "STITCHABLE (리뷰어 판정)"
+  },
+  {
+   "end_sec": 600.0,
+   "frame_stamp_count": 12,
+   "node_class": "SINGLE_SOURCE",
+   "node_ids": [
+    "SS02"
+   ],
+   "overlap_ids": [],
+   "region_id": "R11",
+   "reviewer_relations": [],
+   "source_windows": [
+    "W23"
+   ],
+   "start_sec": 576.0,
+   "status": "SINGLE_SOURCE (교차 검증 없음)"
+  }
+ ],
+ "schema": "wvr_conservative_event_map_v1",
+ "silent_concat": false,
+ "summary_counts": {
+  "conflict_block_count": 10,
+  "conflict_region_count": 4,
+  "consensus_event_count": 6,
+  "continuation_group_count": 5,
+  "false_resolution_count": 0,
+  "invalid_source_dependency_count": 0,
+  "region_count": 11,
+  "single_source_count": 2,
+  "single_source_event_count": 14,
+  "stitch_group_count": 12,
+  "transition_count": 1,
+  "unresolved_gap_count": 1
+ }
+}

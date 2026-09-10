@@ -489,3 +489,94 @@ def test_wvr_t33_the_frozen_boundaries_are_untouched():
     assert verdicts_now == cm.FROZEN_HASHES["stitch_v1_verdicts.json"]
     assert cm.TRACK_A_EVIDENCE_ALLOWED is False
     assert cm.PRODUCTION_PROMOTION_ALLOWED is False
+
+
+# ── WVR-T34~T39 구멍 차단 (mutation에서 나온 항목) ──────────────────
+def test_wvr_t34_a_drifted_region_schedule_is_rejected(monkeypatch):
+    altered = list(cm.EXPECTED_REGION_SCHEDULE)
+    altered[2] = ("R03", 48.0, 96.0, cm.STITCHABLE, ("O02", "O03"))
+    monkeypatch.setattr(cm, "EXPECTED_REGION_SCHEDULE", tuple(altered))
+    with pytest.raises(cm.MapError):
+        cm.regions(VERDICTS)
+
+
+def test_wvr_t35_a_moved_source_event_breaks_the_per_window_census():
+    moved = json.loads(json.dumps(EVENTS))
+    for event in moved:
+        if event["event_id"] == "W07_E003":
+            event["source_window"] = "W06"
+    assert len(moved) == len(EVENTS)
+    with pytest.raises(cm.MapError):
+        cm.build_document(moved, VERDICTS, BANK_TIMES,
+                          provenance=cm.provenance_stub())
+
+
+def test_wvr_t36_the_build_refuses_a_document_with_a_false_resolution(
+        monkeypatch):
+    monkeypatch.setattr(cm, "false_resolutions",
+                        lambda document: [{"node_id": "CB001",
+                                           "reason": "injected"}])
+    with pytest.raises(cm.MapError):
+        cm.build_document(EVENTS, VERDICTS, BANK_TIMES,
+                          provenance=cm.provenance_stub())
+
+
+def test_wvr_t37_the_build_refuses_a_document_that_loses_events(monkeypatch):
+    monkeypatch.setattr(cm, "_memberships", lambda document: {})
+    with pytest.raises(cm.MapError):
+        cm.build_document(EVENTS, VERDICTS, BANK_TIMES,
+                          provenance=cm.provenance_stub())
+
+
+def test_wvr_t38_a_verdict_file_that_is_not_complete_is_refused():
+    incomplete = json.loads(json.dumps(VERDICTS))
+    incomplete["complete"] = False
+    assert len(incomplete["verdicts"]) == 22
+    with pytest.raises(cm.MapError):
+        cm.verdict_index(incomplete)
+    with pytest.raises(cm.MapError):
+        cm.regions(incomplete)
+
+
+def test_wvr_t39_the_validator_reports_a_tampered_map_as_failing(tmp_path):
+    validator = _module(VALIDATOR, "wvr_cmap_validate_mod")
+    runs = tmp_path / "runs"
+    runs.mkdir()
+    for name in ("event_map_v1_registry.json", "stitch_v1_verdicts.json",
+                 "stitch_v1_blind_map.json", "shadow_frame_bank.json"):
+        (runs / name).write_bytes((RUNS / name).read_bytes())
+    built = builder.build(runs)
+    builder.write_artifacts(runs, built)
+    assert all(validator.checks(runs).values())
+
+    document = json.loads((runs / builder.MAP_NAME).read_text(
+        encoding="utf-8"))
+    block = document["nodes"]["conflict_blocks"][0]
+    document["nodes"]["stitch_groups"].append({
+        "node_id": "SG999", "node_type": "CONSENSUS_EVENT",
+        "overlap_id": block["overlap_id"], "relation": "SAME_EVENT",
+        "reviewer_status": "STITCHABLE",
+        "sources": [block["observation_set_1"]["source"],
+                    block["observation_set_2"]["source"]],
+        "start_sec": block["start_sec"], "end_sec": block["end_sec"],
+        "ordered_members": [], "member_count": 0,
+        "description_generated": False, "frame_stamps": []})
+    (runs / builder.MAP_NAME).write_text(cm.canonical(document),
+                                         encoding="utf-8")
+    rows = validator.checks(runs)
+    assert rows["no_conflict_is_resolved"] is False, \
+        "validator가 conflict 오병합을 잡지 못했다"
+
+
+def test_wvr_t40_an_invalid_source_event_is_refused_even_if_the_census_fits(
+        monkeypatch):
+    poisoned = list(EVENTS) + [{
+        "event_id": "W00_E001", "source_window": "W00",
+        "source_window_span": [0.0, 48.0], "start_sec": 4.0, "end_sec": 8.0,
+        "actor": "person", "action": "standing", "object_or_state": "kitchen",
+        "collapsed_index": 0}]
+    census = dict(cm.EXPECTED_EVENTS_PER_WINDOW)
+    census["W00"] = 1
+    monkeypatch.setattr(cm, "EXPECTED_EVENTS_PER_WINDOW", census)
+    with pytest.raises(cm.MapError):
+        cm.assert_source_events(poisoned)

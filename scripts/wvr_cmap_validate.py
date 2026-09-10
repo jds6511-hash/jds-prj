@@ -83,8 +83,9 @@ def checks(runs: Path) -> dict:
             and len(groups) == 12,
         "stitch_group_types_follow_reviewer_relations": all(
             row["node_type"]
-            == cm.RELATION_TO_NODE_TYPE[verdict_index[row["overlap_id"]]
-                                        ["relation"]] for row in groups),
+            == cm.RELATION_TO_NODE_TYPE.get(
+                verdict_index[row["overlap_id"]]["relation"])
+            for row in groups),
         "conflict_keeps_two_observation_sets": all(
             row["observation_set_1"]["source"]
             != row["observation_set_2"]["source"]
