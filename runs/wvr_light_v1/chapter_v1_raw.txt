@@ -1,0 +1,78 @@
+```json
+{
+  "chapters": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 48.0,
+      "title": "Food preparation - initial steps",
+      "summary": "Person selects and prepares various ingredients like soy sauce, curry, and potatoes. Conflicting observations exist for subsequent steps.",
+      "dominant_activities": ["selecting ingredients", "preparing ingredients"],
+      "confidence_class": "MIXED_EVIDENCE",
+      "boundary_reason": ["ACTIVITY_CHANGE"]
+    },
+    {
+      "start_sec": 48.0,
+      "end_sec": 96.0,
+      "title": "Food preparation - chopping and mixing",
+      "summary": "Person chops onions and carrots, mixes ingredients, and prepares ground beef. Conflicting observations exist for some steps.",
+      "dominant_activities": ["chopping vegetables", "mixing ingredients"],
+      "confidence_class": "MIXED_EVIDENCE",
+      "boundary_reason": ["SCENE_OR_TASK_CHANGE"]
+    },
+    {
+      "start_sec": 96.0,
+      "end_sec": 192.0,
+      "title": "Food preparation - cooking and shaping",
+      "summary": "Person cooks the mixture, peels and grates potatoes, forms potato balls, and coats them in breadcrumbs. Some steps are consistent across observations.",
+      "dominant_activities": ["cooking mixture", "forming potato balls", "coating in breadcrumbs"],
+      "confidence_class": "LIMITED_EVIDENCE",
+      "boundary_reason": ["SUSTAINED_TRANSITION"]
+    },
+    {
+      "start_sec": 192.0,
+      "end_sec": 264.0,
+      "title": "Food preparation - finalizing and serving",
+      "summary": "Person pours liquid into a pan, mixes cream, and serves the prepared food. Conflicting observations exist for some steps.",
+      "dominant_activities": ["pouring liquid", "mixing ingredients", "serving food"],
+      "confidence_class": "MIXED_EVIDENCE",
+      "boundary_reason": ["SCENE_OR_TASK_CHANGE"]
+    },
+    {
+      "start_sec": 264.0,
+      "end_sec": 384.0,
+      "title": "Eating and food preparation continuation",
+      "summary": "Person eats noodles and breaded food items, and prepares additional food like curry udon and chicken with sauce. Conflicting observations exist for some steps.",
+      "dominant_activities": ["eating food", "preparing additional food"],
+      "confidence_class": "MIXED_EVIDENCE",
+      "boundary_reason": ["SCENE_OR_TASK_CHANGE"]
+    },
+    {
+      "start_sec": 384.0,
+      "end_sec": 480.0,
+      "title": "Clothing and household tasks",
+      "summary": "Person places chicken legs in a bowl, wraps fabric, and adjusts clothing. Some steps are consistent across observations.",
+      "dominant_activities": ["placing food in bowl", "wrapping fabric", "adjusting clothing"],
+      "confidence_class": "LIMITED_EVIDENCE",
+      "boundary_reason": ["SCENE_OR_TASK_CHANGE"]
+    },
+    {
+      "start_sec": 480.0,
+      "end_sec": 576.0,
+      "title": "Gift wrapping and personal care",
+      "summary": "Person wraps a gift, puts on a handbag, and takes a selfie. Some steps are consistent across observations.",
+      "dominant_activities": ["wrapping gift", "putting on handbag", "taking selfie"],
+      "confidence_class": "LIMITED_EVIDENCE",
+      "boundary_reason": ["SCENE_OR_TASK_CHANGE"]
+    },
+    {
+      "start_sec": 576.0,
+      "end_sec": 600.0,
+      "title": "Exiting and final actions",
+      "summary": "Person adjusts clothing, looks at a phone, and enters a shop.",
+      "dominant_activities": ["adjusting clothing", "looking at phone", "entering shop"],
+      "confidence_class": "STABLE_DOMINANT",
+      "boundary_reason": ["ACTIVITY_CHANGE"]
+    }
+  ]
+}
+```

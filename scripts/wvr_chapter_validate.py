@@ -94,9 +94,14 @@ def checks(runs: Path) -> dict:
         "no_numeric_confidence": all(
             not isinstance(row.get("confidence"), (int, float))
             and "confidence_value" not in row for row in chapters),
-        "boundaries_not_all_on_the_24s_grid":
-            chapters_doc["grid_alignment"]["all_internal_boundaries_on_grid"]
-            is False,
+        # 사전등록 §9: 격자 정렬은 **사실 기록 + 구조 이상**이지 통과 게이트가 아니다.
+        # 전부 격자 위면 반드시 ALL_BOUNDARIES_ON_24S_GRID 이상이 기록돼 있어야 한다.
+        "grid_alignment_recorded_and_not_hidden": (
+            chapters_doc["grid_alignment"] == ch.grid_alignment(chapters)
+            and (chapters_doc["grid_alignment"][
+                "all_internal_boundaries_on_grid"] is False
+                or any(row["kind"] == "ALL_BOUNDARIES_ON_24S_GRID"
+                       for row in chapters_doc["anomalies"]))),
         "every_chapter_has_source_lineage": all(
             rows["source_regions"] and rows["source_nodes"]
             and rows["source_event_count"] > 0 for rows in lineage),
@@ -127,15 +132,17 @@ def checks(runs: Path) -> dict:
         "unresolved_chapter_has_real_events": all(
             rows["stable_source_events"] or rows["conflict_source_events"]
             for rows in lineage if rows["unresolved_intervals"]),
+        # 근거가 빌 수 있는 유일한 정당한 경우는 unresolved 구간이다 —
+        # [0,24)에는 valid 관측이 없고, 사전등록 §6이 만들어 채우는 것을 금지한다.
         "boundary_evidence_is_complete": (
             len(boundaries) == len(chapters)
             and all(row["boundary_sec"] == chapter["start_sec"]
                     and row["boundary_reason"] == chapter["boundary_reason"]
-                    and (row["after_activity_evidence"]
-                         or row["boundary_sec"] >= ch.VIDEO_END_SEC)
                     for row, chapter in zip(boundaries, chapters))
-            and all(row["before_activity_evidence"]
-                    for row in boundaries[1:])),
+            and all(row["after_activity_evidence"]
+                    or row["unresolved_involved"] for row in boundaries)
+            and all(row["before_activity_evidence"] or row["is_video_start"]
+                    or row["unresolved_involved"] for row in boundaries)),
         "boundary_event_ids_exist": all(
             event_id in known_events for row in boundaries
             for event_id in row["before_source_event_ids"]

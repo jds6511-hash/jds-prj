@@ -333,8 +333,17 @@ def test_wvr_u20_the_runner_refuses_to_regenerate(tmp_path, monkeypatch):
     (runs / ch.SOURCE_MAP_NAME).write_bytes(
         (RUNS / ch.SOURCE_MAP_NAME).read_bytes())
     (runs / runner.RAW_NAME).write_text("already there", encoding="utf-8")
-    with pytest.raises(runner.RunError):
+    with pytest.raises(runner.RunError) as error:
         runner.run(runs)                    # raw가 있으면 재생성 금지
+    assert "재생성 금지" in str(error.value)
+    # 재생성 거부는 다른 어떤 검사보다 **먼저** 걸려야 한다 —
+    # 입력이 깨져 있어도 이유는 여전히 재생성 금지다.
+    (runs / ch.SOURCE_MAP_NAME).write_text("{}", encoding="utf-8")
+    with pytest.raises(runner.RunError) as error:
+        runner.run(runs)
+    assert "재생성 금지" in str(error.value)
+    (runs / ch.SOURCE_MAP_NAME).write_bytes(
+        (RUNS / ch.SOURCE_MAP_NAME).read_bytes())
     (runs / runner.RAW_NAME).unlink()
     monkeypatch.setattr(ch, "RETRY_ALLOWED", True)
     with pytest.raises(runner.RunError):
@@ -465,3 +474,43 @@ def test_wvr_u26_the_generated_artifacts_pass_the_validator_when_present():
     rows = validator.checks(RUNS)
     failed = [name for name, value in rows.items() if not value]
     assert not failed, failed
+
+
+def test_wvr_u27_the_grid_anomaly_cannot_be_hidden_from_the_reviewer():
+    """사전등록 §9: 격자 정렬은 통과 게이트가 아니라 기록 대상이다.
+
+    그러나 전부 격자 위인데 이상 기록이 없으면 validator가 잡아야 한다 —
+    사실을 지우는 것은 허용되지 않는다.
+    """
+    validator = _module(VALIDATOR, "wvr_chapter_validate_mod2")
+    chapters, lineage = _built(((0.0, 96.0), (96.0, 288.0), (288.0, 480.0),
+                                (480.0, 600.0)))
+    grid = ch.grid_alignment(chapters)
+    rows = ch.anomalies(chapters, lineage, DOCUMENT)
+    assert grid["all_internal_boundaries_on_grid"] is True
+    assert any(row["kind"] == "ALL_BOUNDARIES_ON_24S_GRID" for row in rows)
+    source = VALIDATOR.read_text(encoding="utf-8")
+    assert "grid_alignment_recorded_and_not_hidden" in source
+    assert '"boundaries_not_all_on_the_24s_grid"' not in source, \
+        "격자 정렬을 통과 게이트로 되돌리면 사전등록 §9와 어긋난다"
+    assert 'row["kind"] == "ALL_BOUNDARIES_ON_24S_GRID"' in source
+    assert hasattr(validator, "checks")
+
+
+def test_wvr_u28_empty_boundary_evidence_is_only_allowed_at_unresolved_spans():
+    """빈 근거는 unresolved 구간(=[0,24))에서만 정당하다.
+
+    다른 경계에서 근거가 비면 validator가 잡아야 한다.
+    """
+    validator = _module(VALIDATOR, "wvr_chapter_validate_mod3")
+    chapters, _ = _built()
+    boundaries = ch.boundary_evidence(chapters, DOCUMENT)
+    assert boundaries[0]["unresolved_involved"] is True
+    assert boundaries[0]["after_activity_evidence"] == []
+    for row in boundaries[1:]:
+        assert row["unresolved_involved"] is False
+        assert row["before_activity_evidence"] and row["after_activity_evidence"]
+    source = VALIDATOR.read_text(encoding="utf-8")
+    assert 'or row["unresolved_involved"] for row in boundaries)' in source
+    assert 'or row["boundary_sec"] >= ch.VIDEO_END_SEC' not in source
+    assert hasattr(validator, "checks")

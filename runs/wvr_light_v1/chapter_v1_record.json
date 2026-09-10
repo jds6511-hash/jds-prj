@@ -1,0 +1,63 @@
+{
+ "code_git_head": "05762ef7ba2856d5aa8b1a9ddb9219dc8f477b07",
+ "effective_runtime": {
+  "attn_implementation": "sdpa",
+  "do_sample": false,
+  "effective_dtype": "torch.bfloat16",
+  "effective_model_id": "Qwen/Qwen2.5-7B-Instruct",
+  "effective_model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+  "effective_quantized": false,
+  "env": {
+   "cuda": "13.0",
+   "generated_at": "2026-09-10T20:27:04",
+   "git_dirty": true,
+   "git_head": "05762ef7ba2856d5aa8b1a9ddb9219dc8f477b07",
+   "gpu": "NVIDIA GeForce RTX 4090",
+   "python": "3.12.13",
+   "torch": "2.13.0+cu130",
+   "transformers": "5.14.1"
+  },
+  "max_new_tokens": 4096,
+  "model_loaded": true,
+  "prompt_sha256": {
+   "CHAPTER_PROMPT_V1": "481a5f60630231ecee6935204326b1375b38eab5005d4fbde76a4a44601c7d9e"
+  },
+  "quantization_mismatch": false,
+  "requested_4bit": false,
+  "requested_model": "Qwen/Qwen2.5-7B-Instruct",
+  "role": "chapter_generator"
+ },
+ "elapsed_sec": 34.08,
+ "event": "WVR_SEMANTIC_CHAPTER_SHADOW_V1",
+ "generation_attempts": 1,
+ "new_vlm_inference_count": 0,
+ "parsed_here": false,
+ "prereg": "docs/preregistration/WVR_SEMANTIC_CHAPTER_SHADOW_V1_2026-09-10.md",
+ "prereg_commit": "05762ef7ba2856d5aa8b1a9ddb9219dc8f477b07",
+ "prompt_chars": 16734,
+ "prompt_name": "CHAPTER_PROMPT_V1",
+ "prompt_sha256": "481a5f60630231ecee6935204326b1375b38eab5005d4fbde76a4a44601c7d9e",
+ "prompt_template_sha256": "032fa497974b182a5a66afda5bc4b7a31251a9b8cd55c990bc26005756a1f39f",
+ "raw_chars": 3544,
+ "raw_persisted_before_parse": true,
+ "raw_sha256": "590e81943ff1f69dc0acb48d78e50c5c4c0d939cc56fcbe4e0c2550ffa14bb3e",
+ "requested_runtime": {
+  "attempts": 1,
+  "do_sample": false,
+  "dtype": "bfloat16",
+  "load_4bit": false,
+  "max_new_tokens": 4096,
+  "model_id": "Qwen/Qwen2.5-7B-Instruct"
+ },
+ "retry_allowed": false,
+ "schema": "wvr_chapter_v1_record",
+ "source_map": "conservative_event_map_v1.json",
+ "source_map_sha256": "0ebecf34e84550805392bfcc8b4681f5028679250736a03f230dafb32d692e8c",
+ "track_a_input_used": false,
+ "vram": {
+  "allocated_gb": 14.193,
+  "cuda": true,
+  "device": "NVIDIA GeForce RTX 4090",
+  "max_allocated_gb": 15.353
+ }
+}

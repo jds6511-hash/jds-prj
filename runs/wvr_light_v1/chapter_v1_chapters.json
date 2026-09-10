@@ -1,0 +1,1035 @@
+{
+ "anomalies": [
+  {
+   "detail": "내부 경계 7개가 전부 24초 격자에 있다",
+   "kind": "ALL_BOUNDARIES_ON_24S_GRID"
+  }
+ ],
+ "artifact_name": "SEMANTIC_CHAPTER_CANDIDATES",
+ "boundary_evidence": [
+  {
+   "after_activity_evidence": [],
+   "after_source_event_ids": [],
+   "before_activity_evidence": [],
+   "before_source_event_ids": [],
+   "boundary_reason": [
+    "ACTIVITY_CHANGE"
+   ],
+   "boundary_sec": 0.0,
+   "chapter_id": "CH01",
+   "conflict_involved": false,
+   "is_video_start": true,
+   "on_24s_grid": true,
+   "source_regions": [
+    "R01"
+   ],
+   "unresolved_involved": true
+  },
+  {
+   "after_activity_evidence": [
+    "46.0-49.0 person | blending | potato slices",
+    "48.0-52.0 person | placing | bread pieces into blender",
+    "49.0-52.0 person | pouring | oil into bowl with curry powder",
+    "52.0-55.0 person | mixing | curry powder and oil",
+    "52.0-55.0 person | placing | lid on blender",
+    "55.0-72.0 person | chopping | onion",
+    "55.0-58.0 person | pouring | oil into bowl of breadcrumbs",
+    "58.0-62.0 person | stirring | breadcrumbs with oil"
+   ],
+   "after_source_event_ids": [
+    "W01_E008",
+    "W02_E001",
+    "W01_E009",
+    "W01_E010",
+    "W02_E002",
+    "W01_E011",
+    "W02_E003",
+    "W02_E004"
+   ],
+   "before_activity_evidence": [
+    "34.0-37.0 person | placing | potatoes in steamer",
+    "37.0-40.0 person | covering | steamer",
+    "40.0-43.0 person | pouring | curry powder into bowl",
+    "43.0-46.0 person | placing | potato slices in blender",
+    "46.0-49.0 person | blending | potato slices"
+   ],
+   "before_source_event_ids": [
+    "W01_E004",
+    "W01_E005",
+    "W01_E006",
+    "W01_E007",
+    "W01_E008"
+   ],
+   "boundary_reason": [
+    "SCENE_OR_TASK_CHANGE"
+   ],
+   "boundary_sec": 48.0,
+   "chapter_id": "CH02",
+   "conflict_involved": true,
+   "is_video_start": false,
+   "on_24s_grid": true,
+   "source_regions": [
+    "R02",
+    "R03"
+   ],
+   "unresolved_involved": false
+  },
+  {
+   "after_activity_evidence": [
+    "96.0-100.0 person | mixing | ingredients in bowl",
+    "96.0-100.0 person | stirring | mixture in a bowl with chopsticks",
+    "100.0-104.0 person | cooking | mixture in pan",
+    "100.0-103.0 person | cooking | mixture in a pan over direct heat",
+    "103.0-123.0 person | peeling | potato with a peeler",
+    "104.0-120.0 person | peeling | potatoes with peeler"
+   ],
+   "after_source_event_ids": [
+    "W03_E007",
+    "W04_E001",
+    "W03_E008",
+    "W04_E002",
+    "W04_E003",
+    "W03_E009"
+   ],
+   "before_activity_evidence": [
+    "82.0-86.0 person | stirring | breadcrumbs in bowl",
+    "84.0-88.0 person | stirring | breadcrumbs in bowl",
+    "88.0-92.0 person | transferring | ground beef into bowl",
+    "92.0-96.0 person | adding | onion and crab stick to bowl"
+   ],
+   "before_source_event_ids": [
+    "W02_E010",
+    "W03_E004",
+    "W03_E005",
+    "W03_E006"
+   ],
+   "boundary_reason": [
+    "SUSTAINED_TRANSITION"
+   ],
+   "boundary_sec": 96.0,
+   "chapter_id": "CH03",
+   "conflict_involved": true,
+   "is_video_start": false,
+   "on_24s_grid": true,
+   "source_regions": [
+    "R03",
+    "R04"
+   ],
+   "unresolved_involved": false
+  },
+  {
+   "after_activity_evidence": [
+    "190.0-193.0 person | pouring | sauce into pan",
+    "192.0-195.0 person | pouring | powder from a bottle into a pan",
+    "193.0-202.0 person | pouring | liquid into pan",
+    "195.0-240.0 person | pouring | liquid from a bottle into a pan",
+    "202.0-205.0 person | pouring | cream into bowl"
+   ],
+   "after_source_event_ids": [
+    "W07_E005",
+    "W08_E001",
+    "W07_E006",
+    "W08_E002",
+    "W07_E007"
+   ],
+   "before_activity_evidence": [
+    "175.0-184.0 person | placing | coated balls on plate",
+    "180.0-185.0 person | placing | coated potato dough on a plate",
+    "184.0-187.0 person | pouring | cream into pan",
+    "185.0-192.0 person | pouring | liquid into a pan",
+    "187.0-190.0 person | stirring | onions in pan",
+    "190.0-193.0 person | pouring | sauce into pan"
+   ],
+   "before_source_event_ids": [
+    "W07_E002",
+    "W06_E009",
+    "W07_E003",
+    "W06_E010",
+    "W07_E004",
+    "W07_E005"
+   ],
+   "boundary_reason": [
+    "SCENE_OR_TASK_CHANGE"
+   ],
+   "boundary_sec": 192.0,
+   "chapter_id": "CH04",
+   "conflict_involved": true,
+   "is_video_start": false,
+   "on_24s_grid": true,
+   "source_regions": [
+    "R04",
+    "R05"
+   ],
+   "unresolved_involved": false
+  },
+  {
+   "after_activity_evidence": [
+    "260.0-288.0 person | eating | noodles",
+    "264.0-272.0 person | using chopsticks | lifting noodles from a bowl",
+    "272.0-280.0 person | eating | noodles with a spoon"
+   ],
+   "after_source_event_ids": [
+    "W10_E004",
+    "W11_E001",
+    "W11_E002"
+   ],
+   "before_activity_evidence": [
+    "236.0-264.0 person | pouring | butter into a bowl",
+    "245.0-255.0 person | serving | potato cream",
+    "255.0-260.0 person | serving | herbs",
+    "260.0-288.0 person | eating | noodles"
+   ],
+   "before_source_event_ids": [
+    "W09_E006",
+    "W10_E002",
+    "W10_E003",
+    "W10_E004"
+   ],
+   "boundary_reason": [
+    "SCENE_OR_TASK_CHANGE"
+   ],
+   "boundary_sec": 264.0,
+   "chapter_id": "CH05",
+   "conflict_involved": true,
+   "is_video_start": false,
+   "on_24s_grid": true,
+   "source_regions": [
+    "R05",
+    "R06"
+   ],
+   "unresolved_involved": false
+  },
+  {
+   "after_activity_evidence": [
+    "380.0-385.0 person | placing | chicken legs in steamer",
+    "384.0-389.0 person | placing | noodles in a bowl",
+    "385.0-390.0 person | placing | noodles in bowl",
+    "389.0-400.0 person | placing | chicken legs in a bowl",
+    "390.0-400.0 person | placing | chicken legs in bowl"
+   ],
+   "after_source_event_ids": [
+    "W15_E005",
+    "W16_E001",
+    "W15_E006",
+    "W16_E002",
+    "W15_E007"
+   ],
+   "before_activity_evidence": [
+    "348.0-376.0 person | preparing food | gimbal with gloves",
+    "370.0-375.0 person | arranging | sushi rolls on plate",
+    "375.0-380.0 person | placing | bowl of soup on table",
+    "376.0-380.0 person | eating | food with spoon",
+    "380.0-384.0 person | preparing food | chicken with sauce",
+    "380.0-385.0 person | placing | chicken legs in steamer"
+   ],
+   "before_source_event_ids": [
+    "W14_E002",
+    "W15_E003",
+    "W15_E004",
+    "W14_E003",
+    "W14_E004",
+    "W15_E005"
+   ],
+   "boundary_reason": [
+    "SCENE_OR_TASK_CHANGE"
+   ],
+   "boundary_sec": 384.0,
+   "chapter_id": "CH06",
+   "conflict_involved": true,
+   "is_video_start": false,
+   "on_24s_grid": true,
+   "source_regions": [
+    "R07",
+    "R08"
+   ],
+   "unresolved_involved": false
+  },
+  {
+   "after_activity_evidence": [
+    "480.0-484.0 hand | transferring | egg mixture onto plate",
+    "480.0-483.0 woman | pouring | sauce onto food",
+    "483.0-486.0 woman | pouring | olive oil onto tofu",
+    "484.0-488.0 hand | pouring | olive oil onto tofu",
+    "486.0-528.0 woman | sprinkling | black pepper on food",
+    "488.0-492.0 hand | placing | tofu on plate"
+   ],
+   "after_source_event_ids": [
+    "W19_E007",
+    "W20_E001",
+    "W20_E002",
+    "W19_E008",
+    "W20_E003",
+    "W19_E009"
+   ],
+   "before_activity_evidence": [
+    "460.0-470.0 person | chopping | tomato",
+    "468.0-472.0 hand | stirring | egg mixture in measuring cup",
+    "470.0-475.0 person | pouring | egg yolk into measuring cup",
+    "472.0-476.0 hand | pouring | egg mixture into pan",
+    "475.0-480.0 person | stirring | egg yolk in measuring cup",
+    "476.0-480.0 hand | stirring | egg mixture in pan"
+   ],
+   "before_source_event_ids": [
+    "W18_E003",
+    "W19_E004",
+    "W18_E004",
+    "W19_E005",
+    "W18_E005",
+    "W19_E006"
+   ],
+   "boundary_reason": [
+    "SCENE_OR_TASK_CHANGE"
+   ],
+   "boundary_sec": 480.0,
+   "chapter_id": "CH07",
+   "conflict_involved": true,
+   "is_video_start": false,
+   "on_24s_grid": true,
+   "source_regions": [
+    "R08",
+    "R09"
+   ],
+   "unresolved_involved": false
+  },
+  {
+   "after_activity_evidence": [
+    "573.0-580.0 person | adjusting clothing | white shirt and shorts",
+    "580.0-585.0 person | looking at phone | phone displaying weather",
+    "585.0-590.0 person | walking through train window | train window showing cityscape"
+   ],
+   "after_source_event_ids": [
+    "W23_E005",
+    "W23_E006",
+    "W23_E007"
+   ],
+   "before_activity_evidence": [
+    "560.0-565.0 person | putting on | handbag",
+    "561.0-565.0 person | picking up handbag | brown handbag",
+    "565.0-570.0 person | taking photo | mirror",
+    "565.0-573.0 person | taking mirror selfie | camera",
+    "570.0-576.0 person | adjusting | clothing",
+    "573.0-580.0 person | adjusting clothing | white shirt and shorts"
+   ],
+   "before_source_event_ids": [
+    "W22_E008",
+    "W23_E003",
+    "W22_E009",
+    "W23_E004",
+    "W22_E010",
+    "W23_E005"
+   ],
+   "boundary_reason": [
+    "ACTIVITY_CHANGE"
+   ],
+   "boundary_sec": 576.0,
+   "chapter_id": "CH08",
+   "conflict_involved": false,
+   "is_video_start": false,
+   "on_24s_grid": true,
+   "source_regions": [
+    "R10",
+    "R11"
+   ],
+   "unresolved_involved": false
+  }
+ ],
+ "chapters": [
+  {
+   "boundary_reason": [
+    "ACTIVITY_CHANGE"
+   ],
+   "chapter_id": "CH01",
+   "confidence_class": "MIXED_EVIDENCE",
+   "dominant_activities": [
+    "selecting ingredients",
+    "preparing ingredients"
+   ],
+   "end_sec": 48.0,
+   "start_sec": 0.0,
+   "summary": "Person selects and prepares various ingredients like soy sauce, curry, and potatoes. Conflicting observations exist for subsequent steps.",
+   "title": "Food preparation - initial steps"
+  },
+  {
+   "boundary_reason": [
+    "SCENE_OR_TASK_CHANGE"
+   ],
+   "chapter_id": "CH02",
+   "confidence_class": "MIXED_EVIDENCE",
+   "dominant_activities": [
+    "chopping vegetables",
+    "mixing ingredients"
+   ],
+   "end_sec": 96.0,
+   "start_sec": 48.0,
+   "summary": "Person chops onions and carrots, mixes ingredients, and prepares ground beef. Conflicting observations exist for some steps.",
+   "title": "Food preparation - chopping and mixing"
+  },
+  {
+   "boundary_reason": [
+    "SUSTAINED_TRANSITION"
+   ],
+   "chapter_id": "CH03",
+   "confidence_class": "LIMITED_EVIDENCE",
+   "dominant_activities": [
+    "cooking mixture",
+    "forming potato balls",
+    "coating in breadcrumbs"
+   ],
+   "end_sec": 192.0,
+   "start_sec": 96.0,
+   "summary": "Person cooks the mixture, peels and grates potatoes, forms potato balls, and coats them in breadcrumbs. Some steps are consistent across observations.",
+   "title": "Food preparation - cooking and shaping"
+  },
+  {
+   "boundary_reason": [
+    "SCENE_OR_TASK_CHANGE"
+   ],
+   "chapter_id": "CH04",
+   "confidence_class": "MIXED_EVIDENCE",
+   "dominant_activities": [
+    "pouring liquid",
+    "mixing ingredients",
+    "serving food"
+   ],
+   "end_sec": 264.0,
+   "start_sec": 192.0,
+   "summary": "Person pours liquid into a pan, mixes cream, and serves the prepared food. Conflicting observations exist for some steps.",
+   "title": "Food preparation - finalizing and serving"
+  },
+  {
+   "boundary_reason": [
+    "SCENE_OR_TASK_CHANGE"
+   ],
+   "chapter_id": "CH05",
+   "confidence_class": "MIXED_EVIDENCE",
+   "dominant_activities": [
+    "eating food",
+    "preparing additional food"
+   ],
+   "end_sec": 384.0,
+   "start_sec": 264.0,
+   "summary": "Person eats noodles and breaded food items, and prepares additional food like curry udon and chicken with sauce. Conflicting observations exist for some steps.",
+   "title": "Eating and food preparation continuation"
+  },
+  {
+   "boundary_reason": [
+    "SCENE_OR_TASK_CHANGE"
+   ],
+   "chapter_id": "CH06",
+   "confidence_class": "LIMITED_EVIDENCE",
+   "dominant_activities": [
+    "placing food in bowl",
+    "wrapping fabric",
+    "adjusting clothing"
+   ],
+   "end_sec": 480.0,
+   "start_sec": 384.0,
+   "summary": "Person places chicken legs in a bowl, wraps fabric, and adjusts clothing. Some steps are consistent across observations.",
+   "title": "Clothing and household tasks"
+  },
+  {
+   "boundary_reason": [
+    "SCENE_OR_TASK_CHANGE"
+   ],
+   "chapter_id": "CH07",
+   "confidence_class": "LIMITED_EVIDENCE",
+   "dominant_activities": [
+    "wrapping gift",
+    "putting on handbag",
+    "taking selfie"
+   ],
+   "end_sec": 576.0,
+   "start_sec": 480.0,
+   "summary": "Person wraps a gift, puts on a handbag, and takes a selfie. Some steps are consistent across observations.",
+   "title": "Gift wrapping and personal care"
+  },
+  {
+   "boundary_reason": [
+    "ACTIVITY_CHANGE"
+   ],
+   "chapter_id": "CH08",
+   "confidence_class": "STABLE_DOMINANT",
+   "dominant_activities": [
+    "adjusting clothing",
+    "looking at phone",
+    "entering shop"
+   ],
+   "end_sec": 600.0,
+   "start_sec": 576.0,
+   "summary": "Person adjusts clothing, looks at a phone, and enters a shop.",
+   "title": "Exiting and final actions"
+  }
+ ],
+ "conflict_safety": {
+  "conflict_block_total": 10,
+  "conflict_blocks_covered": [
+   "CB001",
+   "CB002",
+   "CB003",
+   "CB004",
+   "CB005",
+   "CB006",
+   "CB007",
+   "CB008",
+   "CB009",
+   "CB010"
+  ],
+  "violations": []
+ },
+ "event": "WVR_SEMANTIC_CHAPTER_SHADOW_V1",
+ "executor_state": {
+  "allowed_max_conclusion": "리뷰어가 PASS로 판정하면, Conservative Event Map은 conflict를 확정 사실로 바꾸지 않고도 whole-video Semantic Chapter 후보를 만들 수 있는 입력이다.",
+  "anomaly_count": 1,
+  "chapter_count": 8,
+  "final_verdict_vocabulary": "SEMANTIC_CHAPTER_SHADOW_PASS / HOLD / INCONCLUSIVE",
+  "forbidden_conclusions": [
+   "Event extraction이 해결됐다",
+   "240초 conflict가 해결됐다",
+   "모든 event가 사실이다",
+   "0.5fps sufficient",
+   "production Event Map 승인",
+   "Overview를 만들어도 된다"
+  ],
+  "generation_attempts": 1,
+  "new_vlm_inference_count": 0,
+  "overview_generated": false,
+  "retry_allowed": false,
+  "state": "EXECUTED / REVIEW_PENDING",
+  "track_a_input_used": false,
+  "verdict": null,
+  "verdict_by_executor": false
+ },
+ "grid_alignment": {
+  "all_internal_boundaries_on_grid": true,
+  "grid_sec": 24.0,
+  "internal_boundary_count": 7,
+  "off_grid_count": 0,
+  "on_24s_grid_count": 7
+ },
+ "lineage": [
+  {
+   "chapter_id": "CH01",
+   "conflict_blocks": [],
+   "conflict_regions": [],
+   "conflict_source_events": [],
+   "conflict_sources_preserved": [],
+   "source_event_count": 8,
+   "source_nodes": [
+    "SS01",
+    "UG01"
+   ],
+   "source_regions": [
+    "R01",
+    "R02"
+   ],
+   "source_windows": [
+    "W01"
+   ],
+   "stable_source_events": [
+    "W01_E001",
+    "W01_E002",
+    "W01_E003",
+    "W01_E004",
+    "W01_E005",
+    "W01_E006",
+    "W01_E007",
+    "W01_E008"
+   ],
+   "unresolved_intervals": [
+    [
+     0.0,
+     24.0
+    ]
+   ]
+  },
+  {
+   "chapter_id": "CH02",
+   "conflict_blocks": [
+    "CB001",
+    "CB002"
+   ],
+   "conflict_regions": [
+    "R03"
+   ],
+   "conflict_source_events": [
+    "W02_E001",
+    "W01_E009",
+    "W01_E010",
+    "W02_E002",
+    "W01_E011",
+    "W02_E003",
+    "W02_E004",
+    "W02_E005",
+    "W02_E006",
+    "W02_E007",
+    "W03_E001",
+    "W02_E008",
+    "W03_E002",
+    "W02_E009",
+    "W03_E003",
+    "W02_E010",
+    "W03_E004",
+    "W03_E005",
+    "W03_E006"
+   ],
+   "conflict_sources_preserved": [
+    "W01",
+    "W02",
+    "W03"
+   ],
+   "source_event_count": 20,
+   "source_nodes": [
+    "CB001",
+    "CB002"
+   ],
+   "source_regions": [
+    "R03"
+   ],
+   "source_windows": [
+    "W01",
+    "W02",
+    "W03"
+   ],
+   "stable_source_events": [
+    "W01_E008"
+   ],
+   "unresolved_intervals": []
+  },
+  {
+   "chapter_id": "CH03",
+   "conflict_blocks": [],
+   "conflict_regions": [],
+   "conflict_source_events": [],
+   "conflict_sources_preserved": [],
+   "source_event_count": 30,
+   "source_nodes": [
+    "SG001",
+    "SG002",
+    "SG003",
+    "SG004"
+   ],
+   "source_regions": [
+    "R04"
+   ],
+   "source_windows": [
+    "W03",
+    "W04",
+    "W05",
+    "W06",
+    "W07"
+   ],
+   "stable_source_events": [
+    "W03_E007",
+    "W04_E001",
+    "W03_E008",
+    "W04_E002",
+    "W04_E003",
+    "W03_E009",
+    "W05_E001",
+    "W04_E004",
+    "W05_E002",
+    "W04_E005",
+    "W05_E003",
+    "W04_E006",
+    "W05_E004",
+    "W05_E005",
+    "W06_E001",
+    "W05_E006",
+    "W06_E002",
+    "W06_E003",
+    "W06_E004",
+    "W06_E005",
+    "W06_E006",
+    "W07_E001",
+    "W06_E007",
+    "W06_E008",
+    "W07_E002",
+    "W06_E009",
+    "W07_E003",
+    "W06_E010",
+    "W07_E004",
+    "W07_E005"
+   ],
+   "unresolved_intervals": []
+  },
+  {
+   "chapter_id": "CH04",
+   "conflict_blocks": [
+    "CB003",
+    "CB004",
+    "CB005"
+   ],
+   "conflict_regions": [
+    "R05"
+   ],
+   "conflict_source_events": [
+    "W08_E001",
+    "W07_E006",
+    "W08_E002",
+    "W07_E007",
+    "W07_E008",
+    "W09_E001",
+    "W09_E002",
+    "W09_E003",
+    "W09_E004",
+    "W09_E005",
+    "W09_E006",
+    "W10_E001",
+    "W10_E002",
+    "W10_E003"
+   ],
+   "conflict_sources_preserved": [
+    "W07",
+    "W08",
+    "W09",
+    "W10"
+   ],
+   "source_event_count": 16,
+   "source_nodes": [
+    "CB003",
+    "CB004",
+    "CB005"
+   ],
+   "source_regions": [
+    "R05"
+   ],
+   "source_windows": [
+    "W07",
+    "W08",
+    "W09",
+    "W10"
+   ],
+   "stable_source_events": [
+    "W07_E005",
+    "W10_E004"
+   ],
+   "unresolved_intervals": []
+  },
+  {
+   "chapter_id": "CH05",
+   "conflict_blocks": [
+    "CB006",
+    "CB007",
+    "CB008"
+   ],
+   "conflict_regions": [
+    "R07"
+   ],
+   "conflict_source_events": [
+    "W12_E006",
+    "W13_E001",
+    "W13_E002",
+    "W14_E001",
+    "W14_E002",
+    "W15_E001",
+    "W15_E002",
+    "W15_E003",
+    "W15_E004",
+    "W14_E003",
+    "W14_E004",
+    "W15_E005"
+   ],
+   "conflict_sources_preserved": [
+    "W12",
+    "W13",
+    "W14",
+    "W15"
+   ],
+   "source_event_count": 24,
+   "source_nodes": [
+    "CB006",
+    "CB007",
+    "CB008",
+    "SG005",
+    "SG006"
+   ],
+   "source_regions": [
+    "R06",
+    "R07"
+   ],
+   "source_windows": [
+    "W10",
+    "W11",
+    "W12",
+    "W13",
+    "W14",
+    "W15"
+   ],
+   "stable_source_events": [
+    "W10_E004",
+    "W11_E001",
+    "W11_E002",
+    "W11_E003",
+    "W11_E004",
+    "W12_E001",
+    "W12_E002",
+    "W11_E005",
+    "W12_E003",
+    "W12_E004",
+    "W11_E006",
+    "W12_E005"
+   ],
+   "unresolved_intervals": []
+  },
+  {
+   "chapter_id": "CH06",
+   "conflict_blocks": [],
+   "conflict_regions": [],
+   "conflict_source_events": [
+    "W15_E005"
+   ],
+   "conflict_sources_preserved": [],
+   "source_event_count": 29,
+   "source_nodes": [
+    "SG007",
+    "SG008",
+    "SG009",
+    "SG010"
+   ],
+   "source_regions": [
+    "R08"
+   ],
+   "source_windows": [
+    "W15",
+    "W16",
+    "W17",
+    "W18",
+    "W19"
+   ],
+   "stable_source_events": [
+    "W16_E001",
+    "W15_E006",
+    "W16_E002",
+    "W15_E007",
+    "W15_E008",
+    "W16_E003",
+    "W15_E009",
+    "W16_E004",
+    "W17_E001",
+    "W16_E005",
+    "W17_E002",
+    "W16_E006",
+    "W16_E007",
+    "W17_E003",
+    "W17_E004",
+    "W18_E001",
+    "W17_E005",
+    "W17_E006",
+    "W18_E002",
+    "W19_E001",
+    "W18_E003",
+    "W19_E002",
+    "W19_E003",
+    "W19_E004",
+    "W18_E004",
+    "W19_E005",
+    "W18_E005",
+    "W19_E006"
+   ],
+   "unresolved_intervals": []
+  },
+  {
+   "chapter_id": "CH07",
+   "conflict_blocks": [
+    "CB009",
+    "CB010"
+   ],
+   "conflict_regions": [
+    "R09"
+   ],
+   "conflict_source_events": [
+    "W19_E007",
+    "W20_E001",
+    "W20_E002",
+    "W19_E008",
+    "W20_E003",
+    "W19_E009",
+    "W19_E010",
+    "W19_E011",
+    "W19_E012",
+    "W21_E001",
+    "W21_E002",
+    "W21_E003",
+    "W21_E004",
+    "W21_E005"
+   ],
+   "conflict_sources_preserved": [
+    "W19",
+    "W20",
+    "W21"
+   ],
+   "source_event_count": 32,
+   "source_nodes": [
+    "CB009",
+    "CB010",
+    "SG011",
+    "SG012"
+   ],
+   "source_regions": [
+    "R09",
+    "R10"
+   ],
+   "source_windows": [
+    "W19",
+    "W20",
+    "W21",
+    "W22",
+    "W23"
+   ],
+   "stable_source_events": [
+    "W22_E001",
+    "W21_E006",
+    "W21_E007",
+    "W22_E002",
+    "W22_E003",
+    "W21_E008",
+    "W22_E004",
+    "W22_E005",
+    "W22_E006",
+    "W23_E001",
+    "W22_E007",
+    "W23_E002",
+    "W22_E008",
+    "W23_E003",
+    "W22_E009",
+    "W23_E004",
+    "W22_E010",
+    "W23_E005"
+   ],
+   "unresolved_intervals": []
+  },
+  {
+   "chapter_id": "CH08",
+   "conflict_blocks": [],
+   "conflict_regions": [],
+   "conflict_source_events": [],
+   "conflict_sources_preserved": [],
+   "source_event_count": 6,
+   "source_nodes": [
+    "SS02"
+   ],
+   "source_regions": [
+    "R11"
+   ],
+   "source_windows": [
+    "W23"
+   ],
+   "stable_source_events": [
+    "W23_E005",
+    "W23_E006",
+    "W23_E007",
+    "W23_E008",
+    "W23_E009",
+    "W23_E010"
+   ],
+   "unresolved_intervals": []
+  }
+ ],
+ "policy": {
+  "blockers": [
+   "SOURCE_MAP_HASH_MISMATCH",
+   "RAW_NOT_PERSISTED",
+   "PARSE_FAILURE",
+   "SCHEMA_VIOLATION",
+   "COVERAGE_VIOLATION",
+   "VOCABULARY_VIOLATION",
+   "LINEAGE_BROKEN",
+   "CONFLICT_RESOLVED_BY_GENERATOR",
+   "UNRESOLVED_FILLED",
+   "RUNTIME_FAILURE",
+   "CONFIG_MISMATCH"
+  ],
+  "boundary_reasons": [
+   "ACTIVITY_CHANGE",
+   "SCENE_OR_TASK_CHANGE",
+   "OBJECT_DOMAIN_CHANGE",
+   "SUSTAINED_TRANSITION"
+  ],
+  "chapter_count_bounds": [
+   3,
+   10
+  ],
+  "chapter_llm_allowed": true,
+  "confidence_classes": [
+   "STABLE_DOMINANT",
+   "MIXED_EVIDENCE",
+   "LIMITED_EVIDENCE"
+  ],
+  "final_verdict_vocabulary": "SEMANTIC_CHAPTER_SHADOW_PASS / HOLD / INCONCLUSIVE",
+  "flags": {
+   "ANALYSIS_GENERATION_ALLOWED": false,
+   "CONFLICT_RESOLUTION_ALLOWED": false,
+   "EVENT_TEXT_MUTATION_ALLOWED": false,
+   "NEW_VLM_INFERENCE_ALLOWED": false,
+   "OVERVIEW_GENERATION_ALLOWED": false,
+   "PREFERRED_SOURCE_ALLOWED": false,
+   "PRODUCTION_PROMOTION_ALLOWED": false,
+   "REPORT_GENERATION_ALLOWED": false,
+   "RETRY_ALLOWED": false,
+   "SYNTHETIC_FILL_ALLOWED": false,
+   "TRACK_A_INPUT_ALLOWED": false,
+   "VERDICT_BY_EXECUTOR": false
+  },
+  "short_chapter_sec": 20.0,
+  "unresolved_opening_policy": "coverage_from_zero_with_unresolved_opening_metadata",
+  "verdict_by_executor": false
+ },
+ "prereg": "docs/preregistration/WVR_SEMANTIC_CHAPTER_SHADOW_V1_2026-09-10.md",
+ "prior_state": {
+  "W00": "WINDOW_INVALID (invalid source · 재실행 금지)",
+  "WVR_CONSERVATIVE_EVENT_MAP_SHADOW_V1": "CLOSED / CONSERVATIVE_EVENT_MAP_PASS",
+  "WVR_EVENT_MAP_COVERAGE_SHADOW_V1": "CLOSED / EVENT_MAP_SHADOW_HOLD",
+  "WVR_OVERLAP_EVENT_STITCHING_SHADOW_V1": "CLOSED / EVENT_STITCHING_SHADOW_HOLD"
+ },
+ "provenance": {
+  "build_commit": "05762ef7ba2856d5aa8b1a9ddb9219dc8f477b07",
+  "declared_event_ids_in_output": [],
+  "elapsed_sec": 34.08,
+  "event": "WVR_SEMANTIC_CHAPTER_SHADOW_V1",
+  "generation_attempts": 1,
+  "generation_commit": "05762ef7ba2856d5aa8b1a9ddb9219dc8f477b07",
+  "generator": {
+   "attn_implementation": "sdpa",
+   "do_sample": false,
+   "dtype": "torch.bfloat16",
+   "max_new_tokens": 4096,
+   "model_id": "Qwen/Qwen2.5-7B-Instruct",
+   "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+   "quantized": false
+  },
+  "new_vlm_inference_count": 0,
+  "prereg": "docs/preregistration/WVR_SEMANTIC_CHAPTER_SHADOW_V1_2026-09-10.md",
+  "prereg_commit": "05762ef7ba2856d5aa8b1a9ddb9219dc8f477b07",
+  "prompt_name": "CHAPTER_PROMPT_V1",
+  "prompt_sha256": "481a5f60630231ecee6935204326b1375b38eab5005d4fbde76a4a44601c7d9e",
+  "prompt_template_sha256": "032fa497974b182a5a66afda5bc4b7a31251a9b8cd55c990bc26005756a1f39f",
+  "raw_chars": 3544,
+  "raw_sha256": "590e81943ff1f69dc0acb48d78e50c5c4c0d939cc56fcbe4e0c2550ffa14bb3e",
+  "retry_allowed": false,
+  "source_map_sha256": "0ebecf34e84550805392bfcc8b4681f5028679250736a03f230dafb32d692e8c",
+  "track_a_input_used": false,
+  "vram": {
+   "allocated_gb": 14.193,
+   "cuda": true,
+   "device": "NVIDIA GeForce RTX 4090",
+   "max_allocated_gb": 15.353
+  }
+ },
+ "schema": "wvr_semantic_chapter_v1",
+ "unresolved_safety": {
+  "covered_by_chapters": [
+   [
+    0.0,
+    24.0
+   ]
+  ],
+  "policy": "coverage_from_zero_with_unresolved_opening_metadata",
+  "unresolved_intervals": [
+   [
+    0.0,
+    24.0
+   ]
+  ],
+  "violations": []
+ }
+}

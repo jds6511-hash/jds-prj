@@ -1,0 +1,167 @@
+{
+ "anomalies": [
+  {
+   "detail": "내부 경계 7개가 전부 24초 격자에 있다",
+   "kind": "ALL_BOUNDARIES_ON_24S_GRID"
+  }
+ ],
+ "boundary_reasons": [
+  [
+   "ACTIVITY_CHANGE"
+  ],
+  [
+   "SCENE_OR_TASK_CHANGE"
+  ],
+  [
+   "SUSTAINED_TRANSITION"
+  ],
+  [
+   "SCENE_OR_TASK_CHANGE"
+  ],
+  [
+   "SCENE_OR_TASK_CHANGE"
+  ],
+  [
+   "SCENE_OR_TASK_CHANGE"
+  ],
+  [
+   "SCENE_OR_TASK_CHANGE"
+  ],
+  [
+   "ACTIVITY_CHANGE"
+  ]
+ ],
+ "chapter_count": 8,
+ "chapter_spans": [
+  [
+   0.0,
+   48.0
+  ],
+  [
+   48.0,
+   96.0
+  ],
+  [
+   96.0,
+   192.0
+  ],
+  [
+   192.0,
+   264.0
+  ],
+  [
+   264.0,
+   384.0
+  ],
+  [
+   384.0,
+   480.0
+  ],
+  [
+   480.0,
+   576.0
+  ],
+  [
+   576.0,
+   600.0
+  ]
+ ],
+ "chapter_titles": [
+  "Food preparation - initial steps",
+  "Food preparation - chopping and mixing",
+  "Food preparation - cooking and shaping",
+  "Food preparation - finalizing and serving",
+  "Eating and food preparation continuation",
+  "Clothing and household tasks",
+  "Gift wrapping and personal care",
+  "Exiting and final actions"
+ ],
+ "confidence_classes": [
+  "MIXED_EVIDENCE",
+  "MIXED_EVIDENCE",
+  "LIMITED_EVIDENCE",
+  "MIXED_EVIDENCE",
+  "MIXED_EVIDENCE",
+  "LIMITED_EVIDENCE",
+  "LIMITED_EVIDENCE",
+  "STABLE_DOMINANT"
+ ],
+ "conflict_block_total": 10,
+ "conflict_blocks_covered": 10,
+ "conflict_violations": 0,
+ "event": "WVR_SEMANTIC_CHAPTER_SHADOW_V1",
+ "executor_state": {
+  "allowed_max_conclusion": "리뷰어가 PASS로 판정하면, Conservative Event Map은 conflict를 확정 사실로 바꾸지 않고도 whole-video Semantic Chapter 후보를 만들 수 있는 입력이다.",
+  "anomaly_count": 1,
+  "chapter_count": 8,
+  "final_verdict_vocabulary": "SEMANTIC_CHAPTER_SHADOW_PASS / HOLD / INCONCLUSIVE",
+  "forbidden_conclusions": [
+   "Event extraction이 해결됐다",
+   "240초 conflict가 해결됐다",
+   "모든 event가 사실이다",
+   "0.5fps sufficient",
+   "production Event Map 승인",
+   "Overview를 만들어도 된다"
+  ],
+  "generation_attempts": 1,
+  "new_vlm_inference_count": 0,
+  "overview_generated": false,
+  "retry_allowed": false,
+  "state": "EXECUTED / REVIEW_PENDING",
+  "track_a_input_used": false,
+  "verdict": null,
+  "verdict_by_executor": false
+ },
+ "final_verdict_vocabulary": "SEMANTIC_CHAPTER_SHADOW_PASS / HOLD / INCONCLUSIVE",
+ "generation_attempts": 1,
+ "internal_boundary_count": 7,
+ "new_vlm_inference_count": 0,
+ "off_grid_count": 0,
+ "on_24s_grid_count": 7,
+ "prereg": "docs/preregistration/WVR_SEMANTIC_CHAPTER_SHADOW_V1_2026-09-10.md",
+ "provenance": {
+  "build_commit": "05762ef7ba2856d5aa8b1a9ddb9219dc8f477b07",
+  "declared_event_ids_in_output": [],
+  "elapsed_sec": 34.08,
+  "event": "WVR_SEMANTIC_CHAPTER_SHADOW_V1",
+  "generation_attempts": 1,
+  "generation_commit": "05762ef7ba2856d5aa8b1a9ddb9219dc8f477b07",
+  "generator": {
+   "attn_implementation": "sdpa",
+   "do_sample": false,
+   "dtype": "torch.bfloat16",
+   "max_new_tokens": 4096,
+   "model_id": "Qwen/Qwen2.5-7B-Instruct",
+   "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+   "quantized": false
+  },
+  "new_vlm_inference_count": 0,
+  "prereg": "docs/preregistration/WVR_SEMANTIC_CHAPTER_SHADOW_V1_2026-09-10.md",
+  "prereg_commit": "05762ef7ba2856d5aa8b1a9ddb9219dc8f477b07",
+  "prompt_name": "CHAPTER_PROMPT_V1",
+  "prompt_sha256": "481a5f60630231ecee6935204326b1375b38eab5005d4fbde76a4a44601c7d9e",
+  "prompt_template_sha256": "032fa497974b182a5a66afda5bc4b7a31251a9b8cd55c990bc26005756a1f39f",
+  "raw_chars": 3544,
+  "raw_sha256": "590e81943ff1f69dc0acb48d78e50c5c4c0d939cc56fcbe4e0c2550ffa14bb3e",
+  "retry_allowed": false,
+  "source_map_sha256": "0ebecf34e84550805392bfcc8b4681f5028679250736a03f230dafb32d692e8c",
+  "track_a_input_used": false,
+  "vram": {
+   "allocated_gb": 14.193,
+   "cuda": true,
+   "device": "NVIDIA GeForce RTX 4090",
+   "max_allocated_gb": 15.353
+  }
+ },
+ "reviewer_final_verdict": null,
+ "schema": "wvr_chapter_v1_summary",
+ "source_event_total": 160,
+ "source_events_referenced": 160,
+ "unresolved_intervals": [
+  [
+   0.0,
+   24.0
+  ]
+ ],
+ "unresolved_violations": 0
+}
