@@ -119,6 +119,14 @@ def test_segment_output_accepts_only_canonical_broad_labels():
         ov.parse_segment(bad, "S01")
 
 
+def test_segment_can_preserve_three_distinct_broad_activities():
+    raw = segment_raw([
+        "식사", "음식 준비 및 조리", "구매 또는 둘러보기"])
+    parsed = ov.parse_segment(raw, "S14")
+    assert parsed["BROAD_ACTIVITY"] == [
+        "식사", "음식 준비 및 조리", "구매 또는 둘러보기"]
+
+
 def test_temporal_compression_merges_overlap_repetition_and_keeps_changes():
     rows = [
         summary("S01", ["음식 준비 및 조리"]),
@@ -194,3 +202,34 @@ def test_run_generates_24_segments_compresses_then_synthesizes_once(
         "COMPRESSED ACTIVITY TIMELINE")
     assert "CONTEXT INFERENCES EXCLUDED FROM OVERVIEW" in packet
     assert "UNCERTAINTIES" in packet
+
+
+def test_resume_reuses_persisted_raw_without_retrying_completed_segments(
+        tmp_path, monkeypatch):
+    video = tmp_path / "video.mp4"
+    video.write_bytes(b"frozen-video-resume-fixture-v2")
+    digest = hashlib.sha256(video.read_bytes()).hexdigest()
+    monkeypatch.setattr(ov, "VIDEO_SHA256", digest)
+    monkeypatch.setattr(runner.ov, "VIDEO_SHA256", digest)
+    runs = tmp_path / "runs"
+
+    class StopsAfterTwo(FakeRuntime):
+        def observe(self, video, segment, prompt):
+            if segment["segment_id"] == "S03":
+                raise RuntimeError("simulated process interruption")
+            return super().observe(video, segment, prompt)
+
+    with pytest.raises(RuntimeError, match="simulated process interruption"):
+        runner.run(video, runs, runtime_factory=StopsAfterTwo)
+    assert len(list(runs.glob("video_overview_v2_segment_S*_raw.txt"))) == 2
+
+    resumed = FakeRuntime()
+    result = runner.run(video, runs, runtime_factory=lambda: resumed,
+                        resume=True)
+    assert resumed.calls[0] == ("segment", "S03")
+    assert resumed.calls[-1][0] == "synthesis"
+    assert result["status"] == "GENERATED / REVIEW_REQUESTED"
+    record = json.loads((runs / ov.RECORD_NAME).read_text(encoding="utf-8"))
+    assert record["inference_count"] == 25
+    assert record["retry_count"] == 0
+    assert record["resumed_existing_segment_raw_count"] == 2

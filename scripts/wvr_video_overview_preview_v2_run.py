@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import subprocess
 import sys
 import time
@@ -47,37 +48,91 @@ def _validate_runtime(provenance: dict) -> None:
         raise RunError("RUNTIME_MISMATCH: frozen Qwen3-VL runtime unavailable")
 
 
-def run(video: Path, runs: Path, runtime_factory=v1run.QwenRuntime) -> dict:
+def _resume_state(video: Path, runs: Path, plan: list[dict]) -> tuple[dict, list]:
+    record_path = runs / ov.RECORD_NAME
+    if not record_path.is_file():
+        raise RunError("RESUME_MISMATCH: execution record missing")
+    record = json.loads(record_path.read_text(encoding="utf-8"))
+    exact = (
+        record.get("event") == ov.EVENT
+        and record.get("video_sha256") == ov.sha256_file(video)
+        and record.get("model_id") == ov.MODEL_ID
+        and record.get("model_revision") == ov.MODEL_REVISION
+        and record.get("retry_count") == 0
+        and record.get("status") == "FAILED / REVIEW_REQUESTED"
+        and record.get("synthesis_inference_count") == 0
+        and not (runs / ov.OVERVIEW_RAW_NAME).exists()
+    )
+    if not exact:
+        raise RunError("RESUME_MISMATCH: only pre-synthesis failed execution can resume")
+    expected_prompt = ov.segment_prompt()
+    summaries, found_gap = [], False
+    for segment in plan:
+        segment_id = segment["segment_id"]
+        prompt_path = runs / ("video_overview_v2_segment_%s_prompt.txt" % segment_id)
+        raw_path = runs / ("video_overview_v2_segment_%s_raw.txt" % segment_id)
+        if not raw_path.is_file():
+            found_gap = True
+            continue
+        if found_gap:
+            raise RunError("RESUME_MISMATCH: persisted segment raws are not a prefix")
+        if not prompt_path.is_file() or prompt_path.read_text(
+                encoding="utf-8") != expected_prompt:
+            raise RunError("RESUME_MISMATCH: segment prompt changed")
+        if record.get("segment_raw_sha256", {}).get(segment_id) != \
+                ov.sha256_file(raw_path):
+            raise RunError("RESUME_MISMATCH: segment raw hash changed")
+        summaries.append(ov.parse_segment(
+            raw_path.read_text(encoding="utf-8"), segment_id))
+    if record.get("segment_inference_count") != len(summaries) or \
+            record.get("inference_count") != len(summaries):
+        raise RunError("RESUME_MISMATCH: inference count/raw count differ")
+    record["status"] = "RUNNING"
+    record["original_error"] = record.pop("error", None)
+    record["resume_code_git_head"] = _git_head()
+    record["resumed_existing_segment_raw_count"] = len(summaries)
+    if "runtime_metrics" in record:
+        record["pre_resume_runtime_metrics"] = record.pop("runtime_metrics")
+    _write_json(record_path, record)
+    return record, summaries
+
+
+def run(video: Path, runs: Path, runtime_factory=v1run.QwenRuntime,
+        resume: bool = False) -> dict:
     video, runs = Path(video), Path(runs)
     preexisting = list(runs.glob("video_overview_v2_*")) if runs.exists() else []
-    if preexisting:
+    if preexisting and not resume:
         raise RunError("preview artifact already exists: %s" % preexisting[0].name)
     if not video.is_file() or ov.sha256_file(video) != ov.VIDEO_SHA256:
         raise RunError("FROZEN_VIDEO_HASH_MISMATCH")
-    runs.mkdir(parents=True, exist_ok=True)
     plan = ov.segments()
-    _write_json(runs / ov.PLAN_NAME, plan)
-    record = {
-        "schema": "wvr_video_overview_preview_v2_record",
-        "event": ov.EVENT, "code_git_head": _git_head(),
-        "video_sha256": ov.sha256_file(video),
-        "model_id": ov.MODEL_ID, "model_revision": ov.MODEL_REVISION,
-        "segment_count": len(plan), "segment_inference_count": 0,
-        "synthesis_inference_count": 0, "inference_count": 0,
-        "retry_count": 0, "track_a_used": False, "event_map_used": False,
-        "raw_persisted_before_parse": True, "context_used_for_synthesis": False,
-        "status": "RUNNING", "segment_raw_sha256": {},
-    }
-    _write_json(runs / ov.RECORD_NAME, record)
+    runs.mkdir(parents=True, exist_ok=True)
+    if resume:
+        record, summaries = _resume_state(video, runs, plan)
+    else:
+        _write_json(runs / ov.PLAN_NAME, plan)
+        summaries = []
+        record = {
+            "schema": "wvr_video_overview_preview_v2_record",
+            "event": ov.EVENT, "code_git_head": _git_head(),
+            "video_sha256": ov.sha256_file(video),
+            "model_id": ov.MODEL_ID, "model_revision": ov.MODEL_REVISION,
+            "segment_count": len(plan), "segment_inference_count": 0,
+            "synthesis_inference_count": 0, "inference_count": 0,
+            "retry_count": 0, "track_a_used": False, "event_map_used": False,
+            "raw_persisted_before_parse": True,
+            "context_used_for_synthesis": False,
+            "status": "RUNNING", "segment_raw_sha256": {},
+        }
+        _write_json(runs / ov.RECORD_NAME, record)
     runtime = None
     started = time.time()
     try:
         runtime = runtime_factory()
         record["runtime_provenance"] = runtime.provenance()
         _validate_runtime(record["runtime_provenance"])
-        summaries = []
         prompt = ov.segment_prompt()
-        for segment in plan:
+        for segment in plan[len(summaries):]:
             segment_id = segment["segment_id"]
             prompt_path = runs / ("video_overview_v2_segment_%s_prompt.txt" % segment_id)
             raw_path = runs / ("video_overview_v2_segment_%s_raw.txt" % segment_id)
@@ -132,8 +187,9 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--video", default="data/videos/full_xekZO4n4QuE.mp4")
     parser.add_argument("--runs", default="runs/wvr_video_overview_preview_v2")
+    parser.add_argument("--resume", action="store_true")
     args = parser.parse_args(argv)
-    result = run(Path(args.video), Path(args.runs))
+    result = run(Path(args.video), Path(args.runs), resume=args.resume)
     print("status=%s segments=%d inference_count=25 retry_count=0" %
           (result["status"], len(result["segment_summaries"])))
     return 0

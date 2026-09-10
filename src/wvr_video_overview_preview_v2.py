@@ -151,8 +151,8 @@ def parse_segment(raw: str, segment_id: str) -> dict:
     if set(value) != SEGMENT_KEYS:
         raise PreviewError("SEGMENT_SCHEMA: exact four fields required")
     activities = _text_list(value["BROAD_ACTIVITY"], "BROAD_ACTIVITY")
-    if not 1 <= len(activities) <= 2 or len(set(activities)) != len(activities):
-        raise PreviewError("BROAD_ACTIVITY: 1~2 unique labels required")
+    if not activities or len(set(activities)) != len(activities):
+        raise PreviewError("BROAD_ACTIVITY: unique canonical labels required")
     if any(activity not in ACTIVITY_LABELS for activity in activities):
         raise PreviewError("BROAD_ACTIVITY: non-canonical label")
     changes = _text_list(value["OBSERVED_CHANGE"], "OBSERVED_CHANGE")
