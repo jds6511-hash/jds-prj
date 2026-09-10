@@ -5,11 +5,11 @@
 (commit `4108125`) · 구현 `872ef94` · **새 추론 0회 · 새 LLM 호출 0회 · GPU 미사용**
 
 ```
-executor 상태   EXECUTED / REVIEW_PENDING
+사건 상태        CLOSED / EVENT_STITCHING_SHADOW_HOLD (리뷰어 판정 · §I)
 대상            valid-valid adjacency 22개 (O02…O23) · 각 24초 · 공유 프레임 12장
-packet          blinded (Arm A/B) · 창 id·event id 미노출 · mapping 봉인
+packet          blinded (Arm A/B) · 창 id·event id 미노출 · 판정 후 reveal (§D-2)
 비교 단위        overlap-local event sequence (event 한 줄 매칭 아님)
-판정             relation·상위 판정·최종 verdict 모두 미기록 (전부 NOT_ADJUDICATED)
+판정             22/22 기록 · STITCHABLE 12 · MATERIAL_CONFLICT 10 · UNRESOLVED 0
 validator       PASS (27/27) · 같은 입력 재계산 결과 동일
 ```
 
@@ -74,43 +74,107 @@ sequence 토큰 교집합 크기         최소 1 · 중앙값 5 · 최대 10
 있다.** 즉 두 창이 완전히 무관한 장면을 말하는 경우는 자동 지표상 하나도 없다. 이 수치는
 판정 authority가 아니며 임계·점수 컷을 만들지 않았다(`threshold_used: false`).
 
-## D. 판정 상태 (미기록)
+## D. 리뷰어 판정 (기록 완료 · 2026-09-10)
+
+리뷰어가 blinded packet만 보고 22개를 독립 판정했고, executor는 그것을 그대로 기록했다
+(`runs/wvr_light_v1/stitch_v1_verdicts.json` · `recorded_by: reviewer` ·
+`final_verdict: null` — 산출물의 최종 verdict 필드는 **executor가 계산하지 않으므로
+비워 둔다**. 리뷰어 최종 판정은 §I에 적는다).
 
 ```
-overlap 22개 전부   relation NOT_ADJUDICATED · top_verdict NOT_ADJUDICATED
-adjudicated         0 / 22
-final_verdict       null (executor 계산 금지)
-mapping reveal      거부됨 (VERDICTS_INCOMPLETE) — 22개 전부 기록 후에만 허용
+adjudicated       22 / 22 (complete)
+relation          SAME_EVENT 6 · CONTINUATION 5 · TRANSITION 1 · CONFLICT 10 · UNRESOLVED 0
+상위 판정          STITCHABLE 12 · MATERIAL_CONFLICT 10 · UNRESOLVED 0
 ```
 
-리뷰어 어휘:
+| overlap | relation | 상위 판정 | overlap | relation | 상위 판정 |
+| --- | --- | --- | --- | --- | --- |
+| O02 | CONFLICT | MATERIAL_CONFLICT | O13 | CONFLICT | MATERIAL_CONFLICT |
+| O03 | CONFLICT | MATERIAL_CONFLICT | O14 | CONFLICT | MATERIAL_CONFLICT |
+| O04 | SAME_EVENT | STITCHABLE | O15 | CONFLICT | MATERIAL_CONFLICT |
+| O05 | CONTINUATION | STITCHABLE | O16 | SAME_EVENT | STITCHABLE |
+| O06 | CONTINUATION | STITCHABLE | O17 | SAME_EVENT | STITCHABLE |
+| O07 | CONTINUATION | STITCHABLE | O18 | SAME_EVENT | STITCHABLE |
+| O08 | CONFLICT | MATERIAL_CONFLICT | O19 | TRANSITION | STITCHABLE |
+| O09 | CONFLICT | MATERIAL_CONFLICT | O20 | CONFLICT | MATERIAL_CONFLICT |
+| O10 | CONFLICT | MATERIAL_CONFLICT | O21 | CONFLICT | MATERIAL_CONFLICT |
+| O11 | CONTINUATION | STITCHABLE | O22 | SAME_EVENT | STITCHABLE |
+| O12 | CONTINUATION | STITCHABLE | O23 | SAME_EVENT | STITCHABLE |
 
-```
-relation      SAME_EVENT · CONTINUATION · TRANSITION · CONFLICT · UNRESOLVED
-상위 판정      STITCHABLE · MATERIAL_CONFLICT · UNRESOLVED
-최종           STITCHING_SHADOW_PASS / HOLD / INCONCLUSIVE
-기준           문자열 일치가 아니라 report-material contradiction
-```
-
-기록 방법:
+기록·확인·reveal 방법:
 
 ```
 python scripts/wvr_stitch_verdicts.py --runs runs/wvr_light_v1 --input <판정.json>
-형식  {"verdicts": [{"overlap_id": "O02", "relation": "CONTINUATION",
-                    "top_verdict": "STITCHABLE", "note": "..."}]}
-확인  python scripts/wvr_stitch_verdicts.py --runs runs/wvr_light_v1
+확인   python scripts/wvr_stitch_verdicts.py --runs runs/wvr_light_v1
 reveal python scripts/wvr_stitch_verdicts.py --runs runs/wvr_light_v1 --reveal
-       (22개 전부 기록됐을 때만 성공한다)
 ```
+
+## D-2. mapping reveal (판정 기록 후에만 실행)
+
+22개 전부 기록돼 `reveal_allowed=True`가 된 뒤 실행했다. **판정은 reveal 전에 확정됐고
+reveal 후 한 글자도 바꾸지 않았다.**
+
+```
+overlap  구간        Arm A  Arm B   판정
+O02       48– 72     W02    W01    CONFLICT     / MATERIAL_CONFLICT
+O03       72– 96     W02    W03    CONFLICT     / MATERIAL_CONFLICT
+O04       96–120     W04    W03    SAME_EVENT   / STITCHABLE
+O05      120–144     W04    W05    CONTINUATION / STITCHABLE
+O06      144–168     W05    W06    CONTINUATION / STITCHABLE
+O07      168–192     W07    W06    CONTINUATION / STITCHABLE
+O08      192–216     W07    W08    CONFLICT     / MATERIAL_CONFLICT
+O09      216–240     W08    W09    CONFLICT     / MATERIAL_CONFLICT
+O10      240–264     W10    W09    CONFLICT     / MATERIAL_CONFLICT
+O11      264–288     W11    W10    CONTINUATION / STITCHABLE
+O12      288–312     W12    W11    CONTINUATION / STITCHABLE
+O13      312–336     W13    W12    CONFLICT     / MATERIAL_CONFLICT
+O14      336–360     W13    W14    CONFLICT     / MATERIAL_CONFLICT
+O15      360–384     W15    W14    CONFLICT     / MATERIAL_CONFLICT
+O16      384–408     W15    W16    SAME_EVENT   / STITCHABLE
+O17      408–432     W17    W16    SAME_EVENT   / STITCHABLE
+O18      432–456     W18    W17    SAME_EVENT   / STITCHABLE
+O19      456–480     W19    W18    TRANSITION   / STITCHABLE
+O20      480–504     W19    W20    CONFLICT     / MATERIAL_CONFLICT
+O21      504–528     W20    W21    CONFLICT     / MATERIAL_CONFLICT
+O22      528–552     W22    W21    SAME_EVENT   / STITCHABLE
+O23      552–576     W23    W22    SAME_EVENT   / STITCHABLE
+```
+
+blinding 실효성: 22개 중 **9개는 earlier 창이 Arm A**, **13개는 earlier 창이 Arm B**였다.
+즉 Arm 라벨은 시간 순서와 일정한 관계가 없었고, 리뷰어가 라벨로 순서를 추정할 수 없었다.
+
+reveal 후 계산한 **기술적 사실**(판정 아님):
+
+```
+MATERIAL_CONFLICT 구간(병합)   [48,96) [192,264) [312,384) [480,528)   총 240초
+STITCHABLE 구간(병합)          [96,192) [264,312) [384,480) [528,576)  총 288초
+                              (240+288 = 528 = 22 × 24초, 빠짐 없음)
+conflict에 1회 이상 참여한 창    14 / 23 (W01–W03 · W07–W10 · W12–W15 · W19–W21)
+conflict 무참여 창              9 / 23 (W04–W06 · W11 · W16–W18 · W22–W23)
+```
+
+자동 지표는 이 판정을 예측하지 못했다:
+
+```
+shared_token_count   STITCHABLE 최소3·중앙7·최대10   MATERIAL_CONFLICT 최소1·중앙3·최대10
+event 수 차이 중앙값   STITCHABLE 1.5                MATERIAL_CONFLICT 2.5
+완전일치 쌍 1건        O03(W02_E010 ↔ W03_E004) — 그 overlap의 판정은 MATERIAL_CONFLICT다
+```
+
+즉 **문자열 완전일치가 나온 유일한 overlap이 오히려 material conflict로 판정됐다.**
+이 수치들은 임계로 쓰지 않는다(`threshold_used: false` 유지) — 판정 authority는 사람이다.
 
 ## E. 의미 / 비의미
 
 말하는 것:
 
 ```
-22개 overlap의 sequence-대-sequence 비교 재료가 blinded 상태로 준비됐다
-자동 지표상 완전 무관(공통 토큰 0) overlap은 0개이고, 완전일치는 1건뿐이다
-executor는 어떤 판정도 채우지 않았고 mapping은 봉인돼 있다
+22개 overlap의 sequence-대-sequence 비교 재료가 blinded 상태로 준비됐고, 리뷰어가
+  22개 전부를 판정했다 (STITCHABLE 12 · MATERIAL_CONFLICT 10 · UNRESOLVED 0)
+비교 자체는 가능했다 — 판정 불가(UNRESOLVED)로 남은 overlap이 0개다
+자동 지표상 완전 무관(공통 토큰 0) overlap은 0개이고, 완전일치는 1건뿐이며
+  그 1건은 오히려 MATERIAL_CONFLICT 판정을 받았다
+executor는 어떤 판정도 채우지 않았고 reveal은 22개 기록 후에 했다
 새 추론·새 LLM 호출 없이 기존 23창 output만 사용했다
 ```
 
@@ -135,10 +199,17 @@ Adjudicated Event Map 구축을 시도할 최소 조건을 만족한다.
 새 테스트   tests/test_wvr_stitch_v1.py  WVR-S01~S33  33/33
 뮤테이션    S-M1~S-M46 전부 RED (구멍 없음)
 전체 스위트  4,871 passed · 2 skipped · 0 failed
-validator  scripts/wvr_stitch_validate.py  PASS 27/27
+validator  scripts/wvr_stitch_validate.py  PASS 27/27 (판정 기록 **전**, commit ef5ccf7 시점)
            (O01·W00 제외 · pairs에 창/event id 없음 · audit blind·임계 없음 ·
             판정 미기록 · reveal 거부 · 재계산 결정성 · Event Map 재생성 차단)
 clean tree · HEAD == origin/master
+           판정 기록 후 다시 돌리면 `executor_filled_no_verdict`·`reveal_refused_now`
+           2개가 False가 된다 — 이 두 검사는 **판정 기록 이전 상태**를 고정하는
+           검사이고, 리뷰어가 22건을 기록하면 정의상 뒤집힌다. 결과를 본 뒤
+           검사식을 고치지 않았다(사후 게이트 변경 금지). executor가 채우지
+           않았다는 증거는 산출물 필드로 남는다 — `recorded_by: reviewer` ·
+           `final_verdict: null` · `final_verdict_by_executor: false` ·
+           mapping 파일 자체는 무변경(reveal은 읽기 전용 출력이다).
 경계 확인   SHADOW source 46파일 무변경 · W00 산출물 무변경 · registry 무변경 ·
            SHADOW_V1 blind map 미접촉 · 현행 제출본 5732075871fd… 불변 ·
            official test 미접촉
@@ -147,7 +218,7 @@ clean tree · HEAD == origin/master
 ## G. 상태
 
 ```
-WVR_OVERLAP_EVENT_STITCHING_SHADOW_V1   EXECUTED / REVIEW_PENDING
+WVR_OVERLAP_EVENT_STITCHING_SHADOW_V1   CLOSED / EVENT_STITCHING_SHADOW_HOLD (§I)
 WVR_EVENT_MAP_COVERAGE_SHADOW_V1        CLOSED / EVENT_MAP_SHADOW_HOLD (불변)
 WVR_EVENT_EXTRACTION_SHADOW_V1          CLOSED / INCONCLUSIVE (불변)
 SUBDIVISION family                      STOPPED / NOT SUFFICIENT
@@ -158,9 +229,6 @@ Overview · Analysis · Conclusion · HWPX · submission promotion ·
 official test · M9                      HOLD
 ```
 
-리뷰어 PASS 후에만 Adjudicated Event Map을 만들고 그 다음
-`WVR_SEMANTIC_CHAPTER_SHADOW_V1`로 간다.
-
 ## H. 산출물
 
 ```
@@ -169,9 +237,38 @@ runs/wvr_light_v1/stitch_v1_pairs.json      arm sequence (local_id만 · 창/eve
 runs/wvr_light_v1/stitch_v1_audit.json      AUDIT_DIAGNOSTIC_ONLY 지표 (임계 없음)
 runs/wvr_light_v1/stitch_v1_blind_map.json  mapping (봉인 · local_id 대응 포함)
 runs/wvr_light_v1/stitch_v1_summary.json    요약·계보·상태
+runs/wvr_light_v1/stitch_v1_verdicts.json   리뷰어 판정 22건 (recorded_by: reviewer)
 src/wvr_stitch_v1.py · scripts/wvr_stitch_build.py ·
 scripts/wvr_stitch_verdicts.py · scripts/wvr_stitch_validate.py ·
 tests/test_wvr_stitch_v1.py
 ```
 
-여기서 멈춘다. 리뷰어 판정 대기.
+## I. 리뷰어 판정 (2026-09-10)
+
+```
+WVR_OVERLAP_EVENT_STITCHING_SHADOW_V1   CLOSED / EVENT_STITCHING_SHADOW_HOLD
+```
+
+리뷰어 근거(원문 요지):
+
+```
+PASS 아님    22개 중 10개에서 report-material conflict가 났다. 이 상태로 자동 병합해
+            Chapter로 올리면 잘못된 사건이 Overview에 섞일 위험이 크다.
+INCONCLUSIVE 아님  비교는 충분히 가능했고(UNRESOLVED 0), 문제 위치가 명확히 측정됐다.
+따라서 HOLD.
+```
+
+리뷰어가 제시한 후속 방향(**아직 사건으로 승인되지 않았다 — 설계는 리뷰어가 한다**):
+
+```
+10개 conflict의 "정답"을 찾으러 가지 않는다. STITCHABLE 구간만 병합하고
+conflict 구간은 CONFLICT / UNRESOLVED로 보존하는 CONSERVATIVE_EVENT_MAP_V1을 만든 뒤
+SEMANTIC_CHAPTER_SHADOW_V1 → OVERVIEW_SHADOW_V1로 간다.
+W00 · sampling 원인 · prompt tuning 방향으로는 돌아가지 않는다.
+```
+
+executor 경계: 이 사건은 판정 기록과 reveal로 종료다. **Conservative Event Map ·
+Adjudicated Event Map · Semantic Chapter · Overview는 승인 전까지 착수 금지**이고,
+판정된 22건은 사후 수정하지 않는다.
+
+여기서 멈춘다.

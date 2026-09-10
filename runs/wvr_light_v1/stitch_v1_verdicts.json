@@ -1,0 +1,186 @@
+{
+ "schema": "wvr_stitch_v1_verdicts",
+ "event": "WVR_OVERLAP_EVENT_STITCHING_SHADOW_V1",
+ "prereg": "docs/preregistration/WVR_OVERLAP_EVENT_STITCHING_SHADOW_V1_2026-09-10.md",
+ "verdicts": [
+  {
+   "overlap_id": "O02",
+   "relation": "CONFLICT",
+   "top_verdict": "MATERIAL_CONFLICT",
+   "note": "bread/blender/breadcrumb sequence conflicts materially with potato/curry sequence in the same overlap",
+   "adjudicated": true
+  },
+  {
+   "overlap_id": "O03",
+   "relation": "CONFLICT",
+   "top_verdict": "MATERIAL_CONFLICT",
+   "note": "beef/onion/breadcrumb sequence materially differs from carrot/pot/breadcrumb/beef sequence",
+   "adjudicated": true
+  },
+  {
+   "overlap_id": "O04",
+   "relation": "SAME_EVENT",
+   "top_verdict": "STITCHABLE",
+   "note": "mixing to pan cooking to potato peeling sequence is materially aligned",
+   "adjudicated": true
+  },
+  {
+   "overlap_id": "O05",
+   "relation": "CONTINUATION",
+   "top_verdict": "STITCHABLE",
+   "note": "both describe potato preparation, mixing, forming and plating with granularity differences",
+   "adjudicated": true
+  },
+  {
+   "overlap_id": "O06",
+   "relation": "CONTINUATION",
+   "top_verdict": "STITCHABLE",
+   "note": "broad coating description is compatible with detailed dipping, coating and placing sequence",
+   "adjudicated": true
+  },
+  {
+   "overlap_id": "O07",
+   "relation": "CONTINUATION",
+   "top_verdict": "STITCHABLE",
+   "note": "coating and plating sequence followed by pan activity is compatible",
+   "adjudicated": true
+  },
+  {
+   "overlap_id": "O08",
+   "relation": "CONFLICT",
+   "top_verdict": "MATERIAL_CONFLICT",
+   "note": "bowl cream mixing conflicts materially with continued pan pouring",
+   "adjudicated": true
+  },
+  {
+   "overlap_id": "O09",
+   "relation": "CONFLICT",
+   "top_verdict": "MATERIAL_CONFLICT",
+   "note": "continuous pan pouring conflicts with mashed-potato mixing, piping and croquette preparation",
+   "adjudicated": true
+  },
+  {
+   "overlap_id": "O10",
+   "relation": "CONFLICT",
+   "top_verdict": "MATERIAL_CONFLICT",
+   "note": "noodle serving and eating conflicts with butter pouring throughout the overlap",
+   "adjudicated": true
+  },
+  {
+   "overlap_id": "O11",
+   "relation": "CONTINUATION",
+   "top_verdict": "STITCHABLE",
+   "note": "broad noodle eating is compatible with more granular eating and breaded-food handling",
+   "adjudicated": true
+  },
+  {
+   "overlap_id": "O12",
+   "relation": "CONTINUATION",
+   "top_verdict": "STITCHABLE",
+   "note": "both primarily depict eating breaded food with compatible additional details",
+   "adjudicated": true
+  },
+  {
+   "overlap_id": "O13",
+   "relation": "CONFLICT",
+   "top_verdict": "MATERIAL_CONFLICT",
+   "note": "rice-with-kimchi claim conflicts with continued curry-udon eating over a material interval",
+   "adjudicated": true
+  },
+  {
+   "overlap_id": "O14",
+   "relation": "CONFLICT",
+   "top_verdict": "MATERIAL_CONFLICT",
+   "note": "rice-with-kimchi continuation conflicts with noodles then food-preparation transition",
+   "adjudicated": true
+  },
+  {
+   "overlap_id": "O15",
+   "relation": "CONFLICT",
+   "top_verdict": "MATERIAL_CONFLICT",
+   "note": "sushi/soup/chicken-steamer sequence materially differs from gimbal/eating/chicken-sauce sequence",
+   "adjudicated": true
+  },
+  {
+   "overlap_id": "O16",
+   "relation": "SAME_EVENT",
+   "top_verdict": "STITCHABLE",
+   "note": "noodles, chicken and orange-clothing transition materially aligns",
+   "adjudicated": true
+  },
+  {
+   "overlap_id": "O17",
+   "relation": "SAME_EVENT",
+   "top_verdict": "STITCHABLE",
+   "note": "elastic and orange garment handling followed by drawer placement materially aligns",
+   "adjudicated": true
+  },
+  {
+   "overlap_id": "O18",
+   "relation": "SAME_EVENT",
+   "top_verdict": "STITCHABLE",
+   "note": "sewing then holding orange patterned fabric aligns",
+   "adjudicated": true
+  },
+  {
+   "overlap_id": "O19",
+   "relation": "TRANSITION",
+   "top_verdict": "STITCHABLE",
+   "note": "minor disagreement at the transition boundary, followed by aligned tomato and egg preparation",
+   "adjudicated": true
+  },
+  {
+   "overlap_id": "O20",
+   "relation": "CONFLICT",
+   "top_verdict": "MATERIAL_CONFLICT",
+   "note": "only partial tofu agreement; later plating/hair actions conflict with prolonged pepper seasoning",
+   "adjudicated": true
+  },
+  {
+   "overlap_id": "O21",
+   "relation": "CONFLICT",
+   "top_verdict": "MATERIAL_CONFLICT",
+   "note": "continued pepper seasoning conflicts with room movement and gift-packaging activity",
+   "adjudicated": true
+  },
+  {
+   "overlap_id": "O22",
+   "relation": "SAME_EVENT",
+   "top_verdict": "STITCHABLE",
+   "note": "gift wrapping, stamp, ribbon and finished-package handling align",
+   "adjudicated": true
+  },
+  {
+   "overlap_id": "O23",
+   "relation": "SAME_EVENT",
+   "top_verdict": "STITCHABLE",
+   "note": "fabric/clothing, handbag, mirror photo and clothing adjustment sequence aligns",
+   "adjudicated": true
+  }
+ ],
+ "adjudicated_count": 22,
+ "expected_count": 22,
+ "complete": true,
+ "relation_counts": {
+  "SAME_EVENT": 6,
+  "CONTINUATION": 5,
+  "TRANSITION": 1,
+  "CONFLICT": 10,
+  "UNRESOLVED": 0
+ },
+ "top_verdict_counts": {
+  "STITCHABLE": 12,
+  "MATERIAL_CONFLICT": 10,
+  "UNRESOLVED": 0
+ },
+ "final_verdict": null,
+ "final_verdict_by_executor": false,
+ "final_verdict_vocabulary": [
+  "STITCHING_SHADOW_PASS",
+  "STITCHING_SHADOW_HOLD",
+  "STITCHING_SHADOW_INCONCLUSIVE"
+ ],
+ "judgment_basis": "문자열 일치가 아니라 report-material contradiction으로 본다",
+ "recorded_by": "reviewer",
+ "code_git_head": "ef5ccf74b4a689b070107184a457c5b48878b16a"
+}
