@@ -166,7 +166,27 @@ unresolved coverage.
 
 이 문장의 "usable" 여부도 executor가 아니라 리뷰어가 판정한다.
 
-## I. 리뷰어 질문 (미판정)
+## I. 리뷰어 판정 (2026-09-10 · 접수)
+
+```
+Q1 FLOW_RECOVERABLE   COARSELY YES        576초 coverage · 160 event 시간순 배치 ·
+                                          24초 격자와 독립적인 boundary 후보 생성
+                                          단 "신뢰 가능한 event sequence"는 아니다
+Q2 GAP_MATERIALITY    NOT PRIMARY BLOCKER [0,24) 24초는 전체 4% · [24,48)은 W01이 관찰 ·
+                                          single-window-only 58초는 redundancy 부족일 뿐
+                                          → Event Map 병목을 W00 gap으로 돌리면 안 된다
+Q3 EVENT_MAP_USABLE   NO                  160 event → 159 group · SAME 1 · CONFLICT 12 ·
+                                          UNRESOLVED 116 — overlap 88%를 확보했는데도
+                                          stitch가 사실상 되지 않았다
+                                          chapter 후보 8개는 기술적 생성물이다
+
+FINAL   EVENT_MAP_SHADOW_HOLD
+병목     Local Events → ★ Event stitching ← 여기 → Event Map → Semantic Chapters
+후속     WVR_OVERLAP_EVENT_STITCHING_SHADOW_V1 (승인 · 문자열 기반 stitching의 한계가
+        설계 신호로 확인됨). W00·fps·prompt로 돌아가지 않는다.
+```
+
+## I-2. 원래의 리뷰어 질문 (판정 전 기록)
 
 ```
 Q1 FLOW_RECOVERABLE   23창 event만으로 주요 activity sequence·큰 transition·
