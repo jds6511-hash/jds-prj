@@ -8,3 +8,10 @@ docs/probes/_scratch/p3_opcost_reporting_rules.json -text
 docs/probes/_scratch/p3_opcost_full.json -text
 docs/probes/_scratch/p3_opcost_full_summary.json -text
 docs/probes/_scratch/p3_opcost_verdict.json -text
+runs/wvr_light_v1/conservative_event_map_v1.json -text
+runs/wvr_light_v1/conservative_event_map_v1_summary.json -text
+runs/wvr_light_v1/chapter_v1_chapters.json -text
+runs/wvr_light_v1/chapter_v1_summary.json -text
+runs/wvr_light_v1/chapter_v1_record.json -text
+runs/wvr_light_v1/chapter_v1_raw.txt -text
+runs/wvr_light_v1/chapter_v1_prompt.txt -text

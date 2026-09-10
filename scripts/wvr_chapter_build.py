@@ -188,12 +188,17 @@ def write_artifacts(runs: Path, built: dict) -> list:
     written = []
     for name, payload in ((CHAPTERS_NAME, built["chapters_doc"]),
                           (SUMMARY_NAME, built["summary"])):
-        (runs / name).write_text(ch.canonical(payload) + "\n",
-                                 encoding="utf-8")
+        _write_text(runs / name, ch.canonical(payload) + "\n")
         written.append(name)
-    (runs / PACKET_NAME).write_text(built["packet"], encoding="utf-8")
+    _write_text(runs / PACKET_NAME, built["packet"])
     written.append(PACKET_NAME)
     return written
+
+
+def _write_text(path, text: str) -> None:
+    """산출물은 항상 LF로 쓴다 — 플랫폼별 CRLF 변환이 해시를 깨뜨린다."""
+    with open(path, "w", encoding="utf-8", newline=chr(10)) as handle:
+        handle.write(text)
 
 
 def main(argv=None) -> int:

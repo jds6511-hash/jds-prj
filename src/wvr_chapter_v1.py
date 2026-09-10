@@ -34,8 +34,8 @@ GRID_SEC = cmap.CELL_SEC                             # 24.0 (복사 금지 대�
 
 # ── 입력 동결 (사전등록 §2) ────────────────────────────────────────
 SOURCE_MAP_NAME = "conservative_event_map_v1.json"
-SOURCE_MAP_SHA256 = ("ab1876fd8e2b5c41f6e2791a9e8c80656ba2d5ce296f8c197b6fea5d"
-                     "b5ab3119")
+SOURCE_MAP_SHA256 = ("0ebecf34e84550805392bfcc8b4681f5028679250736a03f230dafb3"
+                     "2d692e8c")        # LF 정규형 (git blob과 동일)
 PROMPT_TEMPLATE_SHA256 = ("032fa497974b182a5a66afda5bc4b7a31251a9b8cd55c990bc26"
                           "005756a1f39f")
 RENDERED_PROMPT_SHA256 = ("481a5f60630231ecee6935204326b1375b38eab5005d4fbde76a"

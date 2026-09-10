@@ -27,10 +27,19 @@ conflict 240초 · stitchable 288초 · source event 160건(유실 0).
 ## 2. 입력 (해시 동결 · 불일치면 즉시 중단)
 
 ```
-conservative_event_map_v1.json   ab1876fd8e2b5c41f6e2791a9e8c80656ba2d5ce296f8c197b6fea5db5ab3119
+conservative_event_map_v1.json   0ebecf34e84550805392bfcc8b4681f5028679250736a03f230dafb32d692e8c
 (파생 확인용)                     conservative_event_map_v1_summary.json
 source event 총계                 160 · region 11
+해시 정의                          LF 정규형 = git blob 바이트 (플랫폼 독립)
 ```
+
+**결과 산출 전 정정 2(errata · 생성 0회 시점):** 최초 동결 해시 `ab1876fd…`는
+Windows 텍스트 모드가 만든 **CRLF 사본**의 해시였고, 같은 파일의 git blob·서버
+체크아웃(LF)은 `0ebecf34…`였다. 즉 그 해시는 플랫폼에 따라 달라지는 값이어서
+동결 대상이 될 수 없다. 생성 **전에** ① 해당 산출물을 `.gitattributes`에 `-text`로
+등록하고 ② 작업 사본을 LF로 재정규화하고 ③ chapter 스크립트가 산출물을 항상 LF로
+쓰게 고치고 ④ 동결 해시를 LF 정규형으로 갱신했다. 렌더된 프롬프트 해시는
+JSON 파싱 결과에서 만들어지므로 줄바꿈과 무관하게 `481a5f60…`로 동일하다.
 
 금지 입력: 원본 영상 재추론(VLM), Track A STT·caption, official test, 새 frame
 adjudication, 이전 사건의 blind packet.

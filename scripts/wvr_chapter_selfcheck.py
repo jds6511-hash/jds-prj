@@ -99,6 +99,12 @@ def checks(runs: Path) -> dict:
     }
 
 
+def _write_text(path, text: str) -> None:
+    """산출물은 항상 LF로 쓴다 — 플랫폼별 CRLF 변환이 해시를 깨뜨린다."""
+    with open(path, "w", encoding="utf-8", newline=chr(10)) as handle:
+        handle.write(text)
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="chapter self-check")
     parser.add_argument("--runs", default="runs/wvr_light_v1")
@@ -117,8 +123,7 @@ def main(argv=None) -> int:
     print("prompt chars=%d sha256=%s"
           % (len(result["prompt"]), ch.sha256_text(result["prompt"])))
     if args.write_prompt and ok:
-        (runs / "chapter_v1_prompt.txt").write_text(result["prompt"],
-                                                    encoding="utf-8")
+        _write_text(runs / "chapter_v1_prompt.txt", result["prompt"])
         print("wrote chapter_v1_prompt.txt")
     return 0 if ok else 1
 

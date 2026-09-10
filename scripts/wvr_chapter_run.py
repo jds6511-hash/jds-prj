@@ -73,7 +73,7 @@ def run(runs: Path) -> dict:
         raise RunError("self-check 항목 실패: %r" % failed)
 
     prompt = result["prompt"]
-    (runs / PROMPT_NAME).write_text(prompt, encoding="utf-8")
+    _write_text(runs / PROMPT_NAME, prompt)
 
     generate = llm.make_llm(ch.LLM_MODEL_ID,
                             max_new_tokens=ch.LLM_MAX_NEW_TOKENS,
@@ -83,7 +83,7 @@ def run(runs: Path) -> dict:
     elapsed = round(time.time() - started, 2)
 
     # raw-before-parse: 파싱하지 않고 먼저 남긴다
-    (runs / RAW_NAME).write_text(raw or "", encoding="utf-8")
+    _write_text(runs / RAW_NAME, raw or "")
 
     provenance = llm.llm_provenance(generate, role="chapter_generator",
                                     prompts={ch.CHAPTER_PROMPT_NAME: prompt})
@@ -116,10 +116,14 @@ def run(runs: Path) -> dict:
         "retry_allowed": ch.RETRY_ALLOWED,
         "parsed_here": False,
     }
-    (runs / RECORD_NAME).write_text(
-        json.dumps(record, ensure_ascii=False, indent=1, sort_keys=True),
-        encoding="utf-8")
+    _write_text(runs / RECORD_NAME, json.dumps(record, ensure_ascii=False, indent=1, sort_keys=True))
     return record
+
+
+def _write_text(path, text: str) -> None:
+    """산출물은 항상 LF로 쓴다 — 플랫폼별 CRLF 변환이 해시를 깨뜨린다."""
+    with open(path, "w", encoding="utf-8", newline=chr(10)) as handle:
+        handle.write(text)
 
 
 def main(argv=None) -> int:
