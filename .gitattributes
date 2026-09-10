@@ -15,3 +15,10 @@ runs/wvr_light_v1/chapter_v1_summary.json -text
 runs/wvr_light_v1/chapter_v1_record.json -text
 runs/wvr_light_v1/chapter_v1_raw.txt -text
 runs/wvr_light_v1/chapter_v1_prompt.txt -text
+runs/wvr_light_v1/chapter_repair_v1_candidates.json -text
+runs/wvr_light_v1/chapter_repair_v1_boundaries.json -text
+runs/wvr_light_v1/chapter_repair_v1_chapters.json -text
+runs/wvr_light_v1/chapter_repair_v1_summary.json -text
+runs/wvr_light_v1/chapter_repair_v1_record.json -text
+runs/wvr_light_v1/chapter_repair_v1_raw.txt -text
+runs/wvr_light_v1/chapter_repair_v1_prompt.txt -text
