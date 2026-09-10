@@ -386,3 +386,24 @@ D proposer output distribution · E STRONG/AMBIGUOUS reviewer packet ·
 F leakage audit · G technical validation · H verification ·
 I status `WVR_SEMANTIC_BOUNDARY_CANDIDATE_SHADOW_V1 EXECUTED / REVIEW_PENDING`.
 mapping reveal 금지 · Semantic Chapter/Overview 생성 금지 · 여기서 멈춘다.
+
+## 29. 정정 (errata 1 · 2026-09-10 · 생성물 0건 시점)
+
+Stage A 구성 중 §8이 다루지 않은 사례를 발견했다. 창 기하(길이 48초·stride 24초)
+때문에 30초 side에 **최대 4개 source window가 기여**한다(실측 분포: 1창 13 · 2창 28 ·
+3창 208 · 4창 38 · 0창 1 — side 288개 기준). §8은 "두 window가 기여하면"만 규정했으므로
+일반 규칙을 여기서 동결한다. **아직 어떤 packet·프롬프트·생성물도 만들지 않았다.**
+
+```
+k = 그 side에 기여한 source window 수
+k = 0   "(no observation recorded on this side)" 한 줄로 명시한다 (실측 1건)
+k = 1   집합 라벨 없이 한 목록으로 제시한다
+k >= 2  k개 집합으로 나눠 Observation Set A, B, C, D … 로 제시한다
+라벨 순서  sort key = sha256(BLIND_SALT + "|" + candidate_id + "|" +
+                          "+".join(sorted(windows)) + "|" + window) 의 hex 오름차순
+           → 그 순서대로 A, B, C, D 배정 (창 id 순서·시간 순서를 드러내지 않는다)
+적용      conflict 구간과 stitchable 구간에 동일하게 적용한다 (region class 누출 방지)
+```
+
+라벨은 문자이므로 §22의 digit 감사에 영향이 없다. side가 비어 있는 candidate도
+제외하지 않고 그대로 proposer에게 보낸다(제외하면 후보 집합이 사후에 바뀐다).
