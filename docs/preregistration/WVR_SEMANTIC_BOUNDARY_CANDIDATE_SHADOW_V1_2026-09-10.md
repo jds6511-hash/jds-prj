@@ -485,3 +485,90 @@ candidate universe · ±30초 context · opaque ID · mapping seal · proposer v
 batching · conflict preservation · raw-before-parse · reviewer authority · STRONG 0~1
 diagnostic · downstream generation prohibition은 전부 불변이다. 새 semantic threshold를
 추가하지 않는다.
+
+## 31. 정정 (errata 3 · 2026-09-10 · inference 0회/raw 0건 시점)
+
+리뷰어가 두 번째 충돌을 `PREREG_TEST_CONTRACT_MISMATCH / SECOND PRE-INFERENCE
+CONFLICT CONFIRMED`로 판정하고 `MINIMAL PRE-INFERENCE ERRATA #2 / APPROVED`를
+승인했다. frozen observation의 자연어와 geometry/time control metadata를 일반 substring
+검사로 구분할 수 없는 모순만 교정한다.
+
+```
+authority principle
+LEAKAGE IS STRUCTURAL / IDENTIFIER-BASED,
+NOT GENERIC NATURAL-LANGUAGE SUBSTRING-BASED.
+
+errata 2 commit            a1e958a
+original test SHA256       6aa39751fb74baa9e2526af466800855e2f167b15c0e522bd872097d9c294b2f
+inference                  0회
+raw/result artifact        0건
+implementation commit      없음
+```
+
+### 31.1 Source semantic payload와 control metadata 분리
+
+`actor` · `action` · `object_or_state`의 frozen 자연어는 source semantic payload다.
+그 밖의 candidate/batch control, source identity, geometry, time, prior chapter 정보는
+control metadata다. builder와 validator는 두 범주를 구조적으로 구분하며 최종 직렬화 전
+범주별 검사를 수행한다.
+
+source payload의 다음 원문은 허용하고 삭제·마스킹·치환하지 않는다.
+
+```
+train window showing cityscape
+walking through train window
+blending
+bread pieces into blender
+lid on blender
+potato slices in blender
+```
+
+일반 단어 `window`와 `blender`/`blending` 안의 `end` substring은 그 자체로 leakage가
+아니다.
+
+### 31.2 Geometry leakage (rendered input 전체에서 계속 금지)
+
+```
+explicit identifiers   W\d{2} · R\d{2} · CH\d{2} · 실제 source event ID
+metadata fields         source_window · source_window_id · window_id ·
+                        region_id · region_class · region_boundary ·
+                        chapter_id · prior_chapter · grid_24s · grid_48s ·
+                        earlier_window · later_window
+metadata prose          24-second grid · 48-second grid와 동등한 geometry 표현
+prior chapter           boundary · title · summary · V1 chapter sequence
+```
+
+`source window W07`, `window_id: W07`, `region R05`, `region_id: R05`,
+`prior chapter CH03`과 source event ID poison은 계속 RED여야 한다.
+
+### 31.3 Time leakage의 구조 검사
+
+계속 금지:
+
+```
+실제 timestamp 표현             48.0 · 192 sec · 00:48 등
+machine-readable time metadata  start_sec · end_sec · boundary_sec ·
+                                timestamp · time_sec
+disallowed property key         "time" · "start" · "end"가 candidate timing을 운반
+guidance                        timestamp 선택 또는 boundary start/end 이동 요구
+```
+
+모든 숫자를 timestamp로 보거나 일반 prose 안의 `start`/`end`/`time` substring만으로
+leakage를 판정하지 않는다.
+
+### 31.4 Test correction authorization
+
+WVR-B11은 generic `window` ban을 제거하고 identifier/metadata 금지와 frozen `train window`
+원문 보존을 검사한다. WVR-B12/leakage audit은 위 structural poison을 RED로 유지하면서
+자연어 `train window showing cityscape`를 허용한다. WVR-B15는 generic substring 검사를
+structured time field/key/guidance 검사로 바꾸고 `blender`/`blending`을 허용한다.
+
+변경 후 test SHA256, B11/B12/B15 exact diff, 사유와 이 절을 integrity audit에 기록한다.
+로컬 pytest temp permission은 contract와 별개이며 결과 독립적인 `--basetemp` 지정으로만
+해결하고 실행 명령을 provenance에 남긴다.
+
+### 31.5 불변 계약
+
+candidate universe · ±30초 context · opaque ID · mapping seal · batching · proposer
+vocabulary · alternative observation preservation · raw-before-parse · reviewer authority ·
+semantic threshold · STRONG 0~1 diagnostic · downstream generation prohibition은 불변이다.
