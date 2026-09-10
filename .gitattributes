@@ -24,3 +24,4 @@ runs/wvr_light_v1/chapter_repair_v1_raw.txt -text
 runs/wvr_light_v1/chapter_repair_v1_prompt.txt -text
 runs/wvr_light_v1/bcand_v1_* -text
 runs/wvr_light_v1/overview_preview_v1_* -text
+runs/wvr_light_v1/overview_preview_v2_* -text
