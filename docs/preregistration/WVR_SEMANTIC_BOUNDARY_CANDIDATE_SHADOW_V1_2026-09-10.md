@@ -407,3 +407,81 @@ k >= 2  k개 집합으로 나눠 Observation Set A, B, C, D … 로 제시한다
 
 라벨은 문자이므로 §22의 digit 감사에 영향이 없다. side가 비어 있는 candidate도
 제외하지 않고 그대로 proposer에게 보낸다(제외하면 후보 집합이 사후에 바뀐다).
+
+## 30. 정정 (errata 2 · 2026-09-10 · inference 0회/raw 0건 시점)
+
+리뷰어가 `PREREG_TEST_CONTRACT_MISMATCH / CONFIRMED`로 판정하고
+`MINIMAL PRE-INFERENCE ERRATA / APPROVED`를 승인했다. §6의 source observation 원문
+보존과 §10의 rendered prompt 전체 activity-term 금지가 frozen input에서 동시에 성립하지
+않는 모순만 교정한다. semantic acceptance threshold나 다른 실행 계약은 바꾸지 않는다.
+
+정정 전 provenance:
+
+```
+original prereg commit       4ace1f224f141c51338ccca7eafa39745e9d9ec4
+errata 1 commit              8c7df4c9538fb1de2c25f540f3627329f6b804dc
+inherited test SHA256        6aa39751fb74baa9e2526af466800855e2f167b15c0e522bd872097d9c294b2f
+inference                    0회
+raw/result artifact          0건
+```
+
+### 30.1 Prompt guidance neutrality (정정된 §10 범위)
+
+다음 video-specific expected-answer term 금지는 **executor가 작성한 고정 prompt
+instruction/template prose/example/few-shot/task explanation/expected-answer hint**에 적용한다.
+
+```
+food preparation · eating · sewing · gift wrapping · clothing · 400 sec ·
+V1 chapter sequence
+```
+
+즉 고정 guidance가 이 영상의 예상 macro-flow를 암시해서는 안 된다.
+
+### 30.2 Frozen observation payload exemption
+
+Conservative Event Map에서 그대로 복사되는 아래 세 필드는 §30.1 activity-term ban의
+대상이 아니다.
+
+```
+actor · action · object_or_state
+```
+
+source-derived observation text에 같은 활동 단어가 자연스럽게 존재하면 원문 그대로
+proposer input에 포함한다. 그 단어를 없애기 위한 수정·삭제·semantic masking·동의어
+치환·generic placeholder 치환은 금지한다. 즉 `PROMPT GUIDANCE NEUTRALITY`와
+`SOURCE OBSERVATION FIDELITY`를 동시에 유지한다.
+
+### 30.3 Global leakage prohibition은 불변
+
+다음 항목은 exemption이 아니며 rendered proposer prompt **전체**에서 계속 0건이어야 한다.
+
+```
+absolute timestamp · window id · region id · conflict-region id/boundary ·
+24초/48초 grid metadata · prior chapter boundary/title/summary ·
+earlier/later-window identity · event id
+```
+
+alternative observation 원문은 모두 보존하되 `Observation Set A/B/C/D` 같은 opaque
+grouping만 쓴다. preferred/winner/truth/reliability 정보는 계속 금지한다.
+
+### 30.4 WVR-B14 correction authorization
+
+Inherited WVR-B14는 다음을 각각 독립적으로 검사하도록 고친다.
+
+```
+A fixed instruction/template/example에 video-specific expected-answer hint 없음
+B source-derived payload의 동일 활동 단어 출현 허용
+C actor/action/object_or_state 원문 보존
+D B14 통과 목적의 삭제·치환·masking 없음
+E timestamp/window/region/grid/prior-chapter 누출은 rendered prompt 전체에서 0
+```
+
+변경 전·후 test SHA256, exact diff, 변경 이유와 이 절 번호를 test integrity audit에
+기록한다.
+
+### 30.5 불변 계약
+
+candidate universe · ±30초 context · opaque ID · mapping seal · proposer vocabulary ·
+batching · conflict preservation · raw-before-parse · reviewer authority · STRONG 0~1
+diagnostic · downstream generation prohibition은 전부 불변이다. 새 semantic threshold를
+추가하지 않는다.
