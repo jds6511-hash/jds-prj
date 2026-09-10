@@ -26,3 +26,4 @@ runs/wvr_light_v1/bcand_v1_* -text
 runs/wvr_light_v1/overview_preview_v1_* -text
 runs/wvr_light_v1/overview_preview_v2_* -text
 runs/wvr_video_overview_preview_v1/* -text
+runs/wvr_video_overview_preview_v2/* -text
