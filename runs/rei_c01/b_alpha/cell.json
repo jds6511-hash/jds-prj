@@ -1,0 +1,16 @@
+{
+  "cell": "b_alpha",
+  "config": "configs\\rei_c01_alpha.yaml",
+  "engine": "alpha",
+  "stats": {
+    "caption_populated": 24,
+    "duplicate_temporal_coverage_sec": 0.0,
+    "segment_count": 24,
+    "subtitle_populated": 23,
+    "temporal_coverage_sec": 600.0,
+    "view": "NONOVERLAP_VIEW"
+  },
+  "video_id": "rei_c01_nonoverlap",
+  "view": "NONOVERLAP_VIEW",
+  "work_dir": "work_rei_c01\\rei_c01_nonoverlap"
+}

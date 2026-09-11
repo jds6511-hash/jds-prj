@@ -1,0 +1,16 @@
+{
+  "cell": "a_beta",
+  "config": "configs\\rei_c01_beta.yaml",
+  "engine": "beta",
+  "stats": {
+    "caption_populated": 24,
+    "duplicate_temporal_coverage_sec": 552.0,
+    "segment_count": 24,
+    "subtitle_populated": 24,
+    "temporal_coverage_sec": 600.0,
+    "view": "OVERLAP_VIEW"
+  },
+  "video_id": "rei_c01_overlap",
+  "view": "OVERLAP_VIEW",
+  "work_dir": "work_rei_c01\\rei_c01_overlap"
+}
