@@ -1,0 +1,7 @@
+{
+  "segment_id": "S21",
+  "broad_activities": ["아침 식사 준비 및 섭취", "출근 준비"],
+  "important_changes": ["주방에서 식사 준비 → 거실에서 머리 묶기 → 출근 전 물품 정리"],
+  "notable_context": ["주방, 거실, 출근 전 준비 장면"],
+  "uncertain_or_ambiguous": []
+}

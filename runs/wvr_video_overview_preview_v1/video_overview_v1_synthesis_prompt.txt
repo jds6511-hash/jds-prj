@@ -1,0 +1,394 @@
+아래 자료는 원본 영상의 시간순 구간별 broad summary입니다. 이 자료만 사용하여 영상 전체의 자연스러운 한국어 Overview를 작성하십시오.
+
+작성 질문:
+"이 영상은 전체적으로 어떤 주요 활동들이 어떤 순서로 진행되는가?"
+
+규칙:
+- 겹치는 인접 구간에서 반복된 같은 활동은 하나의 broad phase로 합치십시오.
+- 서로 다른 활동을 억지로 합치지 마십시오.
+- 구간 번호나 구간 경계를 본문에 노출하지 마십시오.
+- 주요 activity 변화와 작업·장소 맥락의 큰 변화를 균형 있게 반영하십시오.
+- 개별 재료, 작은 도구, 손동작, 불안정한 세부 명칭을 나열하지 마십시오.
+- uncertain_or_ambiguous의 세부사항은 전체 흐름에 중요하지 않으면 생략하십시오.
+- 불확실한 내용을 확정하지 마십시오.
+- SHORT와 DETAILED는 동일한 주요 활동 순서를 유지하십시오.
+- event log, 감정, 의도, 평가, 분석, 결론을 작성하지 마십시오.
+- 한국어 보고서에 바로 넣을 수 있는 자연스러운 문장으로 작성하십시오.
+- Markdown fence, JSON, bullet, 추가 설명 없이 지정된 두 heading과 본문만 출력하십시오.
+
+출력 형식:
+SHORT OVERVIEW
+
+<전체 흐름 중심 3~5문장>
+
+DETAILED OVERVIEW
+
+<Short와 동일한 흐름의 2~3개 단락>
+
+시간순 broad summaries:
+[
+  {
+    "broad_activities": [
+      "식사 준비",
+      "식료품 구매",
+      "요리"
+    ],
+    "important_changes": [
+      "장소 전환: 주방 → 마트 → 주방"
+    ],
+    "notable_context": [
+      "한국식 식료품 마트",
+      "주방에서 요리하는 장면",
+      "레고 쇼핑센터 외부"
+    ],
+    "segment_id": "S01",
+    "uncertain_or_ambiguous": []
+  },
+  {
+    "broad_activities": [
+      "채소와 감자 조리 준비",
+      "감자 찌기",
+      "토끼정 감자 크림 커리 우동 만들기",
+      "감자 크림 만들기",
+      "감자 크림 볶기"
+    ],
+    "important_changes": [
+      "요리 장소가 마트에서 주방으로 변경",
+      "요리 방식이 조리 준비에서 실제 조리로 전환"
+    ],
+    "notable_context": [
+      "저녁 식사 준비",
+      "감자와 커리가 주요 재료",
+      "감자 크림 커리 우동이 메인 요리"
+    ],
+    "segment_id": "S02",
+    "uncertain_or_ambiguous": []
+  },
+  {
+    "broad_activities": [
+      "크루아상 반죽 만들기",
+      "고기 채소 채우기",
+      "크루아상 튀기기"
+    ],
+    "important_changes": [],
+    "notable_context": [],
+    "segment_id": "S03",
+    "uncertain_or_ambiguous": []
+  },
+  {
+    "broad_activities": [
+      "감자 다듬기",
+      "고로케 채소 및 고기 채소 섞기",
+      "고로케 반죽 만들기",
+      "감자 채소 넣기"
+    ],
+    "important_changes": [],
+    "notable_context": [],
+    "segment_id": "S04",
+    "uncertain_or_ambiguous": []
+  },
+  {
+    "broad_activities": [
+      "채소와 고기 혼합물 조리",
+      "감자 다듬기 및 조리 준비",
+      "아침 식사 메뉴 변경"
+    ],
+    "important_changes": [],
+    "notable_context": [
+      "주방 환경에서 진행되는 요리 활동",
+      "감자 다듬기 기계 사용",
+      "아침 식사 메뉴 회전"
+    ],
+    "segment_id": "S05",
+    "uncertain_or_ambiguous": []
+  },
+  {
+    "broad_activities": [
+      "감자 크로켓 재료 준비",
+      "감자 크로켓 반죽 조리",
+      "감자 크로켓 튀기기 전 준비"
+    ],
+    "important_changes": [],
+    "notable_context": [
+      "주방 환경에서 진행",
+      "아침 식사용으로 대량 제작"
+    ],
+    "segment_id": "S06",
+    "uncertain_or_ambiguous": []
+  },
+  {
+    "broad_activities": [
+      "감자 반죽을 튀기지 않고 오븐에서 구워서 냉동식품으로 준비",
+      "크림 커리 우동을 요리"
+    ],
+    "important_changes": [],
+    "notable_context": [
+      "주방 환경에서 진행",
+      "냉동식품 제작 및 요리"
+    ],
+    "segment_id": "S07",
+    "uncertain_or_ambiguous": []
+  },
+  {
+    "broad_activities": [
+      "크림 커리 우동 조리",
+      "크림 섞기",
+      "크로켓 구워서 준비"
+    ],
+    "important_changes": [
+      "요리 방식 변경: 튀기지 않고 굽기",
+      "재료 추가: 부다크 소스, 크림"
+    ],
+    "notable_context": [
+      "냉동 식품 준비",
+      "주방 환경"
+    ],
+    "segment_id": "S08",
+    "uncertain_or_ambiguous": []
+  },
+  {
+    "broad_activities": [
+      "커리 국물을 조리하고 양념 추가",
+      "크림을 발泡하여 소스 준비",
+      "감자 튀김을 굽기 전에 준비"
+    ],
+    "important_changes": [
+      "요리 단계가 진행됨",
+      "재료가 추가됨",
+      "요리 도구가 교체됨"
+    ],
+    "notable_context": [
+      "주방 환경에서 진행됨",
+      "요리 중인 사람의 손이 보임",
+      "재료와 도구가 주변에 배치됨"
+    ],
+    "segment_id": "S09",
+    "uncertain_or_ambiguous": []
+  },
+  {
+    "broad_activities": [
+      "감자 크림 만들기",
+      "감자 쿠레트 만들기",
+      "감자 크림 커리 우동 조리 및 장식"
+    ],
+    "important_changes": [],
+    "notable_context": [
+      "주방 환경에서 진행",
+      "감자 크림과 쿠레트를 이용한 음식 조리"
+    ],
+    "segment_id": "S10",
+    "uncertain_or_ambiguous": []
+  },
+  {
+    "broad_activities": [
+      "요리한 감자 요리들을 접시에 담아 식사 준비",
+      "감자크림 위에 커리우동을 올리고 양념을 추가해 완성",
+      "요리된 음식을 먹는다"
+    ],
+    "important_changes": [],
+    "notable_context": [
+      "주방 환경에서 식사 준비 및 섭취",
+      "감자크림 커리우동과 감자 튀김 등 다양한 감자 요리가 포함됨"
+    ],
+    "segment_id": "S11",
+    "uncertain_or_ambiguous": []
+  },
+  {
+    "broad_activities": [
+      "식사하기",
+      "외부 활동 준비"
+    ],
+    "important_changes": [],
+    "notable_context": [
+      "병원에서 퇴원 후 첫 외출",
+      "여름 휴가 전 직전"
+    ],
+    "segment_id": "S12",
+    "uncertain_or_ambiguous": []
+  },
+  {
+    "broad_activities": [
+      "식사",
+      "시장 방문",
+      "의료 복귀 후 외출"
+    ],
+    "important_changes": [
+      "다음 날로 시간 전환",
+      "병원 퇴원 후 첫 외출"
+    ],
+    "notable_context": [
+      "도시 거리",
+      "시장 내 천사",
+      "식사 장면"
+    ],
+    "segment_id": "S13",
+    "uncertain_or_ambiguous": []
+  },
+  {
+    "broad_activities": [
+      "크림 커리 우동을 먹는다",
+      "동대문 시장에서 음식을 먹는다",
+      "김밥을 만든다"
+    ],
+    "important_changes": [
+      "다음 날로 넘어간다",
+      "시장에서 실내로 이동한다",
+      "김밥 제작을 시작한다"
+    ],
+    "notable_context": [
+      "식사 후 다음 날 동대문 시장 방문",
+      "김밥을 대량 제작하는 장면"
+    ],
+    "segment_id": "S14",
+    "uncertain_or_ambiguous": []
+  },
+  {
+    "broad_activities": [
+      "식사",
+      "김밥 제작",
+      "급식 준비"
+    ],
+    "important_changes": [
+      "외부에서 실내로 이동",
+      "마감 기한에 따른 급식 준비"
+    ],
+    "notable_context": [
+      "식당에서의 식사",
+      "주방에서의 김밥 제작",
+      "급식을 위한 식재료 준비"
+    ],
+    "segment_id": "S15",
+    "uncertain_or_ambiguous": []
+  },
+  {
+    "broad_activities": [
+      "김밥 만들기",
+      "식사 준비 및 섭취",
+      "옷 정리"
+    ],
+    "important_changes": [
+      "김밥을 접시에 정리",
+      "식사 준비",
+      "옷을 정리"
+    ],
+    "notable_context": [
+      "주방 환경",
+      "식사 시간",
+      "출근 전"
+    ],
+    "segment_id": "S16",
+    "uncertain_or_ambiguous": []
+  },
+  {
+    "broad_activities": [
+      "라면과 닭고기를 함께 먹는 식사 준비",
+      "잠옷을 정리하고 수리 작업 수행"
+    ],
+    "important_changes": [
+      "식사 준비에서 수리 작업으로 장소와 활동 맥락 전환"
+    ],
+    "notable_context": [
+      "주방에서 식사 준비",
+      "수리 작업은 실내 작업 공간에서 진행"
+    ],
+    "segment_id": "S17",
+    "uncertain_or_ambiguous": []
+  },
+  {
+    "broad_activities": [
+      " pajamas를 수리하는 작업"
+    ],
+    "important_changes": [],
+    "notable_context": [
+      "실내 작업 공간에서 진행됨",
+      "수리 작업이 직장 시간에 이루어짐"
+    ],
+    "segment_id": "S18",
+    "uncertain_or_ambiguous": []
+  },
+  {
+    "broad_activities": [
+      "옷 수선",
+      "요리"
+    ],
+    "important_changes": [],
+    "notable_context": [
+      "직장 시간에 수선 작업",
+      "동대문 시장 방문"
+    ],
+    "segment_id": "S19",
+    "uncertain_or_ambiguous": []
+  },
+  {
+    "broad_activities": [
+      "아침 식사 준비",
+      "머리 묶기"
+    ],
+    "important_changes": [],
+    "notable_context": [
+      "주방",
+      "침실"
+    ],
+    "segment_id": "S20",
+    "uncertain_or_ambiguous": []
+  },
+  {
+    "broad_activities": [
+      "아침 식사 준비 및 섭취",
+      "출근 준비"
+    ],
+    "important_changes": [
+      "주방에서 식사 준비 → 거실에서 머리 묶기 → 출근 전 물품 정리"
+    ],
+    "notable_context": [
+      "주방, 거실, 출근 전 준비 장면"
+    ],
+    "segment_id": "S21",
+    "uncertain_or_ambiguous": []
+  },
+  {
+    "broad_activities": [
+      "패키지 포장",
+      "선물 포장 완성"
+    ],
+    "important_changes": [],
+    "notable_context": [
+      "주방 또는 거실 같은 실내 공간",
+      "자신의 집에서 이루어짐"
+    ],
+    "segment_id": "S22",
+    "uncertain_or_ambiguous": []
+  },
+  {
+    "broad_activities": [
+      "선물 포장하기",
+      "시장 방문 계획 세우기",
+      "옷차림 정리하기"
+    ],
+    "important_changes": [],
+    "notable_context": [
+      "실내에서 선물 포장",
+      "시장 방문 일정 안내",
+      "미러 앞에서 옷차림 확인"
+    ],
+    "segment_id": "S23",
+    "uncertain_or_ambiguous": []
+  },
+  {
+    "broad_activities": [
+      "옷차림 확인 및 촬영",
+      "출근 전 준비",
+      "시장 방문 계획 수립"
+    ],
+    "important_changes": [
+      "출발 전 옷차림 점검",
+      "출발 장소 및 경로 확인"
+    ],
+    "notable_context": [
+      "실내에서 옷차림 확인 및 촬영",
+      "출근 전 일정 및 장소 계획"
+    ],
+    "segment_id": "S24",
+    "uncertain_or_ambiguous": []
+  }
+]

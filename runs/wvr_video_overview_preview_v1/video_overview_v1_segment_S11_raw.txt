@@ -1,0 +1,7 @@
+{
+  "segment_id": "S11",
+  "broad_activities": ["요리한 감자 요리들을 접시에 담아 식사 준비", "감자크림 위에 커리우동을 올리고 양념을 추가해 완성", "요리된 음식을 먹는다"],
+  "important_changes": [],
+  "notable_context": ["주방 환경에서 식사 준비 및 섭취", "감자크림 커리우동과 감자 튀김 등 다양한 감자 요리가 포함됨"],
+  "uncertain_or_ambiguous": []
+}

@@ -1,0 +1,7 @@
+{
+  "segment_id": "S03",
+  "broad_activities": ["크루아상 반죽 만들기", "고기 채소 채우기", "크루아상 튀기기"],
+  "important_changes": [],
+  "notable_context": [],
+  "uncertain_or_ambiguous": []
+}

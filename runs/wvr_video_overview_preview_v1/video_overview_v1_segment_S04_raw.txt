@@ -1,0 +1,7 @@
+{
+  "segment_id": "S04",
+  "broad_activities": ["감자 다듬기", "고로케 채소 및 고기 채소 섞기", "고로케 반죽 만들기", "감자 채소 넣기"],
+  "important_changes": [],
+  "notable_context": [],
+  "uncertain_or_ambiguous": []
+}

@@ -1,0 +1,7 @@
+{
+  "segment_id": "S22",
+  "broad_activities": ["패키지 포장", "선물 포장 완성"],
+  "important_changes": [],
+  "notable_context": ["주방 또는 거실 같은 실내 공간", "자신의 집에서 이루어짐"],
+  "uncertain_or_ambiguous": []
+}

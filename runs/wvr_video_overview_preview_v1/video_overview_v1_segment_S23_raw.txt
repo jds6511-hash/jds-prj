@@ -1,0 +1,7 @@
+{
+  "segment_id": "S23",
+  "broad_activities": ["선물 포장하기", "시장 방문 계획 세우기", "옷차림 정리하기"],
+  "important_changes": [],
+  "notable_context": ["실내에서 선물 포장", "시장 방문 일정 안내", "미러 앞에서 옷차림 확인"],
+  "uncertain_or_ambiguous": []
+}

@@ -1,0 +1,7 @@
+{
+  "segment_id": "S01",
+  "broad_activities": ["식사 준비", "식료품 구매", "요리"],
+  "important_changes": ["장소 전환: 주방 → 마트 → 주방"],
+  "notable_context": ["한국식 식료품 마트", "주방에서 요리하는 장면", "레고 쇼핑센터 외부"],
+  "uncertain_or_ambiguous": []
+}

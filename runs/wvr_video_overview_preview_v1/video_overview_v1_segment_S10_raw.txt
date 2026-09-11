@@ -1,0 +1,7 @@
+{
+  "segment_id": "S10",
+  "broad_activities": ["감자 크림 만들기", "감자 쿠레트 만들기", "감자 크림 커리 우동 조리 및 장식"],
+  "important_changes": [],
+  "notable_context": ["주방 환경에서 진행", "감자 크림과 쿠레트를 이용한 음식 조리"],
+  "uncertain_or_ambiguous": []
+}

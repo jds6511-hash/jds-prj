@@ -1,0 +1,7 @@
+{
+  "segment_id": "S24",
+  "broad_activities": ["옷차림 확인 및 촬영", "출근 전 준비", "시장 방문 계획 수립"],
+  "important_changes": ["출발 전 옷차림 점검", "출발 장소 및 경로 확인"],
+  "notable_context": ["실내에서 옷차림 확인 및 촬영", "출근 전 일정 및 장소 계획"],
+  "uncertain_or_ambiguous": []
+}

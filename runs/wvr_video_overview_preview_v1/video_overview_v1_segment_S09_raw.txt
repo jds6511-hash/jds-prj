@@ -1,0 +1,7 @@
+{
+  "segment_id": "S09",
+  "broad_activities": ["커리 국물을 조리하고 양념 추가", "크림을 발泡하여 소스 준비", "감자 튀김을 굽기 전에 준비"],
+  "important_changes": ["요리 단계가 진행됨", "재료가 추가됨", "요리 도구가 교체됨"],
+  "notable_context": ["주방 환경에서 진행됨", "요리 중인 사람의 손이 보임", "재료와 도구가 주변에 배치됨"],
+  "uncertain_or_ambiguous": []
+}

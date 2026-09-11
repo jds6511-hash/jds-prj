@@ -1,0 +1,7 @@
+{
+  "segment_id": "S18",
+  "broad_activities": [" pajamas를 수리하는 작업"],
+  "important_changes": [],
+  "notable_context": ["실내 작업 공간에서 진행됨", "수리 작업이 직장 시간에 이루어짐"],
+  "uncertain_or_ambiguous": []
+}

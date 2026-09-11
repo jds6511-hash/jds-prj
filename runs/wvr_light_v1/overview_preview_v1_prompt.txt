@@ -1,0 +1,1331 @@
+당신은 관찰 기록만으로 영상 전체의 Overview를 작성하는 text-only generator입니다.
+
+아래 입력은 시간순으로 직렬화된 11개 region입니다. 한국어로만 작성하십시오.
+
+작성 원칙:
+- event log나 작은 행동의 나열이 아니라 영상 전체의 큰 활동 흐름을 자연스럽게 설명합니다.
+- SHORT OVERVIEW는 3~5문장, DETAILED OVERVIEW는 1~3개 단락입니다.
+- UNRESOLVED / NO_OBSERVATION 구간, 특히 R01에는 내용을 만들지 마십시오.
+- CONFLICT에서는 Observation Set A나 B 중 하나를 사실로 선택하지 마십시오. 양측이 함께 지지하는 broad activity만 쓰거나 필요한 경우 짧게 불확실성을 표시하십시오.
+- winner, preferred source, 원본 source/window의 정체를 추론하거나 언급하지 마십시오.
+- 감정, 의도, 평가, 분석, 결론을 추가하지 마십시오.
+- claim마다 실제 source_event_ids와 source_regions를 연결하십시오.
+- CONFLICT_COMMON_DENOMINATOR claim은 관련 conflict block의 Observation Set A와 B에서 각각 최소 1개 event를 인용해야 합니다.
+- 출력은 설명이나 Markdown fence 없이 아래 JSON object 하나만 반환하십시오.
+
+출력 스키마:
+{
+  "short_overview": [
+    {"sentence_id":"S01","text":"...","claim_ids":["OVC01"]}
+  ],
+  "detailed_overview": [
+    {"paragraph_id":"D01","text":"...","claim_ids":["OVC01"]}
+  ],
+  "claim_trace": [
+    {
+      "claim_id":"OVC01",
+      "claim":"...",
+      "support_type":"STITCHABLE|CONFLICT_COMMON_DENOMINATOR|SINGLE_SOURCE",
+      "source_event_ids":["..."],
+      "source_regions":["R02"]
+    }
+  ]
+}
+
+입력:
+{
+  "regions": [
+    {
+      "observations": [],
+      "region_class": "UNRESOLVED",
+      "region_id": "R01",
+      "status": "NO_OBSERVATION"
+    },
+    {
+      "observations": [
+        {
+          "action": "selecting",
+          "actor": "person",
+          "event_id": "W01_E001",
+          "object_or_state": "bottle of soy sauce"
+        },
+        {
+          "action": "selecting",
+          "actor": "person",
+          "event_id": "W01_E002",
+          "object_or_state": "packet of curry"
+        },
+        {
+          "action": "selecting",
+          "actor": "person",
+          "event_id": "W01_E003",
+          "object_or_state": "bag of potatoes"
+        },
+        {
+          "action": "placing",
+          "actor": "person",
+          "event_id": "W01_E004",
+          "object_or_state": "potatoes in steamer"
+        },
+        {
+          "action": "covering",
+          "actor": "person",
+          "event_id": "W01_E005",
+          "object_or_state": "steamer"
+        },
+        {
+          "action": "pouring",
+          "actor": "person",
+          "event_id": "W01_E006",
+          "object_or_state": "curry powder into bowl"
+        },
+        {
+          "action": "placing",
+          "actor": "person",
+          "event_id": "W01_E007",
+          "object_or_state": "potato slices in blender"
+        },
+        {
+          "action": "blending",
+          "actor": "person",
+          "event_id": "W01_E008",
+          "object_or_state": "potato slices"
+        }
+      ],
+      "region_class": "SINGLE_SOURCE",
+      "region_id": "R02"
+    },
+    {
+      "blocks": [
+        {
+          "block_id": "CB001",
+          "observation_sets": {
+            "A": [
+              {
+                "action": "blending",
+                "actor": "person",
+                "event_id": "W01_E008",
+                "object_or_state": "potato slices"
+              },
+              {
+                "action": "pouring",
+                "actor": "person",
+                "event_id": "W01_E009",
+                "object_or_state": "oil into bowl with curry powder"
+              },
+              {
+                "action": "mixing",
+                "actor": "person",
+                "event_id": "W01_E010",
+                "object_or_state": "curry powder and oil"
+              },
+              {
+                "action": "chopping",
+                "actor": "person",
+                "event_id": "W01_E011",
+                "object_or_state": "onion"
+              }
+            ],
+            "B": [
+              {
+                "action": "placing",
+                "actor": "person",
+                "event_id": "W02_E001",
+                "object_or_state": "bread pieces into blender"
+              },
+              {
+                "action": "placing",
+                "actor": "person",
+                "event_id": "W02_E002",
+                "object_or_state": "lid on blender"
+              },
+              {
+                "action": "pouring",
+                "actor": "person",
+                "event_id": "W02_E003",
+                "object_or_state": "oil into bowl of breadcrumbs"
+              },
+              {
+                "action": "stirring",
+                "actor": "person",
+                "event_id": "W02_E004",
+                "object_or_state": "breadcrumbs with oil"
+              },
+              {
+                "action": "chopping",
+                "actor": "person",
+                "event_id": "W02_E005",
+                "object_or_state": "onion on cutting board"
+              },
+              {
+                "action": "chopping",
+                "actor": "person",
+                "event_id": "W02_E006",
+                "object_or_state": "carrot on cutting board"
+              },
+              {
+                "action": "placing",
+                "actor": "person",
+                "event_id": "W02_E007",
+                "object_or_state": "ground beef into bowl"
+              }
+            ]
+          }
+        },
+        {
+          "block_id": "CB002",
+          "observation_sets": {
+            "A": [
+              {
+                "action": "placing",
+                "actor": "person",
+                "event_id": "W02_E007",
+                "object_or_state": "ground beef into bowl"
+              },
+              {
+                "action": "placing",
+                "actor": "person",
+                "event_id": "W02_E008",
+                "object_or_state": "onion and carrot into bowl with beef"
+              },
+              {
+                "action": "transferring",
+                "actor": "person",
+                "event_id": "W02_E009",
+                "object_or_state": "toasted breadcrumbs into bowl"
+              },
+              {
+                "action": "stirring",
+                "actor": "person",
+                "event_id": "W02_E010",
+                "object_or_state": "breadcrumbs in bowl"
+              }
+            ],
+            "B": [
+              {
+                "action": "peeling",
+                "actor": "person",
+                "event_id": "W03_E001",
+                "object_or_state": "carrot"
+              },
+              {
+                "action": "placing",
+                "actor": "person",
+                "event_id": "W03_E002",
+                "object_or_state": "lid on pot"
+              },
+              {
+                "action": "pouring",
+                "actor": "person",
+                "event_id": "W03_E003",
+                "object_or_state": "breadcrumbs into bowl"
+              },
+              {
+                "action": "stirring",
+                "actor": "person",
+                "event_id": "W03_E004",
+                "object_or_state": "breadcrumbs in bowl"
+              },
+              {
+                "action": "transferring",
+                "actor": "person",
+                "event_id": "W03_E005",
+                "object_or_state": "ground beef into bowl"
+              },
+              {
+                "action": "adding",
+                "actor": "person",
+                "event_id": "W03_E006",
+                "object_or_state": "onion and crab stick to bowl"
+              }
+            ]
+          }
+        }
+      ],
+      "region_class": "CONFLICT",
+      "region_id": "R03"
+    },
+    {
+      "groups": [
+        {
+          "events": [
+            {
+              "action": "mixing",
+              "actor": "person",
+              "event_id": "W03_E007",
+              "object_or_state": "ingredients in bowl"
+            },
+            {
+              "action": "stirring",
+              "actor": "person",
+              "event_id": "W04_E001",
+              "object_or_state": "mixture in a bowl with chopsticks"
+            },
+            {
+              "action": "cooking",
+              "actor": "person",
+              "event_id": "W03_E008",
+              "object_or_state": "mixture in pan"
+            },
+            {
+              "action": "cooking",
+              "actor": "person",
+              "event_id": "W04_E002",
+              "object_or_state": "mixture in a pan over direct heat"
+            },
+            {
+              "action": "peeling",
+              "actor": "person",
+              "event_id": "W04_E003",
+              "object_or_state": "potato with a peeler"
+            },
+            {
+              "action": "peeling",
+              "actor": "person",
+              "event_id": "W03_E009",
+              "object_or_state": "potatoes with peeler"
+            }
+          ],
+          "group_id": "SG001"
+        },
+        {
+          "events": [
+            {
+              "action": "peeling",
+              "actor": "person",
+              "event_id": "W04_E003",
+              "object_or_state": "potato with a peeler"
+            },
+            {
+              "action": "grating",
+              "actor": "person",
+              "event_id": "W05_E001",
+              "object_or_state": "potato"
+            },
+            {
+              "action": "mixing",
+              "actor": "person",
+              "event_id": "W04_E004",
+              "object_or_state": "mixture in a bowl with chopsticks"
+            },
+            {
+              "action": "mixing",
+              "actor": "person",
+              "event_id": "W05_E002",
+              "object_or_state": "potato mixture"
+            },
+            {
+              "action": "forming",
+              "actor": "person",
+              "event_id": "W04_E005",
+              "object_or_state": "mixture into balls"
+            },
+            {
+              "action": "forming",
+              "actor": "person",
+              "event_id": "W05_E003",
+              "object_or_state": "potato balls"
+            },
+            {
+              "action": "placing",
+              "actor": "person",
+              "event_id": "W04_E006",
+              "object_or_state": "balls on a plate"
+            },
+            {
+              "action": "coating",
+              "actor": "person",
+              "event_id": "W05_E004",
+              "object_or_state": "potato balls"
+            },
+            {
+              "action": "placing",
+              "actor": "person",
+              "event_id": "W05_E005",
+              "object_or_state": "potato balls"
+            }
+          ],
+          "group_id": "SG002"
+        },
+        {
+          "events": [
+            {
+              "action": "placing",
+              "actor": "person",
+              "event_id": "W05_E005",
+              "object_or_state": "potato balls"
+            },
+            {
+              "action": "pouring",
+              "actor": "person",
+              "event_id": "W06_E001",
+              "object_or_state": "liquid into a bowl"
+            },
+            {
+              "action": "coating",
+              "actor": "person",
+              "event_id": "W05_E006",
+              "object_or_state": "potato balls"
+            },
+            {
+              "action": "mixing",
+              "actor": "person",
+              "event_id": "W06_E002",
+              "object_or_state": "ingredients in a bowl"
+            },
+            {
+              "action": "dipping",
+              "actor": "person",
+              "event_id": "W06_E003",
+              "object_or_state": "potato dough in egg mixture"
+            },
+            {
+              "action": "coating",
+              "actor": "person",
+              "event_id": "W06_E004",
+              "object_or_state": "potato dough in breadcrumbs"
+            },
+            {
+              "action": "placing",
+              "actor": "person",
+              "event_id": "W06_E005",
+              "object_or_state": "coated potato dough on a plate"
+            },
+            {
+              "action": "coating",
+              "actor": "person",
+              "event_id": "W06_E006",
+              "object_or_state": "potato dough in breadcrumbs"
+            }
+          ],
+          "group_id": "SG003"
+        },
+        {
+          "events": [
+            {
+              "action": "coating",
+              "actor": "person",
+              "event_id": "W06_E006",
+              "object_or_state": "potato dough in breadcrumbs"
+            },
+            {
+              "action": "coating",
+              "actor": "person",
+              "event_id": "W07_E001",
+              "object_or_state": "ball in breadcrumbs"
+            },
+            {
+              "action": "placing",
+              "actor": "person",
+              "event_id": "W06_E007",
+              "object_or_state": "coated potato dough on a plate"
+            },
+            {
+              "action": "coating",
+              "actor": "person",
+              "event_id": "W06_E008",
+              "object_or_state": "potato dough in breadcrumbs"
+            },
+            {
+              "action": "placing",
+              "actor": "person",
+              "event_id": "W07_E002",
+              "object_or_state": "coated balls on plate"
+            },
+            {
+              "action": "placing",
+              "actor": "person",
+              "event_id": "W06_E009",
+              "object_or_state": "coated potato dough on a plate"
+            },
+            {
+              "action": "pouring",
+              "actor": "person",
+              "event_id": "W07_E003",
+              "object_or_state": "cream into pan"
+            },
+            {
+              "action": "pouring",
+              "actor": "person",
+              "event_id": "W06_E010",
+              "object_or_state": "liquid into a pan"
+            },
+            {
+              "action": "stirring",
+              "actor": "person",
+              "event_id": "W07_E004",
+              "object_or_state": "onions in pan"
+            },
+            {
+              "action": "pouring",
+              "actor": "person",
+              "event_id": "W07_E005",
+              "object_or_state": "sauce into pan"
+            }
+          ],
+          "group_id": "SG004"
+        }
+      ],
+      "region_class": "STITCHABLE",
+      "region_id": "R04"
+    },
+    {
+      "blocks": [
+        {
+          "block_id": "CB003",
+          "observation_sets": {
+            "A": [
+              {
+                "action": "pouring",
+                "actor": "person",
+                "event_id": "W07_E005",
+                "object_or_state": "sauce into pan"
+              },
+              {
+                "action": "pouring",
+                "actor": "person",
+                "event_id": "W07_E006",
+                "object_or_state": "liquid into pan"
+              },
+              {
+                "action": "pouring",
+                "actor": "person",
+                "event_id": "W07_E007",
+                "object_or_state": "cream into bowl"
+              },
+              {
+                "action": "mixing",
+                "actor": "person",
+                "event_id": "W07_E008",
+                "object_or_state": "cream in bowl"
+              }
+            ],
+            "B": [
+              {
+                "action": "pouring",
+                "actor": "person",
+                "event_id": "W08_E001",
+                "object_or_state": "powder from a bottle into a pan"
+              },
+              {
+                "action": "pouring",
+                "actor": "person",
+                "event_id": "W08_E002",
+                "object_or_state": "liquid from a bottle into a pan"
+              }
+            ]
+          }
+        },
+        {
+          "block_id": "CB004",
+          "observation_sets": {
+            "A": [
+              {
+                "action": "pouring",
+                "actor": "person",
+                "event_id": "W08_E002",
+                "object_or_state": "liquid from a bottle into a pan"
+              }
+            ],
+            "B": [
+              {
+                "action": "pouring",
+                "actor": "person",
+                "event_id": "W09_E001",
+                "object_or_state": "mashed potatoes into a bowl with a hand mixer"
+              },
+              {
+                "action": "mixing",
+                "actor": "person",
+                "event_id": "W09_E002",
+                "object_or_state": "mashed potatoes with a hand mixer"
+              },
+              {
+                "action": "transferring",
+                "actor": "person",
+                "event_id": "W09_E003",
+                "object_or_state": "mashed potatoes into a piping bag"
+              },
+              {
+                "action": "placing",
+                "actor": "person",
+                "event_id": "W09_E004",
+                "object_or_state": "potato croquettes on a wire rack"
+              },
+              {
+                "action": "pouring",
+                "actor": "person",
+                "event_id": "W09_E005",
+                "object_or_state": "oil into a baking tray"
+              },
+              {
+                "action": "pouring",
+                "actor": "person",
+                "event_id": "W09_E006",
+                "object_or_state": "butter into a bowl"
+              }
+            ]
+          }
+        },
+        {
+          "block_id": "CB005",
+          "observation_sets": {
+            "A": [
+              {
+                "action": "pouring",
+                "actor": "person",
+                "event_id": "W09_E006",
+                "object_or_state": "butter into a bowl"
+              }
+            ],
+            "B": [
+              {
+                "action": "serving",
+                "actor": "person",
+                "event_id": "W10_E001",
+                "object_or_state": "noodles"
+              },
+              {
+                "action": "serving",
+                "actor": "person",
+                "event_id": "W10_E002",
+                "object_or_state": "potato cream"
+              },
+              {
+                "action": "serving",
+                "actor": "person",
+                "event_id": "W10_E003",
+                "object_or_state": "herbs"
+              },
+              {
+                "action": "eating",
+                "actor": "person",
+                "event_id": "W10_E004",
+                "object_or_state": "noodles"
+              }
+            ]
+          }
+        }
+      ],
+      "region_class": "CONFLICT",
+      "region_id": "R05"
+    },
+    {
+      "groups": [
+        {
+          "events": [
+            {
+              "action": "eating",
+              "actor": "person",
+              "event_id": "W10_E004",
+              "object_or_state": "noodles"
+            },
+            {
+              "action": "using chopsticks",
+              "actor": "person",
+              "event_id": "W11_E001",
+              "object_or_state": "lifting noodles from a bowl"
+            },
+            {
+              "action": "eating",
+              "actor": "person",
+              "event_id": "W11_E002",
+              "object_or_state": "noodles with a spoon"
+            },
+            {
+              "action": "using chopsticks",
+              "actor": "person",
+              "event_id": "W11_E003",
+              "object_or_state": "picking up a breaded food item"
+            }
+          ],
+          "group_id": "SG005"
+        },
+        {
+          "events": [
+            {
+              "action": "eating",
+              "actor": "person",
+              "event_id": "W11_E004",
+              "object_or_state": "breaded food item"
+            },
+            {
+              "action": "breaking apart",
+              "actor": "person",
+              "event_id": "W12_E001",
+              "object_or_state": "breaded potato ball"
+            },
+            {
+              "action": "eating",
+              "actor": "person",
+              "event_id": "W12_E002",
+              "object_or_state": "breaded potato ball"
+            },
+            {
+              "action": "using chopsticks",
+              "actor": "person",
+              "event_id": "W11_E005",
+              "object_or_state": "picking up a breaded food item"
+            },
+            {
+              "action": "eating",
+              "actor": "person",
+              "event_id": "W12_E003",
+              "object_or_state": "curry udon"
+            },
+            {
+              "action": "eating",
+              "actor": "person",
+              "event_id": "W12_E004",
+              "object_or_state": "breaded potato ball"
+            },
+            {
+              "action": "eating",
+              "actor": "person",
+              "event_id": "W11_E006",
+              "object_or_state": "breaded food item"
+            },
+            {
+              "action": "drinking",
+              "actor": "person",
+              "event_id": "W12_E005",
+              "object_or_state": "water"
+            },
+            {
+              "action": "eating",
+              "actor": "person",
+              "event_id": "W12_E006",
+              "object_or_state": "curry udon"
+            }
+          ],
+          "group_id": "SG006"
+        }
+      ],
+      "region_class": "STITCHABLE",
+      "region_id": "R06"
+    },
+    {
+      "blocks": [
+        {
+          "block_id": "CB006",
+          "observation_sets": {
+            "A": [
+              {
+                "action": "eating",
+                "actor": "person",
+                "event_id": "W12_E006",
+                "object_or_state": "curry udon"
+              }
+            ],
+            "B": [
+              {
+                "action": "eating",
+                "actor": "a person",
+                "event_id": "W13_E001",
+                "object_or_state": "cream curry udon"
+              },
+              {
+                "action": "eating",
+                "actor": "a person",
+                "event_id": "W13_E002",
+                "object_or_state": "rice with kimchi"
+              }
+            ]
+          }
+        },
+        {
+          "block_id": "CB007",
+          "observation_sets": {
+            "A": [
+              {
+                "action": "eating",
+                "actor": "a person",
+                "event_id": "W13_E002",
+                "object_or_state": "rice with kimchi"
+              }
+            ],
+            "B": [
+              {
+                "action": "eating",
+                "actor": "person",
+                "event_id": "W14_E001",
+                "object_or_state": "noodles with chopsticks and spoon"
+              },
+              {
+                "action": "preparing food",
+                "actor": "person",
+                "event_id": "W14_E002",
+                "object_or_state": "gimbal with gloves"
+              }
+            ]
+          }
+        },
+        {
+          "block_id": "CB008",
+          "observation_sets": {
+            "A": [
+              {
+                "action": "preparing food",
+                "actor": "person",
+                "event_id": "W14_E002",
+                "object_or_state": "gimbal with gloves"
+              },
+              {
+                "action": "eating",
+                "actor": "person",
+                "event_id": "W14_E003",
+                "object_or_state": "food with spoon"
+              },
+              {
+                "action": "preparing food",
+                "actor": "person",
+                "event_id": "W14_E004",
+                "object_or_state": "chicken with sauce"
+              }
+            ],
+            "B": [
+              {
+                "action": "placing",
+                "actor": "person",
+                "event_id": "W15_E001",
+                "object_or_state": "sushi roll on cutting board"
+              },
+              {
+                "action": "placing",
+                "actor": "person",
+                "event_id": "W15_E002",
+                "object_or_state": "sushi rolls on plate"
+              },
+              {
+                "action": "arranging",
+                "actor": "person",
+                "event_id": "W15_E003",
+                "object_or_state": "sushi rolls on plate"
+              },
+              {
+                "action": "placing",
+                "actor": "person",
+                "event_id": "W15_E004",
+                "object_or_state": "bowl of soup on table"
+              },
+              {
+                "action": "placing",
+                "actor": "person",
+                "event_id": "W15_E005",
+                "object_or_state": "chicken legs in steamer"
+              }
+            ]
+          }
+        }
+      ],
+      "region_class": "CONFLICT",
+      "region_id": "R07"
+    },
+    {
+      "groups": [
+        {
+          "events": [
+            {
+              "action": "placing",
+              "actor": "person",
+              "event_id": "W15_E005",
+              "object_or_state": "chicken legs in steamer"
+            },
+            {
+              "action": "placing",
+              "actor": "person",
+              "event_id": "W16_E001",
+              "object_or_state": "noodles in a bowl"
+            },
+            {
+              "action": "placing",
+              "actor": "person",
+              "event_id": "W15_E006",
+              "object_or_state": "noodles in bowl"
+            },
+            {
+              "action": "placing",
+              "actor": "person",
+              "event_id": "W16_E002",
+              "object_or_state": "chicken legs in a bowl"
+            },
+            {
+              "action": "placing",
+              "actor": "person",
+              "event_id": "W15_E007",
+              "object_or_state": "chicken legs in bowl"
+            },
+            {
+              "action": "holding",
+              "actor": "person",
+              "event_id": "W15_E008",
+              "object_or_state": "orange cloth"
+            },
+            {
+              "action": "holding",
+              "actor": "person",
+              "event_id": "W16_E003",
+              "object_or_state": "orange pajama pants"
+            },
+            {
+              "action": "holding",
+              "actor": "person",
+              "event_id": "W15_E009",
+              "object_or_state": "pink cloth"
+            }
+          ],
+          "group_id": "SG007"
+        },
+        {
+          "events": [
+            {
+              "action": "pulling",
+              "actor": "person",
+              "event_id": "W16_E004",
+              "object_or_state": "elastic band from pajama pants"
+            },
+            {
+              "action": "holding",
+              "actor": "person",
+              "event_id": "W17_E001",
+              "object_or_state": "elastic band and orange fabric"
+            },
+            {
+              "action": "holding",
+              "actor": "person",
+              "event_id": "W16_E005",
+              "object_or_state": "elastic band"
+            },
+            {
+              "action": "holding",
+              "actor": "person",
+              "event_id": "W17_E002",
+              "object_or_state": "orange fabric with pattern"
+            },
+            {
+              "action": "holding",
+              "actor": "person",
+              "event_id": "W16_E006",
+              "object_or_state": "orange pajama pants"
+            },
+            {
+              "action": "placing",
+              "actor": "person",
+              "event_id": "W16_E007",
+              "object_or_state": "orange pajama pants in a drawer"
+            },
+            {
+              "action": "placing",
+              "actor": "person",
+              "event_id": "W17_E003",
+              "object_or_state": "orange fabric on drawer"
+            },
+            {
+              "action": "placing",
+              "actor": "person",
+              "event_id": "W17_E004",
+              "object_or_state": "white elastic band on sewing machine"
+            }
+          ],
+          "group_id": "SG008"
+        },
+        {
+          "events": [
+            {
+              "action": "placing",
+              "actor": "person",
+              "event_id": "W17_E004",
+              "object_or_state": "white elastic band on sewing machine"
+            },
+            {
+              "action": "sewing",
+              "actor": "person",
+              "event_id": "W18_E001",
+              "object_or_state": "orange fabric with green dots"
+            },
+            {
+              "action": "sewing",
+              "actor": "person",
+              "event_id": "W17_E005",
+              "object_or_state": "orange fabric with pattern"
+            },
+            {
+              "action": "holding",
+              "actor": "person",
+              "event_id": "W17_E006",
+              "object_or_state": "orange fabric with pattern"
+            },
+            {
+              "action": "holding up",
+              "actor": "person",
+              "event_id": "W18_E002",
+              "object_or_state": "orange fabric with green dots"
+            }
+          ],
+          "group_id": "SG009"
+        },
+        {
+          "events": [
+            {
+              "action": "holding up",
+              "actor": "person",
+              "event_id": "W18_E002",
+              "object_or_state": "orange fabric with green dots"
+            },
+            {
+              "action": "placing",
+              "actor": "hand",
+              "event_id": "W19_E001",
+              "object_or_state": "crispy ball on plate"
+            },
+            {
+              "action": "chopping",
+              "actor": "person",
+              "event_id": "W18_E003",
+              "object_or_state": "tomato"
+            },
+            {
+              "action": "chopping",
+              "actor": "hand",
+              "event_id": "W19_E002",
+              "object_or_state": "tomato"
+            },
+            {
+              "action": "cracking",
+              "actor": "hand",
+              "event_id": "W19_E003",
+              "object_or_state": "egg into measuring cup"
+            },
+            {
+              "action": "stirring",
+              "actor": "hand",
+              "event_id": "W19_E004",
+              "object_or_state": "egg mixture in measuring cup"
+            },
+            {
+              "action": "pouring",
+              "actor": "person",
+              "event_id": "W18_E004",
+              "object_or_state": "egg yolk into measuring cup"
+            },
+            {
+              "action": "pouring",
+              "actor": "hand",
+              "event_id": "W19_E005",
+              "object_or_state": "egg mixture into pan"
+            },
+            {
+              "action": "stirring",
+              "actor": "person",
+              "event_id": "W18_E005",
+              "object_or_state": "egg yolk in measuring cup"
+            },
+            {
+              "action": "stirring",
+              "actor": "hand",
+              "event_id": "W19_E006",
+              "object_or_state": "egg mixture in pan"
+            }
+          ],
+          "group_id": "SG010"
+        }
+      ],
+      "region_class": "STITCHABLE",
+      "region_id": "R08"
+    },
+    {
+      "blocks": [
+        {
+          "block_id": "CB009",
+          "observation_sets": {
+            "A": [
+              {
+                "action": "transferring",
+                "actor": "hand",
+                "event_id": "W19_E007",
+                "object_or_state": "egg mixture onto plate"
+              },
+              {
+                "action": "pouring",
+                "actor": "hand",
+                "event_id": "W19_E008",
+                "object_or_state": "olive oil onto tofu"
+              },
+              {
+                "action": "placing",
+                "actor": "hand",
+                "event_id": "W19_E009",
+                "object_or_state": "tofu on plate"
+              },
+              {
+                "action": "placing",
+                "actor": "hand",
+                "event_id": "W19_E010",
+                "object_or_state": "shredded cabbage on plate"
+              },
+              {
+                "action": "tying",
+                "actor": "person",
+                "event_id": "W19_E011",
+                "object_or_state": "hair into bun"
+              },
+              {
+                "action": "adjusting",
+                "actor": "person",
+                "event_id": "W19_E012",
+                "object_or_state": "hair bun"
+              }
+            ],
+            "B": [
+              {
+                "action": "pouring",
+                "actor": "woman",
+                "event_id": "W20_E001",
+                "object_or_state": "sauce onto food"
+              },
+              {
+                "action": "pouring",
+                "actor": "woman",
+                "event_id": "W20_E002",
+                "object_or_state": "olive oil onto tofu"
+              },
+              {
+                "action": "sprinkling",
+                "actor": "woman",
+                "event_id": "W20_E003",
+                "object_or_state": "black pepper on food"
+              }
+            ]
+          }
+        },
+        {
+          "block_id": "CB010",
+          "observation_sets": {
+            "A": [
+              {
+                "action": "sprinkling",
+                "actor": "woman",
+                "event_id": "W20_E003",
+                "object_or_state": "black pepper on food"
+              }
+            ],
+            "B": [
+              {
+                "action": "walking",
+                "actor": "a woman",
+                "event_id": "W21_E001",
+                "object_or_state": "through a room"
+              },
+              {
+                "action": "placing",
+                "actor": "a woman",
+                "event_id": "W21_E002",
+                "object_or_state": "a small box on a table"
+              },
+              {
+                "action": "holding",
+                "actor": "a woman",
+                "event_id": "W21_E003",
+                "object_or_state": "two small boxes"
+              },
+              {
+                "action": "placing",
+                "actor": "a woman",
+                "event_id": "W21_E004",
+                "object_or_state": "a small pouch on a table"
+              },
+              {
+                "action": "wrapping",
+                "actor": "a woman",
+                "event_id": "W21_E005",
+                "object_or_state": "a small pouch in a brown paper bag"
+              }
+            ]
+          }
+        }
+      ],
+      "region_class": "CONFLICT",
+      "region_id": "R09"
+    },
+    {
+      "groups": [
+        {
+          "events": [
+            {
+              "action": "wrapping",
+              "actor": "a woman",
+              "event_id": "W21_E005",
+              "object_or_state": "a small pouch in a brown paper bag"
+            },
+            {
+              "action": "wrapping",
+              "actor": "person",
+              "event_id": "W22_E001",
+              "object_or_state": "gift in kraft paper"
+            },
+            {
+              "action": "placing",
+              "actor": "a woman",
+              "event_id": "W21_E006",
+              "object_or_state": "a stamp on a table"
+            },
+            {
+              "action": "tying",
+              "actor": "a woman",
+              "event_id": "W21_E007",
+              "object_or_state": "a ribbon around a wrapped package"
+            },
+            {
+              "action": "placing",
+              "actor": "person",
+              "event_id": "W22_E002",
+              "object_or_state": "stamp on kraft paper bag"
+            },
+            {
+              "action": "tying",
+              "actor": "person",
+              "event_id": "W22_E003",
+              "object_or_state": "ribbon around kraft paper bag"
+            },
+            {
+              "action": "holding",
+              "actor": "a woman",
+              "event_id": "W21_E008",
+              "object_or_state": "a wrapped package"
+            },
+            {
+              "action": "adjusting",
+              "actor": "person",
+              "event_id": "W22_E004",
+              "object_or_state": "bow on kraft paper bag"
+            },
+            {
+              "action": "holding",
+              "actor": "person",
+              "event_id": "W22_E005",
+              "object_or_state": "wrapped gift"
+            },
+            {
+              "action": "unfolding",
+              "actor": "person",
+              "event_id": "W22_E006",
+              "object_or_state": "fabric"
+            }
+          ],
+          "group_id": "SG011"
+        },
+        {
+          "events": [
+            {
+              "action": "unfolding",
+              "actor": "person",
+              "event_id": "W22_E006",
+              "object_or_state": "fabric"
+            },
+            {
+              "action": "holding and displaying fabric",
+              "actor": "person",
+              "event_id": "W23_E001",
+              "object_or_state": "white fabric"
+            },
+            {
+              "action": "putting on",
+              "actor": "person",
+              "event_id": "W22_E007",
+              "object_or_state": "fabric"
+            },
+            {
+              "action": "placing fabric on table",
+              "actor": "person",
+              "event_id": "W23_E002",
+              "object_or_state": "white fabric"
+            },
+            {
+              "action": "putting on",
+              "actor": "person",
+              "event_id": "W22_E008",
+              "object_or_state": "handbag"
+            },
+            {
+              "action": "picking up handbag",
+              "actor": "person",
+              "event_id": "W23_E003",
+              "object_or_state": "brown handbag"
+            },
+            {
+              "action": "taking photo",
+              "actor": "person",
+              "event_id": "W22_E009",
+              "object_or_state": "mirror"
+            },
+            {
+              "action": "taking mirror selfie",
+              "actor": "person",
+              "event_id": "W23_E004",
+              "object_or_state": "camera"
+            },
+            {
+              "action": "adjusting",
+              "actor": "person",
+              "event_id": "W22_E010",
+              "object_or_state": "clothing"
+            },
+            {
+              "action": "adjusting clothing",
+              "actor": "person",
+              "event_id": "W23_E005",
+              "object_or_state": "white shirt and shorts"
+            }
+          ],
+          "group_id": "SG012"
+        }
+      ],
+      "region_class": "STITCHABLE",
+      "region_id": "R10"
+    },
+    {
+      "observations": [
+        {
+          "action": "adjusting clothing",
+          "actor": "person",
+          "event_id": "W23_E005",
+          "object_or_state": "white shirt and shorts"
+        },
+        {
+          "action": "looking at phone",
+          "actor": "person",
+          "event_id": "W23_E006",
+          "object_or_state": "phone displaying weather"
+        },
+        {
+          "action": "walking through train window",
+          "actor": "person",
+          "event_id": "W23_E007",
+          "object_or_state": "train window showing cityscape"
+        },
+        {
+          "action": "looking at train station sign",
+          "actor": "person",
+          "event_id": "W23_E008",
+          "object_or_state": "train station sign with text"
+        },
+        {
+          "action": "walking outside",
+          "actor": "person",
+          "event_id": "W23_E009",
+          "object_or_state": "building with signage"
+        },
+        {
+          "action": "entering shop",
+          "actor": "person",
+          "event_id": "W23_E010",
+          "object_or_state": "shop entrance with sign"
+        }
+      ],
+      "region_class": "SINGLE_SOURCE",
+      "region_id": "R11"
+    }
+  ],
+  "schema": "wvr_overview_preview_v1_input",
+  "source_event_count": 160
+}

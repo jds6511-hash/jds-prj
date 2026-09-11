@@ -1,0 +1,7 @@
+{
+  "segment_id": "S05",
+  "broad_activities": ["채소와 고기 혼합물 조리", "감자 다듬기 및 조리 준비", "아침 식사 메뉴 변경"],
+  "important_changes": [],
+  "notable_context": ["주방 환경에서 진행되는 요리 활동", "감자 다듬기 기계 사용", "아침 식사 메뉴 회전"],
+  "uncertain_or_ambiguous": []
+}

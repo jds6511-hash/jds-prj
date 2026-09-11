@@ -1,0 +1,7 @@
+{
+  "segment_id": "S15",
+  "broad_activities": ["식사", "김밥 제작", "급식 준비"],
+  "important_changes": ["외부에서 실내로 이동", "마감 기한에 따른 급식 준비"],
+  "notable_context": ["식당에서의 식사", "주방에서의 김밥 제작", "급식을 위한 식재료 준비"],
+  "uncertain_or_ambiguous": []
+}

@@ -1,0 +1,7 @@
+{
+  "segment_id": "S07",
+  "broad_activities": ["감자 반죽을 튀기지 않고 오븐에서 구워서 냉동식품으로 준비", "크림 커리 우동을 요리"],
+  "important_changes": [],
+  "notable_context": ["주방 환경에서 진행", "냉동식품 제작 및 요리"],
+  "uncertain_or_ambiguous": []
+}

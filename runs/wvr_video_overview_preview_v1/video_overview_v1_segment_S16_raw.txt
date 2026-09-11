@@ -1,0 +1,7 @@
+{
+  "segment_id": "S16",
+  "broad_activities": ["김밥 만들기", "식사 준비 및 섭취", "옷 정리"],
+  "important_changes": ["김밥을 접시에 정리", "식사 준비", "옷을 정리"],
+  "notable_context": ["주방 환경", "식사 시간", "출근 전"],
+  "uncertain_or_ambiguous": []
+}

@@ -1,0 +1,43 @@
+{
+  "conflicts_supplied_as_opaque_sets": true,
+  "effective_runtime": {
+    "attn_implementation": "sdpa",
+    "effective_dtype": "torch.bfloat16",
+    "effective_model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "effective_model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "effective_quantized": false
+  },
+  "elapsed_sec": 35.556,
+  "event": "WVR_OVERVIEW_PREVIEW_V1",
+  "generation_attempts": 1,
+  "inference_count": 1,
+  "new_vlm_inference_count": 0,
+  "parsed_here": false,
+  "prompt_sha256": "85d4046f5383f92f8e03607af04a99f087c275a6dcce6f882aab722bd257711d",
+  "prompt_template_sha256": "09a01e430f9cbe5521941dd0077061fc3c61bad08dd8f524ebc9b534e9d83cb9",
+  "raw_persisted_before_parse": true,
+  "raw_sha256": "facf33764b1119f4fd7cb8da6c0d2e6dbfb94fe2136aa2949a908aa933343041",
+  "requested_runtime": {
+    "attn_implementation": "sdpa",
+    "do_sample": false,
+    "dtype": "bfloat16",
+    "load_4bit": false,
+    "max_new_tokens": 4096,
+    "model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "revision": "a09a35458c702b33eeacc393d103063234e8bc28"
+  },
+  "retry_count": 0,
+  "runtime_metrics": {
+    "cuda_available": true,
+    "device_count": 1,
+    "device_names": [
+      "NVIDIA GeForce RTX 4090"
+    ],
+    "max_memory_allocated_bytes": 17162978304,
+    "max_memory_reserved_bytes": 17586716672
+  },
+  "schema": "wvr_overview_preview_v1_record",
+  "source_map_sha256": "0ebecf34e84550805392bfcc8b4681f5028679250736a03f230dafb32d692e8c",
+  "track_a_input_used": false,
+  "unresolved_r01_synthesized": false
+}

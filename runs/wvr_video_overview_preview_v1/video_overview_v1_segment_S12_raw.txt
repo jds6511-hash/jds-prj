@@ -1,0 +1,7 @@
+{
+  "segment_id": "S12",
+  "broad_activities": ["식사하기", "외부 활동 준비"],
+  "important_changes": [],
+  "notable_context": ["병원에서 퇴원 후 첫 외출", "여름 휴가 전 직전"],
+  "uncertain_or_ambiguous": []
+}

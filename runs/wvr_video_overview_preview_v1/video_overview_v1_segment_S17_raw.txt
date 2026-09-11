@@ -1,0 +1,7 @@
+{
+  "segment_id": "S17",
+  "broad_activities": ["라면과 닭고기를 함께 먹는 식사 준비", "잠옷을 정리하고 수리 작업 수행"],
+  "important_changes": ["식사 준비에서 수리 작업으로 장소와 활동 맥락 전환"],
+  "notable_context": ["주방에서 식사 준비", "수리 작업은 실내 작업 공간에서 진행"],
+  "uncertain_or_ambiguous": []
+}

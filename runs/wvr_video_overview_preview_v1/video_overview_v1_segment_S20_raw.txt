@@ -1,0 +1,7 @@
+{
+  "segment_id": "S20",
+  "broad_activities": ["아침 식사 준비", "머리 묶기"],
+  "important_changes": [],
+  "notable_context": ["주방", "침실"],
+  "uncertain_or_ambiguous": []
+}

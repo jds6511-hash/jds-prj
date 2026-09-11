@@ -1,0 +1,19 @@
+이 영상 구간을 직접 관찰하고, 전체 영상 Overview에 남길 가치가 있는 큰 활동만 한국어로 요약하십시오.
+
+규칙:
+- local event를 세세하게 나열하지 마십시오.
+- 개별 재료, 작은 도구, 짧은 손동작, 한두 프레임의 객체, 불안정한 객체 분류나 세부 명칭은 전체 흐름에 필수적이지 않으면 생략하십시오.
+- 작은 행동 여러 개가 하나의 넓은 활동이면 broad activity 하나로 압축하십시오.
+- 주요 activity 종류, 작업 또는 장소 맥락의 중요한 변화는 보존하십시오.
+- 확실하지 않은 object/action을 사실로 확정하지 말고 uncertain_or_ambiguous에 짧게 기록하십시오.
+- 감정, 의도, 평가, 분석, 결론을 추가하지 마십시오.
+- Markdown fence나 추가 설명 없이 JSON object 하나만 출력하십시오.
+
+출력 형식:
+{
+  "segment_id": "S13",
+  "broad_activities": ["..."],
+  "important_changes": ["..."],
+  "notable_context": ["..."],
+  "uncertain_or_ambiguous": ["..."]
+}

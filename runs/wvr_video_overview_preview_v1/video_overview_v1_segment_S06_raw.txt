@@ -1,0 +1,7 @@
+{
+  "segment_id": "S06",
+  "broad_activities": ["감자 크로켓 재료 준비", "감자 크로켓 반죽 조리", "감자 크로켓 튀기기 전 준비"],
+  "important_changes": [],
+  "notable_context": ["주방 환경에서 진행", "아침 식사용으로 대량 제작"],
+  "uncertain_or_ambiguous": []
+}

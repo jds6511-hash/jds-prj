@@ -1,0 +1,7 @@
+{
+  "segment_id": "S13",
+  "broad_activities": ["식사", "시장 방문", "의료 복귀 후 외출"],
+  "important_changes": ["다음 날로 시간 전환", "병원 퇴원 후 첫 외출"],
+  "notable_context": ["도시 거리", "시장 내 천사", "식사 장면"],
+  "uncertain_or_ambiguous": []
+}

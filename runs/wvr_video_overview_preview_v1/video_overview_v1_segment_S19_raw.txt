@@ -1,0 +1,7 @@
+{
+  "segment_id": "S19",
+  "broad_activities": ["옷 수선", "요리"],
+  "important_changes": [],
+  "notable_context": ["직장 시간에 수선 작업", "동대문 시장 방문"],
+  "uncertain_or_ambiguous": []
+}

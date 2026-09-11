@@ -1,0 +1,7 @@
+{
+  "segment_id": "S14",
+  "broad_activities": ["크림 커리 우동을 먹는다", "동대문 시장에서 음식을 먹는다", "김밥을 만든다"],
+  "important_changes": ["다음 날로 넘어간다", "시장에서 실내로 이동한다", "김밥 제작을 시작한다"],
+  "notable_context": ["식사 후 다음 날 동대문 시장 방문", "김밥을 대량 제작하는 장면"],
+  "uncertain_or_ambiguous": []
+}

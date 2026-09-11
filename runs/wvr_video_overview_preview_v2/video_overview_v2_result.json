@@ -1,0 +1,318 @@
+{
+  "compressed_timeline": {
+    "activity_runs": [
+      {
+        "broad_activity": "음식 준비 및 조리",
+        "first_segment": "S01",
+        "last_segment": "S11",
+        "phase_id": "P01"
+      },
+      {
+        "broad_activity": "구매 또는 둘러보기",
+        "first_segment": "S01",
+        "last_segment": "S01",
+        "phase_id": "P02"
+      },
+      {
+        "broad_activity": "식사",
+        "first_segment": "S11",
+        "last_segment": "S16",
+        "phase_id": "P03"
+      },
+      {
+        "broad_activity": "구매 또는 둘러보기",
+        "first_segment": "S13",
+        "last_segment": "S14",
+        "phase_id": "P04"
+      },
+      {
+        "broad_activity": "음식 준비 및 조리",
+        "first_segment": "S14",
+        "last_segment": "S17",
+        "phase_id": "P05"
+      },
+      {
+        "broad_activity": "의류 작업 및 수선",
+        "first_segment": "S17",
+        "last_segment": "S19",
+        "phase_id": "P06"
+      },
+      {
+        "broad_activity": "음식 준비 및 조리",
+        "first_segment": "S19",
+        "last_segment": "S21",
+        "phase_id": "P07"
+      },
+      {
+        "broad_activity": "외출 준비",
+        "first_segment": "S20",
+        "last_segment": "S24",
+        "phase_id": "P08"
+      },
+      {
+        "broad_activity": "포장 작업",
+        "first_segment": "S22",
+        "last_segment": "S23",
+        "phase_id": "P09"
+      },
+      {
+        "broad_activity": "이동",
+        "first_segment": "S24",
+        "last_segment": "S24",
+        "phase_id": "P10"
+      },
+      {
+        "broad_activity": "구매 또는 둘러보기",
+        "first_segment": "S24",
+        "last_segment": "S24",
+        "phase_id": "P11"
+      }
+    ],
+    "observed_changes": []
+  },
+  "context_inferences_excluded": [],
+  "event": "WVR_VIDEO_TO_OVERVIEW_PREVIEW_V2",
+  "overview": {
+    "detailed_overview": "음식 준비 및 조리가 시작되어 식사로 이어지며, 이후 구매 또는 둘러보기 활동이 나타난다. 이 활동이 다시 음식 준비 및 조리로 전환되며, 의류 작업 및 수선이 잠시 진행된다. 음식 준비 및 조리가 다시 반복된 후 외출 준비와 포장 작업이 이루어지며, 이동이 발생한다. 마지막으로 구매 또는 둘러보기 활동으로 마무리된다.",
+    "detailed_paragraphs": [
+      "음식 준비 및 조리가 시작되어 식사로 이어지며, 이후 구매 또는 둘러보기 활동이 나타난다. 이 활동이 다시 음식 준비 및 조리로 전환되며, 의류 작업 및 수선이 잠시 진행된다. 음식 준비 및 조리가 다시 반복된 후 외출 준비와 포장 작업이 이루어지며, 이동이 발생한다. 마지막으로 구매 또는 둘러보기 활동으로 마무리된다."
+    ],
+    "short_overview": "음식을 준비하고 조리한 후 식사를 하며, 이어지는 구매 또는 둘러보기 활동이 반복된다. 이후 의류 작업과 외출 준비, 포장 작업, 이동이 이어지며, 마지막으로 다시 구매 또는 둘러보기 활동으로 마무리된다."
+  },
+  "schema": "wvr_video_overview_preview_v2_result",
+  "segment_summaries": [
+    {
+      "BROAD_ACTIVITY": [
+        "음식 준비 및 조리",
+        "구매 또는 둘러보기"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S01"
+    },
+    {
+      "BROAD_ACTIVITY": [
+        "음식 준비 및 조리"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S02"
+    },
+    {
+      "BROAD_ACTIVITY": [
+        "음식 준비 및 조리"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S03"
+    },
+    {
+      "BROAD_ACTIVITY": [
+        "음식 준비 및 조리"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S04"
+    },
+    {
+      "BROAD_ACTIVITY": [
+        "음식 준비 및 조리"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S05"
+    },
+    {
+      "BROAD_ACTIVITY": [
+        "음식 준비 및 조리"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S06"
+    },
+    {
+      "BROAD_ACTIVITY": [
+        "음식 준비 및 조리"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S07"
+    },
+    {
+      "BROAD_ACTIVITY": [
+        "음식 준비 및 조리"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S08"
+    },
+    {
+      "BROAD_ACTIVITY": [
+        "음식 준비 및 조리"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S09"
+    },
+    {
+      "BROAD_ACTIVITY": [
+        "음식 준비 및 조리"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S10"
+    },
+    {
+      "BROAD_ACTIVITY": [
+        "음식 준비 및 조리",
+        "식사"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S11"
+    },
+    {
+      "BROAD_ACTIVITY": [
+        "식사"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S12"
+    },
+    {
+      "BROAD_ACTIVITY": [
+        "식사",
+        "구매 또는 둘러보기"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S13"
+    },
+    {
+      "BROAD_ACTIVITY": [
+        "식사",
+        "음식 준비 및 조리",
+        "구매 또는 둘러보기"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S14"
+    },
+    {
+      "BROAD_ACTIVITY": [
+        "식사",
+        "음식 준비 및 조리"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S15"
+    },
+    {
+      "BROAD_ACTIVITY": [
+        "음식 준비 및 조리",
+        "식사"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S16"
+    },
+    {
+      "BROAD_ACTIVITY": [
+        "음식 준비 및 조리",
+        "의류 작업 및 수선"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S17"
+    },
+    {
+      "BROAD_ACTIVITY": [
+        "의류 작업 및 수선"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S18"
+    },
+    {
+      "BROAD_ACTIVITY": [
+        "의류 작업 및 수선",
+        "음식 준비 및 조리"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S19"
+    },
+    {
+      "BROAD_ACTIVITY": [
+        "음식 준비 및 조리",
+        "외출 준비"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S20"
+    },
+    {
+      "BROAD_ACTIVITY": [
+        "음식 준비 및 조리",
+        "외출 준비"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S21"
+    },
+    {
+      "BROAD_ACTIVITY": [
+        "포장 작업",
+        "외출 준비"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S22"
+    },
+    {
+      "BROAD_ACTIVITY": [
+        "포장 작업",
+        "외출 준비"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S23"
+    },
+    {
+      "BROAD_ACTIVITY": [
+        "외출 준비",
+        "이동",
+        "구매 또는 둘러보기"
+      ],
+      "CONTEXT_INFERENCE": [],
+      "OBSERVED_CHANGE": [],
+      "UNCERTAINTY": [],
+      "segment_id": "S24"
+    }
+  ],
+  "status": "GENERATED / REVIEW_REQUESTED",
+  "uncertainties": []
+}

@@ -1,0 +1,7 @@
+{
+  "segment_id": "S08",
+  "broad_activities": ["크림 커리 우동 조리", "크림 섞기", "크로켓 구워서 준비"],
+  "important_changes": ["요리 방식 변경: 튀기지 않고 굽기", "재료 추가: 부다크 소스, 크림"],
+  "notable_context": ["냉동 식품 준비", "주방 환경"],
+  "uncertain_or_ambiguous": []
+}
