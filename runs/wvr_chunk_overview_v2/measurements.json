@@ -201,7 +201,21 @@
   "event": "WVR_CHUNK_OVERVIEW_V2",
   "note": "관측값만 적는다. 관찰 품질 PASS·재실행 여부·merge 방식은 executor가 판단하지 않는다 (§11).",
   "prereg": "docs/preregistration/WVR_CHUNK_OVERVIEW_V2_C02_C05_2026-09-13.md",
-  "status": "EXECUTED / REVIEW_PENDING",
+  "reviewer_verdict": {
+    "decided": "2026-09-13",
+    "empty_field_ruling": "OBSERVED_CHANGE/CONTEXT_INFERENCE/UNCERTAINTY == 0 은 known observation-contract behavior",
+    "forbidden_interpretations": [
+      "모델이 모든 구간에 확신했다",
+      "context inference가 실제로 0이었다",
+      "영상에 변화가 없었다"
+    ],
+    "next_stage_approved": "WVR_WHOLE_VIDEO_TEMPORAL_MERGE_OVERVIEW_V1",
+    "scope": "expansion / technical validity 판정 — semantic completeness 판정이 아니다",
+    "terminal_remainder_ruling": "0.5fps sampling interval보다 짧은 terminal remainder로 기록 · 별도 visual inference 사건으로 만들지 않는다",
+    "terminal_remainder_sec": 0.186485,
+    "verdict": "CHUNK_EXPANSION_PASS"
+  },
+  "status": "CLOSED / CHUNK_EXPANSION_PASS",
   "whole_video": {
     "chunk_ids_with_summaries": [
       "C01",

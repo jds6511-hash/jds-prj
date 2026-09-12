@@ -3,10 +3,11 @@
 사전등록: `docs/preregistration/WVR_CHUNK_OVERVIEW_V2_C02_C05_2026-09-13.md`
 
 ```
-상태   EXECUTED / REVIEW_PENDING
+실행 시 상태   EXECUTED / REVIEW_PENDING
+최종 상태      CLOSED / CHUNK_EXPANSION_PASS   (2026-09-13 reviewer 판정 — §N)
 ```
 
-**이 문서는 관측값만 적는다.** 관찰 품질 PASS · chunk 재실행 여부 · 프롬프트 개선 ·
+**A~M은 관측값만 적는다. 판정은 §N에만 있다.** 관찰 품질 PASS · chunk 재실행 여부 · 프롬프트 개선 ·
 whole-video merge 방식 · Overview/Analysis/Conclusion 품질 · M9 실행 여부는 전부
 reviewer 결정이다(사전등록 §11).
 
@@ -248,4 +249,54 @@ M9 실행 여부 · official test 개방 여부
 ```
 WVR_CHUNK_OVERVIEW_V2 (C02~C05)
 EXECUTED / REVIEW_PENDING
+```
+
+---
+
+## N. Reviewer 판정 (2026-09-13)
+
+```
+WVR_CHUNK_OVERVIEW_V2_C02_C05
+CLOSED / CHUNK_EXPANSION_PASS
+```
+
+근거로 채택된 관측값: C02~C05 4/4 exit 0 · gate 40/40 PASS · retry 0 · resume 0 ·
+parse failure 0 · schema violation 0 · empty window 0 · label drift 0 ·
+windows 92 · frames 2,208 · inference 96 · model/revision·prompt/schema·
+window/stride/fps frozen 유지 · chunk-specific tuning 없음 · C01 rerun 없음 ·
+official test 미접촉 · M9 미호출.
+
+### terminal remainder
+
+```
+source duration    2424.186485초
+observed union     [0, 2424)
+terminal remainder 0.186485초
+```
+
+현재 0.5fps sampling interval보다 짧은 **terminal remainder로 기록한다.**
+이를 별도 visual inference 사건으로 만들지 않는다.
+
+### known observation-contract behavior
+
+`OBSERVED_CHANGE / CONTEXT_INFERENCE / UNCERTAINTY == 0` 이 C01~C05 전체에서
+반복된 사실은 **known observation-contract behavior로 기록한다.**
+
+다음 해석은 금지다.
+
+```
+모델이 모든 구간에 확신했다
+context inference가 실제로 0이었다
+영상에 변화가 없었다
+```
+
+### 판정의 범위
+
+이번 PASS는 **expansion / technical validity에 대한 판정이며 semantic
+completeness 판정이 아니다.**
+
+### 다음 단계 승인
+
+```
+NEXT STAGE APPROVED — WVR_WHOLE_VIDEO_TEMPORAL_MERGE_OVERVIEW_V1
 ```
