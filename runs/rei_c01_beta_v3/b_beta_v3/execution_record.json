@@ -1,0 +1,16 @@
+{
+  "event": "WVR_REPORT_ENGINE_C01_BETA_V3_SHADOW_V1",
+  "cell": "b_beta_v3",
+  "view": "NONOVERLAP_VIEW",
+  "contract": "v3",
+  "exit_code": 0,
+  "started_utc": "2026-09-12T14:04:53Z",
+  "ended_utc": "2026-09-12T14:05:15Z",
+  "code_git_head": "6e64fe3a2c1cdbc7df8d5bd40200219557ed840f",
+  "host": "kixlab2",
+  "model": "Qwen/Qwen2.5-7B-Instruct",
+  "llm_4bit": false,
+  "new_visual_inference": 0,
+  "new_stt": 0,
+  "retry_count": 0
+}

@@ -1,0 +1,164 @@
+{
+  "body": {
+    "excluded_summary_episode_ids": {
+      "H02": [
+        "EP10"
+      ]
+    },
+    "excluded_summary_reasons": {
+      "EP10": "OUTPUT_LANGUAGE_DRIFT"
+    },
+    "highlight_summary_status": [
+      "AVAILABLE",
+      "AVAILABLE"
+    ],
+    "no_reliable_content_count": 0,
+    "report_md_bytes": 3200,
+    "synthesis_source_episode_ids": [
+      "EP01",
+      "EP02",
+      "EP03",
+      "EP04",
+      "EP05",
+      "EP06",
+      "EP07",
+      "EP08",
+      "EP09"
+    ]
+  },
+  "canonical": {
+    "canonical_episodes": 10,
+    "content_status": {
+      "VALID_PARSE": 10
+    },
+    "counters": {
+      "llm_calls": 10,
+      "llm_failures": 0,
+      "prompt_refusals": 0,
+      "retries": 0
+    },
+    "expected_episodes": 10,
+    "parse_status": {
+      "VALID_PARSE": 10
+    },
+    "stages_success": {
+      "S0": true,
+      "S1": true,
+      "S2": true,
+      "S3": true,
+      "S4": true,
+      "S5": true,
+      "S6": true,
+      "S7": true
+    },
+    "summary_mode": {
+      "MODEL_ABSTRACTIVE": 10
+    }
+  },
+  "citations": {
+    "anchor_cite_count": 24,
+    "citations_to_unknown_segment": [],
+    "unique_anchor_cite_count": 24
+  },
+  "event": "WVR_REPORT_ENGINE_C01_BETA_V3_SHADOW_V1",
+  "execution_record": {
+    "cell": "b_beta_v3",
+    "code_git_head": "6e64fe3a2c1cdbc7df8d5bd40200219557ed840f",
+    "contract": "v3",
+    "ended_utc": "2026-09-12T14:05:15Z",
+    "event": "WVR_REPORT_ENGINE_C01_BETA_V3_SHADOW_V1",
+    "exit_code": 0,
+    "host": "kixlab2",
+    "llm_4bit": false,
+    "model": "Qwen/Qwen2.5-7B-Instruct",
+    "new_stt": 0,
+    "new_visual_inference": 0,
+    "retry_count": 0,
+    "started_utc": "2026-09-12T14:04:53Z",
+    "view": "NONOVERLAP_VIEW"
+  },
+  "fallback": {
+    "empty_report": false,
+    "llm_failures": 0,
+    "prompt_refusals": 0,
+    "retries": 0,
+    "stage_partial_success": []
+  },
+  "grounding": {
+    "reason_codes": {},
+    "status_distribution": {
+      "NOT_APPLICABLE": 10
+    }
+  },
+  "hwpx": {
+    "bad_entry": null,
+    "bytes": 5552,
+    "entry_count": 6,
+    "generated": true,
+    "has_mimetype": true,
+    "zip_open_ok": true
+  },
+  "input": {
+    "caption_populated": 24,
+    "segment_count": 24,
+    "subtitle_populated": 23,
+    "view": "NONOVERLAP_VIEW"
+  },
+  "new_stt": 0,
+  "new_visual_inference": 0,
+  "note": "관측값만 적는다. 보고서 품질 PASS · production 채택 · C02~C05 실행 여부는 executor가 판단하지 않는다 (사전등록 §10).",
+  "prereg": "docs/preregistration/WVR_REPORT_ENGINE_C01_BETA_V3_SHADOW_V1_2026-09-12.md",
+  "presentation": {
+    "dialogue_note_present": 0,
+    "eligible": 9,
+    "episodes": 10,
+    "excluded_by_dialogue_grounding": 0,
+    "excluded_episode_ids": []
+  },
+  "prompt_contract": {
+    "code_revision": "6e64fe3a2c1cdbc7df8d5bd40200219557ed840f",
+    "model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "prompt_hash": "a08e3c3c4988daa6639cf0316f8b5d81f466685590fb54400eeda7d6ab6610d7",
+    "prompt_version": "episode_content_v3_summary_only"
+  },
+  "reference_baselines": {
+    "runs/rei_c01/b_beta (v2)": {
+      "eligible": 0,
+      "episodes": 10
+    },
+    "runs/v3_paired/r0_v2": {
+      "eligible": 2,
+      "episodes": 41
+    },
+    "runs/v3_paired/r1_v3": {
+      "eligible": 39,
+      "episodes": 41,
+      "grounding": "NOT_APPLICABLE 41"
+    },
+    "주의": "입력 격자와 규모가 다르다 — 차이를 단일 원인으로 귀속하지 않는다."
+  },
+  "retry_count": 0,
+  "section_completion": {
+    "## 개요": true,
+    "## 결론": true,
+    "## 근거 및 생성 정보": true,
+    "## 주요 사건 및 내용": true,
+    "## 핵심 내용 분석": true
+  },
+  "status": "EXECUTED / REVIEW_PENDING",
+  "timestamps": {
+    "adjacent_overlap_sec": 0.0,
+    "highlights": [
+      {
+        "end_sec": 312.0,
+        "id": "H01",
+        "start_sec": 0.0
+      },
+      {
+        "end_sec": 600.0,
+        "id": "H02",
+        "start_sec": 312.0
+      }
+    ]
+  }
+}
