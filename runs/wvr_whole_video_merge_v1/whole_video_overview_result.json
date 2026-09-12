@@ -1,0 +1,236 @@
+{
+  "compressed_timeline": {
+    "activity_runs": [
+      {
+        "broad_activity": "음식 준비 및 조리",
+        "first_segment": "G001",
+        "last_segment": "G011",
+        "phase_id": "P01"
+      },
+      {
+        "broad_activity": "구매 또는 둘러보기",
+        "first_segment": "G001",
+        "last_segment": "G001",
+        "phase_id": "P02"
+      },
+      {
+        "broad_activity": "식사",
+        "first_segment": "G011",
+        "last_segment": "G016",
+        "phase_id": "P03"
+      },
+      {
+        "broad_activity": "구매 또는 둘러보기",
+        "first_segment": "G013",
+        "last_segment": "G014",
+        "phase_id": "P04"
+      },
+      {
+        "broad_activity": "음식 준비 및 조리",
+        "first_segment": "G014",
+        "last_segment": "G017",
+        "phase_id": "P05"
+      },
+      {
+        "broad_activity": "의류 작업 및 수선",
+        "first_segment": "G017",
+        "last_segment": "G019",
+        "phase_id": "P06"
+      },
+      {
+        "broad_activity": "음식 준비 및 조리",
+        "first_segment": "G019",
+        "last_segment": "G021",
+        "phase_id": "P07"
+      },
+      {
+        "broad_activity": "외출 준비",
+        "first_segment": "G020",
+        "last_segment": "G024",
+        "phase_id": "P08"
+      },
+      {
+        "broad_activity": "포장 작업",
+        "first_segment": "G022",
+        "last_segment": "G023",
+        "phase_id": "P09"
+      },
+      {
+        "broad_activity": "이동",
+        "first_segment": "G024",
+        "last_segment": "G024",
+        "phase_id": "P10"
+      },
+      {
+        "broad_activity": "구매 또는 둘러보기",
+        "first_segment": "G024",
+        "last_segment": "G036",
+        "phase_id": "P11"
+      },
+      {
+        "broad_activity": "이동",
+        "first_segment": "G027",
+        "last_segment": "G028",
+        "phase_id": "P12"
+      },
+      {
+        "broad_activity": "포장 작업",
+        "first_segment": "G029",
+        "last_segment": "G029",
+        "phase_id": "P13"
+      },
+      {
+        "broad_activity": "음식 준비 및 조리",
+        "first_segment": "G030",
+        "last_segment": "G030",
+        "phase_id": "P14"
+      },
+      {
+        "broad_activity": "이동",
+        "first_segment": "G036",
+        "last_segment": "G036",
+        "phase_id": "P15"
+      },
+      {
+        "broad_activity": "식사",
+        "first_segment": "G037",
+        "last_segment": "G040",
+        "phase_id": "P16"
+      },
+      {
+        "broad_activity": "구매 또는 둘러보기",
+        "first_segment": "G040",
+        "last_segment": "G048",
+        "phase_id": "P17"
+      },
+      {
+        "broad_activity": "이동",
+        "first_segment": "G041",
+        "last_segment": "G041",
+        "phase_id": "P18"
+      },
+      {
+        "broad_activity": "음식 준비 및 조리",
+        "first_segment": "G047",
+        "last_segment": "G047",
+        "phase_id": "P19"
+      },
+      {
+        "broad_activity": "식사",
+        "first_segment": "G048",
+        "last_segment": "G051",
+        "phase_id": "P20"
+      },
+      {
+        "broad_activity": "구매 또는 둘러보기",
+        "first_segment": "G051",
+        "last_segment": "G054",
+        "phase_id": "P21"
+      },
+      {
+        "broad_activity": "음식 준비 및 조리",
+        "first_segment": "G053",
+        "last_segment": "G057",
+        "phase_id": "P22"
+      },
+      {
+        "broad_activity": "이동",
+        "first_segment": "G055",
+        "last_segment": "G056",
+        "phase_id": "P23"
+      },
+      {
+        "broad_activity": "포장 작업",
+        "first_segment": "G056",
+        "last_segment": "G056",
+        "phase_id": "P24"
+      },
+      {
+        "broad_activity": "구매 또는 둘러보기",
+        "first_segment": "G056",
+        "last_segment": "G058",
+        "phase_id": "P25"
+      },
+      {
+        "broad_activity": "외출 준비",
+        "first_segment": "G057",
+        "last_segment": "G057",
+        "phase_id": "P26"
+      },
+      {
+        "broad_activity": "정리 작업",
+        "first_segment": "G058",
+        "last_segment": "G058",
+        "phase_id": "P27"
+      },
+      {
+        "broad_activity": "외출 준비",
+        "first_segment": "G059",
+        "last_segment": "G059",
+        "phase_id": "P28"
+      },
+      {
+        "broad_activity": "구매 또는 둘러보기",
+        "first_segment": "G060",
+        "last_segment": "G060",
+        "phase_id": "P29"
+      },
+      {
+        "broad_activity": "음식 준비 및 조리",
+        "first_segment": "G060",
+        "last_segment": "G061",
+        "phase_id": "P30"
+      },
+      {
+        "broad_activity": "구매 또는 둘러보기",
+        "first_segment": "G062",
+        "last_segment": "G062",
+        "phase_id": "P31"
+      },
+      {
+        "broad_activity": "포장 작업",
+        "first_segment": "G063",
+        "last_segment": "G063",
+        "phase_id": "P32"
+      },
+      {
+        "broad_activity": "음식 준비 및 조리",
+        "first_segment": "G064",
+        "last_segment": "G072",
+        "phase_id": "P33"
+      },
+      {
+        "broad_activity": "식사",
+        "first_segment": "G072",
+        "last_segment": "G075",
+        "phase_id": "P34"
+      },
+      {
+        "broad_activity": "음식 준비 및 조리",
+        "first_segment": "G075",
+        "last_segment": "G094",
+        "phase_id": "P35"
+      },
+      {
+        "broad_activity": "식사",
+        "first_segment": "G095",
+        "last_segment": "G096",
+        "phase_id": "P36"
+      }
+    ],
+    "observed_changes": []
+  },
+  "context_inference_injected": false,
+  "event": "WVR_WHOLE_VIDEO_TEMPORAL_MERGE_OVERVIEW_V1",
+  "overview": {
+    "detailed_overview": "음식 준비 및 조리가 처음으로 시작되며, 이후 구매 또는 둘러보기로 전환됩니다. 식사 후 다시 구매 또는 둘러보기로 넘어가며, 이동과 포장 작업이 반복적으로 삽입되어 활동의 흐름을 이끕니다. 중간에 의류 작업 및 수선이 잠시 등장하지만, 음식 관련 활동이 다시 중심이 됩니다. 외출 준비와 정리 작업이 종료 단계로 나타나며, 마지막으로 음식 준비 및 조리, 식사가 반복적으로 마무리됩니다.",
+    "detailed_paragraphs": [
+      "음식 준비 및 조리가 처음으로 시작되며, 이후 구매 또는 둘러보기로 전환됩니다. 식사 후 다시 구매 또는 둘러보기로 넘어가며, 이동과 포장 작업이 반복적으로 삽입되어 활동의 흐름을 이끕니다. 중간에 의류 작업 및 수선이 잠시 등장하지만, 음식 관련 활동이 다시 중심이 됩니다. 외출 준비와 정리 작업이 종료 단계로 나타나며, 마지막으로 음식 준비 및 조리, 식사가 반복적으로 마무리됩니다."
+    ],
+    "short_overview": "음식 준비와 조리가 반복적으로 이루어지며, 이와 함께 구매 또는 둘러보기, 식사, 외출 준비, 포장 작업, 이동 등이 순차적으로 전환됩니다. 활동은 주기적으로 음식 관련 작업으로 돌아가며, 이동과 구매가 빈번하게 삽입되어 일상적인 흐름을 이룹니다. 마지막으로 정리 작업과 외출 준비가 종료 단계로 나타납니다."
+  },
+  "status": "GENERATED / REVIEW_REQUESTED",
+  "temporal_coverage_sec": 2424.0,
+  "terminal_remainder_sec": 0.186485,
+  "timeline_entry_count": 96
+}

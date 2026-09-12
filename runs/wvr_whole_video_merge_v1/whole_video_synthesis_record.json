@@ -1,0 +1,38 @@
+{
+  "activity_run_count": 36,
+  "call": "runtime.synthesize (텍스트 전용 · 영상 프레임 없음)",
+  "code_git_head": "cd9f118a959bb7889cc0eb778481e7a69884bb8b",
+  "do_sample": false,
+  "elapsed_sec": 18.188,
+  "event": "WVR_WHOLE_VIDEO_TEMPORAL_MERGE_OVERVIEW_V1",
+  "max_new_tokens": 1024,
+  "model_id": "Qwen/Qwen3-VL-8B-Instruct",
+  "model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "num_beams": 1,
+  "prereg": "docs/preregistration/WVR_WHOLE_VIDEO_TEMPORAL_MERGE_OVERVIEW_V1_2026-09-13.md",
+  "prompt_sha256": "2e7d53c2b4d0df1f49c8006c92c4861dc6553b698b1e3b7080bd612ffd5c154a",
+  "raw_sha256": "adc6118676f68c4d28360cc5570365f6a6e37ecec6b5d2012a8d5768c2775a32",
+  "retry_count": 0,
+  "runtime_metrics": {
+    "peak_vram_allocated_mib": 17031.0,
+    "peak_vram_reserved_mib": 17182.0,
+    "segments": [],
+    "synthesis": {
+      "infer_wall_sec": 10.329,
+      "input_tokens": 1171,
+      "output_tokens": 269
+    }
+  },
+  "runtime_provenance": {
+    "attn_implementation": "sdpa",
+    "device_name": "NVIDIA GeForce RTX 4090",
+    "effective_dtype": "torch.bfloat16",
+    "effective_model_id": "Qwen/Qwen3-VL-8B-Instruct",
+    "effective_model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b"
+  },
+  "status": "GENERATED / REVIEW_REQUESTED",
+  "stt_inference_count": 0,
+  "synthesis_inference_count": 1,
+  "timeline_entry_count": 96,
+  "visual_inference_count": 0
+}
