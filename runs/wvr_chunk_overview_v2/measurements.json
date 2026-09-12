@@ -1,0 +1,230 @@
+{
+  "chunks": {
+    "C02": {
+      "broad_activity_label_counts": {
+        "구매 또는 둘러보기": 18,
+        "식사": 4,
+        "외출 준비": 5,
+        "음식 준비 및 조리": 2,
+        "이동": 5,
+        "포장 작업": 3
+      },
+      "chunk_id": "C02",
+      "context_inference_count": 0,
+      "elapsed_sec": 149.153,
+      "empty_broad_activity_windows": 0,
+      "geometry": {
+        "chunk_end_sec": 1080.0,
+        "chunk_id": "C02",
+        "chunk_start_sec": 480.0,
+        "first_window": [
+          480.0,
+          528.0
+        ],
+        "frame_count": 576,
+        "frames_per_window": 24,
+        "last_window": [
+          1032.0,
+          1080.0
+        ],
+        "sampling_fps": 0.5,
+        "stride_sec": 24.0,
+        "uncovered_tail_sec": 0.0,
+        "window_count": 24,
+        "window_sec": 48.0
+      },
+      "infer_wall_sec": {
+        "max": 3.299,
+        "mean": 1.958,
+        "min": 1.61
+      },
+      "inference_count": 25,
+      "input_tokens_total": 56962,
+      "observed_change_count": 0,
+      "original_error": null,
+      "output_tokens_total": 1082,
+      "peak_vram_allocated_mib": 17446.0,
+      "peak_vram_reserved_mib": 17792.0,
+      "result_status": "GENERATED / REVIEW_REQUESTED",
+      "resumed_existing_segment_raw_count": null,
+      "retry_count": 0,
+      "uncertainty_count": 0
+    },
+    "C03": {
+      "broad_activity_label_counts": {
+        "구매 또는 둘러보기": 19,
+        "식사": 5,
+        "외출 준비": 2,
+        "음식 준비 및 조리": 8,
+        "이동": 3,
+        "정리 작업": 1,
+        "포장 작업": 1
+      },
+      "chunk_id": "C03",
+      "context_inference_count": 0,
+      "elapsed_sec": 151.418,
+      "empty_broad_activity_windows": 0,
+      "geometry": {
+        "chunk_end_sec": 1560.0,
+        "chunk_id": "C03",
+        "chunk_start_sec": 960.0,
+        "first_window": [
+          960.0,
+          1008.0
+        ],
+        "frame_count": 576,
+        "frames_per_window": 24,
+        "last_window": [
+          1512.0,
+          1560.0
+        ],
+        "sampling_fps": 0.5,
+        "stride_sec": 24.0,
+        "uncovered_tail_sec": 0.0,
+        "window_count": 24,
+        "window_sec": 48.0
+      },
+      "infer_wall_sec": {
+        "max": 3.332,
+        "mean": 1.966,
+        "min": 1.585
+      },
+      "inference_count": 25,
+      "input_tokens_total": 57202,
+      "observed_change_count": 0,
+      "original_error": null,
+      "output_tokens_total": 1121,
+      "peak_vram_allocated_mib": 17446.0,
+      "peak_vram_reserved_mib": 17792.0,
+      "result_status": "GENERATED / REVIEW_REQUESTED",
+      "resumed_existing_segment_raw_count": null,
+      "retry_count": 0,
+      "uncertainty_count": 0
+    },
+    "C04": {
+      "broad_activity_label_counts": {
+        "구매 또는 둘러보기": 2,
+        "기타 명확한 주요 활동": 1,
+        "식사": 4,
+        "외출 준비": 1,
+        "음식 준비 및 조리": 18,
+        "포장 작업": 1
+      },
+      "chunk_id": "C04",
+      "context_inference_count": 0,
+      "elapsed_sec": 136.498,
+      "empty_broad_activity_windows": 0,
+      "geometry": {
+        "chunk_end_sec": 2040.0,
+        "chunk_id": "C04",
+        "chunk_start_sec": 1440.0,
+        "first_window": [
+          1440.0,
+          1488.0
+        ],
+        "frame_count": 576,
+        "frames_per_window": 24,
+        "last_window": [
+          1992.0,
+          2040.0
+        ],
+        "sampling_fps": 0.5,
+        "stride_sec": 24.0,
+        "uncovered_tail_sec": 0.0,
+        "window_count": 24,
+        "window_sec": 48.0
+      },
+      "infer_wall_sec": {
+        "max": 2.972,
+        "mean": 1.797,
+        "min": 1.578
+      },
+      "inference_count": 25,
+      "input_tokens_total": 57216,
+      "observed_change_count": 0,
+      "original_error": null,
+      "output_tokens_total": 999,
+      "peak_vram_allocated_mib": 17446.0,
+      "peak_vram_reserved_mib": 17792.0,
+      "result_status": "GENERATED / REVIEW_REQUESTED",
+      "resumed_existing_segment_raw_count": null,
+      "retry_count": 0,
+      "uncertainty_count": 0
+    },
+    "C05": {
+      "broad_activity_label_counts": {
+        "식사": 2,
+        "음식 준비 및 조리": 18
+      },
+      "chunk_id": "C05",
+      "context_inference_count": 0,
+      "elapsed_sec": 111.678,
+      "empty_broad_activity_windows": 0,
+      "geometry": {
+        "chunk_end_sec": 2424.186,
+        "chunk_id": "C05",
+        "chunk_start_sec": 1920.0,
+        "first_window": [
+          1920.0,
+          1968.0
+        ],
+        "frame_count": 480,
+        "frames_per_window": 24,
+        "last_window": [
+          2376.0,
+          2424.0
+        ],
+        "sampling_fps": 0.5,
+        "stride_sec": 24.0,
+        "uncovered_tail_sec": 0.186,
+        "window_count": 20,
+        "window_sec": 48.0
+      },
+      "infer_wall_sec": {
+        "max": 3.121,
+        "mean": 1.816,
+        "min": 1.587
+      },
+      "inference_count": 21,
+      "input_tokens_total": 47680,
+      "observed_change_count": 0,
+      "original_error": null,
+      "output_tokens_total": 824,
+      "peak_vram_allocated_mib": 17446.0,
+      "peak_vram_reserved_mib": 17792.0,
+      "result_status": "GENERATED / REVIEW_REQUESTED",
+      "resumed_existing_segment_raw_count": null,
+      "retry_count": 0,
+      "uncertainty_count": 0
+    }
+  },
+  "event": "WVR_CHUNK_OVERVIEW_V2",
+  "note": "관측값만 적는다. 관찰 품질 PASS·재실행 여부·merge 방식은 executor가 판단하지 않는다 (§11).",
+  "prereg": "docs/preregistration/WVR_CHUNK_OVERVIEW_V2_C02_C05_2026-09-13.md",
+  "status": "EXECUTED / REVIEW_PENDING",
+  "whole_video": {
+    "chunk_ids_with_summaries": [
+      "C01",
+      "C02",
+      "C03",
+      "C04",
+      "C05"
+    ],
+    "chunk_pair_overlap_sec": [
+      120.0,
+      120.0,
+      120.0,
+      120.0
+    ],
+    "covered_sec": 2424.0,
+    "merged_spans": [
+      [
+        0.0,
+        2424.0
+      ]
+    ],
+    "uncovered_sec": 0.186485,
+    "video_duration_sec": 2424.186485,
+    "window_total": 116
+  }
+}

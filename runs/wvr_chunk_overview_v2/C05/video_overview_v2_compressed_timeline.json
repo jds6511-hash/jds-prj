@@ -1,0 +1,17 @@
+{
+  "activity_runs": [
+    {
+      "broad_activity": "음식 준비 및 조리",
+      "first_segment": "S01",
+      "last_segment": "S18",
+      "phase_id": "P01"
+    },
+    {
+      "broad_activity": "식사",
+      "first_segment": "S19",
+      "last_segment": "S20",
+      "phase_id": "P02"
+    }
+  ],
+  "observed_changes": []
+}

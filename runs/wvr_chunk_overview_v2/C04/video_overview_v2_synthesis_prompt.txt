@@ -1,0 +1,68 @@
+아래 자료는 원본 영상 관찰을 시간순 broad activity run으로 중복 압축한 결과입니다.
+오직 제공된 BROAD_ACTIVITY_SEQUENCE와 OBSERVED_CHANGES만 사용하여 자연스러운 한국어 Overview를 작성하십시오.
+
+질문:
+"이 영상에서는 전체적으로 어떤 주요 활동들이 어떤 순서로 이어지는가?"
+
+규칙:
+- broad activity의 순서와 주요 전환을 빠짐없이 설명하십시오.
+- 세부 요리명, recipe, 식재료, 소스, 도구 또는 작은 행동을 추가하지 마십시오.
+- 사람의 상황, 일정, 직업, 의료 정보, 계획, 감정, 의도를 추론하지 마십시오.
+- 분석, 평가, 결론을 작성하지 마십시오.
+- SHORT와 DETAILED는 같은 activity sequence를 유지하십시오.
+- SHORT는 자연스러운 약 2~5문장으로 작성하되 문장 수보다 흐름 보존을 우선하십시오.
+- DETAILED는 1~3개 단락으로 작성하고 event log처럼 나열하지 마십시오.
+- 구간 번호, window 또는 phase 식별자를 본문에 노출하지 마십시오.
+- Markdown fence, JSON, bullet 또는 추가 설명 없이 두 heading과 본문만 출력하십시오.
+
+출력 형식:
+SHORT OVERVIEW
+
+<실제 본문>
+
+DETAILED OVERVIEW
+
+<실제 본문>
+
+압축 입력:
+{
+  "BROAD_ACTIVITY_SEQUENCE": [
+    {
+      "activity": "외출 준비",
+      "order": 1
+    },
+    {
+      "activity": "구매 또는 둘러보기",
+      "order": 2
+    },
+    {
+      "activity": "음식 준비 및 조리",
+      "order": 3
+    },
+    {
+      "activity": "구매 또는 둘러보기",
+      "order": 4
+    },
+    {
+      "activity": "기타 명확한 주요 활동",
+      "order": 5
+    },
+    {
+      "activity": "포장 작업",
+      "order": 6
+    },
+    {
+      "activity": "음식 준비 및 조리",
+      "order": 7
+    },
+    {
+      "activity": "식사",
+      "order": 8
+    },
+    {
+      "activity": "음식 준비 및 조리",
+      "order": 9
+    }
+  ],
+  "OBSERVED_CHANGES": []
+}

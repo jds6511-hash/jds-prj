@@ -1,0 +1,59 @@
+{
+  "activity_runs": [
+    {
+      "broad_activity": "외출 준비",
+      "first_segment": "S01",
+      "last_segment": "S01",
+      "phase_id": "P01"
+    },
+    {
+      "broad_activity": "구매 또는 둘러보기",
+      "first_segment": "S02",
+      "last_segment": "S02",
+      "phase_id": "P02"
+    },
+    {
+      "broad_activity": "음식 준비 및 조리",
+      "first_segment": "S02",
+      "last_segment": "S03",
+      "phase_id": "P03"
+    },
+    {
+      "broad_activity": "구매 또는 둘러보기",
+      "first_segment": "S04",
+      "last_segment": "S04",
+      "phase_id": "P04"
+    },
+    {
+      "broad_activity": "기타 명확한 주요 활동",
+      "first_segment": "S05",
+      "last_segment": "S05",
+      "phase_id": "P05"
+    },
+    {
+      "broad_activity": "포장 작업",
+      "first_segment": "S06",
+      "last_segment": "S06",
+      "phase_id": "P06"
+    },
+    {
+      "broad_activity": "음식 준비 및 조리",
+      "first_segment": "S07",
+      "last_segment": "S15",
+      "phase_id": "P07"
+    },
+    {
+      "broad_activity": "식사",
+      "first_segment": "S15",
+      "last_segment": "S18",
+      "phase_id": "P08"
+    },
+    {
+      "broad_activity": "음식 준비 및 조리",
+      "first_segment": "S18",
+      "last_segment": "S24",
+      "phase_id": "P09"
+    }
+  ],
+  "observed_changes": []
+}

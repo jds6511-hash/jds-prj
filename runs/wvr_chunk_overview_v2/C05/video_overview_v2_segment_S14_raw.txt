@@ -1,0 +1,8 @@
+```json
+{
+  "BROAD_ACTIVITY": ["음식 준비 및 조리"],
+  "OBSERVED_CHANGE": [],
+  "CONTEXT_INFERENCE": [],
+  "UNCERTAINTY": []
+}
+```

@@ -1,0 +1,777 @@
+{
+  "chunks": [
+    {
+      "checks": [
+        {
+          "desc": "status == GENERATED / REVIEW_REQUESTED",
+          "detail": "GENERATED / REVIEW_REQUESTED",
+          "id": "G1",
+          "result": "PASS"
+        },
+        {
+          "desc": "segment_count · segment_inference_count == 창 수",
+          "detail": {
+            "expected": 24,
+            "segment_count": 24,
+            "segment_inference_count": 24
+          },
+          "id": "G2",
+          "result": "PASS"
+        },
+        {
+          "desc": "inference_count == 창 수 + 1 (chunk 합성 1회)",
+          "detail": 25,
+          "id": "G3",
+          "result": "PASS"
+        },
+        {
+          "desc": "runtime — 동결 모델·revision · bfloat16 · sdpa · 4090",
+          "detail": {
+            "attn_implementation": "sdpa",
+            "device_name": "NVIDIA GeForce RTX 4090",
+            "effective_dtype": "torch.bfloat16",
+            "effective_model_id": "Qwen/Qwen3-VL-8B-Instruct",
+            "effective_model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b"
+          },
+          "id": "G4",
+          "result": "PASS"
+        },
+        {
+          "desc": "summary 개수 == 창 수 · 4개 필드 전부 보유",
+          "detail": {
+            "count": 24
+          },
+          "id": "G5",
+          "result": "PASS"
+        },
+        {
+          "desc": "BROAD_ACTIVITY label이 동결 집합 안에 있다",
+          "detail": [],
+          "id": "G6",
+          "result": "PASS"
+        },
+        {
+          "desc": "창 시각이 사전등록 §3 표와 일치",
+          "detail": {
+            "first": {
+              "end_sec": 528.0,
+              "frame_times": [
+                480.0,
+                482.0,
+                484.0,
+                486.0,
+                488.0,
+                490.0,
+                492.0,
+                494.0,
+                496.0,
+                498.0,
+                500.0,
+                502.0,
+                504.0,
+                506.0,
+                508.0,
+                510.0,
+                512.0,
+                514.0,
+                516.0,
+                518.0,
+                520.0,
+                522.0,
+                524.0,
+                526.0
+              ],
+              "segment_id": "S01",
+              "start_sec": 480.0
+            },
+            "last": {
+              "end_sec": 1080.0,
+              "frame_times": [
+                1032.0,
+                1034.0,
+                1036.0,
+                1038.0,
+                1040.0,
+                1042.0,
+                1044.0,
+                1046.0,
+                1048.0,
+                1050.0,
+                1052.0,
+                1054.0,
+                1056.0,
+                1058.0,
+                1060.0,
+                1062.0,
+                1064.0,
+                1066.0,
+                1068.0,
+                1070.0,
+                1072.0,
+                1074.0,
+                1076.0,
+                1078.0
+              ],
+              "segment_id": "S24",
+              "start_sec": 1032.0
+            }
+          },
+          "id": "G7",
+          "result": "PASS"
+        },
+        {
+          "desc": "video_sha256 == 동결 원본",
+          "detail": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+          "id": "G8",
+          "result": "PASS"
+        },
+        {
+          "desc": "C01 산출물 존재 · 파일 수 불변(읽기 전용)",
+          "detail": {
+            "file_count": 56
+          },
+          "id": "G9",
+          "result": "PASS"
+        },
+        {
+          "desc": "official test 경로 미접근 · M9 미호출",
+          "detail": [],
+          "id": "G10",
+          "result": "PASS"
+        }
+      ],
+      "chunk_id": "C02",
+      "gate": "PASS",
+      "measurement": {
+        "broad_activity_label_counts": {
+          "구매 또는 둘러보기": 18,
+          "식사": 4,
+          "외출 준비": 5,
+          "음식 준비 및 조리": 2,
+          "이동": 5,
+          "포장 작업": 3
+        },
+        "chunk_id": "C02",
+        "context_inference_count": 0,
+        "elapsed_sec": 149.153,
+        "empty_broad_activity_windows": 0,
+        "geometry": {
+          "chunk_end_sec": 1080.0,
+          "chunk_id": "C02",
+          "chunk_start_sec": 480.0,
+          "first_window": [
+            480.0,
+            528.0
+          ],
+          "frame_count": 576,
+          "frames_per_window": 24,
+          "last_window": [
+            1032.0,
+            1080.0
+          ],
+          "sampling_fps": 0.5,
+          "stride_sec": 24.0,
+          "uncovered_tail_sec": 0.0,
+          "window_count": 24,
+          "window_sec": 48.0
+        },
+        "infer_wall_sec": {
+          "max": 3.299,
+          "mean": 1.958,
+          "min": 1.61
+        },
+        "inference_count": 25,
+        "input_tokens_total": 56962,
+        "observed_change_count": 0,
+        "original_error": null,
+        "output_tokens_total": 1082,
+        "peak_vram_allocated_mib": 17446.0,
+        "peak_vram_reserved_mib": 17792.0,
+        "result_status": "GENERATED / REVIEW_REQUESTED",
+        "resumed_existing_segment_raw_count": null,
+        "retry_count": 0,
+        "uncertainty_count": 0
+      }
+    },
+    {
+      "checks": [
+        {
+          "desc": "status == GENERATED / REVIEW_REQUESTED",
+          "detail": "GENERATED / REVIEW_REQUESTED",
+          "id": "G1",
+          "result": "PASS"
+        },
+        {
+          "desc": "segment_count · segment_inference_count == 창 수",
+          "detail": {
+            "expected": 24,
+            "segment_count": 24,
+            "segment_inference_count": 24
+          },
+          "id": "G2",
+          "result": "PASS"
+        },
+        {
+          "desc": "inference_count == 창 수 + 1 (chunk 합성 1회)",
+          "detail": 25,
+          "id": "G3",
+          "result": "PASS"
+        },
+        {
+          "desc": "runtime — 동결 모델·revision · bfloat16 · sdpa · 4090",
+          "detail": {
+            "attn_implementation": "sdpa",
+            "device_name": "NVIDIA GeForce RTX 4090",
+            "effective_dtype": "torch.bfloat16",
+            "effective_model_id": "Qwen/Qwen3-VL-8B-Instruct",
+            "effective_model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b"
+          },
+          "id": "G4",
+          "result": "PASS"
+        },
+        {
+          "desc": "summary 개수 == 창 수 · 4개 필드 전부 보유",
+          "detail": {
+            "count": 24
+          },
+          "id": "G5",
+          "result": "PASS"
+        },
+        {
+          "desc": "BROAD_ACTIVITY label이 동결 집합 안에 있다",
+          "detail": [],
+          "id": "G6",
+          "result": "PASS"
+        },
+        {
+          "desc": "창 시각이 사전등록 §3 표와 일치",
+          "detail": {
+            "first": {
+              "end_sec": 1008.0,
+              "frame_times": [
+                960.0,
+                962.0,
+                964.0,
+                966.0,
+                968.0,
+                970.0,
+                972.0,
+                974.0,
+                976.0,
+                978.0,
+                980.0,
+                982.0,
+                984.0,
+                986.0,
+                988.0,
+                990.0,
+                992.0,
+                994.0,
+                996.0,
+                998.0,
+                1000.0,
+                1002.0,
+                1004.0,
+                1006.0
+              ],
+              "segment_id": "S01",
+              "start_sec": 960.0
+            },
+            "last": {
+              "end_sec": 1560.0,
+              "frame_times": [
+                1512.0,
+                1514.0,
+                1516.0,
+                1518.0,
+                1520.0,
+                1522.0,
+                1524.0,
+                1526.0,
+                1528.0,
+                1530.0,
+                1532.0,
+                1534.0,
+                1536.0,
+                1538.0,
+                1540.0,
+                1542.0,
+                1544.0,
+                1546.0,
+                1548.0,
+                1550.0,
+                1552.0,
+                1554.0,
+                1556.0,
+                1558.0
+              ],
+              "segment_id": "S24",
+              "start_sec": 1512.0
+            }
+          },
+          "id": "G7",
+          "result": "PASS"
+        },
+        {
+          "desc": "video_sha256 == 동결 원본",
+          "detail": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+          "id": "G8",
+          "result": "PASS"
+        },
+        {
+          "desc": "C01 산출물 존재 · 파일 수 불변(읽기 전용)",
+          "detail": {
+            "file_count": 56
+          },
+          "id": "G9",
+          "result": "PASS"
+        },
+        {
+          "desc": "official test 경로 미접근 · M9 미호출",
+          "detail": [],
+          "id": "G10",
+          "result": "PASS"
+        }
+      ],
+      "chunk_id": "C03",
+      "gate": "PASS",
+      "measurement": {
+        "broad_activity_label_counts": {
+          "구매 또는 둘러보기": 19,
+          "식사": 5,
+          "외출 준비": 2,
+          "음식 준비 및 조리": 8,
+          "이동": 3,
+          "정리 작업": 1,
+          "포장 작업": 1
+        },
+        "chunk_id": "C03",
+        "context_inference_count": 0,
+        "elapsed_sec": 151.418,
+        "empty_broad_activity_windows": 0,
+        "geometry": {
+          "chunk_end_sec": 1560.0,
+          "chunk_id": "C03",
+          "chunk_start_sec": 960.0,
+          "first_window": [
+            960.0,
+            1008.0
+          ],
+          "frame_count": 576,
+          "frames_per_window": 24,
+          "last_window": [
+            1512.0,
+            1560.0
+          ],
+          "sampling_fps": 0.5,
+          "stride_sec": 24.0,
+          "uncovered_tail_sec": 0.0,
+          "window_count": 24,
+          "window_sec": 48.0
+        },
+        "infer_wall_sec": {
+          "max": 3.332,
+          "mean": 1.966,
+          "min": 1.585
+        },
+        "inference_count": 25,
+        "input_tokens_total": 57202,
+        "observed_change_count": 0,
+        "original_error": null,
+        "output_tokens_total": 1121,
+        "peak_vram_allocated_mib": 17446.0,
+        "peak_vram_reserved_mib": 17792.0,
+        "result_status": "GENERATED / REVIEW_REQUESTED",
+        "resumed_existing_segment_raw_count": null,
+        "retry_count": 0,
+        "uncertainty_count": 0
+      }
+    },
+    {
+      "checks": [
+        {
+          "desc": "status == GENERATED / REVIEW_REQUESTED",
+          "detail": "GENERATED / REVIEW_REQUESTED",
+          "id": "G1",
+          "result": "PASS"
+        },
+        {
+          "desc": "segment_count · segment_inference_count == 창 수",
+          "detail": {
+            "expected": 24,
+            "segment_count": 24,
+            "segment_inference_count": 24
+          },
+          "id": "G2",
+          "result": "PASS"
+        },
+        {
+          "desc": "inference_count == 창 수 + 1 (chunk 합성 1회)",
+          "detail": 25,
+          "id": "G3",
+          "result": "PASS"
+        },
+        {
+          "desc": "runtime — 동결 모델·revision · bfloat16 · sdpa · 4090",
+          "detail": {
+            "attn_implementation": "sdpa",
+            "device_name": "NVIDIA GeForce RTX 4090",
+            "effective_dtype": "torch.bfloat16",
+            "effective_model_id": "Qwen/Qwen3-VL-8B-Instruct",
+            "effective_model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b"
+          },
+          "id": "G4",
+          "result": "PASS"
+        },
+        {
+          "desc": "summary 개수 == 창 수 · 4개 필드 전부 보유",
+          "detail": {
+            "count": 24
+          },
+          "id": "G5",
+          "result": "PASS"
+        },
+        {
+          "desc": "BROAD_ACTIVITY label이 동결 집합 안에 있다",
+          "detail": [],
+          "id": "G6",
+          "result": "PASS"
+        },
+        {
+          "desc": "창 시각이 사전등록 §3 표와 일치",
+          "detail": {
+            "first": {
+              "end_sec": 1488.0,
+              "frame_times": [
+                1440.0,
+                1442.0,
+                1444.0,
+                1446.0,
+                1448.0,
+                1450.0,
+                1452.0,
+                1454.0,
+                1456.0,
+                1458.0,
+                1460.0,
+                1462.0,
+                1464.0,
+                1466.0,
+                1468.0,
+                1470.0,
+                1472.0,
+                1474.0,
+                1476.0,
+                1478.0,
+                1480.0,
+                1482.0,
+                1484.0,
+                1486.0
+              ],
+              "segment_id": "S01",
+              "start_sec": 1440.0
+            },
+            "last": {
+              "end_sec": 2040.0,
+              "frame_times": [
+                1992.0,
+                1994.0,
+                1996.0,
+                1998.0,
+                2000.0,
+                2002.0,
+                2004.0,
+                2006.0,
+                2008.0,
+                2010.0,
+                2012.0,
+                2014.0,
+                2016.0,
+                2018.0,
+                2020.0,
+                2022.0,
+                2024.0,
+                2026.0,
+                2028.0,
+                2030.0,
+                2032.0,
+                2034.0,
+                2036.0,
+                2038.0
+              ],
+              "segment_id": "S24",
+              "start_sec": 1992.0
+            }
+          },
+          "id": "G7",
+          "result": "PASS"
+        },
+        {
+          "desc": "video_sha256 == 동결 원본",
+          "detail": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+          "id": "G8",
+          "result": "PASS"
+        },
+        {
+          "desc": "C01 산출물 존재 · 파일 수 불변(읽기 전용)",
+          "detail": {
+            "file_count": 56
+          },
+          "id": "G9",
+          "result": "PASS"
+        },
+        {
+          "desc": "official test 경로 미접근 · M9 미호출",
+          "detail": [],
+          "id": "G10",
+          "result": "PASS"
+        }
+      ],
+      "chunk_id": "C04",
+      "gate": "PASS",
+      "measurement": {
+        "broad_activity_label_counts": {
+          "구매 또는 둘러보기": 2,
+          "기타 명확한 주요 활동": 1,
+          "식사": 4,
+          "외출 준비": 1,
+          "음식 준비 및 조리": 18,
+          "포장 작업": 1
+        },
+        "chunk_id": "C04",
+        "context_inference_count": 0,
+        "elapsed_sec": 136.498,
+        "empty_broad_activity_windows": 0,
+        "geometry": {
+          "chunk_end_sec": 2040.0,
+          "chunk_id": "C04",
+          "chunk_start_sec": 1440.0,
+          "first_window": [
+            1440.0,
+            1488.0
+          ],
+          "frame_count": 576,
+          "frames_per_window": 24,
+          "last_window": [
+            1992.0,
+            2040.0
+          ],
+          "sampling_fps": 0.5,
+          "stride_sec": 24.0,
+          "uncovered_tail_sec": 0.0,
+          "window_count": 24,
+          "window_sec": 48.0
+        },
+        "infer_wall_sec": {
+          "max": 2.972,
+          "mean": 1.797,
+          "min": 1.578
+        },
+        "inference_count": 25,
+        "input_tokens_total": 57216,
+        "observed_change_count": 0,
+        "original_error": null,
+        "output_tokens_total": 999,
+        "peak_vram_allocated_mib": 17446.0,
+        "peak_vram_reserved_mib": 17792.0,
+        "result_status": "GENERATED / REVIEW_REQUESTED",
+        "resumed_existing_segment_raw_count": null,
+        "retry_count": 0,
+        "uncertainty_count": 0
+      }
+    },
+    {
+      "checks": [
+        {
+          "desc": "status == GENERATED / REVIEW_REQUESTED",
+          "detail": "GENERATED / REVIEW_REQUESTED",
+          "id": "G1",
+          "result": "PASS"
+        },
+        {
+          "desc": "segment_count · segment_inference_count == 창 수",
+          "detail": {
+            "expected": 20,
+            "segment_count": 20,
+            "segment_inference_count": 20
+          },
+          "id": "G2",
+          "result": "PASS"
+        },
+        {
+          "desc": "inference_count == 창 수 + 1 (chunk 합성 1회)",
+          "detail": 21,
+          "id": "G3",
+          "result": "PASS"
+        },
+        {
+          "desc": "runtime — 동결 모델·revision · bfloat16 · sdpa · 4090",
+          "detail": {
+            "attn_implementation": "sdpa",
+            "device_name": "NVIDIA GeForce RTX 4090",
+            "effective_dtype": "torch.bfloat16",
+            "effective_model_id": "Qwen/Qwen3-VL-8B-Instruct",
+            "effective_model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b"
+          },
+          "id": "G4",
+          "result": "PASS"
+        },
+        {
+          "desc": "summary 개수 == 창 수 · 4개 필드 전부 보유",
+          "detail": {
+            "count": 20
+          },
+          "id": "G5",
+          "result": "PASS"
+        },
+        {
+          "desc": "BROAD_ACTIVITY label이 동결 집합 안에 있다",
+          "detail": [],
+          "id": "G6",
+          "result": "PASS"
+        },
+        {
+          "desc": "창 시각이 사전등록 §3 표와 일치",
+          "detail": {
+            "first": {
+              "end_sec": 1968.0,
+              "frame_times": [
+                1920.0,
+                1922.0,
+                1924.0,
+                1926.0,
+                1928.0,
+                1930.0,
+                1932.0,
+                1934.0,
+                1936.0,
+                1938.0,
+                1940.0,
+                1942.0,
+                1944.0,
+                1946.0,
+                1948.0,
+                1950.0,
+                1952.0,
+                1954.0,
+                1956.0,
+                1958.0,
+                1960.0,
+                1962.0,
+                1964.0,
+                1966.0
+              ],
+              "segment_id": "S01",
+              "start_sec": 1920.0
+            },
+            "last": {
+              "end_sec": 2424.0,
+              "frame_times": [
+                2376.0,
+                2378.0,
+                2380.0,
+                2382.0,
+                2384.0,
+                2386.0,
+                2388.0,
+                2390.0,
+                2392.0,
+                2394.0,
+                2396.0,
+                2398.0,
+                2400.0,
+                2402.0,
+                2404.0,
+                2406.0,
+                2408.0,
+                2410.0,
+                2412.0,
+                2414.0,
+                2416.0,
+                2418.0,
+                2420.0,
+                2422.0
+              ],
+              "segment_id": "S20",
+              "start_sec": 2376.0
+            }
+          },
+          "id": "G7",
+          "result": "PASS"
+        },
+        {
+          "desc": "video_sha256 == 동결 원본",
+          "detail": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc",
+          "id": "G8",
+          "result": "PASS"
+        },
+        {
+          "desc": "C01 산출물 존재 · 파일 수 불변(읽기 전용)",
+          "detail": {
+            "file_count": 56
+          },
+          "id": "G9",
+          "result": "PASS"
+        },
+        {
+          "desc": "official test 경로 미접근 · M9 미호출",
+          "detail": [],
+          "id": "G10",
+          "result": "PASS"
+        }
+      ],
+      "chunk_id": "C05",
+      "gate": "PASS",
+      "measurement": {
+        "broad_activity_label_counts": {
+          "식사": 2,
+          "음식 준비 및 조리": 18
+        },
+        "chunk_id": "C05",
+        "context_inference_count": 0,
+        "elapsed_sec": 111.678,
+        "empty_broad_activity_windows": 0,
+        "geometry": {
+          "chunk_end_sec": 2424.186,
+          "chunk_id": "C05",
+          "chunk_start_sec": 1920.0,
+          "first_window": [
+            1920.0,
+            1968.0
+          ],
+          "frame_count": 480,
+          "frames_per_window": 24,
+          "last_window": [
+            2376.0,
+            2424.0
+          ],
+          "sampling_fps": 0.5,
+          "stride_sec": 24.0,
+          "uncovered_tail_sec": 0.186,
+          "window_count": 20,
+          "window_sec": 48.0
+        },
+        "infer_wall_sec": {
+          "max": 3.121,
+          "mean": 1.816,
+          "min": 1.587
+        },
+        "inference_count": 21,
+        "input_tokens_total": 47680,
+        "observed_change_count": 0,
+        "original_error": null,
+        "output_tokens_total": 824,
+        "peak_vram_allocated_mib": 17446.0,
+        "peak_vram_reserved_mib": 17792.0,
+        "result_status": "GENERATED / REVIEW_REQUESTED",
+        "resumed_existing_segment_raw_count": null,
+        "retry_count": 0,
+        "uncertainty_count": 0
+      }
+    }
+  ],
+  "code_git_head": "ff888daeda1a0be658f2a1de7949dd414d2ec6f6",
+  "event": "WVR_CHUNK_OVERVIEW_V2",
+  "gate": "PASS",
+  "prereg": "docs/preregistration/WVR_CHUNK_OVERVIEW_V2_C02_C05_2026-09-13.md"
+}

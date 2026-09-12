@@ -1,0 +1,6 @@
+{
+  "BROAD_ACTIVITY": ["식사"],
+  "OBSERVED_CHANGE": [],
+  "CONTEXT_INFERENCE": [],
+  "UNCERTAINTY": []
+}

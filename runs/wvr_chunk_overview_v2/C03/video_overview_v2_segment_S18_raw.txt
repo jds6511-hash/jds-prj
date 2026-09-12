@@ -1,0 +1,6 @@
+{
+  "BROAD_ACTIVITY": ["음식 준비 및 조리", "포장 작업", "이동", "구매 또는 둘러보기"],
+  "OBSERVED_CHANGE": [],
+  "CONTEXT_INFERENCE": [],
+  "UNCERTAINTY": []
+}

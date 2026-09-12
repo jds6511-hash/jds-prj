@@ -1,0 +1,39 @@
+{
+  "chunk": {
+    "chunk_id": "C03",
+    "end_sec": 1560.0,
+    "start_sec": 960.0
+  },
+  "event": "WVR_CHUNK_OVERVIEW_V2",
+  "frozen_c01_runs": "runs/wvr_video_overview_preview_v2",
+  "geometry": {
+    "chunk_end_sec": 1560.0,
+    "chunk_id": "C03",
+    "chunk_start_sec": 960.0,
+    "first_window": [
+      960.0,
+      1008.0
+    ],
+    "frame_count": 576,
+    "frames_per_window": 24,
+    "last_window": [
+      1512.0,
+      1560.0
+    ],
+    "sampling_fps": 0.5,
+    "stride_sec": 24.0,
+    "uncovered_tail_sec": 0.0,
+    "window_count": 24,
+    "window_sec": 48.0
+  },
+  "observation_contract": {
+    "do_sample": false,
+    "max_new_tokens": 1024,
+    "model_id": "Qwen/Qwen3-VL-8B-Instruct",
+    "model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+    "num_beams": 1,
+    "prompt_sha256": "751395fca13f4b9c3e8ed4b7d017b79c3aebec9a7c40aa5b0ad506802c0e0cb4"
+  },
+  "prereg": "docs/preregistration/WVR_CHUNK_OVERVIEW_V2_C02_C05_2026-09-13.md",
+  "video_sha256": "ea0e9f486661282056a36781a57d6d74e40da02c03ad9159b75c21fe435676cc"
+}

@@ -1,0 +1,6 @@
+{
+  "BROAD_ACTIVITY": ["포장 작업", "외출 준비"],
+  "OBSERVED_CHANGE": [],
+  "CONTEXT_INFERENCE": [],
+  "UNCERTAINTY": []
+}

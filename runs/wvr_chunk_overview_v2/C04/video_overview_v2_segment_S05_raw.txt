@@ -1,0 +1,6 @@
+{
+  "BROAD_ACTIVITY": ["기타 명확한 주요 활동"],
+  "OBSERVED_CHANGE": [],
+  "CONTEXT_INFERENCE": [],
+  "UNCERTAINTY": []
+}

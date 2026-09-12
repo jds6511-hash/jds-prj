@@ -1,0 +1,101 @@
+{
+  "activity_runs": [
+    {
+      "broad_activity": "식사",
+      "first_segment": "S01",
+      "last_segment": "S01",
+      "phase_id": "P01"
+    },
+    {
+      "broad_activity": "구매 또는 둘러보기",
+      "first_segment": "S01",
+      "last_segment": "S10",
+      "phase_id": "P02"
+    },
+    {
+      "broad_activity": "이동",
+      "first_segment": "S02",
+      "last_segment": "S02",
+      "phase_id": "P03"
+    },
+    {
+      "broad_activity": "음식 준비 및 조리",
+      "first_segment": "S09",
+      "last_segment": "S09",
+      "phase_id": "P04"
+    },
+    {
+      "broad_activity": "식사",
+      "first_segment": "S10",
+      "last_segment": "S13",
+      "phase_id": "P05"
+    },
+    {
+      "broad_activity": "구매 또는 둘러보기",
+      "first_segment": "S13",
+      "last_segment": "S16",
+      "phase_id": "P06"
+    },
+    {
+      "broad_activity": "음식 준비 및 조리",
+      "first_segment": "S15",
+      "last_segment": "S19",
+      "phase_id": "P07"
+    },
+    {
+      "broad_activity": "이동",
+      "first_segment": "S17",
+      "last_segment": "S18",
+      "phase_id": "P08"
+    },
+    {
+      "broad_activity": "포장 작업",
+      "first_segment": "S18",
+      "last_segment": "S18",
+      "phase_id": "P09"
+    },
+    {
+      "broad_activity": "구매 또는 둘러보기",
+      "first_segment": "S18",
+      "last_segment": "S20",
+      "phase_id": "P10"
+    },
+    {
+      "broad_activity": "외출 준비",
+      "first_segment": "S19",
+      "last_segment": "S19",
+      "phase_id": "P11"
+    },
+    {
+      "broad_activity": "정리 작업",
+      "first_segment": "S20",
+      "last_segment": "S20",
+      "phase_id": "P12"
+    },
+    {
+      "broad_activity": "외출 준비",
+      "first_segment": "S21",
+      "last_segment": "S21",
+      "phase_id": "P13"
+    },
+    {
+      "broad_activity": "구매 또는 둘러보기",
+      "first_segment": "S22",
+      "last_segment": "S22",
+      "phase_id": "P14"
+    },
+    {
+      "broad_activity": "음식 준비 및 조리",
+      "first_segment": "S22",
+      "last_segment": "S23",
+      "phase_id": "P15"
+    },
+    {
+      "broad_activity": "구매 또는 둘러보기",
+      "first_segment": "S24",
+      "last_segment": "S24",
+      "phase_id": "P16"
+    }
+  ],
+  "observed_changes": []
+}

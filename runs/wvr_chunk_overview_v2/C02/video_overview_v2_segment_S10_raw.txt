@@ -1,0 +1,6 @@
+{
+  "BROAD_ACTIVITY": ["구매 또는 둘러보기", "포장 작업"],
+  "OBSERVED_CHANGE": [],
+  "CONTEXT_INFERENCE": [],
+  "UNCERTAINTY": []
+}
