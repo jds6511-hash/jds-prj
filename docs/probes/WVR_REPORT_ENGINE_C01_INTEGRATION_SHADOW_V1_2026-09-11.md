@@ -4,10 +4,11 @@
 (문서명은 사전등록 §12에 동결된 이름을 그대로 쓴다. 실행일은 2026-09-12다.)
 
 ```
-상태   EXECUTED / REVIEW_PENDING
+실행 시 상태   EXECUTED / REVIEW_PENDING
+최종 상태      CLOSED / REPORT_ENGINE_INTEGRATION_HOLD   (2026-09-12 reviewer 판정 — §L)
 ```
 
-**이 문서는 관측값만 적는다.** engine 우열 · production 채택 · 보고서 품질 PASS ·
+**A~K는 관측값만 적는다. 판정은 §L에만 있다.** engine 우열 · production 채택 · 보고서 품질 PASS ·
 C02~C05 실행 여부 · M9 실행 여부는 전부 reviewer 결정이다(사전등록 §13).
 
 ---
@@ -287,3 +288,84 @@ EXECUTED / REVIEW_PENDING
 
 reviewer가 `REPORT_ENGINE_INTEGRATION_PASS` / `_HOLD` / `_INCONCLUSIVE` 중
 하나를 결정한다.
+
+---
+
+## L. Reviewer 판정 (2026-09-12)
+
+```
+WVR_REPORT_ENGINE_C01_INTEGRATION_SHADOW_V1
+CLOSED / REPORT_ENGINE_INTEGRATION_HOLD
+```
+
+INCONCLUSIVE가 아니다 — **어디까지 되는지와 어디서 막히는지가 충분히 측정됐기
+때문에 HOLD**다.
+
+### 엔진별 판정
+
+```
+Engine α / m8_report.py
+  입력 호환        PASS
+  report 생성      PASS
+  [seg#N] 인용     PASS
+  fallback         0
+  단, 24 segments라 map/reduce 분할 경로는 미계측
+
+Engine β / v2.1-B2
+  입력 호환        PASS
+  S0~S7            기술적 완주
+  HWPX 파일 생성   PASS
+  eligible         0/10 · 본문 비어 있음
+  실제 보고서 사용성  FAIL
+```
+
+한 줄 요약:
+
+```
+WVR 입력을 기존 엔진에 꽂을 수 있는가                       YES
+현재 제출/HWPX 엔진 그대로 유효한 보고서를 만들 수 있는가    아직 NO
+```
+
+### 질문별 판정
+
+```
+Q1  WVR → Engine α 기술 호환              YES
+Q2  WVR → Engine β 기술 호환              YES, execution-level
+Q3  현재 submission/HWPX 자산 재사용       NOT YET ESTABLISHED (v2에서 usable body 실패)
+Q4  α citation 구조 재사용 가치            YES — 24/24 valid · missing 0
+Q5  overlap 영향                          YES, measurable — highlight boundary까지 전파
+Q6  M3 STT + WVR visual summary 공존       YES, schema/runtime level
+```
+
+### 실패의 정체 (판정문)
+
+β의 실패는 **영상 이해 실패가 아니라 WVR-derived input과 β의 v2 grounding
+contract 불일치**다. 이번 β cell은 사전등록이 `--contract`를 동결하지 않아 기본값
+v2로 돌았고, 현재 SUBMISSION_READY baseline은 v3 summary-only다 — 즉 **production
+후보와 다른 contract를 시험한 셈**이다. 이 결과로 "β 자체가 WVR과 호환되지
+않는다"고 결론 내리면 안 된다.
+
+### 금지된 해석
+
+```
+"α map-reduce도 검증됐다"          쓰지 마라. 확인된 것은 single-call + citation path다.
+"non-overlap이 더 우수하다"        이번 결과로 고르지 마라. 보수적 기본값일 뿐이다.
+"β가 WVR과 호환되지 않는다"        contract가 다르다. 위 판정문 참조.
+```
+
+### 다음 단계 (C02~C05가 아니다)
+
+```
+C01 frozen WVR input
+        ↓
+β / v3 summary-only          ← 현재 제출 baseline과 같은 contract
+        ↓
+NONOVERLAP_VIEW 우선
+        ↓
+canonical → synthesis → HWPX
+```
+
+여기서 `eligible 정상 · 본문 존재 · HWPX 정상`이 확인되면 그때 C02~C05 실행
+승인으로 넘어간다. 2×2 전체 재실행은 필요 없다.
+
+구조 결정 반영: `docs/구조결정_M8vNext_2026-09-11.md` §10 errata 4.

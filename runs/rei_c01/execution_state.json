@@ -54,6 +54,22 @@
   "prereg": "docs/preregistration/WVR_REPORT_ENGINE_C01_INTEGRATION_SHADOW_V1_2026-09-11.md",
   "remaining_steps_frozen_order": [],
   "report_doc": "docs/probes/WVR_REPORT_ENGINE_C01_INTEGRATION_SHADOW_V1_2026-09-11.md",
+  "reviewer_verdict": {
+    "alpha": "입력 호환·report 생성·[seg#N] 인용 PASS · fallback 0 · map/reduce 미계측",
+    "alpha_role": "citation / traceability R&D 자산",
+    "beta": "입력 호환·S0~S7·HWPX 생성 PASS · eligible 0/10 · 보고서 사용성 FAIL",
+    "cause": "영상 이해 실패 아님 — WVR-derived input과 β v2 grounding contract 불일치",
+    "decided": "2026-09-12",
+    "forbidden_readings": [
+      "α map-reduce 검증됨",
+      "non-overlap이 semantic하게 우수함",
+      "β가 WVR과 호환되지 않음"
+    ],
+    "next_event": "C01 × β/v3 summary-only × NONOVERLAP_VIEW (C02~C05 앞 단계)",
+    "not_inconclusive_because": "되는 범위와 막히는 지점이 측정됐다",
+    "production_candidate": "Engine β / v2.1-B2 contract v3 summary-only",
+    "verdict": "REPORT_ENGINE_INTEGRATION_HOLD"
+  },
   "server_runtime_notes": {
     "cache_path": "/ssd/daeseok/cache/hub/models--Qwen--Qwen2.5-7B-Instruct",
     "model_cached_on_server": true,
@@ -66,5 +82,5 @@
     "file": "runs/rei_c01/static_gate.json",
     "result": "PASS"
   },
-  "status": "EXECUTED / REVIEW_PENDING"
+  "status": "CLOSED / REPORT_ENGINE_INTEGRATION_HOLD"
 }
