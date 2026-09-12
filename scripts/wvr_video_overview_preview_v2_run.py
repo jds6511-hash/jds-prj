@@ -98,14 +98,19 @@ def _resume_state(video: Path, runs: Path, plan: list[dict]) -> tuple[dict, list
 
 
 def run(video: Path, runs: Path, runtime_factory=v1run.QwenRuntime,
-        resume: bool = False) -> dict:
+        resume: bool = False, plan: list | None = None) -> dict:
+    """`plan`을 주지 않으면 C01 [0,600) 그대로다 — 기존 동작은 바뀌지 않는다.
+
+    chunk 확장(WVR_CHUNK_OVERVIEW_V2)이 같은 관찰 계약으로 다른 시간 범위를
+    돌리기 위해 plan만 갈아끼운다. 프롬프트·스키마·모델·표집은 여기서 그대로다.
+    """
     video, runs = Path(video), Path(runs)
     preexisting = list(runs.glob("video_overview_v2_*")) if runs.exists() else []
     if preexisting and not resume:
         raise RunError("preview artifact already exists: %s" % preexisting[0].name)
     if not video.is_file() or ov.sha256_file(video) != ov.VIDEO_SHA256:
         raise RunError("FROZEN_VIDEO_HASH_MISMATCH")
-    plan = ov.segments()
+    plan = ov.segments() if plan is None else [dict(row) for row in plan]
     runs.mkdir(parents=True, exist_ok=True)
     if resume:
         record, summaries = _resume_state(video, runs, plan)
