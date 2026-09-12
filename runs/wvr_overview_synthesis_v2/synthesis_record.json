@@ -1,0 +1,41 @@
+{
+  "call": "runtime.synthesize (텍스트 전용 · 영상 프레임 없음)",
+  "canonical_flow_inference_count": 0,
+  "code_git_head": "bfe772a34c765b2e31ccfdb75deb8569d78637eb",
+  "do_sample": false,
+  "elapsed_sec": 16.422,
+  "event": "WVR_WHOLE_VIDEO_OVERVIEW_SYNTHESIS_V2",
+  "machine_checks_all_pass": true,
+  "max_new_tokens": 1024,
+  "model_id": "Qwen/Qwen3-VL-8B-Instruct",
+  "model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "num_beams": 1,
+  "prereg": "docs/preregistration/WVR_WHOLE_VIDEO_OVERVIEW_SYNTHESIS_V2_2026-09-13.md",
+  "retry_count": 0,
+  "runtime_metrics": {
+    "peak_vram_allocated_mib": 17250.3,
+    "peak_vram_reserved_mib": 17492.0,
+    "segments": [],
+    "synthesis": {
+      "infer_wall_sec": 3.493,
+      "input_tokens": 354,
+      "output_tokens": 103
+    }
+  },
+  "runtime_provenance": {
+    "attn_implementation": "sdpa",
+    "device_name": "NVIDIA GeForce RTX 4090",
+    "effective_dtype": "torch.bfloat16",
+    "effective_model_id": "Qwen/Qwen3-VL-8B-Instruct",
+    "effective_model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b"
+  },
+  "source_sha256": {
+    "timeline_lineage.json": "23d9734363c5f98c507bce4b4c76ae913f9359d091d22204ebfa5261fb758e8e",
+    "whole_video_activity_timeline.json": "ba43a395c26342b6e028b32e33db629c82bf08c3d74785e211c7b04fb5537937"
+  },
+  "status": "GENERATED / REVIEW_REQUESTED",
+  "stt_inference_count": 0,
+  "synthesis_inference_count": 2,
+  "timeline_regeneration_count": 0,
+  "visual_inference_count": 0
+}

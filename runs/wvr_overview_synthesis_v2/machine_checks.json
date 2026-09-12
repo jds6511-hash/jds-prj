@@ -1,0 +1,79 @@
+{
+  "checks": {
+    "all_pass": true,
+    "context_terms": {
+      "detailed": {},
+      "pass": true,
+      "short": {}
+    },
+    "final_phase_matches_canonical": {
+      "canonical_final_phase": [
+        "식사"
+      ],
+      "final_phase_detailed": [
+        "식사"
+      ],
+      "pass": true
+    },
+    "final_phase_short_equals_detailed": {
+      "final_phase_detailed": [
+        "식사"
+      ],
+      "final_phase_short": [
+        "식사"
+      ],
+      "pass": true
+    },
+    "identifier_exposure": {
+      "detailed": [],
+      "pass": true,
+      "short": []
+    },
+    "overclaim_terms": {
+      "detailed": {},
+      "pass": true,
+      "short": {}
+    },
+    "repetition_claims_limited_to_repeated_activities": {
+      "note": "반복 주장 어휘는 overclaim_terms로 계측한다",
+      "pass": true,
+      "repeated_activities": [
+        "구매 또는 둘러보기",
+        "식사",
+        "외출 준비",
+        "음식 준비 및 조리",
+        "의류 작업 및 수선",
+        "이동",
+        "포장 작업"
+      ]
+    },
+    "short_activity_subset_of_detailed": {
+      "detailed_activity_set": [
+        "구매 또는 둘러보기",
+        "식사",
+        "외출 준비",
+        "음식 준비 및 조리",
+        "의류 작업 및 수선",
+        "이동",
+        "포장 작업"
+      ],
+      "pass": true,
+      "short_activity_set": [
+        "구매 또는 둘러보기",
+        "식사",
+        "외출 준비",
+        "음식 준비 및 조리",
+        "의류 작업 및 수선",
+        "이동",
+        "포장 작업"
+      ],
+      "short_only": []
+    },
+    "unknown_label_count": {
+      "count": 0,
+      "pass": true
+    }
+  },
+  "event": "WVR_WHOLE_VIDEO_OVERVIEW_SYNTHESIS_V2",
+  "prereg": "docs/preregistration/WVR_WHOLE_VIDEO_OVERVIEW_SYNTHESIS_V2_2026-09-13.md"
+}
