@@ -1,12 +1,31 @@
 {
-  "blocker": {
-    "attempts": 4,
-    "detail": "internal.kixlab.org:22 · 143.248.48.96:22 connection timed out",
+  "blocker_resolved": {
+    "detail": "internal.kixlab.org 접속 복구. 재시도 외 조치 없었음 — 원인 미확정.",
     "id": "SERVER_UNREACHABLE",
-    "note": "약 30분 전 동일 경로로 V2 artifact 동기화는 정상 수행됨. 원인 미확정 — 네트워크/VPN/서버 중 무엇인지 사용자 확인 필요."
+    "resolved_utc": "2026-09-12T13:29Z"
   },
-  "code_git_head": "18d9dceb9574d9da2b89e5876b6d6cccf7dfd8ea",
+  "code_git_head": "9c477ec366541cb83e9aeeb62f6ecd60e6ca44c8",
+  "completed_steps": [
+    "1. 격리 클론 /ssd/daeseok/jds-prj-rei-c01 생성 (기존 클론 미접촉) — 완료",
+    "2. segments.json + configs 전송 · 9개 파일 해시 일치 확인 — 완료",
+    "3. 동결 순서 Aa -> Ba -> Ab -> Bb 실행 · 4/4 exit 0 · retry 0 — 완료",
+    "4. report.json / canonical / HWPX / execution_record 회수 — 완료",
+    "5. integration_matrix.json + docs/probes 문서 작성 — 완료"
+  ],
   "event": "WVR_REPORT_ENGINE_C01_INTEGRATION_SHADOW_V1",
+  "execution": {
+    "cells_exit_zero": 4,
+    "ended_utc": "2026-09-12T13:33:11Z",
+    "host": "kixlab2",
+    "llm_4bit": false,
+    "model": "Qwen/Qwen2.5-7B-Instruct",
+    "new_stt": 0,
+    "new_visual_inference": 0,
+    "retry_count": 0,
+    "run_script": "scripts/rei_c01_server_run.sh",
+    "server_git_head": "9c477ec366541cb83e9aeeb62f6ecd60e6ca44c8",
+    "started_utc": "2026-09-12T13:31:19Z"
+  },
   "executor_must_not_decide": [
     "최종 production engine",
     "alpha vs beta winner",
@@ -33,13 +52,8 @@
   },
   "new_inference_count": 0,
   "prereg": "docs/preregistration/WVR_REPORT_ENGINE_C01_INTEGRATION_SHADOW_V1_2026-09-11.md",
-  "remaining_steps_frozen_order": [
-    "1. 격리 클론 /ssd/daeseok/jds-prj-rei-c01 생성 (기존 클론 미접촉)",
-    "2. runs/rei_c01/*/segments.json + configs/rei_c01_*.yaml 전송",
-    "3. 동결 순서 실행 Aa -> Ba -> Ab -> Bb (retry 금지)",
-    "4. report.json / canonical / HWPX / execution_record 회수",
-    "5. runs/rei_c01/integration_matrix.json + docs/probes/ 문서 작성"
-  ],
+  "remaining_steps_frozen_order": [],
+  "report_doc": "docs/probes/WVR_REPORT_ENGINE_C01_INTEGRATION_SHADOW_V1_2026-09-11.md",
   "server_runtime_notes": {
     "cache_path": "/ssd/daeseok/cache/hub/models--Qwen--Qwen2.5-7B-Instruct",
     "model_cached_on_server": true,
@@ -52,5 +66,5 @@
     "file": "runs/rei_c01/static_gate.json",
     "result": "PASS"
   },
-  "status": "STATIC_GATE_PASS / SERVER_EXECUTION_BLOCKED"
+  "status": "EXECUTED / REVIEW_PENDING"
 }

@@ -1,0 +1,722 @@
+{
+  "event": "WVR_REPORT_ENGINE_C01_INTEGRATION_SHADOW_V1",
+  "matrix": {
+    "a_alpha": {
+      "common": {
+        "caption_populated": 24,
+        "duplicate_temporal_coverage_sec": 552.0,
+        "segment_count": 24,
+        "subtitle_populated": 24,
+        "temporal_coverage_sec": 600.0,
+        "view": "OVERLAP_VIEW"
+      },
+      "engine": "alpha",
+      "engine_measurements": {
+        "citation_count": 24,
+        "citation_time_ranges": [
+          [
+            0.0,
+            48.0
+          ],
+          [
+            24.0,
+            72.0
+          ],
+          [
+            48.0,
+            96.0
+          ],
+          [
+            72.0,
+            120.0
+          ],
+          [
+            96.0,
+            144.0
+          ],
+          [
+            120.0,
+            168.0
+          ],
+          [
+            144.0,
+            192.0
+          ],
+          [
+            168.0,
+            216.0
+          ],
+          [
+            192.0,
+            240.0
+          ],
+          [
+            216.0,
+            264.0
+          ],
+          [
+            240.0,
+            288.0
+          ],
+          [
+            264.0,
+            312.0
+          ],
+          [
+            288.0,
+            336.0
+          ],
+          [
+            312.0,
+            360.0
+          ],
+          [
+            336.0,
+            384.0
+          ],
+          [
+            360.0,
+            408.0
+          ],
+          [
+            384.0,
+            432.0
+          ],
+          [
+            408.0,
+            456.0
+          ],
+          [
+            432.0,
+            480.0
+          ],
+          [
+            456.0,
+            504.0
+          ],
+          [
+            480.0,
+            528.0
+          ],
+          [
+            504.0,
+            552.0
+          ],
+          [
+            528.0,
+            576.0
+          ],
+          [
+            552.0,
+            600.0
+          ]
+        ],
+        "citations_to_unknown_segment": [],
+        "degenerate_dropped": [],
+        "effective_model_id": "Qwen/Qwen2.5-7B-Instruct",
+        "effective_model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+        "generation_path": "SINGLE_CALL",
+        "map_chunk_count": 0,
+        "map_chunk_size": 60,
+        "map_retries": [],
+        "model_loaded": true,
+        "reduce_retry": null,
+        "report_json_present": true,
+        "requested_4bit": false,
+        "schema_version": 2,
+        "sentence_count": 24,
+        "sentences_without_cite": 0,
+        "truncated_tail": null,
+        "unique_citation_count": 24
+      },
+      "execution_record": {
+        "cell": "a_alpha",
+        "code_git_head": "9c477ec366541cb83e9aeeb62f6ecd60e6ca44c8",
+        "ended_utc": "2026-09-12T13:31:46Z",
+        "event": "WVR_REPORT_ENGINE_C01_INTEGRATION_SHADOW_V1",
+        "exit_code": 0,
+        "host": "kixlab2",
+        "llm_4bit": false,
+        "model": "Qwen/Qwen2.5-7B-Instruct",
+        "new_visual_inference": 0,
+        "retry_count": 0,
+        "started_utc": "2026-09-12T13:31:19Z"
+      }
+    },
+    "a_beta": {
+      "common": {
+        "caption_populated": 24,
+        "duplicate_temporal_coverage_sec": 552.0,
+        "segment_count": 24,
+        "subtitle_populated": 24,
+        "temporal_coverage_sec": 600.0,
+        "view": "OVERLAP_VIEW"
+      },
+      "engine": "beta",
+      "engine_measurements": {
+        "canonical_episodes": 10,
+        "citation_count": 24,
+        "citation_time_ranges": [
+          [
+            0.0,
+            48.0
+          ],
+          [
+            24.0,
+            72.0
+          ],
+          [
+            48.0,
+            96.0
+          ],
+          [
+            72.0,
+            120.0
+          ],
+          [
+            96.0,
+            144.0
+          ],
+          [
+            120.0,
+            168.0
+          ],
+          [
+            144.0,
+            192.0
+          ],
+          [
+            168.0,
+            216.0
+          ],
+          [
+            192.0,
+            240.0
+          ],
+          [
+            216.0,
+            264.0
+          ],
+          [
+            240.0,
+            288.0
+          ],
+          [
+            264.0,
+            312.0
+          ],
+          [
+            288.0,
+            336.0
+          ],
+          [
+            312.0,
+            360.0
+          ],
+          [
+            336.0,
+            384.0
+          ],
+          [
+            360.0,
+            408.0
+          ],
+          [
+            384.0,
+            432.0
+          ],
+          [
+            408.0,
+            456.0
+          ],
+          [
+            432.0,
+            480.0
+          ],
+          [
+            456.0,
+            504.0
+          ],
+          [
+            480.0,
+            528.0
+          ],
+          [
+            504.0,
+            552.0
+          ],
+          [
+            528.0,
+            576.0
+          ],
+          [
+            552.0,
+            600.0
+          ]
+        ],
+        "citations_to_unknown_segment": [],
+        "code_revision": "9c477ec366541cb83e9aeeb62f6ecd60e6ca44c8",
+        "content_status": {
+          "VALID_PARSE": 10
+        },
+        "counters": {
+          "llm_calls": 10,
+          "llm_failures": 0,
+          "prompt_refusals": 0,
+          "retries": 0
+        },
+        "expected_episodes": 10,
+        "grounding_reason_codes": {
+          "unsupported_anchor": 45
+        },
+        "grounding_status": {
+          "FAIL_UNSUPPORTED": 10
+        },
+        "highlights": [
+          {
+            "end_sec": 336.0,
+            "id": "H01",
+            "start_sec": 0.0,
+            "summary_status": "NO_RELIABLE_CONTENT"
+          },
+          {
+            "end_sec": 600.0,
+            "id": "H02",
+            "start_sec": 312.0,
+            "summary_status": "NO_RELIABLE_CONTENT"
+          }
+        ],
+        "hwpx": {
+          "bad_entry": null,
+          "bytes": 4312,
+          "entry_count": 6,
+          "generated": true,
+          "has_mimetype": true,
+          "zip_open_ok": true
+        },
+        "model_id": "Qwen/Qwen2.5-7B-Instruct",
+        "no_reliable_content_count": 4,
+        "parse_status": {
+          "VALID_PARSE": 10
+        },
+        "presentation": {
+          "dialogue_note_present": 0,
+          "eligible": 0,
+          "episodes": 10,
+          "excluded_by_dialogue_grounding": 10,
+          "excluded_episode_ids": [
+            "EP01",
+            "EP02",
+            "EP03",
+            "EP04",
+            "EP05",
+            "EP06",
+            "EP07",
+            "EP08",
+            "EP09",
+            "EP10"
+          ]
+        },
+        "prompt_version": "episode_content_v2",
+        "run_manifest_present": true,
+        "section_completion": {
+          "## 개요": true,
+          "## 결론": true,
+          "## 근거 및 생성 정보": true,
+          "## 주요 사건 및 내용": true,
+          "## 핵심 내용 분석": true
+        },
+        "stages_success": {
+          "S0": true,
+          "S1": true,
+          "S2": true,
+          "S3": true,
+          "S4": true,
+          "S5": true,
+          "S6": true,
+          "S7": true
+        },
+        "summary_mode": {
+          "MODEL_ABSTRACTIVE": 10
+        },
+        "synthesis_source_episode_ids": [],
+        "unique_citation_count": 24
+      },
+      "execution_record": {
+        "cell": "a_beta",
+        "code_git_head": "9c477ec366541cb83e9aeeb62f6ecd60e6ca44c8",
+        "ended_utc": "2026-09-12T13:32:42Z",
+        "event": "WVR_REPORT_ENGINE_C01_INTEGRATION_SHADOW_V1",
+        "exit_code": 0,
+        "host": "kixlab2",
+        "llm_4bit": false,
+        "model": "Qwen/Qwen2.5-7B-Instruct",
+        "new_visual_inference": 0,
+        "retry_count": 0,
+        "started_utc": "2026-09-12T13:32:12Z"
+      }
+    },
+    "b_alpha": {
+      "common": {
+        "caption_populated": 24,
+        "duplicate_temporal_coverage_sec": 0.0,
+        "segment_count": 24,
+        "subtitle_populated": 23,
+        "temporal_coverage_sec": 600.0,
+        "view": "NONOVERLAP_VIEW"
+      },
+      "engine": "alpha",
+      "engine_measurements": {
+        "citation_count": 24,
+        "citation_time_ranges": [
+          [
+            0.0,
+            24.0
+          ],
+          [
+            24.0,
+            48.0
+          ],
+          [
+            48.0,
+            72.0
+          ],
+          [
+            72.0,
+            96.0
+          ],
+          [
+            96.0,
+            120.0
+          ],
+          [
+            120.0,
+            144.0
+          ],
+          [
+            144.0,
+            168.0
+          ],
+          [
+            168.0,
+            192.0
+          ],
+          [
+            192.0,
+            216.0
+          ],
+          [
+            216.0,
+            240.0
+          ],
+          [
+            240.0,
+            264.0
+          ],
+          [
+            264.0,
+            288.0
+          ],
+          [
+            288.0,
+            312.0
+          ],
+          [
+            312.0,
+            336.0
+          ],
+          [
+            336.0,
+            360.0
+          ],
+          [
+            360.0,
+            384.0
+          ],
+          [
+            384.0,
+            408.0
+          ],
+          [
+            408.0,
+            432.0
+          ],
+          [
+            432.0,
+            456.0
+          ],
+          [
+            456.0,
+            480.0
+          ],
+          [
+            480.0,
+            504.0
+          ],
+          [
+            504.0,
+            528.0
+          ],
+          [
+            528.0,
+            552.0
+          ],
+          [
+            552.0,
+            600.0
+          ]
+        ],
+        "citations_to_unknown_segment": [],
+        "degenerate_dropped": [],
+        "effective_model_id": "Qwen/Qwen2.5-7B-Instruct",
+        "effective_model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+        "generation_path": "SINGLE_CALL",
+        "map_chunk_count": 0,
+        "map_chunk_size": 60,
+        "map_retries": [],
+        "model_loaded": true,
+        "reduce_retry": null,
+        "report_json_present": true,
+        "requested_4bit": false,
+        "schema_version": 2,
+        "sentence_count": 24,
+        "sentences_without_cite": 0,
+        "truncated_tail": null,
+        "unique_citation_count": 24
+      },
+      "execution_record": {
+        "cell": "b_alpha",
+        "code_git_head": "9c477ec366541cb83e9aeeb62f6ecd60e6ca44c8",
+        "ended_utc": "2026-09-12T13:32:12Z",
+        "event": "WVR_REPORT_ENGINE_C01_INTEGRATION_SHADOW_V1",
+        "exit_code": 0,
+        "host": "kixlab2",
+        "llm_4bit": false,
+        "model": "Qwen/Qwen2.5-7B-Instruct",
+        "new_visual_inference": 0,
+        "retry_count": 0,
+        "started_utc": "2026-09-12T13:31:46Z"
+      }
+    },
+    "b_beta": {
+      "common": {
+        "caption_populated": 24,
+        "duplicate_temporal_coverage_sec": 0.0,
+        "segment_count": 24,
+        "subtitle_populated": 23,
+        "temporal_coverage_sec": 600.0,
+        "view": "NONOVERLAP_VIEW"
+      },
+      "engine": "beta",
+      "engine_measurements": {
+        "canonical_episodes": 10,
+        "citation_count": 24,
+        "citation_time_ranges": [
+          [
+            0.0,
+            24.0
+          ],
+          [
+            24.0,
+            48.0
+          ],
+          [
+            48.0,
+            72.0
+          ],
+          [
+            72.0,
+            96.0
+          ],
+          [
+            96.0,
+            120.0
+          ],
+          [
+            120.0,
+            144.0
+          ],
+          [
+            144.0,
+            168.0
+          ],
+          [
+            168.0,
+            192.0
+          ],
+          [
+            192.0,
+            216.0
+          ],
+          [
+            216.0,
+            240.0
+          ],
+          [
+            240.0,
+            264.0
+          ],
+          [
+            264.0,
+            288.0
+          ],
+          [
+            288.0,
+            312.0
+          ],
+          [
+            312.0,
+            336.0
+          ],
+          [
+            336.0,
+            360.0
+          ],
+          [
+            360.0,
+            384.0
+          ],
+          [
+            384.0,
+            408.0
+          ],
+          [
+            408.0,
+            432.0
+          ],
+          [
+            432.0,
+            456.0
+          ],
+          [
+            456.0,
+            480.0
+          ],
+          [
+            480.0,
+            504.0
+          ],
+          [
+            504.0,
+            528.0
+          ],
+          [
+            528.0,
+            552.0
+          ],
+          [
+            552.0,
+            600.0
+          ]
+        ],
+        "citations_to_unknown_segment": [],
+        "code_revision": "9c477ec366541cb83e9aeeb62f6ecd60e6ca44c8",
+        "content_status": {
+          "VALID_PARSE": 10
+        },
+        "counters": {
+          "llm_calls": 10,
+          "llm_failures": 0,
+          "prompt_refusals": 0,
+          "retries": 0
+        },
+        "expected_episodes": 10,
+        "grounding_reason_codes": {
+          "no_support_ref": 1,
+          "unsupported_anchor": 43
+        },
+        "grounding_status": {
+          "FAIL_NO_SUPPORT": 1,
+          "FAIL_UNSUPPORTED": 9
+        },
+        "highlights": [
+          {
+            "end_sec": 312.0,
+            "id": "H01",
+            "start_sec": 0.0,
+            "summary_status": "NO_RELIABLE_CONTENT"
+          },
+          {
+            "end_sec": 600.0,
+            "id": "H02",
+            "start_sec": 312.0,
+            "summary_status": "NO_RELIABLE_CONTENT"
+          }
+        ],
+        "hwpx": {
+          "bad_entry": null,
+          "bytes": 4328,
+          "entry_count": 6,
+          "generated": true,
+          "has_mimetype": true,
+          "zip_open_ok": true
+        },
+        "model_id": "Qwen/Qwen2.5-7B-Instruct",
+        "no_reliable_content_count": 4,
+        "parse_status": {
+          "VALID_PARSE": 10
+        },
+        "presentation": {
+          "dialogue_note_present": 0,
+          "eligible": 0,
+          "episodes": 10,
+          "excluded_by_dialogue_grounding": 10,
+          "excluded_episode_ids": [
+            "EP01",
+            "EP02",
+            "EP03",
+            "EP04",
+            "EP05",
+            "EP06",
+            "EP07",
+            "EP08",
+            "EP09",
+            "EP10"
+          ]
+        },
+        "prompt_version": "episode_content_v2",
+        "run_manifest_present": true,
+        "section_completion": {
+          "## 개요": true,
+          "## 결론": true,
+          "## 근거 및 생성 정보": true,
+          "## 주요 사건 및 내용": true,
+          "## 핵심 내용 분석": true
+        },
+        "stages_success": {
+          "S0": true,
+          "S1": true,
+          "S2": true,
+          "S3": true,
+          "S4": true,
+          "S5": true,
+          "S6": true,
+          "S7": true
+        },
+        "summary_mode": {
+          "MODEL_ABSTRACTIVE": 10
+        },
+        "synthesis_source_episode_ids": [],
+        "unique_citation_count": 24
+      },
+      "execution_record": {
+        "cell": "b_beta",
+        "code_git_head": "9c477ec366541cb83e9aeeb62f6ecd60e6ca44c8",
+        "ended_utc": "2026-09-12T13:33:11Z",
+        "event": "WVR_REPORT_ENGINE_C01_INTEGRATION_SHADOW_V1",
+        "exit_code": 0,
+        "host": "kixlab2",
+        "llm_4bit": false,
+        "model": "Qwen/Qwen2.5-7B-Instruct",
+        "new_visual_inference": 0,
+        "retry_count": 0,
+        "started_utc": "2026-09-12T13:32:42Z"
+      }
+    }
+  },
+  "new_visual_inference": 0,
+  "note": "관측값만 적는다. engine 우열·production 채택·품질 PASS는 executor가 판단하지 않는다 (사전등록 §13).",
+  "prereg": "docs/preregistration/WVR_REPORT_ENGINE_C01_INTEGRATION_SHADOW_V1_2026-09-11.md",
+  "retry_count": 0,
+  "status": "EXECUTED / REVIEW_PENDING"
+}

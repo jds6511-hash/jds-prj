@@ -1,0 +1,13 @@
+{
+  "event": "WVR_REPORT_ENGINE_C01_INTEGRATION_SHADOW_V1",
+  "cell": "a_alpha",
+  "exit_code": 0,
+  "started_utc": "2026-09-12T13:31:19Z",
+  "ended_utc": "2026-09-12T13:31:46Z",
+  "code_git_head": "9c477ec366541cb83e9aeeb62f6ecd60e6ca44c8",
+  "host": "kixlab2",
+  "model": "Qwen/Qwen2.5-7B-Instruct",
+  "llm_4bit": false,
+  "new_visual_inference": 0,
+  "retry_count": 0
+}
