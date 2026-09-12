@@ -1,0 +1,970 @@
+{
+  "activity_phase_occurrences": {
+    "구매 또는 둘러보기": 24,
+    "식사": 15,
+    "외출 준비": 5,
+    "음식 준비 및 조리": 21,
+    "의류 작업 및 수선": 3,
+    "이동": 7,
+    "정리 작업": 1,
+    "포장 작업": 4
+  },
+  "event": "WVR_WHOLE_VIDEO_OVERVIEW_SYNTHESIS_V2",
+  "final_phase_activities": [
+    "식사"
+  ],
+  "final_phase_span": [
+    2352.0,
+    2424.0
+  ],
+  "first_phase_activities": [
+    "음식 준비 및 조리",
+    "구매 또는 둘러보기"
+  ],
+  "inference_count": 0,
+  "non_repeated_activities": [
+    "정리 작업"
+  ],
+  "phase_count": 46,
+  "phases": [
+    {
+      "activities": [
+        "음식 준비 및 조리",
+        "구매 또는 둘러보기"
+      ],
+      "end_sec": 24.0,
+      "entry_count": 1,
+      "phase_index": 0,
+      "start_sec": 0.0
+    },
+    {
+      "activities": [
+        "음식 준비 및 조리"
+      ],
+      "end_sec": 240.0,
+      "entry_count": 9,
+      "phase_index": 1,
+      "start_sec": 24.0
+    },
+    {
+      "activities": [
+        "음식 준비 및 조리",
+        "식사"
+      ],
+      "end_sec": 264.0,
+      "entry_count": 1,
+      "phase_index": 2,
+      "start_sec": 240.0
+    },
+    {
+      "activities": [
+        "식사"
+      ],
+      "end_sec": 288.0,
+      "entry_count": 1,
+      "phase_index": 3,
+      "start_sec": 264.0
+    },
+    {
+      "activities": [
+        "식사",
+        "구매 또는 둘러보기"
+      ],
+      "end_sec": 312.0,
+      "entry_count": 1,
+      "phase_index": 4,
+      "start_sec": 288.0
+    },
+    {
+      "activities": [
+        "식사",
+        "음식 준비 및 조리",
+        "구매 또는 둘러보기"
+      ],
+      "end_sec": 336.0,
+      "entry_count": 1,
+      "phase_index": 5,
+      "start_sec": 312.0
+    },
+    {
+      "activities": [
+        "식사",
+        "음식 준비 및 조리"
+      ],
+      "end_sec": 360.0,
+      "entry_count": 1,
+      "phase_index": 6,
+      "start_sec": 336.0
+    },
+    {
+      "activities": [
+        "음식 준비 및 조리",
+        "식사"
+      ],
+      "end_sec": 384.0,
+      "entry_count": 1,
+      "phase_index": 7,
+      "start_sec": 360.0
+    },
+    {
+      "activities": [
+        "음식 준비 및 조리",
+        "의류 작업 및 수선"
+      ],
+      "end_sec": 408.0,
+      "entry_count": 1,
+      "phase_index": 8,
+      "start_sec": 384.0
+    },
+    {
+      "activities": [
+        "의류 작업 및 수선"
+      ],
+      "end_sec": 432.0,
+      "entry_count": 1,
+      "phase_index": 9,
+      "start_sec": 408.0
+    },
+    {
+      "activities": [
+        "의류 작업 및 수선",
+        "음식 준비 및 조리"
+      ],
+      "end_sec": 456.0,
+      "entry_count": 1,
+      "phase_index": 10,
+      "start_sec": 432.0
+    },
+    {
+      "activities": [
+        "음식 준비 및 조리",
+        "외출 준비"
+      ],
+      "end_sec": 504.0,
+      "entry_count": 2,
+      "phase_index": 11,
+      "start_sec": 456.0
+    },
+    {
+      "activities": [
+        "포장 작업",
+        "외출 준비"
+      ],
+      "end_sec": 552.0,
+      "entry_count": 2,
+      "phase_index": 12,
+      "start_sec": 504.0
+    },
+    {
+      "activities": [
+        "외출 준비",
+        "이동",
+        "구매 또는 둘러보기"
+      ],
+      "end_sec": 600.0,
+      "entry_count": 1,
+      "phase_index": 13,
+      "start_sec": 552.0
+    },
+    {
+      "activities": [
+        "구매 또는 둘러보기"
+      ],
+      "end_sec": 648.0,
+      "entry_count": 2,
+      "phase_index": 14,
+      "start_sec": 600.0
+    },
+    {
+      "activities": [
+        "구매 또는 둘러보기",
+        "이동"
+      ],
+      "end_sec": 672.0,
+      "entry_count": 1,
+      "phase_index": 15,
+      "start_sec": 648.0
+    },
+    {
+      "activities": [
+        "이동",
+        "구매 또는 둘러보기"
+      ],
+      "end_sec": 696.0,
+      "entry_count": 1,
+      "phase_index": 16,
+      "start_sec": 672.0
+    },
+    {
+      "activities": [
+        "구매 또는 둘러보기",
+        "포장 작업"
+      ],
+      "end_sec": 720.0,
+      "entry_count": 1,
+      "phase_index": 17,
+      "start_sec": 696.0
+    },
+    {
+      "activities": [
+        "음식 준비 및 조리",
+        "구매 또는 둘러보기"
+      ],
+      "end_sec": 744.0,
+      "entry_count": 1,
+      "phase_index": 18,
+      "start_sec": 720.0
+    },
+    {
+      "activities": [
+        "구매 또는 둘러보기"
+      ],
+      "end_sec": 864.0,
+      "entry_count": 5,
+      "phase_index": 19,
+      "start_sec": 744.0
+    },
+    {
+      "activities": [
+        "구매 또는 둘러보기",
+        "이동"
+      ],
+      "end_sec": 888.0,
+      "entry_count": 1,
+      "phase_index": 20,
+      "start_sec": 864.0
+    },
+    {
+      "activities": [
+        "식사"
+      ],
+      "end_sec": 960.0,
+      "entry_count": 3,
+      "phase_index": 21,
+      "start_sec": 888.0
+    },
+    {
+      "activities": [
+        "식사",
+        "구매 또는 둘러보기"
+      ],
+      "end_sec": 984.0,
+      "entry_count": 1,
+      "phase_index": 22,
+      "start_sec": 960.0
+    },
+    {
+      "activities": [
+        "이동",
+        "구매 또는 둘러보기"
+      ],
+      "end_sec": 1008.0,
+      "entry_count": 1,
+      "phase_index": 23,
+      "start_sec": 984.0
+    },
+    {
+      "activities": [
+        "구매 또는 둘러보기"
+      ],
+      "end_sec": 1152.0,
+      "entry_count": 5,
+      "phase_index": 24,
+      "start_sec": 1008.0
+    },
+    {
+      "activities": [
+        "구매 또는 둘러보기",
+        "음식 준비 및 조리"
+      ],
+      "end_sec": 1176.0,
+      "entry_count": 1,
+      "phase_index": 25,
+      "start_sec": 1152.0
+    },
+    {
+      "activities": [
+        "구매 또는 둘러보기",
+        "식사"
+      ],
+      "end_sec": 1200.0,
+      "entry_count": 1,
+      "phase_index": 26,
+      "start_sec": 1176.0
+    },
+    {
+      "activities": [
+        "식사"
+      ],
+      "end_sec": 1248.0,
+      "entry_count": 2,
+      "phase_index": 27,
+      "start_sec": 1200.0
+    },
+    {
+      "activities": [
+        "식사",
+        "구매 또는 둘러보기"
+      ],
+      "end_sec": 1272.0,
+      "entry_count": 1,
+      "phase_index": 28,
+      "start_sec": 1248.0
+    },
+    {
+      "activities": [
+        "구매 또는 둘러보기"
+      ],
+      "end_sec": 1296.0,
+      "entry_count": 1,
+      "phase_index": 29,
+      "start_sec": 1272.0
+    },
+    {
+      "activities": [
+        "구매 또는 둘러보기",
+        "음식 준비 및 조리"
+      ],
+      "end_sec": 1344.0,
+      "entry_count": 2,
+      "phase_index": 30,
+      "start_sec": 1296.0
+    },
+    {
+      "activities": [
+        "음식 준비 및 조리",
+        "이동"
+      ],
+      "end_sec": 1368.0,
+      "entry_count": 1,
+      "phase_index": 31,
+      "start_sec": 1344.0
+    },
+    {
+      "activities": [
+        "음식 준비 및 조리",
+        "포장 작업",
+        "이동",
+        "구매 또는 둘러보기"
+      ],
+      "end_sec": 1392.0,
+      "entry_count": 1,
+      "phase_index": 32,
+      "start_sec": 1368.0
+    },
+    {
+      "activities": [
+        "외출 준비",
+        "구매 또는 둘러보기",
+        "음식 준비 및 조리"
+      ],
+      "end_sec": 1416.0,
+      "entry_count": 1,
+      "phase_index": 33,
+      "start_sec": 1392.0
+    },
+    {
+      "activities": [
+        "구매 또는 둘러보기",
+        "정리 작업"
+      ],
+      "end_sec": 1440.0,
+      "entry_count": 1,
+      "phase_index": 34,
+      "start_sec": 1416.0
+    },
+    {
+      "activities": [
+        "외출 준비"
+      ],
+      "end_sec": 1464.0,
+      "entry_count": 1,
+      "phase_index": 35,
+      "start_sec": 1440.0
+    },
+    {
+      "activities": [
+        "구매 또는 둘러보기",
+        "음식 준비 및 조리"
+      ],
+      "end_sec": 1488.0,
+      "entry_count": 1,
+      "phase_index": 36,
+      "start_sec": 1464.0
+    },
+    {
+      "activities": [
+        "음식 준비 및 조리"
+      ],
+      "end_sec": 1512.0,
+      "entry_count": 1,
+      "phase_index": 37,
+      "start_sec": 1488.0
+    },
+    {
+      "activities": [
+        "구매 또는 둘러보기"
+      ],
+      "end_sec": 1560.0,
+      "entry_count": 1,
+      "phase_index": 38,
+      "start_sec": 1512.0
+    },
+    {
+      "activities": [
+        "포장 작업"
+      ],
+      "end_sec": 1584.0,
+      "entry_count": 1,
+      "phase_index": 39,
+      "start_sec": 1560.0
+    },
+    {
+      "activities": [
+        "음식 준비 및 조리"
+      ],
+      "end_sec": 1776.0,
+      "entry_count": 8,
+      "phase_index": 40,
+      "start_sec": 1584.0
+    },
+    {
+      "activities": [
+        "음식 준비 및 조리",
+        "식사"
+      ],
+      "end_sec": 1800.0,
+      "entry_count": 1,
+      "phase_index": 41,
+      "start_sec": 1776.0
+    },
+    {
+      "activities": [
+        "식사"
+      ],
+      "end_sec": 1848.0,
+      "entry_count": 2,
+      "phase_index": 42,
+      "start_sec": 1800.0
+    },
+    {
+      "activities": [
+        "식사",
+        "음식 준비 및 조리"
+      ],
+      "end_sec": 1872.0,
+      "entry_count": 1,
+      "phase_index": 43,
+      "start_sec": 1848.0
+    },
+    {
+      "activities": [
+        "음식 준비 및 조리"
+      ],
+      "end_sec": 2352.0,
+      "entry_count": 19,
+      "phase_index": 44,
+      "start_sec": 1872.0
+    },
+    {
+      "activities": [
+        "식사"
+      ],
+      "end_sec": 2424.0,
+      "entry_count": 2,
+      "phase_index": 45,
+      "start_sec": 2352.0
+    }
+  ],
+  "prereg": "docs/preregistration/WVR_WHOLE_VIDEO_OVERVIEW_SYNTHESIS_V2_2026-09-13.md",
+  "repeated_activities": [
+    "구매 또는 둘러보기",
+    "식사",
+    "외출 준비",
+    "음식 준비 및 조리",
+    "의류 작업 및 수선",
+    "이동",
+    "포장 작업"
+  ],
+  "source_sha256": {
+    "timeline_lineage.json": "23d9734363c5f98c507bce4b4c76ae913f9359d091d22204ebfa5261fb758e8e",
+    "whole_video_activity_timeline.json": "ba43a395c26342b6e028b32e33db629c82bf08c3d74785e211c7b04fb5537937"
+  },
+  "source_temporal_coverage_sec": 2424.0,
+  "source_timeline_entry_count": 96,
+  "transition_count": 45,
+  "transitions": [
+    {
+      "at_sec": 24.0,
+      "from": [
+        "음식 준비 및 조리",
+        "구매 또는 둘러보기"
+      ],
+      "to": [
+        "음식 준비 및 조리"
+      ]
+    },
+    {
+      "at_sec": 240.0,
+      "from": [
+        "음식 준비 및 조리"
+      ],
+      "to": [
+        "음식 준비 및 조리",
+        "식사"
+      ]
+    },
+    {
+      "at_sec": 264.0,
+      "from": [
+        "음식 준비 및 조리",
+        "식사"
+      ],
+      "to": [
+        "식사"
+      ]
+    },
+    {
+      "at_sec": 288.0,
+      "from": [
+        "식사"
+      ],
+      "to": [
+        "식사",
+        "구매 또는 둘러보기"
+      ]
+    },
+    {
+      "at_sec": 312.0,
+      "from": [
+        "식사",
+        "구매 또는 둘러보기"
+      ],
+      "to": [
+        "식사",
+        "음식 준비 및 조리",
+        "구매 또는 둘러보기"
+      ]
+    },
+    {
+      "at_sec": 336.0,
+      "from": [
+        "식사",
+        "음식 준비 및 조리",
+        "구매 또는 둘러보기"
+      ],
+      "to": [
+        "식사",
+        "음식 준비 및 조리"
+      ]
+    },
+    {
+      "at_sec": 360.0,
+      "from": [
+        "식사",
+        "음식 준비 및 조리"
+      ],
+      "to": [
+        "음식 준비 및 조리",
+        "식사"
+      ]
+    },
+    {
+      "at_sec": 384.0,
+      "from": [
+        "음식 준비 및 조리",
+        "식사"
+      ],
+      "to": [
+        "음식 준비 및 조리",
+        "의류 작업 및 수선"
+      ]
+    },
+    {
+      "at_sec": 408.0,
+      "from": [
+        "음식 준비 및 조리",
+        "의류 작업 및 수선"
+      ],
+      "to": [
+        "의류 작업 및 수선"
+      ]
+    },
+    {
+      "at_sec": 432.0,
+      "from": [
+        "의류 작업 및 수선"
+      ],
+      "to": [
+        "의류 작업 및 수선",
+        "음식 준비 및 조리"
+      ]
+    },
+    {
+      "at_sec": 456.0,
+      "from": [
+        "의류 작업 및 수선",
+        "음식 준비 및 조리"
+      ],
+      "to": [
+        "음식 준비 및 조리",
+        "외출 준비"
+      ]
+    },
+    {
+      "at_sec": 504.0,
+      "from": [
+        "음식 준비 및 조리",
+        "외출 준비"
+      ],
+      "to": [
+        "포장 작업",
+        "외출 준비"
+      ]
+    },
+    {
+      "at_sec": 552.0,
+      "from": [
+        "포장 작업",
+        "외출 준비"
+      ],
+      "to": [
+        "외출 준비",
+        "이동",
+        "구매 또는 둘러보기"
+      ]
+    },
+    {
+      "at_sec": 600.0,
+      "from": [
+        "외출 준비",
+        "이동",
+        "구매 또는 둘러보기"
+      ],
+      "to": [
+        "구매 또는 둘러보기"
+      ]
+    },
+    {
+      "at_sec": 648.0,
+      "from": [
+        "구매 또는 둘러보기"
+      ],
+      "to": [
+        "구매 또는 둘러보기",
+        "이동"
+      ]
+    },
+    {
+      "at_sec": 672.0,
+      "from": [
+        "구매 또는 둘러보기",
+        "이동"
+      ],
+      "to": [
+        "이동",
+        "구매 또는 둘러보기"
+      ]
+    },
+    {
+      "at_sec": 696.0,
+      "from": [
+        "이동",
+        "구매 또는 둘러보기"
+      ],
+      "to": [
+        "구매 또는 둘러보기",
+        "포장 작업"
+      ]
+    },
+    {
+      "at_sec": 720.0,
+      "from": [
+        "구매 또는 둘러보기",
+        "포장 작업"
+      ],
+      "to": [
+        "음식 준비 및 조리",
+        "구매 또는 둘러보기"
+      ]
+    },
+    {
+      "at_sec": 744.0,
+      "from": [
+        "음식 준비 및 조리",
+        "구매 또는 둘러보기"
+      ],
+      "to": [
+        "구매 또는 둘러보기"
+      ]
+    },
+    {
+      "at_sec": 864.0,
+      "from": [
+        "구매 또는 둘러보기"
+      ],
+      "to": [
+        "구매 또는 둘러보기",
+        "이동"
+      ]
+    },
+    {
+      "at_sec": 888.0,
+      "from": [
+        "구매 또는 둘러보기",
+        "이동"
+      ],
+      "to": [
+        "식사"
+      ]
+    },
+    {
+      "at_sec": 960.0,
+      "from": [
+        "식사"
+      ],
+      "to": [
+        "식사",
+        "구매 또는 둘러보기"
+      ]
+    },
+    {
+      "at_sec": 984.0,
+      "from": [
+        "식사",
+        "구매 또는 둘러보기"
+      ],
+      "to": [
+        "이동",
+        "구매 또는 둘러보기"
+      ]
+    },
+    {
+      "at_sec": 1008.0,
+      "from": [
+        "이동",
+        "구매 또는 둘러보기"
+      ],
+      "to": [
+        "구매 또는 둘러보기"
+      ]
+    },
+    {
+      "at_sec": 1152.0,
+      "from": [
+        "구매 또는 둘러보기"
+      ],
+      "to": [
+        "구매 또는 둘러보기",
+        "음식 준비 및 조리"
+      ]
+    },
+    {
+      "at_sec": 1176.0,
+      "from": [
+        "구매 또는 둘러보기",
+        "음식 준비 및 조리"
+      ],
+      "to": [
+        "구매 또는 둘러보기",
+        "식사"
+      ]
+    },
+    {
+      "at_sec": 1200.0,
+      "from": [
+        "구매 또는 둘러보기",
+        "식사"
+      ],
+      "to": [
+        "식사"
+      ]
+    },
+    {
+      "at_sec": 1248.0,
+      "from": [
+        "식사"
+      ],
+      "to": [
+        "식사",
+        "구매 또는 둘러보기"
+      ]
+    },
+    {
+      "at_sec": 1272.0,
+      "from": [
+        "식사",
+        "구매 또는 둘러보기"
+      ],
+      "to": [
+        "구매 또는 둘러보기"
+      ]
+    },
+    {
+      "at_sec": 1296.0,
+      "from": [
+        "구매 또는 둘러보기"
+      ],
+      "to": [
+        "구매 또는 둘러보기",
+        "음식 준비 및 조리"
+      ]
+    },
+    {
+      "at_sec": 1344.0,
+      "from": [
+        "구매 또는 둘러보기",
+        "음식 준비 및 조리"
+      ],
+      "to": [
+        "음식 준비 및 조리",
+        "이동"
+      ]
+    },
+    {
+      "at_sec": 1368.0,
+      "from": [
+        "음식 준비 및 조리",
+        "이동"
+      ],
+      "to": [
+        "음식 준비 및 조리",
+        "포장 작업",
+        "이동",
+        "구매 또는 둘러보기"
+      ]
+    },
+    {
+      "at_sec": 1392.0,
+      "from": [
+        "음식 준비 및 조리",
+        "포장 작업",
+        "이동",
+        "구매 또는 둘러보기"
+      ],
+      "to": [
+        "외출 준비",
+        "구매 또는 둘러보기",
+        "음식 준비 및 조리"
+      ]
+    },
+    {
+      "at_sec": 1416.0,
+      "from": [
+        "외출 준비",
+        "구매 또는 둘러보기",
+        "음식 준비 및 조리"
+      ],
+      "to": [
+        "구매 또는 둘러보기",
+        "정리 작업"
+      ]
+    },
+    {
+      "at_sec": 1440.0,
+      "from": [
+        "구매 또는 둘러보기",
+        "정리 작업"
+      ],
+      "to": [
+        "외출 준비"
+      ]
+    },
+    {
+      "at_sec": 1464.0,
+      "from": [
+        "외출 준비"
+      ],
+      "to": [
+        "구매 또는 둘러보기",
+        "음식 준비 및 조리"
+      ]
+    },
+    {
+      "at_sec": 1488.0,
+      "from": [
+        "구매 또는 둘러보기",
+        "음식 준비 및 조리"
+      ],
+      "to": [
+        "음식 준비 및 조리"
+      ]
+    },
+    {
+      "at_sec": 1512.0,
+      "from": [
+        "음식 준비 및 조리"
+      ],
+      "to": [
+        "구매 또는 둘러보기"
+      ]
+    },
+    {
+      "at_sec": 1560.0,
+      "from": [
+        "구매 또는 둘러보기"
+      ],
+      "to": [
+        "포장 작업"
+      ]
+    },
+    {
+      "at_sec": 1584.0,
+      "from": [
+        "포장 작업"
+      ],
+      "to": [
+        "음식 준비 및 조리"
+      ]
+    },
+    {
+      "at_sec": 1776.0,
+      "from": [
+        "음식 준비 및 조리"
+      ],
+      "to": [
+        "음식 준비 및 조리",
+        "식사"
+      ]
+    },
+    {
+      "at_sec": 1800.0,
+      "from": [
+        "음식 준비 및 조리",
+        "식사"
+      ],
+      "to": [
+        "식사"
+      ]
+    },
+    {
+      "at_sec": 1848.0,
+      "from": [
+        "식사"
+      ],
+      "to": [
+        "식사",
+        "음식 준비 및 조리"
+      ]
+    },
+    {
+      "at_sec": 1872.0,
+      "from": [
+        "식사",
+        "음식 준비 및 조리"
+      ],
+      "to": [
+        "음식 준비 및 조리"
+      ]
+    },
+    {
+      "at_sec": 2352.0,
+      "from": [
+        "음식 준비 및 조리"
+      ],
+      "to": [
+        "식사"
+      ]
+    }
+  ]
+}
