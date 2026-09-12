@@ -1,0 +1,102 @@
+{
+  "activity_run_count": 36,
+  "checks": [
+    {
+      "desc": "C01~C05 source 해시가 사전등록 §1과 일치",
+      "detail": {
+        "C01": {
+          "video_overview_v2_segment_summaries.json": "35c964e30c35d05957b717fd24aba3225ec2082c50addcebed61c081fc217edc",
+          "video_overview_v2_segments.json": "b4dac6ce532f1a37bf31392fe14f7b557b2b9e3b786dbcd8d84d765f2068bef0"
+        },
+        "C02": {
+          "video_overview_v2_segment_summaries.json": "a91eb783b07b97d3781f99e9d3365404d69291842c340104c535db5f1642c4d0",
+          "video_overview_v2_segments.json": "2a82080e3d3da802033fee228e40a3493c2630b6abb0e9bc510eb4d5e1f20947"
+        },
+        "C03": {
+          "video_overview_v2_segment_summaries.json": "cc0a0ebaf906987ee4ebffb1983e97b6297cb4cee21d31bd4768fbbc753f6569",
+          "video_overview_v2_segments.json": "6bc7380319fb62612f85e2a5e7183b82bec6e9970a7e4b38abbd152ed2697927"
+        },
+        "C04": {
+          "video_overview_v2_segment_summaries.json": "06f3a17c95716da3418d59a879a3eae0dccc3d38bd0edc3c4bec6b12297ec8f3",
+          "video_overview_v2_segments.json": "3bdb9e584fbbca7ef85fd0fa80dd61213fc587e62936244eef8ba837ed89828e"
+        },
+        "C05": {
+          "video_overview_v2_segment_summaries.json": "d6e74b0652028d99165ade269bd5f3d2de9891163cf9f1ed5e288f2d9201e9b4",
+          "video_overview_v2_segments.json": "5f1f4c7b7a53f0858be9618ea2adb12a1aefd78c8a867bf47bb247a1237059d6"
+        }
+      },
+      "id": "G1",
+      "result": "PASS"
+    },
+    {
+      "desc": "entry 시각이 source 창 범위 안에서 파생된다",
+      "detail": null,
+      "id": "G2",
+      "result": "PASS"
+    },
+    {
+      "desc": "duplicate source-time exposure 제거 (entry 간 겹침 0초)",
+      "detail": {
+        "after_sec": 0.0,
+        "before_sec": 3144.0
+      },
+      "id": "G3",
+      "result": "PASS"
+    },
+    {
+      "desc": "[0, 2424) temporal coverage — 빈틈 0 · union 2424.0",
+      "detail": {
+        "coverage_sec": 2424.0,
+        "gaps": [],
+        "terminal_remainder_sec": 0.186485
+      },
+      "id": "G4",
+      "result": "PASS"
+    },
+    {
+      "desc": "source lineage 완전 — chunk · window · artifact 해시",
+      "detail": null,
+      "id": "G5",
+      "result": "PASS"
+    },
+    {
+      "desc": "deterministic merge — 2회 산출물 동일",
+      "detail": null,
+      "id": "G6",
+      "result": "PASS"
+    },
+    {
+      "desc": "no visual inference",
+      "detail": null,
+      "id": "G7",
+      "result": "PASS"
+    },
+    {
+      "desc": "no STT inference",
+      "detail": null,
+      "id": "G8",
+      "result": "PASS"
+    },
+    {
+      "desc": "official test 경로 미접근",
+      "detail": [],
+      "id": "G9",
+      "result": "PASS"
+    },
+    {
+      "desc": "M9 미호출",
+      "detail": null,
+      "id": "G10",
+      "result": "PASS"
+    }
+  ],
+  "code_git_head": "f927efb40ed1832fa9c05007185b4dc94f83d372",
+  "duplicate_coverage_after_sec": 0.0,
+  "duplicate_coverage_before_sec": 3144.0,
+  "entry_count": 96,
+  "event": "WVR_WHOLE_VIDEO_TEMPORAL_MERGE_OVERVIEW_V1",
+  "gate": "PASS",
+  "prereg": "docs/preregistration/WVR_WHOLE_VIDEO_TEMPORAL_MERGE_OVERVIEW_V1_2026-09-13.md",
+  "temporal_coverage_sec": 2424.0,
+  "terminal_remainder_sec": 0.186485
+}
