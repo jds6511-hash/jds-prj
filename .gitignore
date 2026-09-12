@@ -100,3 +100,14 @@ docs/finalization/aar_sample_*.json
 # copies for provenance, but never publish them before an authorized reveal.
 runs/wvr_light_v1/bcand_v1_blind_map.json
 runs/wvr_light_v1/bcand_v1_candidates.json
+
+# REI C01 보고서 엔진 통합 shadow (2026-09-12). 입력 segments.json에는 M3 자막·
+# WVR 관측 요약 원문이 그대로 들어 있고, b2run/raw/ 는 ASR·VLM 원문 덤프다.
+# work/*/segments.json·AAR 렌더본을 추적하지 않는 것과 같은 이유다.
+# 로컬·서버 사본은 유지한다. 해시·계측값은 runs/rei_c01/adapter_manifest.json 과
+# runs/rei_c01/integration_matrix.json 에 기록돼 있고, 입력은
+# scripts/rei_c01_build_and_gate.py 로 결정적으로 재생성된다.
+runs/rei_c01/*/segments.json
+runs/rei_c01/*/report.json
+runs/rei_c01/*/run.log
+runs/rei_c01/*/b2run/
