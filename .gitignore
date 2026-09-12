@@ -111,3 +111,8 @@ runs/rei_c01/*/segments.json
 runs/rei_c01/*/report.json
 runs/rei_c01/*/run.log
 runs/rei_c01/*/b2run/
+
+# REI C01 β/v3 shadow (2026-09-12). 위 rei_c01 과 같은 이유 — 원문 포함 파일 제외.
+runs/rei_c01_beta_v3/*/segments.json
+runs/rei_c01_beta_v3/*/run.log
+runs/rei_c01_beta_v3/*/b2run/

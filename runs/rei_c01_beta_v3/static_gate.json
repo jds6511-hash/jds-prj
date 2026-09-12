@@ -1,0 +1,95 @@
+{
+  "baseline_sha256_before": {
+    "config.yaml": "72475952bbf56581cbc3a90944804ad2990ed2f9ef35e5103731d7670a47af2f",
+    "runs/v3_paired/submission_manifest.json": "073942ee212a5b22a5bc9a588e3b5f8b7b45ada3bae9d7aa5139aedaee958cee",
+    "work_full/full_xekZO4n4QuE/segments.json": "aa008317023c884a206c2ea8ce9f1de5db809c2638fca257f964a58df4799c92"
+  },
+  "checks": [
+    {
+      "desc": "입력 segments.json 해시가 prereg §2와 일치",
+      "detail": "53d660c05097e97f8d152e24a231bc1744cc83d91bca84e2ac1157451a1786ae",
+      "id": "T1",
+      "result": "PASS"
+    },
+    {
+      "desc": "config 해시가 prereg §2와 일치",
+      "detail": "d6cf9521e3dfdcd247046ebfe81adc3d476fe0f9321ac691b74d91576914068c",
+      "id": "T2",
+      "result": "PASS"
+    },
+    {
+      "desc": "segment 24개 · idx 연속 0…23 · start == idx*24",
+      "detail": 24,
+      "id": "T3",
+      "result": "PASS"
+    },
+    {
+      "desc": "duplicate coverage == 0초 · temporal coverage == 600초",
+      "detail": {
+        "coverage": 600.0,
+        "duplicate": 0.0
+      },
+      "id": "T4",
+      "result": "PASS"
+    },
+    {
+      "desc": "subtitle·caption 필드 전 segment 존재",
+      "detail": {
+        "caption_populated": 24,
+        "subtitle_populated": 23
+      },
+      "id": "T5",
+      "result": "PASS"
+    },
+    {
+      "desc": "resolve_contract(\"v3\") == PROMPT_VERSION_V3",
+      "detail": {
+        "optional_keys": [],
+        "resolved_version": "episode_content_v3_summary_only",
+        "unknown_name": "PromptError — 정상"
+      },
+      "id": "T8",
+      "result": "PASS"
+    },
+    {
+      "desc": "복사본 해시가 원본과 동일",
+      "detail": null,
+      "id": "T3b",
+      "result": "PASS"
+    },
+    {
+      "desc": "baseline 경로 해시 불변",
+      "detail": null,
+      "id": "T6",
+      "result": "PASS"
+    },
+    {
+      "desc": "engine source 해시 불변",
+      "detail": null,
+      "id": "T7",
+      "result": "PASS"
+    },
+    {
+      "desc": "official test 경로 미접근 · M9 미호출",
+      "detail": [],
+      "id": "T9",
+      "result": "PASS"
+    }
+  ],
+  "code_git_head": "7c715d5f60e1108bb159242eeb8439f648913a56",
+  "engine_source_sha256_before": {
+    "scripts/v2_1_b2_orchestrate.py": "b46061b126744db484852c23319d5d7df541020c6b746f5c6d178404f90b85e8",
+    "src/v2_1_grounding.py": "4d9f63f1328422df1e273ff76dc0abee9e39be872d7a3045c307c3ce82a4375f",
+    "src/v2_1_prompt.py": "79dd4197f37d02a2d3afdc50054412b94bbacd7035e9d5cfd01e49b2653c09ea",
+    "src/v2_1_render_hwpx.py": "f9b780f648c404c7590f5f50a3d232d0c584b7d3ddd4a475bba97cf9bf59fb6f",
+    "src/v2_1_segments.py": "17c3934004cb1aee43b87ee17dd4f07d2ae6637a3b0e1cee823ad36e11ce9e33"
+  },
+  "event": "WVR_REPORT_ENGINE_C01_BETA_V3_SHADOW_V1",
+  "gate": "PASS",
+  "input_sha256": {
+    "configs/rei_c01_beta.yaml": "d6cf9521e3dfdcd247046ebfe81adc3d476fe0f9321ac691b74d91576914068c",
+    "segments.json": "53d660c05097e97f8d152e24a231bc1744cc83d91bca84e2ac1157451a1786ae"
+  },
+  "new_inference_count": 0,
+  "prereg": "docs/preregistration/WVR_REPORT_ENGINE_C01_BETA_V3_SHADOW_V1_2026-09-12.md"
+}
