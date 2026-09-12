@@ -1,0 +1,56 @@
+{
+  "blocker": {
+    "attempts": 4,
+    "detail": "internal.kixlab.org:22 · 143.248.48.96:22 connection timed out",
+    "id": "SERVER_UNREACHABLE",
+    "note": "약 30분 전 동일 경로로 V2 artifact 동기화는 정상 수행됨. 원인 미확정 — 네트워크/VPN/서버 중 무엇인지 사용자 확인 필요."
+  },
+  "code_git_head": "18d9dceb9574d9da2b89e5876b6d6cccf7dfd8ea",
+  "event": "WVR_REPORT_ENGINE_C01_INTEGRATION_SHADOW_V1",
+  "executor_must_not_decide": [
+    "최종 production engine",
+    "alpha vs beta winner",
+    "report quality PASS",
+    "C02~C05 실행 여부",
+    "M9 실행 여부"
+  ],
+  "gpu_visual_inference": 0,
+  "measured_static": {
+    "NONOVERLAP_VIEW": {
+      "caption_populated": 24,
+      "duplicate_temporal_coverage_sec": 0.0,
+      "segment_count": 24,
+      "subtitle_populated": 23,
+      "temporal_coverage_sec": 600.0
+    },
+    "OVERLAP_VIEW": {
+      "caption_populated": 24,
+      "duplicate_temporal_coverage_sec": 552.0,
+      "segment_count": 24,
+      "subtitle_populated": 24,
+      "temporal_coverage_sec": 600.0
+    }
+  },
+  "new_inference_count": 0,
+  "prereg": "docs/preregistration/WVR_REPORT_ENGINE_C01_INTEGRATION_SHADOW_V1_2026-09-11.md",
+  "remaining_steps_frozen_order": [
+    "1. 격리 클론 /ssd/daeseok/jds-prj-rei-c01 생성 (기존 클론 미접촉)",
+    "2. runs/rei_c01/*/segments.json + configs/rei_c01_*.yaml 전송",
+    "3. 동결 순서 실행 Aa -> Ba -> Ab -> Bb (retry 금지)",
+    "4. report.json / canonical / HWPX / execution_record 회수",
+    "5. runs/rei_c01/integration_matrix.json + docs/probes/ 문서 작성"
+  ],
+  "server_runtime_notes": {
+    "cache_path": "/ssd/daeseok/cache/hub/models--Qwen--Qwen2.5-7B-Instruct",
+    "model_cached_on_server": true,
+    "text_generation_model": "Qwen/Qwen2.5-7B-Instruct",
+    "visual_inference": "금지 — 이번 사건에 없음"
+  },
+  "static_gate": {
+    "checks_passed": 12,
+    "checks_total": 12,
+    "file": "runs/rei_c01/static_gate.json",
+    "result": "PASS"
+  },
+  "status": "STATIC_GATE_PASS / SERVER_EXECUTION_BLOCKED"
+}
