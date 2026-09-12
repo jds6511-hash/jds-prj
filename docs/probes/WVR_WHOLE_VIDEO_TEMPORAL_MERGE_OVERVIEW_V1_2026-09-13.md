@@ -225,3 +225,62 @@ M9 실행 여부 · official test 개방 여부
 WVR_WHOLE_VIDEO_TEMPORAL_MERGE_OVERVIEW_V1
 EXECUTED / REVIEW_PENDING
 ```
+
+---
+
+## M. Reviewer 판정 (2026-09-13)
+
+```
+WVR_WHOLE_VIDEO_TEMPORAL_MERGE_OVERVIEW_V1
+CLOSED / WHOLE_VIDEO_OVERVIEW_HOLD
+```
+
+**technical temporal merge는 PASS로 인정한다.**
+
+```
+C01~C05 source integration      PASS
+timeline entries                96
+coverage                        [0, 2424)
+temporal gap                    0
+duplicate after normalization   0
+lineage                         96/96
+synthesis inference             1
+retry                           0
+visual/STT inference            0
+gate                            G1~G10 PASS
+```
+
+따라서 이후 다음 연구를 **재개하지 않는다.**
+
+```
+Event Map · Semantic Chapter · Boundary Candidate
+visual sampling 연구 · chunk/window geometry 변경 · C01~C05 재실행
+```
+
+### HOLD 사유 — final Overview의 semantic consistency
+
+**1. SHORT / DETAILED 종료부 불일치**
+
+```
+SHORT     마지막으로 정리 작업과 외출 준비가 종료 단계
+DETAILED  마지막으로 음식 준비 및 조리, 식사가 반복적으로 마무리
+```
+
+같은 timeline을 요약하면서 마지막 흐름 설명이 일치하지 않는다.
+
+**2. source보다 강한 해석 표현**
+
+```
+빈번하게 삽입되어 · 일상적인 흐름 · 활동의 흐름을 이끕니다 · 음식 관련 활동이 중심
+```
+
+broad activity timeline에서 직접 보장되지 않는 일반화일 수 있다.
+
+### 후속 사건 승인
+
+```
+WVR_WHOLE_VIDEO_OVERVIEW_SYNTHESIS_V2
+```
+
+frozen 96-entry timeline을 바꾸지 않고 **최종 Overview synthesis만** 더 보수적이고
+내부적으로 일관되게 만든다. 새 visual inference / STT / timeline merge 금지.

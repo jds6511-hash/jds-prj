@@ -97,6 +97,22 @@
   "event": "WVR_WHOLE_VIDEO_TEMPORAL_MERGE_OVERVIEW_V1",
   "gate": "PASS",
   "prereg": "docs/preregistration/WVR_WHOLE_VIDEO_TEMPORAL_MERGE_OVERVIEW_V1_2026-09-13.md",
+  "reviewer_verdict": {
+    "closed_research": [
+      "Event Map",
+      "Semantic Chapter",
+      "Boundary Candidate",
+      "visual sampling 연구",
+      "chunk/window geometry 변경",
+      "C01~C05 재실행"
+    ],
+    "decided": "2026-09-13",
+    "hold_reason": "final Overview의 semantic consistency — SHORT/DETAILED 종료부 불일치 · source보다 강한 해석 표현",
+    "next_event": "WVR_WHOLE_VIDEO_OVERVIEW_SYNTHESIS_V2",
+    "technical_temporal_merge": "PASS",
+    "verdict": "WHOLE_VIDEO_OVERVIEW_HOLD"
+  },
+  "status": "CLOSED / WHOLE_VIDEO_OVERVIEW_HOLD",
   "temporal_coverage_sec": 2424.0,
   "terminal_remainder_sec": 0.186485
 }
