@@ -3,10 +3,11 @@
 사전등록: `docs/preregistration/WVR_REPORT_ENGINE_C01_BETA_V3_SHADOW_V1_2026-09-12.md`
 
 ```
-상태   EXECUTED / REVIEW_PENDING
+실행 시 상태   EXECUTED / REVIEW_PENDING
+최종 상태      CLOSED / BETA_V3_INTEGRATION_PASS   (2026-09-13 reviewer 판정 — §K)
 ```
 
-**이 문서는 관측값만 적는다.** 보고서 품질 PASS · production 채택 ·
+**A~J는 관측값만 적는다. 판정은 §K에만 있다.** 보고서 품질 PASS · production 채택 ·
 overlap vs non-overlap 선택 · C02~C05 실행 여부 · M9 실행 여부는 전부 reviewer
 결정이다(사전등록 §10).
 
@@ -186,3 +187,66 @@ EXECUTED / REVIEW_PENDING
 
 reviewer가 `BETA_V3_INTEGRATION_PASS` / `_HOLD` / `_INCONCLUSIVE` 중 하나를
 결정한다. PASS면 C02~C05 실행 승인 단계로 이동한다.
+
+---
+
+## K. Reviewer 판정 (2026-09-13)
+
+```
+WVR_REPORT_ENGINE_C01_BETA_V3_SHADOW_V1
+CLOSED / BETA_V3_INTEGRATION_PASS
+```
+
+근거로 채택된 관측값:
+
+```
+frozen NONOVERLAP input byte-identical      excluded_by_dialogue_grounding 0
+β/v3 summary-only contract 정상 적용         presentation eligible 9/10
+exit 0 / retry 0                            highlight AVAILABLE
+NO_RELIABLE_CONTENT 0                       report body 생성
+HWPX 생성 · valid zip                        section 5/5
+adjacent highlight overlap 0.0초             baseline / engine source unchanged
+official test untouched · M9 not invoked     new visual inference 0 · new STT 0
+```
+
+EP10 `OUTPUT_LANGUAGE_DRIFT` 1건은 **integration blocker로 판정하지 않는다** —
+quality gate가 탐지했고, 해당 source를 제외했고, exclusion reason이 report에
+명시됐기 때문이다.
+
+### 금지된 주장
+
+```
+language drift resolved
+v3 always produces Korean
+EP10 source interval is the cause
+```
+
+### 확정된 결론의 범위
+
+```
+C01 frozen WVR input → β / v3 summary-only → usable report body → HWPX
+```
+
+integration이 성립했다는 것까지다. 그 이상을 이 결과로 주장하지 않는다.
+
+### Production candidate (확정)
+
+```
+Video
+→ Qwen3-VL broad visual understanding
+→ deterministic WVR→report adapter
+→ β / v3 summary-only
+→ report
+→ HWPX
+
+Engine α / m8_report.py  =  citation / traceability R&D asset
+```
+
+### 다음 단계 승인
+
+```
+NEXT STAGE APPROVED — C02~C05 Qwen3-VL broad visual observation
+```
+
+목적은 새 구조 연구가 아니라 **C01에서 검증한 구조를 2424.186485초 전체 source로
+확장하는 것**이다. official test · M9는 계속 금지.

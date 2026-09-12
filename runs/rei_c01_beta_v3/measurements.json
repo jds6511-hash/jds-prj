@@ -138,6 +138,20 @@
     "주의": "입력 격자와 규모가 다르다 — 차이를 단일 원인으로 귀속하지 않는다."
   },
   "retry_count": 0,
+  "reviewer_verdict": {
+    "alpha_role": "citation / traceability R&D asset",
+    "decided": "2026-09-13",
+    "ep10_language_drift": "integration blocker 아님 — quality gate 탐지·제외·사유 명시",
+    "established_scope": "C01 frozen WVR input → β/v3 summary-only → usable report body → HWPX",
+    "forbidden_claims": [
+      "language drift resolved",
+      "v3 always produces Korean",
+      "EP10 source interval is the cause"
+    ],
+    "next_stage_approved": "C02~C05 Qwen3-VL broad visual observation",
+    "production_candidate": "Video → Qwen3-VL → deterministic adapter → β/v3 → report → HWPX",
+    "verdict": "BETA_V3_INTEGRATION_PASS"
+  },
   "section_completion": {
     "## 개요": true,
     "## 결론": true,
@@ -145,7 +159,7 @@
     "## 주요 사건 및 내용": true,
     "## 핵심 내용 분석": true
   },
-  "status": "EXECUTED / REVIEW_PENDING",
+  "status": "CLOSED / BETA_V3_INTEGRATION_PASS",
   "timestamps": {
     "adjacent_overlap_sec": 0.0,
     "highlights": [
