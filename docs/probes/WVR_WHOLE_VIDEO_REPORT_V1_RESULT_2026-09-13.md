@@ -73,3 +73,23 @@ runs/wvr_whole_video_report_v1/result.json
 WVR_WHOLE_VIDEO_REPORT_V1
 EXECUTED / REVIEW_PENDING
 ```
+
+---
+
+## Reviewer 판정 (2026-09-13)
+
+```
+WVR_WHOLE_VIDEO_REPORT_V1
+CLOSED / WHOLE_VIDEO_REPORT_HOLD
+```
+
+확정 PASS: 2424초 visual observation · whole-video temporal merge · lineage ·
+Overview · β/v3 integration · HWPX structural generation.
+
+HOLD 원인은 사용자-facing composition이다. H01~H09의 STT corruption, 부자연스러운
+명칭, language/contract 품질 문제, 과도한 맥락 추정, 내부 identifier와 종료부 혼동
+가능성 때문에 β/v3 generated natural-language summary를 사용자 본문에서 제외한다.
+또한 Analysis는 구조적 패턴, Conclusion은 Overview와 Analysis의 짧은 종합으로 역할을
+분리한다.
+
+다음 단계: `WVR_WHOLE_VIDEO_REPORT_V2` 사용자-facing 보고서 정리.
