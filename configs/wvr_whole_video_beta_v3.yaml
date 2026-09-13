@@ -1,0 +1,58 @@
+seg_len_sec: 24
+frame_sample_fps: 3
+static_threshold: 0
+gaussian_sigma: 1.0
+seed: 42
+stt_model: large-v3
+stt_language: ko
+caption_model: Qwen/Qwen2.5-VL-3B-Instruct
+vlm_4bit: true
+vlm_max_pixels: 602112
+vlm_max_new_tokens: 128
+vlm_rep_penalty: 1.1
+caption_truncate_incomplete: false
+caption_normalize_cjk: false
+caption_prompt: 이 장면을 한 문장의 한국어로 객관적으로 묘사하라. 화면에 보이지 않는 것은 쓰지 마라. 화면에 자막이나 글자가 보이더라도
+  그 글자를 그대로 옮겨 적지 말고, 인물의 행동과 배경 등 시각적 내용만 묘사하라.
+embed_model: nlpai-lab/KURE-v1
+embed_batch_size: 32
+abstention_tau: 0.55
+alpha_grid:
+- 0.0
+- 0.1
+- 0.2
+- 0.3
+- 0.4
+- 0.5
+- 0.6
+- 0.7
+- 0.8
+- 0.9
+- 1.0
+alpha_select_metric: mrr
+bootstrap_B: 2000
+alpha_tiebreak: larger
+eval_k:
+- 1
+- 5
+- 10
+iou_thresholds:
+- 0.5
+- 0.3
+report_model: Qwen/Qwen2.5-7B-Instruct
+report_max_new_tokens: 16384
+llm_4bit: false
+judge_model: Qwen/Qwen2.5-7B-Instruct
+same_model_judge: true
+map_chunk_size: 60
+map_chunk_overlap: 5
+human_check_n: 20
+paths:
+  data: data
+  work: work_wvr_report
+  results: results_wvr_report
+_provenance:
+  event: WVR_WHOLE_VIDEO_REPORT_V1
+  prereg: docs/preregistration/WVR_WHOLE_VIDEO_REPORT_V1_2026-09-13.md
+  derived_from: configs/rei_c01_beta.yaml
+  isolated: true

@@ -1,0 +1,107 @@
+{
+  "checks": [
+    {
+      "desc": "Overview branch 4개 파일 존재 · 해시 기록",
+      "detail": {
+        "runs/wvr_overview_synthesis_v2/canonical_flow.json": "f1bb720e48b602030143eebd43a200098cc24a125176116e1ff7587295c2858f",
+        "runs/wvr_overview_synthesis_v2/overview_result.json": "f5d9cc5efcbf1af70e453c7536468b861e2e5eb977604d0657f839dc101b4ba6",
+        "runs/wvr_whole_video_merge_v1/timeline_lineage.json": "23d9734363c5f98c507bce4b4c76ae913f9359d091d22204ebfa5261fb758e8e",
+        "runs/wvr_whole_video_merge_v1/whole_video_activity_timeline.json": "ba43a395c26342b6e028b32e33db629c82bf08c3d74785e211c7b04fb5537937"
+      },
+      "id": "R1",
+      "result": "PASS"
+    },
+    {
+      "desc": "M3 STT source 해시가 사전등록 §4-3과 일치",
+      "detail": "aa008317023c884a206c2ea8ce9f1de5db809c2638fca257f964a58df4799c92",
+      "id": "R2",
+      "result": "PASS"
+    },
+    {
+      "desc": "segment 101개 · idx 연속 · start == idx*24",
+      "detail": {
+        "count": 101
+      },
+      "id": "R3",
+      "result": "PASS"
+    },
+    {
+      "desc": "coverage 2424.0초 · 중복 0초 · 빈틈 0",
+      "detail": {
+        "coverage": 2424.0,
+        "duplicate": 0.0,
+        "gaps": []
+      },
+      "id": "R4",
+      "result": "PASS"
+    },
+    {
+      "desc": "분할 조각이 원본 entry와 같은 activity·lineage를 갖는다",
+      "detail": {
+        "split_entry_count": 5
+      },
+      "id": "R5",
+      "result": "PASS"
+    },
+    {
+      "desc": "caption·subtitle 필드 전 segment 존재",
+      "detail": {
+        "caption_populated": 101,
+        "subtitle_populated": 98
+      },
+      "id": "R6",
+      "result": "PASS"
+    },
+    {
+      "desc": "engine source 해시 불변",
+      "detail": null,
+      "id": "R7",
+      "result": "PASS"
+    },
+    {
+      "desc": "deterministic — 2회 build 산출물 동일",
+      "detail": null,
+      "id": "R8",
+      "result": "PASS"
+    },
+    {
+      "desc": "official test 경로 미접근",
+      "detail": [],
+      "id": "R9",
+      "result": "PASS"
+    },
+    {
+      "desc": "M9 미호출",
+      "detail": null,
+      "id": "R10",
+      "result": "PASS"
+    }
+  ],
+  "code_git_head": "743bea29973ef832a8f1a871d0e9bdc09323cbd9",
+  "engine_source_sha256": {
+    "scripts/v2_1_b2_orchestrate.py": "b46061b126744db484852c23319d5d7df541020c6b746f5c6d178404f90b85e8",
+    "src/v2_1_grounding.py": "4d9f63f1328422df1e273ff76dc0abee9e39be872d7a3045c307c3ce82a4375f",
+    "src/v2_1_prompt.py": "79dd4197f37d02a2d3afdc50054412b94bbacd7035e9d5cfd01e49b2653c09ea",
+    "src/v2_1_render_hwpx.py": "f9b780f648c404c7590f5f50a3d232d0c584b7d3ddd4a475bba97cf9bf59fb6f",
+    "src/v2_1_segments.py": "17c3934004cb1aee43b87ee17dd4f07d2ae6637a3b0e1cee823ad36e11ce9e33"
+  },
+  "event": "WVR_WHOLE_VIDEO_REPORT_V1",
+  "gate": "PASS",
+  "m3_segments_sha256": "aa008317023c884a206c2ea8ce9f1de5db809c2638fca257f964a58df4799c92",
+  "new_inference_count": 0,
+  "overview_branch_sha256": {
+    "runs/wvr_overview_synthesis_v2/canonical_flow.json": "f1bb720e48b602030143eebd43a200098cc24a125176116e1ff7587295c2858f",
+    "runs/wvr_overview_synthesis_v2/overview_result.json": "f5d9cc5efcbf1af70e453c7536468b861e2e5eb977604d0657f839dc101b4ba6",
+    "runs/wvr_whole_video_merge_v1/timeline_lineage.json": "23d9734363c5f98c507bce4b4c76ae913f9359d091d22204ebfa5261fb758e8e",
+    "runs/wvr_whole_video_merge_v1/whole_video_activity_timeline.json": "ba43a395c26342b6e028b32e33db629c82bf08c3d74785e211c7b04fb5537937"
+  },
+  "prereg": "docs/preregistration/WVR_WHOLE_VIDEO_REPORT_V1_2026-09-13.md",
+  "stats": {
+    "caption_populated": 101,
+    "duplicate_coverage_sec": 0.0,
+    "segment_count": 101,
+    "split_entry_count": 5,
+    "subtitle_populated": 98,
+    "temporal_coverage_sec": 2424.0
+  }
+}
