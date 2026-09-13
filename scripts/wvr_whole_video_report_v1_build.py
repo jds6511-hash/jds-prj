@@ -76,7 +76,7 @@ def main() -> int:
     for rel in FROZEN_BRANCH:
         path = ROOT / rel
         if path.is_file():
-            branch_hashes[rel] = sha(path)
+            branch_hashes[rel] = wr.frozen_text_sha(path)
         else:
             missing.append(rel)
     if not check("R1", "Overview branch 4개 파일 존재 · 해시 기록",

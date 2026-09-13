@@ -327,3 +327,14 @@ def test_wvr_wr_27_release_runtime_drops_model_and_processor_references():
     assert not hasattr(runtime, "model")
     assert not hasattr(runtime, "processor")
     assert model_ref() is None and processor_ref() is None
+
+
+def test_wvr_wr_28_frozen_text_hash_ignores_only_crlf(tmp_path):
+    lf = tmp_path / "lf.json"
+    crlf = tmp_path / "crlf.json"
+    changed = tmp_path / "changed.json"
+    lf.write_bytes(b'{\n  "value": 1\n}\n')
+    crlf.write_bytes(b'{\r\n  "value": 1\r\n}\r\n')
+    changed.write_bytes(b'{\n  "value": 2\n}\n')
+    assert wr.frozen_text_sha(lf) == wr.frozen_text_sha(crlf)
+    assert wr.frozen_text_sha(lf) != wr.frozen_text_sha(changed)

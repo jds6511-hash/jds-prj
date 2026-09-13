@@ -15,6 +15,7 @@ Overview branch(timeline · CANONICAL_FLOW · Overview)는 **읽기 전용**이�
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 from types import SimpleNamespace
@@ -38,6 +39,12 @@ M3_SEGMENTS_SHA256 = \
 
 class ReportError(RuntimeError):
     """report 계약 위반."""
+
+
+def frozen_text_sha(path) -> str:
+    """텍스트 checkout의 CRLF만 LF로 맞춘 portable SHA256."""
+    payload = path.read_bytes().replace(b"\r\n", b"\n")
+    return hashlib.sha256(payload).hexdigest()
 
 
 # ── §4-1 24초 격자 정규화 ───────────────────────────────────────────

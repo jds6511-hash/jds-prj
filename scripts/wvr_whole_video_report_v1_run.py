@@ -102,7 +102,8 @@ def main() -> int:
     if gate.get("gate") != "PASS":
         raise RuntimeError("report gate가 PASS가 아니다")
 
-    frozen_before = {str(p.relative_to(ROOT)): sha(p) for p in FROZEN_PATHS}
+    frozen_before = {
+        str(p.relative_to(ROOT)): wr.frozen_text_sha(p) for p in FROZEN_PATHS}
     if frozen_before != gate["overview_branch_sha256"]:
         raise RuntimeError("gate 이후 Overview branch 해시가 달라졌다")
 
@@ -205,7 +206,9 @@ def main() -> int:
                 1 for name in package.namelist()
                 if name.startswith("Contents/section") and name.endswith(".xml"))
 
-        frozen_after = {str(p.relative_to(ROOT)): sha(p) for p in FROZEN_PATHS}
+        frozen_after = {
+            str(p.relative_to(ROOT)): wr.frozen_text_sha(p)
+            for p in FROZEN_PATHS}
         if frozen_after != frozen_before:
             raise RuntimeError("실행 중 Overview branch가 변경됐다")
 
