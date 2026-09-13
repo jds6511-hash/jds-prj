@@ -49,6 +49,13 @@ FORBIDDEN_MARKERS = (
 CONTRACT_FIELDS = {
     "BROAD_ACTIVITY", "OBSERVED_CHANGE", "CONTEXT_INFERENCE", "UNCERTAINTY",
 }
+ZERO_INFERENCE = {
+    "visual": 0,
+    "stt": 0,
+    "beta_v3_regeneration": 0,
+    "text_generation": 0,
+    "retry": 0,
+}
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 RAW_NAME = re.compile(r"^video_overview_v2_segment_(S\d+)_raw\.txt$")
 
@@ -324,3 +331,134 @@ def audit_one(source: dict, raw_bytes: bytes,
         "eligible_visual_facts": visual_facts,
         "observation": observation,
     }
+
+
+def _dominant_activities(timeline: dict) -> list[str]:
+    coverage: defaultdict[str, float] = defaultdict(float)
+    for entry in timeline.get("entries", []):
+        duration = float(entry["end_sec"]) - float(entry["start_sec"])
+        if duration < 0:
+            raise GroundingError("invalid timeline interval")
+        for activity in entry.get("broad_activity", []):
+            coverage[activity] += duration
+    return [item[0] for item in sorted(
+        coverage.items(), key=lambda item: (-item[1], item[0]))[:2]]
+
+
+def _fact_lineage_complete(audit: dict, fact: dict) -> bool:
+    source = audit.get("observation", {}).get("source", {})
+    span = fact.get("source_span")
+    return bool(
+        source.get("chunk") and source.get("window") and source.get("raw_path")
+        and HEX64.fullmatch(str(source.get("raw_sha256", "")))
+        and isinstance(span, list) and len(span) == 2
+        and float(span[0]) >= float(audit["start_sec"])
+        and float(span[1]) <= float(audit["end_sec"])
+        and float(span[1]) > float(span[0])
+        and fact.get("confidence") == "high" and fact.get("source_text")
+    )
+
+
+def evaluate_sufficiency(audits: list[dict], timeline: dict) -> dict:
+    """Apply the four frozen Branch A thresholds as a conjunction."""
+    usable: list[dict] = []
+    all_safe = True
+    for audit in audits:
+        facts = list(audit.get("eligible_visual_facts", []))
+        if not facts:
+            continue
+        if all(_fact_lineage_complete(audit, fact) for fact in facts):
+            usable.append(audit)
+        else:
+            all_safe = False
+    activities = {
+        activity for audit in usable for activity in audit.get("BROAD_ACTIVITY", [])
+    }
+    dominant = set(_dominant_activities(timeline))
+    non_dominant = activities - dominant
+    metrics = {
+        "usable_detail_windows": len({
+            (row["chunk"], row["window"]) for row in usable
+        }),
+        "distinct_activities_with_detail": len(activities),
+        "non_dominant_activities_with_detail": len(non_dominant),
+        "lineage_complete_candidates": len(usable),
+        "every_eligible_fact_safe": all_safe,
+        "dominant_activities": sorted(dominant),
+        "detail_activities": sorted(activities),
+        "non_dominant_detail_activities": sorted(non_dominant),
+    }
+    passed = (
+        metrics["usable_detail_windows"] >= 5
+        and metrics["distinct_activities_with_detail"] >= 3
+        and metrics["non_dominant_activities_with_detail"] >= 1
+        and metrics["lineage_complete_candidates"] >= 5
+        and metrics["every_eligible_fact_safe"] is True
+    )
+    return {
+        "branch": "A" if passed else "SOURCE_INSUFFICIENT",
+        "metrics": metrics,
+        "thresholds": {
+            "usable_detail_windows": 5,
+            "distinct_activities_with_detail": 3,
+            "non_dominant_activities_with_detail": 1,
+            "lineage_complete_candidates": 5,
+            "every_eligible_fact_safe": True,
+        },
+        "all_thresholds_pass": passed,
+    }
+
+
+def snapshot_sources(root: Path, targets: Iterable[str]) -> dict[str, str]:
+    root = Path(root).resolve()
+    result = {}
+    for relative in targets:
+        path = root / relative
+        if not path.is_file():
+            raise GroundingError(f"protected source missing: {relative}")
+        result[Path(relative).as_posix()] = sha256_file(path)
+    return result
+
+
+def assert_unchanged(before: dict[str, str], after: dict[str, str]) -> None:
+    if before != after:
+        changed = sorted(set(before) | set(after))
+        changed = [key for key in changed if before.get(key) != after.get(key)]
+        raise GroundingError(f"source hash drift: {changed}")
+
+
+def write_json(path: Path, value) -> None:
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n",
+                    encoding="utf-8")
+
+
+def write_source_insufficient_outputs(output_dir: Path, audits: list[dict],
+                                      execution_record: dict,
+                                      decision: dict) -> dict:
+    """Write only the three preregistered Branch B artifacts."""
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    audit_payload = {
+        "event": EVENT,
+        "raw_file_count": len(audits),
+        "audits": audits,
+    }
+    result = {
+        "event": EVENT,
+        "decision": "GROUNDING_DETAIL_SOURCE_INSUFFICIENT",
+        "branch": "SOURCE_INSUFFICIENT",
+        "gate": decision,
+        "new_visual_inference_required": "UNKNOWN",
+        "downstream_grounded_store_executed": False,
+        "highlight_selection_executed": False,
+        "inference": dict(ZERO_INFERENCE),
+        "status": "CLOSED / GROUNDING_DETAIL_SOURCE_INSUFFICIENT",
+    }
+    record = dict(execution_record)
+    record["decision"] = result["decision"]
+    record["status"] = result["status"]
+    record["inference"] = dict(ZERO_INFERENCE)
+    write_json(output_dir / "raw_detail_audit.json", audit_payload)
+    write_json(output_dir / "execution_record.json", record)
+    write_json(output_dir / "result.json", result)
+    return result
