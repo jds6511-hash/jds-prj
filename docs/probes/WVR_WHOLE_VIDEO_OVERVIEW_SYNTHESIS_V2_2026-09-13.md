@@ -241,3 +241,50 @@ M9 실행 여부 · official test 개방 여부
 WVR_WHOLE_VIDEO_OVERVIEW_SYNTHESIS_V2
 EXECUTED / REVIEW_PENDING
 ```
+
+---
+
+## N. Reviewer 판정 (2026-09-13)
+
+```
+WVR_WHOLE_VIDEO_OVERVIEW_SYNTHESIS_V2
+CLOSED / WHOLE_VIDEO_OVERVIEW_PASS
+```
+
+V1 HOLD의 두 핵심 원인(SHORT/DETAILED 종료부 불일치 · source보다 강한 일반화
+표현)은 V2에서 해소됐다.
+
+`정리 작업` 생략은 이번 PASS를 막지 않는다.
+
+```
+canonical flow에 보존돼 있다
+activity 8종 중 7종이 Overview에 표현됐다
+정리 작업은 1회 등장 non-repeated activity다
+prereg가 exhaustive activity listing을 요구하지 않았다
+```
+
+**이를 임의로 추가하기 위한 Overview 재생성은 하지 않는다.**
+
+### Overview branch freeze
+
+이 시점 이후 다음은 변경하지 않는다.
+
+```
+whole_video_activity_timeline · timeline lineage
+CANONICAL_FLOW · DETAILED_OVERVIEW · SHORT_OVERVIEW
+```
+
+```
+새 Overview prompt tuning 금지
+새 visual inference / STT inference 금지
+Event Map / Chapter / Boundary 연구 재개 금지
+```
+
+### 다음 단계 승인
+
+```
+NEXT STAGE APPROVED — WVR_WHOLE_VIDEO_REPORT_V1
+Whole-video Analysis → Conclusion → β/v3 report integration → HWPX
+```
+
+**목적이 architecture probe가 아니라 실제 최종 보고서 생성으로 바뀐다.**

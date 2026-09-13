@@ -202,8 +202,26 @@
   "detailed_overview": "음식 준비 및 조리와 구매 또는 둘러보기가 먼저 이어진다. 이후 음식 준비 및 조리가 다시 나타나며, 식사가 추가된다. 식사가 끝나면 다시 구매 또는 둘러보기가 나타나고, 이동과 외출 준비, 포장 작업, 의류 작업 및 수선 등이 순차적으로 이어진다. 영상은 식사로 끝난다.",
   "event": "WVR_WHOLE_VIDEO_OVERVIEW_SYNTHESIS_V2",
   "machine_checks_all_pass": true,
+  "reviewer_verdict": {
+    "cleanup_activity_omission": "PASS를 막지 않는다 — canonical flow에 보존 · 8종 중 7종 표현 · 1회 등장 non-repeated · prereg가 exhaustive listing 미요구",
+    "decided": "2026-09-13",
+    "frozen_branch": [
+      "whole_video_activity_timeline",
+      "timeline lineage",
+      "CANONICAL_FLOW",
+      "DETAILED_OVERVIEW",
+      "SHORT_OVERVIEW"
+    ],
+    "next_stage_approved": "WVR_WHOLE_VIDEO_REPORT_V1",
+    "no_regeneration": "정리 작업을 임의로 추가하기 위한 Overview 재생성 금지",
+    "v1_hold_causes_resolved": [
+      "SHORT/DETAILED 종료부 불일치",
+      "source보다 강한 일반화 표현"
+    ],
+    "verdict": "WHOLE_VIDEO_OVERVIEW_PASS"
+  },
   "short_overview": "음식 준비 및 조리와 구매 또는 둘러보기가 먼저 이어진다.  \n다시 음식 준비 및 조리가 나타나며 식사가 추가된다.  \n식사 후 구매 또는 둘러보기가 다시 나타나고, 이동과 외출 준비, 포장 작업, 의류 작업 및 수선 등이 순차적으로 이어진다.  \n영상은 식사로 끝난다.",
   "source_temporal_coverage_sec": 2424.0,
   "source_timeline_entry_count": 96,
-  "status": "GENERATED / REVIEW_REQUESTED"
+  "status": "CLOSED / WHOLE_VIDEO_OVERVIEW_PASS"
 }
