@@ -138,7 +138,10 @@ def build_segments(timeline: dict, m3_segments: list[dict]) -> dict:
         "subtitle_populated": sum(1 for s in segments if s["subtitle"]),
         "caption_populated": sum(1 for s in segments
                                  if s["caption"] and s["caption"] != EMPTY_CAPTION),
-        "split_entry_count": sum(1 for r in rows if r["source_entry_part_count"] > 1),
+        "split_entry_count": len({
+            r["source_entry_index"] for r in rows
+            if r["source_entry_part_count"] > 1
+        }),
     }
     return {"doc": doc, "lineage": lineage, "stats": stats}
 

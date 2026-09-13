@@ -85,6 +85,14 @@ def test_wvr_wr_06_exactly_five_entries_are_split():
 
 
 @needs_branch
+@pytest.mark.skipif(not M3.is_file(), reason="M3 STT 미존재")
+def test_wvr_wr_06b_split_entry_stat_counts_sources_not_pieces():
+    m3 = json.loads(M3.read_text(encoding="utf-8"))["segments"]
+    stats = wr.build_segments(_timeline(), m3)["stats"]
+    assert stats["split_entry_count"] == 5
+
+
+@needs_branch
 def test_wvr_wr_07_split_pieces_keep_the_source_activity_verbatim():
     timeline = _timeline()
     by_index = {e["entry_index"]: e for e in timeline["entries"]}
