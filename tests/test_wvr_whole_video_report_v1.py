@@ -7,15 +7,18 @@ from __future__ import annotations
 
 import json
 import sys
+import weakref
 from pathlib import Path
 
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT / "scripts"))
 
 import wvr_overview_synthesis_v2 as sv  # noqa: E402
 import wvr_whole_video_report_v1 as wr  # noqa: E402
+import wvr_whole_video_report_v1_run as run  # noqa: E402
 
 TIMELINE = (ROOT / "runs" / "wvr_whole_video_merge_v1" /
             "whole_video_activity_timeline.json")
@@ -306,3 +309,21 @@ def test_wvr_wr_26_beta_metrics_expose_exclusions_and_fallbacks():
     assert metrics["quality_exclusions"] == {"EP02": "PARSE_CONTRACT_FAILURE"}
     assert metrics["fallback"] == {"prompt_refusals": 0, "llm_failures": 0,
                                    "retries": 0}
+
+
+def test_wvr_wr_27_release_runtime_drops_model_and_processor_references():
+    class Payload:
+        pass
+
+    class Runtime:
+        pass
+
+    runtime = Runtime()
+    runtime.model = Payload()
+    runtime.processor = Payload()
+    model_ref = weakref.ref(runtime.model)
+    processor_ref = weakref.ref(runtime.processor)
+    run.release_runtime(runtime)
+    assert not hasattr(runtime, "model")
+    assert not hasattr(runtime, "processor")
+    assert model_ref() is None and processor_ref() is None

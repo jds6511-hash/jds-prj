@@ -66,7 +66,9 @@ def git_head() -> str:
 
 
 def release_runtime(runtime) -> None:
-    del runtime
+    for name in ("model", "processor", "tokenizer"):
+        if hasattr(runtime, name):
+            delattr(runtime, name)
     gc.collect()
     try:
         import torch
