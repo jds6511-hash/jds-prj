@@ -240,3 +240,26 @@ EXECUTED / REVIEW_PENDING
 ```
 
 그리고 STOP한다.
+
+---
+
+## 12. Pre-inference execution erratum — text hash의 EOL 정규화
+
+서버 최초 실행을 시작하기 전(Analysis 0회 · Conclusion 0회 · β/v3 0회),
+`overview_result.json`의 Windows checkout은 CRLF이고 Linux checkout은 LF여서 같은
+Git 내용이 서로 다른 SHA256으로 계산되는 것을 확인했다. 나머지 frozen branch
+3개 파일의 byte SHA256은 일치했다.
+
+Overview 내용이나 JSON 값은 수정하지 않는다. R1과 실행 직전/직후 동결 검사는
+텍스트 파일 바이트의 `CRLF → LF`만 정규화한 뒤 SHA256을 계산한다. 이외의 공백,
+문자, 필드, 배열 순서, JSON 직렬화는 정규화하지 않는다. 따라서 실제 내용 변경은
+계속 탐지된다.
+
+```
+erratum 시점 inference
+Analysis      0
+Conclusion    0
+β/v3          0
+visual        0
+STT           0
+```
