@@ -462,3 +462,383 @@ def write_source_insufficient_outputs(output_dir: Path, audits: list[dict],
     write_json(output_dir / "execution_record.json", record)
     write_json(output_dir / "result.json", result)
     return result
+
+
+def validate_detail(detail: dict) -> None:
+    validate_observation(detail)
+
+
+def validate_candidate(candidate: dict, allowed: set[str] | None = None) -> None:
+    allowed = set(allowed or ACTIVITY_LABELS)
+    activities = candidate.get("activities")
+    if (not isinstance(activities, list) or not activities
+            or any(activity not in allowed for activity in activities)):
+        raise GroundingError("unknown activity in candidate")
+    start, end = float(candidate["start_sec"]), float(candidate["end_sec"])
+    if end <= start:
+        raise GroundingError("invalid candidate interval")
+    if abs(float(candidate.get("duration_sec", end - start)) - (end - start)) > 1e-6:
+        raise GroundingError("candidate duration mismatch")
+    sources = candidate.get("sources")
+    if not isinstance(sources, list) or not sources:
+        raise GroundingError("candidate source lineage required")
+    for source in sources:
+        if (not source.get("chunk") or not source.get("window")
+                or not source.get("raw_path")
+                or not HEX64.fullmatch(str(source.get("raw_sha256", "")))):
+            raise GroundingError("candidate source lineage incomplete")
+    for fact in candidate.get("visual_facts", []):
+        if fact.get("confidence") != "high" or not fact.get("source_text"):
+            raise GroundingError("candidate visual fact invalid")
+        span = fact.get("source_span")
+        if (not isinstance(span, list) or len(span) != 2
+                or float(span[0]) < start or float(span[1]) > end
+                or float(span[1]) <= float(span[0])):
+            raise GroundingError("candidate visual fact outside interval")
+
+
+def validate_highlights(rows: list[dict], allowed: set[str] | None = None) -> None:
+    ids: set[str] = set()
+    cursor = float("-inf")
+    for row in rows:
+        validate_candidate(row, allowed)
+        identifier = row.get("highlight_id", row.get("candidate_id"))
+        if not identifier or identifier in ids:
+            raise GroundingError("duplicate highlight id")
+        ids.add(identifier)
+        if float(row["start_sec"]) < cursor:
+            raise GroundingError("nonmonotonic highlight time")
+        cursor = float(row["end_sec"])
+
+
+def build_grounded_store(audits: list[dict]) -> tuple[list[dict], dict]:
+    observations = []
+    details = []
+    for index, audit in enumerate(audits, start=1):
+        observation = dict(audit["observation"])
+        observation["observation_id"] = observation.get("observation_id") or f"GO{index:04d}"
+        validate_observation(observation)
+        observations.append(observation)
+        for fact_index, fact in enumerate(observation["visual_facts"], start=1):
+            details.append({
+                "detail_id": f"GD{len(details) + 1:04d}",
+                "observation_id": observation["observation_id"],
+                "start_sec": observation["start_sec"],
+                "end_sec": observation["end_sec"],
+                "broad_activity": observation["broad_activity"],
+                "visual_fact": fact,
+                "source": observation["source"],
+            })
+    return observations, {
+        "event": EVENT,
+        "detail_count": len(details),
+        "details": details,
+    }
+
+
+def _coverage_seconds(entries: list[dict]) -> dict[str, float]:
+    coverage: defaultdict[str, float] = defaultdict(float)
+    for entry in entries:
+        duration = float(entry["end_sec"]) - float(entry["start_sec"])
+        for activity in entry.get("broad_activity", []):
+            coverage[activity] += duration
+    return dict(coverage)
+
+
+def _temporal_zone(start: float, end: float, total_end: float) -> str:
+    midpoint = (start + end) / 2
+    if midpoint < total_end / 3:
+        return "early"
+    if midpoint < total_end * 2 / 3:
+        return "middle"
+    return "late"
+
+
+def build_candidates(audits: list[dict], timeline: dict) -> list[dict]:
+    entries = list(timeline.get("entries", []))
+    if not entries:
+        raise GroundingError("timeline entries required")
+    by_source = {(row["chunk"], row["window"]): row for row in audits}
+    coverage = _coverage_seconds(entries)
+    total_end = float(entries[-1]["end_sec"])
+    blocks: list[dict] = []
+    for entry in entries:
+        signature = tuple(entry.get("broad_activity", []))
+        if not signature or any(activity not in ACTIVITY_LABELS for activity in signature):
+            raise GroundingError("unknown activity in timeline")
+        start, end = float(entry["start_sec"]), float(entry["end_sec"])
+        source_window = entry.get("source_window", {})
+        key = (entry.get("source_chunk"), source_window.get("segment_id"))
+        audit = by_source.get(key)
+        if audit is None:
+            raise GroundingError(f"timeline source missing from audit: {key}")
+        facts = []
+        for fact in audit.get("eligible_visual_facts", []):
+            attached = dict(fact)
+            attached["source_span"] = [start, end]
+            facts.append(attached)
+        source = dict(audit["observation"]["source"])
+        observation_id = audit["observation"]["observation_id"]
+        if (blocks and tuple(blocks[-1]["activities"]) == signature
+                and abs(float(blocks[-1]["end_sec"]) - start) <= 1e-9):
+            block = blocks[-1]
+            block["end_sec"] = end
+            block["timeline_entry_ids"].append(entry["entry_index"])
+            if observation_id not in block["grounded_observation_ids"]:
+                block["grounded_observation_ids"].append(observation_id)
+            if source not in block["sources"]:
+                block["sources"].append(source)
+            for fact in facts:
+                if fact not in block["visual_facts"]:
+                    block["visual_facts"].append(fact)
+        else:
+            blocks.append({
+                "start_sec": start, "end_sec": end,
+                "activities": list(signature), "visual_facts": facts,
+                "timeline_entry_ids": [entry["entry_index"]],
+                "grounded_observation_ids": [observation_id],
+                "sources": [source],
+            })
+    final_signature = tuple(entries[-1]["broad_activity"])
+    final_start = float(entries[-1]["start_sec"])
+    for entry in reversed(entries[:-1]):
+        if (tuple(entry["broad_activity"]) == final_signature
+                and abs(float(entry["end_sec"]) - final_start) <= 1e-9):
+            final_start = float(entry["start_sec"])
+        else:
+            break
+    candidates = []
+    for block in blocks:
+        is_final = (abs(block["start_sec"] - final_start) <= 1e-9
+                    and abs(block["end_sec"] - total_end) <= 1e-9)
+        if not block["visual_facts"] and not is_final:
+            continue
+        facts = block["visual_facts"]
+        unique_facts = {fact["text"] for fact in facts}
+        candidate = {
+            "candidate_id": f"GC{len(candidates) + 1:04d}",
+            **block,
+            "duration_sec": block["end_sec"] - block["start_sec"],
+            "temporal_zone": _temporal_zone(block["start_sec"], block["end_sec"],
+                                             total_end),
+            "visual_fact_count": len(facts),
+            "unique_visual_fact_count": len(unique_facts),
+            "activity_coverage_seconds": {
+                activity: coverage[activity] for activity in block["activities"]
+            },
+            "activity_rarity_seconds": min(
+                coverage[activity] for activity in block["activities"]),
+            "is_final_phase": is_final,
+        }
+        validate_candidate(candidate)
+        candidates.append(candidate)
+    signatures = Counter(tuple(row["activities"]) for row in candidates)
+    for candidate in candidates:
+        candidate["activity_signature_repeat_count"] = signatures[
+            tuple(candidate["activities"])]
+    return candidates
+
+
+def _candidate_rank(candidate: dict) -> tuple:
+    rarity = min(candidate.get("activity_coverage_seconds", {"": float("inf")}).values())
+    return (
+        -int(bool(candidate.get("visual_facts"))),
+        -int(candidate.get("unique_visual_fact_count", 0)),
+        float(rarity),
+        -float(candidate["duration_sec"]),
+        float(candidate["start_sec"]),
+        str(candidate["candidate_id"]),
+    )
+
+
+def _can_select(candidate: dict, selected: list[dict]) -> bool:
+    signature = tuple(candidate["activities"])
+    same = [row for row in selected if tuple(row["activities"]) == signature]
+    if len(same) >= 2:
+        return False
+    fact_set = {fact["text"] for fact in candidate.get("visual_facts", [])}
+    if any(fact_set == {fact["text"] for fact in row.get("visual_facts", [])}
+           for row in same):
+        return False
+    start, end = float(candidate["start_sec"]), float(candidate["end_sec"])
+    return not any(start < float(row["end_sec"]) and end > float(row["start_sec"])
+                   for row in selected)
+
+
+def select_highlights(candidates: list[dict], final_span: list[float],
+                      dominant: set[str]) -> list[dict]:
+    if not candidates:
+        raise GroundingError("DIVERSITY_SELECTION_CONTRACT_UNSATISFIED")
+    for candidate in candidates:
+        validate_candidate(candidate)
+    target = min(7, len(candidates))
+    ranked = sorted(candidates, key=_candidate_rank)
+    selected: list[dict] = []
+
+    final = next((row for row in candidates
+                  if [float(row["start_sec"]), float(row["end_sec"])]
+                  == [float(final_span[0]), float(final_span[1])]), None)
+    if final is None:
+        raise GroundingError("DIVERSITY_SELECTION_CONTRACT_UNSATISFIED: final")
+    selected.append(final)
+
+    for zone in ("early", "middle", "late"):
+        if any(row["temporal_zone"] == zone and row.get("visual_facts")
+               for row in selected):
+            continue
+        choice = next((row for row in ranked
+                       if row["temporal_zone"] == zone and row.get("visual_facts")
+                       and row not in selected and _can_select(row, selected)), None)
+        if choice is None:
+            raise GroundingError(
+                f"DIVERSITY_SELECTION_CONTRACT_UNSATISFIED: {zone}")
+        selected.append(choice)
+
+    while sum(bool(set(row["activities"]) - set(dominant))
+              for row in selected) < 2:
+        choice = next((row for row in ranked
+                       if row not in selected
+                       and bool(set(row["activities"]) - set(dominant))
+                       and _can_select(row, selected)), None)
+        if choice is None:
+            break
+        selected.append(choice)
+
+    for candidate in ranked:
+        if len(selected) >= target:
+            break
+        if candidate not in selected and _can_select(candidate, selected):
+            selected.append(candidate)
+    if len(selected) < 5:
+        raise GroundingError("DIVERSITY_SELECTION_CONTRACT_UNSATISFIED: count")
+
+    selected.sort(key=lambda row: (float(row["start_sec"]), row["candidate_id"]))
+    highlights = []
+    for index, candidate in enumerate(selected, start=1):
+        item = copy_dict(candidate)
+        item["highlight_id"] = f"H{index:02d}"
+        item["description"] = render_highlight(item)
+        highlights.append(item)
+    validate_highlights(highlights)
+    return highlights
+
+
+def copy_dict(value: dict) -> dict:
+    return json.loads(json.dumps(value, ensure_ascii=False))
+
+
+def _format_time(seconds: float) -> str:
+    total = int(round(seconds))
+    return f"{total // 60:02d}:{total % 60:02d}"
+
+
+def render_highlight(candidate: dict) -> str:
+    time_range = f'{_format_time(candidate["start_sec"])}–{_format_time(candidate["end_sec"])}'
+    activities = candidate["activities"]
+    if len(activities) == 1:
+        lead = f"{time_range}에는 {activities[0]}가 나타난다."
+    else:
+        lead = f"{time_range}에는 {' · '.join(activities)} 활동이 함께 나타난다."
+    facts = [fact["text"].rstrip(".。") for fact in candidate.get("visual_facts", [])[:2]]
+    return " ".join([lead] + [f"{fact}." for fact in facts])
+
+
+def render_pair(left: dict, right: dict) -> str:
+    adjacent = abs(float(left["end_sec"]) - float(right["start_sec"])) <= 1e-9
+    different = tuple(left["activities"]) != tuple(right["activities"])
+    if adjacent and different:
+        return f"{' · '.join(left['activities'])}에서 {' · '.join(right['activities'])}로 전환된다."
+    return f"{' · '.join(left['activities'])} 뒤 {' · '.join(right['activities'])}가 나타난다."
+
+
+def compare_v3(highlights: list[dict], v3_highlights: list[dict],
+               dominant: set[str]) -> dict:
+    def metrics(rows: list[dict]) -> dict:
+        signatures = [tuple(row.get("activities", [])) for row in rows]
+        non_dominant = sum(bool(set(signature) - dominant) for signature in signatures)
+        detail_bearing = sum(bool(row.get("visual_facts")) for row in rows)
+        return {
+            "highlight_count": len(rows),
+            "distinct_activity_signatures": len(set(signatures)),
+            "non_dominant_highlight_count": non_dominant,
+            "grounded_detail_highlight_count": detail_bearing,
+        }
+    return {"v3": metrics(v3_highlights), "grounded_v1": metrics(highlights)}
+
+
+def write_branch_a_outputs(output_dir: Path, audits: list[dict],
+                           execution_record: dict, decision: dict,
+                           observations: list[dict], detail_store: dict,
+                           candidates: list[dict], highlights: list[dict],
+                           comparison: dict) -> dict:
+    """Write only the preregistered Branch A data layer plus audit records."""
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    for observation in observations:
+        validate_observation(observation)
+    validate_highlights(highlights)
+    detail_lineage = {
+        "event": EVENT,
+        "lineage": [{
+            "detail_id": row["detail_id"],
+            "observation_id": row["observation_id"],
+            "source": row["source"],
+        } for row in detail_store.get("details", [])],
+        "lineage_completeness": 1.0 if detail_store.get("details") else 1.0,
+    }
+    highlight_lineage = {
+        "event": EVENT,
+        "lineage": [{
+            "highlight_id": row["highlight_id"],
+            "candidate_id": row["candidate_id"],
+            "grounded_observation_ids": row["grounded_observation_ids"],
+            "sources": row["sources"],
+        } for row in highlights],
+        "lineage_completeness": 1.0,
+    }
+    audit_payload = {"event": EVENT, "raw_file_count": len(audits),
+                     "audits": audits}
+    result = {
+        "event": EVENT, "branch": "A", "gate": decision,
+        "grounded_observation_count": len(observations),
+        "grounded_detail_count": len(detail_store.get("details", [])),
+        "highlight_candidate_count": len(candidates),
+        "highlight_count": len(highlights),
+        "lineage_completeness": 1.0,
+        "comparison_v3": comparison,
+        "new_visual_inference_required": "UNKNOWN",
+        "downstream_grounded_store_executed": True,
+        "highlight_selection_executed": True,
+        "inference": dict(ZERO_INFERENCE),
+        "status": "EXECUTED / REVIEW_PENDING",
+    }
+    record = dict(execution_record)
+    record.update({"decision": "BRANCH_A", "status": result["status"],
+                   "inference": dict(ZERO_INFERENCE)})
+    payloads = {
+        "raw_detail_audit.json": audit_payload,
+        "execution_record.json": record,
+        "result.json": result,
+        "grounded_observations.json": {
+            "event": EVENT, "observations": observations},
+        "grounded_detail_store.json": detail_store,
+        "grounded_detail_lineage.json": detail_lineage,
+        "highlight_candidates.json": {
+            "event": EVENT, "candidates": candidates},
+        "highlights.json": highlights,
+        "highlight_lineage.json": highlight_lineage,
+        "comparison_v3.json": comparison,
+    }
+    for name, payload in payloads.items():
+        write_json(output_dir / name, payload)
+    return result
+
+
+def tree_sha256(root: Path) -> str:
+    digest = hashlib.sha256()
+    for path in sorted(path for path in Path(root).rglob("*") if path.is_file()):
+        digest.update(path.relative_to(root).as_posix().encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(bytes.fromhex(sha256_file(path)))
+        digest.update(b"\n")
+    return digest.hexdigest()

@@ -211,3 +211,142 @@ def test_source_hash_drift_fails_closed(tmp_path):
     after = ge.snapshot_sources(tmp_path, ["protected.txt"])
     with pytest.raises(ge.GroundingError, match="source hash drift"):
         ge.assert_unchanged(before, after)
+
+
+def valid_detail():
+    return valid_observation()
+
+
+def valid_candidate(candidate_id="C001", start=0.0, end=24.0,
+                    activities=None, zone="early", fact_text=None,
+                    final=False):
+    activities = list(activities or ["음식 준비 및 조리"])
+    fact_text = fact_text or f"재료를 손으로 다룬다 {candidate_id}"
+    return {
+        "candidate_id": candidate_id,
+        "start_sec": float(start), "end_sec": float(end),
+        "duration_sec": float(end - start),
+        "activities": activities, "temporal_zone": zone,
+        "visual_facts": [{
+            "text": fact_text, "source_text": fact_text,
+            "confidence": "high", "source_span": [float(start), float(end)],
+        }],
+        "unique_visual_fact_count": 1,
+        "activity_coverage_seconds": {activity: 30.0 for activity in activities},
+        "timeline_entry_ids": [1], "grounded_observation_ids": ["GO0001"],
+        "sources": [{"chunk": "C01", "window": "S01",
+                     "raw_path": "raw.txt", "raw_sha256": "a" * 64}],
+        "is_final_phase": final,
+    }
+
+
+def test_detail_without_lineage_is_rejected():
+    detail = valid_detail()
+    del detail["source"]
+    with pytest.raises(ge.GroundingError, match="source lineage"):
+        ge.validate_detail(detail)
+
+
+def test_activity_outside_allowed_or_source_set_is_rejected():
+    candidate = valid_candidate(activities=["자동차 운전"])
+    with pytest.raises(ge.GroundingError, match="unknown activity"):
+        ge.validate_candidate(candidate, ALLOWED)
+
+
+def test_duplicate_id_and_nonmonotonic_time_are_rejected():
+    rows = [
+        valid_candidate("H01", 20, 30),
+        valid_candidate("H01", 0, 10),
+    ]
+    with pytest.raises(ge.GroundingError):
+        ge.validate_highlights(rows, ALLOWED)
+
+
+def selection_fixture():
+    return [
+        valid_candidate("C001", 0, 25, activities=["음식 준비 및 조리"],
+                        zone="early", fact_text="재료를 손으로 다룬다 하나"),
+        valid_candidate("C002", 30, 55, activities=["음식 준비 및 조리"],
+                        zone="early", fact_text="재료를 그릇에 담는다 둘"),
+        valid_candidate("C003", 60, 85, activities=["음식 준비 및 조리"],
+                        zone="early", fact_text="음식을 용기에 넣는다 셋"),
+        valid_candidate("C004", 100, 125, activities=["의류 작업 및 수선"],
+                        zone="middle", fact_text="옷을 손으로 수선한다"),
+        valid_candidate("C005", 135, 160, activities=["포장 작업"],
+                        zone="middle", fact_text="물건을 종이로 포장한다"),
+        valid_candidate("C006", 200, 225, activities=["구매 또는 둘러보기"],
+                        zone="late", fact_text="사람이 걸으며 이동한다"),
+        valid_candidate("C007", 235, 260, activities=["정리 작업"],
+                        zone="late", fact_text="물건을 손으로 정리한다"),
+        valid_candidate("C008", 270, 300, activities=["식사"],
+                        zone="late", fact_text="사람이 음식을 먹는다",
+                        final=True),
+    ]
+
+
+def test_selector_caps_identical_signature_and_keeps_zones_and_final():
+    got = ge.select_highlights(
+        selection_fixture(), [270.0, 300.0],
+        dominant={"음식 준비 및 조리", "구매 또는 둘러보기"},
+    )
+    assert 5 <= len(got) <= 8
+    assert max(Counter(tuple(x["activities"]) for x in got).values()) <= 2
+    assert {x["temporal_zone"] for x in got} == {"early", "middle", "late"}
+    assert [got[-1]["start_sec"], got[-1]["end_sec"]] == [270.0, 300.0]
+    assert sum(bool(set(x["activities"]) - {
+        "음식 준비 및 조리", "구매 또는 둘러보기"
+    }) for x in got) >= 2
+
+
+def test_same_label_and_nonadjacent_highlights_never_claim_transition():
+    same = ge.render_highlight(valid_candidate(
+        "H01", 0, 24, activities=["식사"], fact_text="사람이 음식을 먹는다"))
+    assert "전환" not in same
+    pair = ge.render_pair(
+        valid_candidate("H01", 0, 24, activities=["식사"]),
+        valid_candidate("H02", 48, 72, activities=["이동"]),
+    )
+    assert "전환" not in pair
+
+
+def test_compound_label_uses_separator_not_broken_particle():
+    text = ge.render_highlight(valid_candidate(
+        "H01", 0, 24,
+        activities=["구매 또는 둘러보기", "음식 준비 및 조리"],
+    ))
+    assert "구매 또는 둘러보기 · 음식 준비 및 조리 활동이 함께 나타난다" in text
+    assert "둘러보기와" not in text
+    assert "둘러보기과" not in text
+
+
+def test_adjacent_different_pair_may_claim_transition():
+    pair = ge.render_pair(
+        valid_candidate("H01", 0, 24, activities=["식사"]),
+        valid_candidate("H02", 24, 48, activities=["이동"]),
+    )
+    assert "전환" in pair
+
+
+def test_branch_a_writer_emits_only_preregistered_data_artifacts(tmp_path):
+    candidates = selection_fixture()
+    highlights = ge.select_highlights(
+        candidates, [270.0, 300.0],
+        dominant={"음식 준비 및 조리", "구매 또는 둘러보기"},
+    )
+    observation = valid_observation()
+    observation["observation_id"] = "GO0001"
+    result = ge.write_branch_a_outputs(
+        tmp_path, audits=[], execution_record={"raw_files_inspected": 116},
+        decision={"branch": "A", "metrics": {}, "all_thresholds_pass": True},
+        observations=[observation], detail_store={"details": []},
+        candidates=candidates, highlights=highlights,
+        comparison={"v3": {}, "grounded_v1": {}},
+    )
+    assert result["status"] == "EXECUTED / REVIEW_PENDING"
+    assert sorted(p.name for p in tmp_path.iterdir()) == sorted([
+        "raw_detail_audit.json", "execution_record.json", "result.json",
+        "grounded_observations.json", "grounded_detail_store.json",
+        "grounded_detail_lineage.json", "highlight_candidates.json",
+        "highlights.json", "highlight_lineage.json", "comparison_v3.json",
+    ])
+    assert not any(p.suffix in {".md", ".hwpx"} for p in tmp_path.iterdir())
