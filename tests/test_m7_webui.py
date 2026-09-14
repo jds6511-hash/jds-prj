@@ -1,0 +1,593 @@
+import json
+import threading
+import time
+import warnings
+from pathlib import Path
+from types import SimpleNamespace
+
+import pytest
+from starlette.exceptions import StarletteDeprecationWarning
+
+# StarletteDeprecationWarning(UserWarning 하위)이 fastapi.testclient import 시점에
+# 발생함(DeprecationWarning이 아니므로 pytest filterwarnings 마커로는 못 잡음).
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore", category=StarletteDeprecationWarning)
+    from fastapi.testclient import TestClient
+from m5_search import Result
+from m7_webui import create_app, sanitize_video_id
+
+
+def make_cfg(tmp_path):
+    return {"paths": {"data": str(tmp_path / "data"), "work": str(tmp_path / "work"),
+                      "results": str(tmp_path / "results")},
+            "embed_model": "stub-model", "seg_len_sec": 5, "static_threshold": 0.05}
+
+
+def make_client(tmp_path, run_module=lambda script, cfgp, vid: None, cfg=None, **kw):
+    cfg = cfg or make_cfg(tmp_path)
+    app = create_app(cfg, "config.yaml", alpha=0.5, run_module=run_module, **kw)
+    return TestClient(app), cfg
+
+
+def wait_stage(client, vid, target, timeout=2.0):
+    deadline = time.time() + timeout
+    st = None
+    while time.time() < deadline:
+        st = client.get(f"/api/status/{vid}").json()
+        if st["stage"] == target:
+            return st
+        time.sleep(0.01)
+    raise AssertionError(f"stage '{target}' 도달 실패: {st}")
+
+
+def test_sanitize_video_id():
+    assert sanitize_video_id("my video! (1)") == "my_video___1_"
+    assert sanitize_video_id("clip_01-final") == "clip_01-final"
+
+
+def test_upload_rejects_non_mp4(tmp_path):
+    client, _ = make_client(tmp_path)
+    r = client.post("/api/upload", files={"file": ("a.txt", b"x", "text/plain")})
+    assert r.status_code == 400
+
+
+def test_upload_runs_pipeline_to_done(tmp_path):
+    calls = []
+    client, cfg = make_client(tmp_path,
+                              run_module=lambda s, c, v: calls.append(s))
+    r = client.post("/api/upload",
+                    files={"file": ("My Clip.mp4", b"\x00\x01", "video/mp4")})
+    assert r.status_code == 200
+    vid = r.json()["video_id"]
+    assert vid == "My_Clip"
+    wait_stage(client, vid, "done")
+    assert calls == ["m1_preprocess.py", "m2_keyframe.py",
+                     "m3_generate.py", "m4_index.py"]
+    assert (Path(cfg["paths"]["data"]) / "videos" / "My_Clip.mp4").read_bytes() \
+        == b"\x00\x01"
+
+
+def test_pipeline_failure_reports_stage_and_detail(tmp_path):
+    def boom(script, cfgp, vid):
+        if script == "m3_generate.py":
+            raise RuntimeError("m3_generate.py 실패:\nCUDA OOM")
+    client, _ = make_client(tmp_path, run_module=boom)
+    vid = client.post("/api/upload",
+                      files={"file": ("v.mp4", b"\x00", "video/mp4")}).json()["video_id"]
+    st = wait_stage(client, vid, "error")
+    assert "m3_generate.py 실패" in st["detail"]
+
+
+def test_second_upload_while_busy_is_409(tmp_path):
+    gate = threading.Event()
+    client, _ = make_client(tmp_path, run_module=lambda s, c, v: gate.wait(1))
+    r1 = client.post("/api/upload", files={"file": ("a.mp4", b"\x00", "video/mp4")})
+    assert r1.status_code == 200
+    r2 = client.post("/api/upload", files={"file": ("b.mp4", b"\x00", "video/mp4")})
+    assert r2.status_code == 409
+    gate.set()
+    wait_stage(client, "a", "done")   # 정리: 잡 완료 후 종료
+
+
+def test_upload_write_failure_releases_busy(tmp_path, monkeypatch):
+    orig_write_bytes = Path.write_bytes
+    calls = {"n": 0}
+
+    def flaky_write_bytes(self, data):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            raise OSError("디스크 가득 참")
+        return orig_write_bytes(self, data)
+
+    monkeypatch.setattr(Path, "write_bytes", flaky_write_bytes)
+    client, _ = make_client(tmp_path)
+
+    r1 = client.post("/api/upload", files={"file": ("a.mp4", b"\x00", "video/mp4")})
+    assert r1.status_code == 500
+
+    r2 = client.post("/api/upload", files={"file": ("b.mp4", b"\x00", "video/mp4")})
+    assert r2.status_code == 200
+
+
+def test_upload_non_oserror_failure_releases_busy(tmp_path, monkeypatch):
+    # 비-OSError 예외(멀티파트 파싱 오류, 클라이언트 절단 등)도 busy를 해제해야 함
+    def boom_write_bytes(self, data):
+        raise RuntimeError("클라이언트 연결 끊김")
+
+    monkeypatch.setattr(Path, "write_bytes", boom_write_bytes)
+    client, _ = make_client(tmp_path)
+
+    r1 = client.post("/api/upload", files={"file": ("a.mp4", b"\x00", "video/mp4")})
+    assert r1.status_code == 500
+
+    monkeypatch.undo()
+    r2 = client.post("/api/upload", files={"file": ("b.mp4", b"\x00", "video/mp4")})
+    assert r2.status_code == 200
+
+
+def test_status_unknown_video_404(tmp_path):
+    client, _ = make_client(tmp_path)
+    assert client.get("/api/status/nope").status_code == 404
+
+
+def write_segments(cfg, vid, n=3):
+    wdir = Path(cfg["paths"]["work"]) / vid
+    wdir.mkdir(parents=True)
+    doc = {"video_id": vid, "duration_sec": n * 5.0, "fps": 30.0, "n_segments": n,
+           "segments": [{"idx": i, "start": i * 5, "end": i * 5 + 5,
+                         "rep_frame": "", "is_static": False, "motion_score": 0.1,
+                         "subtitle": f"자막{i}", "caption": f"설명{i}"}
+                        for i in range(n)]}
+    (wdir / "segments.json").write_text(
+        json.dumps(doc, ensure_ascii=False), encoding="utf-8")
+
+
+def _stub_index(n=3):
+    return SimpleNamespace(segments=[
+        {"idx": i, "start": i * 5, "end": i * 5 + 5,
+         "subtitle": f"자막{i}", "caption": f"설명{i}"} for i in range(n)])
+
+
+def test_segments_endpoint_returns_list(tmp_path):
+    client, cfg = make_client(tmp_path)
+    write_segments(cfg, "v1")
+    r = client.get("/api/segments/v1")
+    assert r.status_code == 200
+    segs = r.json()["segments"]
+    assert len(segs) == 3
+    assert segs[0] == {"idx": 0, "start": 0, "end": 5,
+                       "subtitle": "자막0", "caption": "설명0"}
+
+
+def test_segments_missing_index_404(tmp_path):
+    client, _ = make_client(tmp_path)
+    assert client.get("/api/segments/nope").status_code == 404
+
+
+def test_segments_invariant_violation_404(tmp_path):
+    # common.load_segments가 던지는 ValueError(불변식/필드 누락)도 404로 매핑돼야 함
+    client, cfg = make_client(tmp_path)
+    wdir = Path(cfg["paths"]["work"]) / "v1"
+    wdir.mkdir(parents=True)
+    bad_doc = {"video_id": "v1", "duration_sec": 5.0, "fps": 30.0, "n_segments": 2,
+               "segments": [{"idx": 0, "start": 0, "end": 5, "rep_frame": "",
+                             "is_static": False, "motion_score": 0.1,
+                             "subtitle": "자막0", "caption": "설명0"}]}
+    (wdir / "segments.json").write_text(
+        json.dumps(bad_doc, ensure_ascii=False), encoding="utf-8")
+    r = client.get("/api/segments/v1")
+    assert r.status_code == 404
+
+
+def test_search_returns_top3_cards(tmp_path):
+    ranked = [Result(2, 0.9, 10, 15), Result(0, 0.8, 0, 5),
+              Result(1, 0.7, 5, 10), Result(3, 0.1, 15, 20)]
+    client, _ = make_client(tmp_path,
+                            search_fn=lambda q, v, a, c: ranked,
+                            load_index=lambda cfg, vid: _stub_index(4))
+    r = client.post("/api/search", json={"video_id": "v1", "query": "질의"})
+    assert r.status_code == 200
+    res = r.json()["results"]
+    assert len(res) == 3                                  # 기본 Top-3
+    assert res[0] == {"rank": 1, "idx": 2, "start": 10, "end": 15,
+                      "seek_to": 10, "score": 0.9,
+                      "subtitle": "자막2", "caption": "설명2"}
+
+
+def test_search_empty_query_400(tmp_path):
+    client, _ = make_client(tmp_path)
+    r = client.post("/api/search", json={"video_id": "v1", "query": "  "})
+    assert r.status_code == 400
+
+
+def test_search_while_indexing_409(tmp_path):
+    gate = threading.Event()
+    client, _ = make_client(tmp_path, run_module=lambda s, c, v: gate.wait(1))
+    vid = client.post("/api/upload",
+                      files={"file": ("v.mp4", b"\x00", "video/mp4")}).json()["video_id"]
+    r = client.post("/api/search", json={"video_id": vid, "query": "질의"})
+    assert r.status_code == 409
+    assert "인덱싱" in r.json()["detail"]
+    gate.set()
+    wait_stage(client, vid, "done")
+
+
+def test_search_no_index_files_404(tmp_path):
+    def missing(cfg, vid):
+        raise FileNotFoundError("emb_sub.npy 없음 — run m4_index.py first")
+    client, _ = make_client(tmp_path, load_index=missing)
+    r = client.post("/api/search", json={"video_id": "v1", "query": "질의"})
+    assert r.status_code == 404
+
+
+def test_search_index_mismatch_valueerror_404(tmp_path):
+    # VideoIndex.load가 임베딩 모델/세그먼트 수 불일치 시 던지는 ValueError도 404 + 원인 포함
+    def mismatch(cfg, vid):
+        raise ValueError("임베딩 모델 불일치: index=a config=b — run m4_index.py --force")
+    client, _ = make_client(tmp_path, load_index=mismatch)
+    r = client.post("/api/search", json={"video_id": "v1", "query": "질의"})
+    assert r.status_code == 404
+    assert "임베딩 모델 불일치" in r.json()["detail"]
+
+
+def test_search_after_indexing_error_is_409_with_failure_message(tmp_path):
+    def boom(script, cfgp, vid):
+        raise RuntimeError("m1_preprocess.py 실패:\n뭔가 잘못됨")
+    client, _ = make_client(tmp_path, run_module=boom)
+    vid = client.post("/api/upload",
+                      files={"file": ("v.mp4", b"\x00", "video/mp4")}).json()["video_id"]
+    wait_stage(client, vid, "error")
+    r = client.post("/api/search", json={"video_id": vid, "query": "질의"})
+    assert r.status_code == 409
+    assert "실패" in r.json()["detail"]
+
+
+def test_search_video_id_traversal_is_sanitized_to_404(tmp_path):
+    client, _ = make_client(tmp_path)
+    r = client.post("/api/search", json={"video_id": "../etc", "query": "질의"})
+    assert r.status_code == 404
+
+
+def test_search_returns_raw_stats_and_logs_search(tmp_path):
+    # search_stats_fn 스텁 주입 → 응답에 raw 4개 키 + search_log.jsonl에 줄 추가 [HIGH-2]
+    stats = {"raw_sub_max": 0.9, "raw_sub_mean": 0.5,
+             "raw_cap_max": 0.8, "raw_cap_mean": 0.4}
+    ranked = [Result(0, 0.9, 0, 5)]
+    client, cfg = make_client(
+        tmp_path,
+        search_stats_fn=lambda q, v, a, c: (ranked, stats),
+        load_index=lambda cfg, vid: _stub_index(1))
+    r = client.post("/api/search", json={"video_id": "v1", "query": "질의"})
+    assert r.status_code == 200
+    body = r.json()
+    assert body["raw"] == stats
+
+    log_path = Path(cfg["paths"]["results"]) / "search_log.jsonl"
+    assert log_path.exists()
+    line = json.loads(log_path.read_text(encoding="utf-8").strip().splitlines()[-1])
+    assert line["video_id"] == "v1"
+    assert line["query"] == "질의"
+    assert line["alpha"] == 0.5
+    assert line["top1_idx"] == 0
+    assert line["top1_score"] == 0.9
+    for k, v in stats.items():
+        assert line[k] == v
+
+
+def test_meta_exposes_confirmed_settings(tmp_path):
+    # 헤더가 확정 설정을 표시한다 — 발표 중 "α는 얼마냐"가 나오면 화면이 이미 답한다.
+    # alpha는 config에 없고 CLI 주입값이라(절대규칙 5) 서버가 알려주는 수밖에 없다.
+    client, cfg = make_client(tmp_path)
+    body = client.get("/api/meta").json()
+    assert body["alpha"] == 0.5
+    assert body["seg_len_sec"] == cfg["seg_len_sec"]
+    assert body["embed_model"] == cfg["embed_model"]
+
+
+def test_per_seg_reaches_response_but_never_the_log(tmp_path):
+    # 타임라인 리본이 per_seg를 쓴다. 그런데 search_log.jsonl은 검색 1건마다
+    # 한 줄씩 쌓이므로, 세그먼트 수만큼의 배열 3개가 들어가면 시연 몇 번에
+    # 로그가 수 MB로 불어난다. 응답에는 넣고 로그에서는 뺀다.
+    per_seg = {"sub": [0.1, 0.2], "cap": [0.3, 0.4], "fused": [-1.0, 1.0]}
+    stats = {"raw_sub_max": 0.9, "raw_sub_mean": 0.5,
+             "raw_cap_max": 0.8, "raw_cap_mean": 0.4, "per_seg": per_seg}
+    client, cfg = make_client(
+        tmp_path,
+        search_stats_fn=lambda q, v, a, c: ([Result(0, 0.9, 0, 5)], stats),
+        load_index=lambda cfg, vid: _stub_index(2))
+    body = client.post("/api/search", json={"video_id": "v1", "query": "질의"}).json()
+    assert body["raw"]["per_seg"] == per_seg
+
+    line = json.loads((Path(cfg["paths"]["results"]) / "search_log.jsonl")
+                      .read_text(encoding="utf-8").strip().splitlines()[-1])
+    assert "per_seg" not in line
+    assert line["raw_sub_max"] == 0.9          # 나머지 통계는 그대로 남는다
+
+
+def _search_with_tau(tmp_path, raw_sub_max, tau, raw_cap_max=0.5):
+    stats = {"raw_sub_max": raw_sub_max, "raw_sub_mean": 0.4,
+             "raw_cap_max": raw_cap_max, "raw_cap_mean": 0.3}
+    ranked = [Result(0, 0.9, 0, 5)]
+    cfg = make_cfg(tmp_path)
+    if tau is not None:
+        cfg["abstention_tau"] = tau
+    client, _ = make_client(tmp_path, cfg=cfg,
+                            search_stats_fn=lambda q, v, a, c: (ranked, stats),
+                            load_index=lambda cfg, vid: _stub_index(1))
+    r = client.post("/api/search", json={"video_id": "v1", "query": "질의"})
+    assert r.status_code == 200
+    return r.json()
+
+
+def test_search_low_relevance_banner_flag(tmp_path):
+    # [8-2 개정 2026-07-13] max(raw_sub_max, raw_cap_max) < tau → low_relevance=True.
+    # 결과 목록은 그대로(은폐 금지).
+    body = _search_with_tau(tmp_path, raw_sub_max=0.40, raw_cap_max=0.50, tau=0.55)
+    assert body["low_relevance"] is True
+    assert len(body["results"]) == 1          # 결과는 여전히 반환
+
+    body = _search_with_tau(tmp_path, raw_sub_max=0.60, raw_cap_max=0.50, tau=0.55)
+    assert body["low_relevance"] is False
+
+
+def test_search_low_relevance_caption_channel_rescues_scene_query(tmp_path):
+    # 장면형 질의 시나리오: 무발화 장면이라 자막 코사인은 낮지만(0.40) 캡션이 붙으면(0.60)
+    # 유관 — sub 단독 채널이었다면 오배제됐을 케이스가 max 채널에서는 배너 없음
+    # [설계 점검 1, 2026-07-13]
+    body = _search_with_tau(tmp_path, raw_sub_max=0.40, raw_cap_max=0.60, tau=0.55)
+    assert body["low_relevance"] is False
+
+
+def test_search_no_tau_key_omits_low_relevance(tmp_path):
+    # abstention_tau 미설정 config(구버전)에서는 필드 자체가 없어야 함 — 하위호환
+    body = _search_with_tau(tmp_path, raw_sub_max=0.40, tau=None)
+    assert "low_relevance" not in body
+
+
+def test_search_still_works_when_results_path_missing(tmp_path):
+    # cfg에 results 경로가 없거나 로그 기록이 실패해도 검색 응답은 500이 아니어야 함
+    # (로깅은 best-effort) [HIGH-2]
+    cfg = make_cfg(tmp_path)
+    del cfg["paths"]["results"]
+    stats = {"raw_sub_max": 0.9, "raw_sub_mean": 0.5,
+             "raw_cap_max": 0.8, "raw_cap_mean": 0.4}
+    ranked = [Result(0, 0.9, 0, 5)]
+    app = create_app(cfg, "config.yaml", alpha=0.5,
+                     search_stats_fn=lambda q, v, a, c: (ranked, stats),
+                     load_index=lambda cfg, vid: _stub_index(1))
+    client = TestClient(app)
+    r = client.post("/api/search", json={"video_id": "v1", "query": "질의"})
+    assert r.status_code == 200
+    assert r.json()["raw"] == stats
+
+
+def test_search_fn_stub_without_stats_omits_raw(tmp_path):
+    # 기존 search_fn 스텁 주입 패턴(stats 없음)은 그대로 동작하고 raw 필드가 없다 —
+    # 하위호환 확인 [HIGH-2]
+    ranked = [Result(0, 0.9, 0, 5)]
+    client, _ = make_client(tmp_path,
+                            search_fn=lambda q, v, a, c: ranked,
+                            load_index=lambda cfg, vid: _stub_index(1))
+    r = client.post("/api/search", json={"video_id": "v1", "query": "질의"})
+    assert r.status_code == 200
+    assert "raw" not in r.json()
+
+
+def test_video_route_404_when_missing(tmp_path):
+    client, _ = make_client(tmp_path)
+    assert client.get("/api/video/nope").status_code == 404
+
+
+def test_root_serves_html(tmp_path):
+    client, _ = make_client(tmp_path)
+    r = client.get("/")
+    assert r.status_code == 200
+    assert "영상 순간 검색" in r.text
+    assert "text/html" in r.headers["content-type"]
+    assert "/api/current" in r.text   # 재접속 복원 로직 존재 스모크
+    assert "/api/meta" in r.text      # 확정 설정 표시
+    assert 'id="canvas"' in r.text    # 채널 리본(시연의 시그니처 요소)
+
+
+def test_status_progress_during_m2(tmp_path):
+    gate = threading.Event()
+
+    def run_module(script, cfgp, vid):
+        if script == "m2_keyframe.py":
+            gate.wait(2)
+
+    client, cfg = make_client(tmp_path, run_module=run_module)
+    vid = client.post("/api/upload",
+                      files={"file": ("v.mp4", b"\x00", "video/mp4")}).json()["video_id"]
+    wait_stage(client, vid, "m2")
+    write_segments(cfg, vid, n=4)
+    frames_dir = Path(cfg["paths"]["work"]) / vid / "frames"
+    frames_dir.mkdir(parents=True, exist_ok=True)
+    (frames_dir / "seg_0000.jpg").write_bytes(b"")
+    (frames_dir / "seg_0001.jpg").write_bytes(b"")
+    st = client.get(f"/api/status/{vid}").json()
+    assert st["progress"] == {"n": 2, "total": 4}
+    gate.set()
+    wait_stage(client, vid, "done")
+
+
+def test_status_progress_absent_when_no_segments(tmp_path):
+    gate = threading.Event()
+
+    def run_module(script, cfgp, vid):
+        if script == "m1_preprocess.py":
+            gate.wait(2)
+
+    client, cfg = make_client(tmp_path, run_module=run_module)
+    vid = client.post("/api/upload",
+                      files={"file": ("v.mp4", b"\x00", "video/mp4")}).json()["video_id"]
+    st = wait_stage(client, vid, "m1")
+    assert "progress" not in st
+    gate.set()
+    wait_stage(client, vid, "done")
+
+
+def test_current_returns_active_job(tmp_path):
+    client, _ = make_client(tmp_path)
+    assert client.get("/api/current").json() == {"video_id": None}
+    r = client.post("/api/upload", files={"file": ("v.mp4", b"\x00", "video/mp4")})
+    vid = r.json()["video_id"]
+    cur = client.get("/api/current").json()
+    assert cur["video_id"] == vid
+
+
+@pytest.mark.parametrize("sub,cap,tau", [
+    (0.40, 0.50, 0.48),   # cap이 τ를 넘긴다 → 배너 없음. sub 단독 판정이면 어긋난다
+    (0.40, 0.30, 0.48),   # 둘 다 미달 → 배너
+    (0.60, 0.10, 0.48),   # sub가 넘긴다 → 배너 없음
+])
+def test_search_log_low_relevance_matches_the_banner_user_saw(tmp_path, sub, cap, tau):
+    """로그의 판정이 **응답의 판정과 같아야** 한다.
+
+    로그의 목적은 "tau 재캘리브레이션 후에도 사용자가 실제로 본 경고를 복원"하는
+    것이다[리뷰 2026-07-11 Minor]. 그런데 로그는 `raw_sub_max < tau`(8-2 개정 이전
+    규칙)로, 응답은 `max(sub, cap) < tau`로 판정하고 있었다 — 첫 파라미터 조합에서
+    로그는 True, 사용자는 배너를 보지 못했다. 2026-08-26 설계 정합성 감사에서 적발.
+    값을 하드코딩하지 않고 **두 판정의 일치**를 검사한다.
+    """
+    stats = {"raw_sub_max": sub, "raw_sub_mean": 0.3,
+             "raw_cap_max": cap, "raw_cap_mean": 0.3}
+    ranked = [Result(0, 0.9, 0, 5)]
+    cfg = make_cfg(tmp_path)
+    cfg["abstention_tau"] = tau
+    client, _ = make_client(tmp_path, cfg=cfg,
+                            search_stats_fn=lambda q, v, a, c: (ranked, stats),
+                            load_index=lambda cfg, vid: _stub_index(1))
+    r = client.post("/api/search", json={"video_id": "v1", "query": "질의"})
+    assert r.status_code == 200
+    line = json.loads((Path(cfg["paths"]["results"]) / "search_log.jsonl")
+                      .read_text(encoding="utf-8").strip().splitlines()[-1])
+    assert line["abstention_tau"] == tau
+    assert line["low_relevance"] == r.json()["low_relevance"]
+    assert line["low_relevance"] is (max(sub, cap) < tau)
+
+
+def test_display_clean_collapses_repetition_and_masks_cjk():
+    # 표시 계층 정리 [실사용 테스트 2026-07-13]: Whisper 반복 환각과 캡션 잔여
+    # 한자·가나를 화면 표시에서만 정리한다. 인덱스·랭킹·평가에는 불개입.
+    from m7_webui import display_clean
+    assert display_clean("설탕 설탕 설탕") == "설탕"
+    assert display_clean("파 파 파 파 파 두부") == "파 두부"
+    assert display_clean("다진 마늘 오이") == "다진 마늘 오이"      # 2회 이하 반복은 유지
+    assert display_clean("투명한 식품 포包가 놓여") == "투명한 식품 포가 놓여"
+    assert display_clean("") == ""
+
+
+def test_search_response_uses_display_clean(tmp_path):
+    # /api/search 카드의 subtitle/caption은 표시 정리를 거쳐야 한다
+    stats = {"raw_sub_max": 0.9, "raw_sub_mean": 0.5,
+             "raw_cap_max": 0.8, "raw_cap_mean": 0.4}
+    ranked = [Result(0, 0.9, 0, 5)]
+    cfg = make_cfg(tmp_path)
+    idx = _stub_index(1)
+    idx.segments[0]["subtitle"] = "설탕 설탕 설탕"
+    idx.segments[0]["caption"] = "포包 상자"
+    client, _ = make_client(tmp_path, cfg=cfg,
+                            search_stats_fn=lambda q, v, a, c: (ranked, stats),
+                            load_index=lambda cfg, vid: idx)
+    r = client.post("/api/search", json={"video_id": "v1", "query": "질의"})
+    body = r.json()
+    assert body["results"][0]["subtitle"] == "설탕"
+    assert body["results"][0]["caption"] == "포 상자"
+
+
+# ---- FINALIZATION: 결과 스키마 보완 --------------------------------------
+
+def test_search_result_carries_rank_and_echo(tmp_path):
+    """보고서·발표에 넣을 수 있게 rank·video_id·query·alpha를 응답에 담는다."""
+    ranked = [Result(2, 0.9, 10, 15), Result(0, 0.8, 0, 5), Result(1, 0.7, 5, 10)]
+    client, _ = make_client(tmp_path,
+                            search_fn=lambda q, v, a, c: ranked,
+                            load_index=lambda cfg, vid: _stub_index(4))
+    body = client.post("/api/search",
+                       json={"video_id": "v1", "query": "질의"}).json()
+    assert body["video_id"] == "v1" and body["query"] == "질의"
+    assert body["alpha"] == 0.5
+    assert [r["rank"] for r in body["results"]] == [1, 2, 3]
+
+
+def test_search_top_k_is_requestable_and_bounded(tmp_path):
+    ranked = [Result(i, 1.0 - i / 10, i * 5, i * 5 + 5) for i in range(4)]
+    client, _ = make_client(tmp_path,
+                            search_fn=lambda q, v, a, c: ranked,
+                            load_index=lambda cfg, vid: _stub_index(4))
+
+    def n(k):
+        return len(client.post("/api/search",
+                               json={"video_id": "v1", "query": "질의",
+                                     "top_k": k}).json()["results"])
+    assert n(1) == 1 and n(4) == 4
+    assert n(999) == 4                    # 구간 수를 넘지 않는다
+    assert client.post("/api/search", json={"video_id": "v1", "query": "q",
+                                            "top_k": 0}).status_code == 400
+
+
+def test_search_default_top_k_stays_three(tmp_path):
+    """기존 동작 불변 — 지정하지 않으면 Top-3."""
+    ranked = [Result(i, 1.0 - i / 10, i * 5, i * 5 + 5) for i in range(4)]
+    client, _ = make_client(tmp_path,
+                            search_fn=lambda q, v, a, c: ranked,
+                            load_index=lambda cfg, vid: _stub_index(4))
+    body = client.post("/api/search",
+                       json={"video_id": "v1", "query": "질의"}).json()
+    assert len(body["results"]) == 3
+
+
+def test_search_result_timestamps_are_within_video(tmp_path):
+    ranked = [Result(2, 0.9, 10, 15)]
+    client, _ = make_client(tmp_path,
+                            search_fn=lambda q, v, a, c: ranked,
+                            load_index=lambda cfg, vid: _stub_index(4))
+    body = client.post("/api/search",
+                       json={"video_id": "v1", "query": "질의"}).json()
+    r = body["results"][0]
+    assert 0 <= r["start"] < r["end"] <= body["duration_sec"]
+    assert r["seek_to"] == r["start"]
+
+
+# ---- FINALIZATION-F1: UX 계약 -------------------------------------------
+
+def test_search_with_zero_results_returns_valid_schema(tmp_path):
+    """결과가 0건이어도 스키마가 깨지지 않는다."""
+    client, _ = make_client(tmp_path, search_fn=lambda q, v, a, c: [],
+                            load_index=lambda cfg, vid: _stub_index(4))
+    body = client.post("/api/search",
+                       json={"video_id": "v1", "query": "질의"}).json()
+    assert body["results"] == [] and body["top_k"] >= 1
+    assert body["video_id"] == "v1" and body["duration_sec"] > 0
+
+
+def test_last_segment_seek_stays_within_duration(tmp_path):
+    """마지막 구간에서도 seek_to가 영상 길이를 넘지 않는다."""
+    client, _ = make_client(tmp_path,
+                            search_fn=lambda q, v, a, c: [Result(3, 0.9, 15, 20)],
+                            load_index=lambda cfg, vid: _stub_index(4))
+    body = client.post("/api/search",
+                       json={"video_id": "v1", "query": "질의"}).json()
+    r = body["results"][0]
+    assert r["seek_to"] == 15 and r["end"] == body["duration_sec"]
+    assert 0 <= r["seek_to"] < body["duration_sec"]
+
+
+def test_top_k_must_be_an_integer(tmp_path):
+    client, _ = make_client(tmp_path,
+                            search_fn=lambda q, v, a, c: [Result(0, 0.5, 0, 5)],
+                            load_index=lambda cfg, vid: _stub_index(4))
+    r = client.post("/api/search", json={"video_id": "v1", "query": "q",
+                                         "top_k": "셋"})
+    assert r.status_code == 400
+
+
+def test_frontend_wraps_long_evidence_and_has_no_abstention_wording():
+    """긴 근거가 카드를 넘치지 않고, 사용자 대면에 abstention 용어를 쓰지 않는다."""
+    html = (Path(__file__).resolve().parents[1] / "src" / "jds_video" / "_internal" / "webui"
+            / "index.html").read_text(encoding="utf-8")
+    assert "overflow-wrap: anywhere" in html
+    assert ".hit .body { grid-column: 2; min-width: 0; }" in html
+    assert "abstention" not in html.lower()
+    assert "표시할 구간이 없습니다" in html          # 결과 0건 안내

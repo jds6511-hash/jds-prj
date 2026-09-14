@@ -1,0 +1,345 @@
+{
+  "alpha_from_dev": 0.5,
+  "n_queries": {
+    "total": 39,
+    "자막형": 12,
+    "복합형": 14,
+    "장면형": 13
+  },
+  "metrics": {
+    "baseline": {
+      "hit@1": 0.5641,
+      "hit@5": 0.7692,
+      "hit@10": 0.7949,
+      "mrr": 0.6489,
+      "iou@0.5_r@1": 0.5641,
+      "iou@0.3_r@1": 0.5641,
+      "by_type": {
+        "자막형": {
+          "hit@1": 0.9167,
+          "hit@5": 1.0,
+          "hit@10": 1.0,
+          "mrr": 0.9583,
+          "iou@0.5_r@1": 0.9167,
+          "iou@0.3_r@1": 0.9167
+        },
+        "복합형": {
+          "hit@1": 0.7857,
+          "hit@5": 0.9286,
+          "hit@10": 0.9286,
+          "mrr": 0.8246,
+          "iou@0.5_r@1": 0.7857,
+          "iou@0.3_r@1": 0.7857
+        },
+        "장면형": {
+          "hit@1": 0.0,
+          "hit@5": 0.3846,
+          "hit@10": 0.4615,
+          "mrr": 0.1741,
+          "iou@0.5_r@1": 0.0,
+          "iou@0.3_r@1": 0.0
+        }
+      }
+    },
+    "proposed": {
+      "hit@1": 0.7692,
+      "hit@5": 0.8718,
+      "hit@10": 0.9231,
+      "mrr": 0.8286,
+      "iou@0.5_r@1": 0.7692,
+      "iou@0.3_r@1": 0.7692,
+      "by_type": {
+        "자막형": {
+          "hit@1": 0.8333,
+          "hit@5": 0.9167,
+          "hit@10": 0.9167,
+          "mrr": 0.8802,
+          "iou@0.5_r@1": 0.8333,
+          "iou@0.3_r@1": 0.8333
+        },
+        "복합형": {
+          "hit@1": 0.8571,
+          "hit@5": 0.9286,
+          "hit@10": 0.9286,
+          "mrr": 0.8869,
+          "iou@0.5_r@1": 0.8571,
+          "iou@0.3_r@1": 0.8571
+        },
+        "장면형": {
+          "hit@1": 0.6154,
+          "hit@5": 0.7692,
+          "hit@10": 0.9231,
+          "mrr": 0.7183,
+          "iou@0.5_r@1": 0.6154,
+          "iou@0.3_r@1": 0.6154
+        }
+      }
+    }
+  },
+  "diff_ci95": {
+    "mrr": [
+      0.0583,
+      0.3098
+    ],
+    "hit@1": [
+      0.0769,
+      0.359
+    ],
+    "hit@5": [
+      -0.0256,
+      0.2564
+    ],
+    "hit@10": [
+      -0.0256,
+      0.2821
+    ]
+  },
+  "rank_summary": {
+    "baseline": {
+      "median_rank": 1.0
+    },
+    "proposed": {
+      "median_rank": 1.0
+    }
+  },
+  "contested": {
+    "n_saturated": 21,
+    "n_contested": 18,
+    "query_ids": [
+      "pb_q09",
+      "pb_q10",
+      "pb_q11",
+      "gm_q04",
+      "gm_q05",
+      "gm_q08",
+      "yn_q01",
+      "yn_q02",
+      "yn_q03",
+      "yn_q06",
+      "yn_q07",
+      "yn_q09",
+      "yn_q10",
+      "it_q01",
+      "it_q03",
+      "it_q07",
+      "it_q09",
+      "it_q10"
+    ],
+    "metrics": {
+      "baseline": {
+        "hit@1": 0.0556,
+        "hit@5": 0.5,
+        "hit@10": 0.5556,
+        "mrr": 0.2393,
+        "iou@0.5_r@1": 0.0556,
+        "iou@0.3_r@1": 0.0556
+      },
+      "proposed": {
+        "hit@1": 0.5,
+        "hit@5": 0.7222,
+        "hit@10": 0.8333,
+        "mrr": 0.6287,
+        "iou@0.5_r@1": 0.5,
+        "iou@0.3_r@1": 0.5
+      }
+    }
+  },
+  "per_query": [
+    {
+      "query_id": "pb_q01",
+      "baseline_rank": 1,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "pb_q02",
+      "baseline_rank": 1,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "pb_q03",
+      "baseline_rank": 1,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "pb_q04",
+      "baseline_rank": 1,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "pb_q05",
+      "baseline_rank": 1,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "pb_q06",
+      "baseline_rank": 1,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "pb_q07",
+      "baseline_rank": 1,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "pb_q08",
+      "baseline_rank": 1,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "pb_q09",
+      "baseline_rank": 2,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "pb_q10",
+      "baseline_rank": 204,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "pb_q11",
+      "baseline_rank": 196,
+      "proposed_rank": 7
+    },
+    {
+      "query_id": "gm_q01",
+      "baseline_rank": 1,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "gm_q02",
+      "baseline_rank": 1,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "gm_q03",
+      "baseline_rank": 1,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "gm_q04",
+      "baseline_rank": 116,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "gm_q05",
+      "baseline_rank": 37,
+      "proposed_rank": 2
+    },
+    {
+      "query_id": "gm_q06",
+      "baseline_rank": 1,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "gm_q07",
+      "baseline_rank": 1,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "gm_q08",
+      "baseline_rank": 86,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "yn_q01",
+      "baseline_rank": 4,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "yn_q02",
+      "baseline_rank": 2,
+      "proposed_rank": 2
+    },
+    {
+      "query_id": "yn_q03",
+      "baseline_rank": 237,
+      "proposed_rank": 6
+    },
+    {
+      "query_id": "yn_q04",
+      "baseline_rank": 1,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "yn_q05",
+      "baseline_rank": 1,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "yn_q06",
+      "baseline_rank": 196,
+      "proposed_rank": 35
+    },
+    {
+      "query_id": "yn_q07",
+      "baseline_rank": 3,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "yn_q08",
+      "baseline_rank": 1,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "yn_q09",
+      "baseline_rank": 5,
+      "proposed_rank": 12
+    },
+    {
+      "query_id": "yn_q10",
+      "baseline_rank": 3,
+      "proposed_rank": 3
+    },
+    {
+      "query_id": "it_q01",
+      "baseline_rank": 2,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "it_q02",
+      "baseline_rank": 1,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "it_q03",
+      "baseline_rank": 2,
+      "proposed_rank": 2
+    },
+    {
+      "query_id": "it_q04",
+      "baseline_rank": 1,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "it_q05",
+      "baseline_rank": 1,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "it_q06",
+      "baseline_rank": 1,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "it_q07",
+      "baseline_rank": 1,
+      "proposed_rank": 16
+    },
+    {
+      "query_id": "it_q08",
+      "baseline_rank": 1,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "it_q09",
+      "baseline_rank": 9,
+      "proposed_rank": 1
+    },
+    {
+      "query_id": "it_q10",
+      "baseline_rank": 74,
+      "proposed_rank": 1
+    }
+  ],
+  "static_threshold": 0
+}

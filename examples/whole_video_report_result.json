@@ -1,0 +1,90 @@
+{
+  "analysis": "음식 준비 및 조리와 구매 또는 둘러보기가 반복적으로 나타나며, 식사가 여러 차례 중간에 배치된다. 의류 작업 및 수선은 한 번만 등장하고, 외출 준비와 이동, 포장 작업은 특정 시점에서 순차적으로 연결된다. 영상은 식사로 종료된다.",
+  "artifact_sha256": {
+    "analysis_raw": "f4f4fa698a0696fa3b28029f1e0524ed578ef6628ef4345022f47cbeb8ef5dda",
+    "conclusion_raw": "1ba185fd93fbccbc13ba051e58a96bdc355be467378b16803c357fe3378b4350",
+    "final_report_hwpx": "9783487b7c91e0257d6505b753d8f0cd2bcfac48a1577501236ef638030708c1",
+    "final_report_md": "9d4d901760d37c9e9b9c03e304739c2f3f81a082092bfadf198f0506cf357095"
+  },
+  "beta_v3": {
+    "eligible": 36,
+    "episodes": 41,
+    "excluded": 5,
+    "excluded_by_dialogue_grounding": 0,
+    "fallback": {
+      "llm_failures": 0,
+      "prompt_refusals": 0,
+      "retries": 0
+    },
+    "quality_exclusions": {
+      "EP10": "OUTPUT_LANGUAGE_DRIFT",
+      "EP21": "OUTPUT_LANGUAGE_DRIFT",
+      "EP23": "OUTPUT_LANGUAGE_CONTRACT_FAILURE + OUTPUT_LANGUAGE_DRIFT",
+      "EP28": "PARSE_CONTRACT_FAILURE",
+      "EP30": "PARSE_CONTRACT_FAILURE"
+    },
+    "section_completion": {
+      "## 개요": true,
+      "## 결론": true,
+      "## 근거 및 생성 정보": true,
+      "## 주요 사건 및 내용": true,
+      "## 핵심 내용 분석": true
+    }
+  },
+  "conclusion": "음식 준비 및 조리와 구매 또는 둘러보기가 반복되며, 식사는 중간에 여러 번 등장한다. 의류 작업 및 수선은 한 번만 나타나고, 외출 준비와 이동, 포장 작업은 특정 시점에 순차적으로 이어진다. 영상은 식사로 끝난다.",
+  "detailed_overview": "음식 준비 및 조리와 구매 또는 둘러보기가 먼저 이어진다. 이후 음식 준비 및 조리가 다시 나타나며, 식사가 추가된다. 식사가 끝나면 다시 구매 또는 둘러보기가 나타나고, 이동과 외출 준비, 포장 작업, 의류 작업 및 수선 등이 순차적으로 이어진다. 영상은 식사로 끝난다.",
+  "event": "WVR_WHOLE_VIDEO_REPORT_V2",
+  "hwpx": {
+    "bytes": 5330,
+    "generated": true,
+    "gui_layout": "GUI_LAYOUT_UNVERIFIED",
+    "semantic_text_match": true,
+    "structural_errors": []
+  },
+  "protection": {
+    "all_pass": true,
+    "beta_v3_tree_hash_unchanged": true,
+    "canonical_flow_hash_unchanged": true,
+    "lineage_hash_unchanged": true,
+    "m3_stt_hash_unchanged": true,
+    "overview_hash_unchanged": true,
+    "timeline_hash_unchanged": true
+  },
+  "semantic_checks": {
+    "all_pass": true,
+    "analysis_context": true,
+    "analysis_final": true,
+    "analysis_identifier": true,
+    "analysis_overclaim": true,
+    "analysis_unknown_activity": true,
+    "conclusion_activity_subset": true,
+    "conclusion_context": true,
+    "conclusion_final": true,
+    "conclusion_identifier": true,
+    "conclusion_overclaim": true
+  },
+  "short_overview": "음식 준비 및 조리와 구매 또는 둘러보기가 먼저 이어진다.  \n다시 음식 준비 및 조리가 나타나며 식사가 추가된다.  \n식사 후 구매 또는 둘러보기가 다시 나타나고, 이동과 외출 준비, 포장 작업, 의류 작업 및 수선 등이 순차적으로 이어진다.  \n영상은 식사로 끝난다.",
+  "source_state": {
+    "beta_v3_tree_sha256": "63f7e620654376344cf7853023755512d0eeaa6384e22f4303eb36fc9fb5bf3a",
+    "frozen_text_sha256": {
+      "runs/wvr_overview_synthesis_v2/canonical_flow.json": "f1bb720e48b602030143eebd43a200098cc24a125176116e1ff7587295c2858f",
+      "runs/wvr_overview_synthesis_v2/overview_result.json": "1580a4204b9157ebd6fece4532d2b8ad18e1ee9cc0b7c58b1dab05659d6aba88",
+      "runs/wvr_whole_video_merge_v1/timeline_lineage.json": "23d9734363c5f98c507bce4b4c76ae913f9359d091d22204ebfa5261fb758e8e",
+      "runs/wvr_whole_video_merge_v1/whole_video_activity_timeline.json": "ba43a395c26342b6e028b32e33db629c82bf08c3d74785e211c7b04fb5537937"
+    },
+    "m3_stt_mounted": false,
+    "m3_stt_sha256": "aa008317023c884a206c2ea8ce9f1de5db809c2638fca257f964a58df4799c92"
+  },
+  "status": "EXECUTED / REVIEW_PENDING",
+  "user_body_checks": {
+    "all_pass": true,
+    "analysis_present": true,
+    "beta_highlight_headings_absent": true,
+    "beta_narrative_section_absent": true,
+    "conclusion_present": true,
+    "detailed_overview_verbatim": true,
+    "logical_section_count_five": true,
+    "seg_identifier_absent": true,
+    "short_overview_verbatim": true
+  }
+}
