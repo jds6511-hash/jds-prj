@@ -57,7 +57,8 @@ def test_upload_runs_pipeline_to_done(tmp_path):
                               run_module=lambda s, c, v: calls.append(s))
     r = client.post("/api/upload",
                     files={"file": ("My Clip.mp4", b"\x00\x01", "video/mp4")})
-    assert r.status_code == 200
+    assert r.status_code == 202
+    assert r.json()["reused"] is False
     vid = r.json()["video_id"]
     assert vid == "My_Clip"
     wait_stage(client, vid, "done")
@@ -82,7 +83,7 @@ def test_second_upload_while_busy_is_409(tmp_path):
     gate = threading.Event()
     client, _ = make_client(tmp_path, run_module=lambda s, c, v: gate.wait(1))
     r1 = client.post("/api/upload", files={"file": ("a.mp4", b"\x00", "video/mp4")})
-    assert r1.status_code == 200
+    assert r1.status_code == 202
     r2 = client.post("/api/upload", files={"file": ("b.mp4", b"\x00", "video/mp4")})
     assert r2.status_code == 409
     gate.set()
@@ -106,7 +107,7 @@ def test_upload_write_failure_releases_busy(tmp_path, monkeypatch):
     assert r1.status_code == 500
 
     r2 = client.post("/api/upload", files={"file": ("b.mp4", b"\x00", "video/mp4")})
-    assert r2.status_code == 200
+    assert r2.status_code == 202
 
 
 def test_upload_non_oserror_failure_releases_busy(tmp_path, monkeypatch):
@@ -122,12 +123,92 @@ def test_upload_non_oserror_failure_releases_busy(tmp_path, monkeypatch):
 
     monkeypatch.undo()
     r2 = client.post("/api/upload", files={"file": ("b.mp4", b"\x00", "video/mp4")})
-    assert r2.status_code == 200
+    assert r2.status_code == 202
 
 
 def test_status_unknown_video_404(tmp_path):
     client, _ = make_client(tmp_path)
     assert client.get("/api/status/nope").status_code == 404
+
+
+def test_completed_existing_video_is_reused_without_pipeline_or_overwrite(tmp_path):
+    calls = []
+    client, cfg = make_client(
+        tmp_path,
+        run_module=lambda *args: calls.append(args),
+        load_index=lambda *_args: _stub_index(),
+    )
+    video = Path(cfg["paths"]["data"]) / "videos" / "existing.mp4"
+    video.parent.mkdir(parents=True)
+    video.write_bytes(b"original")
+    (Path(cfg["paths"]["work"]) / "existing").mkdir(parents=True)
+
+    response = client.post(
+        "/api/upload",
+        files={"file": ("existing.mp4", b"replacement", "video/mp4")},
+    )
+
+    assert response.status_code == 200
+    assert response.json()["stage"] == "done"
+    assert response.json()["reused"] is True
+    assert calls == []
+    assert video.read_bytes() == b"original"
+
+
+def test_same_video_upload_attaches_to_active_job_without_second_pipeline(tmp_path):
+    gate = threading.Event()
+    calls = []
+
+    def run_module(script, _cfg, _video_id):
+        calls.append(script)
+        gate.wait(2)
+
+    client, _ = make_client(tmp_path, run_module=run_module)
+    first = client.post(
+        "/api/upload", files={"file": ("active.mp4", b"original", "video/mp4")}
+    )
+    assert first.status_code == 202
+
+    second = client.post(
+        "/api/upload", files={"file": ("active.mp4", b"replacement", "video/mp4")}
+    )
+    assert second.status_code == 200
+    assert second.json()["reused"] is True
+    assert second.json()["stage"] in {"m1", "m2", "m3", "m4"}
+
+    gate.set()
+    wait_stage(client, "active", "done")
+    assert calls == ["m1_preprocess.py", "m2_keyframe.py", "m3_generate.py", "m4_index.py"]
+
+
+def test_incomplete_existing_video_stays_409_and_is_not_overwritten(tmp_path):
+    client, cfg = make_client(tmp_path)
+    video = Path(cfg["paths"]["data"]) / "videos" / "incomplete.mp4"
+    video.parent.mkdir(parents=True)
+    video.write_bytes(b"original")
+    (Path(cfg["paths"]["work"]) / "incomplete").mkdir(parents=True)
+
+    response = client.post(
+        "/api/upload",
+        files={"file": ("incomplete.mp4", b"replacement", "video/mp4")},
+    )
+
+    assert response.status_code == 409
+    assert video.read_bytes() == b"original"
+
+
+def test_status_recovers_completed_existing_video_after_server_restart(tmp_path):
+    client, cfg = make_client(tmp_path, load_index=lambda *_args: _stub_index())
+    video = Path(cfg["paths"]["data"]) / "videos" / "existing.mp4"
+    video.parent.mkdir(parents=True)
+    video.write_bytes(b"original")
+    (Path(cfg["paths"]["work"]) / "existing").mkdir(parents=True)
+
+    response = client.get("/api/status/existing")
+
+    assert response.status_code == 200
+    assert response.json()["stage"] == "done"
+    assert response.json()["reused"] is True
 
 
 def write_segments(cfg, vid, n=3):
@@ -387,6 +468,8 @@ def test_root_serves_html(tmp_path):
     assert "/api/current" in r.text   # 재접속 복원 로직 존재 스모크
     assert "/api/meta" in r.text      # 확정 설정 표시
     assert 'id="canvas"' in r.text    # 채널 리본(시연의 시그니처 요소)
+    assert 'body.stage === "done"' in r.text
+    assert "await ready()" in r.text
 
 
 def test_status_progress_during_m2(tmp_path):

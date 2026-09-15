@@ -5,7 +5,7 @@ import argparse, json, re, subprocess, sys, threading, time
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, UploadFile
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 
 import common
 import deployment
@@ -165,6 +165,43 @@ def create_app(cfg: dict, config_path: str, alpha: float,
         if reason:
             raise HTTPException(403, reason)
 
+    def _resource_state(video_id: str) -> dict | None:
+        """Inspect an existing resource without mutating stored artifacts."""
+        live = jobs.get(video_id)
+        if live is not None:
+            if live["stage"] in {"m1", "m2", "m3", "m4", "done"}:
+                return {**live, "video_id": video_id, "reused": True}
+            return {**live, "video_id": video_id, "reused": False}
+
+        video_exists = (videos_dir / f"{video_id}.mp4").is_file()
+        work_exists = common.work_dir(cfg, video_id).is_dir()
+        if not video_exists and not work_exists:
+            return None
+        if not video_exists or not work_exists:
+            return {
+                "video_id": video_id,
+                "stage": "incomplete",
+                "detail": "원본 영상과 인덱스 산출물이 모두 갖춰지지 않았습니다.",
+                "reused": False,
+            }
+
+        try:
+            if video_id not in index_cache:
+                index_cache[video_id] = load_index(cfg, video_id)
+        except Exception as exc:
+            return {
+                "video_id": video_id,
+                "stage": "incomplete",
+                "detail": f"기존 인덱스를 검증하지 못했습니다: {exc}",
+                "reused": False,
+            }
+        return {
+            "video_id": video_id,
+            "stage": "done",
+            "detail": "기존 영상과 검색 인덱스를 재사용합니다.",
+            "reused": True,
+        }
+
     def _pipeline(video_id: str) -> None:
         try:
             for script in PIPELINE:
@@ -188,10 +225,18 @@ def create_app(cfg: dict, config_path: str, alpha: float,
         # 조회 금지와 **덮어쓰기 금지**는 다른 문제다. 같은 이름 업로드로 확정 인덱스의
         # 원본 영상을 갈아치울 수 있으면 배포 정합성이 무너지고, text_hash·embed_model은
         # 둘 다 인덱스만 보므로 이것을 잡지 못한다 [경계 감사 2026-08-26]
-        if (videos_dir / f"{video_id}.mp4").exists() or common.work_dir(cfg, video_id).is_dir():
+        existing = _resource_state(video_id)
+        if existing is not None and existing["stage"] in {
+            "m1", "m2", "m3", "m4", "done"
+        }:
+            return existing
+        if existing is not None:
             raise HTTPException(
-                409, f"{video_id}는 이미 있는 영상이다 — 기존 산출물을 덮지 않는다. "
-                     f"다시 인덱싱하려면 파일 이름을 바꿔 올려라")
+                409,
+                f"{video_id}의 기존 영상 또는 산출물이 불완전합니다. "
+                "자동 덮어쓰기·삭제·재인덱싱은 하지 않습니다. "
+                f"상세: {existing['detail']}",
+            )
         if not jobs.try_start(video_id):
             raise HTTPException(409, "다른 영상 인덱싱 중이에요 — 잠시 후 다시 시도하세요")
         try:
@@ -201,7 +246,10 @@ def create_app(cfg: dict, config_path: str, alpha: float,
             jobs.set(video_id, "error", f"업로드 저장 실패: {e}")
             raise HTTPException(500, f"업로드 저장 실패: {e}")
         threading.Thread(target=_pipeline, args=(video_id,), daemon=True).start()
-        return {"video_id": video_id}
+        return JSONResponse(
+            status_code=202,
+            content={"video_id": video_id, "stage": "m1", "reused": False},
+        )
 
     @app.get("/api/status/{video_id}")
     def status(video_id: str):
@@ -210,9 +258,11 @@ def create_app(cfg: dict, config_path: str, alpha: float,
         # restricted 영상에 도달하는 route가 0개"다 [경계 감사 2026-08-26]
         video_id = sanitize_video_id(video_id)
         _guard(video_id)
-        st = jobs.get(video_id)
+        st = _resource_state(video_id)
         if st is None:
             raise HTTPException(404, f"{video_id}: 업로드 기록 없음")
+        if st["stage"] == "incomplete":
+            raise HTTPException(409, st["detail"])
         result = dict(st)
         progress = None
         if st["stage"] == "m2":

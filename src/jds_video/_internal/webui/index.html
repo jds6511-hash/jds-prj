@@ -316,6 +316,14 @@ $("file").addEventListener("change", async e => {
     const body = await r.json();
     if (!r.ok) { alertOn(body.detail); return; }
     videoId = body.video_id;
+    if (body.stage === "done") {
+      alertOn(body.detail || "기존 영상과 검색 인덱스를 재사용합니다.");
+      await ready();
+      return;
+    }
+    if (body.reused) {
+      alertOn(body.detail || "진행 중인 기존 인덱싱 작업에 연결합니다.");
+    }
     $("bar").classList.add("on");
     poll();
   } catch { alertOn("영상을 올리지 못했습니다. 네트워크를 확인하세요."); }
