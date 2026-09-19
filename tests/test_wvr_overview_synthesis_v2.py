@@ -12,7 +12,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT / "src" / "jds_video" / "_internal"))
 
 import wvr_overview_synthesis_v2 as sv  # noqa: E402
 import wvr_video_overview_preview_v2 as ov  # noqa: E402

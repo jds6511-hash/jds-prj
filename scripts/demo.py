@@ -259,7 +259,8 @@ def main():
     print(f"\n웹 UI 시작 — http://127.0.0.1:{a.port}  (alpha={r['alpha']})")
     import uvicorn
     from m7_webui import create_app
-    uvicorn.run(create_app(cfg, a.config, a.alpha),
+    uvicorn.run(create_app(cfg, a.config, a.alpha,
+                           initial_video_id=a.video_id),
                 host="127.0.0.1", port=a.port)
     return 0
 

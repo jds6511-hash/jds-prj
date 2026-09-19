@@ -15,7 +15,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT / "src" / "jds_video" / "_internal"))
 sys.path.insert(0, str(ROOT / "scripts"))
 
 import eligibility  # noqa: E402
@@ -129,6 +129,13 @@ def test_segments_endpoint_rejects_blocked_video(tmp_path, vid):
     """캡션·자막 전문을 노출하는 경로다 — 여기서 새면 인덱스 내용이 그대로 나간다."""
     c = _client(tmp_path)
     assert c.get("/api/segments/%s" % vid).status_code == 403
+
+
+@pytest.mark.parametrize("vid", BLOCKED)
+def test_transcript_endpoints_reject_blocked_video(tmp_path, vid):
+    c = _client(tmp_path)
+    assert c.get("/api/transcript/%s" % vid).status_code == 403
+    assert c.get("/api/transcript/%s/download?format=txt" % vid).status_code == 403
 
 
 @pytest.mark.parametrize("vid", BLOCKED)

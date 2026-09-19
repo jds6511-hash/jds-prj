@@ -33,25 +33,41 @@ Video
 
 ```text
 Video
-→ Qwen3-VL 구간 관찰
-→ overlap 중복을 제거한 canonical activity flow
-→ Overview
-→ Analysis / Conclusion
+→ 구간 관찰(보이는 것) + STT 발화(말한 것)
+→ 두 채널을 같은 사건으로 묶기
+→ 사건 단위 요약 · 근거 검증
+→ 보고 개요 / 영상 개요 / 세부 관찰 내용
 → Markdown / HWPX
 ```
 
-현재 공개 기준선은 reviewer가 `WHOLE_VIDEO_REPORT_PASS`로 판정한 `WVR_WHOLE_VIDEO_REPORT_V2`입니다. 보고서 생성은 관찰된 활동과 그 순서만 사용하며, 의도·감정·장소·원인 같은 비시각적 맥락 추론을 차단합니다. 대표 산출물은 [`examples/whole_video_report.md`](examples/whole_video_report.md)와 [`examples/whole_video_report.hwpx`](examples/whole_video_report.hwpx)에 있습니다.
+보고서는 화면 근거와 음성 근거를 함께 읽어 사건 단위로 정리합니다. 각 행은 자신이 나온 구간을 달고 나오며, **근거 검증을 통과하지 못한 사건은 보고서에 싣지 않습니다.**
+
+발화 근거는 보고서 문장으로 다시 쓰고, 전사 원문을 그대로 옮기지 않습니다. 후보 문장이 전사에서 연속 토큰을 베끼거나 아직 말투로 읽히면(의문형 종결·1인칭 주어·담화 표지) 통과시키지 않고, 제약을 건 재생성 → 구분 범위 요약 → 음성 행 보류 순으로 물러섭니다. 판정 규칙은 닫힌 문법 범주만 쓰며 내용 단어 목록을 두지 않습니다.
+
+시연 영상 40분(구간 478개)에서 측정한 값입니다.
+
+| 항목 | 값 |
+|---|---:|
+| 근거 검증을 통과한 사건 | 21 / 21 |
+| 제목·개요의 미지지 문장 | 0 |
+| 가드가 막은 환각 (4편 합계) | 10 (최종 출력 0) |
+| 전사 원문이 그대로 실린 행 (4편 합계) | 13 → **0** |
+
+대표 산출물은 [`examples/multimodal_report.md`](examples/multimodal_report.md)이고, 그 판정 근거는 [`examples/multimodal_report_evidence_audit.json`](examples/multimodal_report_evidence_audit.json)과 [`examples/multimodal_report_style_audit.json`](examples/multimodal_report_style_audit.json)에 함께 둡니다.
+
+이전 기준선인 관찰 전용 경로(`WVR_WHOLE_VIDEO_REPORT_V2`)도 [`examples/whole_video_report.md`](examples/whole_video_report.md)에 그대로 남겨 두었습니다. 현재 보고서 경로는 **기본 경로 후보**이며 production 기준선으로 선언하지 않습니다 — 근거가 희박한 영상에서 보고서가 거의 비는 한계가 남아 있습니다.
 
 ## 저장소 구조
 
 ```text
 src/jds_video/scene_search.py        장면 검색 공개 진입점
-src/jds_video/whole_video_report.py  전체 영상 보고서 공개 진입점
+src/jds_video/whole_video_report.py  관찰 전용 보고서 공개 진입점
+src/jds_video/multimodal_report.py   화면+음성 보고서 공개 진입점
 src/jds_video/_internal/             검증된 내부 구현
 scripts/   재현·실행 진입점
 tests/     공개 코드에 대응하는 단위·계약 테스트
 results/   고정 검색 평가 결과
-examples/  reviewer-PASS 대표 보고서
+examples/  대표 보고서와 그 판정 근거
 docs/      최종 발표 자료와 개발 이력 요약
 ```
 

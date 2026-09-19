@@ -5,227 +5,390 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>영상 순간 검색</title>
 <style>
-/* 발표장 투사 기준으로 짠다 — 본문 15px 이상, 보조색도 대비 4.5:1 이상,
-   타임코드·점수는 monospace + tabular-nums(자릿수가 흔들리면 읽기 어렵다).
-   웹폰트 CDN을 쓰지 않는다: 발표장 네트워크를 신뢰할 수 없다. */
+/* 발표장 투사 기준 — 본문 15px 이상, 보조색도 대비 4.5:1 이상, 타임코드·점수는
+   monospace + tabular-nums. 웹폰트 CDN을 쓰지 않는다(발표장 네트워크 불신).
+
+   시선 순서를 레이아웃으로 강제한다: 검색창 → 영상 → 결과 카드 → 근거 → 그래프.
+   전사·구간목록·내부 수치는 서랍과 접힌 영역으로 내린다. */
 :root {
   --ink:    #16191F;
-  --paper:  #FCFBF9;
+  --paper:  #F6F7F9;   /* 중립 회색 — 갈색기를 뺀다 */
   --panel:  #FFFFFF;
-  --rule:   #DBD7D0;
-  --muted:  #63605A;
-  --speech: #2E5E4E;   /* 발화 채널 — 색이 의미를 나른다(장식 아님) */
-  --scene:  #B0563A;   /* 화면 채널 */
-  --warn-bg:#FBF1E3;
-  --warn-ink:#7A4A12;
+  --sunken: #EDEFF3;
+  --rule:   #D9DDE3;
+  --muted:  #5F6570;
+  --accent: #2E5BD6;   /* 단 하나의 primary accent */
+  --accent-soft: #E8EEFC;
+  --speech: #17706A;   /* 발화 채널 — 청록. 색이 의미를 나른다(장식 아님) */
+  --scene:  #B2571F;   /* 화면 채널 — 주황 */
+  --warn-bg:#F1F2F5;
+  --warn-ink:#3E434C;
+  --err-bg: #FBE9E7;
+  --err-ink:#9A2C1B;
   --sans: -apple-system, 'Segoe UI Variable Text', 'Segoe UI', 'Malgun Gothic',
           'Apple SD Gothic Neo', sans-serif;
   --mono: 'Cascadia Mono', 'Consolas', 'D2Coding', ui-monospace, monospace;
-  --r: 4px;
+  --r: 8px;
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --ink:#ECE9E3; --paper:#14161A; --panel:#1B1E23; --rule:#333840;
-    --muted:#A5A099; --speech:#6FBFA2; --scene:#E58E6B;
-    --warn-bg:#33270F; --warn-ink:#F0C98A;
+    --ink:#E9EBEF; --paper:#101215; --panel:#191C21; --sunken:#22262C;
+    --rule:#31363E; --muted:#9AA1AC;
+    --accent:#6C97FF; --accent-soft:#1B2740;
+    --speech:#4FC3B4; --scene:#F0975C;
+    --warn-bg:#22262C; --warn-ink:#C9CFD8;
+    --err-bg:#3A1D18; --err-ink:#FFB4A2;
   }
 }
 
 * { box-sizing: border-box; margin: 0; }
 html, body { height: 100%; }
 body {
-  font-family: var(--sans); font-size: 15px; line-height: 1.5;
+  font-family: var(--sans); font-size: 15px; line-height: 1.55;
   color: var(--ink); background: var(--paper);
-  display: flex; flex-direction: column;
+  display: flex; flex-direction: column; overflow: hidden;
 }
-.label {           /* 작은 대문자 라벨 — 위계는 폰트가 아니라 트래킹으로 만든다 */
-  font-size: 11px; font-weight: 600; letter-spacing: .09em;
+.label {
+  font-size: 11px; font-weight: 700; letter-spacing: .09em;
   text-transform: uppercase; color: var(--muted);
 }
 .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.grow { flex: 1; }
 
-/* ── 헤더: 상태줄이 곧 방법론 표시다. 발표 중 질문이 나오면 화면이 이미 답한다 ── */
+/* ── 헤더 ─────────────────────────────────────────────────────────────
+   제품 이름과 한 줄 설명만 크게. 내부 수치(α 등)는 여기 두지 않는다. */
 .top {
-  display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap;
-  padding: 12px 20px; background: var(--panel);
+  display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+  padding: 12px 24px; background: var(--panel);
   border-bottom: 1px solid var(--rule);
 }
-.top h1 { font-size: 17px; font-weight: 650; letter-spacing: -.01em; }
-.spec { font-size: 12px; color: var(--muted); }
-.spec b { font-weight: 600; color: var(--ink); }
-.top .grow { flex: 1; }
-.top input[type=file] { font-size: 13px; color: var(--muted); max-width: 210px; }
+.brand h1 { font-size: 21px; font-weight: 700; letter-spacing: -.02em; }
+.brand p { font-size: 13px; color: var(--muted); margin-top: 1px; }
+.badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.badge {
+  padding: 3px 9px; font-size: 11.5px; font-weight: 600; color: var(--muted);
+  background: var(--sunken); border-radius: 999px; white-space: nowrap;
+}
+.tools { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.tool-button, .download-menu summary, .dialog-close, .file-button {
+  font: inherit; font-size: 13px; color: var(--ink); background: var(--panel);
+  border: 1px solid var(--rule); border-radius: var(--r);
+  padding: 7px 12px; cursor: pointer; white-space: nowrap;
+}
+.file-button { background: var(--sunken); font-weight: 600; }
+/* display:none이면 키보드 초점이 안 간다 — 보이지만 않게 하고 초점은 남긴다. */
+.file-button input {
+  position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none;
+}
+.file-button:focus-within { outline: 2px solid var(--accent); outline-offset: 1px; }
+.tool-button:disabled { opacity: .4; cursor: default; }
+.download-menu { position: relative; }
+.download-menu summary { list-style: none; }
+.download-menu summary::-webkit-details-marker { display: none; }
+.download-menu:not(.ready) { display: none; }
+.download-options {
+  position: absolute; z-index: 5; right: 0; top: calc(100% + 5px);
+  display: grid; min-width: 150px; overflow: hidden; background: var(--panel);
+  border: 1px solid var(--rule); border-radius: var(--r);
+  box-shadow: 0 6px 20px rgba(0,0,0,.14);
+}
+.download-options a {
+  padding: 8px 12px; font-size: 13px; color: var(--ink);
+  text-decoration: none; white-space: nowrap;
+}
+.download-options a:hover { background: var(--sunken); }
 
-.bar { display: none; align-items: center; gap: 10px; min-width: 260px; }
+/* 시스템 상태는 작은 칩 하나로. 발표 중 시선을 가져가지 않는다. */
+.status {
+  display: none; max-width: 340px; padding: 5px 10px; font-size: 12.5px;
+  color: var(--warn-ink); background: var(--warn-bg);
+  border-radius: 999px; white-space: pre-wrap;
+}
+.status.on { display: block; }
+.status.err { color: var(--err-ink); background: var(--err-bg); }
+
+.bar { display: none; align-items: center; gap: 10px; min-width: 220px; }
 .bar.on { display: flex; }
-.track { flex: 1; height: 3px; background: var(--rule); overflow: hidden; }
-.fill { height: 100%; width: 0; background: var(--ink); transition: width .4s ease-out; }
+.track { flex: 1; height: 4px; background: var(--sunken); border-radius: 2px; overflow: hidden; }
+.fill { height: 100%; width: 0; background: var(--accent); transition: width .4s ease-out; }
 .bar span { font-size: 12px; color: var(--muted); white-space: nowrap; }
 
-.alert {
-  display: none; padding: 10px 20px; font-size: 14px; white-space: pre-wrap;
-  background: var(--warn-bg); color: var(--warn-ink);
-  border-bottom: 1px solid var(--rule);
+/* ── 검색창: 화면에서 가장 먼저 보이는 요소 ── */
+.ask {
+  display: flex; gap: 10px; padding: 14px 24px;
+  background: var(--panel); border-bottom: 1px solid var(--rule);
 }
-.alert.on { display: block; }
+.ask input {
+  flex: 1; padding: 13px 16px; font: inherit; font-size: 16px; color: var(--ink);
+  background: var(--paper); border: 1.5px solid var(--rule); border-radius: var(--r);
+}
+.ask input::placeholder { color: var(--muted); }
+.ask input:focus-visible, .hit-main:focus-visible, .seg:focus-visible,
+.more:focus-visible, .tool-button:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 1px;
+}
+.ask button {
+  padding: 13px 30px; font: inherit; font-size: 16px; font-weight: 700;
+  cursor: pointer; color: #fff; background: var(--accent);
+  border: 1px solid var(--accent); border-radius: var(--r);
+}
+.ask button:disabled { opacity: .45; cursor: default; }
 
-/* ── 본문 ── */
+/* ── 본문: 왼쪽 영상 · 오른쪽 결과 ── */
 .wrap {
-  flex: 1; display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-  gap: 14px; padding: 14px 20px 20px; min-height: 0;
+  flex: 1; display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(360px, 1fr);
+  gap: 16px; padding: 16px 24px 0; min-height: 0;
 }
-.col { display: flex; flex-direction: column; gap: 14px; min-height: 0; }
-.panel {
+.stage { display: flex; flex-direction: column; gap: 8px; min-height: 0; }
+video {
+  width: 100%; flex: 1; min-height: 0; display: block;
+  background: #000; border-radius: var(--r);
+}
+.now { display: flex; align-items: baseline; gap: 8px; font-size: 12.5px; color: var(--muted); }
+
+.side {
+  display: flex; flex-direction: column; min-height: 0;
   background: var(--panel); border: 1px solid var(--rule); border-radius: var(--r);
-  min-height: 0;
 }
+.side-head {
+  display: flex; align-items: baseline; gap: 10px;
+  padding: 12px 16px; border-bottom: 1px solid var(--rule);
+}
+.side-head h2 { font-size: 15px; font-weight: 700; }
+.side-head .count { font-size: 12px; color: var(--muted); }
+.scale-note {
+  padding: 7px 16px; font-size: 11.5px; color: var(--muted);
+  background: var(--sunken); border-bottom: 1px solid var(--rule);
+}
+.scale-note[hidden] { display: none; }
+.results { flex: 1; overflow-y: auto; padding: 12px; display: grid; gap: 10px; align-content: start; }
+.empty { padding: 26px 8px; color: var(--muted); font-size: 14px; text-align: center; }
+.empty b { display: block; margin-bottom: 4px; color: var(--ink); font-weight: 600; }
 
-video { width: 100%; display: block; background: #000; border-radius: var(--r); max-height: 42vh; }
+/* ── 결과 카드 ── */
+.hit {
+  border: 1px solid var(--rule); border-radius: var(--r);
+  background: var(--panel); overflow: hidden;
+}
+.hit.best { border-color: var(--accent); background: var(--accent-soft); }
+.hit-main {
+  display: block; width: 100%; text-align: left; font: inherit; color: inherit;
+  padding: 12px 14px 10px; background: none; border: 0; cursor: pointer;
+}
+.hit-main:hover { background: rgba(127,127,127,.09); }
+.hit-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.hit .rank { font-family: var(--mono); font-size: 15px; font-weight: 700; }
+.hit .best-tag {
+  padding: 2px 8px; font-size: 11px; font-weight: 700; color: #fff;
+  background: var(--accent); border-radius: 999px;
+}
+.hit .time {
+  margin-left: auto; font-family: var(--mono); font-variant-numeric: tabular-nums;
+  font-size: 15px; font-weight: 600;
+}
+.hit .body { min-width: 0; }   /* 긴 근거가 카드를 밀지 않게 */
+.line { display: flex; gap: 9px; align-items: baseline; margin-top: 3px; min-width: 0; }
+.line .who {
+  flex: none; width: 30px; font-size: 11px; font-weight: 700; letter-spacing: .04em;
+}
+.line.speech .who { color: var(--speech); }
+.line.scene  .who { color: var(--scene); }
+.line p {
+  font-size: 14px; min-width: 0; overflow-wrap: anywhere; word-break: break-word;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
+}
+.hit.open .line p { -webkit-line-clamp: unset; overflow: visible; }
+.line p.none { color: var(--muted); font-style: italic; }
 
-/* ── 시그니처: 채널 리본 ──────────────────────────────────────────────
-   영상 전체 시간축 위에 두 채널의 세그먼트별 점수를 나란히 그린다.
-   이 연구의 주장("무발화 장면은 자막 채널이 모르고 캡션 채널이 안다")이
-   여기서 눈에 보인다 — 발화 줄이 평평한데 화면 줄만 솟는 지점. */
-.ribbon { padding: 12px 14px 10px; }
-.ribbon .head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 8px; }
-.ribbon .head .grow { flex: 1; }
+.hit-foot {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  padding: 8px 14px 10px; border-top: 1px solid var(--rule);
+}
+.sc { display: inline-flex; align-items: baseline; gap: 5px; font-size: 12px; color: var(--muted); }
+.sc b { font-family: var(--mono); font-variant-numeric: tabular-nums;
+        font-size: 13px; font-weight: 700; color: var(--ink); }
+.sc.speech i { color: var(--speech); font-style: normal; font-weight: 700; }
+.sc.scene  i { color: var(--scene);  font-style: normal; font-weight: 700; }
+.sc.total  i { font-style: normal; font-weight: 700; color: var(--ink); }
+.more {
+  margin-left: auto; padding: 4px 9px; font: inherit; font-size: 12px;
+  color: var(--muted); background: none; border: 1px solid var(--rule);
+  border-radius: var(--r); cursor: pointer;
+}
+.play { font-size: 12.5px; font-weight: 700; color: var(--accent); white-space: nowrap; }
+
+.notice {
+  padding: 12px 14px; font-size: 13.5px; color: var(--warn-ink);
+  background: var(--warn-bg); border: 1px solid var(--rule); border-radius: var(--r);
+}
+.notice b { display: block; margin-bottom: 3px; font-size: 14px; color: var(--ink); }
+.sub-head { padding: 2px 2px 0; font-size: 12px; color: var(--muted); }
+
+/* ── 채널 리본: 보조 시각화. 영상·결과보다 낮고 작게 ── */
+.ribbon {
+  margin: 16px 24px; padding: 10px 16px 8px; background: var(--panel);
+  border: 1px solid var(--rule); border-radius: var(--r);
+}
+.ribbon .head { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
 .key { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--muted); }
 .key i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
 .key.speech i { background: var(--speech); }
 .key.scene  i { background: var(--scene); }
 .plot { display: flex; align-items: stretch; gap: 8px; }
-.rows { flex: none; width: 30px; display: flex; flex-direction: column; gap: 8px; }
+.rows { flex: none; width: 30px; display: flex; flex-direction: column; gap: 6px; }
 .rows span {
-  height: 30px; display: flex; align-items: flex-end; justify-content: flex-end;
-  font-size: 11px; font-weight: 600; letter-spacing: .04em; line-height: 1.1;
+  height: 24px; display: flex; align-items: flex-end; justify-content: flex-end;
+  font-size: 11px; font-weight: 700; letter-spacing: .04em; line-height: 1.1;
 }
 .rows .s1 { color: var(--speech); }
 .rows .s2 { color: var(--scene); }
-canvas { flex: 1; width: 100%; height: 68px; display: block; cursor: crosshair; }
+canvas { flex: 1; width: 100%; height: 54px; display: block; cursor: crosshair; }
 .ribbon .foot {
-  display: flex; justify-content: space-between; margin-top: 6px;
-  font-size: 11px; color: var(--muted);
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  margin-top: 5px; font-size: 11.5px; color: var(--muted);
 }
-.ribbon.idle canvas { opacity: .35; }
+.ribbon.idle canvas { opacity: .3; }
+.adv { font-size: 11.5px; color: var(--muted); }
+.adv summary { cursor: pointer; list-style: none; }
+.adv summary::-webkit-details-marker { display: none; }
+.adv-body { margin-top: 4px; font-family: var(--mono); }
 
-/* ── 질의 + 결과 ── */
-.ask { display: flex; gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--rule); }
-.ask input {
-  flex: 1; padding: 10px 12px; font: inherit; color: var(--ink);
-  background: var(--paper); border: 1px solid var(--rule); border-radius: var(--r);
+/* ── 서랍(전사 · 구간 목록) ── */
+dialog {
+  width: min(720px, calc(100vw - 32px)); max-height: 82vh; margin: auto;
+  padding: 0; color: var(--ink); background: var(--panel);
+  border: 1px solid var(--rule); border-radius: var(--r);
 }
-.ask input:focus-visible, .hit:focus-visible, .seg:focus-visible {
-  outline: 2px solid var(--speech); outline-offset: 1px;
+dialog::backdrop { background: rgba(0, 0, 0, .5); }
+.dialog-head {
+  position: sticky; top: 0; z-index: 1; display: flex; align-items: center; gap: 12px;
+  padding: 13px 16px; background: var(--panel); border-bottom: 1px solid var(--rule);
 }
-.ask button {
-  padding: 10px 20px; font: inherit; font-weight: 600; cursor: pointer;
-  color: var(--paper); background: var(--ink);
-  border: 1px solid var(--ink); border-radius: var(--r);
-}
-.ask button:disabled { opacity: .4; cursor: default; }
-
-.results { flex: 1; overflow-y: auto; padding: 4px 0; }
-.empty { padding: 22px 16px; color: var(--muted); font-size: 14px; }
-
-.hit {
-  display: grid; grid-template-columns: auto 1fr; gap: 4px 14px;
-  width: 100%; text-align: left; font: inherit; color: inherit;
-  padding: 12px 14px; background: none; border: 0;
-  border-bottom: 1px solid var(--rule); cursor: pointer;
-}
-.hit:hover { background: var(--paper); }
-.hit .time { font-family: var(--mono); font-variant-numeric: tabular-nums;
-             font-size: 17px; font-weight: 600; }
-.hit .score { font-family: var(--mono); font-variant-numeric: tabular-nums;
-              font-size: 12px; color: var(--muted); }
-.hit .body { grid-column: 2; min-width: 0; }
-.hit .rank { font-family: var(--mono); font-size: 12px; color: var(--muted); }
-.line { display: flex; gap: 8px; align-items: baseline; margin-top: 2px;
-        min-width: 0; }
-.line .who { flex: none; width: 30px; font-size: 11px; font-weight: 600; letter-spacing: .04em; }
-.line.speech .who { color: var(--speech); }
-.line.scene  .who { color: var(--scene); }
-.line p { font-size: 14px; min-width: 0; overflow-wrap: anywhere;
-           word-break: break-word; }
-.line p.none { color: var(--muted); font-style: italic; }
-
-.notice {
-  margin: 10px 14px; padding: 9px 12px; font-size: 13px;
-  background: var(--warn-bg); color: var(--warn-ink); border-radius: var(--r);
-}
-
-/* ── 세그먼트 목록 ── */
-.list { overflow-y: auto; }
-.list .empty { border: 0; }
-.seg {
+.dialog-head h2 { font-size: 16px; font-weight: 700; }
+.transcript-list, .list { max-height: calc(82vh - 56px); overflow-y: auto; }
+.utterance, .seg {
   display: block; width: 100%; text-align: left; font: inherit; color: inherit;
-  padding: 9px 14px; background: none; border: 0;
-  border-bottom: 1px solid var(--rule); cursor: pointer;
+  background: none; border: 0; border-bottom: 1px solid var(--rule); cursor: pointer;
 }
-.seg:hover { background: var(--paper); }
-.seg.on { box-shadow: inset 3px 0 0 var(--ink); }
+.utterance { padding: 11px 16px; }
+.utterance:hover, .seg:hover { background: var(--sunken); }
+.utterance time { display: block; margin-bottom: 2px; font: 12px var(--mono); color: var(--muted); }
+.utterance span { font-size: 14px; }
+.seg { padding: 10px 16px; }
+.seg.on { box-shadow: inset 3px 0 0 var(--accent); background: var(--accent-soft); }
 .seg .t { font-family: var(--mono); font-variant-numeric: tabular-nums;
           font-size: 12px; color: var(--muted); margin-right: 8px; }
 .seg .sub { font-size: 13.5px; overflow-wrap: anywhere; word-break: break-word; }
 .seg .cap { font-size: 13px; color: var(--muted); margin-top: 1px;
             overflow-wrap: anywhere; word-break: break-word; }
+.list .empty { border: 0; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
-@media (max-width: 900px) { .wrap { grid-template-columns: 1fr; } }
+@media (max-width: 1100px) {
+  body { overflow: auto; }
+  .wrap { grid-template-columns: 1fr; }
+  video { max-height: 46vh; }
+  .results { max-height: none; }
+}
 </style>
 </head>
 <body>
 
 <header class="top">
-  <h1>영상 순간 검색</h1>
-  <p class="spec" id="spec">발화 + 화면 두 채널</p>
+  <div class="brand">
+    <h1>영상 순간 검색</h1>
+    <p>자막과 화면을 함께 분석해 원하는 장면을 찾습니다.</p>
+  </div>
+  <div class="badges" id="spec"><span class="badge">발화 + 화면</span></div>
   <span class="grow"></span>
-  <input type="file" id="file" accept=".mp4" aria-label="mp4 영상 올리기">
+  <div class="status" id="alert" role="alert"></div>
   <div class="bar" id="bar">
     <div class="track"><div class="fill" id="fill"></div></div>
     <span id="bar-text"></span>
   </div>
-</header>
-<div class="alert" id="alert" role="alert"></div>
-
-<div class="wrap">
-  <div class="col">
-    <video id="player" controls playsinline></video>
-
-    <section class="panel ribbon idle" id="ribbon">
-      <div class="head">
-        <span class="label">채널별 일치도</span>
-        <span class="grow"></span>
-        <span class="key speech"><i></i>발화</span>
-        <span class="key scene"><i></i>화면</span>
+  <div class="tools">
+    <label class="file-button">파일 선택
+      <input type="file" id="file" accept=".mp4" aria-label="mp4 영상 올리기">
+    </label>
+    <details class="download-menu" id="transcript-downloads">
+      <summary>전사 다운로드</summary>
+      <div class="download-options">
+        <a id="download-txt" download>TXT</a>
+        <a id="download-srt" download>SRT</a>
+        <a id="download-json" download>원본 JSON</a>
       </div>
-      <div class="plot">
-        <div class="rows"><span class="s1">발화</span><span class="s2">화면</span></div>
-        <canvas id="canvas" height="68"></canvas>
-      </div>
-      <div class="foot">
-        <span class="mono" id="t-start">0:00</span>
-        <span id="ribbon-note">검색하면 두 채널의 일치도가 시간축에 그려집니다</span>
-        <span class="mono" id="t-end">—</span>
-      </div>
-    </section>
-
-    <section class="panel col">
-      <form class="ask" id="ask">
-        <input id="q" placeholder="예: 요리 재료를 도마 위에 준비하는 장면" disabled
-               aria-label="찾을 장면 설명">
-        <button id="go" disabled>검색</button>
-      </form>
-      <div class="results" id="results">
-        <p class="empty">영상을 올리면 장면을 검색할 수 있습니다.</p>
-      </div>
-    </section>
+    </details>
+    <button class="tool-button" id="transcript-open" type="button" disabled>전체 전사</button>
+    <button class="tool-button" id="segments-open" type="button" disabled>구간 목록</button>
   </div>
+</header>
 
-  <section class="panel list" id="list">
-    <p class="empty">전사와 장면 설명이 여기에 표시됩니다.</p>
+<form class="ask" id="ask">
+  <input id="q" placeholder="찾고 싶은 장면을 한국어로 입력하세요 — 예: 요리 재료를 도마 위에 준비하는 장면"
+         disabled aria-label="찾을 장면 설명">
+  <button id="go" disabled>검색</button>
+</form>
+
+<main class="wrap">
+  <section class="stage">
+    <video id="player" controls playsinline></video>
+    <div class="now"><span class="label">현재 시각</span><span class="mono" id="now-time">0:00</span></div>
   </section>
-</div>
+
+  <section class="side">
+    <div class="side-head">
+      <h2>검색 결과</h2>
+      <span class="count" id="result-count"></span>
+    </div>
+    <p class="scale-note" id="scale-note" hidden>발화·화면은 채널별 유사도, 종합은 융합 점수 — 척도가 다릅니다</p>
+    <div class="results" id="results">
+      <p class="empty"><b>영상을 올리면 장면을 검색할 수 있습니다.</b>
+        검색 결과와 근거가 이곳에 표시됩니다.</p>
+    </div>
+  </section>
+</main>
+
+<section class="ribbon idle" id="ribbon">
+  <div class="head">
+    <span class="label">채널별 일치도</span>
+    <span class="grow"></span>
+    <span class="key speech"><i></i>발화</span>
+    <span class="key scene"><i></i>화면</span>
+  </div>
+  <div class="plot">
+    <div class="rows"><span class="s1">발화</span><span class="s2">화면</span></div>
+    <canvas id="canvas" height="54"></canvas>
+  </div>
+  <div class="foot">
+    <span class="mono" id="t-start">0:00</span>
+    <span id="ribbon-note">검색하면 발화/화면 일치도가 표시됩니다</span>
+    <span class="mono" id="t-end">—</span>
+  </div>
+  <details class="adv">
+    <summary>설정 보기</summary>
+    <div class="adv-body" id="adv-body">—</div>
+  </details>
+</section>
+
+<dialog id="transcript-dialog" aria-labelledby="transcript-title">
+  <div class="dialog-head">
+    <h2 id="transcript-title">전체 전사</h2>
+    <span class="grow"></span>
+    <button class="dialog-close" id="transcript-close" type="button">닫기</button>
+  </div>
+  <div class="transcript-list" id="transcript-list"></div>
+</dialog>
+
+<dialog id="segments-dialog" aria-labelledby="segments-title">
+  <div class="dialog-head">
+    <h2 id="segments-title">구간 목록</h2>
+    <span class="grow"></span>
+    <button class="dialog-close" id="segments-close" type="button">닫기</button>
+  </div>
+  <div class="list" id="list">
+    <p class="empty">전사와 장면 설명이 여기에 표시됩니다.</p>
+  </div>
+</dialog>
 
 <script>
 const $ = id => document.getElementById(id);
@@ -239,8 +402,48 @@ const esc = s => String(s ?? "").replace(/[&<>"]/g, c =>
   ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
 function seek(sec) { const v = $("player"); v.currentTime = sec; v.play(); }
-function alertOn(text) { $("alert").textContent = text; $("alert").classList.add("on"); }
-function alertOff() { $("alert").classList.remove("on"); }
+function alertOn(text, kind) {
+  $("alert").textContent = text;
+  $("alert").classList.toggle("err", kind === "err");
+  $("alert").classList.add("on");
+}
+function alertOff() { $("alert").classList.remove("on", "err"); }
+
+$("player").addEventListener("timeupdate", () => {
+  $("now-time").textContent = fmt($("player").currentTime || 0);
+});
+
+async function openTranscript() {
+  if (!videoId) return;
+  try {
+    const response = await fetch(`/api/transcript/${videoId}`);
+    const body = await response.json();
+    if (!response.ok) { alertOn(body.detail, "err"); return; }
+    const list = $("transcript-list");
+    list.innerHTML = "";
+    if (!body.utterances.length) {
+      list.innerHTML = '<p class="empty">표시할 발화가 없습니다.</p>';
+    }
+    body.utterances.forEach(utterance => {
+      const button = document.createElement("button");
+      button.className = "utterance"; button.type = "button";
+      button.innerHTML = `<time>${fmt(utterance.t0)}~${fmt(utterance.t1)}</time>` +
+        `<span>${esc(utterance.text)}</span>`;
+      button.onclick = () => {
+        const player = $("player");
+        player.currentTime = utterance.t0;
+        player.play();
+      };
+      list.appendChild(button);
+    });
+    $("transcript-dialog").showModal();
+  } catch { alertOn("전체 전사문을 불러오지 못했습니다.", "err"); }
+}
+
+$("transcript-open").addEventListener("click", openTranscript);
+$("transcript-close").addEventListener("click", () => $("transcript-dialog").close());
+$("segments-open").addEventListener("click", () => $("segments-dialog").showModal());
+$("segments-close").addEventListener("click", () => $("segments-dialog").close());
 
 /* ── 리본 ────────────────────────────────────────────────────────────
    두 채널의 raw 코사인은 절대 범위가 달라(자막이 대체로 높다) 그대로 겹치면
@@ -251,6 +454,7 @@ function alertOff() { $("alert").classList.remove("on"); }
    봉우리가 안 드러난다 — 발표장에서 "저기다"가 한눈에 와야 한다.
    순서를 바꾸지 않는 단조 변환이라 어느 구간이 더 높은지는 그대로다. */
 const GAMMA = 2.2;
+const ROW_H = 24, ROW_GAP = 6;     /* 보조 시각화라 높이를 줄였다(그림 규칙은 불변) */
 function norm(a) {
   const lo = Math.min(...a), hi = Math.max(...a), d = hi - lo;
   return d < 1e-9 ? a.map(() => 0) : a.map(v => Math.pow((v - lo) / d, GAMMA));
@@ -266,7 +470,7 @@ function drawRibbon() {
 
   const css = getComputedStyle(document.documentElement);
   const rule = css.getPropertyValue("--rule").trim();
-  const rowH = 30, gap = 8, n = segments.length, bw = w / n;
+  const rowH = ROW_H, gap = ROW_GAP, n = segments.length, bw = w / n;
   const ink = css.getPropertyValue("--ink").trim();
   const rows = lastPerSeg
     ? [[norm(lastPerSeg.sub), css.getPropertyValue("--speech").trim(), 0],
@@ -314,7 +518,7 @@ $("file").addEventListener("change", async e => {
   try {
     const r = await fetch("/api/upload", { method: "POST", body: fd });
     const body = await r.json();
-    if (!r.ok) { alertOn(body.detail); return; }
+    if (!r.ok) { alertOn(body.detail, "err"); return; }
     videoId = body.video_id;
     if (body.stage === "done") {
       alertOn(body.detail || "기존 영상과 검색 인덱스를 재사용합니다.");
@@ -326,14 +530,14 @@ $("file").addEventListener("change", async e => {
     }
     $("bar").classList.add("on");
     poll();
-  } catch { alertOn("영상을 올리지 못했습니다. 네트워크를 확인하세요."); }
+  } catch { alertOn("영상을 올리지 못했습니다. 네트워크를 확인하세요.", "err"); }
 });
 
 async function poll() {
   try {
     const st = await (await fetch(`/api/status/${videoId}`)).json();
     if (st.stage === "error") {
-      alertOn("인덱싱이 멈췄습니다.\n" + st.detail + "\n영상을 다시 올려 주세요.");
+      alertOn("인덱싱이 멈췄습니다.\n" + st.detail + "\n영상을 다시 올려 주세요.", "err");
       $("bar").classList.remove("on");
       return;
     }
@@ -376,7 +580,16 @@ async function ready() {
   }
   $("t-end").textContent = fmt(segments[segments.length - 1].end);
   $("q").disabled = false; $("go").disabled = false;
-  $("results").innerHTML = '<p class="empty">장면을 설명해 검색하세요.</p>';
+  $("transcript-open").disabled = false;
+  $("segments-open").disabled = false;
+  $("transcript-downloads").classList.add("ready");
+  for (const kind of ["txt", "srt", "json"]) {
+    $(`download-${kind}`).href = `/api/transcript/${videoId}/download?format=${kind}`;
+  }
+  $("results").innerHTML =
+    '<p class="empty"><b>찾고 싶은 장면을 검색해보세요.</b>검색 결과와 근거가 이곳에 표시됩니다.</p>';
+  $("result-count").textContent = "";
+  $("scale-note").hidden = true;
   drawRibbon();
   $("q").focus();
 }
@@ -400,13 +613,23 @@ $("ask").addEventListener("submit", async e => {
   } finally { $("go").disabled = false; }
 });
 
+/* 채널 점수는 응답의 raw.per_seg에서 그 구간 값을 그대로 읽는다 —
+   새로 계산하지 않는다. per_seg가 없는 호출 경로에서는 칸을 비운다. */
+function channelScore(perSeg, key, idx) {
+  const arr = perSeg && perSeg[key];
+  return Array.isArray(arr) && typeof arr[idx] === "number" ? arr[idx].toFixed(3) : null;
+}
+
 function render(query, body) {
   const box = $("results");
   box.innerHTML = "";
+  const perSeg = body.raw && body.raw.per_seg ? body.raw.per_seg : null;
+
   if (body.low_relevance) {
-    const n = document.createElement("p");
+    const n = document.createElement("div");
     n.className = "notice";
-    n.textContent = "두 채널 모두 일치도가 낮습니다. 이 영상에 해당 장면이 없을 수 있습니다.";
+    n.innerHTML = "<b>검색 결과 없음</b>영상에서 충분히 관련 있는 장면을 찾지 못했습니다. " +
+      "아래는 참고용으로 가장 가까운 구간입니다.";
     box.appendChild(n);
   }
   if (!body.results.length) {
@@ -415,28 +638,50 @@ function render(query, body) {
     e.textContent = "표시할 구간이 없습니다. 인덱싱이 끝났는지 확인해 주세요.";
     box.appendChild(e);
   }
+  $("result-count").textContent = body.results.length
+    ? `상위 ${body.results.length}개` : "";
+  $("scale-note").hidden = !body.results.length;
+
   body.results.forEach((c, i) => {
-    const b = document.createElement("button");
-    b.className = "hit"; b.type = "button";
-    b.innerHTML =
-      `<span class="time">${fmt(c.start)}~${fmt(c.end)}</span>` +
-      `<span class="rank">${c.rank ?? i + 1}위 · <span class="score">${c.score.toFixed(3)}</span></span>` +
-      `<div class="body">` +
-        `<div class="line speech"><span class="who">발화</span>` +
-          `<p class="${c.subtitle ? "" : "none"}">${esc(c.subtitle) || "없음"}</p></div>` +
-        `<div class="line scene"><span class="who">화면</span>` +
-          `<p class="${c.caption ? "" : "none"}">${esc(c.caption) || "없음"}</p></div>` +
+    const card = document.createElement("article");
+    card.className = "hit" + (i === 0 && !body.low_relevance ? " best" : "");
+    const sub = channelScore(perSeg, "sub", c.idx);
+    const cap = channelScore(perSeg, "cap", c.idx);
+    card.innerHTML =
+      `<button class="hit-main" type="button">` +
+        `<div class="hit-top">` +
+          `<span class="rank">#${c.rank ?? i + 1}</span>` +
+          (i === 0 && !body.low_relevance ? `<span class="best-tag">가장 관련 있음</span>` : "") +
+          `<span class="time">${fmt(c.start)} ~ ${fmt(c.end)}</span>` +
+        `</div>` +
+        `<div class="body">` +
+          `<div class="line speech"><span class="who">발화</span>` +
+            `<p class="${c.subtitle ? "" : "none"}">${esc(c.subtitle) || "없음"}</p></div>` +
+          `<div class="line scene"><span class="who">화면</span>` +
+            `<p class="${c.caption ? "" : "none"}">${esc(c.caption) || "없음"}</p></div>` +
+        `</div>` +
+      `</button>` +
+      `<div class="hit-foot">` +
+        (sub ? `<span class="sc speech"><i>발화</i><b>${sub}</b></span>` : "") +
+        (cap ? `<span class="sc scene"><i>화면</i><b>${cap}</b></span>` : "") +
+        `<span class="sc total"><i>종합</i><b>${c.score.toFixed(3)}</b></span>` +
+        `<span class="play">이 시점 재생 ▸</span>` +
+        `<button class="more" type="button">근거 자세히</button>` +
       `</div>`;
-    b.onclick = () => seek(c.seek_to ?? c.start);
-    box.appendChild(b);
+    card.querySelector(".hit-main").onclick = () => seek(c.seek_to ?? c.start);
+    card.querySelector(".more").onclick = () => {
+      const open = card.classList.toggle("open");
+      card.querySelector(".more").textContent = open ? "접기" : "근거 자세히";
+    };
+    box.appendChild(card);
   });
 
-  lastPerSeg = body.raw && body.raw.per_seg ? body.raw.per_seg : null;
+  lastPerSeg = perSeg;
   topIdx = body.results.length ? body.results[0].idx : null;
   $("ribbon").classList.toggle("idle", !lastPerSeg);
   $("ribbon-note").textContent = lastPerSeg
     ? `"${query}" — 채널 안에서 상대 비교(두 채널의 높이를 서로 비교하지 마세요)`
-    : "검색하면 두 채널의 일치도가 시간축에 그려집니다";
+    : "검색하면 발화/화면 일치도가 표시됩니다";
   drawRibbon();
 
   document.querySelectorAll(".seg.on").forEach(el => el.classList.remove("on"));
@@ -444,12 +689,18 @@ function render(query, body) {
   if (body.results.length) $(`seg-${body.results[0].idx}`)?.scrollIntoView({ block: "center" });
 }
 
-/* ── 확정 설정 표시 + 새로고침 복원 ── */
+/* ── 확정 설정 표시 + 새로고침 복원 ──
+   내부 수치(α 등)는 배지가 아니라 접힌 "설정 보기"에 둔다(§23). */
 (async () => {
   try {
     const m = await (await fetch("/api/meta")).json();
-    $("spec").innerHTML = `융합 <b>α ${m.alpha}</b> · ${m.seg_len_sec}초 세그먼트 · ` +
-      `발화 + 화면 두 채널 · <b>${esc(m.embed_model.split("/").pop())}</b>`;
+    const model = esc(m.embed_model.split("/").pop());
+    $("spec").innerHTML =
+      `<span class="badge">${m.seg_len_sec}초 구간</span>` +
+      `<span class="badge">발화 + 화면</span>` +
+      `<span class="badge">${model}</span>`;
+    $("adv-body").textContent =
+      `융합 α ${m.alpha} · 세그먼트 ${m.seg_len_sec}초 · 임베딩 ${m.embed_model}`;
   } catch { /* 설정 표시는 부가 정보 — 실패해도 검색에 영향 없다 */ }
   try {
     const cur = await (await fetch("/api/current")).json();

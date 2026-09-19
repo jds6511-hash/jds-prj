@@ -211,6 +211,29 @@ def test_status_recovers_completed_existing_video_after_server_restart(tmp_path)
     assert response.json()["reused"] is True
 
 
+def test_initial_video_restores_existing_index_without_upload(tmp_path):
+    cfg = make_cfg(tmp_path)
+    video = Path(cfg["paths"]["data"]) / "videos" / "existing.mp4"
+    video.parent.mkdir(parents=True)
+    video.write_bytes(b"original")
+    (Path(cfg["paths"]["work"]) / "existing").mkdir(parents=True)
+
+    client, _ = make_client(
+        tmp_path,
+        cfg=cfg,
+        load_index=lambda *_args: _stub_index(),
+        initial_video_id="existing",
+    )
+
+    response = client.get("/api/current")
+    assert response.status_code == 200
+    assert response.json() == {
+        "video_id": "existing",
+        "stage": "done",
+        "detail": "기존 영상과 검색 인덱스를 재사용합니다.",
+    }
+
+
 def write_segments(cfg, vid, n=3):
     wdir = Path(cfg["paths"]["work"]) / vid
     wdir.mkdir(parents=True)
@@ -221,6 +244,15 @@ def write_segments(cfg, vid, n=3):
                         for i in range(n)]}
     (wdir / "segments.json").write_text(
         json.dumps(doc, ensure_ascii=False), encoding="utf-8")
+
+
+def write_stt_cache(cfg, vid, utterances):
+    wdir = Path(cfg["paths"]["work"]) / vid
+    wdir.mkdir(parents=True, exist_ok=True)
+    (wdir / "stt_cache.json").write_text(json.dumps({
+        "meta": {"model": "large-v3", "lang": "ko"},
+        "utterances": utterances,
+    }, ensure_ascii=False), encoding="utf-8")
 
 
 def _stub_index(n=3):
@@ -258,6 +290,75 @@ def test_segments_invariant_violation_404(tmp_path):
         json.dumps(bad_doc, ensure_ascii=False), encoding="utf-8")
     r = client.get("/api/segments/v1")
     assert r.status_code == 404
+
+
+def test_transcript_endpoint_returns_utterances_and_filters_subtitle_credit(tmp_path):
+    client, cfg = make_client(tmp_path)
+    write_stt_cache(cfg, "v1", [
+        {"text": "첫 번째 발화", "t0": 3.21, "t1": 6.84},
+        {"text": "한글자막 by 한효정", "t0": 6.84, "t1": 7.0},
+        {"text": "두 번째 발화", "t0": 7.12, "t1": 11.43},
+    ])
+
+    r = client.get("/api/transcript/v1")
+
+    assert r.status_code == 200
+    assert r.json() == {"video_id": "v1", "utterances": [
+        {"text": "첫 번째 발화", "t0": 3.21, "t1": 6.84},
+        {"text": "두 번째 발화", "t0": 7.12, "t1": 11.43},
+    ]}
+
+
+@pytest.mark.parametrize("fmt,media_type,suffix,expected", [
+    ("txt", "text/plain", ".txt",
+     "[00:00:03.210 - 00:00:06.840]\n첫 번째 발화\n\n"
+     "[00:00:07.120 - 00:00:11.430]\n두 번째 발화\n"),
+    ("srt", "application/x-subrip", ".srt",
+     "1\n00:00:03,210 --> 00:00:06,840\n첫 번째 발화\n\n"
+     "2\n00:00:07,120 --> 00:00:11,430\n두 번째 발화\n"),
+])
+def test_transcript_text_downloads_are_filtered_and_timestamped(
+        tmp_path, fmt, media_type, suffix, expected):
+    client, cfg = make_client(tmp_path)
+    write_stt_cache(cfg, "v1", [
+        {"text": "첫 번째 발화", "t0": 3.21, "t1": 6.84},
+        {"text": "한글자막 by 한효정", "t0": 6.84, "t1": 7.0},
+        {"text": "두 번째 발화", "t0": 7.12, "t1": 11.43},
+    ])
+
+    r = client.get(f"/api/transcript/v1/download?format={fmt}")
+
+    assert r.status_code == 200
+    assert r.text == expected
+    assert media_type in r.headers["content-type"]
+    assert f'filename="v1_transcript{suffix}"' in r.headers["content-disposition"]
+
+
+def test_transcript_json_download_preserves_unfiltered_raw_utterances(tmp_path):
+    client, cfg = make_client(tmp_path)
+    raw = [
+        {"text": "첫 번째 발화", "t0": 3.21, "t1": 6.84},
+        {"text": "한글자막 by 한효정", "t0": 6.84, "t1": 7.0},
+    ]
+    write_stt_cache(cfg, "v1", raw)
+
+    r = client.get("/api/transcript/v1/download?format=json")
+
+    assert r.status_code == 200
+    assert r.json() == {"video_id": "v1", "utterances": raw}
+    assert "application/json" in r.headers["content-type"]
+    assert 'filename="v1_transcript.json"' in r.headers["content-disposition"]
+
+
+def test_transcript_missing_or_malformed_cache_is_explicit(tmp_path):
+    client, cfg = make_client(tmp_path)
+    assert client.get("/api/transcript/missing").status_code == 404
+
+    wdir = Path(cfg["paths"]["work"]) / "broken"
+    wdir.mkdir(parents=True)
+    (wdir / "stt_cache.json").write_text(
+        '{"utterances":[{"text":"발화","t0":5,"t1":3}]}', encoding="utf-8")
+    assert client.get("/api/transcript/broken").status_code == 422
 
 
 def test_search_returns_top3_cards(tmp_path):
@@ -468,8 +569,12 @@ def test_root_serves_html(tmp_path):
     assert "/api/current" in r.text   # 재접속 복원 로직 존재 스모크
     assert "/api/meta" in r.text      # 확정 설정 표시
     assert 'id="canvas"' in r.text    # 채널 리본(시연의 시그니처 요소)
+    assert 'id="transcript-open"' in r.text
+    assert "/api/transcript/" in r.text
+    assert "player.currentTime = utterance.t0" in r.text
     assert 'body.stage === "done"' in r.text
     assert "await ready()" in r.text
+    assert "기존 영상과 검색 인덱스를 재사용" in r.text
 
 
 def test_status_progress_during_m2(tmp_path):
@@ -671,6 +776,7 @@ def test_frontend_wraps_long_evidence_and_has_no_abstention_wording():
     html = (Path(__file__).resolve().parents[1] / "src" / "jds_video" / "_internal" / "webui"
             / "index.html").read_text(encoding="utf-8")
     assert "overflow-wrap: anywhere" in html
-    assert ".hit .body { grid-column: 2; min-width: 0; }" in html
+    assert ".hit .body { min-width: 0; }" in html   # 카드가 긴 근거에 밀리지 않는다
+    assert "-webkit-line-clamp" in html             # 기본은 접어 두고 "근거 자세히"로 편다
     assert "abstention" not in html.lower()
     assert "표시할 구간이 없습니다" in html          # 결과 0건 안내

@@ -1,0 +1,289 @@
+{
+  "event": "WVR_MULTIMODAL_REPORT_COMPOSER_V2",
+  "video_id": "69E1sdSMaO4",
+  "rule": "화면 근거는 같은 multimodal event이거나 frozen relation으로 연결된 것만 쓴다",
+  "counts": {
+    "EPISODE_GROUNDED": 21,
+    "EPISODE_PROVENANCE_ERROR": 0,
+    "EPISODE_TEMPORAL_ERROR": 0
+  },
+  "records": [
+    {
+      "episode_id": "RE001",
+      "evidence": "화면",
+      "start": 24.0,
+      "end": 32.0,
+      "visual_event_ids": [
+        "EVT_e6854d56748b2d4ef359"
+      ],
+      "speech_event_ids": [],
+      "frozen_link": false,
+      "status": "EPISODE_GROUNDED",
+      "problems": []
+    },
+    {
+      "episode_id": "RE002",
+      "evidence": "화면",
+      "start": 144.0,
+      "end": 152.0,
+      "visual_event_ids": [
+        "EVT_790019960e2d84fc6590"
+      ],
+      "speech_event_ids": [],
+      "frozen_link": false,
+      "status": "EPISODE_GROUNDED",
+      "problems": []
+    },
+    {
+      "episode_id": "RE003",
+      "evidence": "음성",
+      "start": 184.96,
+      "end": 253.38,
+      "visual_event_ids": [],
+      "speech_event_ids": [
+        "SP004"
+      ],
+      "frozen_link": false,
+      "status": "EPISODE_GROUNDED",
+      "problems": []
+    },
+    {
+      "episode_id": "RE004",
+      "evidence": "화면",
+      "start": 264.0,
+      "end": 272.0,
+      "visual_event_ids": [
+        "EVT_f09dc7ca9b529890a6c4"
+      ],
+      "speech_event_ids": [],
+      "frozen_link": false,
+      "status": "EPISODE_GROUNDED",
+      "problems": []
+    },
+    {
+      "episode_id": "RE005",
+      "evidence": "화면",
+      "start": 288.0,
+      "end": 297.0,
+      "visual_event_ids": [
+        "EVT_b1c563e759a97cc0b1b2"
+      ],
+      "speech_event_ids": [],
+      "frozen_link": false,
+      "status": "EPISODE_GROUNDED",
+      "problems": []
+    },
+    {
+      "episode_id": "RE006",
+      "evidence": "음성+화면",
+      "start": 317.48,
+      "end": 712.28,
+      "visual_event_ids": [
+        "EVT_71e516549e2647482033"
+      ],
+      "speech_event_ids": [
+        "SP005"
+      ],
+      "frozen_link": true,
+      "status": "EPISODE_GROUNDED",
+      "problems": []
+    },
+    {
+      "episode_id": "RE007",
+      "evidence": "화면",
+      "start": 561.0,
+      "end": 575.0,
+      "visual_event_ids": [
+        "EVT_8b4ad36daf5a52a8bebc"
+      ],
+      "speech_event_ids": [],
+      "frozen_link": false,
+      "status": "EPISODE_GROUNDED",
+      "problems": []
+    },
+    {
+      "episode_id": "RE008",
+      "evidence": "음성",
+      "start": 772.16,
+      "end": 810.82,
+      "visual_event_ids": [],
+      "speech_event_ids": [
+        "SP007"
+      ],
+      "frozen_link": false,
+      "status": "EPISODE_GROUNDED",
+      "problems": []
+    },
+    {
+      "episode_id": "RE009",
+      "evidence": "음성",
+      "start": 989.1,
+      "end": 1099.72,
+      "visual_event_ids": [],
+      "speech_event_ids": [
+        "SP009"
+      ],
+      "frozen_link": false,
+      "status": "EPISODE_GROUNDED",
+      "problems": []
+    },
+    {
+      "episode_id": "RE010",
+      "evidence": "화면",
+      "start": 1152.0,
+      "end": 1160.0,
+      "visual_event_ids": [
+        "EVT_cfe9c30176ae062b8485"
+      ],
+      "speech_event_ids": [],
+      "frozen_link": false,
+      "status": "EPISODE_GROUNDED",
+      "problems": []
+    },
+    {
+      "episode_id": "RE011",
+      "evidence": "화면",
+      "start": 1200.0,
+      "end": 1208.0,
+      "visual_event_ids": [
+        "EVT_f1481aa704617171fb20"
+      ],
+      "speech_event_ids": [],
+      "frozen_link": false,
+      "status": "EPISODE_GROUNDED",
+      "problems": []
+    },
+    {
+      "episode_id": "RE012",
+      "evidence": "음성",
+      "start": 1294.24,
+      "end": 1376.68,
+      "visual_event_ids": [],
+      "speech_event_ids": [
+        "SP011"
+      ],
+      "frozen_link": false,
+      "status": "EPISODE_GROUNDED",
+      "problems": []
+    },
+    {
+      "episode_id": "RE013",
+      "evidence": "화면",
+      "start": 1440.0,
+      "end": 1448.0,
+      "visual_event_ids": [
+        "EVT_7a79bba8cff3242a215f"
+      ],
+      "speech_event_ids": [],
+      "frozen_link": false,
+      "status": "EPISODE_GROUNDED",
+      "problems": []
+    },
+    {
+      "episode_id": "RE014",
+      "evidence": "화면",
+      "start": 1545.0,
+      "end": 1554.0,
+      "visual_event_ids": [
+        "EVT_8d02589eeadd0164c018"
+      ],
+      "speech_event_ids": [],
+      "frozen_link": false,
+      "status": "EPISODE_GROUNDED",
+      "problems": []
+    },
+    {
+      "episode_id": "RE015",
+      "evidence": "음성",
+      "start": 1579.2,
+      "end": 1697.1,
+      "visual_event_ids": [],
+      "speech_event_ids": [
+        "SP013"
+      ],
+      "frozen_link": false,
+      "status": "EPISODE_GROUNDED",
+      "problems": []
+    },
+    {
+      "episode_id": "RE016",
+      "evidence": "화면",
+      "start": 1752.0,
+      "end": 1760.0,
+      "visual_event_ids": [
+        "EVT_fadeed4157ad2da2cd97"
+      ],
+      "speech_event_ids": [],
+      "frozen_link": false,
+      "status": "EPISODE_GROUNDED",
+      "problems": []
+    },
+    {
+      "episode_id": "RE017",
+      "evidence": "화면",
+      "start": 1824.0,
+      "end": 1832.0,
+      "visual_event_ids": [
+        "EVT_ef7784ae58711bef32d9"
+      ],
+      "speech_event_ids": [],
+      "frozen_link": false,
+      "status": "EPISODE_GROUNDED",
+      "problems": []
+    },
+    {
+      "episode_id": "RE018",
+      "evidence": "화면",
+      "start": 1944.0,
+      "end": 1952.0,
+      "visual_event_ids": [
+        "EVT_d8f56f6b0b50992ea346"
+      ],
+      "speech_event_ids": [],
+      "frozen_link": false,
+      "status": "EPISODE_GROUNDED",
+      "problems": []
+    },
+    {
+      "episode_id": "RE019",
+      "evidence": "화면",
+      "start": 2040.0,
+      "end": 2048.0,
+      "visual_event_ids": [
+        "EVT_bf46afc8495966c3a9ea"
+      ],
+      "speech_event_ids": [
+        "SP016"
+      ],
+      "frozen_link": true,
+      "status": "EPISODE_GROUNDED",
+      "problems": []
+    },
+    {
+      "episode_id": "RE020",
+      "evidence": "화면",
+      "start": 2136.0,
+      "end": 2144.0,
+      "visual_event_ids": [
+        "EVT_c381def2dfc74b1013ea"
+      ],
+      "speech_event_ids": [],
+      "frozen_link": false,
+      "status": "EPISODE_GROUNDED",
+      "problems": []
+    },
+    {
+      "episode_id": "RE021",
+      "evidence": "화면",
+      "start": 2260.0,
+      "end": 2274.0,
+      "visual_event_ids": [
+        "EVT_b62d341d594ec2b3d3cf"
+      ],
+      "speech_event_ids": [],
+      "frozen_link": false,
+      "status": "EPISODE_GROUNDED",
+      "problems": []
+    }
+  ]
+}

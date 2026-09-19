@@ -142,11 +142,11 @@ def check_no_new_human_gt(root: Path, baseline: dict) -> list[Failure]:
 def check_no_provider_adoption(root: Path) -> list[Failure]:
     """REG-009 — C0는 MIXED_SIGNAL이었다. change-point를 default로 올리지 않는다."""
     failures = []
-    boundary = root / "src/jds_video/_internal/v2_1_boundary.py"
+    boundary = root / "src/v2_1_boundary.py"
     if boundary.is_file():
         text = boundary.read_text(encoding="utf-8")
         if 'DEFAULT_PROVIDER_NAME = "fixed_window_v1"' not in text:
-            failures.append(Failure("DEFAULT_PROVIDER_CHANGED", "src/jds_video/_internal/v2_1_boundary.py"))
+            failures.append(Failure("DEFAULT_PROVIDER_CHANGED", "src/v2_1_boundary.py"))
     for config in sorted(root.glob("config*.yaml")):
         if _ADOPTION.search(config.read_text(encoding="utf-8")):
             failures.append(

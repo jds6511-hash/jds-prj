@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT / "src" / "jds_video" / "_internal"))
 sys.path.insert(0, str(ROOT / "scripts"))
 
 import wvr_whole_video_report_v2 as report  # noqa: E402

@@ -1,0 +1,891 @@
+{
+  "event": "WVR_MULTIMODAL_REPORT_COMPOSER_V2",
+  "video_id": "69E1sdSMaO4",
+  "rule": "행마다 전사 복사(§7)와 보고 문체(§6)를 다시 본다 — 최종 화면 문장 기준",
+  "counts": {
+    "TRANSCRIPT_STYLE_PASS": 11,
+    "TRANSCRIPT_STYLE_FAIL": 10
+  },
+  "leakage_rows": 0,
+  "records": [
+    {
+      "episode_id": "RE001",
+      "evidence": "화면",
+      "display": "VISUAL_EVIDENCE",
+      "summary": "사람이 빵과 토마토를 준비하고 있습니다",
+      "speech_event_ids": [],
+      "utterance_ids": [],
+      "status": "TRANSCRIPT_STYLE_PASS",
+      "signals": [],
+      "leakage": {
+        "signals": [],
+        "longest_run": 0,
+        "verbatim_ratio": 0.0,
+        "runs_per_utterance": []
+      },
+      "style": {
+        "signals": [],
+        "sentence_count": 1,
+        "detail": {
+          "endings": [
+            "있습니다"
+          ]
+        }
+      }
+    },
+    {
+      "episode_id": "RE002",
+      "evidence": "화면",
+      "display": "VISUAL_EVIDENCE",
+      "summary": "식사 준비를 하는 활동",
+      "speech_event_ids": [],
+      "utterance_ids": [],
+      "status": "TRANSCRIPT_STYLE_FAIL",
+      "signals": [
+        "NON_DECLARATIVE_ENDING"
+      ],
+      "leakage": {
+        "signals": [],
+        "longest_run": 0,
+        "verbatim_ratio": 0.0,
+        "runs_per_utterance": []
+      },
+      "style": {
+        "signals": [
+          "NON_DECLARATIVE_ENDING"
+        ],
+        "sentence_count": 1,
+        "detail": {
+          "endings": [
+            "활동"
+          ]
+        }
+      }
+    },
+    {
+      "episode_id": "RE003",
+      "evidence": "음성",
+      "display": "REGENERATED_REPORT_SUMMARY",
+      "summary": "오늘 홍재동으로 가는 연탄 나르기 봉사활동을 위해 충분히 준비하고 있다. 위에는 다섯 겹, 아래에는 수면바지를 포함한 세 겹의 옷을 입었다.",
+      "speech_event_ids": [
+        "SP004"
+      ],
+      "utterance_ids": [
+        "U0028",
+        "U0029",
+        "U0030",
+        "U0031",
+        "U0032",
+        "U0034",
+        "U0035",
+        "U0036",
+        "U0037",
+        "U0038",
+        "U0039",
+        "U0040",
+        "U0041",
+        "U0042"
+      ],
+      "status": "TRANSCRIPT_STYLE_PASS",
+      "signals": [],
+      "leakage": {
+        "signals": [],
+        "longest_run": 3,
+        "verbatim_ratio": 0.0,
+        "runs_per_utterance": [
+          1,
+          3,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          2,
+          1,
+          0
+        ]
+      },
+      "style": {
+        "signals": [],
+        "sentence_count": 2,
+        "detail": {
+          "endings": [
+            "있다",
+            "입었다"
+          ]
+        }
+      }
+    },
+    {
+      "episode_id": "RE004",
+      "evidence": "화면",
+      "display": "VISUAL_EVIDENCE",
+      "summary": "사람이 검은색 부츠를 신고 있다",
+      "speech_event_ids": [],
+      "utterance_ids": [],
+      "status": "TRANSCRIPT_STYLE_PASS",
+      "signals": [],
+      "leakage": {
+        "signals": [],
+        "longest_run": 0,
+        "verbatim_ratio": 0.0,
+        "runs_per_utterance": []
+      },
+      "style": {
+        "signals": [],
+        "sentence_count": 1,
+        "detail": {
+          "endings": [
+            "있다"
+          ]
+        }
+      }
+    },
+    {
+      "episode_id": "RE005",
+      "evidence": "화면",
+      "display": "VISUAL_EVIDENCE",
+      "summary": "열차를 타고 이동하는 활동",
+      "speech_event_ids": [],
+      "utterance_ids": [],
+      "status": "TRANSCRIPT_STYLE_FAIL",
+      "signals": [
+        "NON_DECLARATIVE_ENDING"
+      ],
+      "leakage": {
+        "signals": [],
+        "longest_run": 0,
+        "verbatim_ratio": 0.0,
+        "runs_per_utterance": []
+      },
+      "style": {
+        "signals": [
+          "NON_DECLARATIVE_ENDING"
+        ],
+        "sentence_count": 1,
+        "detail": {
+          "endings": [
+            "활동"
+          ]
+        }
+      }
+    },
+    {
+      "episode_id": "RE006",
+      "evidence": "음성+화면",
+      "display": "APPROVED_SUMMARY_RETAINED",
+      "summary": "참가자들이 지게를 이용해 물건을 옮기는 봉사활동을 하고 있으며, 작업이 끝나자마자 근처 슈퍼마켓에서 식사를 하기로 결정했다. 일부 장면에서 확인된 내용: 사람이 음식을 조리하고 접시에 담는다.",
+      "speech_event_ids": [
+        "SP005"
+      ],
+      "utterance_ids": [
+        "U0043",
+        "U0045",
+        "U0046",
+        "U0048",
+        "U0049",
+        "U0050",
+        "U0051",
+        "U0053",
+        "U0056",
+        "U0058",
+        "U0059",
+        "U0063",
+        "U0065",
+        "U0066",
+        "U0067",
+        "U0068",
+        "U0069",
+        "U0071",
+        "U0072",
+        "U0074",
+        "U0075",
+        "U0077",
+        "U0078",
+        "U0079",
+        "U0080",
+        "U0081",
+        "U0082",
+        "U0085",
+        "U0086",
+        "U0087",
+        "U0088",
+        "U0090",
+        "U0091",
+        "U0095",
+        "U0101",
+        "U0102",
+        "U0103",
+        "U0104",
+        "U0105",
+        "U0106",
+        "U0107",
+        "U0108",
+        "U0109",
+        "U0110",
+        "U0112",
+        "U0114",
+        "U0115",
+        "U0116",
+        "U0117",
+        "U0119",
+        "U0120",
+        "U0122",
+        "U0124",
+        "U0125",
+        "U0126",
+        "U0127",
+        "U0129",
+        "U0130",
+        "U0131",
+        "U0132",
+        "U0133",
+        "U0134",
+        "U0136"
+      ],
+      "status": "TRANSCRIPT_STYLE_PASS",
+      "signals": [],
+      "leakage": {
+        "signals": [],
+        "longest_run": 1,
+        "verbatim_ratio": 0.0,
+        "runs_per_utterance": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "style": {
+        "signals": [],
+        "sentence_count": 2,
+        "detail": {
+          "endings": [
+            "결정했다",
+            "담는다"
+          ]
+        }
+      }
+    },
+    {
+      "episode_id": "RE007",
+      "evidence": "화면",
+      "display": "VISUAL_EVIDENCE",
+      "summary": "사람들이 검은색 원통형 물체를 다루고 있습니다",
+      "speech_event_ids": [],
+      "utterance_ids": [],
+      "status": "TRANSCRIPT_STYLE_PASS",
+      "signals": [],
+      "leakage": {
+        "signals": [],
+        "longest_run": 0,
+        "verbatim_ratio": 0.0,
+        "runs_per_utterance": []
+      },
+      "style": {
+        "signals": [],
+        "sentence_count": 1,
+        "detail": {
+          "endings": [
+            "있습니다"
+          ]
+        }
+      }
+    },
+    {
+      "episode_id": "RE008",
+      "evidence": "음성",
+      "display": "GENERATIVE_REPORT_SUMMARY",
+      "summary": "매콤한 고추튀김을 준비했다.",
+      "speech_event_ids": [
+        "SP007"
+      ],
+      "utterance_ids": [
+        "U0151",
+        "U0152",
+        "U0153",
+        "U0154",
+        "U0155"
+      ],
+      "status": "TRANSCRIPT_STYLE_PASS",
+      "signals": [],
+      "leakage": {
+        "signals": [],
+        "longest_run": 2,
+        "verbatim_ratio": 0.0,
+        "runs_per_utterance": [
+          0,
+          0,
+          2,
+          2,
+          2
+        ]
+      },
+      "style": {
+        "signals": [],
+        "sentence_count": 1,
+        "detail": {
+          "endings": [
+            "준비했다"
+          ]
+        }
+      }
+    },
+    {
+      "episode_id": "RE009",
+      "evidence": "음성",
+      "display": "GENERATIVE_REPORT_SUMMARY",
+      "summary": "오랜만에 연탄 봉사에 참여하여 몸을 쓰면서 기분이 좋았고, 홍제역 근처의 바이소에서 귀여운 강판을 샀으며, 만두집에서 맛있는 만두를 먹었다.",
+      "speech_event_ids": [
+        "SP009"
+      ],
+      "utterance_ids": [
+        "U0184",
+        "U0186",
+        "U0187",
+        "U0188",
+        "U0189",
+        "U0190",
+        "U0191",
+        "U0192",
+        "U0193",
+        "U0194",
+        "U0195",
+        "U0197",
+        "U0198",
+        "U0199",
+        "U0200",
+        "U0201",
+        "U0202",
+        "U0203",
+        "U0204",
+        "U0205",
+        "U0206",
+        "U0207",
+        "U0208",
+        "U0209"
+      ],
+      "status": "TRANSCRIPT_STYLE_PASS",
+      "signals": [],
+      "leakage": {
+        "signals": [],
+        "longest_run": 1,
+        "verbatim_ratio": 0.0,
+        "runs_per_utterance": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "style": {
+        "signals": [],
+        "sentence_count": 1,
+        "detail": {
+          "endings": [
+            "먹었다"
+          ]
+        }
+      }
+    },
+    {
+      "episode_id": "RE010",
+      "evidence": "화면",
+      "display": "VISUAL_EVIDENCE",
+      "summary": "식품을 조리하는 활동",
+      "speech_event_ids": [],
+      "utterance_ids": [],
+      "status": "TRANSCRIPT_STYLE_FAIL",
+      "signals": [
+        "NON_DECLARATIVE_ENDING"
+      ],
+      "leakage": {
+        "signals": [],
+        "longest_run": 0,
+        "verbatim_ratio": 0.0,
+        "runs_per_utterance": []
+      },
+      "style": {
+        "signals": [
+          "NON_DECLARATIVE_ENDING"
+        ],
+        "sentence_count": 1,
+        "detail": {
+          "endings": [
+            "활동"
+          ]
+        }
+      }
+    },
+    {
+      "episode_id": "RE011",
+      "evidence": "화면",
+      "display": "VISUAL_EVIDENCE",
+      "summary": "식사 준비를 위해 음식을 접시에 올리는 행동",
+      "speech_event_ids": [],
+      "utterance_ids": [],
+      "status": "TRANSCRIPT_STYLE_FAIL",
+      "signals": [
+        "NON_DECLARATIVE_ENDING"
+      ],
+      "leakage": {
+        "signals": [],
+        "longest_run": 0,
+        "verbatim_ratio": 0.0,
+        "runs_per_utterance": []
+      },
+      "style": {
+        "signals": [
+          "NON_DECLARATIVE_ENDING"
+        ],
+        "sentence_count": 1,
+        "detail": {
+          "endings": [
+            "행동"
+          ]
+        }
+      }
+    },
+    {
+      "episode_id": "RE012",
+      "evidence": "음성",
+      "display": "GENERATIVE_REPORT_SUMMARY",
+      "summary": "라면이 매우 맛있다는 점을 여러 번 언급하며, 라면을 먹어야 한다는 의지를 표현한다.",
+      "speech_event_ids": [
+        "SP011"
+      ],
+      "utterance_ids": [
+        "U0237",
+        "U0238",
+        "U0239",
+        "U0240",
+        "U0241",
+        "U0242",
+        "U0243",
+        "U0244",
+        "U0245",
+        "U0246",
+        "U0247",
+        "U0248",
+        "U0250"
+      ],
+      "status": "TRANSCRIPT_STYLE_PASS",
+      "signals": [],
+      "leakage": {
+        "signals": [],
+        "longest_run": 2,
+        "verbatim_ratio": 0.0,
+        "runs_per_utterance": [
+          1,
+          1,
+          1,
+          1,
+          0,
+          2,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "style": {
+        "signals": [],
+        "sentence_count": 1,
+        "detail": {
+          "endings": [
+            "표현한다"
+          ]
+        }
+      }
+    },
+    {
+      "episode_id": "RE013",
+      "evidence": "화면",
+      "display": "VISUAL_EVIDENCE",
+      "summary": "손으로 식품 포장 상자를 들고 보는 행동",
+      "speech_event_ids": [],
+      "utterance_ids": [],
+      "status": "TRANSCRIPT_STYLE_FAIL",
+      "signals": [
+        "NON_DECLARATIVE_ENDING"
+      ],
+      "leakage": {
+        "signals": [],
+        "longest_run": 0,
+        "verbatim_ratio": 0.0,
+        "runs_per_utterance": []
+      },
+      "style": {
+        "signals": [
+          "NON_DECLARATIVE_ENDING"
+        ],
+        "sentence_count": 1,
+        "detail": {
+          "endings": [
+            "행동"
+          ]
+        }
+      }
+    },
+    {
+      "episode_id": "RE014",
+      "evidence": "화면",
+      "display": "VISUAL_EVIDENCE",
+      "summary": "사람이 음식을 먹는다",
+      "speech_event_ids": [],
+      "utterance_ids": [],
+      "status": "TRANSCRIPT_STYLE_PASS",
+      "signals": [],
+      "leakage": {
+        "signals": [],
+        "longest_run": 0,
+        "verbatim_ratio": 0.0,
+        "runs_per_utterance": []
+      },
+      "style": {
+        "signals": [],
+        "sentence_count": 1,
+        "detail": {
+          "endings": [
+            "먹는다"
+          ]
+        }
+      }
+    },
+    {
+      "episode_id": "RE015",
+      "evidence": "음성",
+      "display": "GENERATIVE_REPORT_SUMMARY",
+      "summary": "이 제품들은 다양한 용도로 활용될 수 있으며, 가성비가 좋은 것으로 평가된다.",
+      "speech_event_ids": [
+        "SP013"
+      ],
+      "utterance_ids": [
+        "U0287",
+        "U0288",
+        "U0290",
+        "U0291",
+        "U0293",
+        "U0294",
+        "U0296",
+        "U0298",
+        "U0299",
+        "U0300",
+        "U0301",
+        "U0302",
+        "U0303",
+        "U0304",
+        "U0305",
+        "U0306",
+        "U0308",
+        "U0309",
+        "U0310",
+        "U0311",
+        "U0312",
+        "U0313",
+        "U0314",
+        "U0315"
+      ],
+      "status": "TRANSCRIPT_STYLE_PASS",
+      "signals": [],
+      "leakage": {
+        "signals": [],
+        "longest_run": 1,
+        "verbatim_ratio": 0.0,
+        "runs_per_utterance": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "style": {
+        "signals": [],
+        "sentence_count": 1,
+        "detail": {
+          "endings": [
+            "평가된다"
+          ]
+        }
+      }
+    },
+    {
+      "episode_id": "RE016",
+      "evidence": "화면",
+      "display": "VISUAL_EVIDENCE",
+      "summary": "햄을 썰고 치즈를 꺼내는 활동",
+      "speech_event_ids": [],
+      "utterance_ids": [],
+      "status": "TRANSCRIPT_STYLE_FAIL",
+      "signals": [
+        "NON_DECLARATIVE_ENDING"
+      ],
+      "leakage": {
+        "signals": [],
+        "longest_run": 0,
+        "verbatim_ratio": 0.0,
+        "runs_per_utterance": []
+      },
+      "style": {
+        "signals": [
+          "NON_DECLARATIVE_ENDING"
+        ],
+        "sentence_count": 1,
+        "detail": {
+          "endings": [
+            "활동"
+          ]
+        }
+      }
+    },
+    {
+      "episode_id": "RE017",
+      "evidence": "화면",
+      "display": "VISUAL_EVIDENCE",
+      "summary": "식품을 용기 안에 담는다",
+      "speech_event_ids": [],
+      "utterance_ids": [],
+      "status": "TRANSCRIPT_STYLE_PASS",
+      "signals": [],
+      "leakage": {
+        "signals": [],
+        "longest_run": 0,
+        "verbatim_ratio": 0.0,
+        "runs_per_utterance": []
+      },
+      "style": {
+        "signals": [],
+        "sentence_count": 1,
+        "detail": {
+          "endings": [
+            "담는다"
+          ]
+        }
+      }
+    },
+    {
+      "episode_id": "RE018",
+      "evidence": "화면",
+      "display": "VISUAL_EVIDENCE",
+      "summary": "조리 활동",
+      "speech_event_ids": [],
+      "utterance_ids": [],
+      "status": "TRANSCRIPT_STYLE_FAIL",
+      "signals": [
+        "NON_DECLARATIVE_ENDING"
+      ],
+      "leakage": {
+        "signals": [],
+        "longest_run": 0,
+        "verbatim_ratio": 0.0,
+        "runs_per_utterance": []
+      },
+      "style": {
+        "signals": [
+          "NON_DECLARATIVE_ENDING"
+        ],
+        "sentence_count": 1,
+        "detail": {
+          "endings": [
+            "활동"
+          ]
+        }
+      }
+    },
+    {
+      "episode_id": "RE019",
+      "evidence": "화면",
+      "display": "VISUAL_ONLY_DOWNGRADE",
+      "summary": "식재료를 조리하는 활동",
+      "speech_event_ids": [
+        "SP016"
+      ],
+      "utterance_ids": [],
+      "status": "TRANSCRIPT_STYLE_FAIL",
+      "signals": [
+        "NON_DECLARATIVE_ENDING"
+      ],
+      "leakage": {
+        "signals": [],
+        "longest_run": 0,
+        "verbatim_ratio": 0.0,
+        "runs_per_utterance": []
+      },
+      "style": {
+        "signals": [
+          "NON_DECLARATIVE_ENDING"
+        ],
+        "sentence_count": 1,
+        "detail": {
+          "endings": [
+            "활동"
+          ]
+        }
+      }
+    },
+    {
+      "episode_id": "RE020",
+      "evidence": "화면",
+      "display": "VISUAL_EVIDENCE",
+      "summary": "식사 중인 사람",
+      "speech_event_ids": [],
+      "utterance_ids": [],
+      "status": "TRANSCRIPT_STYLE_FAIL",
+      "signals": [
+        "NON_DECLARATIVE_ENDING"
+      ],
+      "leakage": {
+        "signals": [],
+        "longest_run": 0,
+        "verbatim_ratio": 0.0,
+        "runs_per_utterance": []
+      },
+      "style": {
+        "signals": [
+          "NON_DECLARATIVE_ENDING"
+        ],
+        "sentence_count": 1,
+        "detail": {
+          "endings": [
+            "사람"
+          ]
+        }
+      }
+    },
+    {
+      "episode_id": "RE021",
+      "evidence": "화면",
+      "display": "VISUAL_EVIDENCE",
+      "summary": "식재료를 준비하고 조리하는 활동",
+      "speech_event_ids": [],
+      "utterance_ids": [],
+      "status": "TRANSCRIPT_STYLE_FAIL",
+      "signals": [
+        "NON_DECLARATIVE_ENDING"
+      ],
+      "leakage": {
+        "signals": [],
+        "longest_run": 0,
+        "verbatim_ratio": 0.0,
+        "runs_per_utterance": []
+      },
+      "style": {
+        "signals": [
+          "NON_DECLARATIVE_ENDING"
+        ],
+        "sentence_count": 1,
+        "detail": {
+          "endings": [
+            "활동"
+          ]
+        }
+      }
+    }
+  ]
+}

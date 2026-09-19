@@ -127,8 +127,28 @@ def attach_provenance(doc: dict, prov: dict) -> None:
 DEFAULT_BEAM_SIZE = 5     # faster-whisper 기본값. 확정 인덱스가 이 값으로 만들어졌다.
 
 
+def segment_diagnostic(segment) -> dict:
+    """faster-whisper 세그먼트에서 **실제로 제공되는** 신뢰도 값만 꺼낸다.
+
+    clean validation이 STT 시점 진단을 요구한다. 없는 지표를 만들지 않는다.
+    """
+    words = list(getattr(segment, "words", None) or [])
+    probabilities = [w.probability for w in words if getattr(w, "probability", None) is not None]
+    return {
+        "t0": float(segment.start), "t1": float(segment.end),
+        "text": (segment.text or "").strip(),
+        "avg_logprob": getattr(segment, "avg_logprob", None),
+        "no_speech_prob": getattr(segment, "no_speech_prob", None),
+        "compression_ratio": getattr(segment, "compression_ratio", None),
+        "min_word_probability": min(probabilities) if probabilities else None,
+        "mean_word_probability": (sum(probabilities) / len(probabilities)
+                                  if probabilities else None),
+    }
+
+
 def transcribe(wav: Path, model_name: str = "large-v3", lang: str = "ko",
-               force: bool = False, beam_size: int = DEFAULT_BEAM_SIZE) -> list[dict]:
+               force: bool = False, beam_size: int = DEFAULT_BEAM_SIZE,
+               with_diagnostics: bool = False):
     """utterance = {text, t0, t1} 리스트. 캐시: audio.wav 옆 stt_cache.json.
 
     `beam_size`는 **캐시 키에 포함**한다. 없으면 빔만 바꿔도 캐시가 적중해 옛 전사를
@@ -143,9 +163,11 @@ def transcribe(wav: Path, model_name: str = "large-v3", lang: str = "ko",
     if not force and cache.exists():
         d = json.loads(cache.read_text(encoding="utf-8"))
         stored = {"beam_size": DEFAULT_BEAM_SIZE, **d.get("meta", {})}
-        if stored == meta:
+        # 진단을 요구했는데 옛 캐시에 없으면 캐시를 쓰지 않는다 — 빈 진단을 돌려주면
+        # "측정했는데 이상이 없었다"로 읽히기 때문이다.
+        if stored == meta and not (with_diagnostics and "diagnostics" not in d):
             print(f"캐시된 전사 사용: {cache}")
-            return d["utterances"]
+            return (d["utterances"], d.get("diagnostics", [])) if with_diagnostics                 else d["utterances"]
 
     from faster_whisper import WhisperModel
 
@@ -157,24 +179,29 @@ def transcribe(wav: Path, model_name: str = "large-v3", lang: str = "ko",
             condition_on_previous_text=False,
             hallucination_silence_threshold=1.0,
             beam_size=beam_size, best_of=beam_size)
-        return [{"text": s.text.strip(), "t0": float(s.start), "t1": float(s.end)}
-                for s in raw if s.text.strip()]
+        kept, diagnostics = [], []
+        for s in raw:
+            diagnostics.append(segment_diagnostic(s))
+            if s.text.strip():
+                kept.append({"text": s.text.strip(), "t0": float(s.start), "t1": float(s.end)})
+        return kept, diagnostics
 
     # GPU 폴백 사다리 [stt_local.py 차용]
     ladder = [("cuda", "float16"), ("cuda", "int8_float16"), ("cpu", "int8")]
-    utts = None
+    utts = diagnostics = None
     for device, compute in ladder:
         try:
             print(f"faster-whisper {model_name} ({device}/{compute}) 전사 중...")
-            utts = run(device, compute)
+            utts, diagnostics = run(device, compute)
             break
         except Exception as e:
             if (device, compute) == ladder[-1]:
                 raise
             print(f"  {device}/{compute} 불가({type(e).__name__}) → 폴백")
 
-    common.atomic_write_json(cache, {"meta": meta, "utterances": utts})
-    return utts
+    common.atomic_write_json(cache, {"meta": meta, "utterances": utts,
+                                     "diagnostics": diagnostics})
+    return (utts, diagnostics) if with_diagnostics else utts
 
 
 def assign_subtitles(utts: list[dict], segments: list[dict]) -> None:

@@ -1,11 +1,11 @@
 """M7-W 웹 UI 서버: 업로드 → M1~M4 서브프로세스 인덱싱 → 채팅 검색.
 검색은 m5_search.search를 그대로 import (재구현 금지).
 [docs/superpowers/specs/2026-07-07-webui-design.md]"""
-import argparse, json, re, subprocess, sys, threading, time
+import argparse, json, math, re, subprocess, sys, threading, time
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, UploadFile
-from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, Response
 
 import common
 import deployment
@@ -34,10 +34,62 @@ def sanitize_video_id(stem: str) -> str:
     return re.sub(r"[^a-zA-Z0-9_-]", "_", stem)
 
 
+def _load_stt_utterances(path: Path) -> list[dict]:
+    if not path.exists():
+        raise HTTPException(404, f"{path.parent.name}: STT 전사 없음")
+    try:
+        doc = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        raise HTTPException(422, "stt_cache.json을 읽을 수 없음") from exc
+    utterances = doc.get("utterances") if isinstance(doc, dict) else None
+    if not isinstance(utterances, list):
+        raise HTTPException(422, "stt_cache.json utterances 형식 오류")
+    result = []
+    for item in utterances:
+        if not isinstance(item, dict):
+            raise HTTPException(422, "STT 발화 형식 오류")
+        text, t0, t1 = item.get("text"), item.get("t0"), item.get("t1")
+        numeric = (int, float)
+        if (not isinstance(text, str) or not text.strip()
+                or isinstance(t0, bool) or isinstance(t1, bool)
+                or not isinstance(t0, numeric) or not isinstance(t1, numeric)
+                or not math.isfinite(float(t0)) or not math.isfinite(float(t1))
+                or float(t0) < 0 or float(t1) < float(t0)):
+            raise HTTPException(422, "STT 발화 필드 형식 오류")
+        result.append({"text": text, "t0": t0, "t1": t1})
+    return result
+
+
+def _user_transcript(utterances: list[dict]) -> list[dict]:
+    return [item for item in utterances if not common.is_subtitle_credit(item["text"])]
+
+
+def _timestamp(seconds: float, separator: str = ".") -> str:
+    millis = round(float(seconds) * 1000)
+    hours, remainder = divmod(millis, 3_600_000)
+    minutes, remainder = divmod(remainder, 60_000)
+    secs, millis = divmod(remainder, 1000)
+    return f"{hours:02d}:{minutes:02d}:{secs:02d}{separator}{millis:03d}"
+
+
+def _render_transcript(utterances: list[dict], fmt: str) -> str:
+    if fmt == "txt":
+        return "\n\n".join(
+            f"[{_timestamp(item['t0'])} - {_timestamp(item['t1'])}]\n{item['text']}"
+            for item in utterances
+        ) + ("\n" if utterances else "")
+    if fmt == "srt":
+        return "\n\n".join(
+            f"{index}\n{_timestamp(item['t0'], ',')} --> {_timestamp(item['t1'], ',')}\n{item['text']}"
+            for index, item in enumerate(utterances, start=1)
+        ) + ("\n" if utterances else "")
+    raise ValueError(fmt)
+
+
 def run_module_subprocess(script: str, config_path: str, video_id: str) -> None:
     """M1~M4 CLI 한 단계 실행. 실패 시 stderr 꼬리를 담아 RuntimeError."""
     proc = subprocess.run(
-        [sys.executable, str(Path(__file__).resolve().parent / script),
+        [sys.executable, str(Path("src") / script),
          "--config", config_path, "--video-id", video_id],
         capture_output=True, text=True, encoding="utf-8", errors="replace")
     if proc.returncode != 0:
@@ -144,7 +196,8 @@ def _log_search(cfg: dict, video_id: str, query: str, alpha: float,
 def create_app(cfg: dict, config_path: str, alpha: float,
                run_module=run_module_subprocess,
                search_fn=search, load_index=VideoIndex.load,
-               search_stats_fn=None, enforce_demo_policy: bool = True) -> FastAPI:
+               search_stats_fn=None, enforce_demo_policy: bool = True,
+               initial_video_id: str | None = None) -> FastAPI:
     """`enforce_demo_policy`는 **기본 True다(fail-closed)**.
 
     진입점(`scripts/demo.py`)의 preflight는 시작 시 `--video-id` 하나만 본다. 그런데
@@ -202,6 +255,16 @@ def create_app(cfg: dict, config_path: str, alpha: float,
             "reused": True,
         }
 
+    if initial_video_id is not None:
+        initial_video_id = sanitize_video_id(initial_video_id)
+        _guard(initial_video_id)
+        initial_state = _resource_state(initial_video_id)
+        if initial_state is None or initial_state["stage"] != "done":
+            detail = (initial_state or {}).get("detail", "기존 검색 인덱스가 없습니다.")
+            raise ValueError(f"{initial_video_id}: {detail}")
+        jobs.try_start(initial_video_id)
+        jobs.set(initial_video_id, "done", initial_state["detail"])
+
     def _pipeline(video_id: str) -> None:
         try:
             for script in PIPELINE:
@@ -222,9 +285,6 @@ def create_app(cfg: dict, config_path: str, alpha: float,
             raise HTTPException(400, "mp4 파일만 업로드할 수 있어요")
         video_id = sanitize_video_id(Path(file.filename).stem)
         _guard(video_id)
-        # 조회 금지와 **덮어쓰기 금지**는 다른 문제다. 같은 이름 업로드로 확정 인덱스의
-        # 원본 영상을 갈아치울 수 있으면 배포 정합성이 무너지고, text_hash·embed_model은
-        # 둘 다 인덱스만 보므로 이것을 잡지 못한다 [경계 감사 2026-08-26]
         existing = _resource_state(video_id)
         if existing is not None and existing["stage"] in {
             "m1", "m2", "m3", "m4", "done"
@@ -304,6 +364,32 @@ def create_app(cfg: dict, config_path: str, alpha: float,
             {"idx": s["idx"], "start": s["start"], "end": s["end"],
              "subtitle": display_clean(s["subtitle"]),
              "caption": display_clean(s["caption"])} for s in doc["segments"]]}
+
+    @app.get("/api/transcript/{video_id}")
+    def transcript(video_id: str):
+        video_id = sanitize_video_id(video_id)
+        _guard(video_id)
+        utterances = _load_stt_utterances(
+            common.work_dir(cfg, video_id) / "stt_cache.json")
+        return {"video_id": video_id, "utterances": _user_transcript(utterances)}
+
+    @app.get("/api/transcript/{video_id}/download")
+    def transcript_download(video_id: str, format: str = "txt"):
+        video_id = sanitize_video_id(video_id)
+        _guard(video_id)
+        fmt = format.lower()
+        if fmt not in {"txt", "srt", "json"}:
+            raise HTTPException(400, "format은 txt, srt, json 중 하나여야 함")
+        raw = _load_stt_utterances(common.work_dir(cfg, video_id) / "stt_cache.json")
+        headers = {"Content-Disposition":
+                   f'attachment; filename="{video_id}_transcript.{fmt}"'}
+        if fmt == "json":
+            body = json.dumps({"video_id": video_id, "utterances": raw},
+                              ensure_ascii=False, indent=2) + "\n"
+            return Response(body, media_type="application/json", headers=headers)
+        body = _render_transcript(_user_transcript(raw), fmt)
+        media_type = "text/plain" if fmt == "txt" else "application/x-subrip"
+        return Response(body, media_type=media_type, headers=headers)
 
     @app.post("/api/search")
     def do_search(body: dict):

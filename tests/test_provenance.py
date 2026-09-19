@@ -17,7 +17,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT / "src" / "jds_video" / "_internal"))
 sys.path.insert(0, str(ROOT / "scripts"))
 import provenance as P                                           # noqa: E402
 
@@ -158,9 +158,7 @@ def test_provenance_is_not_used_in_metrics_or_eligibility():
     banned = ("import provenance", "source_url", "source_id", "file_sha256",
               '"provenance"', "'provenance'", "legacy_exempt")
     for name in ("m6_evaluate.py", "m5_search.py"):
-        src = (ROOT / "src" / "jds_video" / "_internal" / name).read_text(
-            encoding="utf-8"
-        )
+        src = (ROOT / "src" / "jds_video" / "_internal" / name).read_text(encoding="utf-8")
         for token in banned:
             assert token not in src, f"{name}: {token}"
     gate = (ROOT / "scripts" / "p2_staging_verify.py").read_text(
